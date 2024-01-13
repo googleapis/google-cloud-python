@@ -5027,6 +5027,1336 @@ async def test_export_lock_info_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        config.CreatePreviewRequest,
+        dict,
+    ],
+)
+def test_create_preview(request_type, transport: str = "grpc"):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_preview), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_preview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.CreatePreviewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_preview_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_preview), "__call__") as call:
+        client.create_preview()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.CreatePreviewRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_preview_async(
+    transport: str = "grpc_asyncio", request_type=config.CreatePreviewRequest
+):
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_preview), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_preview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.CreatePreviewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_preview_async_from_dict():
+    await test_create_preview_async(request_type=dict)
+
+
+def test_create_preview_field_headers():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = config.CreatePreviewRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_preview), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_preview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_preview_field_headers_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = config.CreatePreviewRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_preview), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_preview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_preview_flattened():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_preview), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_preview(
+            parent="parent_value",
+            preview=config.Preview(
+                terraform_blueprint=config.TerraformBlueprint(
+                    gcs_source="gcs_source_value"
+                )
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].preview
+        mock_val = config.Preview(
+            terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")
+        )
+        assert arg == mock_val
+
+
+def test_create_preview_flattened_error():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_preview(
+            config.CreatePreviewRequest(),
+            parent="parent_value",
+            preview=config.Preview(
+                terraform_blueprint=config.TerraformBlueprint(
+                    gcs_source="gcs_source_value"
+                )
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_preview_flattened_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_preview), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_preview(
+            parent="parent_value",
+            preview=config.Preview(
+                terraform_blueprint=config.TerraformBlueprint(
+                    gcs_source="gcs_source_value"
+                )
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].preview
+        mock_val = config.Preview(
+            terraform_blueprint=config.TerraformBlueprint(gcs_source="gcs_source_value")
+        )
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_preview_flattened_error_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_preview(
+            config.CreatePreviewRequest(),
+            parent="parent_value",
+            preview=config.Preview(
+                terraform_blueprint=config.TerraformBlueprint(
+                    gcs_source="gcs_source_value"
+                )
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        config.GetPreviewRequest,
+        dict,
+    ],
+)
+def test_get_preview(request_type, transport: str = "grpc"):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_preview), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = config.Preview(
+            name="name_value",
+            state=config.Preview.State.CREATING,
+            deployment="deployment_value",
+            preview_mode=config.Preview.PreviewMode.DEFAULT,
+            service_account="service_account_value",
+            artifacts_gcs_bucket="artifacts_gcs_bucket_value",
+            worker_pool="worker_pool_value",
+            error_code=config.Preview.ErrorCode.CLOUD_BUILD_PERMISSION_DENIED,
+            build="build_value",
+            error_logs="error_logs_value",
+            logs="logs_value",
+        )
+        response = client.get_preview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.GetPreviewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, config.Preview)
+    assert response.name == "name_value"
+    assert response.state == config.Preview.State.CREATING
+    assert response.deployment == "deployment_value"
+    assert response.preview_mode == config.Preview.PreviewMode.DEFAULT
+    assert response.service_account == "service_account_value"
+    assert response.artifacts_gcs_bucket == "artifacts_gcs_bucket_value"
+    assert response.worker_pool == "worker_pool_value"
+    assert response.error_code == config.Preview.ErrorCode.CLOUD_BUILD_PERMISSION_DENIED
+    assert response.build == "build_value"
+    assert response.error_logs == "error_logs_value"
+    assert response.logs == "logs_value"
+
+
+def test_get_preview_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_preview), "__call__") as call:
+        client.get_preview()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.GetPreviewRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_preview_async(
+    transport: str = "grpc_asyncio", request_type=config.GetPreviewRequest
+):
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_preview), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            config.Preview(
+                name="name_value",
+                state=config.Preview.State.CREATING,
+                deployment="deployment_value",
+                preview_mode=config.Preview.PreviewMode.DEFAULT,
+                service_account="service_account_value",
+                artifacts_gcs_bucket="artifacts_gcs_bucket_value",
+                worker_pool="worker_pool_value",
+                error_code=config.Preview.ErrorCode.CLOUD_BUILD_PERMISSION_DENIED,
+                build="build_value",
+                error_logs="error_logs_value",
+                logs="logs_value",
+            )
+        )
+        response = await client.get_preview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.GetPreviewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, config.Preview)
+    assert response.name == "name_value"
+    assert response.state == config.Preview.State.CREATING
+    assert response.deployment == "deployment_value"
+    assert response.preview_mode == config.Preview.PreviewMode.DEFAULT
+    assert response.service_account == "service_account_value"
+    assert response.artifacts_gcs_bucket == "artifacts_gcs_bucket_value"
+    assert response.worker_pool == "worker_pool_value"
+    assert response.error_code == config.Preview.ErrorCode.CLOUD_BUILD_PERMISSION_DENIED
+    assert response.build == "build_value"
+    assert response.error_logs == "error_logs_value"
+    assert response.logs == "logs_value"
+
+
+@pytest.mark.asyncio
+async def test_get_preview_async_from_dict():
+    await test_get_preview_async(request_type=dict)
+
+
+def test_get_preview_field_headers():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = config.GetPreviewRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_preview), "__call__") as call:
+        call.return_value = config.Preview()
+        client.get_preview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_preview_field_headers_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = config.GetPreviewRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_preview), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.Preview())
+        await client.get_preview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_preview_flattened():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_preview), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = config.Preview()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_preview(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_preview_flattened_error():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_preview(
+            config.GetPreviewRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_preview_flattened_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_preview), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = config.Preview()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(config.Preview())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_preview(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_preview_flattened_error_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_preview(
+            config.GetPreviewRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        config.ListPreviewsRequest,
+        dict,
+    ],
+)
+def test_list_previews(request_type, transport: str = "grpc"):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_previews), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = config.ListPreviewsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_previews(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.ListPreviewsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPreviewsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_previews_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_previews), "__call__") as call:
+        client.list_previews()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.ListPreviewsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_previews_async(
+    transport: str = "grpc_asyncio", request_type=config.ListPreviewsRequest
+):
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_previews), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            config.ListPreviewsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_previews(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.ListPreviewsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPreviewsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_previews_async_from_dict():
+    await test_list_previews_async(request_type=dict)
+
+
+def test_list_previews_field_headers():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = config.ListPreviewsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_previews), "__call__") as call:
+        call.return_value = config.ListPreviewsResponse()
+        client.list_previews(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_previews_field_headers_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = config.ListPreviewsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_previews), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            config.ListPreviewsResponse()
+        )
+        await client.list_previews(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_previews_flattened():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_previews), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = config.ListPreviewsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_previews(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_previews_flattened_error():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_previews(
+            config.ListPreviewsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_previews_flattened_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_previews), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = config.ListPreviewsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            config.ListPreviewsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_previews(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_previews_flattened_error_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_previews(
+            config.ListPreviewsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_previews_pager(transport_name: str = "grpc"):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_previews), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                    config.Preview(),
+                    config.Preview(),
+                ],
+                next_page_token="abc",
+            ),
+            config.ListPreviewsResponse(
+                previews=[],
+                next_page_token="def",
+            ),
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                ],
+                next_page_token="ghi",
+            ),
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                    config.Preview(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_previews(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, config.Preview) for i in results)
+
+
+def test_list_previews_pages(transport_name: str = "grpc"):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_previews), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                    config.Preview(),
+                    config.Preview(),
+                ],
+                next_page_token="abc",
+            ),
+            config.ListPreviewsResponse(
+                previews=[],
+                next_page_token="def",
+            ),
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                ],
+                next_page_token="ghi",
+            ),
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                    config.Preview(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_previews(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_previews_async_pager():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_previews), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                    config.Preview(),
+                    config.Preview(),
+                ],
+                next_page_token="abc",
+            ),
+            config.ListPreviewsResponse(
+                previews=[],
+                next_page_token="def",
+            ),
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                ],
+                next_page_token="ghi",
+            ),
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                    config.Preview(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_previews(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, config.Preview) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_previews_async_pages():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_previews), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                    config.Preview(),
+                    config.Preview(),
+                ],
+                next_page_token="abc",
+            ),
+            config.ListPreviewsResponse(
+                previews=[],
+                next_page_token="def",
+            ),
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                ],
+                next_page_token="ghi",
+            ),
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                    config.Preview(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_previews(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        config.DeletePreviewRequest,
+        dict,
+    ],
+)
+def test_delete_preview(request_type, transport: str = "grpc"):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_preview), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_preview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.DeletePreviewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_preview_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_preview), "__call__") as call:
+        client.delete_preview()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.DeletePreviewRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_preview_async(
+    transport: str = "grpc_asyncio", request_type=config.DeletePreviewRequest
+):
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_preview), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_preview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.DeletePreviewRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_preview_async_from_dict():
+    await test_delete_preview_async(request_type=dict)
+
+
+def test_delete_preview_field_headers():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = config.DeletePreviewRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_preview), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_preview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_preview_field_headers_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = config.DeletePreviewRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_preview), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_preview(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_preview_flattened():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_preview), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_preview(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_preview_flattened_error():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_preview(
+            config.DeletePreviewRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_preview_flattened_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_preview), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_preview(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_preview_flattened_error_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_preview(
+            config.DeletePreviewRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        config.ExportPreviewResultRequest,
+        dict,
+    ],
+)
+def test_export_preview_result(request_type, transport: str = "grpc"):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_preview_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = config.ExportPreviewResultResponse()
+        response = client.export_preview_result(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.ExportPreviewResultRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, config.ExportPreviewResultResponse)
+
+
+def test_export_preview_result_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_preview_result), "__call__"
+    ) as call:
+        client.export_preview_result()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.ExportPreviewResultRequest()
+
+
+@pytest.mark.asyncio
+async def test_export_preview_result_async(
+    transport: str = "grpc_asyncio", request_type=config.ExportPreviewResultRequest
+):
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_preview_result), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            config.ExportPreviewResultResponse()
+        )
+        response = await client.export_preview_result(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == config.ExportPreviewResultRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, config.ExportPreviewResultResponse)
+
+
+@pytest.mark.asyncio
+async def test_export_preview_result_async_from_dict():
+    await test_export_preview_result_async(request_type=dict)
+
+
+def test_export_preview_result_field_headers():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = config.ExportPreviewResultRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_preview_result), "__call__"
+    ) as call:
+        call.return_value = config.ExportPreviewResultResponse()
+        client.export_preview_result(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_export_preview_result_field_headers_async():
+    client = ConfigAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = config.ExportPreviewResultRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.export_preview_result), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            config.ExportPreviewResultResponse()
+        )
+        await client.export_preview_result(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         config.ListDeploymentsRequest,
         dict,
     ],
@@ -9803,6 +11133,1496 @@ def test_export_lock_info_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        config.CreatePreviewRequest,
+        dict,
+    ],
+)
+def test_create_preview_rest(request_type):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["preview"] = {
+        "terraform_blueprint": {
+            "gcs_source": "gcs_source_value",
+            "git_source": {
+                "repo": "repo_value",
+                "directory": "directory_value",
+                "ref": "ref_value",
+            },
+            "input_values": {},
+        },
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "labels": {},
+        "state": 1,
+        "deployment": "deployment_value",
+        "preview_mode": 1,
+        "service_account": "service_account_value",
+        "artifacts_gcs_bucket": "artifacts_gcs_bucket_value",
+        "worker_pool": "worker_pool_value",
+        "error_code": 1,
+        "error_status": {
+            "code": 411,
+            "message": "message_value",
+            "details": [
+                {
+                    "type_url": "type.googleapis.com/google.protobuf.Duration",
+                    "value": b"\x08\x0c\x10\xdb\x07",
+                }
+            ],
+        },
+        "build": "build_value",
+        "tf_errors": [
+            {
+                "resource_address": "resource_address_value",
+                "http_response_code": 1928,
+                "error_description": "error_description_value",
+                "error": {},
+            }
+        ],
+        "error_logs": "error_logs_value",
+        "preview_artifacts": {
+            "content": "content_value",
+            "artifacts": "artifacts_value",
+        },
+        "logs": "logs_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = config.CreatePreviewRequest.meta.fields["preview"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["preview"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["preview"][field])):
+                    del request_init["preview"][field][i][subfield]
+            else:
+                del request_init["preview"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_preview(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_preview_rest_required_fields(request_type=config.CreatePreviewRequest):
+    transport_class = transports.ConfigRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_preview._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_preview._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "preview_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_preview(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_preview_rest_unset_required_fields():
+    transport = transports.ConfigRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_preview._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "previewId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "preview",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_preview_rest_interceptors(null_interceptor):
+    transport = transports.ConfigRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigRestInterceptor(),
+    )
+    client = ConfigClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ConfigRestInterceptor, "post_create_preview"
+    ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "pre_create_preview"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = config.CreatePreviewRequest.pb(config.CreatePreviewRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = config.CreatePreviewRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_preview(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_preview_rest_bad_request(
+    transport: str = "rest", request_type=config.CreatePreviewRequest
+):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_preview(request)
+
+
+def test_create_preview_rest_flattened():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            preview=config.Preview(
+                terraform_blueprint=config.TerraformBlueprint(
+                    gcs_source="gcs_source_value"
+                )
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_preview(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/previews" % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_preview_rest_flattened_error(transport: str = "rest"):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_preview(
+            config.CreatePreviewRequest(),
+            parent="parent_value",
+            preview=config.Preview(
+                terraform_blueprint=config.TerraformBlueprint(
+                    gcs_source="gcs_source_value"
+                )
+            ),
+        )
+
+
+def test_create_preview_rest_error():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        config.GetPreviewRequest,
+        dict,
+    ],
+)
+def test_get_preview_rest(request_type):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/previews/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = config.Preview(
+            name="name_value",
+            state=config.Preview.State.CREATING,
+            deployment="deployment_value",
+            preview_mode=config.Preview.PreviewMode.DEFAULT,
+            service_account="service_account_value",
+            artifacts_gcs_bucket="artifacts_gcs_bucket_value",
+            worker_pool="worker_pool_value",
+            error_code=config.Preview.ErrorCode.CLOUD_BUILD_PERMISSION_DENIED,
+            build="build_value",
+            error_logs="error_logs_value",
+            logs="logs_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = config.Preview.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_preview(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, config.Preview)
+    assert response.name == "name_value"
+    assert response.state == config.Preview.State.CREATING
+    assert response.deployment == "deployment_value"
+    assert response.preview_mode == config.Preview.PreviewMode.DEFAULT
+    assert response.service_account == "service_account_value"
+    assert response.artifacts_gcs_bucket == "artifacts_gcs_bucket_value"
+    assert response.worker_pool == "worker_pool_value"
+    assert response.error_code == config.Preview.ErrorCode.CLOUD_BUILD_PERMISSION_DENIED
+    assert response.build == "build_value"
+    assert response.error_logs == "error_logs_value"
+    assert response.logs == "logs_value"
+
+
+def test_get_preview_rest_required_fields(request_type=config.GetPreviewRequest):
+    transport_class = transports.ConfigRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_preview._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_preview._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = config.Preview()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = config.Preview.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_preview(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_preview_rest_unset_required_fields():
+    transport = transports.ConfigRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_preview._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_preview_rest_interceptors(null_interceptor):
+    transport = transports.ConfigRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigRestInterceptor(),
+    )
+    client = ConfigClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_get_preview"
+    ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "pre_get_preview"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = config.GetPreviewRequest.pb(config.GetPreviewRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = config.Preview.to_json(config.Preview())
+
+        request = config.GetPreviewRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = config.Preview()
+
+        client.get_preview(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_preview_rest_bad_request(
+    transport: str = "rest", request_type=config.GetPreviewRequest
+):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/previews/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_preview(request)
+
+
+def test_get_preview_rest_flattened():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = config.Preview()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/previews/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = config.Preview.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_preview(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/previews/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_preview_rest_flattened_error(transport: str = "rest"):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_preview(
+            config.GetPreviewRequest(),
+            name="name_value",
+        )
+
+
+def test_get_preview_rest_error():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        config.ListPreviewsRequest,
+        dict,
+    ],
+)
+def test_list_previews_rest(request_type):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = config.ListPreviewsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = config.ListPreviewsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_previews(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPreviewsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_previews_rest_required_fields(request_type=config.ListPreviewsRequest):
+    transport_class = transports.ConfigRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_previews._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_previews._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = config.ListPreviewsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = config.ListPreviewsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_previews(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_previews_rest_unset_required_fields():
+    transport = transports.ConfigRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_previews._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_previews_rest_interceptors(null_interceptor):
+    transport = transports.ConfigRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigRestInterceptor(),
+    )
+    client = ConfigClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_list_previews"
+    ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "pre_list_previews"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = config.ListPreviewsRequest.pb(config.ListPreviewsRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = config.ListPreviewsResponse.to_json(
+            config.ListPreviewsResponse()
+        )
+
+        request = config.ListPreviewsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = config.ListPreviewsResponse()
+
+        client.list_previews(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_previews_rest_bad_request(
+    transport: str = "rest", request_type=config.ListPreviewsRequest
+):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_previews(request)
+
+
+def test_list_previews_rest_flattened():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = config.ListPreviewsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = config.ListPreviewsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_previews(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/previews" % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_previews_rest_flattened_error(transport: str = "rest"):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_previews(
+            config.ListPreviewsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_previews_rest_pager(transport: str = "rest"):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                    config.Preview(),
+                    config.Preview(),
+                ],
+                next_page_token="abc",
+            ),
+            config.ListPreviewsResponse(
+                previews=[],
+                next_page_token="def",
+            ),
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                ],
+                next_page_token="ghi",
+            ),
+            config.ListPreviewsResponse(
+                previews=[
+                    config.Preview(),
+                    config.Preview(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(config.ListPreviewsResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_previews(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, config.Preview) for i in results)
+
+        pages = list(client.list_previews(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        config.DeletePreviewRequest,
+        dict,
+    ],
+)
+def test_delete_preview_rest(request_type):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/previews/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_preview(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_preview_rest_required_fields(request_type=config.DeletePreviewRequest):
+    transport_class = transports.ConfigRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_preview._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_preview._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_preview(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_preview_rest_unset_required_fields():
+    transport = transports.ConfigRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_preview._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_preview_rest_interceptors(null_interceptor):
+    transport = transports.ConfigRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigRestInterceptor(),
+    )
+    client = ConfigClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.ConfigRestInterceptor, "post_delete_preview"
+    ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "pre_delete_preview"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = config.DeletePreviewRequest.pb(config.DeletePreviewRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = config.DeletePreviewRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_preview(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_preview_rest_bad_request(
+    transport: str = "rest", request_type=config.DeletePreviewRequest
+):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/previews/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_preview(request)
+
+
+def test_delete_preview_rest_flattened():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/previews/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_preview(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/previews/*}" % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_preview_rest_flattened_error(transport: str = "rest"):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_preview(
+            config.DeletePreviewRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_preview_rest_error():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        config.ExportPreviewResultRequest,
+        dict,
+    ],
+)
+def test_export_preview_result_rest(request_type):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/previews/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = config.ExportPreviewResultResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = config.ExportPreviewResultResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.export_preview_result(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, config.ExportPreviewResultResponse)
+
+
+def test_export_preview_result_rest_required_fields(
+    request_type=config.ExportPreviewResultRequest,
+):
+    transport_class = transports.ConfigRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).export_preview_result._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).export_preview_result._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = config.ExportPreviewResultResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = config.ExportPreviewResultResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.export_preview_result(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_export_preview_result_rest_unset_required_fields():
+    transport = transports.ConfigRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.export_preview_result._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("parent",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_export_preview_result_rest_interceptors(null_interceptor):
+    transport = transports.ConfigRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.ConfigRestInterceptor(),
+    )
+    client = ConfigClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.ConfigRestInterceptor, "post_export_preview_result"
+    ) as post, mock.patch.object(
+        transports.ConfigRestInterceptor, "pre_export_preview_result"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = config.ExportPreviewResultRequest.pb(
+            config.ExportPreviewResultRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = config.ExportPreviewResultResponse.to_json(
+            config.ExportPreviewResultResponse()
+        )
+
+        request = config.ExportPreviewResultRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = config.ExportPreviewResultResponse()
+
+        client.export_preview_result(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_export_preview_result_rest_bad_request(
+    transport: str = "rest", request_type=config.ExportPreviewResultRequest
+):
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2/previews/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.export_preview_result(request)
+
+
+def test_export_preview_result_rest_error():
+    client = ConfigClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ConfigGrpcTransport(
@@ -9958,6 +12778,11 @@ def test_config_base_transport():
         "lock_deployment",
         "unlock_deployment",
         "export_lock_info",
+        "create_preview",
+        "get_preview",
+        "list_previews",
+        "delete_preview",
+        "export_preview_result",
         "set_iam_policy",
         "get_iam_policy",
         "test_iam_permissions",
@@ -10292,6 +13117,21 @@ def test_config_client_transport_session_collision(transport_name):
     session1 = client1.transport.export_lock_info._session
     session2 = client2.transport.export_lock_info._session
     assert session1 != session2
+    session1 = client1.transport.create_preview._session
+    session2 = client2.transport.create_preview._session
+    assert session1 != session2
+    session1 = client1.transport.get_preview._session
+    session2 = client2.transport.get_preview._session
+    assert session1 != session2
+    session1 = client1.transport.list_previews._session
+    session2 = client2.transport.list_previews._session
+    assert session1 != session2
+    session1 = client1.transport.delete_preview._session
+    session2 = client2.transport.delete_preview._session
+    assert session1 != session2
+    session1 = client1.transport.export_preview_result._session
+    session2 = client2.transport.export_preview_result._session
+    assert session1 != session2
 
 
 def test_config_grpc_transport_channel():
@@ -10474,12 +13314,38 @@ def test_parse_deployment_path():
     assert expected == actual
 
 
-def test_resource_path():
+def test_preview_path():
     project = "cuttlefish"
     location = "mussel"
-    deployment = "winkle"
-    revision = "nautilus"
-    resource = "scallop"
+    preview = "winkle"
+    expected = "projects/{project}/locations/{location}/previews/{preview}".format(
+        project=project,
+        location=location,
+        preview=preview,
+    )
+    actual = ConfigClient.preview_path(project, location, preview)
+    assert expected == actual
+
+
+def test_parse_preview_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "preview": "abalone",
+    }
+    path = ConfigClient.preview_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConfigClient.parse_preview_path(path)
+    assert expected == actual
+
+
+def test_resource_path():
+    project = "squid"
+    location = "clam"
+    deployment = "whelk"
+    revision = "octopus"
+    resource = "oyster"
     expected = "projects/{project}/locations/{location}/deployments/{deployment}/revisions/{revision}/resources/{resource}".format(
         project=project,
         location=location,
@@ -10495,11 +13361,11 @@ def test_resource_path():
 
 def test_parse_resource_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "deployment": "clam",
-        "revision": "whelk",
-        "resource": "octopus",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "deployment": "mussel",
+        "revision": "winkle",
+        "resource": "nautilus",
     }
     path = ConfigClient.resource_path(**expected)
 
@@ -10509,10 +13375,10 @@ def test_parse_resource_path():
 
 
 def test_revision_path():
-    project = "oyster"
-    location = "nudibranch"
-    deployment = "cuttlefish"
-    revision = "mussel"
+    project = "scallop"
+    location = "abalone"
+    deployment = "squid"
+    revision = "clam"
     expected = "projects/{project}/locations/{location}/deployments/{deployment}/revisions/{revision}".format(
         project=project,
         location=location,
@@ -10525,10 +13391,10 @@ def test_revision_path():
 
 def test_parse_revision_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "deployment": "scallop",
-        "revision": "abalone",
+        "project": "whelk",
+        "location": "octopus",
+        "deployment": "oyster",
+        "revision": "nudibranch",
     }
     path = ConfigClient.revision_path(**expected)
 
@@ -10538,8 +13404,8 @@ def test_parse_revision_path():
 
 
 def test_service_account_path():
-    project = "squid"
-    service_account = "clam"
+    project = "cuttlefish"
+    service_account = "mussel"
     expected = "projects/{project}/serviceAccounts/{service_account}".format(
         project=project,
         service_account=service_account,
@@ -10550,8 +13416,8 @@ def test_service_account_path():
 
 def test_parse_service_account_path():
     expected = {
-        "project": "whelk",
-        "service_account": "octopus",
+        "project": "winkle",
+        "service_account": "nautilus",
     }
     path = ConfigClient.service_account_path(**expected)
 
@@ -10561,9 +13427,9 @@ def test_parse_service_account_path():
 
 
 def test_worker_pool_path():
-    project = "oyster"
-    location = "nudibranch"
-    worker_pool = "cuttlefish"
+    project = "scallop"
+    location = "abalone"
+    worker_pool = "squid"
     expected = (
         "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
             project=project,
@@ -10577,9 +13443,9 @@ def test_worker_pool_path():
 
 def test_parse_worker_pool_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "worker_pool": "nautilus",
+        "project": "clam",
+        "location": "whelk",
+        "worker_pool": "octopus",
     }
     path = ConfigClient.worker_pool_path(**expected)
 
@@ -10589,7 +13455,7 @@ def test_parse_worker_pool_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -10599,7 +13465,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "nudibranch",
     }
     path = ConfigClient.common_billing_account_path(**expected)
 
@@ -10609,7 +13475,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -10619,7 +13485,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "mussel",
     }
     path = ConfigClient.common_folder_path(**expected)
 
@@ -10629,7 +13495,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -10639,7 +13505,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "nautilus",
     }
     path = ConfigClient.common_organization_path(**expected)
 
@@ -10649,7 +13515,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -10659,7 +13525,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "abalone",
     }
     path = ConfigClient.common_project_path(**expected)
 
@@ -10669,8 +13535,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -10681,8 +13547,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = ConfigClient.common_location_path(**expected)
 
