@@ -78,6 +78,7 @@ from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._helpers import _verify_job_config_type
 from google.cloud.bigquery._helpers import _get_bigquery_host
 from google.cloud.bigquery._helpers import _DEFAULT_HOST
+from google.cloud.bigquery._helpers import _DEFAULT_UNIVERSE
 from google.cloud.bigquery._job_helpers import make_job_id as _make_job_id
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
@@ -252,6 +253,14 @@ class Client(ClientWithProject):
             if client_options.api_endpoint:
                 api_endpoint = client_options.api_endpoint
                 kw_args["api_endpoint"] = api_endpoint
+            elif (
+                hasattr(client_options, "universe_domain")
+                and client_options.universe_domain
+                and client_options.universe_domain is not _DEFAULT_UNIVERSE
+            ):
+                kw_args["api_endpoint"] = _DEFAULT_HOST.replace(
+                    _DEFAULT_UNIVERSE, client_options.universe_domain
+                )
 
         self._connection = Connection(self, **kw_args)
         self._location = location

@@ -201,6 +201,23 @@ class TestClient(unittest.TestCase):
             client._connection.API_BASE_URL, "https://www.foo-googleapis.com"
         )
 
+    @pytest.mark.skipif(
+        packaging.version.parse(getattr(google.api_core, "__version__", "0.0.0"))
+        < packaging.version.Version("2.15.0"),
+        reason="universe_domain not supported with google-api-core < 2.15.0",
+    )
+    def test_ctor_w_client_options_universe(self):
+        creds = _make_credentials()
+        http = object()
+        client_options = {"universe_domain": "foo.com"}
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+            client_options=client_options,
+        )
+        self.assertEqual(client._connection.API_BASE_URL, "https://bigquery.foo.com")
+
     def test_ctor_w_location(self):
         from google.cloud.bigquery._http import Connection
 
