@@ -465,13 +465,12 @@ def test_client_query_total_rows(client, capsys):
         'WHERE state = "TX" '
         "LIMIT 100"
     )
-    query_job = client.query(
+    results = client.query_and_wait(
         query,
         # Location must match that of the dataset(s) referenced in the query.
         location="US",
-    )  # API request - starts the query
+    )  # API request - starts the query and waits for results.
 
-    results = query_job.result()  # Wait for query to complete.
     print("Got {} rows.".format(results.total_rows))
     # [END bigquery_query_total_rows]
 
@@ -551,7 +550,7 @@ def test_query_results_as_dataframe(client):
         LIMIT 10
     """
 
-    df = client.query(sql).to_dataframe()
+    df = client.query_and_wait(sql).to_dataframe()
     # [END bigquery_query_results_dataframe]
     assert isinstance(df, pandas.DataFrame)
     assert len(list(df)) == 2  # verify the number of columns
