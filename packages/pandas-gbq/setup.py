@@ -34,12 +34,9 @@ dependencies = [
     "google-api-core >= 2.10.2, <3.0.0dev",
     "google-auth >=2.13.0",
     "google-auth-oauthlib >=0.7.0",
-    # Require 1.27.* because it has a fix for out-of-bounds timestamps.  See:
-    # https://github.com/googleapis/python-bigquery/pull/209 and
-    # https://github.com/googleapis/python-bigquery-pandas/issues/365
-    # Exclude 2.4.* because it has a bug where waiting for the query can hang
-    # indefinitely. https://github.com/pydata/pandas-gbq/issues/343
-    "google-cloud-bigquery >=3.3.5,<4.0.0dev,!=2.4.*",
+    # Please also update the minimum version in pandas_gbq/features.py to
+    # allow pandas-gbq to detect invalid package versions at runtime.
+    "google-cloud-bigquery >=3.3.5,<4.0.0dev",
     "google-cloud-bigquery-storage >=2.16.2,<3.0.0dev",
     "packaging >=20.0.0",
 ]

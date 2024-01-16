@@ -367,9 +367,9 @@ class GbqConnector(object):
 
     def get_client(self):
         import google.api_core.client_info
-        from google.cloud import bigquery
         import pandas
 
+        bigquery = FEATURES.bigquery_try_import()
         client_info = google.api_core.client_info.ClientInfo(
             user_agent="pandas-{}".format(pandas.__version__)
         )
@@ -563,10 +563,6 @@ class GbqConnector(object):
         if max_results is not None:
             create_bqstorage_client = False
 
-        to_dataframe_kwargs = {}
-        if FEATURES.bigquery_needs_date_as_object:
-            to_dataframe_kwargs["date_as_object"] = True
-
         try:
             schema_fields = [field.to_api_repr() for field in rows_iter.schema]
             conversion_dtypes = _bqschema_to_nullsafe_dtypes(schema_fields)
@@ -575,7 +571,6 @@ class GbqConnector(object):
                 dtypes=conversion_dtypes,
                 progress_bar_type=progress_bar_type,
                 create_bqstorage_client=create_bqstorage_client,
-                **to_dataframe_kwargs,
             )
         except self.http_error as ex:
             self.process_http_error(ex)

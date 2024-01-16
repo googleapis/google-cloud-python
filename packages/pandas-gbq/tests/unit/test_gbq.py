@@ -732,19 +732,11 @@ def test_read_gbq_use_bqstorage_api(
     assert df is not None
 
     mock_list_rows = mock_bigquery_client.list_rows("dest", max_results=100)
-    if FEATURES.bigquery_needs_date_as_object:
-        mock_list_rows.to_dataframe.assert_called_once_with(
-            create_bqstorage_client=True,
-            dtypes=mock.ANY,
-            progress_bar_type=mock.ANY,
-            date_as_object=True,
-        )
-    else:
-        mock_list_rows.to_dataframe.assert_called_once_with(
-            create_bqstorage_client=True,
-            dtypes=mock.ANY,
-            progress_bar_type=mock.ANY,
-        )
+    mock_list_rows.to_dataframe.assert_called_once_with(
+        create_bqstorage_client=True,
+        dtypes=mock.ANY,
+        progress_bar_type=mock.ANY,
+    )
 
 
 def test_read_gbq_calls_tqdm(mock_bigquery_client, mock_service_account_credentials):

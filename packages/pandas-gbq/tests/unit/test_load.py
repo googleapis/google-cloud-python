@@ -8,7 +8,6 @@ import datetime
 import decimal
 from io import StringIO
 import textwrap
-from unittest import mock
 
 import db_dtypes
 import numpy
@@ -17,13 +16,10 @@ import pandas.testing
 import pytest
 
 from pandas_gbq import exceptions
-from pandas_gbq.features import FEATURES
 from pandas_gbq import load
 
 
 def load_method(bqclient, api_method):
-    if not FEATURES.bigquery_has_from_dataframe_with_csv and api_method == "load_csv":
-        return bqclient.load_table_from_file
     return bqclient.load_table_from_dataframe
 
 
@@ -180,12 +176,10 @@ def test_load_csv_from_file_generates_schema(mock_bigquery_client):
 
 
 @pytest.mark.parametrize(
-    ["bigquery_has_from_dataframe_with_csv", "api_method"],
-    [(True, "load_parquet"), (True, "load_csv"), (False, "load_csv")],
+    ["api_method"],
+    [("load_parquet",), ("load_csv",)],
 )
-def test_load_chunks_omits_policy_tags(
-    monkeypatch, mock_bigquery_client, bigquery_has_from_dataframe_with_csv, api_method
-):
+def test_load_chunks_omits_policy_tags(monkeypatch, mock_bigquery_client, api_method):
     """Ensure that policyTags are omitted.
 
     We don't want to change the policyTags via a load job, as this can cause
@@ -193,11 +187,6 @@ def test_load_chunks_omits_policy_tags(
     """
     import google.cloud.bigquery
 
-    monkeypatch.setattr(
-        type(FEATURES),
-        "bigquery_has_from_dataframe_with_csv",
-        mock.PropertyMock(return_value=bigquery_has_from_dataframe_with_csv),
-    )
     df = pandas.DataFrame({"col1": [1, 2, 3]})
     destination = google.cloud.bigquery.TableReference.from_string(
         "my-project.my_dataset.my_table"

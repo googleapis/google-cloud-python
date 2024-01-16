@@ -14,7 +14,6 @@ import pyarrow.lib
 from google.cloud import bigquery
 
 from pandas_gbq import exceptions
-from pandas_gbq.features import FEATURES
 import pandas_gbq.schema
 
 
@@ -252,28 +251,16 @@ def load_chunks(
         # TODO: yield progress depending on result() with timeout
         return [0]
     elif api_method == "load_csv":
-        if FEATURES.bigquery_has_from_dataframe_with_csv:
-            return load_csv_from_dataframe(
-                client,
-                dataframe,
-                destination_table_ref,
-                write_disposition,
-                location,
-                chunksize,
-                schema,
-                billing_project=billing_project,
-            )
-        else:
-            return load_csv_from_file(
-                client,
-                dataframe,
-                destination_table_ref,
-                write_disposition,
-                location,
-                chunksize,
-                schema,
-                billing_project=billing_project,
-            )
+        return load_csv_from_dataframe(
+            client,
+            dataframe,
+            destination_table_ref,
+            write_disposition,
+            location,
+            chunksize,
+            schema,
+            billing_project=billing_project,
+        )
     else:
         raise ValueError(
             f"Got unexpected api_method: {api_method!r}, expected one of 'load_parquet', 'load_csv'."

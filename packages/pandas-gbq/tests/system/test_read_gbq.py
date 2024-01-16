@@ -454,10 +454,6 @@ ORDER BY row_num ASC
                 ),
             ),
             id="bignumeric-normal-range",
-            marks=pytest.mark.skipif(
-                not FEATURES.bigquery_has_bignumeric,
-                reason="BIGNUMERIC not supported in this version of google-cloud-bigquery",
-            ),
         ),
         pytest.param(
             *QueryTestCase(
@@ -538,9 +534,7 @@ ORDER BY row_num ASC
                         ),
                     }
                 ),
-                use_bqstorage_apis={True, False}
-                if FEATURES.bigquery_has_accurate_timestamp
-                else {True},
+                use_bqstorage_apis={True, False},
             ),
             id="issue365-extreme-datetimes",
         ),
