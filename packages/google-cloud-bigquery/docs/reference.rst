@@ -1,8 +1,6 @@
 API Reference
 ~~~~~~~~~~~~~
 
-.. currentmodule:: google.cloud.bigquery
-
 The main concepts with this API are:
 
 - :class:`~google.cloud.bigquery.client.Client` manages connections to the
@@ -18,55 +16,12 @@ The main concepts with this API are:
 Client
 ======
 
-.. autosummary::
-    :toctree: generated
-
-    client.Client
+.. automodule:: google.cloud.bigquery.client
 
 Job
 ===
 
-Job Configuration
------------------
-
-.. autosummary::
-    :toctree: generated
-
-    job.QueryJobConfig
-    job.CopyJobConfig
-    job.LoadJobConfig
-    job.ExtractJobConfig
-
-Job Classes
------------
-
-.. autosummary::
-    :toctree: generated
-
-    job.QueryJob
-    job.CopyJob
-    job.LoadJob
-    job.ExtractJob
-
-Job-Related Types
------------------
-
-.. autosummary::
-    :toctree: generated
-
-    job.Compression
-    job.CreateDisposition
-    job.DestinationFormat
-    job.DmlStats
-    job.Encoding
-    job.OperationType
-    job.QueryPlanEntry
-    job.QueryPlanEntryStep
-    job.QueryPriority
-    job.ReservationUsage
-    job.SourceFormat
-    job.WriteDisposition
-    job.SchemaUpdateOption
+.. automodule:: google.cloud.bigquery.job
 
 .. toctree::
   :maxdepth: 2
@@ -77,63 +32,28 @@ Job-Related Types
 Dataset
 =======
 
-.. autosummary::
-    :toctree: generated
-
-    dataset.Dataset
-    dataset.DatasetListItem
-    dataset.DatasetReference
-    dataset.AccessEntry
+.. automodule:: google.cloud.bigquery.dataset
 
 
 Table
 =====
 
-.. autosummary::
-    :toctree: generated
-
-    table.PartitionRange
-    table.RangePartitioning
-    table.Row
-    table.RowIterator
-    table.SnapshotDefinition
-    table.CloneDefinition
-    table.Table
-    table.TableListItem
-    table.TableReference
-    table.TimePartitioning
-    table.TimePartitioningType
+.. automodule:: google.cloud.bigquery.table
 
 Model
 =====
 
-.. autosummary::
-    :toctree: generated
-
-    model.Model
-    model.ModelReference
+.. automodule:: google.cloud.bigquery.model
 
 Routine
 =======
 
-.. autosummary::
-    :toctree: generated
-
-    routine.DeterminismLevel
-    routine.Routine
-    routine.RoutineArgument
-    routine.RoutineReference
-    routine.RoutineType
+.. automodule:: google.cloud.bigquery.routine
 
 Schema
 ======
 
-.. autosummary::
-    :toctree: generated
-
-    schema.SchemaField
-    schema.PolicyTagList
-
+.. automodule:: google.cloud.bigquery.schema
 
 Query
 =====
@@ -147,25 +67,13 @@ Query
 Retries
 =======
 
-.. autosummary::
-    :toctree: generated
-
-    retry.DEFAULT_RETRY
+.. automodule:: google.cloud.bigquery.retry
 
 
 External Configuration
 ======================
 
-.. autosummary::
-    :toctree: generated
-
-    external_config.ExternalSourceFormat
-    external_config.ExternalConfig
-    external_config.BigtableOptions
-    external_config.BigtableColumnFamily
-    external_config.BigtableColumn
-    external_config.CSVOptions
-    external_config.GoogleSheetsOptions
+.. automodule:: google.cloud.bigquery.external_config
 
 .. toctree::
     :maxdepth: 2
@@ -194,10 +102,7 @@ Enums
 Encryption Configuration
 ========================
 
-.. autosummary::
-    :toctree: generated
-
-    encryption_configuration.EncryptionConfiguration
+.. automodule:: google.cloud.bigquery.encryption_configuration
 
 
 Additional Types
