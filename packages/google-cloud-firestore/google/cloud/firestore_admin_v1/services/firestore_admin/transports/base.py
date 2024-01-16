@@ -253,6 +253,11 @@ class FirestoreAdminTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.delete_database: gapic_v1.method.wrap_method(
+                self.delete_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -389,6 +394,15 @@ class FirestoreAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [firestore_admin.UpdateDatabaseRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_database(
+        self,
+    ) -> Callable[
+        [firestore_admin.DeleteDatabaseRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

@@ -47,6 +47,7 @@ class firestore_adminCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_database': ('parent', 'database', 'database_id', ),
         'create_index': ('parent', 'index', ),
+        'delete_database': ('name', 'etag', ),
         'delete_index': ('name', ),
         'export_documents': ('name', 'collection_ids', 'output_uri_prefix', 'namespace_ids', 'snapshot_time', ),
         'get_database': ('name', ),

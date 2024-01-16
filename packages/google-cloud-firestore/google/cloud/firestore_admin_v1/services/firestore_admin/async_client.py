@@ -1010,7 +1010,7 @@ class FirestoreAdminAsyncClient:
         overridden. To issue this query, call
         [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields]
         with the filter set to ``indexConfig.usesAncestorConfig:false``
-        .
+        or ``ttlConfig:*``.
 
         .. code-block:: python
 
@@ -1448,12 +1448,16 @@ class FirestoreAdminAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             database_id (:class:`str`):
-                Required. The ID to use for the
-                database, which will become the final
-                component of the database's resource
+                Required. The ID to use for the database, which will
+                become the final component of the database's resource
                 name.
 
-                The value must be set to "(default)".
+                This value should be 4-63 characters. Valid characters
+                are /[a-z][0-9]-/ with first character a letter and the
+                last a letter or a number. Must not be UUID-like
+                /[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}/.
+
+                "(default)" database id is also valid.
 
                 This corresponds to the ``database_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1468,10 +1472,9 @@ class FirestoreAdminAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.firestore_admin_v1.types.Database` A Cloud Firestore Database.
-                   Currently only one database is allowed per cloud
-                   project; this database must have a database_id of
-                   '(default)'.
+                The result type for the operation will be
+                :class:`google.cloud.firestore_admin_v1.types.Database`
+                A Cloud Firestore Database.
 
         """
         # Create or coerce a protobuf request object.
@@ -1585,10 +1588,6 @@ class FirestoreAdminAsyncClient:
         Returns:
             google.cloud.firestore_admin_v1.types.Database:
                 A Cloud Firestore Database.
-                   Currently only one database is allowed per cloud
-                   project; this database must have a database_id of
-                   '(default)'.
-
         """
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
@@ -1798,10 +1797,9 @@ class FirestoreAdminAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.firestore_admin_v1.types.Database` A Cloud Firestore Database.
-                   Currently only one database is allowed per cloud
-                   project; this database must have a database_id of
-                   '(default)'.
+                The result type for the operation will be
+                :class:`google.cloud.firestore_admin_v1.types.Database`
+                A Cloud Firestore Database.
 
         """
         # Create or coerce a protobuf request object.
@@ -1853,6 +1851,123 @@ class FirestoreAdminAsyncClient:
             self._client._transport.operations_client,
             gfa_database.Database,
             metadata_type=firestore_admin.UpdateDatabaseMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_database(
+        self,
+        request: Optional[Union[firestore_admin.DeleteDatabaseRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Deletes a database.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import firestore_admin_v1
+
+            async def sample_delete_database():
+                # Create a client
+                client = firestore_admin_v1.FirestoreAdminAsyncClient()
+
+                # Initialize request argument(s)
+                request = firestore_admin_v1.DeleteDatabaseRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_database(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.firestore_admin_v1.types.DeleteDatabaseRequest, dict]]):
+                The request object. The request for
+                [FirestoreAdmin.DeleteDatabase][google.firestore.admin.v1.FirestoreAdmin.DeleteDatabase].
+            name (:class:`str`):
+                Required. A name of the form
+                ``projects/{project_id}/databases/{database_id}``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.firestore_admin_v1.types.Database`
+                A Cloud Firestore Database.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = firestore_admin.DeleteDatabaseRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_database,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            database.Database,
+            metadata_type=firestore_admin.DeleteDatabaseMetadata,
         )
 
         # Done; return the response.
