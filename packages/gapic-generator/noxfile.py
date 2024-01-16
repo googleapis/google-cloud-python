@@ -441,7 +441,19 @@ def snippetgen(session):
 def docs(session):
     """Build the docs."""
 
-    session.install("sphinx==4.5.0", "sphinx_rtd_theme")
+    session.install(
+        # We need to pin to specific versions of the `sphinxcontrib-*` packages
+        # which still support sphinx 4.x.
+        # See https://github.com/googleapis/sphinx-docfx-yaml/issues/344
+        # and https://github.com/googleapis/sphinx-docfx-yaml/issues/345.
+        "sphinxcontrib-applehelp==1.0.4",
+        "sphinxcontrib-devhelp==1.0.2",
+        "sphinxcontrib-htmlhelp==2.0.1",
+        "sphinxcontrib-qthelp==1.0.3",
+        "sphinxcontrib-serializinghtml==1.1.5",
+        "sphinx==4.5.0",
+        "sphinx_rtd_theme"
+    )
     session.install(".")
 
     # Build the docs!
