@@ -3,7 +3,6 @@
 # license that can be found in the LICENSE file.
 
 import copy
-import concurrent.futures
 from datetime import datetime
 import logging
 import re
@@ -20,8 +19,9 @@ import numpy as np
 if typing.TYPE_CHECKING:  # pragma: NO COVER
     import pandas
 
-from pandas_gbq.exceptions import AccessDenied, GenericGBQException
+from pandas_gbq.exceptions import GenericGBQException, QueryTimeout
 from pandas_gbq.features import FEATURES
+import pandas_gbq.query
 import pandas_gbq.schema
 import pandas_gbq.timestamp
 
@@ -74,8 +74,6 @@ class DatasetCreationError(ValueError):
     Raised when the create dataset method fails
     """
 
-    pass
-
 
 class InvalidColumnOrder(ValueError):
     """
@@ -83,8 +81,6 @@ class InvalidColumnOrder(ValueError):
     results DataFrame does not match the schema
     returned by BigQuery.
     """
-
-    pass
 
 
 class InvalidIndexColumn(ValueError):
@@ -94,16 +90,12 @@ class InvalidIndexColumn(ValueError):
     returned by BigQuery.
     """
 
-    pass
-
 
 class InvalidPageToken(ValueError):
     """
     Raised when Google BigQuery fails to return,
     or returns a duplicate page token.
     """
-
-    pass
 
 
 class InvalidSchema(ValueError):
@@ -126,17 +118,6 @@ class NotFoundException(ValueError):
     Raised when the project_id, table or dataset provided in the query could
     not be found.
     """
-
-    pass
-
-
-class QueryTimeout(ValueError):
-    """
-    Raised when the query request exceeds the timeoutMs value specified in the
-    BigQuery configuration.
-    """
-
-    pass
 
 
 class TableCreationError(ValueError):
@@ -340,10 +321,6 @@ class GbqConnector(object):
         self.client = self.get_client()
         self.use_bqstorage_api = use_bqstorage_api
 
-        # BQ Queries costs $5 per TB. First 1 TB per month is free
-        # see here for more: https://cloud.google.com/bigquery/pricing
-        self.query_price_for_TB = 5.0 / 2**40  # USD/TB
-
     def _start_timer(self):
         self.start = time.time()
 
@@ -354,16 +331,6 @@ class GbqConnector(object):
         sec = self.get_elapsed_seconds()
         if sec > overlong:
             logger.info("{} {} {}".format(prefix, sec, postfix))
-
-    # http://stackoverflow.com/questions/1094841/reusable-library-to-get-human-readable-version-of-file-size
-    @staticmethod
-    def sizeof_fmt(num, suffix="B"):
-        fmt = "%3.1f %s%s"
-        for unit in ["", "K", "M", "G", "T", "P", "E", "Z"]:
-            if abs(num) < 1024.0:
-                return fmt % (num, unit, suffix)
-            num /= 1024.0
-        return fmt % (num, "Y", suffix)
 
     def get_client(self):
         import google.api_core.client_info
@@ -421,46 +388,10 @@ class GbqConnector(object):
             user_dtypes=dtypes,
         )
 
-    def _wait_for_query_job(self, query_reply, timeout_ms):
-        """Wait for query to complete, pausing occasionally to update progress.
-
-        Args:
-            query_reply (QueryJob):
-                A query job which has started.
-
-            timeout_ms (Optional[int]):
-                How long to wait before cancelling the query.
-        """
-        # Wait at most 10 seconds so we can show progress.
-        # TODO(https://github.com/googleapis/python-bigquery-pandas/issues/327):
-        # Include a tqdm progress bar here instead of a stream of log messages.
-        timeout_sec = 10.0
-        if timeout_ms:
-            timeout_sec = min(timeout_sec, timeout_ms / 1000.0)
-
-        while query_reply.state != "DONE":
-            self.log_elapsed_seconds("  Elapsed", "s. Waiting...")
-
-            if timeout_ms and timeout_ms < self.get_elapsed_seconds() * 1000:
-                self.client.cancel_job(
-                    query_reply.job_id, location=query_reply.location
-                )
-                raise QueryTimeout("Query timeout: {} ms".format(timeout_ms))
-
-            try:
-                query_reply.result(timeout=timeout_sec)
-            except concurrent.futures.TimeoutError:
-                # Use our own timeout logic
-                pass
-            except self.http_error as ex:
-                self.process_http_error(ex)
-
     def run_query(self, query, max_results=None, progress_bar_type=None, **kwargs):
-        from google.auth.exceptions import RefreshError
         from google.cloud import bigquery
-        import pandas
 
-        job_config = {
+        job_config_dict = {
             "query": {
                 "useLegacySql": self.dialect
                 == "legacy"
@@ -470,74 +401,27 @@ class GbqConnector(object):
         }
         config = kwargs.get("configuration")
         if config is not None:
-            job_config.update(config)
+            job_config_dict.update(config)
+
+        timeout_ms = job_config_dict.get("jobTimeoutMs") or job_config_dict[
+            "query"
+        ].get("timeoutMs")
+        timeout_ms = int(timeout_ms) if timeout_ms else None
 
         self._start_timer()
-
-        try:
-            logger.debug("Requesting query... ")
-            query_reply = self.client.query(
-                query,
-                job_config=bigquery.QueryJobConfig.from_api_repr(job_config),
-                location=self.location,
-                project=self.project_id,
-            )
-            logger.debug("Query running...")
-        except (RefreshError, ValueError) as ex:
-            if self.private_key:
-                raise AccessDenied(
-                    f"The service account credentials are not valid: {ex}"
-                )
-            else:
-                raise AccessDenied(
-                    "The credentials have been revoked or expired, "
-                    f"please re-run the application to re-authorize: {ex}"
-                )
-        except self.http_error as ex:
-            self.process_http_error(ex)
-
-        job_id = query_reply.job_id
-        logger.debug("Job ID: %s" % job_id)
-
-        timeout_ms = job_config.get("jobTimeoutMs") or job_config["query"].get(
-            "timeoutMs"
+        job_config = bigquery.QueryJobConfig.from_api_repr(job_config_dict)
+        rows_iter = pandas_gbq.query.query_and_wait(
+            self,
+            self.client,
+            query,
+            location=self.location,
+            project_id=self.project_id,
+            job_config=job_config,
+            max_results=max_results,
+            timeout_ms=timeout_ms,
         )
-        timeout_ms = int(timeout_ms) if timeout_ms else None
-        self._wait_for_query_job(query_reply, timeout_ms)
-
-        if query_reply.cache_hit:
-            logger.debug("Query done.\nCache hit.\n")
-        else:
-            bytes_processed = query_reply.total_bytes_processed or 0
-            bytes_billed = query_reply.total_bytes_billed or 0
-            logger.debug(
-                "Query done.\nProcessed: {} Billed: {}".format(
-                    self.sizeof_fmt(bytes_processed),
-                    self.sizeof_fmt(bytes_billed),
-                )
-            )
-            logger.debug(
-                "Standard price: ${:,.2f} USD\n".format(
-                    bytes_billed * self.query_price_for_TB
-                )
-            )
 
         dtypes = kwargs.get("dtypes")
-
-        # Ensure destination is populated.
-        try:
-            query_reply.result()
-        except self.http_error as ex:
-            self.process_http_error(ex)
-
-        # Avoid attempting to download results from DML queries, which have no
-        # destination.
-        if query_reply.destination is None:
-            return pandas.DataFrame()
-
-        rows_iter = self.client.list_rows(
-            query_reply.destination, max_results=max_results
-        )
         return self._download_results(
             rows_iter,
             max_results=max_results,

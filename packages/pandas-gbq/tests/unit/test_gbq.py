@@ -4,12 +4,10 @@
 
 # -*- coding: utf-8 -*-
 
-import concurrent.futures
 import copy
 import datetime
 from unittest import mock
 
-import freezegun
 import google.api_core.exceptions
 import numpy
 import pandas
@@ -133,42 +131,6 @@ def test__transform_read_gbq_configuration_makes_copy(original, expected):
     # Catch if we accidentally modified the original.
     did_change = original == got
     assert did_change == should_change
-
-
-def test__wait_for_query_job_exits_when_done(mock_bigquery_client):
-    connector = _make_connector()
-    connector.client = mock_bigquery_client
-    connector.start = datetime.datetime(2020, 1, 1).timestamp()
-
-    mock_query = mock.create_autospec(google.cloud.bigquery.QueryJob)
-    type(mock_query).state = mock.PropertyMock(side_effect=("RUNNING", "DONE"))
-    mock_query.result.side_effect = concurrent.futures.TimeoutError("fake timeout")
-
-    with freezegun.freeze_time("2020-01-01 00:00:00", tick=False):
-        connector._wait_for_query_job(mock_query, 60)
-
-    mock_bigquery_client.cancel_job.assert_not_called()
-
-
-def test__wait_for_query_job_cancels_after_timeout(mock_bigquery_client):
-    connector = _make_connector()
-    connector.client = mock_bigquery_client
-    connector.start = datetime.datetime(2020, 1, 1).timestamp()
-
-    mock_query = mock.create_autospec(google.cloud.bigquery.QueryJob)
-    mock_query.job_id = "a-random-id"
-    mock_query.location = "job-location"
-    mock_query.state = "RUNNING"
-    mock_query.result.side_effect = concurrent.futures.TimeoutError("fake timeout")
-
-    with freezegun.freeze_time(
-        "2020-01-01 00:00:00", auto_tick_seconds=15
-    ), pytest.raises(gbq.QueryTimeout):
-        connector._wait_for_query_job(mock_query, 60)
-
-    mock_bigquery_client.cancel_job.assert_called_with(
-        "a-random-id", location="job-location"
-    )
 
 
 def test_GbqConnector_get_client_w_new_bq(mock_bigquery_client):
@@ -519,10 +481,10 @@ def test_read_gbq_with_max_results_zero(monkeypatch):
     assert df is None
 
 
-def test_read_gbq_with_max_results_ten(monkeypatch, mock_bigquery_client):
+def test_read_gbq_with_max_results_ten(monkeypatch, mock_query_job):
     df = gbq.read_gbq("SELECT 1", dialect="standard", max_results=10)
     assert df is not None
-    mock_bigquery_client.list_rows.assert_called_with(mock.ANY, max_results=10)
+    mock_query_job.result.assert_called_with(max_results=10)
 
 
 @pytest.mark.parametrize(["verbose"], [(True,), (False,)])
@@ -823,28 +785,6 @@ def test_read_gbq_with_list_rows_error_translates_exception(
             "my-project.my_dataset.read_gbq_table",
             credentials=mock_service_account_credentials,
         )
-
-
-@pytest.mark.parametrize(
-    ["size_in_bytes", "formatted_text"],
-    [
-        (999, "999.0 B"),
-        (1024, "1.0 KB"),
-        (1099, "1.1 KB"),
-        (1044480, "1020.0 KB"),
-        (1048576, "1.0 MB"),
-        (1048576000, "1000.0 MB"),
-        (1073741824, "1.0 GB"),
-        (1.099512e12, "1.0 TB"),
-        (1.125900e15, "1.0 PB"),
-        (1.152922e18, "1.0 EB"),
-        (1.180592e21, "1.0 ZB"),
-        (1.208926e24, "1.0 YB"),
-        (1.208926e28, "10000.0 YB"),
-    ],
-)
-def test_query_response_bytes(size_in_bytes, formatted_text):
-    assert gbq.GbqConnector.sizeof_fmt(size_in_bytes) == formatted_text
 
 
 def test_run_query_with_dml_query(mock_bigquery_client, mock_query_job):

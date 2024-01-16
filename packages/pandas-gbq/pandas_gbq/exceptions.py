@@ -35,3 +35,10 @@ class PerformanceWarning(RuntimeWarning):
     Such warnings can occur when dependencies for the requested feature
     aren't up-to-date.
     """
+
+
+class QueryTimeout(ValueError):
+    """
+    Raised when the query request exceeds the timeoutMs value specified in the
+    BigQuery configuration.
+    """
