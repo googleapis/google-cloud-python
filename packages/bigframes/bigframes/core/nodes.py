@@ -21,7 +21,7 @@ from typing import Tuple
 
 import pandas
 
-import bigframes.core.expression as expressions
+import bigframes.core.expression as ex
 import bigframes.core.guid
 from bigframes.core.ordering import OrderingColumnReference
 import bigframes.core.window_spec as window
@@ -146,14 +146,6 @@ class ReadGbqNode(BigFrameNode):
 
 # Unary nodes
 @dataclass(frozen=True)
-class DropColumnsNode(UnaryNode):
-    columns: Tuple[str, ...]
-
-    def __hash__(self):
-        return self._node_hash
-
-
-@dataclass(frozen=True)
 class PromoteOffsetsNode(UnaryNode):
     col_id: str
 
@@ -188,16 +180,8 @@ class ReversedNode(UnaryNode):
 
 
 @dataclass(frozen=True)
-class SelectNode(UnaryNode):
-    column_ids: typing.Tuple[str, ...]
-
-    def __hash__(self):
-        return self._node_hash
-
-
-@dataclass(frozen=True)
 class ProjectionNode(UnaryNode):
-    assignments: typing.Tuple[typing.Tuple[expressions.Expression, str], ...]
+    assignments: typing.Tuple[typing.Tuple[ex.Expression, str], ...]
 
     def __hash__(self):
         return self._node_hash
@@ -259,25 +243,6 @@ class UnpivotNode(UnaryNode):
         bigframes.dtypes.Dtype, typing.Tuple[bigframes.dtypes.Dtype, ...]
     ] = (pandas.Float64Dtype(),)
     how: typing.Literal["left", "right"] = "left"
-
-    def __hash__(self):
-        return self._node_hash
-
-
-@dataclass(frozen=True)
-class AssignNode(UnaryNode):
-    source_id: str
-    destination_id: str
-
-    def __hash__(self):
-        return self._node_hash
-
-
-@dataclass(frozen=True)
-class AssignConstantNode(UnaryNode):
-    destination_id: str
-    value: typing.Hashable
-    dtype: typing.Optional[bigframes.dtypes.Dtype]
 
     def __hash__(self):
         return self._node_hash

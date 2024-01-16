@@ -80,16 +80,6 @@ def compile_join(node: nodes.JoinNode, ordered: bool = True):
 
 
 @_compile_node.register
-def compile_select(node: nodes.SelectNode, ordered: bool = True):
-    return compile_node(node.child, ordered).select_columns(node.column_ids)
-
-
-@_compile_node.register
-def compile_drop(node: nodes.DropColumnsNode, ordered: bool = True):
-    return compile_node(node.child, ordered).drop_columns(node.columns)
-
-
-@_compile_node.register
 def compile_readlocal(node: nodes.ReadLocalNode, ordered: bool = True):
     array_as_pd = pd.read_feather(io.BytesIO(node.feather_bytes))
     ordered_ir = compiled.OrderedIR.from_pandas(array_as_pd)
@@ -145,9 +135,7 @@ def compile_reversed(node: nodes.ReversedNode, ordered: bool = True):
 @_compile_node.register
 def compile_projection(node: nodes.ProjectionNode, ordered: bool = True):
     result = compile_node(node.child, ordered)
-    for expr, id in node.assignments:
-        result = result.project_expression(expr, id)
-    return result
+    return result.projection(node.assignments)
 
 
 @_compile_node.register
@@ -207,18 +195,6 @@ def compile_unpivot(node: nodes.UnpivotNode, ordered: bool = True):
         index_col_ids=node.index_col_ids,
         dtype=node.dtype,
         how=node.how,
-    )
-
-
-@_compile_node.register
-def compile_assign(node: nodes.AssignNode, ordered: bool = True):
-    return compile_node(node.child, ordered).assign(node.source_id, node.destination_id)
-
-
-@_compile_node.register
-def compile_assign_constant(node: nodes.AssignConstantNode, ordered: bool = True):
-    return compile_node(node.child, ordered).assign_constant(
-        node.destination_id, node.value, node.dtype
     )
 
 

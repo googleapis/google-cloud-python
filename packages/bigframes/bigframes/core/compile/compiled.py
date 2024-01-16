@@ -26,9 +26,8 @@ import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
 import pandas
 
-import bigframes.constants as constants
 import bigframes.core.compile.scalar_op_compiler as op_compilers
-import bigframes.core.expression as expressions
+import bigframes.core.expression as ex
 import bigframes.core.guid
 from bigframes.core.ordering import (
     encode_order_string,
@@ -97,16 +96,6 @@ class BaseIbisIR(abc.ABC):
         )
 
     @abc.abstractmethod
-    def select_columns(self: T, column_ids: typing.Sequence[str]) -> T:
-        """Creates a new expression based on this expression with new columns."""
-        ...
-
-    def drop_columns(self: T, columns: Iterable[str]) -> T:
-        return self.select_columns(
-            [col for col in self.column_ids if col not in columns]
-        )
-
-    @abc.abstractmethod
     def filter(self: T, predicate_id: str, keep_null: bool = False) -> T:
         """Filter the table on a given expression, the predicate must be a boolean series aligned with the table expression."""
         ...
@@ -152,40 +141,26 @@ class BaseIbisIR(abc.ABC):
         """
         ...
 
-    def project_expression(
+    def projection(
         self: T,
-        expression: expressions.Expression,
-        output_column_id: typing.Optional[str] = None,
+        expression_id_pairs: typing.Tuple[typing.Tuple[ex.Expression, str], ...],
     ) -> T:
         """Apply an expression to the ArrayValue and assign the output to a column."""
-        result_id = (
-            output_column_id or expression.unbound_variables[0]
-        )  # overwrite input if not output id provided
-        bindings = {
-            col: self._get_ibis_column(col) for col in expression.unbound_variables
-        }
-        value = op_compiler.compile_expression(expression, bindings).name(result_id)
-        return self._set_or_replace_by_id(result_id, value)
+        bindings = {col: self._get_ibis_column(col) for col in self.column_ids}
+        values = [
+            op_compiler.compile_expression(expression, bindings).name(id)
+            for expression, id in expression_id_pairs
+        ]
+        result = self._select(tuple(values))  # type: ignore
 
-    def assign(self: T, source_id: str, destination_id: str) -> T:
-        return self._set_or_replace_by_id(
-            destination_id, self._get_ibis_column(source_id)
-        )
+        # Need to reproject to convert ibis Scalar to ibis Column object
+        if any(exp_id[0].is_const for exp_id in expression_id_pairs):
+            result = result._reproject_to_table()
+        return result
 
-    def assign_constant(
-        self: T,
-        destination_id: str,
-        value: typing.Any,
-        dtype: typing.Optional[bigframes.dtypes.Dtype],
-    ) -> T:
-        # TODO(b/281587571): Solve scalar constant aggregation problem w/Ibis.
-        ibis_value = bigframes.dtypes.literal_to_ibis_scalar(value, dtype)
-        if ibis_value is None:
-            raise NotImplementedError(
-                f"Type not supported as scalar value {type(value)}. {constants.FEEDBACK_LINK}"
-            )
-        expr = self._set_or_replace_by_id(destination_id, ibis_value)
-        return expr._reproject_to_table()
+    @abc.abstractmethod
+    def _select(self: T, values: typing.Tuple[ibis_types.Value]) -> T:
+        ...
 
     @abc.abstractmethod
     def _set_or_replace_by_id(self: T, id: str, new_value: ibis_types.Value) -> T:
@@ -329,14 +304,6 @@ class UnorderedIR(BaseIbisIR):
         if fraction is not None:
             table = table.filter(ibis.random() < ibis.literal(fraction))
         return table
-
-    def select_columns(self, column_ids: typing.Sequence[str]) -> UnorderedIR:
-        """Creates a new expression based on this expression with new columns."""
-        columns = [self._get_ibis_column(col_id) for col_id in column_ids]
-        builder = self.builder()
-        builder.columns = list(columns)
-        new_expr = builder.build()
-        return new_expr
 
     def filter(self, predicate_id: str, keep_null: bool = False) -> UnorderedIR:
         condition = typing.cast(
@@ -577,6 +544,11 @@ class UnorderedIR(BaseIbisIR):
             builder.columns = [*self.columns, new_value.name(id)]
         return builder.build()
 
+    def _select(self, values: typing.Tuple[ibis_types.Value]) -> UnorderedIR:
+        builder = self.builder()
+        builder.columns = values
+        return builder.build()
+
     def _reproject_to_table(self) -> UnorderedIR:
         """
         Internal operators that projects the internal representation into a
@@ -815,20 +787,6 @@ class OrderedIR(BaseIbisIR):
             *self.columns,
         ]
         return expr_builder.build()
-
-    def select_columns(self, column_ids: typing.Sequence[str]) -> OrderedIR:
-        """Creates a new expression based on this expression with new columns."""
-        columns = [self._get_ibis_column(col_id) for col_id in column_ids]
-        expr = self
-        for ordering_column in set(self.column_ids).intersection(
-            [col_ref.column_id for col_ref in self._ordering.ordering_value_columns]
-        ):
-            # Need to hide ordering columns that are being dropped. Alternatively, could project offsets
-            expr = expr._hide_column(ordering_column)
-        builder = expr.builder()
-        builder.columns = list(columns)
-        new_expr = builder.build()
-        return new_expr
 
     ## Methods that only work with ordering
     def project_window_op(
@@ -1219,6 +1177,29 @@ class OrderedIR(BaseIbisIR):
             ]
         else:
             builder.columns = [*self.columns, new_value.name(id)]
+        return builder.build()
+
+    def _select(self, values: typing.Tuple[ibis_types.Value]) -> OrderedIR:
+        """Safely assign by id while maintaining ordering integrity."""
+        # TODO: Split into explicit set and replace methods
+        ordering_col_ids = [
+            col_ref.column_id for col_ref in self._ordering.ordering_value_columns
+        ]
+        ir = self
+        mappings = {value.name: value for value in values}
+        for ordering_id in ordering_col_ids:
+            # Drop case
+            if (ordering_id not in mappings) and (ordering_id in ir.column_ids):
+                # id is being dropped, hide it first
+                ir = ir._hide_column(ordering_id)
+            # Mutate case
+            elif (ordering_id in mappings) and not mappings[ordering_id].equals(
+                ir._get_any_column(ordering_id)
+            ):
+                ir = ir._hide_column(ordering_id)
+
+        builder = ir.builder()
+        builder.columns = list(values)
         return builder.build()
 
     ## Ordering specific helpers

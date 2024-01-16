@@ -609,7 +609,7 @@ def coalesce_columns(
             expr = expr.drop_columns([left_id])
         elif how == "outer":
             coalesced_id = bigframes.core.guid.generate_guid()
-            expr = expr.project(
+            expr = expr.project_to_id(
                 ops.coalesce_op.as_expr(left_id, right_id), coalesced_id
             )
             expr = expr.drop_columns([left_id, right_id])

@@ -22,7 +22,7 @@ import ibis.expr.types as ibis_types
 import pandas
 
 import bigframes.core.compile as compiling
-import bigframes.core.expression as expressions
+import bigframes.core.expression as ex
 import bigframes.core.guid
 import bigframes.core.nodes as nodes
 from bigframes.core.ordering import OrderingColumnReference
@@ -114,12 +114,6 @@ class ArrayValue:
         return ArrayValue(nodes.RowCountNode(child=self.node))
 
     # Operations
-
-    def drop_columns(self, columns: Iterable[str]) -> ArrayValue:
-        return ArrayValue(
-            nodes.DropColumnsNode(child=self.node, columns=tuple(columns))
-        )
-
     def filter(self, predicate_id: str, keep_null: bool = False) -> ArrayValue:
         """Filter the table on a given expression, the predicate must be a boolean series aligned with the table expression."""
         return ArrayValue(
@@ -140,21 +134,104 @@ class ArrayValue:
         """
         return ArrayValue(nodes.PromoteOffsetsNode(child=self.node, col_id=col_id))
 
-    def select_columns(self, column_ids: typing.Sequence[str]) -> ArrayValue:
-        return ArrayValue(
-            nodes.SelectNode(child=self.node, column_ids=tuple(column_ids))
-        )
-
     def concat(self, other: typing.Sequence[ArrayValue]) -> ArrayValue:
         """Append together multiple ArrayValue objects."""
         return ArrayValue(
             nodes.ConcatNode(children=tuple([self.node, *[val.node for val in other]]))
         )
 
-    def project(self, expression: expressions.Expression, output_id: str):
+    def project_to_id(self, expression: ex.Expression, output_id: str):
+        if output_id in self.column_ids:  # Mutate case
+            exprs = [
+                ((expression if (col_id == output_id) else ex.free_var(col_id)), col_id)
+                for col_id in self.column_ids
+            ]
+        else:  # append case
+            self_projection = (
+                (ex.free_var(col_id), col_id) for col_id in self.column_ids
+            )
+            exprs = [*self_projection, (expression, output_id)]
         return ArrayValue(
             nodes.ProjectionNode(
-                child=self.node, assignments=((expression, output_id),)
+                child=self.node,
+                assignments=tuple(exprs),
+            )
+        )
+
+    def assign(self, source_id: str, destination_id: str) -> ArrayValue:
+        if destination_id in self.column_ids:  # Mutate case
+            exprs = [
+                (
+                    (
+                        ex.free_var(source_id)
+                        if (col_id == destination_id)
+                        else ex.free_var(col_id)
+                    ),
+                    col_id,
+                )
+                for col_id in self.column_ids
+            ]
+        else:  # append case
+            self_projection = (
+                (ex.free_var(col_id), col_id) for col_id in self.column_ids
+            )
+            exprs = [*self_projection, (ex.free_var(source_id), destination_id)]
+        return ArrayValue(
+            nodes.ProjectionNode(
+                child=self.node,
+                assignments=tuple(exprs),
+            )
+        )
+
+    def assign_constant(
+        self,
+        destination_id: str,
+        value: typing.Any,
+        dtype: typing.Optional[bigframes.dtypes.Dtype],
+    ) -> ArrayValue:
+        if destination_id in self.column_ids:  # Mutate case
+            exprs = [
+                (
+                    (
+                        ex.const(value, dtype)
+                        if (col_id == destination_id)
+                        else ex.free_var(col_id)
+                    ),
+                    col_id,
+                )
+                for col_id in self.column_ids
+            ]
+        else:  # append case
+            self_projection = (
+                (ex.free_var(col_id), col_id) for col_id in self.column_ids
+            )
+            exprs = [*self_projection, (ex.const(value, dtype), destination_id)]
+        return ArrayValue(
+            nodes.ProjectionNode(
+                child=self.node,
+                assignments=tuple(exprs),
+            )
+        )
+
+    def select_columns(self, column_ids: typing.Sequence[str]) -> ArrayValue:
+        selections = ((ex.free_var(col_id), col_id) for col_id in column_ids)
+        return ArrayValue(
+            nodes.ProjectionNode(
+                child=self.node,
+                assignments=tuple(selections),
+            )
+        )
+
+    def drop_columns(self, columns: Iterable[str]) -> ArrayValue:
+        new_projection = (
+            (ex.free_var(col_id), col_id)
+            for col_id in self.column_ids
+            if col_id not in columns
+        )
+        return ArrayValue(
+            nodes.ProjectionNode(
+                child=self.node,
+                assignments=tuple(new_projection),
             )
         )
 
@@ -274,25 +351,6 @@ class ArrayValue:
                 index_col_ids=tuple(index_col_ids),
                 dtype=dtype,
                 how=how,
-            )
-        )
-
-    def assign(self, source_id: str, destination_id: str) -> ArrayValue:
-        return ArrayValue(
-            nodes.AssignNode(
-                child=self.node, source_id=source_id, destination_id=destination_id
-            )
-        )
-
-    def assign_constant(
-        self,
-        destination_id: str,
-        value: typing.Any,
-        dtype: typing.Optional[bigframes.dtypes.Dtype],
-    ) -> ArrayValue:
-        return ArrayValue(
-            nodes.AssignConstantNode(
-                child=self.node, destination_id=destination_id, value=value, dtype=dtype
             )
         )
 

@@ -18,12 +18,16 @@ import abc
 import dataclasses
 import itertools
 import typing
+from typing import Optional
 
+import bigframes.dtypes
 import bigframes.operations
 
 
-def const(value: typing.Hashable) -> Expression:
-    return ScalarConstantExpression(value)
+def const(
+    value: typing.Hashable, dtype: Optional[bigframes.dtypes.Dtype] = None
+) -> Expression:
+    return ScalarConstantExpression(value, dtype)
 
 
 def free_var(id: str) -> Expression:
@@ -41,6 +45,10 @@ class Expression(abc.ABC):
     def rename(self, name_mapping: dict[str, str]) -> Expression:
         return self
 
+    @abc.abstractproperty
+    def is_const(self) -> bool:
+        return False
+
 
 @dataclasses.dataclass(frozen=True)
 class ScalarConstantExpression(Expression):
@@ -48,6 +56,11 @@ class ScalarConstantExpression(Expression):
 
     # TODO: Further constrain?
     value: typing.Hashable
+    dtype: Optional[bigframes.dtypes.Dtype] = None
+
+    @property
+    def is_const(self) -> bool:
+        return True
 
 
 @dataclasses.dataclass(frozen=True)
@@ -65,6 +78,10 @@ class UnboundVariableExpression(Expression):
             return UnboundVariableExpression(name_mapping[self.id])
         else:
             return self
+
+    @property
+    def is_const(self) -> bool:
+        return False
 
 
 @dataclasses.dataclass(frozen=True)
@@ -89,3 +106,7 @@ class OpExpression(Expression):
         return OpExpression(
             self.op, tuple(input.rename(name_mapping) for input in self.inputs)
         )
+
+    @property
+    def is_const(self) -> bool:
+        return all(child.is_const for child in self.inputs)
