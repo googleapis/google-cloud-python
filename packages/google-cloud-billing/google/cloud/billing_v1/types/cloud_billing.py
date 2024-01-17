@@ -56,8 +56,8 @@ class BillingAccount(proto.Message):
             open, and will therefore be charged for any
             usage on associated projects. False if the
             billing account is closed, and therefore
-            projects associated with it will be unable to
-            use paid services.
+            projects associated with it are unable to use
+            paid services.
         display_name (str):
             The display name given to the billing account, such as
             ``My Billing Account``. This name is displayed in the Google
@@ -422,8 +422,8 @@ class MoveBillingAccountRequest(proto.Message):
             always belongs to the same organization as its parent
             account.
         destination_parent (str):
-            Required. The resource name of the Organization to reparent
-            the billing account under. Must be of the form
+            Required. The resource name of the Organization to move the
+            billing account under. Must be of the form
             ``organizations/{organization_id}``.
     """
 
