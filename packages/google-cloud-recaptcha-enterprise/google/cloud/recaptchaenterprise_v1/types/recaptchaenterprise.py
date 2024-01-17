@@ -514,9 +514,9 @@ class AccountVerificationInfo(proto.Message):
             Output only. Result of the latest account
             verification challenge.
         username (str):
-            Username of the account that is being
-            verified. Deprecated. Customers should now
-            provide the hashed account ID field in Event.
+            Username of the account that is being verified. Deprecated.
+            Customers should now provide the ``account_id`` field in
+            ``event.user_info``.
     """
 
     class Result(proto.Enum):
