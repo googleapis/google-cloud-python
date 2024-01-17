@@ -16,7 +16,6 @@ from __future__ import annotations
 
 from enum import Enum
 from typing import TYPE_CHECKING, List
-from google.cloud.spanner_dbapi.checksum import ResultsChecksum
 from google.cloud.spanner_dbapi.parsed_statement import (
     ParsedStatement,
     StatementType,
@@ -80,8 +79,10 @@ def run_batch_dml(cursor: "Cursor", statements: List[Statement]):
     """
     from google.cloud.spanner_dbapi import OperationalError
 
-    connection = cursor.connection
     many_result_set = StreamedManyResultSets()
+    if not statements:
+        return many_result_set
+    connection = cursor.connection
     statements_tuple = []
     for statement in statements:
         statements_tuple.append(statement.get_tuple())
@@ -90,28 +91,26 @@ def run_batch_dml(cursor: "Cursor", statements: List[Statement]):
         many_result_set.add_iter(res)
         cursor._row_count = sum([max(val, 0) for val in res])
     else:
-        retried = False
         while True:
             try:
                 transaction = connection.transaction_checkout()
                 status, res = transaction.batch_update(statements_tuple)
-                many_result_set.add_iter(res)
-                res_checksum = ResultsChecksum()
-                res_checksum.consume_result(res)
-                res_checksum.consume_result(status.code)
-                if not retried:
-                    connection._statements.append((statements, res_checksum))
-                cursor._row_count = sum([max(val, 0) for val in res])
-
                 if status.code == ABORTED:
                     connection._transaction = None
                     raise Aborted(status.message)
                 elif status.code != OK:
                     raise OperationalError(status.message)
+
+                cursor._batch_dml_rows_count = res
+                many_result_set.add_iter(res)
+                cursor._row_count = sum([max(val, 0) for val in res])
                 return many_result_set
             except Aborted:
-                connection.retry_transaction()
-                retried = True
+                # We are raising it so it could be handled in transaction_helper.py and is retried
+                if cursor._in_retry_mode:
+                    raise
+                else:
+                    connection._transaction_helper.retry_transaction()
 
 
 def _do_batch_update(transaction, statements):

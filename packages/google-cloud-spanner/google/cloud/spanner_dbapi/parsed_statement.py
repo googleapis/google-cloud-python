@@ -15,8 +15,6 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import Any, List
 
-from google.cloud.spanner_dbapi.checksum import ResultsChecksum
-
 
 class StatementType(Enum):
     CLIENT_SIDE = 1
@@ -44,7 +42,6 @@ class Statement:
     sql: str
     params: Any = None
     param_types: Any = None
-    checksum: ResultsChecksum = None
 
     def get_tuple(self):
         return self.sql, self.params, self.param_types

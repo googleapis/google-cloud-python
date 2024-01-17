@@ -62,6 +62,8 @@ class ResultsChecksum:
 
 
 def _compare_checksums(original, retried):
+    from google.cloud.spanner_dbapi.transaction_helper import RETRY_ABORTED_ERROR
+
     """Compare the given checksums.
 
     Raise an error if the given checksums are not equal.
@@ -75,6 +77,4 @@ def _compare_checksums(original, retried):
     :raises: :exc:`google.cloud.spanner_dbapi.exceptions.RetryAborted` in case if checksums are not equal.
     """
     if retried != original:
-        raise RetryAborted(
-            "The transaction was aborted and could not be retried due to a concurrent modification."
-        )
+        raise RetryAborted(RETRY_ABORTED_ERROR)

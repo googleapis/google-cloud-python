@@ -24,7 +24,6 @@ from google.cloud.spanner_v1 import JsonObject
 from . import client_side_statement_parser
 from deprecated import deprecated
 
-from .checksum import ResultsChecksum
 from .exceptions import Error
 from .parsed_statement import ParsedStatement, StatementType, Statement
 from .types import DateStr, TimestampStr
@@ -230,7 +229,6 @@ def classify_statement(query, args=None):
         query,
         args,
         get_param_types(args or None),
-        ResultsChecksum(),
     )
     statement_type = _get_statement_type(statement)
     return ParsedStatement(statement_type, statement)

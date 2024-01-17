@@ -13,7 +13,6 @@
 # limitations under the License.
 
 """Database cursor for Google Cloud Spanner DB API."""
-
 from collections import namedtuple
 
 import sqlparse
@@ -47,10 +46,9 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     Statement,
     ParsedStatement,
 )
+from google.cloud.spanner_dbapi.transaction_helper import CursorStatementType
 from google.cloud.spanner_dbapi.utils import PeekIterator
 from google.cloud.spanner_dbapi.utils import StreamedManyResultSets
-
-_UNSET_COUNT = -1
 
 ColumnDetails = namedtuple("column_details", ["null_ok", "spanner_type"])
 
@@ -87,14 +85,16 @@ class Cursor(object):
     def __init__(self, connection):
         self._itr = None
         self._result_set = None
-        self._row_count = _UNSET_COUNT
+        self._row_count = None
         self.lastrowid = None
         self.connection = connection
+        self.transaction_helper = self.connection._transaction_helper
         self._is_closed = False
-        # the currently running SQL statement results checksum
-        self._checksum = None
         # the number of rows to fetch at a time with fetchmany()
         self.arraysize = 1
+        self._parsed_statement: ParsedStatement = None
+        self._in_retry_mode = False
+        self._batch_dml_rows_count = None
 
     @property
     def is_closed(self):
@@ -149,14 +149,14 @@ class Cursor(object):
         :returns: The number of rows updated by the last INSERT, UPDATE, DELETE request's .execute*() call.
         """
 
-        if self._row_count != _UNSET_COUNT or self._result_set is None:
+        if self._row_count is not None or self._result_set is None:
             return self._row_count
 
         stats = getattr(self._result_set, "stats", None)
         if stats is not None and "row_count_exact" in stats:
             return stats.row_count_exact
 
-        return _UNSET_COUNT
+        return -1
 
     @check_not_closed
     def callproc(self, procname, args=None):
@@ -190,7 +190,7 @@ class Cursor(object):
             sql, params=params, param_types=get_param_types(params)
         )
         self._itr = PeekIterator(self._result_set)
-        self._row_count = _UNSET_COUNT
+        self._row_count = None
 
     def _batch_DDLs(self, sql):
         """
@@ -218,8 +218,19 @@ class Cursor(object):
         # Only queue DDL statements if they are all correctly classified.
         self.connection._ddl_statements.extend(statements)
 
+    def _reset(self):
+        if self.connection.database is None:
+            raise ValueError("Database needs to be passed for this operation")
+        self._itr = None
+        self._result_set = None
+        self._row_count = None
+        self._batch_dml_rows_count = None
+
     @check_not_closed
     def execute(self, sql, args=None):
+        self._execute(sql, args, False)
+
+    def _execute(self, sql, args=None, call_from_execute_many=False):
         """Prepares and executes a Spanner database operation.
 
         :type sql: str
@@ -228,19 +239,13 @@ class Cursor(object):
         :type args: list
         :param args: Additional parameters to supplement the SQL query.
         """
-        if self.connection.database is None:
-            raise ValueError("Database needs to be passed for this operation")
-        self._itr = None
-        self._result_set = None
-        self._row_count = _UNSET_COUNT
-
+        self._reset()
+        exception = None
         try:
-            parsed_statement: ParsedStatement = parse_utils.classify_statement(
-                sql, args
-            )
-            if parsed_statement.statement_type == StatementType.CLIENT_SIDE:
+            self._parsed_statement = parse_utils.classify_statement(sql, args)
+            if self._parsed_statement.statement_type == StatementType.CLIENT_SIDE:
                 self._result_set = client_side_statement_executor.execute(
-                    self, parsed_statement
+                    self, self._parsed_statement
                 )
                 if self._result_set is not None:
                     if isinstance(self._result_set, StreamedManyResultSets):
@@ -248,53 +253,61 @@ class Cursor(object):
                     else:
                         self._itr = PeekIterator(self._result_set)
             elif self.connection._batch_mode == BatchMode.DML:
-                self.connection.execute_batch_dml_statement(parsed_statement)
+                self.connection.execute_batch_dml_statement(self._parsed_statement)
             elif self.connection.read_only or (
                 not self.connection._client_transaction_started
-                and parsed_statement.statement_type == StatementType.QUERY
+                and self._parsed_statement.statement_type == StatementType.QUERY
             ):
                 self._handle_DQL(sql, args or None)
-            elif parsed_statement.statement_type == StatementType.DDL:
+            elif self._parsed_statement.statement_type == StatementType.DDL:
                 self._batch_DDLs(sql)
                 if not self.connection._client_transaction_started:
                     self.connection.run_prior_DDL_statements()
             else:
-                self._execute_in_rw_transaction(parsed_statement)
+                self._execute_in_rw_transaction()
 
         except (AlreadyExists, FailedPrecondition, OutOfRange) as e:
+            exception = e
             raise IntegrityError(getattr(e, "details", e)) from e
         except InvalidArgument as e:
+            exception = e
             raise ProgrammingError(getattr(e, "details", e)) from e
         except InternalServerError as e:
+            exception = e
             raise OperationalError(getattr(e, "details", e)) from e
+        except Exception as e:
+            exception = e
+            raise
         finally:
+            if not self._in_retry_mode and not call_from_execute_many:
+                self.transaction_helper.add_execute_statement_for_retry(
+                    self, sql, args, exception, False
+                )
             if self.connection._client_transaction_started is False:
                 self.connection._spanner_transaction_started = False
 
-    def _execute_in_rw_transaction(self, parsed_statement: ParsedStatement):
+    def _execute_in_rw_transaction(self):
         # For every other operation, we've got to ensure that
         # any prior DDL statements were run.
         self.connection.run_prior_DDL_statements()
+        statement = self._parsed_statement.statement
         if self.connection._client_transaction_started:
-            (
-                self._result_set,
-                self._checksum,
-            ) = self.connection.run_statement(parsed_statement.statement)
-
             while True:
                 try:
+                    self._result_set = self.connection.run_statement(statement)
                     self._itr = PeekIterator(self._result_set)
-                    break
+                    return
                 except Aborted:
-                    self.connection.retry_transaction()
-                except Exception as ex:
-                    self.connection._statements.remove(parsed_statement.statement)
-                    raise ex
+                    # We are raising it so it could be handled in transaction_helper.py and is retried
+                    if self._in_retry_mode:
+                        raise
+                    else:
+                        self.transaction_helper.retry_transaction()
         else:
             self.connection.database.run_in_transaction(
                 self._do_execute_update_in_autocommit,
-                parsed_statement.statement.sql,
-                parsed_statement.statement.params or None,
+                statement.sql,
+                statement.params or None,
             )
 
     @check_not_closed
@@ -309,87 +322,74 @@ class Cursor(object):
         :param seq_of_params: Sequence of additional parameters to run
                               the query with.
         """
-        if self.connection.database is None:
-            raise ValueError("Database needs to be passed for this operation")
-        self._itr = None
-        self._result_set = None
-        self._row_count = _UNSET_COUNT
-
-        parsed_statement = parse_utils.classify_statement(operation)
-        if parsed_statement.statement_type == StatementType.DDL:
-            raise ProgrammingError(
-                "Executing DDL statements with executemany() method is not allowed."
-            )
-
-        if parsed_statement.statement_type == StatementType.CLIENT_SIDE:
-            raise ProgrammingError(
-                "Executing the following operation: "
-                + operation
-                + ", with executemany() method is not allowed."
-            )
-
-        # For every operation, we've got to ensure that any prior DDL
-        # statements were run.
-        self.connection.run_prior_DDL_statements()
-        if parsed_statement.statement_type in (
-            StatementType.INSERT,
-            StatementType.UPDATE,
-        ):
-            statements = []
-            for params in seq_of_params:
-                sql, params = parse_utils.sql_pyformat_args_to_spanner(
-                    operation, params
+        self._reset()
+        exception = None
+        try:
+            self._parsed_statement = parse_utils.classify_statement(operation)
+            if self._parsed_statement.statement_type == StatementType.DDL:
+                raise ProgrammingError(
+                    "Executing DDL statements with executemany() method is not allowed."
                 )
-                statements.append(Statement(sql, params, get_param_types(params)))
-            many_result_set = batch_dml_executor.run_batch_dml(self, statements)
-        else:
-            many_result_set = StreamedManyResultSets()
-            for params in seq_of_params:
-                self.execute(operation, params)
-                many_result_set.add_iter(self._itr)
 
-        self._result_set = many_result_set
-        self._itr = many_result_set
+            if self._parsed_statement.statement_type == StatementType.CLIENT_SIDE:
+                raise ProgrammingError(
+                    "Executing the following operation: "
+                    + operation
+                    + ", with executemany() method is not allowed."
+                )
+
+            # For every operation, we've got to ensure that any prior DDL
+            # statements were run.
+            self.connection.run_prior_DDL_statements()
+            if self._parsed_statement.statement_type in (
+                StatementType.INSERT,
+                StatementType.UPDATE,
+            ):
+                statements = []
+                for params in seq_of_params:
+                    sql, params = parse_utils.sql_pyformat_args_to_spanner(
+                        operation, params
+                    )
+                    statements.append(Statement(sql, params, get_param_types(params)))
+                many_result_set = batch_dml_executor.run_batch_dml(self, statements)
+            else:
+                many_result_set = StreamedManyResultSets()
+                for params in seq_of_params:
+                    self._execute(operation, params, True)
+                    many_result_set.add_iter(self._itr)
+
+            self._result_set = many_result_set
+            self._itr = many_result_set
+        except Exception as e:
+            exception = e
+            raise
+        finally:
+            if not self._in_retry_mode:
+                self.transaction_helper.add_execute_statement_for_retry(
+                    self,
+                    operation,
+                    seq_of_params,
+                    exception,
+                    True,
+                )
+            if self.connection._client_transaction_started is False:
+                self.connection._spanner_transaction_started = False
 
     @check_not_closed
     def fetchone(self):
         """Fetch the next row of a query result set, returning a single
         sequence, or None when no more data is available."""
-        try:
-            res = next(self)
-            if (
-                self.connection._client_transaction_started
-                and not self.connection.read_only
-            ):
-                self._checksum.consume_result(res)
-            return res
-        except StopIteration:
+        rows = self._fetch(CursorStatementType.FETCH_ONE)
+        if not rows:
             return
-        except Aborted:
-            if not self.connection.read_only:
-                self.connection.retry_transaction()
-                return self.fetchone()
+        return rows[0]
 
     @check_not_closed
     def fetchall(self):
         """Fetch all (remaining) rows of a query result, returning them as
         a sequence of sequences.
         """
-        res = []
-        try:
-            for row in self:
-                if (
-                    self.connection._client_transaction_started
-                    and not self.connection.read_only
-                ):
-                    self._checksum.consume_result(row)
-                res.append(row)
-        except Aborted:
-            if not self.connection.read_only:
-                self.connection.retry_transaction()
-                return self.fetchall()
-
-        return res
+        return self._fetch(CursorStatementType.FETCH_ALL)
 
     @check_not_closed
     def fetchmany(self, size=None):
@@ -405,25 +405,49 @@ class Cursor(object):
         """
         if size is None:
             size = self.arraysize
+        return self._fetch(CursorStatementType.FETCH_MANY, size)
 
-        items = []
-        for _ in range(size):
-            try:
-                res = next(self)
-                if (
-                    self.connection._client_transaction_started
-                    and not self.connection.read_only
-                ):
-                    self._checksum.consume_result(res)
-                items.append(res)
-            except StopIteration:
-                break
-            except Aborted:
-                if not self.connection.read_only:
-                    self.connection.retry_transaction()
-                    return self.fetchmany(size)
-
-        return items
+    def _fetch(self, cursor_statement_type, size=None):
+        exception = None
+        rows = []
+        is_fetch_all = False
+        try:
+            while True:
+                rows = []
+                try:
+                    if cursor_statement_type == CursorStatementType.FETCH_ALL:
+                        is_fetch_all = True
+                        for row in self:
+                            rows.append(row)
+                    elif cursor_statement_type == CursorStatementType.FETCH_MANY:
+                        for _ in range(size):
+                            try:
+                                row = next(self)
+                                rows.append(row)
+                            except StopIteration:
+                                break
+                    elif cursor_statement_type == CursorStatementType.FETCH_ONE:
+                        try:
+                            row = next(self)
+                            rows.append(row)
+                        except StopIteration:
+                            return
+                    break
+                except Aborted:
+                    if not self.connection.read_only:
+                        if self._in_retry_mode:
+                            raise
+                        else:
+                            self.transaction_helper.retry_transaction()
+        except Exception as e:
+            exception = e
+            raise
+        finally:
+            if not self._in_retry_mode:
+                self.transaction_helper.add_fetch_statement_for_retry(
+                    self, rows, exception, is_fetch_all
+                )
+            return rows
 
     def _handle_DQL_with_snapshot(self, snapshot, sql, params):
         self._result_set = snapshot.execute_sql(
@@ -437,7 +461,7 @@ class Cursor(object):
         self._itr = PeekIterator(self._result_set)
         # Unfortunately, Spanner doesn't seem to send back
         # information about the number of rows available.
-        self._row_count = _UNSET_COUNT
+        self._row_count = None
         if self._result_set.metadata.transaction.read_timestamp is not None:
             snapshot._transaction_read_timestamp = (
                 self._result_set.metadata.transaction.read_timestamp
