@@ -17,7 +17,7 @@ import pandas as pd
 import pytest
 
 import bigframes
-from bigframes import remote_function as rf
+from bigframes.functions import remote_function as rf
 from tests.system.utils import assert_pandas_df_equal
 
 

@@ -15,7 +15,7 @@
 from ibis.backends.bigquery import datatypes as bq_types
 from ibis.expr import datatypes as ibis_types
 
-from bigframes import remote_function as rf
+from bigframes.functions import remote_function as rf
 
 
 def test_supported_types_correspond():

@@ -28,7 +28,7 @@ import pytest
 import test_utils.prefixer
 
 import bigframes
-from bigframes.remote_function import (
+from bigframes.functions.remote_function import (
     get_cloud_function_name,
     get_remote_function_locations,
 )

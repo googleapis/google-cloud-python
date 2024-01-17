@@ -74,8 +74,8 @@ import bigframes.core.ordering as orderings
 import bigframes.core.utils as utils
 import bigframes.dataframe as dataframe
 import bigframes.formatting_helpers as formatting_helpers
-from bigframes.remote_function import read_gbq_function as bigframes_rgf
-from bigframes.remote_function import remote_function as bigframes_rf
+from bigframes.functions.remote_function import read_gbq_function as bigframes_rgf
+from bigframes.functions.remote_function import remote_function as bigframes_rf
 import bigframes.session._io.bigquery as bigframes_io
 import bigframes.session.clients
 import bigframes.version
