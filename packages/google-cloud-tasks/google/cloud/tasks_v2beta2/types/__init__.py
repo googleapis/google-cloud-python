@@ -15,8 +15,6 @@
 #
 from .cloudtasks import (
     AcknowledgeTaskRequest,
-    BufferTaskRequest,
-    BufferTaskResponse,
     CancelLeaseRequest,
     CreateQueueRequest,
     CreateTaskRequest,
@@ -58,8 +56,6 @@ from .task import AttemptStatus, Task, TaskStatus
 
 __all__ = (
     "AcknowledgeTaskRequest",
-    "BufferTaskRequest",
-    "BufferTaskResponse",
     "CancelLeaseRequest",
     "CreateQueueRequest",
     "CreateTaskRequest",

@@ -796,45 +796,6 @@ class CloudTasksGrpcAsyncIOTransport(CloudTasksTransport):
             )
         return self._stubs["run_task"]
 
-    @property
-    def buffer_task(
-        self,
-    ) -> Callable[
-        [cloudtasks.BufferTaskRequest], Awaitable[cloudtasks.BufferTaskResponse]
-    ]:
-        r"""Return a callable for the buffer task method over gRPC.
-
-        Creates and buffers a new task without the need to explicitly
-        define a Task message. The queue must have [HTTP
-        target][google.cloud.tasks.v2beta3.HttpTarget]. To create the
-        task with a custom ID, use the following format and set TASK_ID
-        to your desired ID:
-        projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID:buffer
-        To create the task with an automatically generated ID, use the
-        following format:
-        projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks:buffer.
-        Note: This feature is in its experimental stage. You must
-        request access to the API through the `Cloud Tasks BufferTask
-        Experiment Signup form <https://forms.gle/X8Zr5hiXH5tTGFqh8>`__.
-
-        Returns:
-            Callable[[~.BufferTaskRequest],
-                    Awaitable[~.BufferTaskResponse]]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "buffer_task" not in self._stubs:
-            self._stubs["buffer_task"] = self.grpc_channel.unary_unary(
-                "/google.cloud.tasks.v2beta3.CloudTasks/BufferTask",
-                request_serializer=cloudtasks.BufferTaskRequest.serialize,
-                response_deserializer=cloudtasks.BufferTaskResponse.deserialize,
-            )
-        return self._stubs["buffer_task"]
-
     def close(self):
         return self.grpc_channel.close()
 
