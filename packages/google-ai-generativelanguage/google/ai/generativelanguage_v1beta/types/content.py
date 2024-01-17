@@ -211,7 +211,7 @@ class Tool(proto.Message):
             [FunctionCall][content.part.function_call] in the response.
             The next conversation turn may contain a
             [FunctionResponse][content.part.function_response] with the
-            [conent.role] "function" generation context for the next
+            [content.role] "function" generation context for the next
             model turn.
     """
 
