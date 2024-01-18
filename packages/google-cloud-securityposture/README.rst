@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for Security Posture API
+======================================
 
 |preview| |pypi| |versions|
 
-``_: 
+`Security Posture API`_: Security Posture is a comprehensive framework of policy sets that empowers organizations to define, assess early, deploy, and monitor their security measures in a unified way and helps simplify governance and reduces administrative toil. 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-cloud-securityposture/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-securityposture.svg
    :target: https://pypi.org/project/google-cloud-securityposture/
-.. _: 
+.. _Security Posture API: null
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-securityposture/latest
-.. _Product Documentation:  
+.. _Product Documentation:  null
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Security Posture API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the Security Posture API.:  null
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Security Posture API
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Security Posture API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _Security Posture API Product documentation:  null
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst
