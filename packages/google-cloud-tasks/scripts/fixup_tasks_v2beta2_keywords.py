@@ -40,7 +40,6 @@ class tasksCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'acknowledge_task': ('name', 'schedule_time', ),
-        'buffer_task': ('queue', 'task_id', 'body', ),
         'cancel_lease': ('name', 'schedule_time', 'response_view', ),
         'create_queue': ('parent', 'queue', ),
         'create_task': ('parent', 'task', 'response_view', ),
