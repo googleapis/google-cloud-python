@@ -50,8 +50,6 @@ __protobuf__ = proto.module(
         "RenewLeaseRequest",
         "CancelLeaseRequest",
         "RunTaskRequest",
-        "BufferTaskRequest",
-        "BufferTaskResponse",
     },
 )
 
@@ -903,58 +901,6 @@ class RunTaskRequest(proto.Message):
         proto.ENUM,
         number=2,
         enum=gct_task.Task.View,
-    )
-
-
-class BufferTaskRequest(proto.Message):
-    r"""LINT.IfChange Request message for
-    [BufferTask][google.cloud.tasks.v2beta2.CloudTasks.BufferTask].
-
-    Attributes:
-        queue (str):
-            Required. The parent queue name. For example:
-            projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID\`
-
-            The queue must already exist.
-        task_id (str):
-            Optional. Task ID for the task being created.
-            If not provided, a random task ID is assigned to
-            the task.
-        body (google.api.httpbody_pb2.HttpBody):
-            Optional. Body of the HTTP request.
-
-            The body can take any generic value. The value is written to
-            the [HttpRequest][payload] of the [Task].
-    """
-
-    queue: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-    task_id: str = proto.Field(
-        proto.STRING,
-        number=2,
-    )
-    body: httpbody_pb2.HttpBody = proto.Field(
-        proto.MESSAGE,
-        number=3,
-        message=httpbody_pb2.HttpBody,
-    )
-
-
-class BufferTaskResponse(proto.Message):
-    r"""Response message for
-    [BufferTask][google.cloud.tasks.v2beta2.CloudTasks.BufferTask].
-
-    Attributes:
-        task (google.cloud.tasks_v2beta2.types.Task):
-            The created task.
-    """
-
-    task: gct_task.Task = proto.Field(
-        proto.MESSAGE,
-        number=1,
-        message=gct_task.Task,
     )
 
 

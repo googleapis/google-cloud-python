@@ -20,8 +20,6 @@ __version__ = package_version.__version__
 
 from .services.cloud_tasks import CloudTasksAsyncClient, CloudTasksClient
 from .types.cloudtasks import (
-    BufferTaskRequest,
-    BufferTaskResponse,
     CreateQueueRequest,
     CreateTaskRequest,
     DeleteQueueRequest,
@@ -67,8 +65,6 @@ __all__ = (
     "AppEngineHttpRequest",
     "AppEngineRouting",
     "Attempt",
-    "BufferTaskRequest",
-    "BufferTaskResponse",
     "CloudTasksClient",
     "CreateQueueRequest",
     "CreateTaskRequest",
