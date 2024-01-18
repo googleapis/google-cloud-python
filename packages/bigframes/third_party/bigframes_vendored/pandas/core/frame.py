@@ -2961,7 +2961,6 @@ class DataFrame(NDFrame):
         to every element of a DataFrame.
 
         .. note::
-
            In pandas 2.1.0, DataFrame.applymap is deprecated and renamed to
            DataFrame.map.
 
@@ -3037,6 +3036,8 @@ class DataFrame(NDFrame):
             bigframes.dataframe.DataFrame: Transformed DataFrame.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    applymap = map
 
     # ----------------------------------------------------------------------
     # Merging / joining methods

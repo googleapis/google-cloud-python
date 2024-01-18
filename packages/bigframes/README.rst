@@ -304,7 +304,7 @@ following IAM roles:
 * BigQuery Connection Admin (roles/bigquery.connectionAdmin)
 * Cloud Functions Developer (roles/cloudfunctions.developer)
 * Service Account User (roles/iam.serviceAccountUser) on the
-  `service account <https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration> `
+  `service account <https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration>`__
   ``PROJECT_NUMBER-compute@developer.gserviceaccount.com``
 * Storage Object Viewer (roles/storage.objectViewer)
 * Project IAM Admin (roles/resourcemanager.projectIamAdmin)
