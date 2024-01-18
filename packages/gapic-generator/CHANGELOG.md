@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.13.1](https://github.com/googleapis/gapic-generator-python/compare/v1.13.0...v1.13.1) (2024-01-17)
+
+
+### Bug Fixes
+
+* Add None as a type to OptionalRetry ([#1901](https://github.com/googleapis/gapic-generator-python/issues/1901)) ([011475c](https://github.com/googleapis/gapic-generator-python/commit/011475c525cda4245803e197c77fa2a1c37fa98d))
+
 ## [1.13.0](https://github.com/googleapis/gapic-generator-python/compare/v1.12.0...v1.13.0) (2023-11-20)
 
 
