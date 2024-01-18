@@ -14,8 +14,6 @@
 # limitations under the License.
 #
 from .cloudtasks import (
-    BufferTaskRequest,
-    BufferTaskResponse,
     CreateQueueRequest,
     CreateTaskRequest,
     DeleteQueueRequest,
@@ -50,8 +48,6 @@ from .target import (
 from .task import Attempt, Task
 
 __all__ = (
-    "BufferTaskRequest",
-    "BufferTaskResponse",
     "CreateQueueRequest",
     "CreateTaskRequest",
     "DeleteQueueRequest",

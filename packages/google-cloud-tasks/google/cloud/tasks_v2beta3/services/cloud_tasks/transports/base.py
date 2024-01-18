@@ -290,11 +290,6 @@ class CloudTasksTransport(abc.ABC):
                 default_timeout=20.0,
                 client_info=client_info,
             ),
-            self.buffer_task: gapic_v1.method.wrap_method(
-                self.buffer_task,
-                default_timeout=20.0,
-                client_info=client_info,
-            ),
         }
 
     def close(self):
@@ -440,15 +435,6 @@ class CloudTasksTransport(abc.ABC):
     def run_task(
         self,
     ) -> Callable[[cloudtasks.RunTaskRequest], Union[task.Task, Awaitable[task.Task]]]:
-        raise NotImplementedError()
-
-    @property
-    def buffer_task(
-        self,
-    ) -> Callable[
-        [cloudtasks.BufferTaskRequest],
-        Union[cloudtasks.BufferTaskResponse, Awaitable[cloudtasks.BufferTaskResponse]],
-    ]:
         raise NotImplementedError()
 
     @property
