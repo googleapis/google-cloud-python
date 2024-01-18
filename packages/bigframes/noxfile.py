@@ -664,6 +664,7 @@ def notebook(session):
         # appropriate values and omitting cleanup logic that may break
         # our test infrastructure.
         "notebooks/getting_started/getting_started_bq_dataframes.ipynb",
+        "notebooks/getting_started/ml_fundamentals_bq_dataframes.ipynb",
         "notebooks/generative_ai/bq_dataframes_llm_code_generation.ipynb",
         "notebooks/generative_ai/bq_dataframes_llm_kmeans.ipynb",
         "notebooks/regression/bq_dataframes_ml_linear_regression.ipynb",
