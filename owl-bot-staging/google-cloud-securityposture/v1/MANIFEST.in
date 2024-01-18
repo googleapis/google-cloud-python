@@ -1,0 +1,2 @@
+recursive-include google/cloud/securityposture *.py
+recursive-include google/cloud/securityposture_v1 *.py

@@ -1,0 +1,238 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.securityposture_v1",
+  "protoPackage": "google.cloud.securityposture.v1",
+  "schema": "1.0",
+  "services": {
+    "SecurityPosture": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SecurityPostureClient",
+          "rpcs": {
+            "CreatePosture": {
+              "methods": [
+                "create_posture"
+              ]
+            },
+            "CreatePostureDeployment": {
+              "methods": [
+                "create_posture_deployment"
+              ]
+            },
+            "DeletePosture": {
+              "methods": [
+                "delete_posture"
+              ]
+            },
+            "DeletePostureDeployment": {
+              "methods": [
+                "delete_posture_deployment"
+              ]
+            },
+            "ExtractPosture": {
+              "methods": [
+                "extract_posture"
+              ]
+            },
+            "GetPosture": {
+              "methods": [
+                "get_posture"
+              ]
+            },
+            "GetPostureDeployment": {
+              "methods": [
+                "get_posture_deployment"
+              ]
+            },
+            "GetPostureTemplate": {
+              "methods": [
+                "get_posture_template"
+              ]
+            },
+            "ListPostureDeployments": {
+              "methods": [
+                "list_posture_deployments"
+              ]
+            },
+            "ListPostureRevisions": {
+              "methods": [
+                "list_posture_revisions"
+              ]
+            },
+            "ListPostureTemplates": {
+              "methods": [
+                "list_posture_templates"
+              ]
+            },
+            "ListPostures": {
+              "methods": [
+                "list_postures"
+              ]
+            },
+            "UpdatePosture": {
+              "methods": [
+                "update_posture"
+              ]
+            },
+            "UpdatePostureDeployment": {
+              "methods": [
+                "update_posture_deployment"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SecurityPostureAsyncClient",
+          "rpcs": {
+            "CreatePosture": {
+              "methods": [
+                "create_posture"
+              ]
+            },
+            "CreatePostureDeployment": {
+              "methods": [
+                "create_posture_deployment"
+              ]
+            },
+            "DeletePosture": {
+              "methods": [
+                "delete_posture"
+              ]
+            },
+            "DeletePostureDeployment": {
+              "methods": [
+                "delete_posture_deployment"
+              ]
+            },
+            "ExtractPosture": {
+              "methods": [
+                "extract_posture"
+              ]
+            },
+            "GetPosture": {
+              "methods": [
+                "get_posture"
+              ]
+            },
+            "GetPostureDeployment": {
+              "methods": [
+                "get_posture_deployment"
+              ]
+            },
+            "GetPostureTemplate": {
+              "methods": [
+                "get_posture_template"
+              ]
+            },
+            "ListPostureDeployments": {
+              "methods": [
+                "list_posture_deployments"
+              ]
+            },
+            "ListPostureRevisions": {
+              "methods": [
+                "list_posture_revisions"
+              ]
+            },
+            "ListPostureTemplates": {
+              "methods": [
+                "list_posture_templates"
+              ]
+            },
+            "ListPostures": {
+              "methods": [
+                "list_postures"
+              ]
+            },
+            "UpdatePosture": {
+              "methods": [
+                "update_posture"
+              ]
+            },
+            "UpdatePostureDeployment": {
+              "methods": [
+                "update_posture_deployment"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SecurityPostureClient",
+          "rpcs": {
+            "CreatePosture": {
+              "methods": [
+                "create_posture"
+              ]
+            },
+            "CreatePostureDeployment": {
+              "methods": [
+                "create_posture_deployment"
+              ]
+            },
+            "DeletePosture": {
+              "methods": [
+                "delete_posture"
+              ]
+            },
+            "DeletePostureDeployment": {
+              "methods": [
+                "delete_posture_deployment"
+              ]
+            },
+            "ExtractPosture": {
+              "methods": [
+                "extract_posture"
+              ]
+            },
+            "GetPosture": {
+              "methods": [
+                "get_posture"
+              ]
+            },
+            "GetPostureDeployment": {
+              "methods": [
+                "get_posture_deployment"
+              ]
+            },
+            "GetPostureTemplate": {
+              "methods": [
+                "get_posture_template"
+              ]
+            },
+            "ListPostureDeployments": {
+              "methods": [
+                "list_posture_deployments"
+              ]
+            },
+            "ListPostureRevisions": {
+              "methods": [
+                "list_posture_revisions"
+              ]
+            },
+            "ListPostureTemplates": {
+              "methods": [
+                "list_posture_templates"
+              ]
+            },
+            "ListPostures": {
+              "methods": [
+                "list_postures"
+              ]
+            },
+            "UpdatePosture": {
+              "methods": [
+                "update_posture"
+              ]
+            },
+            "UpdatePostureDeployment": {
+              "methods": [
+                "update_posture_deployment"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
