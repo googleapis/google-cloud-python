@@ -3790,6 +3790,2605 @@ async def test_delete_cluster_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        vmwareengine.ListNodesRequest,
+        dict,
+    ],
+)
+def test_list_nodes(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListNodesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_nodes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNodesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNodesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_nodes_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        client.list_nodes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNodesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_nodes_async(
+    transport: str = "grpc_asyncio", request_type=vmwareengine.ListNodesRequest
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListNodesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_nodes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNodesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNodesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_nodes_async_from_dict():
+    await test_list_nodes_async(request_type=dict)
+
+
+def test_list_nodes_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListNodesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        call.return_value = vmwareengine.ListNodesResponse()
+        client.list_nodes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_nodes_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListNodesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListNodesResponse()
+        )
+        await client.list_nodes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_nodes_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListNodesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_nodes(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_nodes_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_nodes(
+            vmwareengine.ListNodesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_nodes_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListNodesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListNodesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_nodes(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_nodes_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_nodes(
+            vmwareengine.ListNodesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_nodes_pager(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_nodes(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmwareengine_resources.Node) for i in results)
+
+
+def test_list_nodes_pages(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_nodes(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_nodes_async_pager():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_nodes), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_nodes(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, vmwareengine_resources.Node) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_nodes_async_pages():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_nodes), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_nodes(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetNodeRequest,
+        dict,
+    ],
+)
+def test_get_node(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.Node(
+            name="name_value",
+            fqdn="fqdn_value",
+            internal_ip="internal_ip_value",
+            node_type_id="node_type_id_value",
+            version="version_value",
+            custom_core_count=1835,
+            state=vmwareengine_resources.Node.State.ACTIVE,
+        )
+        response = client.get_node(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNodeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.Node)
+    assert response.name == "name_value"
+    assert response.fqdn == "fqdn_value"
+    assert response.internal_ip == "internal_ip_value"
+    assert response.node_type_id == "node_type_id_value"
+    assert response.version == "version_value"
+    assert response.custom_core_count == 1835
+    assert response.state == vmwareengine_resources.Node.State.ACTIVE
+
+
+def test_get_node_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node), "__call__") as call:
+        client.get_node()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNodeRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_node_async(
+    transport: str = "grpc_asyncio", request_type=vmwareengine.GetNodeRequest
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.Node(
+                name="name_value",
+                fqdn="fqdn_value",
+                internal_ip="internal_ip_value",
+                node_type_id="node_type_id_value",
+                version="version_value",
+                custom_core_count=1835,
+                state=vmwareengine_resources.Node.State.ACTIVE,
+            )
+        )
+        response = await client.get_node(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNodeRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.Node)
+    assert response.name == "name_value"
+    assert response.fqdn == "fqdn_value"
+    assert response.internal_ip == "internal_ip_value"
+    assert response.node_type_id == "node_type_id_value"
+    assert response.version == "version_value"
+    assert response.custom_core_count == 1835
+    assert response.state == vmwareengine_resources.Node.State.ACTIVE
+
+
+@pytest.mark.asyncio
+async def test_get_node_async_from_dict():
+    await test_get_node_async(request_type=dict)
+
+
+def test_get_node_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetNodeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node), "__call__") as call:
+        call.return_value = vmwareengine_resources.Node()
+        client.get_node(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_node_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetNodeRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.Node()
+        )
+        await client.get_node(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_node_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.Node()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_node(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_node_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_node(
+            vmwareengine.GetNodeRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_node_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.Node()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.Node()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_node(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_node_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_node(
+            vmwareengine.GetNodeRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListExternalAddressesRequest,
+        dict,
+    ],
+)
+def test_list_external_addresses(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListExternalAddressesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_external_addresses(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListExternalAddressesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListExternalAddressesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_external_addresses_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses), "__call__"
+    ) as call:
+        client.list_external_addresses()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListExternalAddressesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_external_addresses_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.ListExternalAddressesRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListExternalAddressesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_external_addresses(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListExternalAddressesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListExternalAddressesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_external_addresses_async_from_dict():
+    await test_list_external_addresses_async(request_type=dict)
+
+
+def test_list_external_addresses_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListExternalAddressesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses), "__call__"
+    ) as call:
+        call.return_value = vmwareengine.ListExternalAddressesResponse()
+        client.list_external_addresses(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_external_addresses_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListExternalAddressesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListExternalAddressesResponse()
+        )
+        await client.list_external_addresses(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_external_addresses_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListExternalAddressesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_external_addresses(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_external_addresses_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_external_addresses(
+            vmwareengine.ListExternalAddressesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_external_addresses_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListExternalAddressesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListExternalAddressesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_external_addresses(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_external_addresses_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_external_addresses(
+            vmwareengine.ListExternalAddressesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_external_addresses_pager(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_external_addresses(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.ExternalAddress) for i in results
+        )
+
+
+def test_list_external_addresses_pages(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_external_addresses(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_external_addresses_async_pager():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_external_addresses(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.ExternalAddress) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_external_addresses_async_pages():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_external_addresses(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
+        dict,
+    ],
+)
+def test_fetch_network_policy_external_addresses(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.fetch_network_policy_external_addresses(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FetchNetworkPolicyExternalAddressesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_fetch_network_policy_external_addresses_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses), "__call__"
+    ) as call:
+        client.fetch_network_policy_external_addresses()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
+
+
+@pytest.mark.asyncio
+async def test_fetch_network_policy_external_addresses_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.fetch_network_policy_external_addresses(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FetchNetworkPolicyExternalAddressesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_fetch_network_policy_external_addresses_async_from_dict():
+    await test_fetch_network_policy_external_addresses_async(request_type=dict)
+
+
+def test_fetch_network_policy_external_addresses_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
+
+    request.network_policy = "network_policy_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses), "__call__"
+    ) as call:
+        call.return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse()
+        client.fetch_network_policy_external_addresses(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "network_policy=network_policy_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_fetch_network_policy_external_addresses_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
+
+    request.network_policy = "network_policy_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse()
+        )
+        await client.fetch_network_policy_external_addresses(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "network_policy=network_policy_value",
+    ) in kw["metadata"]
+
+
+def test_fetch_network_policy_external_addresses_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.fetch_network_policy_external_addresses(
+            network_policy="network_policy_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].network_policy
+        mock_val = "network_policy_value"
+        assert arg == mock_val
+
+
+def test_fetch_network_policy_external_addresses_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.fetch_network_policy_external_addresses(
+            vmwareengine.FetchNetworkPolicyExternalAddressesRequest(),
+            network_policy="network_policy_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_network_policy_external_addresses_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.fetch_network_policy_external_addresses(
+            network_policy="network_policy_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].network_policy
+        mock_val = "network_policy_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_fetch_network_policy_external_addresses_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.fetch_network_policy_external_addresses(
+            vmwareengine.FetchNetworkPolicyExternalAddressesRequest(),
+            network_policy="network_policy_value",
+        )
+
+
+def test_fetch_network_policy_external_addresses_pager(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[],
+                next_page_token="def",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("network_policy", ""),)),
+        )
+        pager = client.fetch_network_policy_external_addresses(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.ExternalAddress) for i in results
+        )
+
+
+def test_fetch_network_policy_external_addresses_pages(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[],
+                next_page_token="def",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.fetch_network_policy_external_addresses(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_fetch_network_policy_external_addresses_async_pager():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[],
+                next_page_token="def",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.fetch_network_policy_external_addresses(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.ExternalAddress) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_network_policy_external_addresses_async_pages():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[],
+                next_page_token="def",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.fetch_network_policy_external_addresses(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetExternalAddressRequest,
+        dict,
+    ],
+)
+def test_get_external_address(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.ExternalAddress(
+            name="name_value",
+            internal_ip="internal_ip_value",
+            external_ip="external_ip_value",
+            state=vmwareengine_resources.ExternalAddress.State.ACTIVE,
+            uid="uid_value",
+            description="description_value",
+        )
+        response = client.get_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetExternalAddressRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.ExternalAddress)
+    assert response.name == "name_value"
+    assert response.internal_ip == "internal_ip_value"
+    assert response.external_ip == "external_ip_value"
+    assert response.state == vmwareengine_resources.ExternalAddress.State.ACTIVE
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+
+
+def test_get_external_address_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_address), "__call__"
+    ) as call:
+        client.get_external_address()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetExternalAddressRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_external_address_async(
+    transport: str = "grpc_asyncio", request_type=vmwareengine.GetExternalAddressRequest
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.ExternalAddress(
+                name="name_value",
+                internal_ip="internal_ip_value",
+                external_ip="external_ip_value",
+                state=vmwareengine_resources.ExternalAddress.State.ACTIVE,
+                uid="uid_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetExternalAddressRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.ExternalAddress)
+    assert response.name == "name_value"
+    assert response.internal_ip == "internal_ip_value"
+    assert response.external_ip == "external_ip_value"
+    assert response.state == vmwareengine_resources.ExternalAddress.State.ACTIVE
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_get_external_address_async_from_dict():
+    await test_get_external_address_async(request_type=dict)
+
+
+def test_get_external_address_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetExternalAddressRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_address), "__call__"
+    ) as call:
+        call.return_value = vmwareengine_resources.ExternalAddress()
+        client.get_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_external_address_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetExternalAddressRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_address), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.ExternalAddress()
+        )
+        await client.get_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_external_address_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.ExternalAddress()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_external_address(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_external_address_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_external_address(
+            vmwareengine.GetExternalAddressRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_external_address_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.ExternalAddress()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.ExternalAddress()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_external_address(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_external_address_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_external_address(
+            vmwareengine.GetExternalAddressRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateExternalAddressRequest,
+        dict,
+    ],
+)
+def test_create_external_address(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateExternalAddressRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_external_address_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_address), "__call__"
+    ) as call:
+        client.create_external_address()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateExternalAddressRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_external_address_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.CreateExternalAddressRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateExternalAddressRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_external_address_async_from_dict():
+    await test_create_external_address_async(request_type=dict)
+
+
+def test_create_external_address_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.CreateExternalAddressRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_address), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_external_address_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.CreateExternalAddressRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_address), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_external_address_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_external_address(
+            parent="parent_value",
+            external_address=vmwareengine_resources.ExternalAddress(name="name_value"),
+            external_address_id="external_address_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].external_address
+        mock_val = vmwareengine_resources.ExternalAddress(name="name_value")
+        assert arg == mock_val
+        arg = args[0].external_address_id
+        mock_val = "external_address_id_value"
+        assert arg == mock_val
+
+
+def test_create_external_address_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_external_address(
+            vmwareengine.CreateExternalAddressRequest(),
+            parent="parent_value",
+            external_address=vmwareengine_resources.ExternalAddress(name="name_value"),
+            external_address_id="external_address_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_external_address_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_external_address(
+            parent="parent_value",
+            external_address=vmwareengine_resources.ExternalAddress(name="name_value"),
+            external_address_id="external_address_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].external_address
+        mock_val = vmwareengine_resources.ExternalAddress(name="name_value")
+        assert arg == mock_val
+        arg = args[0].external_address_id
+        mock_val = "external_address_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_external_address_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_external_address(
+            vmwareengine.CreateExternalAddressRequest(),
+            parent="parent_value",
+            external_address=vmwareengine_resources.ExternalAddress(name="name_value"),
+            external_address_id="external_address_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateExternalAddressRequest,
+        dict,
+    ],
+)
+def test_update_external_address(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateExternalAddressRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_external_address_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_address), "__call__"
+    ) as call:
+        client.update_external_address()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateExternalAddressRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_external_address_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.UpdateExternalAddressRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateExternalAddressRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_external_address_async_from_dict():
+    await test_update_external_address_async(request_type=dict)
+
+
+def test_update_external_address_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.UpdateExternalAddressRequest()
+
+    request.external_address.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_address), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "external_address.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_external_address_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.UpdateExternalAddressRequest()
+
+    request.external_address.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_address), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "external_address.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_external_address_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_external_address(
+            external_address=vmwareengine_resources.ExternalAddress(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].external_address
+        mock_val = vmwareengine_resources.ExternalAddress(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_external_address_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_external_address(
+            vmwareengine.UpdateExternalAddressRequest(),
+            external_address=vmwareengine_resources.ExternalAddress(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_external_address_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_external_address(
+            external_address=vmwareengine_resources.ExternalAddress(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].external_address
+        mock_val = vmwareengine_resources.ExternalAddress(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_external_address_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_external_address(
+            vmwareengine.UpdateExternalAddressRequest(),
+            external_address=vmwareengine_resources.ExternalAddress(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteExternalAddressRequest,
+        dict,
+    ],
+)
+def test_delete_external_address(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteExternalAddressRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_external_address_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_address), "__call__"
+    ) as call:
+        client.delete_external_address()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteExternalAddressRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_external_address_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.DeleteExternalAddressRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteExternalAddressRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_external_address_async_from_dict():
+    await test_delete_external_address_async(request_type=dict)
+
+
+def test_delete_external_address_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.DeleteExternalAddressRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_address), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_external_address_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.DeleteExternalAddressRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_address), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_external_address(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_external_address_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_external_address(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_external_address_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_external_address(
+            vmwareengine.DeleteExternalAddressRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_external_address_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_external_address(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_external_address_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_external_address(
+            vmwareengine.DeleteExternalAddressRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         vmwareengine.ListSubnetsRequest,
         dict,
     ],
@@ -4239,6 +6838,7 @@ def test_get_subnet(request_type, transport: str = "grpc"):
             gateway_ip="gateway_ip_value",
             type_="type__value",
             state=vmwareengine_resources.Subnet.State.ACTIVE,
+            vlan_id=733,
         )
         response = client.get_subnet(request)
 
@@ -4254,6 +6854,7 @@ def test_get_subnet(request_type, transport: str = "grpc"):
     assert response.gateway_ip == "gateway_ip_value"
     assert response.type_ == "type__value"
     assert response.state == vmwareengine_resources.Subnet.State.ACTIVE
+    assert response.vlan_id == 733
 
 
 def test_get_subnet_empty_call():
@@ -4295,6 +6896,7 @@ async def test_get_subnet_async(
                 gateway_ip="gateway_ip_value",
                 type_="type__value",
                 state=vmwareengine_resources.Subnet.State.ACTIVE,
+                vlan_id=733,
             )
         )
         response = await client.get_subnet(request)
@@ -4311,6 +6913,7 @@ async def test_get_subnet_async(
     assert response.gateway_ip == "gateway_ip_value"
     assert response.type_ == "type__value"
     assert response.state == vmwareengine_resources.Subnet.State.ACTIVE
+    assert response.vlan_id == 733
 
 
 @pytest.mark.asyncio
@@ -4694,6 +7297,2976 @@ async def test_update_subnet_flattened_error_async():
             vmwareengine.UpdateSubnetRequest(),
             subnet=vmwareengine_resources.Subnet(name="name_value"),
             update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListExternalAccessRulesRequest,
+        dict,
+    ],
+)
+def test_list_external_access_rules(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListExternalAccessRulesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_external_access_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListExternalAccessRulesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListExternalAccessRulesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_external_access_rules_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules), "__call__"
+    ) as call:
+        client.list_external_access_rules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListExternalAccessRulesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_external_access_rules_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.ListExternalAccessRulesRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListExternalAccessRulesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_external_access_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListExternalAccessRulesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListExternalAccessRulesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_external_access_rules_async_from_dict():
+    await test_list_external_access_rules_async(request_type=dict)
+
+
+def test_list_external_access_rules_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListExternalAccessRulesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules), "__call__"
+    ) as call:
+        call.return_value = vmwareengine.ListExternalAccessRulesResponse()
+        client.list_external_access_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_external_access_rules_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListExternalAccessRulesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListExternalAccessRulesResponse()
+        )
+        await client.list_external_access_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_external_access_rules_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListExternalAccessRulesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_external_access_rules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_external_access_rules_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_external_access_rules(
+            vmwareengine.ListExternalAccessRulesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_external_access_rules_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListExternalAccessRulesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListExternalAccessRulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_external_access_rules(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_external_access_rules_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_external_access_rules(
+            vmwareengine.ListExternalAccessRulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_external_access_rules_pager(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_external_access_rules(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.ExternalAccessRule) for i in results
+        )
+
+
+def test_list_external_access_rules_pages(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_external_access_rules(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_external_access_rules_async_pager():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_external_access_rules(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.ExternalAccessRule) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_external_access_rules_async_pages():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_external_access_rules(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetExternalAccessRuleRequest,
+        dict,
+    ],
+)
+def test_get_external_access_rule(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.ExternalAccessRule(
+            name="name_value",
+            description="description_value",
+            priority=898,
+            action=vmwareengine_resources.ExternalAccessRule.Action.ALLOW,
+            ip_protocol="ip_protocol_value",
+            source_ports=["source_ports_value"],
+            destination_ports=["destination_ports_value"],
+            state=vmwareengine_resources.ExternalAccessRule.State.ACTIVE,
+            uid="uid_value",
+        )
+        response = client.get_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetExternalAccessRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.ExternalAccessRule)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.priority == 898
+    assert response.action == vmwareengine_resources.ExternalAccessRule.Action.ALLOW
+    assert response.ip_protocol == "ip_protocol_value"
+    assert response.source_ports == ["source_ports_value"]
+    assert response.destination_ports == ["destination_ports_value"]
+    assert response.state == vmwareengine_resources.ExternalAccessRule.State.ACTIVE
+    assert response.uid == "uid_value"
+
+
+def test_get_external_access_rule_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_access_rule), "__call__"
+    ) as call:
+        client.get_external_access_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetExternalAccessRuleRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_external_access_rule_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.GetExternalAccessRuleRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.ExternalAccessRule(
+                name="name_value",
+                description="description_value",
+                priority=898,
+                action=vmwareengine_resources.ExternalAccessRule.Action.ALLOW,
+                ip_protocol="ip_protocol_value",
+                source_ports=["source_ports_value"],
+                destination_ports=["destination_ports_value"],
+                state=vmwareengine_resources.ExternalAccessRule.State.ACTIVE,
+                uid="uid_value",
+            )
+        )
+        response = await client.get_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetExternalAccessRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.ExternalAccessRule)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.priority == 898
+    assert response.action == vmwareengine_resources.ExternalAccessRule.Action.ALLOW
+    assert response.ip_protocol == "ip_protocol_value"
+    assert response.source_ports == ["source_ports_value"]
+    assert response.destination_ports == ["destination_ports_value"]
+    assert response.state == vmwareengine_resources.ExternalAccessRule.State.ACTIVE
+    assert response.uid == "uid_value"
+
+
+@pytest.mark.asyncio
+async def test_get_external_access_rule_async_from_dict():
+    await test_get_external_access_rule_async(request_type=dict)
+
+
+def test_get_external_access_rule_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetExternalAccessRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_access_rule), "__call__"
+    ) as call:
+        call.return_value = vmwareengine_resources.ExternalAccessRule()
+        client.get_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_external_access_rule_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetExternalAccessRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_access_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.ExternalAccessRule()
+        )
+        await client.get_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_external_access_rule_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.ExternalAccessRule()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_external_access_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_external_access_rule_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_external_access_rule(
+            vmwareengine.GetExternalAccessRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_external_access_rule_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.ExternalAccessRule()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.ExternalAccessRule()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_external_access_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_external_access_rule_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_external_access_rule(
+            vmwareengine.GetExternalAccessRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateExternalAccessRuleRequest,
+        dict,
+    ],
+)
+def test_create_external_access_rule(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateExternalAccessRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_external_access_rule_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_access_rule), "__call__"
+    ) as call:
+        client.create_external_access_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateExternalAccessRuleRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_external_access_rule_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.CreateExternalAccessRuleRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateExternalAccessRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_external_access_rule_async_from_dict():
+    await test_create_external_access_rule_async(request_type=dict)
+
+
+def test_create_external_access_rule_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.CreateExternalAccessRuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_access_rule), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_external_access_rule_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.CreateExternalAccessRuleRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_access_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_external_access_rule_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_external_access_rule(
+            parent="parent_value",
+            external_access_rule=vmwareengine_resources.ExternalAccessRule(
+                name="name_value"
+            ),
+            external_access_rule_id="external_access_rule_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].external_access_rule
+        mock_val = vmwareengine_resources.ExternalAccessRule(name="name_value")
+        assert arg == mock_val
+        arg = args[0].external_access_rule_id
+        mock_val = "external_access_rule_id_value"
+        assert arg == mock_val
+
+
+def test_create_external_access_rule_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_external_access_rule(
+            vmwareengine.CreateExternalAccessRuleRequest(),
+            parent="parent_value",
+            external_access_rule=vmwareengine_resources.ExternalAccessRule(
+                name="name_value"
+            ),
+            external_access_rule_id="external_access_rule_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_external_access_rule_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_external_access_rule(
+            parent="parent_value",
+            external_access_rule=vmwareengine_resources.ExternalAccessRule(
+                name="name_value"
+            ),
+            external_access_rule_id="external_access_rule_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].external_access_rule
+        mock_val = vmwareengine_resources.ExternalAccessRule(name="name_value")
+        assert arg == mock_val
+        arg = args[0].external_access_rule_id
+        mock_val = "external_access_rule_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_external_access_rule_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_external_access_rule(
+            vmwareengine.CreateExternalAccessRuleRequest(),
+            parent="parent_value",
+            external_access_rule=vmwareengine_resources.ExternalAccessRule(
+                name="name_value"
+            ),
+            external_access_rule_id="external_access_rule_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateExternalAccessRuleRequest,
+        dict,
+    ],
+)
+def test_update_external_access_rule(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateExternalAccessRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_external_access_rule_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_access_rule), "__call__"
+    ) as call:
+        client.update_external_access_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateExternalAccessRuleRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_external_access_rule_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.UpdateExternalAccessRuleRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateExternalAccessRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_external_access_rule_async_from_dict():
+    await test_update_external_access_rule_async(request_type=dict)
+
+
+def test_update_external_access_rule_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.UpdateExternalAccessRuleRequest()
+
+    request.external_access_rule.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_access_rule), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "external_access_rule.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_external_access_rule_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.UpdateExternalAccessRuleRequest()
+
+    request.external_access_rule.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_access_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "external_access_rule.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_external_access_rule_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_external_access_rule(
+            external_access_rule=vmwareengine_resources.ExternalAccessRule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].external_access_rule
+        mock_val = vmwareengine_resources.ExternalAccessRule(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_external_access_rule_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_external_access_rule(
+            vmwareengine.UpdateExternalAccessRuleRequest(),
+            external_access_rule=vmwareengine_resources.ExternalAccessRule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_external_access_rule_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_external_access_rule(
+            external_access_rule=vmwareengine_resources.ExternalAccessRule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].external_access_rule
+        mock_val = vmwareengine_resources.ExternalAccessRule(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_external_access_rule_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_external_access_rule(
+            vmwareengine.UpdateExternalAccessRuleRequest(),
+            external_access_rule=vmwareengine_resources.ExternalAccessRule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteExternalAccessRuleRequest,
+        dict,
+    ],
+)
+def test_delete_external_access_rule(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteExternalAccessRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_external_access_rule_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_access_rule), "__call__"
+    ) as call:
+        client.delete_external_access_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteExternalAccessRuleRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_external_access_rule_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.DeleteExternalAccessRuleRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteExternalAccessRuleRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_external_access_rule_async_from_dict():
+    await test_delete_external_access_rule_async(request_type=dict)
+
+
+def test_delete_external_access_rule_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.DeleteExternalAccessRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_access_rule), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_external_access_rule_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.DeleteExternalAccessRuleRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_access_rule), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_external_access_rule(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_external_access_rule_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_external_access_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_external_access_rule_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_external_access_rule(
+            vmwareengine.DeleteExternalAccessRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_external_access_rule_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_external_access_rule(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_external_access_rule_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_external_access_rule(
+            vmwareengine.DeleteExternalAccessRuleRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListLoggingServersRequest,
+        dict,
+    ],
+)
+def test_list_logging_servers(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListLoggingServersResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_logging_servers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListLoggingServersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListLoggingServersPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_logging_servers_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers), "__call__"
+    ) as call:
+        client.list_logging_servers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListLoggingServersRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_logging_servers_async(
+    transport: str = "grpc_asyncio", request_type=vmwareengine.ListLoggingServersRequest
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListLoggingServersResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_logging_servers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListLoggingServersRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListLoggingServersAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_logging_servers_async_from_dict():
+    await test_list_logging_servers_async(request_type=dict)
+
+
+def test_list_logging_servers_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListLoggingServersRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers), "__call__"
+    ) as call:
+        call.return_value = vmwareengine.ListLoggingServersResponse()
+        client.list_logging_servers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_logging_servers_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListLoggingServersRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListLoggingServersResponse()
+        )
+        await client.list_logging_servers(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_logging_servers_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListLoggingServersResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_logging_servers(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_logging_servers_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_logging_servers(
+            vmwareengine.ListLoggingServersRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_logging_servers_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListLoggingServersResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListLoggingServersResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_logging_servers(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_logging_servers_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_logging_servers(
+            vmwareengine.ListLoggingServersRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_logging_servers_pager(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_logging_servers(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmwareengine_resources.LoggingServer) for i in results)
+
+
+def test_list_logging_servers_pages(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_logging_servers(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_logging_servers_async_pager():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_logging_servers(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.LoggingServer) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_logging_servers_async_pages():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_logging_servers(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetLoggingServerRequest,
+        dict,
+    ],
+)
+def test_get_logging_server(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.LoggingServer(
+            name="name_value",
+            hostname="hostname_value",
+            port=453,
+            protocol=vmwareengine_resources.LoggingServer.Protocol.UDP,
+            source_type=vmwareengine_resources.LoggingServer.SourceType.ESXI,
+            uid="uid_value",
+        )
+        response = client.get_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetLoggingServerRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.LoggingServer)
+    assert response.name == "name_value"
+    assert response.hostname == "hostname_value"
+    assert response.port == 453
+    assert response.protocol == vmwareengine_resources.LoggingServer.Protocol.UDP
+    assert response.source_type == vmwareengine_resources.LoggingServer.SourceType.ESXI
+    assert response.uid == "uid_value"
+
+
+def test_get_logging_server_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_server), "__call__"
+    ) as call:
+        client.get_logging_server()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetLoggingServerRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_logging_server_async(
+    transport: str = "grpc_asyncio", request_type=vmwareengine.GetLoggingServerRequest
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.LoggingServer(
+                name="name_value",
+                hostname="hostname_value",
+                port=453,
+                protocol=vmwareengine_resources.LoggingServer.Protocol.UDP,
+                source_type=vmwareengine_resources.LoggingServer.SourceType.ESXI,
+                uid="uid_value",
+            )
+        )
+        response = await client.get_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetLoggingServerRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.LoggingServer)
+    assert response.name == "name_value"
+    assert response.hostname == "hostname_value"
+    assert response.port == 453
+    assert response.protocol == vmwareengine_resources.LoggingServer.Protocol.UDP
+    assert response.source_type == vmwareengine_resources.LoggingServer.SourceType.ESXI
+    assert response.uid == "uid_value"
+
+
+@pytest.mark.asyncio
+async def test_get_logging_server_async_from_dict():
+    await test_get_logging_server_async(request_type=dict)
+
+
+def test_get_logging_server_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetLoggingServerRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_server), "__call__"
+    ) as call:
+        call.return_value = vmwareengine_resources.LoggingServer()
+        client.get_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_logging_server_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetLoggingServerRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_server), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.LoggingServer()
+        )
+        await client.get_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_logging_server_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.LoggingServer()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_logging_server(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_logging_server_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_logging_server(
+            vmwareengine.GetLoggingServerRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_logging_server_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.LoggingServer()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.LoggingServer()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_logging_server(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_logging_server_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_logging_server(
+            vmwareengine.GetLoggingServerRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateLoggingServerRequest,
+        dict,
+    ],
+)
+def test_create_logging_server(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateLoggingServerRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_logging_server_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_logging_server), "__call__"
+    ) as call:
+        client.create_logging_server()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateLoggingServerRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_logging_server_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.CreateLoggingServerRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateLoggingServerRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_logging_server_async_from_dict():
+    await test_create_logging_server_async(request_type=dict)
+
+
+def test_create_logging_server_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.CreateLoggingServerRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_logging_server), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_logging_server_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.CreateLoggingServerRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_logging_server), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_logging_server_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_logging_server(
+            parent="parent_value",
+            logging_server=vmwareengine_resources.LoggingServer(name="name_value"),
+            logging_server_id="logging_server_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].logging_server
+        mock_val = vmwareengine_resources.LoggingServer(name="name_value")
+        assert arg == mock_val
+        arg = args[0].logging_server_id
+        mock_val = "logging_server_id_value"
+        assert arg == mock_val
+
+
+def test_create_logging_server_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_logging_server(
+            vmwareengine.CreateLoggingServerRequest(),
+            parent="parent_value",
+            logging_server=vmwareengine_resources.LoggingServer(name="name_value"),
+            logging_server_id="logging_server_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_logging_server_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_logging_server(
+            parent="parent_value",
+            logging_server=vmwareengine_resources.LoggingServer(name="name_value"),
+            logging_server_id="logging_server_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].logging_server
+        mock_val = vmwareengine_resources.LoggingServer(name="name_value")
+        assert arg == mock_val
+        arg = args[0].logging_server_id
+        mock_val = "logging_server_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_logging_server_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_logging_server(
+            vmwareengine.CreateLoggingServerRequest(),
+            parent="parent_value",
+            logging_server=vmwareengine_resources.LoggingServer(name="name_value"),
+            logging_server_id="logging_server_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateLoggingServerRequest,
+        dict,
+    ],
+)
+def test_update_logging_server(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateLoggingServerRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_logging_server_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_server), "__call__"
+    ) as call:
+        client.update_logging_server()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateLoggingServerRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_logging_server_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.UpdateLoggingServerRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateLoggingServerRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_logging_server_async_from_dict():
+    await test_update_logging_server_async(request_type=dict)
+
+
+def test_update_logging_server_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.UpdateLoggingServerRequest()
+
+    request.logging_server.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_server), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "logging_server.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_logging_server_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.UpdateLoggingServerRequest()
+
+    request.logging_server.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_server), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "logging_server.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_logging_server_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_logging_server(
+            logging_server=vmwareengine_resources.LoggingServer(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].logging_server
+        mock_val = vmwareengine_resources.LoggingServer(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_logging_server_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_logging_server(
+            vmwareengine.UpdateLoggingServerRequest(),
+            logging_server=vmwareengine_resources.LoggingServer(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_logging_server_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_logging_server(
+            logging_server=vmwareengine_resources.LoggingServer(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].logging_server
+        mock_val = vmwareengine_resources.LoggingServer(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_logging_server_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_logging_server(
+            vmwareengine.UpdateLoggingServerRequest(),
+            logging_server=vmwareengine_resources.LoggingServer(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteLoggingServerRequest,
+        dict,
+    ],
+)
+def test_delete_logging_server(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteLoggingServerRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_logging_server_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_logging_server), "__call__"
+    ) as call:
+        client.delete_logging_server()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteLoggingServerRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_logging_server_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.DeleteLoggingServerRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteLoggingServerRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_logging_server_async_from_dict():
+    await test_delete_logging_server_async(request_type=dict)
+
+
+def test_delete_logging_server_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.DeleteLoggingServerRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_logging_server), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_logging_server_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.DeleteLoggingServerRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_logging_server), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_logging_server(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_logging_server_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_logging_server(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_logging_server_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_logging_server(
+            vmwareengine.DeleteLoggingServerRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_logging_server_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_logging_server(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_logging_server_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_logging_server(
+            vmwareengine.DeleteLoggingServerRequest(),
+            name="name_value",
         )
 
 
@@ -5152,6 +10725,11 @@ def test_get_node_type(request_type, transport: str = "grpc"):
             memory_gb=961,
             disk_size_gb=1261,
             available_custom_core_counts=[2974],
+            kind=vmwareengine_resources.NodeType.Kind.STANDARD,
+            families=["families_value"],
+            capabilities=[
+                vmwareengine_resources.NodeType.Capability.STRETCHED_CLUSTERS
+            ],
         )
         response = client.get_node_type(request)
 
@@ -5170,6 +10748,11 @@ def test_get_node_type(request_type, transport: str = "grpc"):
     assert response.memory_gb == 961
     assert response.disk_size_gb == 1261
     assert response.available_custom_core_counts == [2974]
+    assert response.kind == vmwareengine_resources.NodeType.Kind.STANDARD
+    assert response.families == ["families_value"]
+    assert response.capabilities == [
+        vmwareengine_resources.NodeType.Capability.STRETCHED_CLUSTERS
+    ]
 
 
 def test_get_node_type_empty_call():
@@ -5214,6 +10797,11 @@ async def test_get_node_type_async(
                 memory_gb=961,
                 disk_size_gb=1261,
                 available_custom_core_counts=[2974],
+                kind=vmwareengine_resources.NodeType.Kind.STANDARD,
+                families=["families_value"],
+                capabilities=[
+                    vmwareengine_resources.NodeType.Capability.STRETCHED_CLUSTERS
+                ],
             )
         )
         response = await client.get_node_type(request)
@@ -5233,6 +10821,11 @@ async def test_get_node_type_async(
     assert response.memory_gb == 961
     assert response.disk_size_gb == 1261
     assert response.available_custom_core_counts == [2974]
+    assert response.kind == vmwareengine_resources.NodeType.Kind.STANDARD
+    assert response.families == ["families_value"]
+    assert response.capabilities == [
+        vmwareengine_resources.NodeType.Capability.STRETCHED_CLUSTERS
+    ]
 
 
 @pytest.mark.asyncio
@@ -6364,6 +11957,2459 @@ async def test_reset_vcenter_credentials_flattened_error_async():
             vmwareengine.ResetVcenterCredentialsRequest(),
             private_cloud="private_cloud_value",
         )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetDnsForwardingRequest,
+        dict,
+    ],
+)
+def test_get_dns_forwarding(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_forwarding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.DnsForwarding(
+            name="name_value",
+        )
+        response = client.get_dns_forwarding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetDnsForwardingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.DnsForwarding)
+    assert response.name == "name_value"
+
+
+def test_get_dns_forwarding_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_forwarding), "__call__"
+    ) as call:
+        client.get_dns_forwarding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetDnsForwardingRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_dns_forwarding_async(
+    transport: str = "grpc_asyncio", request_type=vmwareengine.GetDnsForwardingRequest
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_forwarding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.DnsForwarding(
+                name="name_value",
+            )
+        )
+        response = await client.get_dns_forwarding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetDnsForwardingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.DnsForwarding)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_dns_forwarding_async_from_dict():
+    await test_get_dns_forwarding_async(request_type=dict)
+
+
+def test_get_dns_forwarding_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetDnsForwardingRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_forwarding), "__call__"
+    ) as call:
+        call.return_value = vmwareengine_resources.DnsForwarding()
+        client.get_dns_forwarding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_dns_forwarding_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetDnsForwardingRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_forwarding), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.DnsForwarding()
+        )
+        await client.get_dns_forwarding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_dns_forwarding_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_forwarding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.DnsForwarding()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_dns_forwarding(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_dns_forwarding_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_dns_forwarding(
+            vmwareengine.GetDnsForwardingRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_dns_forwarding_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_forwarding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.DnsForwarding()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.DnsForwarding()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_dns_forwarding(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_dns_forwarding_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_dns_forwarding(
+            vmwareengine.GetDnsForwardingRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateDnsForwardingRequest,
+        dict,
+    ],
+)
+def test_update_dns_forwarding(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dns_forwarding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_dns_forwarding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateDnsForwardingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_dns_forwarding_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dns_forwarding), "__call__"
+    ) as call:
+        client.update_dns_forwarding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateDnsForwardingRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_dns_forwarding_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.UpdateDnsForwardingRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dns_forwarding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_dns_forwarding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateDnsForwardingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_dns_forwarding_async_from_dict():
+    await test_update_dns_forwarding_async(request_type=dict)
+
+
+def test_update_dns_forwarding_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.UpdateDnsForwardingRequest()
+
+    request.dns_forwarding.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dns_forwarding), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_dns_forwarding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "dns_forwarding.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_dns_forwarding_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.UpdateDnsForwardingRequest()
+
+    request.dns_forwarding.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dns_forwarding), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_dns_forwarding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "dns_forwarding.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_dns_forwarding_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dns_forwarding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_dns_forwarding(
+            dns_forwarding=vmwareengine_resources.DnsForwarding(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].dns_forwarding
+        mock_val = vmwareengine_resources.DnsForwarding(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_dns_forwarding_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_dns_forwarding(
+            vmwareengine.UpdateDnsForwardingRequest(),
+            dns_forwarding=vmwareengine_resources.DnsForwarding(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_dns_forwarding_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dns_forwarding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_dns_forwarding(
+            dns_forwarding=vmwareengine_resources.DnsForwarding(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].dns_forwarding
+        mock_val = vmwareengine_resources.DnsForwarding(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_dns_forwarding_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_dns_forwarding(
+            vmwareengine.UpdateDnsForwardingRequest(),
+            dns_forwarding=vmwareengine_resources.DnsForwarding(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetNetworkPeeringRequest,
+        dict,
+    ],
+)
+def test_get_network_peering(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.NetworkPeering(
+            name="name_value",
+            peer_network="peer_network_value",
+            export_custom_routes=True,
+            import_custom_routes=True,
+            exchange_subnet_routes=True,
+            export_custom_routes_with_public_ip=True,
+            import_custom_routes_with_public_ip=True,
+            state=vmwareengine_resources.NetworkPeering.State.INACTIVE,
+            state_details="state_details_value",
+            peer_mtu=865,
+            peer_network_type=vmwareengine_resources.NetworkPeering.PeerNetworkType.STANDARD,
+            uid="uid_value",
+            vmware_engine_network="vmware_engine_network_value",
+            description="description_value",
+        )
+        response = client.get_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNetworkPeeringRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.NetworkPeering)
+    assert response.name == "name_value"
+    assert response.peer_network == "peer_network_value"
+    assert response.export_custom_routes is True
+    assert response.import_custom_routes is True
+    assert response.exchange_subnet_routes is True
+    assert response.export_custom_routes_with_public_ip is True
+    assert response.import_custom_routes_with_public_ip is True
+    assert response.state == vmwareengine_resources.NetworkPeering.State.INACTIVE
+    assert response.state_details == "state_details_value"
+    assert response.peer_mtu == 865
+    assert (
+        response.peer_network_type
+        == vmwareengine_resources.NetworkPeering.PeerNetworkType.STANDARD
+    )
+    assert response.uid == "uid_value"
+    assert response.vmware_engine_network == "vmware_engine_network_value"
+    assert response.description == "description_value"
+
+
+def test_get_network_peering_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_network_peering), "__call__"
+    ) as call:
+        client.get_network_peering()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNetworkPeeringRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_network_peering_async(
+    transport: str = "grpc_asyncio", request_type=vmwareengine.GetNetworkPeeringRequest
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.NetworkPeering(
+                name="name_value",
+                peer_network="peer_network_value",
+                export_custom_routes=True,
+                import_custom_routes=True,
+                exchange_subnet_routes=True,
+                export_custom_routes_with_public_ip=True,
+                import_custom_routes_with_public_ip=True,
+                state=vmwareengine_resources.NetworkPeering.State.INACTIVE,
+                state_details="state_details_value",
+                peer_mtu=865,
+                peer_network_type=vmwareengine_resources.NetworkPeering.PeerNetworkType.STANDARD,
+                uid="uid_value",
+                vmware_engine_network="vmware_engine_network_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNetworkPeeringRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.NetworkPeering)
+    assert response.name == "name_value"
+    assert response.peer_network == "peer_network_value"
+    assert response.export_custom_routes is True
+    assert response.import_custom_routes is True
+    assert response.exchange_subnet_routes is True
+    assert response.export_custom_routes_with_public_ip is True
+    assert response.import_custom_routes_with_public_ip is True
+    assert response.state == vmwareengine_resources.NetworkPeering.State.INACTIVE
+    assert response.state_details == "state_details_value"
+    assert response.peer_mtu == 865
+    assert (
+        response.peer_network_type
+        == vmwareengine_resources.NetworkPeering.PeerNetworkType.STANDARD
+    )
+    assert response.uid == "uid_value"
+    assert response.vmware_engine_network == "vmware_engine_network_value"
+    assert response.description == "description_value"
+
+
+@pytest.mark.asyncio
+async def test_get_network_peering_async_from_dict():
+    await test_get_network_peering_async(request_type=dict)
+
+
+def test_get_network_peering_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetNetworkPeeringRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_network_peering), "__call__"
+    ) as call:
+        call.return_value = vmwareengine_resources.NetworkPeering()
+        client.get_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_network_peering_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetNetworkPeeringRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_network_peering), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.NetworkPeering()
+        )
+        await client.get_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_network_peering_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.NetworkPeering()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_network_peering(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_network_peering_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_network_peering(
+            vmwareengine.GetNetworkPeeringRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_network_peering_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.NetworkPeering()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.NetworkPeering()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_network_peering(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_network_peering_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_network_peering(
+            vmwareengine.GetNetworkPeeringRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListNetworkPeeringsRequest,
+        dict,
+    ],
+)
+def test_list_network_peerings(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListNetworkPeeringsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_network_peerings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNetworkPeeringsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNetworkPeeringsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_network_peerings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings), "__call__"
+    ) as call:
+        client.list_network_peerings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNetworkPeeringsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_network_peerings_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.ListNetworkPeeringsRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListNetworkPeeringsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_network_peerings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNetworkPeeringsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNetworkPeeringsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_network_peerings_async_from_dict():
+    await test_list_network_peerings_async(request_type=dict)
+
+
+def test_list_network_peerings_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListNetworkPeeringsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings), "__call__"
+    ) as call:
+        call.return_value = vmwareengine.ListNetworkPeeringsResponse()
+        client.list_network_peerings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_network_peerings_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListNetworkPeeringsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListNetworkPeeringsResponse()
+        )
+        await client.list_network_peerings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_network_peerings_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListNetworkPeeringsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_network_peerings(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_network_peerings_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_network_peerings(
+            vmwareengine.ListNetworkPeeringsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_network_peerings_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListNetworkPeeringsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListNetworkPeeringsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_network_peerings(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_network_peerings_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_network_peerings(
+            vmwareengine.ListNetworkPeeringsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_network_peerings_pager(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_network_peerings(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.NetworkPeering) for i in results
+        )
+
+
+def test_list_network_peerings_pages(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_network_peerings(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_network_peerings_async_pager():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_network_peerings(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.NetworkPeering) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_network_peerings_async_pages():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_network_peerings(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateNetworkPeeringRequest,
+        dict,
+    ],
+)
+def test_create_network_peering(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateNetworkPeeringRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_network_peering_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_network_peering), "__call__"
+    ) as call:
+        client.create_network_peering()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateNetworkPeeringRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_network_peering_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.CreateNetworkPeeringRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateNetworkPeeringRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_network_peering_async_from_dict():
+    await test_create_network_peering_async(request_type=dict)
+
+
+def test_create_network_peering_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.CreateNetworkPeeringRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_network_peering), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_network_peering_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.CreateNetworkPeeringRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_network_peering), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_network_peering_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_network_peering(
+            parent="parent_value",
+            network_peering=vmwareengine_resources.NetworkPeering(name="name_value"),
+            network_peering_id="network_peering_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].network_peering
+        mock_val = vmwareengine_resources.NetworkPeering(name="name_value")
+        assert arg == mock_val
+        arg = args[0].network_peering_id
+        mock_val = "network_peering_id_value"
+        assert arg == mock_val
+
+
+def test_create_network_peering_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_network_peering(
+            vmwareengine.CreateNetworkPeeringRequest(),
+            parent="parent_value",
+            network_peering=vmwareengine_resources.NetworkPeering(name="name_value"),
+            network_peering_id="network_peering_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_network_peering_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_network_peering(
+            parent="parent_value",
+            network_peering=vmwareengine_resources.NetworkPeering(name="name_value"),
+            network_peering_id="network_peering_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].network_peering
+        mock_val = vmwareengine_resources.NetworkPeering(name="name_value")
+        assert arg == mock_val
+        arg = args[0].network_peering_id
+        mock_val = "network_peering_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_network_peering_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_network_peering(
+            vmwareengine.CreateNetworkPeeringRequest(),
+            parent="parent_value",
+            network_peering=vmwareengine_resources.NetworkPeering(name="name_value"),
+            network_peering_id="network_peering_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteNetworkPeeringRequest,
+        dict,
+    ],
+)
+def test_delete_network_peering(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteNetworkPeeringRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_network_peering_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_network_peering), "__call__"
+    ) as call:
+        client.delete_network_peering()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteNetworkPeeringRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_network_peering_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.DeleteNetworkPeeringRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteNetworkPeeringRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_network_peering_async_from_dict():
+    await test_delete_network_peering_async(request_type=dict)
+
+
+def test_delete_network_peering_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.DeleteNetworkPeeringRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_network_peering), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_network_peering_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.DeleteNetworkPeeringRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_network_peering), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_network_peering_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_network_peering(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_network_peering_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_network_peering(
+            vmwareengine.DeleteNetworkPeeringRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_network_peering_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_network_peering(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_network_peering_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_network_peering(
+            vmwareengine.DeleteNetworkPeeringRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateNetworkPeeringRequest,
+        dict,
+    ],
+)
+def test_update_network_peering(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateNetworkPeeringRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_network_peering_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_network_peering), "__call__"
+    ) as call:
+        client.update_network_peering()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateNetworkPeeringRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_network_peering_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.UpdateNetworkPeeringRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateNetworkPeeringRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_network_peering_async_from_dict():
+    await test_update_network_peering_async(request_type=dict)
+
+
+def test_update_network_peering_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.UpdateNetworkPeeringRequest()
+
+    request.network_peering.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_network_peering), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "network_peering.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_network_peering_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.UpdateNetworkPeeringRequest()
+
+    request.network_peering.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_network_peering), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_network_peering(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "network_peering.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_network_peering_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_network_peering(
+            network_peering=vmwareengine_resources.NetworkPeering(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].network_peering
+        mock_val = vmwareengine_resources.NetworkPeering(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_network_peering_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_network_peering(
+            vmwareengine.UpdateNetworkPeeringRequest(),
+            network_peering=vmwareengine_resources.NetworkPeering(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_network_peering_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_network_peering(
+            network_peering=vmwareengine_resources.NetworkPeering(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].network_peering
+        mock_val = vmwareengine_resources.NetworkPeering(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_network_peering_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_network_peering(
+            vmwareengine.UpdateNetworkPeeringRequest(),
+            network_peering=vmwareengine_resources.NetworkPeering(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListPeeringRoutesRequest,
+        dict,
+    ],
+)
+def test_list_peering_routes(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListPeeringRoutesResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_peering_routes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListPeeringRoutesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPeeringRoutesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_peering_routes_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes), "__call__"
+    ) as call:
+        client.list_peering_routes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListPeeringRoutesRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_peering_routes_async(
+    transport: str = "grpc_asyncio", request_type=vmwareengine.ListPeeringRoutesRequest
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListPeeringRoutesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_peering_routes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListPeeringRoutesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPeeringRoutesAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_peering_routes_async_from_dict():
+    await test_list_peering_routes_async(request_type=dict)
+
+
+def test_list_peering_routes_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListPeeringRoutesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes), "__call__"
+    ) as call:
+        call.return_value = vmwareengine.ListPeeringRoutesResponse()
+        client.list_peering_routes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_peering_routes_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListPeeringRoutesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListPeeringRoutesResponse()
+        )
+        await client.list_peering_routes(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_peering_routes_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListPeeringRoutesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_peering_routes(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_peering_routes_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_peering_routes(
+            vmwareengine.ListPeeringRoutesRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_peering_routes_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListPeeringRoutesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListPeeringRoutesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_peering_routes(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_peering_routes_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_peering_routes(
+            vmwareengine.ListPeeringRoutesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_peering_routes_pager(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_peering_routes(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmwareengine_resources.PeeringRoute) for i in results)
+
+
+def test_list_peering_routes_pages(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_peering_routes(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_peering_routes_async_pager():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_peering_routes(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.PeeringRoute) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_peering_routes_async_pages():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_peering_routes(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.parametrize(
@@ -8819,6 +16865,1735 @@ async def test_delete_network_policy_flattened_error_async():
     with pytest.raises(ValueError):
         await client.delete_network_policy(
             vmwareengine.DeleteNetworkPolicyRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListManagementDnsZoneBindingsRequest,
+        dict,
+    ],
+)
+def test_list_management_dns_zone_bindings(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListManagementDnsZoneBindingsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+        response = client.list_management_dns_zone_bindings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListManagementDnsZoneBindingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListManagementDnsZoneBindingsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_management_dns_zone_bindings_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings), "__call__"
+    ) as call:
+        client.list_management_dns_zone_bindings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListManagementDnsZoneBindingsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_management_dns_zone_bindings_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.ListManagementDnsZoneBindingsRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_management_dns_zone_bindings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListManagementDnsZoneBindingsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListManagementDnsZoneBindingsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+@pytest.mark.asyncio
+async def test_list_management_dns_zone_bindings_async_from_dict():
+    await test_list_management_dns_zone_bindings_async(request_type=dict)
+
+
+def test_list_management_dns_zone_bindings_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListManagementDnsZoneBindingsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings), "__call__"
+    ) as call:
+        call.return_value = vmwareengine.ListManagementDnsZoneBindingsResponse()
+        client.list_management_dns_zone_bindings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_management_dns_zone_bindings_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.ListManagementDnsZoneBindingsRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListManagementDnsZoneBindingsResponse()
+        )
+        await client.list_management_dns_zone_bindings(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_list_management_dns_zone_bindings_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListManagementDnsZoneBindingsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_management_dns_zone_bindings(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_management_dns_zone_bindings_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_management_dns_zone_bindings(
+            vmwareengine.ListManagementDnsZoneBindingsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_management_dns_zone_bindings_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine.ListManagementDnsZoneBindingsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListManagementDnsZoneBindingsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_management_dns_zone_bindings(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_management_dns_zone_bindings_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_management_dns_zone_bindings(
+            vmwareengine.ListManagementDnsZoneBindingsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_management_dns_zone_bindings_pager(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_management_dns_zone_bindings(request={})
+
+        assert pager._metadata == metadata
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.ManagementDnsZoneBinding)
+            for i in results
+        )
+
+
+def test_list_management_dns_zone_bindings_pages(transport_name: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_management_dns_zone_bindings(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_management_dns_zone_bindings_async_pager():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_management_dns_zone_bindings(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.ManagementDnsZoneBinding)
+            for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_management_dns_zone_bindings_async_pages():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
+        # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
+        async for page_ in (  # pragma: no branch
+            await client.list_management_dns_zone_bindings(request={})
+        ).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetManagementDnsZoneBindingRequest,
+        dict,
+    ],
+)
+def test_get_management_dns_zone_binding(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.ManagementDnsZoneBinding(
+            name="name_value",
+            state=vmwareengine_resources.ManagementDnsZoneBinding.State.ACTIVE,
+            description="description_value",
+            uid="uid_value",
+            vpc_network="vpc_network_value",
+        )
+        response = client.get_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetManagementDnsZoneBindingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.ManagementDnsZoneBinding)
+    assert response.name == "name_value"
+    assert (
+        response.state == vmwareengine_resources.ManagementDnsZoneBinding.State.ACTIVE
+    )
+    assert response.description == "description_value"
+    assert response.uid == "uid_value"
+
+
+def test_get_management_dns_zone_binding_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_management_dns_zone_binding), "__call__"
+    ) as call:
+        client.get_management_dns_zone_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetManagementDnsZoneBindingRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_management_dns_zone_binding_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.GetManagementDnsZoneBindingRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value",
+                state=vmwareengine_resources.ManagementDnsZoneBinding.State.ACTIVE,
+                description="description_value",
+                uid="uid_value",
+            )
+        )
+        response = await client.get_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetManagementDnsZoneBindingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.ManagementDnsZoneBinding)
+    assert response.name == "name_value"
+    assert (
+        response.state == vmwareengine_resources.ManagementDnsZoneBinding.State.ACTIVE
+    )
+    assert response.description == "description_value"
+    assert response.uid == "uid_value"
+
+
+@pytest.mark.asyncio
+async def test_get_management_dns_zone_binding_async_from_dict():
+    await test_get_management_dns_zone_binding_async(request_type=dict)
+
+
+def test_get_management_dns_zone_binding_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetManagementDnsZoneBindingRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_management_dns_zone_binding), "__call__"
+    ) as call:
+        call.return_value = vmwareengine_resources.ManagementDnsZoneBinding()
+        client.get_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_management_dns_zone_binding_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetManagementDnsZoneBindingRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_management_dns_zone_binding), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.ManagementDnsZoneBinding()
+        )
+        await client.get_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_management_dns_zone_binding_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.ManagementDnsZoneBinding()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_management_dns_zone_binding(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_management_dns_zone_binding_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_management_dns_zone_binding(
+            vmwareengine.GetManagementDnsZoneBindingRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_management_dns_zone_binding_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.ManagementDnsZoneBinding()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.ManagementDnsZoneBinding()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_management_dns_zone_binding(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_management_dns_zone_binding_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_management_dns_zone_binding(
+            vmwareengine.GetManagementDnsZoneBindingRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateManagementDnsZoneBindingRequest,
+        dict,
+    ],
+)
+def test_create_management_dns_zone_binding(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.create_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateManagementDnsZoneBindingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_create_management_dns_zone_binding_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_management_dns_zone_binding), "__call__"
+    ) as call:
+        client.create_management_dns_zone_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateManagementDnsZoneBindingRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_management_dns_zone_binding_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.CreateManagementDnsZoneBindingRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateManagementDnsZoneBindingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_create_management_dns_zone_binding_async_from_dict():
+    await test_create_management_dns_zone_binding_async(request_type=dict)
+
+
+def test_create_management_dns_zone_binding_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.CreateManagementDnsZoneBindingRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_management_dns_zone_binding), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.create_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_management_dns_zone_binding_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.CreateManagementDnsZoneBindingRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_management_dns_zone_binding), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.create_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_create_management_dns_zone_binding_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_management_dns_zone_binding(
+            parent="parent_value",
+            management_dns_zone_binding=vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value"
+            ),
+            management_dns_zone_binding_id="management_dns_zone_binding_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].management_dns_zone_binding
+        mock_val = vmwareengine_resources.ManagementDnsZoneBinding(name="name_value")
+        assert arg == mock_val
+        arg = args[0].management_dns_zone_binding_id
+        mock_val = "management_dns_zone_binding_id_value"
+        assert arg == mock_val
+
+
+def test_create_management_dns_zone_binding_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_management_dns_zone_binding(
+            vmwareengine.CreateManagementDnsZoneBindingRequest(),
+            parent="parent_value",
+            management_dns_zone_binding=vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value"
+            ),
+            management_dns_zone_binding_id="management_dns_zone_binding_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_management_dns_zone_binding_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_management_dns_zone_binding(
+            parent="parent_value",
+            management_dns_zone_binding=vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value"
+            ),
+            management_dns_zone_binding_id="management_dns_zone_binding_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].management_dns_zone_binding
+        mock_val = vmwareengine_resources.ManagementDnsZoneBinding(name="name_value")
+        assert arg == mock_val
+        arg = args[0].management_dns_zone_binding_id
+        mock_val = "management_dns_zone_binding_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_management_dns_zone_binding_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_management_dns_zone_binding(
+            vmwareengine.CreateManagementDnsZoneBindingRequest(),
+            parent="parent_value",
+            management_dns_zone_binding=vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value"
+            ),
+            management_dns_zone_binding_id="management_dns_zone_binding_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateManagementDnsZoneBindingRequest,
+        dict,
+    ],
+)
+def test_update_management_dns_zone_binding(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.update_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateManagementDnsZoneBindingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_update_management_dns_zone_binding_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_management_dns_zone_binding), "__call__"
+    ) as call:
+        client.update_management_dns_zone_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateManagementDnsZoneBindingRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_management_dns_zone_binding_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.UpdateManagementDnsZoneBindingRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateManagementDnsZoneBindingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_update_management_dns_zone_binding_async_from_dict():
+    await test_update_management_dns_zone_binding_async(request_type=dict)
+
+
+def test_update_management_dns_zone_binding_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.UpdateManagementDnsZoneBindingRequest()
+
+    request.management_dns_zone_binding.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_management_dns_zone_binding), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.update_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "management_dns_zone_binding.name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_management_dns_zone_binding_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.UpdateManagementDnsZoneBindingRequest()
+
+    request.management_dns_zone_binding.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_management_dns_zone_binding), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.update_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "management_dns_zone_binding.name=name_value",
+    ) in kw["metadata"]
+
+
+def test_update_management_dns_zone_binding_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_management_dns_zone_binding(
+            management_dns_zone_binding=vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].management_dns_zone_binding
+        mock_val = vmwareengine_resources.ManagementDnsZoneBinding(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_management_dns_zone_binding_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_management_dns_zone_binding(
+            vmwareengine.UpdateManagementDnsZoneBindingRequest(),
+            management_dns_zone_binding=vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_management_dns_zone_binding_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_management_dns_zone_binding(
+            management_dns_zone_binding=vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].management_dns_zone_binding
+        mock_val = vmwareengine_resources.ManagementDnsZoneBinding(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_management_dns_zone_binding_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_management_dns_zone_binding(
+            vmwareengine.UpdateManagementDnsZoneBindingRequest(),
+            management_dns_zone_binding=vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteManagementDnsZoneBindingRequest,
+        dict,
+    ],
+)
+def test_delete_management_dns_zone_binding(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteManagementDnsZoneBindingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_management_dns_zone_binding_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_management_dns_zone_binding), "__call__"
+    ) as call:
+        client.delete_management_dns_zone_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteManagementDnsZoneBindingRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_management_dns_zone_binding_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.DeleteManagementDnsZoneBindingRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteManagementDnsZoneBindingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_management_dns_zone_binding_async_from_dict():
+    await test_delete_management_dns_zone_binding_async(request_type=dict)
+
+
+def test_delete_management_dns_zone_binding_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.DeleteManagementDnsZoneBindingRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_management_dns_zone_binding), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_management_dns_zone_binding_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.DeleteManagementDnsZoneBindingRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_management_dns_zone_binding), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_management_dns_zone_binding_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_management_dns_zone_binding(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_management_dns_zone_binding_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_management_dns_zone_binding(
+            vmwareengine.DeleteManagementDnsZoneBindingRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_management_dns_zone_binding_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_management_dns_zone_binding(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_management_dns_zone_binding_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_management_dns_zone_binding(
+            vmwareengine.DeleteManagementDnsZoneBindingRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.RepairManagementDnsZoneBindingRequest,
+        dict,
+    ],
+)
+def test_repair_management_dns_zone_binding(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.repair_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.repair_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.RepairManagementDnsZoneBindingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_repair_management_dns_zone_binding_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.repair_management_dns_zone_binding), "__call__"
+    ) as call:
+        client.repair_management_dns_zone_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.RepairManagementDnsZoneBindingRequest()
+
+
+@pytest.mark.asyncio
+async def test_repair_management_dns_zone_binding_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.RepairManagementDnsZoneBindingRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.repair_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.repair_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.RepairManagementDnsZoneBindingRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_repair_management_dns_zone_binding_async_from_dict():
+    await test_repair_management_dns_zone_binding_async(request_type=dict)
+
+
+def test_repair_management_dns_zone_binding_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.RepairManagementDnsZoneBindingRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.repair_management_dns_zone_binding), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.repair_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_repair_management_dns_zone_binding_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.RepairManagementDnsZoneBindingRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.repair_management_dns_zone_binding), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.repair_management_dns_zone_binding(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_repair_management_dns_zone_binding_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.repair_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.repair_management_dns_zone_binding(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_repair_management_dns_zone_binding_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.repair_management_dns_zone_binding(
+            vmwareengine.RepairManagementDnsZoneBindingRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_repair_management_dns_zone_binding_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.repair_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.repair_management_dns_zone_binding(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_repair_management_dns_zone_binding_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.repair_management_dns_zone_binding(
+            vmwareengine.RepairManagementDnsZoneBindingRequest(),
             name="name_value",
         )
 
@@ -12295,6 +22070,755 @@ async def test_list_private_connection_peering_routes_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
+        vmwareengine.GrantDnsBindPermissionRequest,
+        dict,
+    ],
+)
+def test_grant_dns_bind_permission(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.grant_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.grant_dns_bind_permission(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GrantDnsBindPermissionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_grant_dns_bind_permission_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.grant_dns_bind_permission), "__call__"
+    ) as call:
+        client.grant_dns_bind_permission()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GrantDnsBindPermissionRequest()
+
+
+@pytest.mark.asyncio
+async def test_grant_dns_bind_permission_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.GrantDnsBindPermissionRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.grant_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.grant_dns_bind_permission(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GrantDnsBindPermissionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_grant_dns_bind_permission_async_from_dict():
+    await test_grant_dns_bind_permission_async(request_type=dict)
+
+
+def test_grant_dns_bind_permission_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GrantDnsBindPermissionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.grant_dns_bind_permission), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.grant_dns_bind_permission(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_grant_dns_bind_permission_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GrantDnsBindPermissionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.grant_dns_bind_permission), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.grant_dns_bind_permission(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_grant_dns_bind_permission_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.grant_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.grant_dns_bind_permission(
+            name="name_value",
+            principal=vmwareengine_resources.Principal(user="user_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].principal
+        mock_val = vmwareengine_resources.Principal(user="user_value")
+        assert arg == mock_val
+
+
+def test_grant_dns_bind_permission_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.grant_dns_bind_permission(
+            vmwareengine.GrantDnsBindPermissionRequest(),
+            name="name_value",
+            principal=vmwareengine_resources.Principal(user="user_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_grant_dns_bind_permission_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.grant_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.grant_dns_bind_permission(
+            name="name_value",
+            principal=vmwareengine_resources.Principal(user="user_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].principal
+        mock_val = vmwareengine_resources.Principal(user="user_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_grant_dns_bind_permission_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.grant_dns_bind_permission(
+            vmwareengine.GrantDnsBindPermissionRequest(),
+            name="name_value",
+            principal=vmwareengine_resources.Principal(user="user_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetDnsBindPermissionRequest,
+        dict,
+    ],
+)
+def test_get_dns_bind_permission(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.DnsBindPermission(
+            name="name_value",
+        )
+        response = client.get_dns_bind_permission(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetDnsBindPermissionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.DnsBindPermission)
+    assert response.name == "name_value"
+
+
+def test_get_dns_bind_permission_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_bind_permission), "__call__"
+    ) as call:
+        client.get_dns_bind_permission()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetDnsBindPermissionRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_dns_bind_permission_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.GetDnsBindPermissionRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.DnsBindPermission(
+                name="name_value",
+            )
+        )
+        response = await client.get_dns_bind_permission(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetDnsBindPermissionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.DnsBindPermission)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_dns_bind_permission_async_from_dict():
+    await test_get_dns_bind_permission_async(request_type=dict)
+
+
+def test_get_dns_bind_permission_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetDnsBindPermissionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_bind_permission), "__call__"
+    ) as call:
+        call.return_value = vmwareengine_resources.DnsBindPermission()
+        client.get_dns_bind_permission(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_dns_bind_permission_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.GetDnsBindPermissionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_bind_permission), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.DnsBindPermission()
+        )
+        await client.get_dns_bind_permission(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_get_dns_bind_permission_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.DnsBindPermission()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_dns_bind_permission(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_dns_bind_permission_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_dns_bind_permission(
+            vmwareengine.GetDnsBindPermissionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_dns_bind_permission_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = vmwareengine_resources.DnsBindPermission()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.DnsBindPermission()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_dns_bind_permission(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_dns_bind_permission_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_dns_bind_permission(
+            vmwareengine.GetDnsBindPermissionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.RevokeDnsBindPermissionRequest,
+        dict,
+    ],
+)
+def test_revoke_dns_bind_permission(request_type, transport: str = "grpc"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.revoke_dns_bind_permission(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.RevokeDnsBindPermissionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_revoke_dns_bind_permission_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_dns_bind_permission), "__call__"
+    ) as call:
+        client.revoke_dns_bind_permission()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.RevokeDnsBindPermissionRequest()
+
+
+@pytest.mark.asyncio
+async def test_revoke_dns_bind_permission_async(
+    transport: str = "grpc_asyncio",
+    request_type=vmwareengine.RevokeDnsBindPermissionRequest,
+):
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.revoke_dns_bind_permission(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.RevokeDnsBindPermissionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_revoke_dns_bind_permission_async_from_dict():
+    await test_revoke_dns_bind_permission_async(request_type=dict)
+
+
+def test_revoke_dns_bind_permission_field_headers():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.RevokeDnsBindPermissionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_dns_bind_permission), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.revoke_dns_bind_permission(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_revoke_dns_bind_permission_field_headers_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = vmwareengine.RevokeDnsBindPermissionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_dns_bind_permission), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.revoke_dns_bind_permission(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_revoke_dns_bind_permission_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.revoke_dns_bind_permission(
+            name="name_value",
+            principal=vmwareengine_resources.Principal(user="user_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].principal
+        mock_val = vmwareengine_resources.Principal(user="user_value")
+        assert arg == mock_val
+
+
+def test_revoke_dns_bind_permission_flattened_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.revoke_dns_bind_permission(
+            vmwareengine.RevokeDnsBindPermissionRequest(),
+            name="name_value",
+            principal=vmwareengine_resources.Principal(user="user_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_revoke_dns_bind_permission_flattened_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.revoke_dns_bind_permission(
+            name="name_value",
+            principal=vmwareengine_resources.Principal(user="user_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].principal
+        mock_val = vmwareengine_resources.Principal(user="user_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_revoke_dns_bind_permission_flattened_error_async():
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.revoke_dns_bind_permission(
+            vmwareengine.RevokeDnsBindPermissionRequest(),
+            name="name_value",
+            principal=vmwareengine_resources.Principal(user="user_value"),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         vmwareengine.ListPrivateCloudsRequest,
         dict,
     ],
@@ -12949,10 +23473,15 @@ def test_create_private_cloud_rest(request_type):
             "vmware_engine_network": "vmware_engine_network_value",
             "vmware_engine_network_canonical": "vmware_engine_network_canonical_value",
             "management_ip_address_layout_version": 3836,
+            "dns_server_ip": "dns_server_ip_value",
         },
         "management_cluster": {
             "cluster_id": "cluster_id_value",
             "node_type_configs": {},
+            "stretched_cluster_config": {
+                "preferred_location": "preferred_location_value",
+                "secondary_location": "secondary_location_value",
+            },
         },
         "description": "description_value",
         "hcx": {
@@ -13363,10 +23892,15 @@ def test_update_private_cloud_rest(request_type):
             "vmware_engine_network": "vmware_engine_network_value",
             "vmware_engine_network_canonical": "vmware_engine_network_canonical_value",
             "management_ip_address_layout_version": 3836,
+            "dns_server_ip": "dns_server_ip_value",
         },
         "management_cluster": {
             "cluster_id": "cluster_id_value",
             "node_type_configs": {},
+            "stretched_cluster_config": {
+                "preferred_location": "preferred_location_value",
+                "secondary_location": "secondary_location_value",
+            },
         },
         "description": "description_value",
         "hcx": {
@@ -14938,6 +25472,10 @@ def test_create_cluster_rest(request_type):
         "management": True,
         "uid": "uid_value",
         "node_type_configs": {},
+        "stretched_cluster_config": {
+            "preferred_location": "preferred_location_value",
+            "secondary_location": "secondary_location_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15326,6 +25864,10 @@ def test_update_cluster_rest(request_type):
         "management": True,
         "uid": "uid_value",
         "node_type_configs": {},
+        "stretched_cluster_config": {
+            "preferred_location": "preferred_location_value",
+            "secondary_location": "secondary_location_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -15944,6 +26486,2687 @@ def test_delete_cluster_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        vmwareengine.ListNodesRequest,
+        dict,
+    ],
+)
+def test_list_nodes_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3/clusters/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListNodesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListNodesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_nodes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNodesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_nodes_rest_required_fields(request_type=vmwareengine.ListNodesRequest):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_nodes._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_nodes._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine.ListNodesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine.ListNodesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_nodes(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_nodes_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_nodes._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_nodes_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_nodes"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_list_nodes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.ListNodesRequest.pb(vmwareengine.ListNodesRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmwareengine.ListNodesResponse.to_json(
+            vmwareengine.ListNodesResponse()
+        )
+
+        request = vmwareengine.ListNodesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine.ListNodesResponse()
+
+        client.list_nodes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_nodes_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.ListNodesRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3/clusters/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_nodes(request)
+
+
+def test_list_nodes_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListNodesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateClouds/sample3/clusters/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListNodesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_nodes(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/privateClouds/*/clusters/*}/nodes"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_nodes_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_nodes(
+            vmwareengine.ListNodesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_nodes_rest_pager(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListNodesResponse(
+                nodes=[
+                    vmwareengine_resources.Node(),
+                    vmwareengine_resources.Node(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(vmwareengine.ListNodesResponse.to_json(x) for x in response)
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateClouds/sample3/clusters/sample4"
+        }
+
+        pager = client.list_nodes(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmwareengine_resources.Node) for i in results)
+
+        pages = list(client.list_nodes(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetNodeRequest,
+        dict,
+    ],
+)
+def test_get_node_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/clusters/sample4/nodes/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.Node(
+            name="name_value",
+            fqdn="fqdn_value",
+            internal_ip="internal_ip_value",
+            node_type_id="node_type_id_value",
+            version="version_value",
+            custom_core_count=1835,
+            state=vmwareengine_resources.Node.State.ACTIVE,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.Node.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_node(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.Node)
+    assert response.name == "name_value"
+    assert response.fqdn == "fqdn_value"
+    assert response.internal_ip == "internal_ip_value"
+    assert response.node_type_id == "node_type_id_value"
+    assert response.version == "version_value"
+    assert response.custom_core_count == 1835
+    assert response.state == vmwareengine_resources.Node.State.ACTIVE
+
+
+def test_get_node_rest_required_fields(request_type=vmwareengine.GetNodeRequest):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_node._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_node._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine_resources.Node()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine_resources.Node.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_node(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_node_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_node._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_node_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_node"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_get_node"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.GetNodeRequest.pb(vmwareengine.GetNodeRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmwareengine_resources.Node.to_json(
+            vmwareengine_resources.Node()
+        )
+
+        request = vmwareengine.GetNodeRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine_resources.Node()
+
+        client.get_node(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_node_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.GetNodeRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/clusters/sample4/nodes/sample5"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_node(request)
+
+
+def test_get_node_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.Node()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/clusters/sample4/nodes/sample5"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.Node.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_node(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/privateClouds/*/clusters/*/nodes/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_node_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_node(
+            vmwareengine.GetNodeRequest(),
+            name="name_value",
+        )
+
+
+def test_get_node_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListExternalAddressesRequest,
+        dict,
+    ],
+)
+def test_list_external_addresses_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListExternalAddressesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListExternalAddressesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_external_addresses(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListExternalAddressesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_external_addresses_rest_required_fields(
+    request_type=vmwareengine.ListExternalAddressesRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_external_addresses._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_external_addresses._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine.ListExternalAddressesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine.ListExternalAddressesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_external_addresses(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_external_addresses_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_external_addresses._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_external_addresses_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_external_addresses"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_list_external_addresses"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.ListExternalAddressesRequest.pb(
+            vmwareengine.ListExternalAddressesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmwareengine.ListExternalAddressesResponse.to_json(
+            vmwareengine.ListExternalAddressesResponse()
+        )
+
+        request = vmwareengine.ListExternalAddressesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine.ListExternalAddressesResponse()
+
+        client.list_external_addresses(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_external_addresses_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.ListExternalAddressesRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_external_addresses(request)
+
+
+def test_list_external_addresses_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListExternalAddressesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListExternalAddressesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_external_addresses(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/privateClouds/*}/externalAddresses"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_external_addresses_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_external_addresses(
+            vmwareengine.ListExternalAddressesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_external_addresses_rest_pager(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmwareengine.ListExternalAddressesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+        }
+
+        pager = client.list_external_addresses(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.ExternalAddress) for i in results
+        )
+
+        pages = list(client.list_external_addresses(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
+        dict,
+    ],
+)
+def test_fetch_network_policy_external_addresses_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "network_policy": "projects/sample1/locations/sample2/networkPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.fetch_network_policy_external_addresses(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.FetchNetworkPolicyExternalAddressesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_fetch_network_policy_external_addresses_rest_required_fields(
+    request_type=vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["network_policy"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_network_policy_external_addresses._get_unset_required_fields(
+        jsonified_request
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["networkPolicy"] = "network_policy_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).fetch_network_policy_external_addresses._get_unset_required_fields(
+        jsonified_request
+    )
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "networkPolicy" in jsonified_request
+    assert jsonified_request["networkPolicy"] == "network_policy_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.fetch_network_policy_external_addresses(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_fetch_network_policy_external_addresses_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.fetch_network_policy_external_addresses._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("networkPolicy",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_fetch_network_policy_external_addresses_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_fetch_network_policy_external_addresses",
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "pre_fetch_network_policy_external_addresses",
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.FetchNetworkPolicyExternalAddressesRequest.pb(
+            vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse.to_json(
+                vmwareengine.FetchNetworkPolicyExternalAddressesResponse()
+            )
+        )
+
+        request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse()
+
+        client.fetch_network_policy_external_addresses(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_fetch_network_policy_external_addresses_rest_bad_request(
+    transport: str = "rest",
+    request_type=vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "network_policy": "projects/sample1/locations/sample2/networkPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.fetch_network_policy_external_addresses(request)
+
+
+def test_fetch_network_policy_external_addresses_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "network_policy": "projects/sample1/locations/sample2/networkPolicies/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            network_policy="network_policy_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.FetchNetworkPolicyExternalAddressesResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.fetch_network_policy_external_addresses(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{network_policy=projects/*/locations/*/networkPolicies/*}:fetchExternalAddresses"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_fetch_network_policy_external_addresses_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.fetch_network_policy_external_addresses(
+            vmwareengine.FetchNetworkPolicyExternalAddressesRequest(),
+            network_policy="network_policy_value",
+        )
+
+
+def test_fetch_network_policy_external_addresses_rest_pager(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[],
+                next_page_token="def",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                external_addresses=[
+                    vmwareengine_resources.ExternalAddress(),
+                    vmwareengine_resources.ExternalAddress(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "network_policy": "projects/sample1/locations/sample2/networkPolicies/sample3"
+        }
+
+        pager = client.fetch_network_policy_external_addresses(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.ExternalAddress) for i in results
+        )
+
+        pages = list(
+            client.fetch_network_policy_external_addresses(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetExternalAddressRequest,
+        dict,
+    ],
+)
+def test_get_external_address_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/externalAddresses/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.ExternalAddress(
+            name="name_value",
+            internal_ip="internal_ip_value",
+            external_ip="external_ip_value",
+            state=vmwareengine_resources.ExternalAddress.State.ACTIVE,
+            uid="uid_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.ExternalAddress.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_external_address(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.ExternalAddress)
+    assert response.name == "name_value"
+    assert response.internal_ip == "internal_ip_value"
+    assert response.external_ip == "external_ip_value"
+    assert response.state == vmwareengine_resources.ExternalAddress.State.ACTIVE
+    assert response.uid == "uid_value"
+    assert response.description == "description_value"
+
+
+def test_get_external_address_rest_required_fields(
+    request_type=vmwareengine.GetExternalAddressRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_external_address._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_external_address._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine_resources.ExternalAddress()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine_resources.ExternalAddress.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_external_address(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_external_address_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_external_address._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_external_address_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_external_address"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_get_external_address"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.GetExternalAddressRequest.pb(
+            vmwareengine.GetExternalAddressRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmwareengine_resources.ExternalAddress.to_json(
+            vmwareengine_resources.ExternalAddress()
+        )
+
+        request = vmwareengine.GetExternalAddressRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine_resources.ExternalAddress()
+
+        client.get_external_address(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_external_address_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.GetExternalAddressRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/externalAddresses/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_external_address(request)
+
+
+def test_get_external_address_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.ExternalAddress()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/externalAddresses/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.ExternalAddress.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_external_address(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/privateClouds/*/externalAddresses/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_external_address_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_external_address(
+            vmwareengine.GetExternalAddressRequest(),
+            name="name_value",
+        )
+
+
+def test_get_external_address_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateExternalAddressRequest,
+        dict,
+    ],
+)
+def test_create_external_address_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+    }
+    request_init["external_address"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "internal_ip": "internal_ip_value",
+        "external_ip": "external_ip_value",
+        "state": 1,
+        "uid": "uid_value",
+        "description": "description_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmwareengine.CreateExternalAddressRequest.meta.fields[
+        "external_address"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["external_address"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["external_address"][field])):
+                    del request_init["external_address"][field][i][subfield]
+            else:
+                del request_init["external_address"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_external_address(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_external_address_rest_required_fields(
+    request_type=vmwareengine.CreateExternalAddressRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["external_address_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "externalAddressId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_external_address._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "externalAddressId" in jsonified_request
+    assert jsonified_request["externalAddressId"] == request_init["external_address_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["externalAddressId"] = "external_address_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_external_address._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "external_address_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "externalAddressId" in jsonified_request
+    assert jsonified_request["externalAddressId"] == "external_address_id_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_external_address(request)
+
+            expected_params = [
+                (
+                    "externalAddressId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_external_address_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_external_address._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "externalAddressId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "externalAddress",
+                "externalAddressId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_external_address_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_create_external_address"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_create_external_address"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.CreateExternalAddressRequest.pb(
+            vmwareengine.CreateExternalAddressRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.CreateExternalAddressRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_external_address(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_external_address_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.CreateExternalAddressRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_external_address(request)
+
+
+def test_create_external_address_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            external_address=vmwareengine_resources.ExternalAddress(name="name_value"),
+            external_address_id="external_address_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_external_address(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/privateClouds/*}/externalAddresses"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_external_address_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_external_address(
+            vmwareengine.CreateExternalAddressRequest(),
+            parent="parent_value",
+            external_address=vmwareengine_resources.ExternalAddress(name="name_value"),
+            external_address_id="external_address_id_value",
+        )
+
+
+def test_create_external_address_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateExternalAddressRequest,
+        dict,
+    ],
+)
+def test_update_external_address_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "external_address": {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/externalAddresses/sample4"
+        }
+    }
+    request_init["external_address"] = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/externalAddresses/sample4",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "internal_ip": "internal_ip_value",
+        "external_ip": "external_ip_value",
+        "state": 1,
+        "uid": "uid_value",
+        "description": "description_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmwareengine.UpdateExternalAddressRequest.meta.fields[
+        "external_address"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["external_address"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["external_address"][field])):
+                    del request_init["external_address"][field][i][subfield]
+            else:
+                del request_init["external_address"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_external_address(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_external_address_rest_required_fields(
+    request_type=vmwareengine.UpdateExternalAddressRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_external_address._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_external_address._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_external_address(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_external_address_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_external_address._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "externalAddress",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_external_address_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_update_external_address"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_update_external_address"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.UpdateExternalAddressRequest.pb(
+            vmwareengine.UpdateExternalAddressRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.UpdateExternalAddressRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_external_address(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_external_address_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.UpdateExternalAddressRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "external_address": {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/externalAddresses/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_external_address(request)
+
+
+def test_update_external_address_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "external_address": {
+                "name": "projects/sample1/locations/sample2/privateClouds/sample3/externalAddresses/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            external_address=vmwareengine_resources.ExternalAddress(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_external_address(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{external_address.name=projects/*/locations/*/privateClouds/*/externalAddresses/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_external_address_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_external_address(
+            vmwareengine.UpdateExternalAddressRequest(),
+            external_address=vmwareengine_resources.ExternalAddress(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_external_address_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteExternalAddressRequest,
+        dict,
+    ],
+)
+def test_delete_external_address_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/externalAddresses/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_external_address(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_external_address_rest_required_fields(
+    request_type=vmwareengine.DeleteExternalAddressRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_external_address._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_external_address._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_external_address(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_external_address_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_external_address._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_external_address_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_delete_external_address"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_delete_external_address"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.DeleteExternalAddressRequest.pb(
+            vmwareengine.DeleteExternalAddressRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.DeleteExternalAddressRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_external_address(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_external_address_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.DeleteExternalAddressRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/externalAddresses/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_external_address(request)
+
+
+def test_delete_external_address_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/externalAddresses/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_external_address(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/privateClouds/*/externalAddresses/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_external_address_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_external_address(
+            vmwareengine.DeleteExternalAddressRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_external_address_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         vmwareengine.ListSubnetsRequest,
         dict,
     ],
@@ -16320,6 +29543,7 @@ def test_get_subnet_rest(request_type):
             gateway_ip="gateway_ip_value",
             type_="type__value",
             state=vmwareengine_resources.Subnet.State.ACTIVE,
+            vlan_id=733,
         )
 
         # Wrap the value into a proper Response obj
@@ -16340,6 +29564,7 @@ def test_get_subnet_rest(request_type):
     assert response.gateway_ip == "gateway_ip_value"
     assert response.type_ == "type__value"
     assert response.state == vmwareengine_resources.Subnet.State.ACTIVE
+    assert response.vlan_id == 733
 
 
 def test_get_subnet_rest_required_fields(request_type=vmwareengine.GetSubnetRequest):
@@ -16598,6 +29823,7 @@ def test_update_subnet_rest(request_type):
         "gateway_ip": "gateway_ip_value",
         "type_": "type__value",
         "state": 1,
+        "vlan_id": 733,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -16925,6 +30151,3397 @@ def test_update_subnet_rest_flattened_error(transport: str = "rest"):
 
 
 def test_update_subnet_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListExternalAccessRulesRequest,
+        dict,
+    ],
+)
+def test_list_external_access_rules_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/networkPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListExternalAccessRulesResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListExternalAccessRulesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_external_access_rules(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListExternalAccessRulesPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_external_access_rules_rest_required_fields(
+    request_type=vmwareengine.ListExternalAccessRulesRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_external_access_rules._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_external_access_rules._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine.ListExternalAccessRulesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine.ListExternalAccessRulesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_external_access_rules(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_external_access_rules_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_external_access_rules._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_external_access_rules_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_external_access_rules"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_list_external_access_rules"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.ListExternalAccessRulesRequest.pb(
+            vmwareengine.ListExternalAccessRulesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            vmwareengine.ListExternalAccessRulesResponse.to_json(
+                vmwareengine.ListExternalAccessRulesResponse()
+            )
+        )
+
+        request = vmwareengine.ListExternalAccessRulesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine.ListExternalAccessRulesResponse()
+
+        client.list_external_access_rules(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_external_access_rules_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.ListExternalAccessRulesRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/networkPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_external_access_rules(request)
+
+
+def test_list_external_access_rules_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListExternalAccessRulesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/networkPolicies/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListExternalAccessRulesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_external_access_rules(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/networkPolicies/*}/externalAccessRules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_external_access_rules_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_external_access_rules(
+            vmwareengine.ListExternalAccessRulesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_external_access_rules_rest_pager(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListExternalAccessRulesResponse(
+                external_access_rules=[
+                    vmwareengine_resources.ExternalAccessRule(),
+                    vmwareengine_resources.ExternalAccessRule(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmwareengine.ListExternalAccessRulesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/networkPolicies/sample3"
+        }
+
+        pager = client.list_external_access_rules(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.ExternalAccessRule) for i in results
+        )
+
+        pages = list(client.list_external_access_rules(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetExternalAccessRuleRequest,
+        dict,
+    ],
+)
+def test_get_external_access_rule_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/networkPolicies/sample3/externalAccessRules/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.ExternalAccessRule(
+            name="name_value",
+            description="description_value",
+            priority=898,
+            action=vmwareengine_resources.ExternalAccessRule.Action.ALLOW,
+            ip_protocol="ip_protocol_value",
+            source_ports=["source_ports_value"],
+            destination_ports=["destination_ports_value"],
+            state=vmwareengine_resources.ExternalAccessRule.State.ACTIVE,
+            uid="uid_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.ExternalAccessRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_external_access_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.ExternalAccessRule)
+    assert response.name == "name_value"
+    assert response.description == "description_value"
+    assert response.priority == 898
+    assert response.action == vmwareengine_resources.ExternalAccessRule.Action.ALLOW
+    assert response.ip_protocol == "ip_protocol_value"
+    assert response.source_ports == ["source_ports_value"]
+    assert response.destination_ports == ["destination_ports_value"]
+    assert response.state == vmwareengine_resources.ExternalAccessRule.State.ACTIVE
+    assert response.uid == "uid_value"
+
+
+def test_get_external_access_rule_rest_required_fields(
+    request_type=vmwareengine.GetExternalAccessRuleRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_external_access_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_external_access_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine_resources.ExternalAccessRule()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine_resources.ExternalAccessRule.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_external_access_rule(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_external_access_rule_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_external_access_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_external_access_rule_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_external_access_rule"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_get_external_access_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.GetExternalAccessRuleRequest.pb(
+            vmwareengine.GetExternalAccessRuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmwareengine_resources.ExternalAccessRule.to_json(
+            vmwareengine_resources.ExternalAccessRule()
+        )
+
+        request = vmwareengine.GetExternalAccessRuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine_resources.ExternalAccessRule()
+
+        client.get_external_access_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_external_access_rule_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.GetExternalAccessRuleRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/networkPolicies/sample3/externalAccessRules/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_external_access_rule(request)
+
+
+def test_get_external_access_rule_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.ExternalAccessRule()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/networkPolicies/sample3/externalAccessRules/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.ExternalAccessRule.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_external_access_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/networkPolicies/*/externalAccessRules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_external_access_rule_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_external_access_rule(
+            vmwareengine.GetExternalAccessRuleRequest(),
+            name="name_value",
+        )
+
+
+def test_get_external_access_rule_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateExternalAccessRuleRequest,
+        dict,
+    ],
+)
+def test_create_external_access_rule_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/networkPolicies/sample3"
+    }
+    request_init["external_access_rule"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "priority": 898,
+        "action": 1,
+        "ip_protocol": "ip_protocol_value",
+        "source_ip_ranges": [
+            {
+                "ip_address": "ip_address_value",
+                "ip_address_range": "ip_address_range_value",
+                "external_address": "external_address_value",
+            }
+        ],
+        "source_ports": ["source_ports_value1", "source_ports_value2"],
+        "destination_ip_ranges": {},
+        "destination_ports": ["destination_ports_value1", "destination_ports_value2"],
+        "state": 1,
+        "uid": "uid_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmwareengine.CreateExternalAccessRuleRequest.meta.fields[
+        "external_access_rule"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "external_access_rule"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["external_access_rule"][field])):
+                    del request_init["external_access_rule"][field][i][subfield]
+            else:
+                del request_init["external_access_rule"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_external_access_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_external_access_rule_rest_required_fields(
+    request_type=vmwareengine.CreateExternalAccessRuleRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["external_access_rule_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "externalAccessRuleId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_external_access_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "externalAccessRuleId" in jsonified_request
+    assert (
+        jsonified_request["externalAccessRuleId"]
+        == request_init["external_access_rule_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["externalAccessRuleId"] = "external_access_rule_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_external_access_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "external_access_rule_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "externalAccessRuleId" in jsonified_request
+    assert jsonified_request["externalAccessRuleId"] == "external_access_rule_id_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_external_access_rule(request)
+
+            expected_params = [
+                (
+                    "externalAccessRuleId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_external_access_rule_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_external_access_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "externalAccessRuleId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "externalAccessRule",
+                "externalAccessRuleId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_external_access_rule_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_create_external_access_rule"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_create_external_access_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.CreateExternalAccessRuleRequest.pb(
+            vmwareengine.CreateExternalAccessRuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.CreateExternalAccessRuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_external_access_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_external_access_rule_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.CreateExternalAccessRuleRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/networkPolicies/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_external_access_rule(request)
+
+
+def test_create_external_access_rule_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/networkPolicies/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            external_access_rule=vmwareengine_resources.ExternalAccessRule(
+                name="name_value"
+            ),
+            external_access_rule_id="external_access_rule_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_external_access_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/networkPolicies/*}/externalAccessRules"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_external_access_rule_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_external_access_rule(
+            vmwareengine.CreateExternalAccessRuleRequest(),
+            parent="parent_value",
+            external_access_rule=vmwareengine_resources.ExternalAccessRule(
+                name="name_value"
+            ),
+            external_access_rule_id="external_access_rule_id_value",
+        )
+
+
+def test_create_external_access_rule_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateExternalAccessRuleRequest,
+        dict,
+    ],
+)
+def test_update_external_access_rule_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "external_access_rule": {
+            "name": "projects/sample1/locations/sample2/networkPolicies/sample3/externalAccessRules/sample4"
+        }
+    }
+    request_init["external_access_rule"] = {
+        "name": "projects/sample1/locations/sample2/networkPolicies/sample3/externalAccessRules/sample4",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "description": "description_value",
+        "priority": 898,
+        "action": 1,
+        "ip_protocol": "ip_protocol_value",
+        "source_ip_ranges": [
+            {
+                "ip_address": "ip_address_value",
+                "ip_address_range": "ip_address_range_value",
+                "external_address": "external_address_value",
+            }
+        ],
+        "source_ports": ["source_ports_value1", "source_ports_value2"],
+        "destination_ip_ranges": {},
+        "destination_ports": ["destination_ports_value1", "destination_ports_value2"],
+        "state": 1,
+        "uid": "uid_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmwareengine.UpdateExternalAccessRuleRequest.meta.fields[
+        "external_access_rule"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "external_access_rule"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["external_access_rule"][field])):
+                    del request_init["external_access_rule"][field][i][subfield]
+            else:
+                del request_init["external_access_rule"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_external_access_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_external_access_rule_rest_required_fields(
+    request_type=vmwareengine.UpdateExternalAccessRuleRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_external_access_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_external_access_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_external_access_rule(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_external_access_rule_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_external_access_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "externalAccessRule",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_external_access_rule_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_update_external_access_rule"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_update_external_access_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.UpdateExternalAccessRuleRequest.pb(
+            vmwareengine.UpdateExternalAccessRuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.UpdateExternalAccessRuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_external_access_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_external_access_rule_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.UpdateExternalAccessRuleRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "external_access_rule": {
+            "name": "projects/sample1/locations/sample2/networkPolicies/sample3/externalAccessRules/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_external_access_rule(request)
+
+
+def test_update_external_access_rule_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "external_access_rule": {
+                "name": "projects/sample1/locations/sample2/networkPolicies/sample3/externalAccessRules/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            external_access_rule=vmwareengine_resources.ExternalAccessRule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_external_access_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{external_access_rule.name=projects/*/locations/*/networkPolicies/*/externalAccessRules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_external_access_rule_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_external_access_rule(
+            vmwareengine.UpdateExternalAccessRuleRequest(),
+            external_access_rule=vmwareengine_resources.ExternalAccessRule(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_external_access_rule_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteExternalAccessRuleRequest,
+        dict,
+    ],
+)
+def test_delete_external_access_rule_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/networkPolicies/sample3/externalAccessRules/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_external_access_rule(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_external_access_rule_rest_required_fields(
+    request_type=vmwareengine.DeleteExternalAccessRuleRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_external_access_rule._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_external_access_rule._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_external_access_rule(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_external_access_rule_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_external_access_rule._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_external_access_rule_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_delete_external_access_rule"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_delete_external_access_rule"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.DeleteExternalAccessRuleRequest.pb(
+            vmwareengine.DeleteExternalAccessRuleRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.DeleteExternalAccessRuleRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_external_access_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_external_access_rule_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.DeleteExternalAccessRuleRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/networkPolicies/sample3/externalAccessRules/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_external_access_rule(request)
+
+
+def test_delete_external_access_rule_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/networkPolicies/sample3/externalAccessRules/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_external_access_rule(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/networkPolicies/*/externalAccessRules/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_external_access_rule_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_external_access_rule(
+            vmwareengine.DeleteExternalAccessRuleRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_external_access_rule_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListLoggingServersRequest,
+        dict,
+    ],
+)
+def test_list_logging_servers_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListLoggingServersResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListLoggingServersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_logging_servers(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListLoggingServersPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_logging_servers_rest_required_fields(
+    request_type=vmwareengine.ListLoggingServersRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_logging_servers._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_logging_servers._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine.ListLoggingServersResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine.ListLoggingServersResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_logging_servers(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_logging_servers_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_logging_servers._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_logging_servers_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_logging_servers"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_list_logging_servers"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.ListLoggingServersRequest.pb(
+            vmwareengine.ListLoggingServersRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmwareengine.ListLoggingServersResponse.to_json(
+            vmwareengine.ListLoggingServersResponse()
+        )
+
+        request = vmwareengine.ListLoggingServersRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine.ListLoggingServersResponse()
+
+        client.list_logging_servers(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_logging_servers_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.ListLoggingServersRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_logging_servers(request)
+
+
+def test_list_logging_servers_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListLoggingServersResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListLoggingServersResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_logging_servers(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/privateClouds/*}/loggingServers"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_logging_servers_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_logging_servers(
+            vmwareengine.ListLoggingServersRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_logging_servers_rest_pager(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListLoggingServersResponse(
+                logging_servers=[
+                    vmwareengine_resources.LoggingServer(),
+                    vmwareengine_resources.LoggingServer(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmwareengine.ListLoggingServersResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+        }
+
+        pager = client.list_logging_servers(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmwareengine_resources.LoggingServer) for i in results)
+
+        pages = list(client.list_logging_servers(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetLoggingServerRequest,
+        dict,
+    ],
+)
+def test_get_logging_server_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/loggingServers/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.LoggingServer(
+            name="name_value",
+            hostname="hostname_value",
+            port=453,
+            protocol=vmwareengine_resources.LoggingServer.Protocol.UDP,
+            source_type=vmwareengine_resources.LoggingServer.SourceType.ESXI,
+            uid="uid_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.LoggingServer.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_logging_server(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.LoggingServer)
+    assert response.name == "name_value"
+    assert response.hostname == "hostname_value"
+    assert response.port == 453
+    assert response.protocol == vmwareengine_resources.LoggingServer.Protocol.UDP
+    assert response.source_type == vmwareengine_resources.LoggingServer.SourceType.ESXI
+    assert response.uid == "uid_value"
+
+
+def test_get_logging_server_rest_required_fields(
+    request_type=vmwareengine.GetLoggingServerRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_logging_server._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_logging_server._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine_resources.LoggingServer()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine_resources.LoggingServer.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_logging_server(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_logging_server_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_logging_server._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_logging_server_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_logging_server"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_get_logging_server"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.GetLoggingServerRequest.pb(
+            vmwareengine.GetLoggingServerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmwareengine_resources.LoggingServer.to_json(
+            vmwareengine_resources.LoggingServer()
+        )
+
+        request = vmwareengine.GetLoggingServerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine_resources.LoggingServer()
+
+        client.get_logging_server(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_logging_server_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.GetLoggingServerRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/loggingServers/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_logging_server(request)
+
+
+def test_get_logging_server_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.LoggingServer()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/loggingServers/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.LoggingServer.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_logging_server(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/privateClouds/*/loggingServers/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_logging_server_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_logging_server(
+            vmwareengine.GetLoggingServerRequest(),
+            name="name_value",
+        )
+
+
+def test_get_logging_server_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateLoggingServerRequest,
+        dict,
+    ],
+)
+def test_create_logging_server_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+    }
+    request_init["logging_server"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "hostname": "hostname_value",
+        "port": 453,
+        "protocol": 1,
+        "source_type": 1,
+        "uid": "uid_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmwareengine.CreateLoggingServerRequest.meta.fields["logging_server"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["logging_server"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["logging_server"][field])):
+                    del request_init["logging_server"][field][i][subfield]
+            else:
+                del request_init["logging_server"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_logging_server(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_logging_server_rest_required_fields(
+    request_type=vmwareengine.CreateLoggingServerRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["logging_server_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "loggingServerId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_logging_server._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "loggingServerId" in jsonified_request
+    assert jsonified_request["loggingServerId"] == request_init["logging_server_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["loggingServerId"] = "logging_server_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_logging_server._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "logging_server_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "loggingServerId" in jsonified_request
+    assert jsonified_request["loggingServerId"] == "logging_server_id_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_logging_server(request)
+
+            expected_params = [
+                (
+                    "loggingServerId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_logging_server_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_logging_server._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "loggingServerId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "loggingServer",
+                "loggingServerId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_logging_server_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_create_logging_server"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_create_logging_server"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.CreateLoggingServerRequest.pb(
+            vmwareengine.CreateLoggingServerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.CreateLoggingServerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_logging_server(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_logging_server_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.CreateLoggingServerRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_logging_server(request)
+
+
+def test_create_logging_server_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            logging_server=vmwareengine_resources.LoggingServer(name="name_value"),
+            logging_server_id="logging_server_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_logging_server(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/privateClouds/*}/loggingServers"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_logging_server_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_logging_server(
+            vmwareengine.CreateLoggingServerRequest(),
+            parent="parent_value",
+            logging_server=vmwareengine_resources.LoggingServer(name="name_value"),
+            logging_server_id="logging_server_id_value",
+        )
+
+
+def test_create_logging_server_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateLoggingServerRequest,
+        dict,
+    ],
+)
+def test_update_logging_server_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "logging_server": {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/loggingServers/sample4"
+        }
+    }
+    request_init["logging_server"] = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/loggingServers/sample4",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "hostname": "hostname_value",
+        "port": 453,
+        "protocol": 1,
+        "source_type": 1,
+        "uid": "uid_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmwareengine.UpdateLoggingServerRequest.meta.fields["logging_server"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["logging_server"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["logging_server"][field])):
+                    del request_init["logging_server"][field][i][subfield]
+            else:
+                del request_init["logging_server"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_logging_server(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_logging_server_rest_required_fields(
+    request_type=vmwareengine.UpdateLoggingServerRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_logging_server._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_logging_server._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_logging_server(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_logging_server_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_logging_server._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "loggingServer",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_logging_server_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_update_logging_server"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_update_logging_server"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.UpdateLoggingServerRequest.pb(
+            vmwareengine.UpdateLoggingServerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.UpdateLoggingServerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_logging_server(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_logging_server_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.UpdateLoggingServerRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "logging_server": {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/loggingServers/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_logging_server(request)
+
+
+def test_update_logging_server_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "logging_server": {
+                "name": "projects/sample1/locations/sample2/privateClouds/sample3/loggingServers/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            logging_server=vmwareengine_resources.LoggingServer(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_logging_server(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{logging_server.name=projects/*/locations/*/privateClouds/*/loggingServers/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_logging_server_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_logging_server(
+            vmwareengine.UpdateLoggingServerRequest(),
+            logging_server=vmwareengine_resources.LoggingServer(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_logging_server_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteLoggingServerRequest,
+        dict,
+    ],
+)
+def test_delete_logging_server_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/loggingServers/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_logging_server(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_logging_server_rest_required_fields(
+    request_type=vmwareengine.DeleteLoggingServerRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_logging_server._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_logging_server._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_logging_server(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_logging_server_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_logging_server._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_logging_server_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_delete_logging_server"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_delete_logging_server"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.DeleteLoggingServerRequest.pb(
+            vmwareengine.DeleteLoggingServerRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.DeleteLoggingServerRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_logging_server(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_logging_server_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.DeleteLoggingServerRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/loggingServers/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_logging_server(request)
+
+
+def test_delete_logging_server_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/loggingServers/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_logging_server(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/privateClouds/*/loggingServers/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_logging_server_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_logging_server(
+            vmwareengine.DeleteLoggingServerRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_logging_server_rest_error():
     client = VmwareEngineClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -17305,6 +33922,11 @@ def test_get_node_type_rest(request_type):
             memory_gb=961,
             disk_size_gb=1261,
             available_custom_core_counts=[2974],
+            kind=vmwareengine_resources.NodeType.Kind.STANDARD,
+            families=["families_value"],
+            capabilities=[
+                vmwareengine_resources.NodeType.Capability.STRETCHED_CLUSTERS
+            ],
         )
 
         # Wrap the value into a proper Response obj
@@ -17328,6 +33950,11 @@ def test_get_node_type_rest(request_type):
     assert response.memory_gb == 961
     assert response.disk_size_gb == 1261
     assert response.available_custom_core_counts == [2974]
+    assert response.kind == vmwareengine_resources.NodeType.Kind.STANDARD
+    assert response.families == ["families_value"]
+    assert response.capabilities == [
+        vmwareengine_resources.NodeType.Capability.STRETCHED_CLUSTERS
+    ]
 
 
 def test_get_node_type_rest_required_fields(
@@ -17916,6 +34543,8 @@ def test_show_vcenter_credentials_rest_required_fields(
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).show_vcenter_credentials._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("username",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -17969,7 +34598,7 @@ def test_show_vcenter_credentials_rest_unset_required_fields():
     )
 
     unset_fields = transport.show_vcenter_credentials._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("privateCloud",)))
+    assert set(unset_fields) == (set(("username",)) & set(("privateCloud",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -18658,6 +35287,2700 @@ def test_reset_vcenter_credentials_rest_error():
     client = VmwareEngineClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetDnsForwardingRequest,
+        dict,
+    ],
+)
+def test_get_dns_forwarding_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/dnsForwarding"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.DnsForwarding(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.DnsForwarding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_dns_forwarding(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.DnsForwarding)
+    assert response.name == "name_value"
+
+
+def test_get_dns_forwarding_rest_required_fields(
+    request_type=vmwareengine.GetDnsForwardingRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_dns_forwarding._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_dns_forwarding._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine_resources.DnsForwarding()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine_resources.DnsForwarding.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_dns_forwarding(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_dns_forwarding_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_dns_forwarding._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_dns_forwarding_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_dns_forwarding"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_get_dns_forwarding"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.GetDnsForwardingRequest.pb(
+            vmwareengine.GetDnsForwardingRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmwareengine_resources.DnsForwarding.to_json(
+            vmwareengine_resources.DnsForwarding()
+        )
+
+        request = vmwareengine.GetDnsForwardingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine_resources.DnsForwarding()
+
+        client.get_dns_forwarding(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_dns_forwarding_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.GetDnsForwardingRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/dnsForwarding"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_dns_forwarding(request)
+
+
+def test_get_dns_forwarding_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.DnsForwarding()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/dnsForwarding"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.DnsForwarding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_dns_forwarding(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/privateClouds/*/dnsForwarding}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_dns_forwarding_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_dns_forwarding(
+            vmwareengine.GetDnsForwardingRequest(),
+            name="name_value",
+        )
+
+
+def test_get_dns_forwarding_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateDnsForwardingRequest,
+        dict,
+    ],
+)
+def test_update_dns_forwarding_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "dns_forwarding": {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/dnsForwarding"
+        }
+    }
+    request_init["dns_forwarding"] = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/dnsForwarding",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "forwarding_rules": [
+            {
+                "domain": "domain_value",
+                "name_servers": ["name_servers_value1", "name_servers_value2"],
+            }
+        ],
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmwareengine.UpdateDnsForwardingRequest.meta.fields["dns_forwarding"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["dns_forwarding"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["dns_forwarding"][field])):
+                    del request_init["dns_forwarding"][field][i][subfield]
+            else:
+                del request_init["dns_forwarding"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_dns_forwarding(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_dns_forwarding_rest_required_fields(
+    request_type=vmwareengine.UpdateDnsForwardingRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_dns_forwarding._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_dns_forwarding._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_dns_forwarding(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_dns_forwarding_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_dns_forwarding._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "dnsForwarding",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_dns_forwarding_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_update_dns_forwarding"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_update_dns_forwarding"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.UpdateDnsForwardingRequest.pb(
+            vmwareengine.UpdateDnsForwardingRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.UpdateDnsForwardingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_dns_forwarding(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_dns_forwarding_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.UpdateDnsForwardingRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "dns_forwarding": {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/dnsForwarding"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_dns_forwarding(request)
+
+
+def test_update_dns_forwarding_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "dns_forwarding": {
+                "name": "projects/sample1/locations/sample2/privateClouds/sample3/dnsForwarding"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            dns_forwarding=vmwareengine_resources.DnsForwarding(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_dns_forwarding(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{dns_forwarding.name=projects/*/locations/*/privateClouds/*/dnsForwarding}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_dns_forwarding_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_dns_forwarding(
+            vmwareengine.UpdateDnsForwardingRequest(),
+            dns_forwarding=vmwareengine_resources.DnsForwarding(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_dns_forwarding_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetNetworkPeeringRequest,
+        dict,
+    ],
+)
+def test_get_network_peering_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/networkPeerings/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.NetworkPeering(
+            name="name_value",
+            peer_network="peer_network_value",
+            export_custom_routes=True,
+            import_custom_routes=True,
+            exchange_subnet_routes=True,
+            export_custom_routes_with_public_ip=True,
+            import_custom_routes_with_public_ip=True,
+            state=vmwareengine_resources.NetworkPeering.State.INACTIVE,
+            state_details="state_details_value",
+            peer_mtu=865,
+            peer_network_type=vmwareengine_resources.NetworkPeering.PeerNetworkType.STANDARD,
+            uid="uid_value",
+            vmware_engine_network="vmware_engine_network_value",
+            description="description_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.NetworkPeering.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_network_peering(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.NetworkPeering)
+    assert response.name == "name_value"
+    assert response.peer_network == "peer_network_value"
+    assert response.export_custom_routes is True
+    assert response.import_custom_routes is True
+    assert response.exchange_subnet_routes is True
+    assert response.export_custom_routes_with_public_ip is True
+    assert response.import_custom_routes_with_public_ip is True
+    assert response.state == vmwareengine_resources.NetworkPeering.State.INACTIVE
+    assert response.state_details == "state_details_value"
+    assert response.peer_mtu == 865
+    assert (
+        response.peer_network_type
+        == vmwareengine_resources.NetworkPeering.PeerNetworkType.STANDARD
+    )
+    assert response.uid == "uid_value"
+    assert response.vmware_engine_network == "vmware_engine_network_value"
+    assert response.description == "description_value"
+
+
+def test_get_network_peering_rest_required_fields(
+    request_type=vmwareengine.GetNetworkPeeringRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_network_peering._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_network_peering._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine_resources.NetworkPeering()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine_resources.NetworkPeering.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_network_peering(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_network_peering_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_network_peering._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_network_peering_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_network_peering"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_get_network_peering"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.GetNetworkPeeringRequest.pb(
+            vmwareengine.GetNetworkPeeringRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmwareengine_resources.NetworkPeering.to_json(
+            vmwareengine_resources.NetworkPeering()
+        )
+
+        request = vmwareengine.GetNetworkPeeringRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine_resources.NetworkPeering()
+
+        client.get_network_peering(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_network_peering_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.GetNetworkPeeringRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/networkPeerings/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_network_peering(request)
+
+
+def test_get_network_peering_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.NetworkPeering()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/networkPeerings/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.NetworkPeering.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_network_peering(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/networkPeerings/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_network_peering_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_network_peering(
+            vmwareengine.GetNetworkPeeringRequest(),
+            name="name_value",
+        )
+
+
+def test_get_network_peering_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListNetworkPeeringsRequest,
+        dict,
+    ],
+)
+def test_list_network_peerings_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListNetworkPeeringsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListNetworkPeeringsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_network_peerings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListNetworkPeeringsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_network_peerings_rest_required_fields(
+    request_type=vmwareengine.ListNetworkPeeringsRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_network_peerings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_network_peerings._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine.ListNetworkPeeringsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine.ListNetworkPeeringsResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_network_peerings(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_network_peerings_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_network_peerings._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_network_peerings_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_network_peerings"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_list_network_peerings"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.ListNetworkPeeringsRequest.pb(
+            vmwareengine.ListNetworkPeeringsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmwareengine.ListNetworkPeeringsResponse.to_json(
+            vmwareengine.ListNetworkPeeringsResponse()
+        )
+
+        request = vmwareengine.ListNetworkPeeringsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine.ListNetworkPeeringsResponse()
+
+        client.list_network_peerings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_network_peerings_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.ListNetworkPeeringsRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_network_peerings(request)
+
+
+def test_list_network_peerings_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListNetworkPeeringsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListNetworkPeeringsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_network_peerings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/networkPeerings"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_network_peerings_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_network_peerings(
+            vmwareengine.ListNetworkPeeringsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_network_peerings_rest_pager(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListNetworkPeeringsResponse(
+                network_peerings=[
+                    vmwareengine_resources.NetworkPeering(),
+                    vmwareengine_resources.NetworkPeering(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmwareengine.ListNetworkPeeringsResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        pager = client.list_network_peerings(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.NetworkPeering) for i in results
+        )
+
+        pages = list(client.list_network_peerings(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateNetworkPeeringRequest,
+        dict,
+    ],
+)
+def test_create_network_peering_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request_init["network_peering"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "peer_network": "peer_network_value",
+        "export_custom_routes": True,
+        "import_custom_routes": True,
+        "exchange_subnet_routes": True,
+        "export_custom_routes_with_public_ip": True,
+        "import_custom_routes_with_public_ip": True,
+        "state": 1,
+        "state_details": "state_details_value",
+        "peer_mtu": 865,
+        "peer_network_type": 1,
+        "uid": "uid_value",
+        "vmware_engine_network": "vmware_engine_network_value",
+        "description": "description_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmwareengine.CreateNetworkPeeringRequest.meta.fields["network_peering"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["network_peering"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["network_peering"][field])):
+                    del request_init["network_peering"][field][i][subfield]
+            else:
+                del request_init["network_peering"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_network_peering(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_network_peering_rest_required_fields(
+    request_type=vmwareengine.CreateNetworkPeeringRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["network_peering_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "networkPeeringId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_network_peering._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "networkPeeringId" in jsonified_request
+    assert jsonified_request["networkPeeringId"] == request_init["network_peering_id"]
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request["networkPeeringId"] = "network_peering_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_network_peering._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "network_peering_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "networkPeeringId" in jsonified_request
+    assert jsonified_request["networkPeeringId"] == "network_peering_id_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_network_peering(request)
+
+            expected_params = [
+                (
+                    "networkPeeringId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_network_peering_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.create_network_peering._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "networkPeeringId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "networkPeeringId",
+                "networkPeering",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_network_peering_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_create_network_peering"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_create_network_peering"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.CreateNetworkPeeringRequest.pb(
+            vmwareengine.CreateNetworkPeeringRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.CreateNetworkPeeringRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_network_peering(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_network_peering_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.CreateNetworkPeeringRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"parent": "projects/sample1/locations/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_network_peering(request)
+
+
+def test_create_network_peering_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1/locations/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            network_peering=vmwareengine_resources.NetworkPeering(name="name_value"),
+            network_peering_id="network_peering_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_network_peering(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*}/networkPeerings"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_network_peering_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_network_peering(
+            vmwareengine.CreateNetworkPeeringRequest(),
+            parent="parent_value",
+            network_peering=vmwareengine_resources.NetworkPeering(name="name_value"),
+            network_peering_id="network_peering_id_value",
+        )
+
+
+def test_create_network_peering_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteNetworkPeeringRequest,
+        dict,
+    ],
+)
+def test_delete_network_peering_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/networkPeerings/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_network_peering(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_network_peering_rest_required_fields(
+    request_type=vmwareengine.DeleteNetworkPeeringRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_network_peering._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_network_peering._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_network_peering(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_network_peering_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_network_peering._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_network_peering_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_delete_network_peering"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_delete_network_peering"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.DeleteNetworkPeeringRequest.pb(
+            vmwareengine.DeleteNetworkPeeringRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.DeleteNetworkPeeringRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_network_peering(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_network_peering_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.DeleteNetworkPeeringRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/networkPeerings/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_network_peering(request)
+
+
+def test_delete_network_peering_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/networkPeerings/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_network_peering(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/networkPeerings/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_network_peering_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_network_peering(
+            vmwareengine.DeleteNetworkPeeringRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_network_peering_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateNetworkPeeringRequest,
+        dict,
+    ],
+)
+def test_update_network_peering_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "network_peering": {
+            "name": "projects/sample1/locations/sample2/networkPeerings/sample3"
+        }
+    }
+    request_init["network_peering"] = {
+        "name": "projects/sample1/locations/sample2/networkPeerings/sample3",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "peer_network": "peer_network_value",
+        "export_custom_routes": True,
+        "import_custom_routes": True,
+        "exchange_subnet_routes": True,
+        "export_custom_routes_with_public_ip": True,
+        "import_custom_routes_with_public_ip": True,
+        "state": 1,
+        "state_details": "state_details_value",
+        "peer_mtu": 865,
+        "peer_network_type": 1,
+        "uid": "uid_value",
+        "vmware_engine_network": "vmware_engine_network_value",
+        "description": "description_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmwareengine.UpdateNetworkPeeringRequest.meta.fields["network_peering"]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init["network_peering"].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(0, len(request_init["network_peering"][field])):
+                    del request_init["network_peering"][field][i][subfield]
+            else:
+                del request_init["network_peering"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_network_peering(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_network_peering_rest_required_fields(
+    request_type=vmwareengine.UpdateNetworkPeeringRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_network_peering._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_network_peering._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_network_peering(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_network_peering_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update_network_peering._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "networkPeering",
+                "updateMask",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_network_peering_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_update_network_peering"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_update_network_peering"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.UpdateNetworkPeeringRequest.pb(
+            vmwareengine.UpdateNetworkPeeringRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.UpdateNetworkPeeringRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_network_peering(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_network_peering_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.UpdateNetworkPeeringRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "network_peering": {
+            "name": "projects/sample1/locations/sample2/networkPeerings/sample3"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_network_peering(request)
+
+
+def test_update_network_peering_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "network_peering": {
+                "name": "projects/sample1/locations/sample2/networkPeerings/sample3"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            network_peering=vmwareengine_resources.NetworkPeering(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_network_peering(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{network_peering.name=projects/*/locations/*/networkPeerings/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_network_peering_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_network_peering(
+            vmwareengine.UpdateNetworkPeeringRequest(),
+            network_peering=vmwareengine_resources.NetworkPeering(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_network_peering_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListPeeringRoutesRequest,
+        dict,
+    ],
+)
+def test_list_peering_routes_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/networkPeerings/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListPeeringRoutesResponse(
+            next_page_token="next_page_token_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListPeeringRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_peering_routes(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListPeeringRoutesPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_peering_routes_rest_required_fields(
+    request_type=vmwareengine.ListPeeringRoutesRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_peering_routes._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_peering_routes._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine.ListPeeringRoutesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine.ListPeeringRoutesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_peering_routes(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_peering_routes_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.list_peering_routes._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_peering_routes_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_peering_routes"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_list_peering_routes"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.ListPeeringRoutesRequest.pb(
+            vmwareengine.ListPeeringRoutesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmwareengine.ListPeeringRoutesResponse.to_json(
+            vmwareengine.ListPeeringRoutesResponse()
+        )
+
+        request = vmwareengine.ListPeeringRoutesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine.ListPeeringRoutesResponse()
+
+        client.list_peering_routes(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_peering_routes_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.ListPeeringRoutesRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/networkPeerings/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_peering_routes(request)
+
+
+def test_list_peering_routes_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListPeeringRoutesResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/networkPeerings/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListPeeringRoutesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_peering_routes(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/networkPeerings/*}/peeringRoutes"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_peering_routes_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_peering_routes(
+            vmwareengine.ListPeeringRoutesRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_peering_routes_rest_pager(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListPeeringRoutesResponse(
+                peering_routes=[
+                    vmwareengine_resources.PeeringRoute(),
+                    vmwareengine_resources.PeeringRoute(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmwareengine.ListPeeringRoutesResponse.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/networkPeerings/sample3"
+        }
+
+        pager = client.list_peering_routes(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, vmwareengine_resources.PeeringRoute) for i in results)
+
+        pages = list(client.list_peering_routes(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.parametrize(
@@ -21346,6 +40669,2023 @@ def test_delete_network_policy_rest_flattened_error(transport: str = "rest"):
 
 
 def test_delete_network_policy_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.ListManagementDnsZoneBindingsRequest,
+        dict,
+    ],
+)
+def test_list_management_dns_zone_bindings_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListManagementDnsZoneBindingsResponse(
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListManagementDnsZoneBindingsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.list_management_dns_zone_bindings(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListManagementDnsZoneBindingsPager)
+    assert response.next_page_token == "next_page_token_value"
+    assert response.unreachable == ["unreachable_value"]
+
+
+def test_list_management_dns_zone_bindings_rest_required_fields(
+    request_type=vmwareengine.ListManagementDnsZoneBindingsRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_management_dns_zone_bindings._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["parent"] = "parent_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).list_management_dns_zone_bindings._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "order_by",
+            "page_size",
+            "page_token",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine.ListManagementDnsZoneBindingsResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine.ListManagementDnsZoneBindingsResponse.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.list_management_dns_zone_bindings(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_list_management_dns_zone_bindings_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.list_management_dns_zone_bindings._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "orderBy",
+                "pageSize",
+                "pageToken",
+            )
+        )
+        & set(("parent",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_list_management_dns_zone_bindings_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_list_management_dns_zone_bindings"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_list_management_dns_zone_bindings"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.ListManagementDnsZoneBindingsRequest.pb(
+            vmwareengine.ListManagementDnsZoneBindingsRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            vmwareengine.ListManagementDnsZoneBindingsResponse.to_json(
+                vmwareengine.ListManagementDnsZoneBindingsResponse()
+            )
+        )
+
+        request = vmwareengine.ListManagementDnsZoneBindingsRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine.ListManagementDnsZoneBindingsResponse()
+
+        client.list_management_dns_zone_bindings(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_list_management_dns_zone_bindings_rest_bad_request(
+    transport: str = "rest",
+    request_type=vmwareengine.ListManagementDnsZoneBindingsRequest,
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.list_management_dns_zone_bindings(request)
+
+
+def test_list_management_dns_zone_bindings_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine.ListManagementDnsZoneBindingsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine.ListManagementDnsZoneBindingsResponse.pb(
+            return_value
+        )
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_management_dns_zone_bindings(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/privateClouds/*}/managementDnsZoneBindings"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_list_management_dns_zone_bindings_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_management_dns_zone_bindings(
+            vmwareengine.ListManagementDnsZoneBindingsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_management_dns_zone_bindings_rest_pager(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+                next_page_token="abc",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[],
+                next_page_token="def",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                management_dns_zone_bindings=[
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                    vmwareengine_resources.ManagementDnsZoneBinding(),
+                ],
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            vmwareengine.ListManagementDnsZoneBindingsResponse.to_json(x)
+            for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+        }
+
+        pager = client.list_management_dns_zone_bindings(request=sample_request)
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(
+            isinstance(i, vmwareengine_resources.ManagementDnsZoneBinding)
+            for i in results
+        )
+
+        pages = list(
+            client.list_management_dns_zone_bindings(request=sample_request).pages
+        )
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetManagementDnsZoneBindingRequest,
+        dict,
+    ],
+)
+def test_get_management_dns_zone_binding_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.ManagementDnsZoneBinding(
+            name="name_value",
+            state=vmwareengine_resources.ManagementDnsZoneBinding.State.ACTIVE,
+            description="description_value",
+            uid="uid_value",
+            vpc_network="vpc_network_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.ManagementDnsZoneBinding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_management_dns_zone_binding(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.ManagementDnsZoneBinding)
+    assert response.name == "name_value"
+    assert (
+        response.state == vmwareengine_resources.ManagementDnsZoneBinding.State.ACTIVE
+    )
+    assert response.description == "description_value"
+    assert response.uid == "uid_value"
+
+
+def test_get_management_dns_zone_binding_rest_required_fields(
+    request_type=vmwareengine.GetManagementDnsZoneBindingRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_management_dns_zone_binding._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_management_dns_zone_binding._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine_resources.ManagementDnsZoneBinding()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine_resources.ManagementDnsZoneBinding.pb(
+                return_value
+            )
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_management_dns_zone_binding(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_management_dns_zone_binding_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_management_dns_zone_binding._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_management_dns_zone_binding_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_management_dns_zone_binding"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_get_management_dns_zone_binding"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.GetManagementDnsZoneBindingRequest.pb(
+            vmwareengine.GetManagementDnsZoneBindingRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = (
+            vmwareengine_resources.ManagementDnsZoneBinding.to_json(
+                vmwareengine_resources.ManagementDnsZoneBinding()
+            )
+        )
+
+        request = vmwareengine.GetManagementDnsZoneBindingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine_resources.ManagementDnsZoneBinding()
+
+        client.get_management_dns_zone_binding(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_management_dns_zone_binding_rest_bad_request(
+    transport: str = "rest",
+    request_type=vmwareengine.GetManagementDnsZoneBindingRequest,
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_management_dns_zone_binding(request)
+
+
+def test_get_management_dns_zone_binding_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.ManagementDnsZoneBinding()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.ManagementDnsZoneBinding.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_management_dns_zone_binding(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/privateClouds/*/managementDnsZoneBindings/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_management_dns_zone_binding_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_management_dns_zone_binding(
+            vmwareengine.GetManagementDnsZoneBindingRequest(),
+            name="name_value",
+        )
+
+
+def test_get_management_dns_zone_binding_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.CreateManagementDnsZoneBindingRequest,
+        dict,
+    ],
+)
+def test_create_management_dns_zone_binding_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+    }
+    request_init["management_dns_zone_binding"] = {
+        "name": "name_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "state": 1,
+        "description": "description_value",
+        "vpc_network": "vpc_network_value",
+        "vmware_engine_network": "vmware_engine_network_value",
+        "uid": "uid_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmwareengine.CreateManagementDnsZoneBindingRequest.meta.fields[
+        "management_dns_zone_binding"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "management_dns_zone_binding"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["management_dns_zone_binding"][field])
+                ):
+                    del request_init["management_dns_zone_binding"][field][i][subfield]
+            else:
+                del request_init["management_dns_zone_binding"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.create_management_dns_zone_binding(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_create_management_dns_zone_binding_rest_required_fields(
+    request_type=vmwareengine.CreateManagementDnsZoneBindingRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["parent"] = ""
+    request_init["management_dns_zone_binding_id"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+    assert "managementDnsZoneBindingId" not in jsonified_request
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_management_dns_zone_binding._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+    assert "managementDnsZoneBindingId" in jsonified_request
+    assert (
+        jsonified_request["managementDnsZoneBindingId"]
+        == request_init["management_dns_zone_binding_id"]
+    )
+
+    jsonified_request["parent"] = "parent_value"
+    jsonified_request[
+        "managementDnsZoneBindingId"
+    ] = "management_dns_zone_binding_id_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).create_management_dns_zone_binding._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "management_dns_zone_binding_id",
+            "request_id",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "parent" in jsonified_request
+    assert jsonified_request["parent"] == "parent_value"
+    assert "managementDnsZoneBindingId" in jsonified_request
+    assert (
+        jsonified_request["managementDnsZoneBindingId"]
+        == "management_dns_zone_binding_id_value"
+    )
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.create_management_dns_zone_binding(request)
+
+            expected_params = [
+                (
+                    "managementDnsZoneBindingId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_create_management_dns_zone_binding_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.create_management_dns_zone_binding._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "managementDnsZoneBindingId",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "parent",
+                "managementDnsZoneBinding",
+                "managementDnsZoneBindingId",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_create_management_dns_zone_binding_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_create_management_dns_zone_binding",
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_create_management_dns_zone_binding"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.CreateManagementDnsZoneBindingRequest.pb(
+            vmwareengine.CreateManagementDnsZoneBindingRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.CreateManagementDnsZoneBindingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.create_management_dns_zone_binding(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_create_management_dns_zone_binding_rest_bad_request(
+    transport: str = "rest",
+    request_type=vmwareengine.CreateManagementDnsZoneBindingRequest,
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.create_management_dns_zone_binding(request)
+
+
+def test_create_management_dns_zone_binding_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "parent": "projects/sample1/locations/sample2/privateClouds/sample3"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            management_dns_zone_binding=vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value"
+            ),
+            management_dns_zone_binding_id="management_dns_zone_binding_id_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_management_dns_zone_binding(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*/locations/*/privateClouds/*}/managementDnsZoneBindings"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_create_management_dns_zone_binding_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_management_dns_zone_binding(
+            vmwareengine.CreateManagementDnsZoneBindingRequest(),
+            parent="parent_value",
+            management_dns_zone_binding=vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value"
+            ),
+            management_dns_zone_binding_id="management_dns_zone_binding_id_value",
+        )
+
+
+def test_create_management_dns_zone_binding_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.UpdateManagementDnsZoneBindingRequest,
+        dict,
+    ],
+)
+def test_update_management_dns_zone_binding_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "management_dns_zone_binding": {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4"
+        }
+    }
+    request_init["management_dns_zone_binding"] = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
+        "state": 1,
+        "description": "description_value",
+        "vpc_network": "vpc_network_value",
+        "vmware_engine_network": "vmware_engine_network_value",
+        "uid": "uid_value",
+    }
+    # The version of a generated dependency at test runtime may differ from the version used during generation.
+    # Delete any fields which are not present in the current runtime dependency
+    # See https://github.com/googleapis/gapic-generator-python/issues/1748
+
+    # Determine if the message type is proto-plus or protobuf
+    test_field = vmwareengine.UpdateManagementDnsZoneBindingRequest.meta.fields[
+        "management_dns_zone_binding"
+    ]
+
+    def get_message_fields(field):
+        # Given a field which is a message (composite type), return a list with
+        # all the fields of the message.
+        # If the field is not a composite type, return an empty list.
+        message_fields = []
+
+        if hasattr(field, "message") and field.message:
+            is_field_type_proto_plus_type = not hasattr(field.message, "DESCRIPTOR")
+
+            if is_field_type_proto_plus_type:
+                message_fields = field.message.meta.fields.values()
+            # Add `# pragma: NO COVER` because there may not be any `*_pb2` field types
+            else:  # pragma: NO COVER
+                message_fields = field.message.DESCRIPTOR.fields
+        return message_fields
+
+    runtime_nested_fields = [
+        (field.name, nested_field.name)
+        for field in get_message_fields(test_field)
+        for nested_field in get_message_fields(field)
+    ]
+
+    subfields_not_in_runtime = []
+
+    # For each item in the sample request, create a list of sub fields which are not present at runtime
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for field, value in request_init[
+        "management_dns_zone_binding"
+    ].items():  # pragma: NO COVER
+        result = None
+        is_repeated = False
+        # For repeated fields
+        if isinstance(value, list) and len(value):
+            is_repeated = True
+            result = value[0]
+        # For fields where the type is another message
+        if isinstance(value, dict):
+            result = value
+
+        if result and hasattr(result, "keys"):
+            for subfield in result.keys():
+                if (field, subfield) not in runtime_nested_fields:
+                    subfields_not_in_runtime.append(
+                        {
+                            "field": field,
+                            "subfield": subfield,
+                            "is_repeated": is_repeated,
+                        }
+                    )
+
+    # Remove fields from the sample request which are not present in the runtime version of the dependency
+    # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
+    for subfield_to_delete in subfields_not_in_runtime:  # pragma: NO COVER
+        field = subfield_to_delete.get("field")
+        field_repeated = subfield_to_delete.get("is_repeated")
+        subfield = subfield_to_delete.get("subfield")
+        if subfield:
+            if field_repeated:
+                for i in range(
+                    0, len(request_init["management_dns_zone_binding"][field])
+                ):
+                    del request_init["management_dns_zone_binding"][field][i][subfield]
+            else:
+                del request_init["management_dns_zone_binding"][field][subfield]
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update_management_dns_zone_binding(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_update_management_dns_zone_binding_rest_required_fields(
+    request_type=vmwareengine.UpdateManagementDnsZoneBindingRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_management_dns_zone_binding._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update_management_dns_zone_binding._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "update_mask",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update_management_dns_zone_binding(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_management_dns_zone_binding_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.update_management_dns_zone_binding._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (
+        set(
+            (
+                "requestId",
+                "updateMask",
+            )
+        )
+        & set(
+            (
+                "updateMask",
+                "managementDnsZoneBinding",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_management_dns_zone_binding_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_update_management_dns_zone_binding",
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_update_management_dns_zone_binding"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.UpdateManagementDnsZoneBindingRequest.pb(
+            vmwareengine.UpdateManagementDnsZoneBindingRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.UpdateManagementDnsZoneBindingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.update_management_dns_zone_binding(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_management_dns_zone_binding_rest_bad_request(
+    transport: str = "rest",
+    request_type=vmwareengine.UpdateManagementDnsZoneBindingRequest,
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "management_dns_zone_binding": {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4"
+        }
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update_management_dns_zone_binding(request)
+
+
+def test_update_management_dns_zone_binding_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "management_dns_zone_binding": {
+                "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4"
+            }
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            management_dns_zone_binding=vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update_management_dns_zone_binding(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{management_dns_zone_binding.name=projects/*/locations/*/privateClouds/*/managementDnsZoneBindings/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_management_dns_zone_binding_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_management_dns_zone_binding(
+            vmwareengine.UpdateManagementDnsZoneBindingRequest(),
+            management_dns_zone_binding=vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value"
+            ),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+def test_update_management_dns_zone_binding_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.DeleteManagementDnsZoneBindingRequest,
+        dict,
+    ],
+)
+def test_delete_management_dns_zone_binding_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_management_dns_zone_binding(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_management_dns_zone_binding_rest_required_fields(
+    request_type=vmwareengine.DeleteManagementDnsZoneBindingRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_management_dns_zone_binding._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_management_dns_zone_binding._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_management_dns_zone_binding(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_management_dns_zone_binding_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.delete_management_dns_zone_binding._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_management_dns_zone_binding_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_delete_management_dns_zone_binding",
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_delete_management_dns_zone_binding"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.DeleteManagementDnsZoneBindingRequest.pb(
+            vmwareengine.DeleteManagementDnsZoneBindingRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.DeleteManagementDnsZoneBindingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_management_dns_zone_binding(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_management_dns_zone_binding_rest_bad_request(
+    transport: str = "rest",
+    request_type=vmwareengine.DeleteManagementDnsZoneBindingRequest,
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_management_dns_zone_binding(request)
+
+
+def test_delete_management_dns_zone_binding_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_management_dns_zone_binding(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/privateClouds/*/managementDnsZoneBindings/*}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_management_dns_zone_binding_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_management_dns_zone_binding(
+            vmwareengine.DeleteManagementDnsZoneBindingRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_management_dns_zone_binding_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.RepairManagementDnsZoneBindingRequest,
+        dict,
+    ],
+)
+def test_repair_management_dns_zone_binding_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.repair_management_dns_zone_binding(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_repair_management_dns_zone_binding_rest_required_fields(
+    request_type=vmwareengine.RepairManagementDnsZoneBindingRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).repair_management_dns_zone_binding._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).repair_management_dns_zone_binding._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.repair_management_dns_zone_binding(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_repair_management_dns_zone_binding_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = (
+        transport.repair_management_dns_zone_binding._get_unset_required_fields({})
+    )
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_repair_management_dns_zone_binding_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor,
+        "post_repair_management_dns_zone_binding",
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_repair_management_dns_zone_binding"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.RepairManagementDnsZoneBindingRequest.pb(
+            vmwareengine.RepairManagementDnsZoneBindingRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.RepairManagementDnsZoneBindingRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.repair_management_dns_zone_binding(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_repair_management_dns_zone_binding_rest_bad_request(
+    transport: str = "rest",
+    request_type=vmwareengine.RepairManagementDnsZoneBindingRequest,
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.repair_management_dns_zone_binding(request)
+
+
+def test_repair_management_dns_zone_binding_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/privateClouds/sample3/managementDnsZoneBindings/sample4"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.repair_management_dns_zone_binding(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/privateClouds/*/managementDnsZoneBindings/*}:repair"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_repair_management_dns_zone_binding_rest_flattened_error(
+    transport: str = "rest",
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.repair_management_dns_zone_binding(
+            vmwareengine.RepairManagementDnsZoneBindingRequest(),
+            name="name_value",
+        )
+
+
+def test_repair_management_dns_zone_binding_rest_error():
     client = VmwareEngineClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -25127,6 +46467,831 @@ def test_list_private_connection_peering_routes_rest_pager(transport: str = "res
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GrantDnsBindPermissionRequest,
+        dict,
+    ],
+)
+def test_grant_dns_bind_permission_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dnsBindPermission"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.grant_dns_bind_permission(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_grant_dns_bind_permission_rest_required_fields(
+    request_type=vmwareengine.GrantDnsBindPermissionRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).grant_dns_bind_permission._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).grant_dns_bind_permission._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.grant_dns_bind_permission(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_grant_dns_bind_permission_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.grant_dns_bind_permission._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "principal",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_grant_dns_bind_permission_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_grant_dns_bind_permission"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_grant_dns_bind_permission"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.GrantDnsBindPermissionRequest.pb(
+            vmwareengine.GrantDnsBindPermissionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.GrantDnsBindPermissionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.grant_dns_bind_permission(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_grant_dns_bind_permission_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.GrantDnsBindPermissionRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dnsBindPermission"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.grant_dns_bind_permission(request)
+
+
+def test_grant_dns_bind_permission_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dnsBindPermission"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            principal=vmwareengine_resources.Principal(user="user_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.grant_dns_bind_permission(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/dnsBindPermission}:grant"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_grant_dns_bind_permission_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.grant_dns_bind_permission(
+            vmwareengine.GrantDnsBindPermissionRequest(),
+            name="name_value",
+            principal=vmwareengine_resources.Principal(user="user_value"),
+        )
+
+
+def test_grant_dns_bind_permission_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.GetDnsBindPermissionRequest,
+        dict,
+    ],
+)
+def test_get_dns_bind_permission_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dnsBindPermission"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.DnsBindPermission(
+            name="name_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.DnsBindPermission.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.get_dns_bind_permission(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, vmwareengine_resources.DnsBindPermission)
+    assert response.name == "name_value"
+
+
+def test_get_dns_bind_permission_rest_required_fields(
+    request_type=vmwareengine.GetDnsBindPermissionRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_dns_bind_permission._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).get_dns_bind_permission._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = vmwareengine_resources.DnsBindPermission()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = vmwareengine_resources.DnsBindPermission.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.get_dns_bind_permission(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_get_dns_bind_permission_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.get_dns_bind_permission._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_get_dns_bind_permission_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_get_dns_bind_permission"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_get_dns_bind_permission"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.GetDnsBindPermissionRequest.pb(
+            vmwareengine.GetDnsBindPermissionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = vmwareengine_resources.DnsBindPermission.to_json(
+            vmwareengine_resources.DnsBindPermission()
+        )
+
+        request = vmwareengine.GetDnsBindPermissionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = vmwareengine_resources.DnsBindPermission()
+
+        client.get_dns_bind_permission(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_get_dns_bind_permission_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.GetDnsBindPermissionRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dnsBindPermission"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.get_dns_bind_permission(request)
+
+
+def test_get_dns_bind_permission_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = vmwareengine_resources.DnsBindPermission()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dnsBindPermission"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = vmwareengine_resources.DnsBindPermission.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_dns_bind_permission(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/dnsBindPermission}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_get_dns_bind_permission_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_dns_bind_permission(
+            vmwareengine.GetDnsBindPermissionRequest(),
+            name="name_value",
+        )
+
+
+def test_get_dns_bind_permission_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmwareengine.RevokeDnsBindPermissionRequest,
+        dict,
+    ],
+)
+def test_revoke_dns_bind_permission_rest(request_type):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dnsBindPermission"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.revoke_dns_bind_permission(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_revoke_dns_bind_permission_rest_required_fields(
+    request_type=vmwareengine.RevokeDnsBindPermissionRequest,
+):
+    transport_class = transports.VmwareEngineRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).revoke_dns_bind_permission._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).revoke_dns_bind_permission._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.revoke_dns_bind_permission(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_revoke_dns_bind_permission_rest_unset_required_fields():
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.revoke_dns_bind_permission._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "name",
+                "principal",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_revoke_dns_bind_permission_rest_interceptors(null_interceptor):
+    transport = transports.VmwareEngineRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.VmwareEngineRestInterceptor(),
+    )
+    client = VmwareEngineClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "post_revoke_dns_bind_permission"
+    ) as post, mock.patch.object(
+        transports.VmwareEngineRestInterceptor, "pre_revoke_dns_bind_permission"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = vmwareengine.RevokeDnsBindPermissionRequest.pb(
+            vmwareengine.RevokeDnsBindPermissionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = vmwareengine.RevokeDnsBindPermissionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.revoke_dns_bind_permission(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_revoke_dns_bind_permission_rest_bad_request(
+    transport: str = "rest", request_type=vmwareengine.RevokeDnsBindPermissionRequest
+):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/dnsBindPermission"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.revoke_dns_bind_permission(request)
+
+
+def test_revoke_dns_bind_permission_rest_flattened():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "name": "projects/sample1/locations/sample2/dnsBindPermission"
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+            principal=vmwareengine_resources.Principal(user="user_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.revoke_dns_bind_permission(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/dnsBindPermission}:revoke"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_revoke_dns_bind_permission_rest_flattened_error(transport: str = "rest"):
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.revoke_dns_bind_permission(
+            vmwareengine.RevokeDnsBindPermissionRequest(),
+            name="name_value",
+            principal=vmwareengine_resources.Principal(user="user_value"),
+        )
+
+
+def test_revoke_dns_bind_permission_rest_error():
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.VmwareEngineGrpcTransport(
@@ -25277,15 +47442,41 @@ def test_vmware_engine_base_transport():
         "create_cluster",
         "update_cluster",
         "delete_cluster",
+        "list_nodes",
+        "get_node",
+        "list_external_addresses",
+        "fetch_network_policy_external_addresses",
+        "get_external_address",
+        "create_external_address",
+        "update_external_address",
+        "delete_external_address",
         "list_subnets",
         "get_subnet",
         "update_subnet",
+        "list_external_access_rules",
+        "get_external_access_rule",
+        "create_external_access_rule",
+        "update_external_access_rule",
+        "delete_external_access_rule",
+        "list_logging_servers",
+        "get_logging_server",
+        "create_logging_server",
+        "update_logging_server",
+        "delete_logging_server",
         "list_node_types",
         "get_node_type",
         "show_nsx_credentials",
         "show_vcenter_credentials",
         "reset_nsx_credentials",
         "reset_vcenter_credentials",
+        "get_dns_forwarding",
+        "update_dns_forwarding",
+        "get_network_peering",
+        "list_network_peerings",
+        "create_network_peering",
+        "delete_network_peering",
+        "update_network_peering",
+        "list_peering_routes",
         "create_hcx_activation_key",
         "list_hcx_activation_keys",
         "get_hcx_activation_key",
@@ -25294,6 +47485,12 @@ def test_vmware_engine_base_transport():
         "create_network_policy",
         "update_network_policy",
         "delete_network_policy",
+        "list_management_dns_zone_bindings",
+        "get_management_dns_zone_binding",
+        "create_management_dns_zone_binding",
+        "update_management_dns_zone_binding",
+        "delete_management_dns_zone_binding",
+        "repair_management_dns_zone_binding",
         "create_vmware_engine_network",
         "update_vmware_engine_network",
         "delete_vmware_engine_network",
@@ -25305,6 +47502,9 @@ def test_vmware_engine_base_transport():
         "update_private_connection",
         "delete_private_connection",
         "list_private_connection_peering_routes",
+        "grant_dns_bind_permission",
+        "get_dns_bind_permission",
+        "revoke_dns_bind_permission",
         "set_iam_policy",
         "get_iam_policy",
         "test_iam_permissions",
@@ -25623,6 +47823,30 @@ def test_vmware_engine_client_transport_session_collision(transport_name):
     session1 = client1.transport.delete_cluster._session
     session2 = client2.transport.delete_cluster._session
     assert session1 != session2
+    session1 = client1.transport.list_nodes._session
+    session2 = client2.transport.list_nodes._session
+    assert session1 != session2
+    session1 = client1.transport.get_node._session
+    session2 = client2.transport.get_node._session
+    assert session1 != session2
+    session1 = client1.transport.list_external_addresses._session
+    session2 = client2.transport.list_external_addresses._session
+    assert session1 != session2
+    session1 = client1.transport.fetch_network_policy_external_addresses._session
+    session2 = client2.transport.fetch_network_policy_external_addresses._session
+    assert session1 != session2
+    session1 = client1.transport.get_external_address._session
+    session2 = client2.transport.get_external_address._session
+    assert session1 != session2
+    session1 = client1.transport.create_external_address._session
+    session2 = client2.transport.create_external_address._session
+    assert session1 != session2
+    session1 = client1.transport.update_external_address._session
+    session2 = client2.transport.update_external_address._session
+    assert session1 != session2
+    session1 = client1.transport.delete_external_address._session
+    session2 = client2.transport.delete_external_address._session
+    assert session1 != session2
     session1 = client1.transport.list_subnets._session
     session2 = client2.transport.list_subnets._session
     assert session1 != session2
@@ -25631,6 +47855,36 @@ def test_vmware_engine_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.update_subnet._session
     session2 = client2.transport.update_subnet._session
+    assert session1 != session2
+    session1 = client1.transport.list_external_access_rules._session
+    session2 = client2.transport.list_external_access_rules._session
+    assert session1 != session2
+    session1 = client1.transport.get_external_access_rule._session
+    session2 = client2.transport.get_external_access_rule._session
+    assert session1 != session2
+    session1 = client1.transport.create_external_access_rule._session
+    session2 = client2.transport.create_external_access_rule._session
+    assert session1 != session2
+    session1 = client1.transport.update_external_access_rule._session
+    session2 = client2.transport.update_external_access_rule._session
+    assert session1 != session2
+    session1 = client1.transport.delete_external_access_rule._session
+    session2 = client2.transport.delete_external_access_rule._session
+    assert session1 != session2
+    session1 = client1.transport.list_logging_servers._session
+    session2 = client2.transport.list_logging_servers._session
+    assert session1 != session2
+    session1 = client1.transport.get_logging_server._session
+    session2 = client2.transport.get_logging_server._session
+    assert session1 != session2
+    session1 = client1.transport.create_logging_server._session
+    session2 = client2.transport.create_logging_server._session
+    assert session1 != session2
+    session1 = client1.transport.update_logging_server._session
+    session2 = client2.transport.update_logging_server._session
+    assert session1 != session2
+    session1 = client1.transport.delete_logging_server._session
+    session2 = client2.transport.delete_logging_server._session
     assert session1 != session2
     session1 = client1.transport.list_node_types._session
     session2 = client2.transport.list_node_types._session
@@ -25649,6 +47903,30 @@ def test_vmware_engine_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.reset_vcenter_credentials._session
     session2 = client2.transport.reset_vcenter_credentials._session
+    assert session1 != session2
+    session1 = client1.transport.get_dns_forwarding._session
+    session2 = client2.transport.get_dns_forwarding._session
+    assert session1 != session2
+    session1 = client1.transport.update_dns_forwarding._session
+    session2 = client2.transport.update_dns_forwarding._session
+    assert session1 != session2
+    session1 = client1.transport.get_network_peering._session
+    session2 = client2.transport.get_network_peering._session
+    assert session1 != session2
+    session1 = client1.transport.list_network_peerings._session
+    session2 = client2.transport.list_network_peerings._session
+    assert session1 != session2
+    session1 = client1.transport.create_network_peering._session
+    session2 = client2.transport.create_network_peering._session
+    assert session1 != session2
+    session1 = client1.transport.delete_network_peering._session
+    session2 = client2.transport.delete_network_peering._session
+    assert session1 != session2
+    session1 = client1.transport.update_network_peering._session
+    session2 = client2.transport.update_network_peering._session
+    assert session1 != session2
+    session1 = client1.transport.list_peering_routes._session
+    session2 = client2.transport.list_peering_routes._session
     assert session1 != session2
     session1 = client1.transport.create_hcx_activation_key._session
     session2 = client2.transport.create_hcx_activation_key._session
@@ -25673,6 +47951,24 @@ def test_vmware_engine_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.delete_network_policy._session
     session2 = client2.transport.delete_network_policy._session
+    assert session1 != session2
+    session1 = client1.transport.list_management_dns_zone_bindings._session
+    session2 = client2.transport.list_management_dns_zone_bindings._session
+    assert session1 != session2
+    session1 = client1.transport.get_management_dns_zone_binding._session
+    session2 = client2.transport.get_management_dns_zone_binding._session
+    assert session1 != session2
+    session1 = client1.transport.create_management_dns_zone_binding._session
+    session2 = client2.transport.create_management_dns_zone_binding._session
+    assert session1 != session2
+    session1 = client1.transport.update_management_dns_zone_binding._session
+    session2 = client2.transport.update_management_dns_zone_binding._session
+    assert session1 != session2
+    session1 = client1.transport.delete_management_dns_zone_binding._session
+    session2 = client2.transport.delete_management_dns_zone_binding._session
+    assert session1 != session2
+    session1 = client1.transport.repair_management_dns_zone_binding._session
+    session2 = client2.transport.repair_management_dns_zone_binding._session
     assert session1 != session2
     session1 = client1.transport.create_vmware_engine_network._session
     session2 = client2.transport.create_vmware_engine_network._session
@@ -25706,6 +48002,15 @@ def test_vmware_engine_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.list_private_connection_peering_routes._session
     session2 = client2.transport.list_private_connection_peering_routes._session
+    assert session1 != session2
+    session1 = client1.transport.grant_dns_bind_permission._session
+    session2 = client2.transport.grant_dns_bind_permission._session
+    assert session1 != session2
+    session1 = client1.transport.get_dns_bind_permission._session
+    session2 = client2.transport.get_dns_bind_permission._session
+    assert session1 != session2
+    session1 = client1.transport.revoke_dns_bind_permission._session
+    session2 = client2.transport.revoke_dns_bind_permission._session
     assert session1 != session2
 
 
@@ -25890,11 +48195,122 @@ def test_parse_cluster_path():
     assert expected == actual
 
 
-def test_hcx_activation_key_path():
+def test_dns_bind_permission_path():
     project = "winkle"
     location = "nautilus"
-    private_cloud = "scallop"
-    hcx_activation_key = "abalone"
+    expected = "projects/{project}/locations/{location}/dnsBindPermission".format(
+        project=project,
+        location=location,
+    )
+    actual = VmwareEngineClient.dns_bind_permission_path(project, location)
+    assert expected == actual
+
+
+def test_parse_dns_bind_permission_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+    }
+    path = VmwareEngineClient.dns_bind_permission_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = VmwareEngineClient.parse_dns_bind_permission_path(path)
+    assert expected == actual
+
+
+def test_dns_forwarding_path():
+    project = "squid"
+    location = "clam"
+    private_cloud = "whelk"
+    expected = "projects/{project}/locations/{location}/privateClouds/{private_cloud}/dnsForwarding".format(
+        project=project,
+        location=location,
+        private_cloud=private_cloud,
+    )
+    actual = VmwareEngineClient.dns_forwarding_path(project, location, private_cloud)
+    assert expected == actual
+
+
+def test_parse_dns_forwarding_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "private_cloud": "nudibranch",
+    }
+    path = VmwareEngineClient.dns_forwarding_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = VmwareEngineClient.parse_dns_forwarding_path(path)
+    assert expected == actual
+
+
+def test_external_access_rule_path():
+    project = "cuttlefish"
+    location = "mussel"
+    network_policy = "winkle"
+    external_access_rule = "nautilus"
+    expected = "projects/{project}/locations/{location}/networkPolicies/{network_policy}/externalAccessRules/{external_access_rule}".format(
+        project=project,
+        location=location,
+        network_policy=network_policy,
+        external_access_rule=external_access_rule,
+    )
+    actual = VmwareEngineClient.external_access_rule_path(
+        project, location, network_policy, external_access_rule
+    )
+    assert expected == actual
+
+
+def test_parse_external_access_rule_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "network_policy": "squid",
+        "external_access_rule": "clam",
+    }
+    path = VmwareEngineClient.external_access_rule_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = VmwareEngineClient.parse_external_access_rule_path(path)
+    assert expected == actual
+
+
+def test_external_address_path():
+    project = "whelk"
+    location = "octopus"
+    private_cloud = "oyster"
+    external_address = "nudibranch"
+    expected = "projects/{project}/locations/{location}/privateClouds/{private_cloud}/externalAddresses/{external_address}".format(
+        project=project,
+        location=location,
+        private_cloud=private_cloud,
+        external_address=external_address,
+    )
+    actual = VmwareEngineClient.external_address_path(
+        project, location, private_cloud, external_address
+    )
+    assert expected == actual
+
+
+def test_parse_external_address_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "private_cloud": "winkle",
+        "external_address": "nautilus",
+    }
+    path = VmwareEngineClient.external_address_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = VmwareEngineClient.parse_external_address_path(path)
+    assert expected == actual
+
+
+def test_hcx_activation_key_path():
+    project = "scallop"
+    location = "abalone"
+    private_cloud = "squid"
+    hcx_activation_key = "clam"
     expected = "projects/{project}/locations/{location}/privateClouds/{private_cloud}/hcxActivationKeys/{hcx_activation_key}".format(
         project=project,
         location=location,
@@ -25909,10 +48325,10 @@ def test_hcx_activation_key_path():
 
 def test_parse_hcx_activation_key_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "private_cloud": "whelk",
-        "hcx_activation_key": "octopus",
+        "project": "whelk",
+        "location": "octopus",
+        "private_cloud": "oyster",
+        "hcx_activation_key": "nudibranch",
     }
     path = VmwareEngineClient.hcx_activation_key_path(**expected)
 
@@ -25921,9 +48337,71 @@ def test_parse_hcx_activation_key_path():
     assert expected == actual
 
 
+def test_logging_server_path():
+    project = "cuttlefish"
+    location = "mussel"
+    private_cloud = "winkle"
+    logging_server = "nautilus"
+    expected = "projects/{project}/locations/{location}/privateClouds/{private_cloud}/loggingServers/{logging_server}".format(
+        project=project,
+        location=location,
+        private_cloud=private_cloud,
+        logging_server=logging_server,
+    )
+    actual = VmwareEngineClient.logging_server_path(
+        project, location, private_cloud, logging_server
+    )
+    assert expected == actual
+
+
+def test_parse_logging_server_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "private_cloud": "squid",
+        "logging_server": "clam",
+    }
+    path = VmwareEngineClient.logging_server_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = VmwareEngineClient.parse_logging_server_path(path)
+    assert expected == actual
+
+
+def test_management_dns_zone_binding_path():
+    project = "whelk"
+    location = "octopus"
+    private_cloud = "oyster"
+    management_dns_zone_binding = "nudibranch"
+    expected = "projects/{project}/locations/{location}/privateClouds/{private_cloud}/managementDnsZoneBindings/{management_dns_zone_binding}".format(
+        project=project,
+        location=location,
+        private_cloud=private_cloud,
+        management_dns_zone_binding=management_dns_zone_binding,
+    )
+    actual = VmwareEngineClient.management_dns_zone_binding_path(
+        project, location, private_cloud, management_dns_zone_binding
+    )
+    assert expected == actual
+
+
+def test_parse_management_dns_zone_binding_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "private_cloud": "winkle",
+        "management_dns_zone_binding": "nautilus",
+    }
+    path = VmwareEngineClient.management_dns_zone_binding_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = VmwareEngineClient.parse_management_dns_zone_binding_path(path)
+    assert expected == actual
+
+
 def test_network_path():
-    project = "oyster"
-    network = "nudibranch"
+    project = "scallop"
+    network = "abalone"
     expected = "projects/{project}/global/networks/{network}".format(
         project=project,
         network=network,
@@ -25934,13 +48412,39 @@ def test_network_path():
 
 def test_parse_network_path():
     expected = {
-        "project": "cuttlefish",
-        "network": "mussel",
+        "project": "squid",
+        "network": "clam",
     }
     path = VmwareEngineClient.network_path(**expected)
 
     # Check that the path construction is reversible.
     actual = VmwareEngineClient.parse_network_path(path)
+    assert expected == actual
+
+
+def test_network_peering_path():
+    project = "whelk"
+    location = "octopus"
+    network_peering = "oyster"
+    expected = "projects/{project}/locations/{location}/networkPeerings/{network_peering}".format(
+        project=project,
+        location=location,
+        network_peering=network_peering,
+    )
+    actual = VmwareEngineClient.network_peering_path(project, location, network_peering)
+    assert expected == actual
+
+
+def test_parse_network_peering_path():
+    expected = {
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "network_peering": "mussel",
+    }
+    path = VmwareEngineClient.network_peering_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = VmwareEngineClient.parse_network_peering_path(path)
     assert expected == actual
 
 
@@ -25970,10 +48474,44 @@ def test_parse_network_policy_path():
     assert expected == actual
 
 
-def test_node_type_path():
+def test_node_path():
     project = "whelk"
     location = "octopus"
-    node_type = "oyster"
+    private_cloud = "oyster"
+    cluster = "nudibranch"
+    node = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/privateClouds/{private_cloud}/clusters/{cluster}/nodes/{node}".format(
+        project=project,
+        location=location,
+        private_cloud=private_cloud,
+        cluster=cluster,
+        node=node,
+    )
+    actual = VmwareEngineClient.node_path(
+        project, location, private_cloud, cluster, node
+    )
+    assert expected == actual
+
+
+def test_parse_node_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "private_cloud": "nautilus",
+        "cluster": "scallop",
+        "node": "abalone",
+    }
+    path = VmwareEngineClient.node_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = VmwareEngineClient.parse_node_path(path)
+    assert expected == actual
+
+
+def test_node_type_path():
+    project = "squid"
+    location = "clam"
+    node_type = "whelk"
     expected = "projects/{project}/locations/{location}/nodeTypes/{node_type}".format(
         project=project,
         location=location,
@@ -25985,9 +48523,9 @@ def test_node_type_path():
 
 def test_parse_node_type_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "node_type": "mussel",
+        "project": "octopus",
+        "location": "oyster",
+        "node_type": "nudibranch",
     }
     path = VmwareEngineClient.node_type_path(**expected)
 
@@ -25997,9 +48535,9 @@ def test_parse_node_type_path():
 
 
 def test_private_cloud_path():
-    project = "winkle"
-    location = "nautilus"
-    private_cloud = "scallop"
+    project = "cuttlefish"
+    location = "mussel"
+    private_cloud = "winkle"
     expected = (
         "projects/{project}/locations/{location}/privateClouds/{private_cloud}".format(
             project=project,
@@ -26013,9 +48551,9 @@ def test_private_cloud_path():
 
 def test_parse_private_cloud_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "private_cloud": "clam",
+        "project": "nautilus",
+        "location": "scallop",
+        "private_cloud": "abalone",
     }
     path = VmwareEngineClient.private_cloud_path(**expected)
 
@@ -26025,9 +48563,9 @@ def test_parse_private_cloud_path():
 
 
 def test_private_connection_path():
-    project = "whelk"
-    location = "octopus"
-    private_connection = "oyster"
+    project = "squid"
+    location = "clam"
+    private_connection = "whelk"
     expected = "projects/{project}/locations/{location}/privateConnections/{private_connection}".format(
         project=project,
         location=location,
@@ -26041,9 +48579,9 @@ def test_private_connection_path():
 
 def test_parse_private_connection_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "private_connection": "mussel",
+        "project": "octopus",
+        "location": "oyster",
+        "private_connection": "nudibranch",
     }
     path = VmwareEngineClient.private_connection_path(**expected)
 
@@ -26053,10 +48591,10 @@ def test_parse_private_connection_path():
 
 
 def test_subnet_path():
-    project = "winkle"
-    location = "nautilus"
-    private_cloud = "scallop"
-    subnet = "abalone"
+    project = "cuttlefish"
+    location = "mussel"
+    private_cloud = "winkle"
+    subnet = "nautilus"
     expected = "projects/{project}/locations/{location}/privateClouds/{private_cloud}/subnets/{subnet}".format(
         project=project,
         location=location,
@@ -26069,10 +48607,10 @@ def test_subnet_path():
 
 def test_parse_subnet_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
-        "private_cloud": "whelk",
-        "subnet": "octopus",
+        "project": "scallop",
+        "location": "abalone",
+        "private_cloud": "squid",
+        "subnet": "clam",
     }
     path = VmwareEngineClient.subnet_path(**expected)
 
@@ -26082,9 +48620,9 @@ def test_parse_subnet_path():
 
 
 def test_vmware_engine_network_path():
-    project = "oyster"
-    location = "nudibranch"
-    vmware_engine_network = "cuttlefish"
+    project = "whelk"
+    location = "octopus"
+    vmware_engine_network = "oyster"
     expected = "projects/{project}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network}".format(
         project=project,
         location=location,
@@ -26098,9 +48636,9 @@ def test_vmware_engine_network_path():
 
 def test_parse_vmware_engine_network_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "vmware_engine_network": "nautilus",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "vmware_engine_network": "mussel",
     }
     path = VmwareEngineClient.vmware_engine_network_path(**expected)
 
@@ -26110,7 +48648,7 @@ def test_parse_vmware_engine_network_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -26120,7 +48658,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "nautilus",
     }
     path = VmwareEngineClient.common_billing_account_path(**expected)
 
@@ -26130,7 +48668,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -26140,7 +48678,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "abalone",
     }
     path = VmwareEngineClient.common_folder_path(**expected)
 
@@ -26150,7 +48688,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -26160,7 +48698,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "clam",
     }
     path = VmwareEngineClient.common_organization_path(**expected)
 
@@ -26170,7 +48708,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -26180,7 +48718,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "octopus",
     }
     path = VmwareEngineClient.common_project_path(**expected)
 
@@ -26190,8 +48728,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -26202,8 +48740,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = VmwareEngineClient.common_location_path(**expected)
 

@@ -40,7 +40,7 @@ def sample_create_vmware_engine_network():
 
     # Initialize request argument(s)
     vmware_engine_network = vmwareengine_v1.VmwareEngineNetwork()
-    vmware_engine_network.type_ = "LEGACY"
+    vmware_engine_network.type_ = "STANDARD"
 
     request = vmwareengine_v1.CreateVmwareEngineNetworkRequest(
         parent="parent_value",

@@ -39,10 +39,33 @@ __protobuf__ = proto.module(
         "CreateClusterRequest",
         "UpdateClusterRequest",
         "DeleteClusterRequest",
+        "ListNodesRequest",
+        "ListNodesResponse",
+        "GetNodeRequest",
+        "ListExternalAddressesRequest",
+        "ListExternalAddressesResponse",
+        "FetchNetworkPolicyExternalAddressesRequest",
+        "FetchNetworkPolicyExternalAddressesResponse",
+        "GetExternalAddressRequest",
+        "CreateExternalAddressRequest",
+        "UpdateExternalAddressRequest",
+        "DeleteExternalAddressRequest",
         "ListSubnetsRequest",
         "ListSubnetsResponse",
         "GetSubnetRequest",
         "UpdateSubnetRequest",
+        "ListExternalAccessRulesRequest",
+        "ListExternalAccessRulesResponse",
+        "GetExternalAccessRuleRequest",
+        "CreateExternalAccessRuleRequest",
+        "UpdateExternalAccessRuleRequest",
+        "DeleteExternalAccessRuleRequest",
+        "ListLoggingServersRequest",
+        "ListLoggingServersResponse",
+        "GetLoggingServerRequest",
+        "CreateLoggingServerRequest",
+        "UpdateLoggingServerRequest",
+        "DeleteLoggingServerRequest",
         "OperationMetadata",
         "ListNodeTypesRequest",
         "ListNodeTypesResponse",
@@ -55,12 +78,29 @@ __protobuf__ = proto.module(
         "ListHcxActivationKeysRequest",
         "GetHcxActivationKeyRequest",
         "CreateHcxActivationKeyRequest",
+        "GetDnsForwardingRequest",
+        "UpdateDnsForwardingRequest",
+        "CreateNetworkPeeringRequest",
+        "DeleteNetworkPeeringRequest",
+        "GetNetworkPeeringRequest",
+        "ListNetworkPeeringsRequest",
+        "UpdateNetworkPeeringRequest",
+        "ListNetworkPeeringsResponse",
+        "ListPeeringRoutesRequest",
+        "ListPeeringRoutesResponse",
         "ListNetworkPoliciesRequest",
         "ListNetworkPoliciesResponse",
         "GetNetworkPolicyRequest",
         "UpdateNetworkPolicyRequest",
         "CreateNetworkPolicyRequest",
         "DeleteNetworkPolicyRequest",
+        "ListManagementDnsZoneBindingsRequest",
+        "ListManagementDnsZoneBindingsResponse",
+        "GetManagementDnsZoneBindingRequest",
+        "CreateManagementDnsZoneBindingRequest",
+        "UpdateManagementDnsZoneBindingRequest",
+        "DeleteManagementDnsZoneBindingRequest",
+        "RepairManagementDnsZoneBindingRequest",
         "CreateVmwareEngineNetworkRequest",
         "UpdateVmwareEngineNetworkRequest",
         "DeleteVmwareEngineNetworkRequest",
@@ -75,6 +115,9 @@ __protobuf__ = proto.module(
         "DeletePrivateConnectionRequest",
         "ListPrivateConnectionPeeringRoutesRequest",
         "ListPrivateConnectionPeeringRoutesResponse",
+        "GrantDnsBindPermissionRequest",
+        "RevokeDnsBindPermissionRequest",
+        "GetDnsBindPermissionRequest",
     },
 )
 
@@ -674,6 +717,477 @@ class DeleteClusterRequest(proto.Message):
     )
 
 
+class ListNodesRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.ListNodes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodes]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the cluster to be queried for
+            nodes. Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster``
+        page_size (int):
+            The maximum number of nodes to return in one
+            page. The service may return fewer than this
+            value. The maximum value is coerced to 1000.
+            The default value of this field is 500.
+        page_token (str):
+            A page token, received from a previous ``ListNodes`` call.
+            Provide this to retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListNodes`` must match the call that provided the page
+            token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListNodesResponse(proto.Message):
+    r"""Response message for
+    [VmwareEngine.ListNodes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodes]
+
+    Attributes:
+        nodes (MutableSequence[google.cloud.vmwareengine_v1.types.Node]):
+            The nodes.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    nodes: MutableSequence[vmwareengine_resources.Node] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.Node,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetNodeRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.GetNode][google.cloud.vmwareengine.v1.VmwareEngine.GetNode]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the node to retrieve. For
+            example:
+            ``projects/{project}/locations/{location}/privateClouds/{private_cloud}/clusters/{cluster}/nodes/{node}``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListExternalAddressesRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.ListExternalAddresses][google.cloud.vmwareengine.v1.VmwareEngine.ListExternalAddresses]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the private cloud to be
+            queried for external IP addresses. Resource names are
+            schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
+        page_size (int):
+            The maximum number of external IP addresses
+            to return in one page. The service may return
+            fewer than this value. The maximum value is
+            coerced to 1000.
+            The default value of this field is 500.
+        page_token (str):
+            A page token, received from a previous
+            ``ListExternalAddresses`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListExternalAddresses`` must match the call that provided
+            the page token.
+        filter (str):
+            A filter expression that matches resources returned in the
+            response. The expression must specify the field name, a
+            comparison operator, and the value that you want to use for
+            filtering. The value must be a string, a number, or a
+            boolean. The comparison operator must be ``=``, ``!=``,
+            ``>``, or ``<``.
+
+            For example, if you are filtering a list of IP addresses,
+            you can exclude the ones named ``example-ip`` by specifying
+            ``name != "example-ip"``.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (name = "example-ip")
+               (createTime > "2021-04-12T08:15:10.40Z")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (name = "example-ip-1") AND
+               (createTime > "2021-04-12T08:15:10.40Z") OR
+               (name = "example-ip-2")
+        order_by (str):
+            Sorts list results by a certain order. By default, returned
+            results are ordered by ``name`` in ascending order. You can
+            also sort results in descending order based on the ``name``
+            value using ``orderBy="name desc"``. Currently, only
+            ordering by ``name`` is supported.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListExternalAddressesResponse(proto.Message):
+    r"""Response message for
+    [VmwareEngine.ListExternalAddresses][google.cloud.vmwareengine.v1.VmwareEngine.ListExternalAddresses]
+
+    Attributes:
+        external_addresses (MutableSequence[google.cloud.vmwareengine_v1.types.ExternalAddress]):
+            A list of external IP addresses.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached when
+            making an aggregated query using wildcards.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    external_addresses: MutableSequence[
+        vmwareengine_resources.ExternalAddress
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.ExternalAddress,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class FetchNetworkPolicyExternalAddressesRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.FetchNetworkPolicyExternalAddresses][google.cloud.vmwareengine.v1.VmwareEngine.FetchNetworkPolicyExternalAddresses]
+
+    Attributes:
+        network_policy (str):
+            Required. The resource name of the network policy to query
+            for assigned external IP addresses. Resource names are
+            schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1/networkPolicies/my-policy``
+        page_size (int):
+            The maximum number of external IP addresses
+            to return in one page. The service may return
+            fewer than this value. The maximum value is
+            coerced to 1000.
+            The default value of this field is 500.
+        page_token (str):
+            A page token, received from a previous
+            ``FetchNetworkPolicyExternalAddresses`` call. Provide this
+            to retrieve the subsequent page.
+
+            When paginating, all parameters provided to
+            ``FetchNetworkPolicyExternalAddresses``, except for
+            ``page_size`` and ``page_token``, must match the call that
+            provided the page token.
+    """
+
+    network_policy: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class FetchNetworkPolicyExternalAddressesResponse(proto.Message):
+    r"""Response message for
+    [VmwareEngine.FetchNetworkPolicyExternalAddresses][google.cloud.vmwareengine.v1.VmwareEngine.FetchNetworkPolicyExternalAddresses]
+
+    Attributes:
+        external_addresses (MutableSequence[google.cloud.vmwareengine_v1.types.ExternalAddress]):
+            A list of external IP addresses assigned to
+            VMware workload VMs within the scope of the
+            given network policy.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    external_addresses: MutableSequence[
+        vmwareengine_resources.ExternalAddress
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.ExternalAddress,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetExternalAddressRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.GetExternalAddress][google.cloud.vmwareengine.v1.VmwareEngine.GetExternalAddress]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the external IP address to
+            retrieve. Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/externalAddresses/my-ip``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateExternalAddressRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.CreateExternalAddress][google.cloud.vmwareengine.v1.VmwareEngine.CreateExternalAddress]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the private cloud to create a
+            new external IP address in. Resource names are schemeless
+            URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
+        external_address (google.cloud.vmwareengine_v1.types.ExternalAddress):
+            Required. The initial description of a new
+            external IP address.
+        external_address_id (str):
+            Required. The user-provided identifier of the
+            ``ExternalAddress`` to be created. This identifier must be
+            unique among ``ExternalAddress`` resources within the parent
+            and becomes the final token in the name URI. The identifier
+            must meet the following requirements:
+
+            -  Only contains 1-63 alphanumeric characters and hyphens
+            -  Begins with an alphabetical character
+            -  Ends with a non-hyphen character
+            -  Not formatted as a UUID
+            -  Complies with `RFC
+               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+               (section 3.5)
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    external_address: vmwareengine_resources.ExternalAddress = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=vmwareengine_resources.ExternalAddress,
+    )
+    external_address_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class UpdateExternalAddressRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.UpdateExternalAddress][google.cloud.vmwareengine.v1.VmwareEngine.UpdateExternalAddress]
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the fields to be
+            overwritten in the ``ExternalAddress`` resource by the
+            update. The fields specified in the ``update_mask`` are
+            relative to the resource, not the full request. A field will
+            be overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
+        external_address (google.cloud.vmwareengine_v1.types.ExternalAddress):
+            Required. External IP address description.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    external_address: vmwareengine_resources.ExternalAddress = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=vmwareengine_resources.ExternalAddress,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeleteExternalAddressRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.DeleteExternalAddress][google.cloud.vmwareengine.v1.VmwareEngine.DeleteExternalAddress]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the external IP address to
+            delete. Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/externalAddresses/my-ip``
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class ListSubnetsRequest(proto.Message):
     r"""Request message for
     [VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets]
@@ -795,6 +1309,629 @@ class UpdateSubnetRequest(proto.Message):
         proto.MESSAGE,
         number=2,
         message=vmwareengine_resources.Subnet,
+    )
+
+
+class ListExternalAccessRulesRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.ListExternalAccessRules][google.cloud.vmwareengine.v1.VmwareEngine.ListExternalAccessRules]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the network policy to query
+            for external access firewall rules. Resource names are
+            schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1/networkPolicies/my-policy``
+        page_size (int):
+            The maximum number of external access rules
+            to return in one page. The service may return
+            fewer than this value. The maximum value is
+            coerced to 1000.
+            The default value of this field is 500.
+        page_token (str):
+            A page token, received from a previous
+            ``ListExternalAccessRulesRequest`` call. Provide this to
+            retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListExternalAccessRulesRequest`` must match the call that
+            provided the page token.
+        filter (str):
+            A filter expression that matches resources returned in the
+            response. The expression must specify the field name, a
+            comparison operator, and the value that you want to use for
+            filtering. The value must be a string, a number, or a
+            boolean. The comparison operator must be ``=``, ``!=``,
+            ``>``, or ``<``.
+
+            For example, if you are filtering a list of external access
+            rules, you can exclude the ones named ``example-rule`` by
+            specifying ``name != "example-rule"``.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (name = "example-rule")
+               (createTime > "2021-04-12T08:15:10.40Z")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (name = "example-rule-1") AND
+               (createTime > "2021-04-12T08:15:10.40Z") OR
+               (name = "example-rule-2")
+        order_by (str):
+            Sorts list results by a certain order. By default, returned
+            results are ordered by ``name`` in ascending order. You can
+            also sort results in descending order based on the ``name``
+            value using ``orderBy="name desc"``. Currently, only
+            ordering by ``name`` is supported.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListExternalAccessRulesResponse(proto.Message):
+    r"""Response message for
+    [VmwareEngine.ListExternalAccessRules][google.cloud.vmwareengine.v1.VmwareEngine.ListExternalAccessRules]
+
+    Attributes:
+        external_access_rules (MutableSequence[google.cloud.vmwareengine_v1.types.ExternalAccessRule]):
+            A list of external access firewall rules.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached when
+            making an aggregated query using wildcards.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    external_access_rules: MutableSequence[
+        vmwareengine_resources.ExternalAccessRule
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.ExternalAccessRule,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetExternalAccessRuleRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.GetExternalAccessRule][google.cloud.vmwareengine.v1.VmwareEngine.GetExternalAccessRule]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the external access firewall
+            rule to retrieve. Resource names are schemeless URIs that
+            follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1/networkPolicies/my-policy/externalAccessRules/my-rule``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateExternalAccessRuleRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.CreateExternalAccessRule][google.cloud.vmwareengine.v1.VmwareEngine.CreateExternalAccessRule]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the network policy to create
+            a new external access firewall rule in. Resource names are
+            schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1/networkPolicies/my-policy``
+        external_access_rule (google.cloud.vmwareengine_v1.types.ExternalAccessRule):
+            Required. The initial description of a new
+            external access rule.
+        external_access_rule_id (str):
+            Required. The user-provided identifier of the
+            ``ExternalAccessRule`` to be created. This identifier must
+            be unique among ``ExternalAccessRule`` resources within the
+            parent and becomes the final token in the name URI. The
+            identifier must meet the following requirements:
+
+            -  Only contains 1-63 alphanumeric characters and hyphens
+            -  Begins with an alphabetical character
+            -  Ends with a non-hyphen character
+            -  Not formatted as a UUID
+            -  Complies with `RFC
+               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+               (section 3.5)
+        request_id (str):
+            A request ID to identify requests. Specify a
+            unique request ID so that if you must retry your
+            request, the server will know to ignore the
+            request if it has already been completed. The
+            server guarantees that a request doesn't result
+            in creation of duplicate commitments for at
+            least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    external_access_rule: vmwareengine_resources.ExternalAccessRule = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=vmwareengine_resources.ExternalAccessRule,
+    )
+    external_access_rule_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class UpdateExternalAccessRuleRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.UpdateExternalAccessRule][google.cloud.vmwareengine.v1.VmwareEngine.UpdateExternalAccessRule]
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the fields to be
+            overwritten in the ``ExternalAccessRule`` resource by the
+            update. The fields specified in the ``update_mask`` are
+            relative to the resource, not the full request. A field will
+            be overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
+        external_access_rule (google.cloud.vmwareengine_v1.types.ExternalAccessRule):
+            Required. Description of the external access
+            rule.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    external_access_rule: vmwareengine_resources.ExternalAccessRule = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=vmwareengine_resources.ExternalAccessRule,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeleteExternalAccessRuleRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.DeleteExternalAccessRule][google.cloud.vmwareengine.v1.VmwareEngine.DeleteExternalAccessRule]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the external access firewall
+            rule to delete. Resource names are schemeless URIs that
+            follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1/networkPolicies/my-policy/externalAccessRules/my-rule``
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListLoggingServersRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.ListLoggingServers][google.cloud.vmwareengine.v1.VmwareEngine.ListLoggingServers]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the private cloud to be
+            queried for logging servers. Resource names are schemeless
+            URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
+        page_size (int):
+            The maximum number of logging servers to
+            return in one page. The service may return fewer
+            than this value. The maximum value is coerced to
+            1000.
+            The default value of this field is 500.
+        page_token (str):
+            A page token, received from a previous
+            ``ListLoggingServersRequest`` call. Provide this to retrieve
+            the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListLoggingServersRequest`` must match the call that
+            provided the page token.
+        filter (str):
+            A filter expression that matches resources returned in the
+            response. The expression must specify the field name, a
+            comparison operator, and the value that you want to use for
+            filtering. The value must be a string, a number, or a
+            boolean. The comparison operator must be ``=``, ``!=``,
+            ``>``, or ``<``.
+
+            For example, if you are filtering a list of logging servers,
+            you can exclude the ones named ``example-server`` by
+            specifying ``name != "example-server"``.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (name = "example-server")
+               (createTime > "2021-04-12T08:15:10.40Z")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (name = "example-server-1") AND
+               (createTime > "2021-04-12T08:15:10.40Z") OR
+               (name = "example-server-2")
+        order_by (str):
+            Sorts list results by a certain order. By default, returned
+            results are ordered by ``name`` in ascending order. You can
+            also sort results in descending order based on the ``name``
+            value using ``orderBy="name desc"``. Currently, only
+            ordering by ``name`` is supported.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListLoggingServersResponse(proto.Message):
+    r"""Response message for
+    [VmwareEngine.ListLoggingServers][google.cloud.vmwareengine.v1.VmwareEngine.ListLoggingServers]
+
+    Attributes:
+        logging_servers (MutableSequence[google.cloud.vmwareengine_v1.types.LoggingServer]):
+            A list of Logging Servers.
+        next_page_token (str):
+            A token, which can be send as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached when
+            making an aggregated query using wildcards.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    logging_servers: MutableSequence[
+        vmwareengine_resources.LoggingServer
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.LoggingServer,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetLoggingServerRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.GetLoggingServer][google.cloud.vmwareengine.v1.VmwareEngine.GetLoggingServer]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Logging Server to
+            retrieve. Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/loggingServers/my-logging-server``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateLoggingServerRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.CreateLoggingServer][google.cloud.vmwareengine.v1.VmwareEngine.CreateLoggingServer]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the private cloud to create a
+            new Logging Server in. Resource names are schemeless URIs
+            that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
+        logging_server (google.cloud.vmwareengine_v1.types.LoggingServer):
+            Required. The initial description of a new
+            logging server.
+        logging_server_id (str):
+            Required. The user-provided identifier of the
+            ``LoggingServer`` to be created. This identifier must be
+            unique among ``LoggingServer`` resources within the parent
+            and becomes the final token in the name URI. The identifier
+            must meet the following requirements:
+
+            -  Only contains 1-63 alphanumeric characters and hyphens
+            -  Begins with an alphabetical character
+            -  Ends with a non-hyphen character
+            -  Not formatted as a UUID
+            -  Complies with `RFC
+               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+               (section 3.5)
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    logging_server: vmwareengine_resources.LoggingServer = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=vmwareengine_resources.LoggingServer,
+    )
+    logging_server_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class UpdateLoggingServerRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.UpdateLoggingServer][google.cloud.vmwareengine.v1.VmwareEngine.UpdateLoggingServer]
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the fields to be
+            overwritten in the ``LoggingServer`` resource by the update.
+            The fields specified in the ``update_mask`` are relative to
+            the resource, not the full request. A field will be
+            overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
+        logging_server (google.cloud.vmwareengine_v1.types.LoggingServer):
+            Required. Logging server description.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    logging_server: vmwareengine_resources.LoggingServer = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=vmwareengine_resources.LoggingServer,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeleteLoggingServerRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.DeleteLoggingServer][google.cloud.vmwareengine.v1.VmwareEngine.DeleteLoggingServer]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the logging server to delete.
+            Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/loggingServers/my-logging-server``
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1019,11 +2156,28 @@ class ShowVcenterCredentialsRequest(proto.Message):
             https://cloud.google.com/apis/design/resource_names. For
             example:
             ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
+        username (str):
+            Optional. The username of the user to be
+            queried for credentials. The default value of
+            this field is CloudOwner@gve.local. The provided
+            value must be one of the following:
+
+            CloudOwner@gve.local,
+            solution-user-01@gve.local,
+            solution-user-02@gve.local,
+            solution-user-03@gve.local,
+            solution-user-04@gve.local,
+            solution-user-05@gve.local,
+            zertoadmin@gve.local.
     """
 
     private_cloud: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    username: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1105,6 +2259,18 @@ class ResetVcenterCredentialsRequest(proto.Message):
             The request ID must be a valid UUID with the
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
+        username (str):
+            Optional. The username of the user to be to
+            reset the credentials. The default value of this
+            field is CloudOwner@gve.local. The provided
+            value should be one of the following:
+
+            solution-user-01@gve.local,
+            solution-user-02@gve.local,
+            solution-user-03@gve.local,
+            solution-user-04@gve.local,
+            solution-user-05@gve.local,
+            zertoadmin@gve.local.
     """
 
     private_cloud: str = proto.Field(
@@ -1114,6 +2280,10 @@ class ResetVcenterCredentialsRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    username: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1284,6 +2454,468 @@ class CreateHcxActivationKeyRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class GetDnsForwardingRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.GetDnsForwarding][google.cloud.vmwareengine.v1.VmwareEngine.GetDnsForwarding]
+
+    Attributes:
+        name (str):
+            Required. The resource name of a ``DnsForwarding`` to
+            retrieve. Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/dnsForwarding``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateDnsForwardingRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.UpdateDnsForwarding][google.cloud.vmwareengine.v1.VmwareEngine.UpdateDnsForwarding]
+
+    Attributes:
+        dns_forwarding (google.cloud.vmwareengine_v1.types.DnsForwarding):
+            Required. DnsForwarding config details.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the fields to be
+            overwritten in the ``DnsForwarding`` resource by the update.
+            The fields specified in the ``update_mask`` are relative to
+            the resource, not the full request. A field will be
+            overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    dns_forwarding: vmwareengine_resources.DnsForwarding = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.DnsForwarding,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class CreateNetworkPeeringRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.CreateNetworkPeering][google.cloud.vmwareengine.v1.VmwareEngine.CreateNetworkPeering]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the location to create the
+            new network peering in. This value is always ``global``,
+            because ``NetworkPeering`` is a global resource. Resource
+            names are schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example: ``projects/my-project/locations/global``
+        network_peering_id (str):
+            Required. The user-provided identifier of the new
+            ``NetworkPeering``. This identifier must be unique among
+            ``NetworkPeering`` resources within the parent and becomes
+            the final token in the name URI. The identifier must meet
+            the following requirements:
+
+            -  Only contains 1-63 alphanumeric characters and hyphens
+            -  Begins with an alphabetical character
+            -  Ends with a non-hyphen character
+            -  Not formatted as a UUID
+            -  Complies with `RFC
+               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+               (section 3.5)
+        network_peering (google.cloud.vmwareengine_v1.types.NetworkPeering):
+            Required. The initial description of the new
+            network peering.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    network_peering_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    network_peering: vmwareengine_resources.NetworkPeering = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=vmwareengine_resources.NetworkPeering,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class DeleteNetworkPeeringRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.DeleteNetworkPeering][google.cloud.vmwareengine.v1.VmwareEngine.DeleteNetworkPeering]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the network peering to be
+            deleted. Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/global/networkPeerings/my-peering``
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetNetworkPeeringRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.GetNetworkPeering][google.cloud.vmwareengine.v1.VmwareEngine.GetNetworkPeering]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the network peering to
+            retrieve. Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/global/networkPeerings/my-peering``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListNetworkPeeringsRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.ListNetworkPeerings][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPeerings]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the location (global) to
+            query for network peerings. Resource names are schemeless
+            URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example: ``projects/my-project/locations/global``
+        page_size (int):
+            The maximum number of network peerings to
+            return in one page. The maximum value is coerced
+            to 1000. The default value of this field is 500.
+        page_token (str):
+            A page token, received from a previous
+            ``ListNetworkPeerings`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListNetworkPeerings`` must match the call that provided
+            the page token.
+        filter (str):
+            A filter expression that matches resources returned in the
+            response. The expression must specify the field name, a
+            comparison operator, and the value that you want to use for
+            filtering. The value must be a string, a number, or a
+            boolean. The comparison operator must be ``=``, ``!=``,
+            ``>``, or ``<``.
+
+            For example, if you are filtering a list of network
+            peerings, you can exclude the ones named ``example-peering``
+            by specifying ``name != "example-peering"``.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (name = "example-peering")
+               (createTime > "2021-04-12T08:15:10.40Z")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (name = "example-peering-1") AND
+               (createTime > "2021-04-12T08:15:10.40Z") OR
+               (name = "example-peering-2")
+        order_by (str):
+            Sorts list results by a certain order. By default, returned
+            results are ordered by ``name`` in ascending order. You can
+            also sort results in descending order based on the ``name``
+            value using ``orderBy="name desc"``. Currently, only
+            ordering by ``name`` is supported.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class UpdateNetworkPeeringRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.UpdateNetworkPeering][google.cloud.vmwareengine.v1.VmwareEngine.UpdateNetworkPeering]
+
+    Attributes:
+        network_peering (google.cloud.vmwareengine_v1.types.NetworkPeering):
+            Required. Network peering description.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the fields to be
+            overwritten in the ``NetworkPeering`` resource by the
+            update. The fields specified in the ``update_mask`` are
+            relative to the resource, not the full request. A field will
+            be overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    network_peering: vmwareengine_resources.NetworkPeering = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.NetworkPeering,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListNetworkPeeringsResponse(proto.Message):
+    r"""Response message for
+    [VmwareEngine.ListNetworkPeerings][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPeerings]
+
+    Attributes:
+        network_peerings (MutableSequence[google.cloud.vmwareengine_v1.types.NetworkPeering]):
+            A list of network peerings.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Unreachable resources.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    network_peerings: MutableSequence[
+        vmwareengine_resources.NetworkPeering
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.NetworkPeering,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListPeeringRoutesRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.ListPeeringRoutes][google.cloud.vmwareengine.v1.VmwareEngine.ListPeeringRoutes]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the network peering to
+            retrieve peering routes from. Resource names are schemeless
+            URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/global/networkPeerings/my-peering``
+        page_size (int):
+            The maximum number of peering routes to
+            return in one page. The service may return fewer
+            than this value. The maximum value is coerced to
+            1000.
+            The default value of this field is 500.
+        page_token (str):
+            A page token, received from a previous ``ListPeeringRoutes``
+            call. Provide this to retrieve the subsequent page. When
+            paginating, all other parameters provided to
+            ``ListPeeringRoutes`` must match the call that provided the
+            page token.
+        filter (str):
+            A filter expression that matches resources returned in the
+            response. Currently, only filtering on the ``direction``
+            field is supported. To return routes imported from the peer
+            network, provide "direction=INCOMING". To return routes
+            exported from the VMware Engine network, provide
+            "direction=OUTGOING". Other filter expressions return an
+            error.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class ListPeeringRoutesResponse(proto.Message):
+    r"""Response message for
+    [VmwareEngine.ListPeeringRoutes][google.cloud.vmwareengine.v1.VmwareEngine.ListPeeringRoutes]
+
+    Attributes:
+        peering_routes (MutableSequence[google.cloud.vmwareengine_v1.types.PeeringRoute]):
+            A list of peering routes.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    peering_routes: MutableSequence[
+        vmwareengine_resources.PeeringRoute
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.PeeringRoute,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1578,6 +3210,367 @@ class DeleteNetworkPolicyRequest(proto.Message):
             ID, the server can check if original operation
             with the same request ID was received, and if
             so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListManagementDnsZoneBindingsRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.ListManagementDnsZoneBindings][google.cloud.vmwareengine.v1.VmwareEngine.ListManagementDnsZoneBindings]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the private cloud to be
+            queried for management DNS zone bindings. Resource names are
+            schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
+        page_size (int):
+            The maximum number of management DNS zone
+            bindings to return in one page. The service may
+            return fewer than this value. The maximum value
+            is coerced to 1000.
+            The default value of this field is 500.
+        page_token (str):
+            A page token, received from a previous
+            ``ListManagementDnsZoneBindings`` call. Provide this to
+            retrieve the subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListManagementDnsZoneBindings`` must match the call that
+            provided the page token.
+        filter (str):
+            A filter expression that matches resources returned in the
+            response. The expression must specify the field name, a
+            comparison operator, and the value that you want to use for
+            filtering. The value must be a string, a number, or a
+            boolean. The comparison operator must be ``=``, ``!=``,
+            ``>``, or ``<``.
+
+            For example, if you are filtering a list of Management DNS
+            Zone Bindings, you can exclude the ones named
+            ``example-management-dns-zone-binding`` by specifying
+            ``name != "example-management-dns-zone-binding"``.
+
+            To filter on multiple expressions, provide each separate
+            expression within parentheses. For example:
+
+            ::
+
+               (name = "example-management-dns-zone-binding")
+               (createTime > "2021-04-12T08:15:10.40Z")
+
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+
+            ::
+
+               (name = "example-management-dns-zone-binding-1") AND
+               (createTime > "2021-04-12T08:15:10.40Z") OR
+               (name = "example-management-dns-zone-binding-2")
+        order_by (str):
+            Sorts list results by a certain order. By default, returned
+            results are ordered by ``name`` in ascending order. You can
+            also sort results in descending order based on the ``name``
+            value using ``orderBy="name desc"``. Currently, only
+            ordering by ``name`` is supported.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ListManagementDnsZoneBindingsResponse(proto.Message):
+    r"""Response message for
+    [VmwareEngine.ListManagementDnsZoneBindings][google.cloud.vmwareengine.v1.VmwareEngine.ListManagementDnsZoneBindings]
+
+    Attributes:
+        management_dns_zone_bindings (MutableSequence[google.cloud.vmwareengine_v1.types.ManagementDnsZoneBinding]):
+            A list of management DNS zone bindings.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+        unreachable (MutableSequence[str]):
+            Locations that could not be reached when
+            making an aggregated query using wildcards.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    management_dns_zone_bindings: MutableSequence[
+        vmwareengine_resources.ManagementDnsZoneBinding
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=vmwareengine_resources.ManagementDnsZoneBinding,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetManagementDnsZoneBindingRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.GetManagementDnsZoneBinding][google.cloud.vmwareengine.v1.VmwareEngine.GetManagementDnsZoneBinding]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the management DNS zone
+            binding to retrieve. Resource names are schemeless URIs that
+            follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/managementDnsZoneBindings/my-management-dns-zone-binding``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateManagementDnsZoneBindingRequest(proto.Message):
+    r"""Request message for [VmwareEngine.CreateManagementDnsZoneBindings][]
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the private cloud to create a
+            new management DNS zone binding for. Resource names are
+            schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud``
+        management_dns_zone_binding (google.cloud.vmwareengine_v1.types.ManagementDnsZoneBinding):
+            Required. The initial values for a new
+            management DNS zone binding.
+        management_dns_zone_binding_id (str):
+            Required. The user-provided identifier of the
+            ``ManagementDnsZoneBinding`` resource to be created. This
+            identifier must be unique among ``ManagementDnsZoneBinding``
+            resources within the parent and becomes the final token in
+            the name URI. The identifier must meet the following
+            requirements:
+
+            -  Only contains 1-63 alphanumeric characters and hyphens
+            -  Begins with an alphabetical character
+            -  Ends with a non-hyphen character
+            -  Not formatted as a UUID
+            -  Complies with `RFC
+               1034 <https://datatracker.ietf.org/doc/html/rfc1034>`__
+               (section 3.5)
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    management_dns_zone_binding: vmwareengine_resources.ManagementDnsZoneBinding = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=vmwareengine_resources.ManagementDnsZoneBinding,
+        )
+    )
+    management_dns_zone_binding_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class UpdateManagementDnsZoneBindingRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.UpdateManagementDnsZoneBinding][google.cloud.vmwareengine.v1.VmwareEngine.UpdateManagementDnsZoneBinding]
+
+    Attributes:
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. Field mask is used to specify the fields to be
+            overwritten in the ``ManagementDnsZoneBinding`` resource by
+            the update. The fields specified in the ``update_mask`` are
+            relative to the resource, not the full request. A field will
+            be overwritten if it is in the mask. If the user does not
+            provide a mask then all fields will be overwritten.
+        management_dns_zone_binding (google.cloud.vmwareengine_v1.types.ManagementDnsZoneBinding):
+            Required. New values to update the management
+            DNS zone binding with.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
+    )
+    management_dns_zone_binding: vmwareengine_resources.ManagementDnsZoneBinding = (
+        proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=vmwareengine_resources.ManagementDnsZoneBinding,
+        )
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class DeleteManagementDnsZoneBindingRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.DeleteManagementDnsZoneBinding][google.cloud.vmwareengine.v1.VmwareEngine.DeleteManagementDnsZoneBinding]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the management DNS zone
+            binding to delete. Resource names are schemeless URIs that
+            follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/managementDnsZoneBindings/my-management-dns-zone-binding``
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class RepairManagementDnsZoneBindingRequest(proto.Message):
+    r"""Request message for [VmwareEngine.RepairManagementDnsZoneBindings][]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the management DNS zone
+            binding to repair. Resource names are schemeless URIs that
+            follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/managementDnsZoneBindings/my-management-dns-zone-binding``
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if the original
+            operation with the same request ID was received,
+            and if so, will ignore the second request. This
             prevents clients from accidentally creating
             duplicate commitments.
 
@@ -2295,6 +4288,142 @@ class ListPrivateConnectionPeeringRoutesResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class GrantDnsBindPermissionRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.GrantDnsBindPermission][google.cloud.vmwareengine.v1.VmwareEngine.GrantDnsBindPermission]
+
+    Attributes:
+        name (str):
+            Required. The name of the resource which stores the
+            users/service accounts having the permission to bind to the
+            corresponding intranet VPC of the consumer project.
+            DnsBindPermission is a global resource. Resource names are
+            schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/global/dnsBindPermission``
+        principal (google.cloud.vmwareengine_v1.types.Principal):
+            Required. The consumer provided user/service
+            account which needs to be granted permission to
+            bind with the intranet VPC corresponding to the
+            consumer project.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    principal: vmwareengine_resources.Principal = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=vmwareengine_resources.Principal,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class RevokeDnsBindPermissionRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.RevokeDnsBindPermission][google.cloud.vmwareengine.v1.VmwareEngine.RevokeDnsBindPermission]
+
+    Attributes:
+        name (str):
+            Required. The name of the resource which stores the
+            users/service accounts having the permission to bind to the
+            corresponding intranet VPC of the consumer project.
+            DnsBindPermission is a global resource. Resource names are
+            schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/global/dnsBindPermission``
+        principal (google.cloud.vmwareengine_v1.types.Principal):
+            Required. The consumer provided user/service
+            account which needs to be granted permission to
+            bind with the intranet VPC corresponding to the
+            consumer project.
+        request_id (str):
+            Optional. A request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. The server guarantees that a request
+            doesn't result in creation of duplicate
+            commitments for at least 60 minutes.
+
+            For example, consider a situation where you make
+            an initial request and the request times out. If
+            you make the request again with the same request
+            ID, the server can check if original operation
+            with the same request ID was received, and if
+            so, will ignore the second request. This
+            prevents clients from accidentally creating
+            duplicate commitments.
+
+            The request ID must be a valid UUID with the
+            exception that zero UUID is not supported
+            (00000000-0000-0000-0000-000000000000).
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    principal: vmwareengine_resources.Principal = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=vmwareengine_resources.Principal,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class GetDnsBindPermissionRequest(proto.Message):
+    r"""Request message for
+    [VmwareEngine.GetDnsBindPermission][google.cloud.vmwareengine.v1.VmwareEngine.GetDnsBindPermission]
+
+    Attributes:
+        name (str):
+            Required. The name of the resource which stores the
+            users/service accounts having the permission to bind to the
+            corresponding intranet VPC of the consumer project.
+            DnsBindPermission is a global resource. Resource names are
+            schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/global/dnsBindPermission``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
