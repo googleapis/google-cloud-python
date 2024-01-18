@@ -42,7 +42,7 @@ class spannerCallTransformer(cst.CSTTransformer):
         'batch_create_sessions': ('database', 'session_count', 'session_template', ),
         'batch_write': ('session', 'mutation_groups', 'request_options', ),
         'begin_transaction': ('session', 'options', 'request_options', ),
-        'commit': ('session', 'transaction_id', 'single_use_transaction', 'mutations', 'return_commit_stats', 'request_options', ),
+        'commit': ('session', 'transaction_id', 'single_use_transaction', 'mutations', 'return_commit_stats', 'max_commit_delay', 'request_options', ),
         'create_session': ('database', 'session', ),
         'delete_session': ('name', ),
         'execute_batch_dml': ('session', 'transaction', 'statements', 'seqno', 'request_options', ),

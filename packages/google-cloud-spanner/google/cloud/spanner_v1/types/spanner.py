@@ -24,6 +24,7 @@ from google.cloud.spanner_v1.types import mutation
 from google.cloud.spanner_v1.types import result_set
 from google.cloud.spanner_v1.types import transaction as gs_transaction
 from google.cloud.spanner_v1.types import type as gs_type
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
@@ -1434,6 +1435,14 @@ class CommitRequest(proto.Message):
             be included in the
             [CommitResponse][google.spanner.v1.CommitResponse.commit_stats].
             Default value is ``false``.
+        max_commit_delay (google.protobuf.duration_pb2.Duration):
+            Optional. The amount of latency this request
+            is willing to incur in order to improve
+            throughput. If this field is not set, Spanner
+            assumes requests are relatively latency
+            sensitive and automatically determines an
+            appropriate delay time. You can specify a
+            batching delay value between 0 and 500 ms.
         request_options (google.cloud.spanner_v1.types.RequestOptions):
             Common options for this request.
     """
@@ -1461,6 +1470,11 @@ class CommitRequest(proto.Message):
     return_commit_stats: bool = proto.Field(
         proto.BOOL,
         number=5,
+    )
+    max_commit_delay: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=duration_pb2.Duration,
     )
     request_options: "RequestOptions" = proto.Field(
         proto.MESSAGE,
