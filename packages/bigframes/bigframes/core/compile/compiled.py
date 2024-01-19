@@ -96,8 +96,8 @@ class BaseIbisIR(abc.ABC):
         )
 
     @abc.abstractmethod
-    def filter(self: T, predicate_id: str, keep_null: bool = False) -> T:
-        """Filter the table on a given expression, the predicate must be a boolean series aligned with the table expression."""
+    def filter(self: T, predicate: ex.Expression) -> T:
+        """Filter the table on a given expression, the predicate must be a boolean expression."""
         ...
 
     @abc.abstractmethod
@@ -305,17 +305,9 @@ class UnorderedIR(BaseIbisIR):
             table = table.filter(ibis.random() < ibis.literal(fraction))
         return table
 
-    def filter(self, predicate_id: str, keep_null: bool = False) -> UnorderedIR:
-        condition = typing.cast(
-            ibis_types.BooleanValue, self._get_ibis_column(predicate_id)
-        )
-        if keep_null:
-            condition = typing.cast(
-                ibis_types.BooleanValue,
-                condition.fillna(
-                    typing.cast(ibis_types.BooleanScalar, ibis_types.literal(True))
-                ),
-            )
+    def filter(self, predicate: ex.Expression) -> UnorderedIR:
+        bindings = {col: self._get_ibis_column(col) for col in self.column_ids}
+        condition = op_compiler.compile_expression(predicate, bindings)
         return self._filter(condition)
 
     def _filter(self, predicate_value: ibis_types.BooleanValue) -> UnorderedIR:
@@ -1140,17 +1132,9 @@ class OrderedIR(BaseIbisIR):
             table = table.filter(ibis.random() < ibis.literal(fraction))
         return table
 
-    def filter(self, predicate_id: str, keep_null: bool = False) -> OrderedIR:
-        condition = typing.cast(
-            ibis_types.BooleanValue, self._get_ibis_column(predicate_id)
-        )
-        if keep_null:
-            condition = typing.cast(
-                ibis_types.BooleanValue,
-                condition.fillna(
-                    typing.cast(ibis_types.BooleanScalar, ibis_types.literal(True))
-                ),
-            )
+    def filter(self, predicate: ex.Expression) -> OrderedIR:
+        bindings = {col: self._get_ibis_column(col) for col in self.column_ids}
+        condition = op_compiler.compile_expression(predicate, bindings)
         return self._filter(condition)
 
     def _filter(self, predicate_value: ibis_types.BooleanValue) -> OrderedIR:

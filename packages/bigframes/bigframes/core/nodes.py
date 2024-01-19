@@ -23,6 +23,7 @@ import pandas
 
 import bigframes.core.expression as ex
 import bigframes.core.guid
+from bigframes.core.join_def import JoinDefinition
 from bigframes.core.ordering import OrderingColumnReference
 import bigframes.core.window_spec as window
 import bigframes.dtypes
@@ -87,15 +88,7 @@ class UnaryNode(BigFrameNode):
 class JoinNode(BigFrameNode):
     left_child: BigFrameNode
     right_child: BigFrameNode
-    left_column_ids: typing.Tuple[str, ...]
-    right_column_ids: typing.Tuple[str, ...]
-    how: typing.Literal[
-        "inner",
-        "left",
-        "outer",
-        "right",
-        "cross",
-    ]
+    join: JoinDefinition
     allow_row_identity_join: bool = True
 
     @property
@@ -155,8 +148,7 @@ class PromoteOffsetsNode(UnaryNode):
 
 @dataclass(frozen=True)
 class FilterNode(UnaryNode):
-    predicate_id: str
-    keep_null: bool = False
+    predicate: ex.Expression
 
     def __hash__(self):
         return self._node_hash

@@ -39,8 +39,3 @@ class JoinNameRemapper:
             col: f"{self._namespace}_r_{i}" for i, col in enumerate(right_column_ids)
         }
         return new_left_ids, new_right_ids
-
-
-# Defines how column ids are remapped, regardless of join strategy or ordering mode
-# Use this remapper for all value column remappings.
-JOIN_NAME_REMAPPER = JoinNameRemapper("bfjoin")

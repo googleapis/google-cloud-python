@@ -38,7 +38,7 @@ import bigframes.core as core
 import bigframes.core.expression as ex
 import bigframes.core.guid as guid
 import bigframes.core.indexes as indexes
-import bigframes.core.joins.name_resolution as join_names
+import bigframes.core.join_def as join_defs
 import bigframes.core.ordering as ordering
 import bigframes.core.utils
 import bigframes.core.utils as utils
@@ -826,7 +826,7 @@ class Block:
 
     def filter(self, column_id: str, keep_null: bool = False):
         return Block(
-            self._expr.filter(column_id, keep_null),
+            self._expr.filter_by_id(column_id, keep_null),
             index_columns=self.index_columns,
             column_labels=self.column_labels,
             index_labels=self.index.names,
@@ -1542,19 +1542,38 @@ class Block:
         sort: bool,
         suffixes: tuple[str, str] = ("_x", "_y"),
     ) -> Block:
-        joined_expr = self.expr.join(
-            left_join_ids,
-            other.expr,
-            right_join_ids,
-            how=how,
+        left_mappings = [
+            join_defs.JoinColumnMapping(
+                source_table=join_defs.JoinSide.LEFT,
+                source_id=id,
+                destination_id=guid.generate_guid(),
+            )
+            for id in self.expr.column_ids
+        ]
+        right_mappings = [
+            join_defs.JoinColumnMapping(
+                source_table=join_defs.JoinSide.RIGHT,
+                source_id=id,
+                destination_id=guid.generate_guid(),
+            )
+            for id in other.expr.column_ids
+        ]
+
+        join_def = join_defs.JoinDefinition(
+            conditions=tuple(
+                join_defs.JoinCondition(left, right)
+                for left, right in zip(left_join_ids, right_join_ids)
+            ),
+            mappings=(*left_mappings, *right_mappings),
+            type=how,
         )
-        get_column_left, get_column_right = join_names.JOIN_NAME_REMAPPER(
-            self.expr.column_ids, other.expr.column_ids
-        )
+        joined_expr = self.expr.join(other.expr, join_def=join_def)
         result_columns = []
         matching_join_labels = []
 
         coalesced_ids = []
+        get_column_left = join_def.get_left_mapping()
+        get_column_right = join_def.get_right_mapping()
         for left_id, right_id in zip(left_join_ids, right_join_ids):
             coalesced_id = guid.generate_guid()
             joined_expr = joined_expr.project_to_id(

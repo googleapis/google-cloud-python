@@ -24,6 +24,7 @@ import ibis.expr.types as ibis_types
 
 import bigframes.constants as constants
 import bigframes.core.compile.compiled as compiled
+import bigframes.core.join_def as join_def
 import bigframes.core.joins as joining
 import bigframes.core.ordering as orderings
 
@@ -33,11 +34,10 @@ SUPPORTED_ROW_IDENTITY_HOW = {"outer", "left", "inner"}
 def join_by_row_identity_unordered(
     left: compiled.UnorderedIR,
     right: compiled.UnorderedIR,
-    *,
-    how: str,
+    join_def: join_def.JoinDefinition,
 ) -> compiled.UnorderedIR:
     """Compute join when we are joining by row identity not a specific column."""
-    if how not in SUPPORTED_ROW_IDENTITY_HOW:
+    if join_def.type not in SUPPORTED_ROW_IDENTITY_HOW:
         raise NotImplementedError(
             f"Only how='outer','left','inner' currently supported. {constants.FEEDBACK_LINK}"
         )
@@ -60,17 +60,20 @@ def join_by_row_identity_unordered(
     combined_predicates = []
     if left_predicates or right_predicates:
         joined_predicates = _join_predicates(
-            left_predicates, right_predicates, join_type=how
+            left_predicates, right_predicates, join_type=join_def.type
         )
         combined_predicates = list(joined_predicates)  # builder expects mutable list
 
-    left_mask = left_relative_predicates if how in ["right", "outer"] else None
-    right_mask = right_relative_predicates if how in ["left", "outer"] else None
+    left_mask = (
+        left_relative_predicates if join_def.type in ["right", "outer"] else None
+    )
+    right_mask = (
+        right_relative_predicates if join_def.type in ["left", "outer"] else None
+    )
 
     # Public mapping must use JOIN_NAME_REMAPPER to stay in sync with consumers of join result
-    map_left_id, map_right_id = joining.JOIN_NAME_REMAPPER(
-        left.column_ids, right.column_ids
-    )
+    map_left_id = join_def.get_left_mapping()
+    map_right_id = join_def.get_right_mapping()
     joined_columns = [
         _mask_value(left._get_ibis_column(key), left_mask).name(map_left_id[key])
         for key in left.column_ids
@@ -90,11 +93,10 @@ def join_by_row_identity_unordered(
 def join_by_row_identity_ordered(
     left: compiled.OrderedIR,
     right: compiled.OrderedIR,
-    *,
-    how: str,
+    join_def: join_def.JoinDefinition,
 ) -> compiled.OrderedIR:
     """Compute join when we are joining by row identity not a specific column."""
-    if how not in SUPPORTED_ROW_IDENTITY_HOW:
+    if join_def.type not in SUPPORTED_ROW_IDENTITY_HOW:
         raise NotImplementedError(
             f"Only how='outer','left','inner' currently supported. {constants.FEEDBACK_LINK}"
         )
@@ -117,17 +119,20 @@ def join_by_row_identity_ordered(
     combined_predicates = []
     if left_predicates or right_predicates:
         joined_predicates = _join_predicates(
-            left_predicates, right_predicates, join_type=how
+            left_predicates, right_predicates, join_type=join_def.type
         )
         combined_predicates = list(joined_predicates)  # builder expects mutable list
 
-    left_mask = left_relative_predicates if how in ["right", "outer"] else None
-    right_mask = right_relative_predicates if how in ["left", "outer"] else None
+    left_mask = (
+        left_relative_predicates if join_def.type in ["right", "outer"] else None
+    )
+    right_mask = (
+        right_relative_predicates if join_def.type in ["left", "outer"] else None
+    )
 
     # Public mapping must use JOIN_NAME_REMAPPER to stay in sync with consumers of join result
-    lpublicmapping, rpublicmapping = joining.JOIN_NAME_REMAPPER(
-        left.column_ids, right.column_ids
-    )
+    lpublicmapping = join_def.get_left_mapping()
+    rpublicmapping = join_def.get_right_mapping()
     lhiddenmapping, rhiddenmapping = joining.JoinNameRemapper(namespace="hidden")(
         left._hidden_column_ids, right._hidden_column_ids
     )

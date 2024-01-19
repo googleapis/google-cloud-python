@@ -16,7 +16,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import io
 import typing
-from typing import Iterable, Literal, Sequence
+from typing import Iterable, Sequence
 
 import ibis.expr.types as ibis_types
 import pandas
@@ -24,12 +24,14 @@ import pandas
 import bigframes.core.compile as compiling
 import bigframes.core.expression as ex
 import bigframes.core.guid
+import bigframes.core.join_def as join_def
 import bigframes.core.nodes as nodes
 from bigframes.core.ordering import OrderingColumnReference
 import bigframes.core.ordering as orderings
 import bigframes.core.utils
 from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
+import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.session._io.bigquery
 
@@ -114,13 +116,15 @@ class ArrayValue:
         return ArrayValue(nodes.RowCountNode(child=self.node))
 
     # Operations
-    def filter(self, predicate_id: str, keep_null: bool = False) -> ArrayValue:
+    def filter_by_id(self, predicate_id: str, keep_null: bool = False) -> ArrayValue:
         """Filter the table on a given expression, the predicate must be a boolean series aligned with the table expression."""
-        return ArrayValue(
-            nodes.FilterNode(
-                child=self.node, predicate_id=predicate_id, keep_null=keep_null
-            )
-        )
+        predicate = ex.free_var(predicate_id)
+        if keep_null:
+            predicate = ops.fillna_op.as_expr(predicate, ex.const(True))
+        return self.filter(predicate)
+
+    def filter(self, predicate: ex.Expression):
+        return ArrayValue(nodes.FilterNode(child=self.node, predicate=predicate))
 
     def order_by(self, by: Sequence[OrderingColumnReference]) -> ArrayValue:
         return ArrayValue(nodes.OrderByNode(child=self.node, by=tuple(by)))
@@ -356,26 +360,15 @@ class ArrayValue:
 
     def join(
         self,
-        self_column_ids: typing.Sequence[str],
         other: ArrayValue,
-        other_column_ids: typing.Sequence[str],
-        *,
-        how: Literal[
-            "inner",
-            "left",
-            "outer",
-            "right",
-            "cross",
-        ],
+        join_def: join_def.JoinDefinition,
         allow_row_identity_join: bool = True,
     ):
         return ArrayValue(
             nodes.JoinNode(
                 left_child=self.node,
                 right_child=other.node,
-                left_column_ids=tuple(self_column_ids),
-                right_column_ids=tuple(other_column_ids),
-                how=how,
+                join=join_def,
                 allow_row_identity_join=allow_row_identity_join,
             )
         )

@@ -59,22 +59,18 @@ def compile_join(node: nodes.JoinNode, ordered: bool = True):
         left_ordered = compile_ordered(node.left_child)
         right_ordered = compile_ordered(node.right_child)
         return bigframes.core.compile.single_column.join_by_column_ordered(
-            left_ordered,
-            node.left_column_ids,
-            right_ordered,
-            node.right_column_ids,
-            how=node.how,
+            left=left_ordered,
+            right=right_ordered,
+            join=node.join,
             allow_row_identity_join=node.allow_row_identity_join,
         )
     else:
         left_unordered = compile_unordered(node.left_child)
         right_unordered = compile_unordered(node.right_child)
         return bigframes.core.compile.single_column.join_by_column_unordered(
-            left_unordered,
-            node.left_column_ids,
-            right_unordered,
-            node.right_column_ids,
-            how=node.how,
+            left=left_unordered,
+            right=right_unordered,
+            join=node.join,
             allow_row_identity_join=node.allow_row_identity_join,
         )
 
@@ -113,7 +109,7 @@ def compile_promote_offsets(node: nodes.PromoteOffsetsNode, ordered: bool = True
 
 @_compile_node.register
 def compile_filter(node: nodes.FilterNode, ordered: bool = True):
-    return compile_node(node.child, ordered).filter(node.predicate_id, node.keep_null)
+    return compile_node(node.child, ordered).filter(node.predicate)
 
 
 @_compile_node.register
