@@ -201,13 +201,16 @@ def prerelease(session, tests_path):
         "--upgrade",
         "pyarrow",
     )
+    # Avoid pandas==2.2.0rc0 as this version causes PyArrow to fail. Once newer
+    # prerelease comes out, this constraint can be removed. See
+    # https://github.com/googleapis/python-db-dtypes-pandas/issues/234
     session.install(
         "--extra-index-url",
         "https://pypi.anaconda.org/scipy-wheels-nightly/simple",
         "--prefer-binary",
         "--pre",
         "--upgrade",
-        "pandas",
+        "pandas!=2.2.0rc0",
     )
     session.install(
         "mock",
