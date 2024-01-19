@@ -62,7 +62,6 @@ import os
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import jwt
-import google.auth.transport.requests
 
 
 # The URL that provides public certificates for verifying ID tokens issued
@@ -282,6 +281,8 @@ def fetch_id_token_credentials(audience, request=None):
 
         # Create a request object if not provided.
         if not request:
+            import google.auth.transport.requests
+
             request = google.auth.transport.requests.Request()
 
         if _metadata.ping(request):
