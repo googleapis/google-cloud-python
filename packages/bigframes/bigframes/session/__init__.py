@@ -380,7 +380,7 @@ class Session(
         try:
             # Write to temp table to workaround BigQuery 10 GB query results
             # limit. See: internal issue 303057336.
-            job_config.labels["error_caught"] = "True"
+            job_config.labels["error_caught"] = "true"
             _, query_job = self._start_query(query, job_config=job_config)
             return query_job.destination, query_job
         except google.api_core.exceptions.BadRequest:
