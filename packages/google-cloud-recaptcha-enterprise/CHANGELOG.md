@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.16.0...google-cloud-recaptcha-enterprise-v1.16.1) (2024-01-19)
+
+
+### Documentation
+
+* [google-cloud-recaptcha-enterprise] update comment for `AccountVerificationInfo.username` ([#12201](https://github.com/googleapis/google-cloud-python/issues/12201)) ([f7cd400](https://github.com/googleapis/google-cloud-python/commit/f7cd400be8b61d01904a950fbf7fa474325e4300))
+
 ## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.15.0...google-cloud-recaptcha-enterprise-v1.16.0) (2023-12-07)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.15.0...google-cloud-tasks-v2.15.1) (2024-01-19)
+
+
+### Bug Fixes
+
+* [google-cloud-tasks] remove BufferTask method from beta libraries, which cannot call it ([23e91f5](https://github.com/googleapis/google-cloud-python/commit/23e91f57cb5b1dcd12245039e98dc8f233e51063))
+
 ## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.14.2...google-cloud-tasks-v2.15.0) (2023-12-07)
 
 
