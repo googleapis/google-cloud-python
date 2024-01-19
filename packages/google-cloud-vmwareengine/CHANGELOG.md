@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v1.2.0...google-cloud-vmwareengine-v1.3.0) (2024-01-19)
+
+
+### Features
+
+* [google-cloud-vmwareengine] Adding ManagementDnsZoneBinding, DnsBindPermission, DnsForwarding, ExternalAccessRule, ExternalAddress, LoggingServer, NetworkPeering, Node and stretched PC features ([#12207](https://github.com/googleapis/google-cloud-python/issues/12207)) ([d18cf96](https://github.com/googleapis/google-cloud-python/commit/d18cf9674cb1d3a07cadff016f7d8ead22f194ca))
+
+
+### Documentation
+
+* clarified wording around private cloud and update cluster ([d18cf96](https://github.com/googleapis/google-cloud-python/commit/d18cf9674cb1d3a07cadff016f7d8ead22f194ca))
+
 ## [1.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vmwareengine-v1.1.2...google-cloud-vmwareengine-v1.2.0) (2023-12-07)
 
 

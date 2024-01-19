@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.2...google-cloud-config-v0.1.3) (2024-01-19)
+
+
+### Features
+
+* [google-cloud-config] added Terraform Plan ([#12197](https://github.com/googleapis/google-cloud-python/issues/12197)) ([2de325b](https://github.com/googleapis/google-cloud-python/commit/2de325ba6aef85c98c9ebbe03fc6a4ebb2834a12))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.1...google-cloud-config-v0.1.2) (2023-12-07)
 
 
