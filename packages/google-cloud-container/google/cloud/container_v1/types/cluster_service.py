@@ -33,6 +33,7 @@ __protobuf__ = proto.module(
         "NodePoolUpdateStrategy",
         "StackType",
         "IPv6AccessType",
+        "InTransitEncryptionConfig",
         "LinuxNodeConfig",
         "WindowsNodeConfig",
         "NodeKubeletConfig",
@@ -309,6 +310,24 @@ class IPv6AccessType(proto.Enum):
     IPV6_ACCESS_TYPE_UNSPECIFIED = 0
     INTERNAL = 1
     EXTERNAL = 2
+
+
+class InTransitEncryptionConfig(proto.Enum):
+    r"""Options for in-transit encryption.
+
+    Values:
+        IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED (0):
+            Unspecified, will be inferred as default -
+            IN_TRANSIT_ENCRYPTION_UNSPECIFIED.
+        IN_TRANSIT_ENCRYPTION_DISABLED (1):
+            In-transit encryption is disabled.
+        IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT (2):
+            Data in-transit is encrypted using inter-node
+            transparent encryption.
+    """
+    IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED = 0
+    IN_TRANSIT_ENCRYPTION_DISABLED = 1
+    IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT = 2
 
 
 class LinuxNodeConfig(proto.Message):
@@ -3407,6 +3426,10 @@ class ClusterUpdate(proto.Message):
             to all auto-provisioned node pools in autopilot
             clusters and node auto-provisioning enabled
             clusters.
+        desired_in_transit_encryption_config (google.cloud.container_v1.types.InTransitEncryptionConfig):
+            Specify the details of in-transit encryption.
+
+            This field is a member of `oneof`_ ``_desired_in_transit_encryption_config``.
     """
 
     desired_node_version: str = proto.Field(
@@ -3654,6 +3677,12 @@ class ClusterUpdate(proto.Message):
             number=136,
             message="ResourceManagerTags",
         )
+    )
+    desired_in_transit_encryption_config: "InTransitEncryptionConfig" = proto.Field(
+        proto.ENUM,
+        number=137,
+        optional=True,
+        enum="InTransitEncryptionConfig",
     )
 
 
@@ -7482,6 +7511,10 @@ class NetworkConfig(proto.Message):
             this cluster.
 
             This field is a member of `oneof`_ ``_enable_fqdn_network_policy``.
+        in_transit_encryption_config (google.cloud.container_v1.types.InTransitEncryptionConfig):
+            Specify the details of in-transit encryption.
+
+            This field is a member of `oneof`_ ``_in_transit_encryption_config``.
     """
 
     class ClusterNetworkPerformanceConfig(proto.Message):
@@ -7576,6 +7609,12 @@ class NetworkConfig(proto.Message):
         proto.BOOL,
         number=19,
         optional=True,
+    )
+    in_transit_encryption_config: "InTransitEncryptionConfig" = proto.Field(
+        proto.ENUM,
+        number=20,
+        optional=True,
+        enum="InTransitEncryptionConfig",
     )
 
 
