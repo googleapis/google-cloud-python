@@ -1135,19 +1135,6 @@ class TaskGroup(proto.Message):
             When true, Batch will configure SSH to allow
             passwordless login between VMs running the Batch
             tasks in the same TaskGroup.
-        enable_oslogin (bool):
-            Optional. Deprecated: When true, Batch will use the OS Login
-            generated POSIX account to exeucute the runnables instead of
-            the default root user.
-
-            | To control root or non-root privilege for runnable
-              execution, the project
-            | Admin user needs to configure IAM roles according to
-              https://cloud.google.com/compute/docs/oslogin/set-up-oslogin#configure_users.
-              Specifically, if a root execution is needed, the
-              roles/compute.osAdminLogin should be granted to the Batch
-              job submitter. Otherwise, roles/compute.osLogin should be
-              granted to the Batch job submitter.
         run_as_non_root (bool):
             Optional. If not set or set to false, Batch
             will use root user to execute runnables. If set
@@ -1226,10 +1213,6 @@ class TaskGroup(proto.Message):
     permissive_ssh: bool = proto.Field(
         proto.BOOL,
         number=12,
-    )
-    enable_oslogin: bool = proto.Field(
-        proto.BOOL,
-        number=13,
     )
     run_as_non_root: bool = proto.Field(
         proto.BOOL,
