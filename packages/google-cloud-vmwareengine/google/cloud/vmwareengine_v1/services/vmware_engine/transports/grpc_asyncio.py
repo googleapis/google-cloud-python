@@ -320,10 +320,10 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
         r"""Return a callable for the create private cloud method over gRPC.
 
         Creates a new ``PrivateCloud`` resource in a given project and
-        location. Private clouds can only be created in zones, regional
-        private clouds are not supported.
-
-        Creating a private cloud also creates a `management
+        location. Private clouds of type ``STANDARD`` and
+        ``TIME_LIMITED`` are zonal resources, ``STRETCHED`` private
+        clouds are regional. Creating a private cloud also creates a
+        `management
         cluster <https://cloud.google.com/vmware-engine/docs/concepts-vmware-components>`__
         for that private cloud.
 
@@ -552,9 +552,8 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
     ]:
         r"""Return a callable for the update cluster method over gRPC.
 
-        Modifies a ``Cluster`` resource. Only the following fields can
-        be updated: ``node_type_configs.*.node_count``. Only fields
-        specified in ``updateMask`` are applied.
+        Modifies a ``Cluster`` resource. Only fields specified in
+        ``updateMask`` are applied.
 
         During operation processing, the resource is temporarily in the
         ``ACTIVE`` state before the operation fully completes. For that
@@ -609,6 +608,251 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_cluster"]
+
+    @property
+    def list_nodes(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListNodesRequest], Awaitable[vmwareengine.ListNodesResponse]
+    ]:
+        r"""Return a callable for the list nodes method over gRPC.
+
+        Lists nodes in a given cluster.
+
+        Returns:
+            Callable[[~.ListNodesRequest],
+                    Awaitable[~.ListNodesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_nodes" not in self._stubs:
+            self._stubs["list_nodes"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/ListNodes",
+                request_serializer=vmwareengine.ListNodesRequest.serialize,
+                response_deserializer=vmwareengine.ListNodesResponse.deserialize,
+            )
+        return self._stubs["list_nodes"]
+
+    @property
+    def get_node(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetNodeRequest], Awaitable[vmwareengine_resources.Node]
+    ]:
+        r"""Return a callable for the get node method over gRPC.
+
+        Gets details of a single node.
+
+        Returns:
+            Callable[[~.GetNodeRequest],
+                    Awaitable[~.Node]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_node" not in self._stubs:
+            self._stubs["get_node"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GetNode",
+                request_serializer=vmwareengine.GetNodeRequest.serialize,
+                response_deserializer=vmwareengine_resources.Node.deserialize,
+            )
+        return self._stubs["get_node"]
+
+    @property
+    def list_external_addresses(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListExternalAddressesRequest],
+        Awaitable[vmwareengine.ListExternalAddressesResponse],
+    ]:
+        r"""Return a callable for the list external addresses method over gRPC.
+
+        Lists external IP addresses assigned to VMware
+        workload VMs in a given private cloud.
+
+        Returns:
+            Callable[[~.ListExternalAddressesRequest],
+                    Awaitable[~.ListExternalAddressesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_external_addresses" not in self._stubs:
+            self._stubs["list_external_addresses"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/ListExternalAddresses",
+                request_serializer=vmwareengine.ListExternalAddressesRequest.serialize,
+                response_deserializer=vmwareengine.ListExternalAddressesResponse.deserialize,
+            )
+        return self._stubs["list_external_addresses"]
+
+    @property
+    def fetch_network_policy_external_addresses(
+        self,
+    ) -> Callable[
+        [vmwareengine.FetchNetworkPolicyExternalAddressesRequest],
+        Awaitable[vmwareengine.FetchNetworkPolicyExternalAddressesResponse],
+    ]:
+        r"""Return a callable for the fetch network policy external
+        addresses method over gRPC.
+
+        Lists external IP addresses assigned to VMware
+        workload VMs within the scope of the given network
+        policy.
+
+        Returns:
+            Callable[[~.FetchNetworkPolicyExternalAddressesRequest],
+                    Awaitable[~.FetchNetworkPolicyExternalAddressesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "fetch_network_policy_external_addresses" not in self._stubs:
+            self._stubs[
+                "fetch_network_policy_external_addresses"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/FetchNetworkPolicyExternalAddresses",
+                request_serializer=vmwareengine.FetchNetworkPolicyExternalAddressesRequest.serialize,
+                response_deserializer=vmwareengine.FetchNetworkPolicyExternalAddressesResponse.deserialize,
+            )
+        return self._stubs["fetch_network_policy_external_addresses"]
+
+    @property
+    def get_external_address(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetExternalAddressRequest],
+        Awaitable[vmwareengine_resources.ExternalAddress],
+    ]:
+        r"""Return a callable for the get external address method over gRPC.
+
+        Gets details of a single external IP address.
+
+        Returns:
+            Callable[[~.GetExternalAddressRequest],
+                    Awaitable[~.ExternalAddress]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_external_address" not in self._stubs:
+            self._stubs["get_external_address"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GetExternalAddress",
+                request_serializer=vmwareengine.GetExternalAddressRequest.serialize,
+                response_deserializer=vmwareengine_resources.ExternalAddress.deserialize,
+            )
+        return self._stubs["get_external_address"]
+
+    @property
+    def create_external_address(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreateExternalAddressRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create external address method over gRPC.
+
+        Creates a new ``ExternalAddress`` resource in a given private
+        cloud. The network policy that corresponds to the private cloud
+        must have the external IP address network service enabled
+        (``NetworkPolicy.external_ip``).
+
+        Returns:
+            Callable[[~.CreateExternalAddressRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_external_address" not in self._stubs:
+            self._stubs["create_external_address"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/CreateExternalAddress",
+                request_serializer=vmwareengine.CreateExternalAddressRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_external_address"]
+
+    @property
+    def update_external_address(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateExternalAddressRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update external address method over gRPC.
+
+        Updates the parameters of a single external IP address. Only
+        fields specified in ``update_mask`` are applied.
+
+        During operation processing, the resource is temporarily in the
+        ``ACTIVE`` state before the operation fully completes. For that
+        period of time, you can't update the resource. Use the operation
+        status to determine when the processing fully completes.
+
+        Returns:
+            Callable[[~.UpdateExternalAddressRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_external_address" not in self._stubs:
+            self._stubs["update_external_address"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateExternalAddress",
+                request_serializer=vmwareengine.UpdateExternalAddressRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_external_address"]
+
+    @property
+    def delete_external_address(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeleteExternalAddressRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete external address method over gRPC.
+
+        Deletes a single external IP address. When you delete
+        an external IP address, connectivity between the
+        external IP address and the corresponding internal IP
+        address is lost.
+
+        Returns:
+            Callable[[~.DeleteExternalAddressRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_external_address" not in self._stubs:
+            self._stubs["delete_external_address"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteExternalAddress",
+                request_serializer=vmwareengine.DeleteExternalAddressRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_external_address"]
 
     @property
     def list_subnets(
@@ -698,6 +942,299 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_subnet"]
+
+    @property
+    def list_external_access_rules(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListExternalAccessRulesRequest],
+        Awaitable[vmwareengine.ListExternalAccessRulesResponse],
+    ]:
+        r"""Return a callable for the list external access rules method over gRPC.
+
+        Lists ``ExternalAccessRule`` resources in the specified network
+        policy.
+
+        Returns:
+            Callable[[~.ListExternalAccessRulesRequest],
+                    Awaitable[~.ListExternalAccessRulesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_external_access_rules" not in self._stubs:
+            self._stubs["list_external_access_rules"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/ListExternalAccessRules",
+                request_serializer=vmwareengine.ListExternalAccessRulesRequest.serialize,
+                response_deserializer=vmwareengine.ListExternalAccessRulesResponse.deserialize,
+            )
+        return self._stubs["list_external_access_rules"]
+
+    @property
+    def get_external_access_rule(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetExternalAccessRuleRequest],
+        Awaitable[vmwareengine_resources.ExternalAccessRule],
+    ]:
+        r"""Return a callable for the get external access rule method over gRPC.
+
+        Gets details of a single external access rule.
+
+        Returns:
+            Callable[[~.GetExternalAccessRuleRequest],
+                    Awaitable[~.ExternalAccessRule]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_external_access_rule" not in self._stubs:
+            self._stubs["get_external_access_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GetExternalAccessRule",
+                request_serializer=vmwareengine.GetExternalAccessRuleRequest.serialize,
+                response_deserializer=vmwareengine_resources.ExternalAccessRule.deserialize,
+            )
+        return self._stubs["get_external_access_rule"]
+
+    @property
+    def create_external_access_rule(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreateExternalAccessRuleRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create external access rule method over gRPC.
+
+        Creates a new external access rule in a given network
+        policy.
+
+        Returns:
+            Callable[[~.CreateExternalAccessRuleRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_external_access_rule" not in self._stubs:
+            self._stubs["create_external_access_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/CreateExternalAccessRule",
+                request_serializer=vmwareengine.CreateExternalAccessRuleRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_external_access_rule"]
+
+    @property
+    def update_external_access_rule(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateExternalAccessRuleRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update external access rule method over gRPC.
+
+        Updates the parameters of a single external access rule. Only
+        fields specified in ``update_mask`` are applied.
+
+        Returns:
+            Callable[[~.UpdateExternalAccessRuleRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_external_access_rule" not in self._stubs:
+            self._stubs["update_external_access_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateExternalAccessRule",
+                request_serializer=vmwareengine.UpdateExternalAccessRuleRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_external_access_rule"]
+
+    @property
+    def delete_external_access_rule(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeleteExternalAccessRuleRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete external access rule method over gRPC.
+
+        Deletes a single external access rule.
+
+        Returns:
+            Callable[[~.DeleteExternalAccessRuleRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_external_access_rule" not in self._stubs:
+            self._stubs["delete_external_access_rule"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteExternalAccessRule",
+                request_serializer=vmwareengine.DeleteExternalAccessRuleRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_external_access_rule"]
+
+    @property
+    def list_logging_servers(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListLoggingServersRequest],
+        Awaitable[vmwareengine.ListLoggingServersResponse],
+    ]:
+        r"""Return a callable for the list logging servers method over gRPC.
+
+        Lists logging servers configured for a given private
+        cloud.
+
+        Returns:
+            Callable[[~.ListLoggingServersRequest],
+                    Awaitable[~.ListLoggingServersResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_logging_servers" not in self._stubs:
+            self._stubs["list_logging_servers"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/ListLoggingServers",
+                request_serializer=vmwareengine.ListLoggingServersRequest.serialize,
+                response_deserializer=vmwareengine.ListLoggingServersResponse.deserialize,
+            )
+        return self._stubs["list_logging_servers"]
+
+    @property
+    def get_logging_server(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetLoggingServerRequest],
+        Awaitable[vmwareengine_resources.LoggingServer],
+    ]:
+        r"""Return a callable for the get logging server method over gRPC.
+
+        Gets details of a logging server.
+
+        Returns:
+            Callable[[~.GetLoggingServerRequest],
+                    Awaitable[~.LoggingServer]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_logging_server" not in self._stubs:
+            self._stubs["get_logging_server"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GetLoggingServer",
+                request_serializer=vmwareengine.GetLoggingServerRequest.serialize,
+                response_deserializer=vmwareengine_resources.LoggingServer.deserialize,
+            )
+        return self._stubs["get_logging_server"]
+
+    @property
+    def create_logging_server(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreateLoggingServerRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create logging server method over gRPC.
+
+        Create a new logging server for a given private
+        cloud.
+
+        Returns:
+            Callable[[~.CreateLoggingServerRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_logging_server" not in self._stubs:
+            self._stubs["create_logging_server"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/CreateLoggingServer",
+                request_serializer=vmwareengine.CreateLoggingServerRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_logging_server"]
+
+    @property
+    def update_logging_server(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateLoggingServerRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update logging server method over gRPC.
+
+        Updates the parameters of a single logging server. Only fields
+        specified in ``update_mask`` are applied.
+
+        Returns:
+            Callable[[~.UpdateLoggingServerRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_logging_server" not in self._stubs:
+            self._stubs["update_logging_server"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateLoggingServer",
+                request_serializer=vmwareengine.UpdateLoggingServerRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_logging_server"]
+
+    @property
+    def delete_logging_server(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeleteLoggingServerRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete logging server method over gRPC.
+
+        Deletes a single logging server.
+
+        Returns:
+            Callable[[~.DeleteLoggingServerRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_logging_server" not in self._stubs:
+            self._stubs["delete_logging_server"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteLoggingServer",
+                request_serializer=vmwareengine.DeleteLoggingServerRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_logging_server"]
 
     @property
     def list_node_types(
@@ -870,6 +1407,253 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["reset_vcenter_credentials"]
+
+    @property
+    def get_dns_forwarding(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetDnsForwardingRequest],
+        Awaitable[vmwareengine_resources.DnsForwarding],
+    ]:
+        r"""Return a callable for the get dns forwarding method over gRPC.
+
+        Gets details of the ``DnsForwarding`` config.
+
+        Returns:
+            Callable[[~.GetDnsForwardingRequest],
+                    Awaitable[~.DnsForwarding]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_dns_forwarding" not in self._stubs:
+            self._stubs["get_dns_forwarding"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GetDnsForwarding",
+                request_serializer=vmwareengine.GetDnsForwardingRequest.serialize,
+                response_deserializer=vmwareengine_resources.DnsForwarding.deserialize,
+            )
+        return self._stubs["get_dns_forwarding"]
+
+    @property
+    def update_dns_forwarding(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateDnsForwardingRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update dns forwarding method over gRPC.
+
+        Updates the parameters of the ``DnsForwarding`` config, like
+        associated domains. Only fields specified in ``update_mask`` are
+        applied.
+
+        Returns:
+            Callable[[~.UpdateDnsForwardingRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_dns_forwarding" not in self._stubs:
+            self._stubs["update_dns_forwarding"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateDnsForwarding",
+                request_serializer=vmwareengine.UpdateDnsForwardingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_dns_forwarding"]
+
+    @property
+    def get_network_peering(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetNetworkPeeringRequest],
+        Awaitable[vmwareengine_resources.NetworkPeering],
+    ]:
+        r"""Return a callable for the get network peering method over gRPC.
+
+        Retrieves a ``NetworkPeering`` resource by its resource name.
+        The resource contains details of the network peering, such as
+        peered networks, import and export custom route configurations,
+        and peering state. NetworkPeering is a global resource and
+        location can only be global.
+
+        Returns:
+            Callable[[~.GetNetworkPeeringRequest],
+                    Awaitable[~.NetworkPeering]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_network_peering" not in self._stubs:
+            self._stubs["get_network_peering"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GetNetworkPeering",
+                request_serializer=vmwareengine.GetNetworkPeeringRequest.serialize,
+                response_deserializer=vmwareengine_resources.NetworkPeering.deserialize,
+            )
+        return self._stubs["get_network_peering"]
+
+    @property
+    def list_network_peerings(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListNetworkPeeringsRequest],
+        Awaitable[vmwareengine.ListNetworkPeeringsResponse],
+    ]:
+        r"""Return a callable for the list network peerings method over gRPC.
+
+        Lists ``NetworkPeering`` resources in a given project.
+        NetworkPeering is a global resource and location can only be
+        global.
+
+        Returns:
+            Callable[[~.ListNetworkPeeringsRequest],
+                    Awaitable[~.ListNetworkPeeringsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_network_peerings" not in self._stubs:
+            self._stubs["list_network_peerings"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/ListNetworkPeerings",
+                request_serializer=vmwareengine.ListNetworkPeeringsRequest.serialize,
+                response_deserializer=vmwareengine.ListNetworkPeeringsResponse.deserialize,
+            )
+        return self._stubs["list_network_peerings"]
+
+    @property
+    def create_network_peering(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreateNetworkPeeringRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the create network peering method over gRPC.
+
+        Creates a new network peering between the peer network and
+        VMware Engine network provided in a ``NetworkPeering`` resource.
+        NetworkPeering is a global resource and location can only be
+        global.
+
+        Returns:
+            Callable[[~.CreateNetworkPeeringRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_network_peering" not in self._stubs:
+            self._stubs["create_network_peering"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/CreateNetworkPeering",
+                request_serializer=vmwareengine.CreateNetworkPeeringRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_network_peering"]
+
+    @property
+    def delete_network_peering(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeleteNetworkPeeringRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete network peering method over gRPC.
+
+        Deletes a ``NetworkPeering`` resource. When a network peering is
+        deleted for a VMware Engine network, the peer network becomes
+        inaccessible to that VMware Engine network. NetworkPeering is a
+        global resource and location can only be global.
+
+        Returns:
+            Callable[[~.DeleteNetworkPeeringRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_network_peering" not in self._stubs:
+            self._stubs["delete_network_peering"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteNetworkPeering",
+                request_serializer=vmwareengine.DeleteNetworkPeeringRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_network_peering"]
+
+    @property
+    def update_network_peering(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateNetworkPeeringRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the update network peering method over gRPC.
+
+        Modifies a ``NetworkPeering`` resource. Only the ``description``
+        field can be updated. Only fields specified in ``updateMask``
+        are applied. NetworkPeering is a global resource and location
+        can only be global.
+
+        Returns:
+            Callable[[~.UpdateNetworkPeeringRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_network_peering" not in self._stubs:
+            self._stubs["update_network_peering"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateNetworkPeering",
+                request_serializer=vmwareengine.UpdateNetworkPeeringRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_network_peering"]
+
+    @property
+    def list_peering_routes(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListPeeringRoutesRequest],
+        Awaitable[vmwareengine.ListPeeringRoutesResponse],
+    ]:
+        r"""Return a callable for the list peering routes method over gRPC.
+
+        Lists the network peering routes exchanged over a
+        peering connection. NetworkPeering is a global resource
+        and location can only be global.
+
+        Returns:
+            Callable[[~.ListPeeringRoutesRequest],
+                    Awaitable[~.ListPeeringRoutesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_peering_routes" not in self._stubs:
+            self._stubs["list_peering_routes"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/ListPeeringRoutes",
+                request_serializer=vmwareengine.ListPeeringRoutesRequest.serialize,
+                response_deserializer=vmwareengine.ListPeeringRoutesResponse.deserialize,
+            )
+        return self._stubs["list_peering_routes"]
 
     @property
     def create_hcx_activation_key(
@@ -1118,6 +1902,212 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_network_policy"]
+
+    @property
+    def list_management_dns_zone_bindings(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListManagementDnsZoneBindingsRequest],
+        Awaitable[vmwareengine.ListManagementDnsZoneBindingsResponse],
+    ]:
+        r"""Return a callable for the list management dns zone
+        bindings method over gRPC.
+
+        Lists Consumer VPCs bound to Management DNS Zone of a
+        given private cloud.
+
+        Returns:
+            Callable[[~.ListManagementDnsZoneBindingsRequest],
+                    Awaitable[~.ListManagementDnsZoneBindingsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_management_dns_zone_bindings" not in self._stubs:
+            self._stubs[
+                "list_management_dns_zone_bindings"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/ListManagementDnsZoneBindings",
+                request_serializer=vmwareengine.ListManagementDnsZoneBindingsRequest.serialize,
+                response_deserializer=vmwareengine.ListManagementDnsZoneBindingsResponse.deserialize,
+            )
+        return self._stubs["list_management_dns_zone_bindings"]
+
+    @property
+    def get_management_dns_zone_binding(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetManagementDnsZoneBindingRequest],
+        Awaitable[vmwareengine_resources.ManagementDnsZoneBinding],
+    ]:
+        r"""Return a callable for the get management dns zone
+        binding method over gRPC.
+
+        Retrieves a 'ManagementDnsZoneBinding' resource by
+        its resource name.
+
+        Returns:
+            Callable[[~.GetManagementDnsZoneBindingRequest],
+                    Awaitable[~.ManagementDnsZoneBinding]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_management_dns_zone_binding" not in self._stubs:
+            self._stubs[
+                "get_management_dns_zone_binding"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GetManagementDnsZoneBinding",
+                request_serializer=vmwareengine.GetManagementDnsZoneBindingRequest.serialize,
+                response_deserializer=vmwareengine_resources.ManagementDnsZoneBinding.deserialize,
+            )
+        return self._stubs["get_management_dns_zone_binding"]
+
+    @property
+    def create_management_dns_zone_binding(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreateManagementDnsZoneBindingRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the create management dns zone
+        binding method over gRPC.
+
+        Creates a new ``ManagementDnsZoneBinding`` resource in a private
+        cloud. This RPC creates the DNS binding and the resource that
+        represents the DNS binding of the consumer VPC network to the
+        management DNS zone. A management DNS zone is the Cloud DNS
+        cross-project binding zone that VMware Engine creates for each
+        private cloud. It contains FQDNs and corresponding IP addresses
+        for the private cloud's ESXi hosts and management VM appliances
+        like vCenter and NSX Manager.
+
+        Returns:
+            Callable[[~.CreateManagementDnsZoneBindingRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_management_dns_zone_binding" not in self._stubs:
+            self._stubs[
+                "create_management_dns_zone_binding"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/CreateManagementDnsZoneBinding",
+                request_serializer=vmwareengine.CreateManagementDnsZoneBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_management_dns_zone_binding"]
+
+    @property
+    def update_management_dns_zone_binding(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateManagementDnsZoneBindingRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the update management dns zone
+        binding method over gRPC.
+
+        Updates a ``ManagementDnsZoneBinding`` resource. Only fields
+        specified in ``update_mask`` are applied.
+
+        Returns:
+            Callable[[~.UpdateManagementDnsZoneBindingRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_management_dns_zone_binding" not in self._stubs:
+            self._stubs[
+                "update_management_dns_zone_binding"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/UpdateManagementDnsZoneBinding",
+                request_serializer=vmwareengine.UpdateManagementDnsZoneBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_management_dns_zone_binding"]
+
+    @property
+    def delete_management_dns_zone_binding(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeleteManagementDnsZoneBindingRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the delete management dns zone
+        binding method over gRPC.
+
+        Deletes a ``ManagementDnsZoneBinding`` resource. When a
+        management DNS zone binding is deleted, the corresponding
+        consumer VPC network is no longer bound to the management DNS
+        zone.
+
+        Returns:
+            Callable[[~.DeleteManagementDnsZoneBindingRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_management_dns_zone_binding" not in self._stubs:
+            self._stubs[
+                "delete_management_dns_zone_binding"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/DeleteManagementDnsZoneBinding",
+                request_serializer=vmwareengine.DeleteManagementDnsZoneBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_management_dns_zone_binding"]
+
+    @property
+    def repair_management_dns_zone_binding(
+        self,
+    ) -> Callable[
+        [vmwareengine.RepairManagementDnsZoneBindingRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the repair management dns zone
+        binding method over gRPC.
+
+        Retries to create a ``ManagementDnsZoneBinding`` resource that
+        is in failed state.
+
+        Returns:
+            Callable[[~.RepairManagementDnsZoneBindingRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "repair_management_dns_zone_binding" not in self._stubs:
+            self._stubs[
+                "repair_management_dns_zone_binding"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/RepairManagementDnsZoneBinding",
+                request_serializer=vmwareengine.RepairManagementDnsZoneBindingRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["repair_management_dns_zone_binding"]
 
     @property
     def create_vmware_engine_network(
@@ -1460,6 +2450,104 @@ class VmwareEngineGrpcAsyncIOTransport(VmwareEngineTransport):
                 response_deserializer=vmwareengine.ListPrivateConnectionPeeringRoutesResponse.deserialize,
             )
         return self._stubs["list_private_connection_peering_routes"]
+
+    @property
+    def grant_dns_bind_permission(
+        self,
+    ) -> Callable[
+        [vmwareengine.GrantDnsBindPermissionRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the grant dns bind permission method over gRPC.
+
+        Grants the bind permission to the customer provided
+        principal(user / service account) to bind their DNS zone
+        with the intranet VPC associated with the project.
+        DnsBindPermission is a global resource and location can
+        only be global.
+
+        Returns:
+            Callable[[~.GrantDnsBindPermissionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "grant_dns_bind_permission" not in self._stubs:
+            self._stubs["grant_dns_bind_permission"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GrantDnsBindPermission",
+                request_serializer=vmwareengine.GrantDnsBindPermissionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["grant_dns_bind_permission"]
+
+    @property
+    def get_dns_bind_permission(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetDnsBindPermissionRequest],
+        Awaitable[vmwareengine_resources.DnsBindPermission],
+    ]:
+        r"""Return a callable for the get dns bind permission method over gRPC.
+
+        Gets all the principals having bind permission on the
+        intranet VPC associated with the consumer project
+        granted by the Grant API. DnsBindPermission is a global
+        resource and location can only be global.
+
+        Returns:
+            Callable[[~.GetDnsBindPermissionRequest],
+                    Awaitable[~.DnsBindPermission]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_dns_bind_permission" not in self._stubs:
+            self._stubs["get_dns_bind_permission"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/GetDnsBindPermission",
+                request_serializer=vmwareengine.GetDnsBindPermissionRequest.serialize,
+                response_deserializer=vmwareengine_resources.DnsBindPermission.deserialize,
+            )
+        return self._stubs["get_dns_bind_permission"]
+
+    @property
+    def revoke_dns_bind_permission(
+        self,
+    ) -> Callable[
+        [vmwareengine.RevokeDnsBindPermissionRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the revoke dns bind permission method over gRPC.
+
+        Revokes the bind permission from the customer
+        provided principal(user / service account) on the
+        intranet VPC associated with the consumer project.
+        DnsBindPermission is a global resource and location can
+        only be global.
+
+        Returns:
+            Callable[[~.RevokeDnsBindPermissionRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "revoke_dns_bind_permission" not in self._stubs:
+            self._stubs["revoke_dns_bind_permission"] = self.grpc_channel.unary_unary(
+                "/google.cloud.vmwareengine.v1.VmwareEngine/RevokeDnsBindPermission",
+                request_serializer=vmwareengine.RevokeDnsBindPermissionRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["revoke_dns_bind_permission"]
 
     def close(self):
         return self.grpc_channel.close()

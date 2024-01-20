@@ -25,19 +25,30 @@ __protobuf__ = proto.module(
     manifest={
         "NetworkConfig",
         "NodeTypeConfig",
+        "StretchedClusterConfig",
         "PrivateCloud",
         "Cluster",
+        "Node",
+        "ExternalAddress",
         "Subnet",
+        "ExternalAccessRule",
+        "LoggingServer",
         "NodeType",
         "Credentials",
         "HcxActivationKey",
         "Hcx",
         "Nsx",
         "Vcenter",
+        "DnsForwarding",
+        "NetworkPeering",
         "PeeringRoute",
         "NetworkPolicy",
+        "ManagementDnsZoneBinding",
         "VmwareEngineNetwork",
         "PrivateConnection",
+        "LocationMetadata",
+        "DnsBindPermission",
+        "Principal",
     },
 )
 
@@ -73,6 +84,12 @@ class NetworkConfig(proto.Message):
                latest IP address layout used by all newly created
                private clouds. This version supports all current
                features.
+        dns_server_ip (str):
+            Output only. DNS Server IP of the Private
+            Cloud. All DNS queries can be forwarded to this
+            address for name resolution of Private Cloud's
+            management entities like vCenter, NSX-T Manager
+            and ESXi hosts.
     """
 
     management_cidr: str = proto.Field(
@@ -90,6 +107,10 @@ class NetworkConfig(proto.Message):
     management_ip_address_layout_version: int = proto.Field(
         proto.INT32,
         number=8,
+    )
+    dns_server_ip: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
 
 
@@ -119,9 +140,40 @@ class NodeTypeConfig(proto.Message):
     )
 
 
+class StretchedClusterConfig(proto.Message):
+    r"""Configuration of a stretched cluster.
+
+    Attributes:
+        preferred_location (str):
+            Required. Zone that will remain operational when connection
+            between the two zones is lost. Specify the resource name of
+            a zone that belongs to the region of the private cloud. For
+            example: ``projects/{project}/locations/europe-west3-a``
+            where ``{project}`` can either be a project number or a
+            project ID.
+        secondary_location (str):
+            Required. Additional zone for a higher level of availability
+            and load balancing. Specify the resource name of a zone that
+            belongs to the region of the private cloud. For example:
+            ``projects/{project}/locations/europe-west3-b`` where
+            ``{project}`` can either be a project number or a project
+            ID.
+    """
+
+    preferred_location: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    secondary_location: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class PrivateCloud(proto.Message):
-    r"""Represents a private cloud resource. Private clouds are zonal
-    resources.
+    r"""Represents a private cloud resource. Private clouds of type
+    ``STANDARD`` and ``TIME_LIMITED`` are zonal resources, ``STRETCHED``
+    private clouds are regional.
 
     Attributes:
         name (str):
@@ -218,9 +270,14 @@ class PrivateCloud(proto.Message):
                 life span. Will be deleted after defined period
                 of time, can be converted into standard private
                 cloud by expanding it up to 3 or more nodes.
+            STRETCHED (2):
+                Stretched private cloud is a regional
+                resource with redundancy, with a minimum of 6
+                nodes, nodes count has to be even.
         """
         STANDARD = 0
         TIME_LIMITED = 1
+        STRETCHED = 2
 
     class ManagementCluster(proto.Message):
         r"""Management cluster configuration.
@@ -242,6 +299,9 @@ class PrivateCloud(proto.Message):
                 Required. The map of cluster node types in this cluster,
                 where the key is canonical identifier of the node type
                 (corresponds to the ``NodeType``).
+            stretched_cluster_config (google.cloud.vmwareengine_v1.types.StretchedClusterConfig):
+                Optional. Configuration of a stretched
+                cluster. Required for STRETCHED private clouds.
         """
 
         cluster_id: str = proto.Field(
@@ -253,6 +313,11 @@ class PrivateCloud(proto.Message):
             proto.MESSAGE,
             number=7,
             message="NodeTypeConfig",
+        )
+        stretched_cluster_config: "StretchedClusterConfig" = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message="StretchedClusterConfig",
         )
 
     name: str = proto.Field(
@@ -353,6 +418,10 @@ class Cluster(proto.Message):
             Required. The map of cluster node types in this cluster,
             where the key is canonical identifier of the node type
             (corresponds to the ``NodeType``).
+        stretched_cluster_config (google.cloud.vmwareengine_v1.types.StretchedClusterConfig):
+            Optional. Configuration of a stretched
+            cluster. Required for clusters that belong to a
+            STRETCHED private cloud.
     """
 
     class State(proto.Enum):
@@ -416,6 +485,183 @@ class Cluster(proto.Message):
         number=16,
         message="NodeTypeConfig",
     )
+    stretched_cluster_config: "StretchedClusterConfig" = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message="StretchedClusterConfig",
+    )
+
+
+class Node(proto.Message):
+    r"""Node in a cluster.
+
+    Attributes:
+        name (str):
+            Output only. The resource name of this node. Resource names
+            are schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            projects/my-project/locations/us-central1-a/privateClouds/my-cloud/clusters/my-cluster/nodes/my-node
+        fqdn (str):
+            Output only. Fully qualified domain name of
+            the node.
+        internal_ip (str):
+            Output only. Internal IP address of the node.
+        node_type_id (str):
+            Output only. The canonical identifier of the node type
+            (corresponds to the ``NodeType``). For example: standard-72.
+        version (str):
+            Output only. The version number of the VMware
+            ESXi management component in this cluster.
+        custom_core_count (int):
+            Output only. Customized number of cores
+        state (google.cloud.vmwareengine_v1.types.Node.State):
+            Output only. The state of the appliance.
+    """
+
+    class State(proto.Enum):
+        r"""Enum State defines possible states of a node in a cluster.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value should never be
+                used.
+            ACTIVE (1):
+                Node is operational and can be used by the
+                user.
+            CREATING (2):
+                Node is being provisioned.
+            FAILED (3):
+                Node is in a failed state.
+            UPGRADING (4):
+                Node is undergoing maintenance, e.g.: during
+                private cloud upgrade.
+        """
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        CREATING = 2
+        FAILED = 3
+        UPGRADING = 4
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    fqdn: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    internal_ip: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    node_type_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    version: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    custom_core_count: int = proto.Field(
+        proto.INT64,
+        number=6,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=State,
+    )
+
+
+class ExternalAddress(proto.Message):
+    r"""Represents an allocated external IP address and its
+    corresponding internal IP address in a private cloud.
+
+    Attributes:
+        name (str):
+            Output only. The resource name of this external IP address.
+            Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/externalAddresses/my-address``
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Creation time of this resource.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last update time of this
+            resource.
+        internal_ip (str):
+            The internal IP address of a workload VM.
+        external_ip (str):
+            Output only. The external IP address of a
+            workload VM.
+        state (google.cloud.vmwareengine_v1.types.ExternalAddress.State):
+            Output only. The state of the resource.
+        uid (str):
+            Output only. System-generated unique
+            identifier for the resource.
+        description (str):
+            User-provided description for this resource.
+    """
+
+    class State(proto.Enum):
+        r"""Enum State defines possible states of external addresses.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value should never be
+                used.
+            ACTIVE (1):
+                The address is ready.
+            CREATING (2):
+                The address is being created.
+            UPDATING (3):
+                The address is being updated.
+            DELETING (4):
+                The address is being deleted.
+        """
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        CREATING = 2
+        UPDATING = 3
+        DELETING = 4
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    internal_ip: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    external_ip: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=State,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
 
 
 class Subnet(proto.Message):
@@ -441,6 +687,9 @@ class Subnet(proto.Message):
             example "management" or "userDefined".
         state (google.cloud.vmwareengine_v1.types.Subnet.State):
             Output only. The state of the resource.
+        vlan_id (int):
+            Output only. VLAN ID of the VLAN on which the
+            subnet is configured
     """
 
     class State(proto.Enum):
@@ -495,6 +744,339 @@ class Subnet(proto.Message):
         number=13,
         enum=State,
     )
+    vlan_id: int = proto.Field(
+        proto.INT32,
+        number=16,
+    )
+
+
+class ExternalAccessRule(proto.Message):
+    r"""External access firewall rules for filtering incoming traffic
+    destined to ``ExternalAddress`` resources.
+
+    Attributes:
+        name (str):
+            Output only. The resource name of this external access rule.
+            Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1/networkPolicies/my-policy/externalAccessRules/my-rule``
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Creation time of this resource.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last update time of this
+            resource.
+        description (str):
+            User-provided description for this external
+            access rule.
+        priority (int):
+            External access rule priority, which determines the external
+            access rule to use when multiple rules apply. If multiple
+            rules have the same priority, their ordering is
+            non-deterministic. If specific ordering is required, assign
+            unique priorities to enforce such ordering. The external
+            access rule priority is an integer from 100 to 4096, both
+            inclusive. Lower integers indicate higher precedence. For
+            example, a rule with priority ``100`` has higher precedence
+            than a rule with priority ``101``.
+        action (google.cloud.vmwareengine_v1.types.ExternalAccessRule.Action):
+            The action that the external access rule
+            performs.
+        ip_protocol (str):
+            The IP protocol to which the external access rule applies.
+            This value can be one of the following three protocol
+            strings (not case-sensitive): ``tcp``, ``udp``, or ``icmp``.
+        source_ip_ranges (MutableSequence[google.cloud.vmwareengine_v1.types.ExternalAccessRule.IpRange]):
+            If source ranges are specified, the external access rule
+            applies only to traffic that has a source IP address in
+            these ranges. These ranges can either be expressed in the
+            CIDR format or as an IP address. As only inbound rules are
+            supported, ``ExternalAddress`` resources cannot be the
+            source IP addresses of an external access rule. To match all
+            source addresses, specify ``0.0.0.0/0``.
+        source_ports (MutableSequence[str]):
+            A list of source ports to which the external access rule
+            applies. This field is only applicable for the UDP or TCP
+            protocol. Each entry must be either an integer or a range.
+            For example: ``["22"]``, ``["80","443"]``, or
+            ``["12345-12349"]``. To match all source ports, specify
+            ``["0-65535"]``.
+        destination_ip_ranges (MutableSequence[google.cloud.vmwareengine_v1.types.ExternalAccessRule.IpRange]):
+            If destination ranges are specified, the external access
+            rule applies only to the traffic that has a destination IP
+            address in these ranges. The specified IP addresses must
+            have reserved external IP addresses in the scope of the
+            parent network policy. To match all external IP addresses in
+            the scope of the parent network policy, specify
+            ``0.0.0.0/0``. To match a specific external IP address,
+            specify it using the ``IpRange.external_address`` property.
+        destination_ports (MutableSequence[str]):
+            A list of destination ports to which the external access
+            rule applies. This field is only applicable for the UDP or
+            TCP protocol. Each entry must be either an integer or a
+            range. For example: ``["22"]``, ``["80","443"]``, or
+            ``["12345-12349"]``. To match all destination ports, specify
+            ``["0-65535"]``.
+        state (google.cloud.vmwareengine_v1.types.ExternalAccessRule.State):
+            Output only. The state of the resource.
+        uid (str):
+            Output only. System-generated unique
+            identifier for the resource.
+    """
+
+    class Action(proto.Enum):
+        r"""Action determines whether the external access rule permits or
+        blocks traffic, subject to the other components of the rule
+        matching the traffic.
+
+        Values:
+            ACTION_UNSPECIFIED (0):
+                Defaults to allow.
+            ALLOW (1):
+                Allows connections that match the other
+                specified components.
+            DENY (2):
+                Blocks connections that match the other
+                specified components.
+        """
+        ACTION_UNSPECIFIED = 0
+        ALLOW = 1
+        DENY = 2
+
+    class State(proto.Enum):
+        r"""Defines possible states of external access firewall rules.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value is used if the
+                state is omitted.
+            ACTIVE (1):
+                The rule is ready.
+            CREATING (2):
+                The rule is being created.
+            UPDATING (3):
+                The rule is being updated.
+            DELETING (4):
+                The rule is being deleted.
+        """
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        CREATING = 2
+        UPDATING = 3
+        DELETING = 4
+
+    class IpRange(proto.Message):
+        r"""An IP range provided in any one of the supported formats.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            ip_address (str):
+                A single IP address. For example: ``10.0.0.5``.
+
+                This field is a member of `oneof`_ ``ip_range``.
+            ip_address_range (str):
+                An IP address range in the CIDR format. For example:
+                ``10.0.0.0/24``.
+
+                This field is a member of `oneof`_ ``ip_range``.
+            external_address (str):
+                The name of an ``ExternalAddress`` resource. The external
+                address must have been reserved in the scope of this
+                external access rule's parent network policy. Provide the
+                external address name in the form of
+                ``projects/{project}/locations/{location}/privateClouds/{private_cloud}/externalAddresses/{external_address}``.
+                For example:
+                ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/externalAddresses/my-address``.
+
+                This field is a member of `oneof`_ ``ip_range``.
+        """
+
+        ip_address: str = proto.Field(
+            proto.STRING,
+            number=1,
+            oneof="ip_range",
+        )
+        ip_address_range: str = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="ip_range",
+        )
+        external_address: str = proto.Field(
+            proto.STRING,
+            number=3,
+            oneof="ip_range",
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    priority: int = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    action: Action = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=Action,
+    )
+    ip_protocol: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    source_ip_ranges: MutableSequence[IpRange] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message=IpRange,
+    )
+    source_ports: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=10,
+    )
+    destination_ip_ranges: MutableSequence[IpRange] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message=IpRange,
+    )
+    destination_ports: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=12,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=State,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+
+
+class LoggingServer(proto.Message):
+    r"""Logging server to receive vCenter or ESXi logs.
+
+    Attributes:
+        name (str):
+            Output only. The resource name of this logging server.
+            Resource names are schemeless URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/loggingServers/my-logging-server``
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Creation time of this resource.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last update time of this
+            resource.
+        hostname (str):
+            Required. Fully-qualified domain name (FQDN)
+            or IP Address of the logging server.
+        port (int):
+            Required. Port number at which the logging
+            server receives logs.
+        protocol (google.cloud.vmwareengine_v1.types.LoggingServer.Protocol):
+            Required. Protocol used by vCenter to send
+            logs to a logging server.
+        source_type (google.cloud.vmwareengine_v1.types.LoggingServer.SourceType):
+            Required. The type of component that produces
+            logs that will be forwarded to this logging
+            server.
+        uid (str):
+            Output only. System-generated unique
+            identifier for the resource.
+    """
+
+    class Protocol(proto.Enum):
+        r"""Defines possible protocols used to send logs to
+        a logging server.
+
+        Values:
+            PROTOCOL_UNSPECIFIED (0):
+                Unspecified communications protocol. This is
+                the default value.
+            UDP (1):
+                UDP
+            TCP (2):
+                TCP
+        """
+        PROTOCOL_UNSPECIFIED = 0
+        UDP = 1
+        TCP = 2
+
+    class SourceType(proto.Enum):
+        r"""Defines possible types of component that produces logs.
+
+        Values:
+            SOURCE_TYPE_UNSPECIFIED (0):
+                The default value. This value should never be
+                used.
+            ESXI (1):
+                Logs produced by ESXI hosts
+            VCSA (2):
+                Logs produced by vCenter server
+        """
+        SOURCE_TYPE_UNSPECIFIED = 0
+        ESXI = 1
+        VCSA = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    hostname: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    port: int = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    protocol: Protocol = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=Protocol,
+    )
+    source_type: SourceType = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=SourceType,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class NodeType(proto.Message):
@@ -528,7 +1110,44 @@ class NodeType(proto.Message):
         available_custom_core_counts (MutableSequence[int]):
             Output only. List of possible values of
             custom core count.
+        kind (google.cloud.vmwareengine_v1.types.NodeType.Kind):
+            Output only. The type of the resource.
+        families (MutableSequence[str]):
+            Output only. Families of the node type. For node types to be
+            in the same cluster they must share at least one element in
+            the ``families``.
+        capabilities (MutableSequence[google.cloud.vmwareengine_v1.types.NodeType.Capability]):
+            Output only. Capabilities of this node type.
     """
+
+    class Kind(proto.Enum):
+        r"""Enum Kind defines possible types of a NodeType.
+
+        Values:
+            KIND_UNSPECIFIED (0):
+                The default value. This value should never be
+                used.
+            STANDARD (1):
+                Standard HCI node.
+            STORAGE_ONLY (2):
+                Storage only Node.
+        """
+        KIND_UNSPECIFIED = 0
+        STANDARD = 1
+        STORAGE_ONLY = 2
+
+    class Capability(proto.Enum):
+        r"""Capability of a node type.
+
+        Values:
+            CAPABILITY_UNSPECIFIED (0):
+                The default value. This value is used if the
+                capability is omitted or unknown.
+            STRETCHED_CLUSTERS (1):
+                This node type supports stretch clusters.
+        """
+        CAPABILITY_UNSPECIFIED = 0
+        STRETCHED_CLUSTERS = 1
 
     name: str = proto.Field(
         proto.STRING,
@@ -561,6 +1180,20 @@ class NodeType(proto.Message):
     available_custom_core_counts: MutableSequence[int] = proto.RepeatedField(
         proto.INT32,
         number=11,
+    )
+    kind: Kind = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=Kind,
+    )
+    families: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=13,
+    )
+    capabilities: MutableSequence[Capability] = proto.RepeatedField(
+        proto.ENUM,
+        number=14,
+        enum=Capability,
     )
 
 
@@ -800,6 +1433,310 @@ class Vcenter(proto.Message):
     fqdn: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+
+
+class DnsForwarding(proto.Message):
+    r"""DNS forwarding config.
+    This config defines a list of domain to name server mappings,
+    and is attached to the private cloud for custom domain
+    resolution.
+
+    Attributes:
+        name (str):
+            Output only. The resource name of this DNS profile. Resource
+            names are schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/dnsForwarding``
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Creation time of this resource.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last update time of this
+            resource.
+        forwarding_rules (MutableSequence[google.cloud.vmwareengine_v1.types.DnsForwarding.ForwardingRule]):
+            Required. List of domain mappings to
+            configure
+    """
+
+    class ForwardingRule(proto.Message):
+        r"""A forwarding rule is a mapping of a ``domain`` to ``name_servers``.
+        This mapping allows VMware Engine to resolve domains for attached
+        private clouds by forwarding DNS requests for a given domain to the
+        specified nameservers.
+
+        Attributes:
+            domain (str):
+                Required. Domain used to resolve a ``name_servers`` list.
+            name_servers (MutableSequence[str]):
+                Required. List of DNS servers to use for
+                domain resolution
+        """
+
+        domain: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        name_servers: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    forwarding_rules: MutableSequence[ForwardingRule] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=ForwardingRule,
+    )
+
+
+class NetworkPeering(proto.Message):
+    r"""Details of a network peering.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Output only. The resource name of the network peering.
+            NetworkPeering is a global resource and location can only be
+            global. Resource names are scheme-less URIs that follow the
+            conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/global/networkPeerings/my-peering``
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Creation time of this resource.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last update time of this
+            resource.
+        peer_network (str):
+            Required. The relative resource name of the network to peer
+            with a standard VMware Engine network. The provided network
+            can be a consumer VPC network or another standard VMware
+            Engine network. If the ``peer_network_type`` is
+            VMWARE_ENGINE_NETWORK, specify the name in the form:
+            ``projects/{project}/locations/global/vmwareEngineNetworks/{vmware_engine_network_id}``.
+            Otherwise specify the name in the form:
+            ``projects/{project}/global/networks/{network_id}``, where
+            ``{project}`` can either be a project number or a project
+            ID.
+        export_custom_routes (bool):
+            Optional. True if custom routes are exported
+            to the peered network; false otherwise. The
+            default value is true.
+
+            This field is a member of `oneof`_ ``_export_custom_routes``.
+        import_custom_routes (bool):
+            Optional. True if custom routes are imported
+            from the peered network; false otherwise. The
+            default value is true.
+
+            This field is a member of `oneof`_ ``_import_custom_routes``.
+        exchange_subnet_routes (bool):
+            Optional. True if full mesh connectivity is
+            created and managed automatically between peered
+            networks; false otherwise. Currently this field
+            is always true because Google Compute Engine
+            automatically creates and manages subnetwork
+            routes between two VPC networks when peering
+            state is 'ACTIVE'.
+
+            This field is a member of `oneof`_ ``_exchange_subnet_routes``.
+        export_custom_routes_with_public_ip (bool):
+            Optional. True if all subnet routes with a public IP address
+            range are exported; false otherwise. The default value is
+            true. IPv4 special-use ranges
+            (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are
+            always exported to peers and are not controlled by this
+            field.
+
+            This field is a member of `oneof`_ ``_export_custom_routes_with_public_ip``.
+        import_custom_routes_with_public_ip (bool):
+            Optional. True if all subnet routes with public IP address
+            range are imported; false otherwise. The default value is
+            true. IPv4 special-use ranges
+            (https://en.wikipedia.org/wiki/IPv4#Special_addresses) are
+            always imported to peers and are not controlled by this
+            field.
+
+            This field is a member of `oneof`_ ``_import_custom_routes_with_public_ip``.
+        state (google.cloud.vmwareengine_v1.types.NetworkPeering.State):
+            Output only. State of the network peering.
+            This field has a value of 'ACTIVE' when there's
+            a matching configuration in the peer network.
+            New values may be added to this enum when
+            appropriate.
+        state_details (str):
+            Output only. Output Only. Details about the
+            current state of the network peering.
+        peer_mtu (int):
+            Optional. Maximum transmission unit (MTU) in bytes. The
+            default value is ``1500``. If a value of ``0`` is provided
+            for this field, VMware Engine uses the default value
+            instead.
+        peer_network_type (google.cloud.vmwareengine_v1.types.NetworkPeering.PeerNetworkType):
+            Required. The type of the network to peer
+            with the VMware Engine network.
+        uid (str):
+            Output only. System-generated unique
+            identifier for the resource.
+        vmware_engine_network (str):
+            Required. The relative resource name of the VMware Engine
+            network. Specify the name in the following form:
+            ``projects/{project}/locations/{location}/vmwareEngineNetworks/{vmware_engine_network_id}``
+            where ``{project}`` can either be a project number or a
+            project ID.
+        description (str):
+            Optional. User-provided description for this
+            network peering.
+    """
+
+    class State(proto.Enum):
+        r"""Possible states of a network peering.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Unspecified network peering state. This is
+                the default value.
+            INACTIVE (1):
+                The peering is not active.
+            ACTIVE (2):
+                The peering is active.
+            CREATING (3):
+                The peering is being created.
+            DELETING (4):
+                The peering is being deleted.
+        """
+        STATE_UNSPECIFIED = 0
+        INACTIVE = 1
+        ACTIVE = 2
+        CREATING = 3
+        DELETING = 4
+
+    class PeerNetworkType(proto.Enum):
+        r"""Type or purpose of the network peering connection.
+
+        Values:
+            PEER_NETWORK_TYPE_UNSPECIFIED (0):
+                Unspecified
+            STANDARD (1):
+                Peering connection used for connecting to
+                another VPC network established by the same
+                user. For example, a peering connection to
+                another VPC network in the same project or to an
+                on-premises network.
+            VMWARE_ENGINE_NETWORK (2):
+                Peering connection used for connecting to
+                another VMware Engine network.
+            PRIVATE_SERVICES_ACCESS (3):
+                Peering connection used for establishing `private services
+                access <https://cloud.google.com/vpc/docs/private-services-access>`__.
+            NETAPP_CLOUD_VOLUMES (4):
+                Peering connection used for connecting to
+                NetApp Cloud Volumes.
+            THIRD_PARTY_SERVICE (5):
+                Peering connection used for connecting to
+                third-party services. Most third-party services
+                require manual setup of reverse peering on the
+                VPC network associated with the third-party
+                service.
+            DELL_POWERSCALE (6):
+                Peering connection used for connecting to
+                Dell PowerScale Filers
+        """
+        PEER_NETWORK_TYPE_UNSPECIFIED = 0
+        STANDARD = 1
+        VMWARE_ENGINE_NETWORK = 2
+        PRIVATE_SERVICES_ACCESS = 3
+        NETAPP_CLOUD_VOLUMES = 4
+        THIRD_PARTY_SERVICE = 5
+        DELL_POWERSCALE = 6
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    peer_network: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    export_custom_routes: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+        optional=True,
+    )
+    import_custom_routes: bool = proto.Field(
+        proto.BOOL,
+        number=9,
+        optional=True,
+    )
+    exchange_subnet_routes: bool = proto.Field(
+        proto.BOOL,
+        number=10,
+        optional=True,
+    )
+    export_custom_routes_with_public_ip: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+        optional=True,
+    )
+    import_custom_routes_with_public_ip: bool = proto.Field(
+        proto.BOOL,
+        number=12,
+        optional=True,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=State,
+    )
+    state_details: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    peer_mtu: int = proto.Field(
+        proto.INT32,
+        number=14,
+    )
+    peer_network_type: PeerNetworkType = proto.Field(
+        proto.ENUM,
+        number=16,
+        enum=PeerNetworkType,
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    vmware_engine_network: str = proto.Field(
+        proto.STRING,
+        number=20,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=21,
     )
 
 
@@ -1051,6 +1988,123 @@ class NetworkPolicy(proto.Message):
     )
 
 
+class ManagementDnsZoneBinding(proto.Message):
+    r"""Represents a binding between a network and the management DNS
+    zone. A management DNS zone is the Cloud DNS cross-project
+    binding zone that VMware Engine creates for each private cloud.
+    It contains FQDNs and corresponding IP addresses for the private
+    cloud's ESXi hosts and management VM appliances like vCenter and
+    NSX Manager.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        name (str):
+            Output only. The resource name of this binding. Resource
+            names are schemeless URIs that follow the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/us-central1-a/privateClouds/my-cloud/managementDnsZoneBindings/my-management-dns-zone-binding``
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Creation time of this resource.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Last update time of this
+            resource.
+        state (google.cloud.vmwareengine_v1.types.ManagementDnsZoneBinding.State):
+            Output only. The state of the resource.
+        description (str):
+            User-provided description for this resource.
+        vpc_network (str):
+            Network to bind is a standard consumer VPC. Specify the name
+            in the following form for consumer VPC network:
+            ``projects/{project}/global/networks/{network_id}``.
+            ``{project}`` can either be a project number or a project
+            ID.
+
+            This field is a member of `oneof`_ ``bind_network``.
+        vmware_engine_network (str):
+            Network to bind is a VMware Engine network. Specify the name
+            in the following form for VMware engine network:
+            ``projects/{project}/locations/global/vmwareEngineNetworks/{vmware_engine_network_id}``.
+            ``{project}`` can either be a project number or a project
+            ID.
+
+            This field is a member of `oneof`_ ``bind_network``.
+        uid (str):
+            Output only. System-generated unique
+            identifier for the resource.
+    """
+
+    class State(proto.Enum):
+        r"""Enum State defines possible states of binding between the
+        consumer VPC network and the management DNS zone.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                The default value. This value should never be
+                used.
+            ACTIVE (1):
+                The binding is ready.
+            CREATING (2):
+                The binding is being created.
+            UPDATING (3):
+                The binding is being updated.
+            DELETING (4):
+                The binding is being deleted.
+            FAILED (5):
+                The binding has failed.
+        """
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        CREATING = 2
+        UPDATING = 3
+        DELETING = 4
+        FAILED = 5
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=State,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    vpc_network: str = proto.Field(
+        proto.STRING,
+        number=14,
+        oneof="bind_network",
+    )
+    vmware_engine_network: str = proto.Field(
+        proto.STRING,
+        number=15,
+        oneof="bind_network",
+    )
+    uid: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+
+
 class VmwareEngineNetwork(proto.Message):
     r"""VMware Engine network resource that provides connectivity for
     VMware Engine private clouds.
@@ -1126,9 +2180,13 @@ class VmwareEngineNetwork(proto.Message):
                 without a network of type ``STANDARD``. This network type is
                 no longer used for new VMware Engine private cloud
                 deployments.
+            STANDARD (2):
+                Standard network type used for private cloud
+                connectivity.
         """
         TYPE_UNSPECIFIED = 0
         LEGACY = 1
+        STANDARD = 2
 
     class VpcNetwork(proto.Message):
         r"""Represents a VMware Engine VPC network that is managed by a
@@ -1441,6 +2499,106 @@ class PrivateConnection(proto.Message):
         proto.ENUM,
         number=17,
         enum=PeeringState,
+    )
+
+
+class LocationMetadata(proto.Message):
+    r"""VmwareEngine specific metadata for the given
+    [google.cloud.location.Location][google.cloud.location.Location]. It
+    is returned as a content of the
+    ``google.cloud.location.Location.metadata`` field.
+
+    Attributes:
+        capabilities (MutableSequence[google.cloud.vmwareengine_v1.types.LocationMetadata.Capability]):
+            Output only. Capabilities of this location.
+    """
+
+    class Capability(proto.Enum):
+        r"""Capability of a location.
+
+        Values:
+            CAPABILITY_UNSPECIFIED (0):
+                The default value. This value is used if the
+                capability is omitted or unknown.
+            STRETCHED_CLUSTERS (1):
+                Stretch clusters are supported in this
+                location.
+        """
+        CAPABILITY_UNSPECIFIED = 0
+        STRETCHED_CLUSTERS = 1
+
+    capabilities: MutableSequence[Capability] = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum=Capability,
+    )
+
+
+class DnsBindPermission(proto.Message):
+    r"""DnsBindPermission resource that contains the accounts having
+    the consumer DNS bind permission on the corresponding intranet
+    VPC of the consumer project.
+
+    Attributes:
+        name (str):
+            Required. Output only. The name of the resource which stores
+            the users/service accounts having the permission to bind to
+            the corresponding intranet VPC of the consumer project.
+            DnsBindPermission is a global resource and location can only
+            be global. Resource names are schemeless URIs that follow
+            the conventions in
+            https://cloud.google.com/apis/design/resource_names. For
+            example:
+            ``projects/my-project/locations/global/dnsBindPermission``
+        principals (MutableSequence[google.cloud.vmwareengine_v1.types.Principal]):
+            Output only. Users/Service accounts which
+            have access for binding on the intranet VPC
+            project corresponding to the consumer project.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    principals: MutableSequence["Principal"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Principal",
+    )
+
+
+class Principal(proto.Message):
+    r"""Users/Service accounts which have access for DNS binding on
+    the intranet VPC corresponding to the consumer project.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        user (str):
+            The user who needs to be granted permission.
+
+            This field is a member of `oneof`_ ``principal``.
+        service_account (str):
+            The service account which needs to be granted
+            the permission.
+
+            This field is a member of `oneof`_ ``principal``.
+    """
+
+    user: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="principal",
+    )
+    service_account: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="principal",
     )
 
 

@@ -217,6 +217,82 @@ class VmwareEngineTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_nodes: gapic_v1.method.wrap_method(
+                self.list_nodes,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_node: gapic_v1.method.wrap_method(
+                self.get_node,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.list_external_addresses: gapic_v1.method.wrap_method(
+                self.list_external_addresses,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.fetch_network_policy_external_addresses: gapic_v1.method.wrap_method(
+                self.fetch_network_policy_external_addresses,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_external_address: gapic_v1.method.wrap_method(
+                self.get_external_address,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_external_address: gapic_v1.method.wrap_method(
+                self.create_external_address,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_external_address: gapic_v1.method.wrap_method(
+                self.update_external_address,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_external_address: gapic_v1.method.wrap_method(
+                self.delete_external_address,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_subnets: gapic_v1.method.wrap_method(
                 self.list_subnets,
                 default_retry=retries.Retry(
@@ -248,6 +324,92 @@ class VmwareEngineTransport(abc.ABC):
             self.update_subnet: gapic_v1.method.wrap_method(
                 self.update_subnet,
                 default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.list_external_access_rules: gapic_v1.method.wrap_method(
+                self.list_external_access_rules,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_external_access_rule: gapic_v1.method.wrap_method(
+                self.get_external_access_rule,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_external_access_rule: gapic_v1.method.wrap_method(
+                self.create_external_access_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_external_access_rule: gapic_v1.method.wrap_method(
+                self.update_external_access_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_external_access_rule: gapic_v1.method.wrap_method(
+                self.delete_external_access_rule,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_logging_servers: gapic_v1.method.wrap_method(
+                self.list_logging_servers,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_logging_server: gapic_v1.method.wrap_method(
+                self.get_logging_server,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_logging_server: gapic_v1.method.wrap_method(
+                self.create_logging_server,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_logging_server: gapic_v1.method.wrap_method(
+                self.update_logging_server,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_logging_server: gapic_v1.method.wrap_method(
+                self.delete_logging_server,
+                default_timeout=None,
                 client_info=client_info,
             ),
             self.list_node_types: gapic_v1.method.wrap_method(
@@ -314,6 +476,82 @@ class VmwareEngineTransport(abc.ABC):
             self.reset_vcenter_credentials: gapic_v1.method.wrap_method(
                 self.reset_vcenter_credentials,
                 default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_dns_forwarding: gapic_v1.method.wrap_method(
+                self.get_dns_forwarding,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.update_dns_forwarding: gapic_v1.method.wrap_method(
+                self.update_dns_forwarding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_network_peering: gapic_v1.method.wrap_method(
+                self.get_network_peering,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.list_network_peerings: gapic_v1.method.wrap_method(
+                self.list_network_peerings,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_network_peering: gapic_v1.method.wrap_method(
+                self.create_network_peering,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_network_peering: gapic_v1.method.wrap_method(
+                self.delete_network_peering,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_network_peering: gapic_v1.method.wrap_method(
+                self.update_network_peering,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_peering_routes: gapic_v1.method.wrap_method(
+                self.list_peering_routes,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
                 client_info=client_info,
             ),
             self.create_hcx_activation_key: gapic_v1.method.wrap_method(
@@ -389,6 +627,54 @@ class VmwareEngineTransport(abc.ABC):
             ),
             self.delete_network_policy: gapic_v1.method.wrap_method(
                 self.delete_network_policy,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_management_dns_zone_bindings: gapic_v1.method.wrap_method(
+                self.list_management_dns_zone_bindings,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.get_management_dns_zone_binding: gapic_v1.method.wrap_method(
+                self.get_management_dns_zone_binding,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.create_management_dns_zone_binding: gapic_v1.method.wrap_method(
+                self.create_management_dns_zone_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_management_dns_zone_binding: gapic_v1.method.wrap_method(
+                self.update_management_dns_zone_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_management_dns_zone_binding: gapic_v1.method.wrap_method(
+                self.delete_management_dns_zone_binding,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.repair_management_dns_zone_binding: gapic_v1.method.wrap_method(
+                self.repair_management_dns_zone_binding,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -490,6 +776,30 @@ class VmwareEngineTransport(abc.ABC):
                     deadline=120.0,
                 ),
                 default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.grant_dns_bind_permission: gapic_v1.method.wrap_method(
+                self.grant_dns_bind_permission,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_dns_bind_permission: gapic_v1.method.wrap_method(
+                self.get_dns_bind_permission,
+                default_retry=retries.Retry(
+                    initial=1.0,
+                    maximum=10.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=120.0,
+                ),
+                default_timeout=120.0,
+                client_info=client_info,
+            ),
+            self.revoke_dns_bind_permission: gapic_v1.method.wrap_method(
+                self.revoke_dns_bind_permission,
+                default_timeout=None,
                 client_info=client_info,
             ),
         }
@@ -619,6 +929,89 @@ class VmwareEngineTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def list_nodes(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListNodesRequest],
+        Union[
+            vmwareengine.ListNodesResponse, Awaitable[vmwareengine.ListNodesResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_node(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetNodeRequest],
+        Union[vmwareengine_resources.Node, Awaitable[vmwareengine_resources.Node]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_external_addresses(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListExternalAddressesRequest],
+        Union[
+            vmwareengine.ListExternalAddressesResponse,
+            Awaitable[vmwareengine.ListExternalAddressesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def fetch_network_policy_external_addresses(
+        self,
+    ) -> Callable[
+        [vmwareengine.FetchNetworkPolicyExternalAddressesRequest],
+        Union[
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse,
+            Awaitable[vmwareengine.FetchNetworkPolicyExternalAddressesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_external_address(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetExternalAddressRequest],
+        Union[
+            vmwareengine_resources.ExternalAddress,
+            Awaitable[vmwareengine_resources.ExternalAddress],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_external_address(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreateExternalAddressRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_external_address(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateExternalAddressRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_external_address(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeleteExternalAddressRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
     def list_subnets(
         self,
     ) -> Callable[
@@ -644,6 +1037,108 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.UpdateSubnetRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_external_access_rules(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListExternalAccessRulesRequest],
+        Union[
+            vmwareengine.ListExternalAccessRulesResponse,
+            Awaitable[vmwareengine.ListExternalAccessRulesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_external_access_rule(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetExternalAccessRuleRequest],
+        Union[
+            vmwareengine_resources.ExternalAccessRule,
+            Awaitable[vmwareengine_resources.ExternalAccessRule],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_external_access_rule(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreateExternalAccessRuleRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_external_access_rule(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateExternalAccessRuleRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_external_access_rule(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeleteExternalAccessRuleRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_logging_servers(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListLoggingServersRequest],
+        Union[
+            vmwareengine.ListLoggingServersResponse,
+            Awaitable[vmwareengine.ListLoggingServersResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_logging_server(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetLoggingServerRequest],
+        Union[
+            vmwareengine_resources.LoggingServer,
+            Awaitable[vmwareengine_resources.LoggingServer],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_logging_server(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreateLoggingServerRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_logging_server(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateLoggingServerRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_logging_server(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeleteLoggingServerRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -710,6 +1205,90 @@ class VmwareEngineTransport(abc.ABC):
     ) -> Callable[
         [vmwareengine.ResetVcenterCredentialsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_dns_forwarding(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetDnsForwardingRequest],
+        Union[
+            vmwareengine_resources.DnsForwarding,
+            Awaitable[vmwareengine_resources.DnsForwarding],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_dns_forwarding(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateDnsForwardingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_network_peering(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetNetworkPeeringRequest],
+        Union[
+            vmwareengine_resources.NetworkPeering,
+            Awaitable[vmwareengine_resources.NetworkPeering],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_network_peerings(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListNetworkPeeringsRequest],
+        Union[
+            vmwareengine.ListNetworkPeeringsResponse,
+            Awaitable[vmwareengine.ListNetworkPeeringsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_network_peering(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreateNetworkPeeringRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_network_peering(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeleteNetworkPeeringRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_network_peering(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateNetworkPeeringRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_peering_routes(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListPeeringRoutesRequest],
+        Union[
+            vmwareengine.ListPeeringRoutesResponse,
+            Awaitable[vmwareengine.ListPeeringRoutesResponse],
+        ],
     ]:
         raise NotImplementedError()
 
@@ -793,6 +1372,66 @@ class VmwareEngineTransport(abc.ABC):
         self,
     ) -> Callable[
         [vmwareengine.DeleteNetworkPolicyRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_management_dns_zone_bindings(
+        self,
+    ) -> Callable[
+        [vmwareengine.ListManagementDnsZoneBindingsRequest],
+        Union[
+            vmwareengine.ListManagementDnsZoneBindingsResponse,
+            Awaitable[vmwareengine.ListManagementDnsZoneBindingsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_management_dns_zone_binding(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetManagementDnsZoneBindingRequest],
+        Union[
+            vmwareengine_resources.ManagementDnsZoneBinding,
+            Awaitable[vmwareengine_resources.ManagementDnsZoneBinding],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_management_dns_zone_binding(
+        self,
+    ) -> Callable[
+        [vmwareengine.CreateManagementDnsZoneBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_management_dns_zone_binding(
+        self,
+    ) -> Callable[
+        [vmwareengine.UpdateManagementDnsZoneBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_management_dns_zone_binding(
+        self,
+    ) -> Callable[
+        [vmwareengine.DeleteManagementDnsZoneBindingRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def repair_management_dns_zone_binding(
+        self,
+    ) -> Callable[
+        [vmwareengine.RepairManagementDnsZoneBindingRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
@@ -908,6 +1547,36 @@ class VmwareEngineTransport(abc.ABC):
             vmwareengine.ListPrivateConnectionPeeringRoutesResponse,
             Awaitable[vmwareengine.ListPrivateConnectionPeeringRoutesResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def grant_dns_bind_permission(
+        self,
+    ) -> Callable[
+        [vmwareengine.GrantDnsBindPermissionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_dns_bind_permission(
+        self,
+    ) -> Callable[
+        [vmwareengine.GetDnsBindPermissionRequest],
+        Union[
+            vmwareengine_resources.DnsBindPermission,
+            Awaitable[vmwareengine_resources.DnsBindPermission],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def revoke_dns_bind_permission(
+        self,
+    ) -> Callable[
+        [vmwareengine.RevokeDnsBindPermissionRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.2...google-cloud-securitycentermanagement-v0.1.3) (2024-01-19)
+
+
+### Documentation
+
+* [google-cloud-securitycentermanagement] update documentation for UpdateSecurityHealthAnalyticsCustomModule update_mask field ([#12196](https://github.com/googleapis/google-cloud-python/issues/12196)) ([c7cf0a1](https://github.com/googleapis/google-cloud-python/commit/c7cf0a1c754091fb5b141dd7a9238c63f9d1f36e))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.1...google-cloud-securitycentermanagement-v0.1.2) (2024-01-08)
 
 

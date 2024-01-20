@@ -283,6 +283,396 @@ class ListClustersAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListNodesPager:
+    """A pager for iterating through ``list_nodes`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListNodesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``nodes`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListNodes`` requests and continue to iterate
+    through the ``nodes`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListNodesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., vmwareengine.ListNodesResponse],
+        request: vmwareengine.ListNodesRequest,
+        response: vmwareengine.ListNodesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListNodesRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListNodesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListNodesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[vmwareengine.ListNodesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[vmwareengine_resources.Node]:
+        for page in self.pages:
+            yield from page.nodes
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListNodesAsyncPager:
+    """A pager for iterating through ``list_nodes`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListNodesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``nodes`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListNodes`` requests and continue to iterate
+    through the ``nodes`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListNodesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmwareengine.ListNodesResponse]],
+        request: vmwareengine.ListNodesRequest,
+        response: vmwareengine.ListNodesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListNodesRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListNodesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListNodesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[vmwareengine.ListNodesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.Node]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.nodes:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListExternalAddressesPager:
+    """A pager for iterating through ``list_external_addresses`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListExternalAddressesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``external_addresses`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListExternalAddresses`` requests and continue to iterate
+    through the ``external_addresses`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListExternalAddressesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., vmwareengine.ListExternalAddressesResponse],
+        request: vmwareengine.ListExternalAddressesRequest,
+        response: vmwareengine.ListExternalAddressesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListExternalAddressesRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListExternalAddressesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListExternalAddressesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[vmwareengine.ListExternalAddressesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[vmwareengine_resources.ExternalAddress]:
+        for page in self.pages:
+            yield from page.external_addresses
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListExternalAddressesAsyncPager:
+    """A pager for iterating through ``list_external_addresses`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListExternalAddressesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``external_addresses`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListExternalAddresses`` requests and continue to iterate
+    through the ``external_addresses`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListExternalAddressesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmwareengine.ListExternalAddressesResponse]],
+        request: vmwareengine.ListExternalAddressesRequest,
+        response: vmwareengine.ListExternalAddressesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListExternalAddressesRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListExternalAddressesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListExternalAddressesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[vmwareengine.ListExternalAddressesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.ExternalAddress]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.external_addresses:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class FetchNetworkPolicyExternalAddressesPager:
+    """A pager for iterating through ``fetch_network_policy_external_addresses`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.FetchNetworkPolicyExternalAddressesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``external_addresses`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``FetchNetworkPolicyExternalAddresses`` requests and continue to iterate
+    through the ``external_addresses`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.FetchNetworkPolicyExternalAddressesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., vmwareengine.FetchNetworkPolicyExternalAddressesResponse],
+        request: vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
+        response: vmwareengine.FetchNetworkPolicyExternalAddressesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.FetchNetworkPolicyExternalAddressesRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.FetchNetworkPolicyExternalAddressesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(
+        self,
+    ) -> Iterator[vmwareengine.FetchNetworkPolicyExternalAddressesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[vmwareengine_resources.ExternalAddress]:
+        for page in self.pages:
+            yield from page.external_addresses
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class FetchNetworkPolicyExternalAddressesAsyncPager:
+    """A pager for iterating through ``fetch_network_policy_external_addresses`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.FetchNetworkPolicyExternalAddressesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``external_addresses`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``FetchNetworkPolicyExternalAddresses`` requests and continue to iterate
+    through the ``external_addresses`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.FetchNetworkPolicyExternalAddressesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[vmwareengine.FetchNetworkPolicyExternalAddressesResponse]
+        ],
+        request: vmwareengine.FetchNetworkPolicyExternalAddressesRequest,
+        response: vmwareengine.FetchNetworkPolicyExternalAddressesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.FetchNetworkPolicyExternalAddressesRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.FetchNetworkPolicyExternalAddressesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[vmwareengine.FetchNetworkPolicyExternalAddressesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.ExternalAddress]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.external_addresses:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListSubnetsPager:
     """A pager for iterating through ``list_subnets`` requests.
 
@@ -411,6 +801,264 @@ class ListSubnetsAsyncPager:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
 
 
+class ListExternalAccessRulesPager:
+    """A pager for iterating through ``list_external_access_rules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListExternalAccessRulesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``external_access_rules`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListExternalAccessRules`` requests and continue to iterate
+    through the ``external_access_rules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListExternalAccessRulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., vmwareengine.ListExternalAccessRulesResponse],
+        request: vmwareengine.ListExternalAccessRulesRequest,
+        response: vmwareengine.ListExternalAccessRulesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListExternalAccessRulesRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListExternalAccessRulesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListExternalAccessRulesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[vmwareengine.ListExternalAccessRulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[vmwareengine_resources.ExternalAccessRule]:
+        for page in self.pages:
+            yield from page.external_access_rules
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListExternalAccessRulesAsyncPager:
+    """A pager for iterating through ``list_external_access_rules`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListExternalAccessRulesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``external_access_rules`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListExternalAccessRules`` requests and continue to iterate
+    through the ``external_access_rules`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListExternalAccessRulesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmwareengine.ListExternalAccessRulesResponse]],
+        request: vmwareengine.ListExternalAccessRulesRequest,
+        response: vmwareengine.ListExternalAccessRulesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListExternalAccessRulesRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListExternalAccessRulesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListExternalAccessRulesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[vmwareengine.ListExternalAccessRulesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.ExternalAccessRule]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.external_access_rules:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListLoggingServersPager:
+    """A pager for iterating through ``list_logging_servers`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListLoggingServersResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``logging_servers`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListLoggingServers`` requests and continue to iterate
+    through the ``logging_servers`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListLoggingServersResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., vmwareengine.ListLoggingServersResponse],
+        request: vmwareengine.ListLoggingServersRequest,
+        response: vmwareengine.ListLoggingServersResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListLoggingServersRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListLoggingServersResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListLoggingServersRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[vmwareengine.ListLoggingServersResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[vmwareengine_resources.LoggingServer]:
+        for page in self.pages:
+            yield from page.logging_servers
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListLoggingServersAsyncPager:
+    """A pager for iterating through ``list_logging_servers`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListLoggingServersResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``logging_servers`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListLoggingServers`` requests and continue to iterate
+    through the ``logging_servers`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListLoggingServersResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmwareengine.ListLoggingServersResponse]],
+        request: vmwareengine.ListLoggingServersRequest,
+        response: vmwareengine.ListLoggingServersResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListLoggingServersRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListLoggingServersResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListLoggingServersRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[vmwareengine.ListLoggingServersResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.LoggingServer]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.logging_servers:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
 class ListNodeTypesPager:
     """A pager for iterating through ``list_node_types`` requests.
 
@@ -531,6 +1179,262 @@ class ListNodeTypesAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.node_types:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListNetworkPeeringsPager:
+    """A pager for iterating through ``list_network_peerings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListNetworkPeeringsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``network_peerings`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListNetworkPeerings`` requests and continue to iterate
+    through the ``network_peerings`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListNetworkPeeringsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., vmwareengine.ListNetworkPeeringsResponse],
+        request: vmwareengine.ListNetworkPeeringsRequest,
+        response: vmwareengine.ListNetworkPeeringsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListNetworkPeeringsRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListNetworkPeeringsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListNetworkPeeringsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[vmwareengine.ListNetworkPeeringsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[vmwareengine_resources.NetworkPeering]:
+        for page in self.pages:
+            yield from page.network_peerings
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListNetworkPeeringsAsyncPager:
+    """A pager for iterating through ``list_network_peerings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListNetworkPeeringsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``network_peerings`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListNetworkPeerings`` requests and continue to iterate
+    through the ``network_peerings`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListNetworkPeeringsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmwareengine.ListNetworkPeeringsResponse]],
+        request: vmwareengine.ListNetworkPeeringsRequest,
+        response: vmwareengine.ListNetworkPeeringsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListNetworkPeeringsRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListNetworkPeeringsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListNetworkPeeringsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[vmwareengine.ListNetworkPeeringsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.NetworkPeering]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.network_peerings:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListPeeringRoutesPager:
+    """A pager for iterating through ``list_peering_routes`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListPeeringRoutesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``peering_routes`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListPeeringRoutes`` requests and continue to iterate
+    through the ``peering_routes`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListPeeringRoutesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., vmwareengine.ListPeeringRoutesResponse],
+        request: vmwareengine.ListPeeringRoutesRequest,
+        response: vmwareengine.ListPeeringRoutesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListPeeringRoutesRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListPeeringRoutesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListPeeringRoutesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[vmwareengine.ListPeeringRoutesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[vmwareengine_resources.PeeringRoute]:
+        for page in self.pages:
+            yield from page.peering_routes
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListPeeringRoutesAsyncPager:
+    """A pager for iterating through ``list_peering_routes`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListPeeringRoutesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``peering_routes`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListPeeringRoutes`` requests and continue to iterate
+    through the ``peering_routes`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListPeeringRoutesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[vmwareengine.ListPeeringRoutesResponse]],
+        request: vmwareengine.ListPeeringRoutesRequest,
+        response: vmwareengine.ListPeeringRoutesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListPeeringRoutesRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListPeeringRoutesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListPeeringRoutesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[vmwareengine.ListPeeringRoutesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[vmwareengine_resources.PeeringRoute]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.peering_routes:
                     yield response
 
         return async_generator()
@@ -787,6 +1691,140 @@ class ListNetworkPoliciesAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.network_policies:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListManagementDnsZoneBindingsPager:
+    """A pager for iterating through ``list_management_dns_zone_bindings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListManagementDnsZoneBindingsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``management_dns_zone_bindings`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListManagementDnsZoneBindings`` requests and continue to iterate
+    through the ``management_dns_zone_bindings`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListManagementDnsZoneBindingsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., vmwareengine.ListManagementDnsZoneBindingsResponse],
+        request: vmwareengine.ListManagementDnsZoneBindingsRequest,
+        response: vmwareengine.ListManagementDnsZoneBindingsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListManagementDnsZoneBindingsRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListManagementDnsZoneBindingsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListManagementDnsZoneBindingsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[vmwareengine.ListManagementDnsZoneBindingsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[vmwareengine_resources.ManagementDnsZoneBinding]:
+        for page in self.pages:
+            yield from page.management_dns_zone_bindings
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListManagementDnsZoneBindingsAsyncPager:
+    """A pager for iterating through ``list_management_dns_zone_bindings`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.vmwareengine_v1.types.ListManagementDnsZoneBindingsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``management_dns_zone_bindings`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListManagementDnsZoneBindings`` requests and continue to iterate
+    through the ``management_dns_zone_bindings`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.vmwareengine_v1.types.ListManagementDnsZoneBindingsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[vmwareengine.ListManagementDnsZoneBindingsResponse]
+        ],
+        request: vmwareengine.ListManagementDnsZoneBindingsRequest,
+        response: vmwareengine.ListManagementDnsZoneBindingsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.vmwareengine_v1.types.ListManagementDnsZoneBindingsRequest):
+                The initial request object.
+            response (google.cloud.vmwareengine_v1.types.ListManagementDnsZoneBindingsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = vmwareengine.ListManagementDnsZoneBindingsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[vmwareengine.ListManagementDnsZoneBindingsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(
+        self,
+    ) -> AsyncIterator[vmwareengine_resources.ManagementDnsZoneBinding]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.management_dns_zone_bindings:
                     yield response
 
         return async_generator()
