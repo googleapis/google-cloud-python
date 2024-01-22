@@ -22,6 +22,7 @@ import pytest
 import pytz
 
 import bigframes
+import bigframes.features
 from bigframes.ml import core
 import tests.system.utils
 
@@ -263,7 +264,6 @@ def test_model_predict(penguins_bqml_linear_model: core.BqmlModel, new_penguins_
 def test_model_predict_with_unnamed_index(
     penguins_bqml_linear_model: core.BqmlModel, new_penguins_df
 ):
-
     # This will result in an index that lacks a name, which the ML library will
     # need to persist through the call to ML.PREDICT
     new_penguins_df = new_penguins_df.reset_index()
@@ -295,7 +295,11 @@ def test_remote_model_predict(
     expected = pd.DataFrame(
         {"predicted_body_mass_g": [[3739.54], [3675.79], [3619.54]]},
         index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
-        dtype=pd.ArrowDtype(pa.list_(pa.float64())),
+        dtype=(
+            pd.ArrowDtype(pa.list_(pa.float64()))
+            if bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable
+            else "object"
+        ),
     )
     predictions = bqml_linear_remote_model.predict(new_penguins_df).to_pandas()
     pd.testing.assert_frame_equal(

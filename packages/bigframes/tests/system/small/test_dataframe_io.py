@@ -30,6 +30,7 @@ import typing
 
 import bigframes
 import bigframes.dataframe
+import bigframes.features
 import bigframes.pandas as bpd
 
 
@@ -57,7 +58,12 @@ def test_to_pandas_array_struct_correct_result(session):
     expected = pd.DataFrame(
         {
             "array_column": pd.Series(
-                [[1, 3, 2]], dtype=pd.ArrowDtype(pa.list_(pa.int64()))
+                [[1, 3, 2]],
+                dtype=(
+                    pd.ArrowDtype(pa.list_(pa.int64()))
+                    if bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable
+                    else "object"
+                ),
             ),
             "struct_column": pd.Series(
                 [{"string_field": "a", "float_field": 1.2}],

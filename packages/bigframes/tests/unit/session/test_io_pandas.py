@@ -23,7 +23,27 @@ import pandas.testing
 import pyarrow  # type: ignore
 import pytest
 
+import bigframes.features
 import bigframes.session._io.pandas
+
+_LIST_OF_SCALARS = [
+    [1, 2, 3],
+    [],
+    [4, 5, 6],
+]
+_LIST_OF_STRUCTS = [
+    [
+        {"version": 1, "package": "numpy"},
+        {"version": 2, "package": "pandas"},
+        {"version": 3, "package": "pyarrow"},
+    ],
+    [],
+    [
+        {"version": 4, "package": "awkward-pandas"},
+        {"version": 5, "package": "cyberpandas"},
+        {"version": 6, "package": "geopandas"},
+    ],
+]
 
 
 @pytest.mark.parametrize(
@@ -183,6 +203,111 @@ import bigframes.session._io.pandas
                 }
             ),
             id="arrow-dtypes",
+        ),
+        pytest.param(
+            pyarrow.Table.from_pydict(
+                {
+                    "listofscalars": pyarrow.array(
+                        _LIST_OF_SCALARS,
+                        type=pyarrow.list_(pyarrow.int64()),
+                    ),
+                    "listofstructs": pyarrow.array(
+                        _LIST_OF_STRUCTS,
+                        type=pyarrow.list_(
+                            pyarrow.struct(
+                                [
+                                    ("version", pyarrow.int64()),
+                                    ("package", pyarrow.string()),
+                                ]
+                            )
+                        ),
+                    ),
+                },
+            ),
+            {
+                "listofscalars": pandas.ArrowDtype(pyarrow.list_(pyarrow.int64())),
+                "listofstructs": pandas.ArrowDtype(
+                    pyarrow.list_(
+                        pyarrow.struct(
+                            [
+                                ("version", pyarrow.int64()),
+                                ("package", pyarrow.string()),
+                            ]
+                        )
+                    )
+                ),
+            },
+            pandas.DataFrame(
+                {
+                    "listofscalars": pandas.Series(_LIST_OF_SCALARS, dtype="object"),
+                    "listofstructs": pandas.Series(_LIST_OF_STRUCTS, dtype="object"),
+                },
+            ),
+            marks=pytest.mark.skipif(
+                bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable,
+                reason="no need to use object dtype for ARRAY in pandas 2.x",
+            ),
+            id="nested-dtypes-pandas-1-x",
+        ),
+        pytest.param(
+            pyarrow.Table.from_pydict(
+                {
+                    "listofscalars": pyarrow.array(
+                        _LIST_OF_SCALARS,
+                        type=pyarrow.list_(pyarrow.int64()),
+                    ),
+                    "listofstructs": pyarrow.array(
+                        _LIST_OF_STRUCTS,
+                        type=pyarrow.list_(
+                            pyarrow.struct(
+                                [
+                                    ("version", pyarrow.int64()),
+                                    ("package", pyarrow.string()),
+                                ]
+                            )
+                        ),
+                    ),
+                },
+            ),
+            {
+                "listofscalars": pandas.ArrowDtype(pyarrow.list_(pyarrow.int64())),
+                "listofstructs": pandas.ArrowDtype(
+                    pyarrow.list_(
+                        pyarrow.struct(
+                            [
+                                ("version", pyarrow.int64()),
+                                ("package", pyarrow.string()),
+                            ]
+                        )
+                    )
+                ),
+            },
+            pandas.DataFrame(
+                {
+                    "listofscalars": pandas.Series(
+                        _LIST_OF_SCALARS,
+                        dtype=pandas.ArrowDtype(pyarrow.list_(pyarrow.int64())),
+                    ),
+                    "listofstructs": pandas.Series(
+                        _LIST_OF_STRUCTS,
+                        dtype=pandas.ArrowDtype(
+                            pyarrow.list_(
+                                pyarrow.struct(
+                                    [
+                                        ("version", pyarrow.int64()),
+                                        ("package", pyarrow.string()),
+                                    ]
+                                )
+                            )
+                        ),
+                    ),
+                },
+            ),
+            marks=pytest.mark.skipif(
+                not bigframes.features.PANDAS_VERSIONS.is_arrow_list_dtype_usable,
+                reason="Arrow list type broken in pandas 1.x",
+            ),
+            id="nested-dtypes-pandas-2-x",
         ),
         pytest.param(
             pyarrow.Table.from_pydict(
