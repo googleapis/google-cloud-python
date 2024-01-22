@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.4.0...google-ai-generativelanguage-v0.4.1) (2024-01-22)
+
+
+### Documentation
+
+* [google-ai-generativelanguage] Fixed minor documentation typos for field `function_declarations` in message `google.ai.generativelanguage.v1beta.Tool` ([#12206](https://github.com/googleapis/google-cloud-python/issues/12206)) ([52957f3](https://github.com/googleapis/google-cloud-python/commit/52957f38e2d5dca5e873cfc7239a6ce469ed541f))
+
 ## [0.4.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.3.5...google-ai-generativelanguage-v0.4.0) (2023-12-09)
 
 
