@@ -36,6 +36,15 @@ __protobuf__ = proto.module(
 class StructuredQuery(proto.Message):
     r"""A Firestore query.
 
+    The query stages are executed in the following order:
+
+    1. from
+    2. where
+    3. select
+    4. order_by + start_at + end_at
+    5. offset
+    6. limit
+
     Attributes:
         select (google.cloud.firestore_v1.types.StructuredQuery.Projection):
             Optional sub-set of the fields to return.
