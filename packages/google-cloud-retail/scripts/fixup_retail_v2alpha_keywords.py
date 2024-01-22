@@ -56,6 +56,7 @@ class retailCallTransformer(cst.CSTTransformer):
         'delete_model': ('name', ),
         'delete_product': ('name', 'force', ),
         'delete_serving_config': ('name', ),
+        'export_analytics_metrics': ('catalog', 'output_config', 'filter', ),
         'get_attributes_config': ('name', ),
         'get_completion_config': ('name', ),
         'get_control': ('name', ),

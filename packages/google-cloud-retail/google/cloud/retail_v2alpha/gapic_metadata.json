@@ -5,6 +5,40 @@
   "protoPackage": "google.cloud.retail.v2alpha",
   "schema": "1.0",
   "services": {
+    "AnalyticsService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AnalyticsServiceClient",
+          "rpcs": {
+            "ExportAnalyticsMetrics": {
+              "methods": [
+                "export_analytics_metrics"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AnalyticsServiceAsyncClient",
+          "rpcs": {
+            "ExportAnalyticsMetrics": {
+              "methods": [
+                "export_analytics_metrics"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AnalyticsServiceClient",
+          "rpcs": {
+            "ExportAnalyticsMetrics": {
+              "methods": [
+                "export_analytics_metrics"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CatalogService": {
       "clients": {
         "grpc": {
