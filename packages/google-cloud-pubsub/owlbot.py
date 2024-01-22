@@ -366,16 +366,18 @@ s.replace(
         session.install("-e", ".[all]")
         session.install(MYPY_VERSION)
 
-        # Just install the type info directly, since "mypy --install-types" might
-        # require an additional pass.
-        session.install("types-protobuf", "types-setuptools")
-
         # Version 2.1.1 of google-api-core version is the first type-checked release.
         # Version 2.2.0 of google-cloud-core version is the first type-checked release.
         session.install(
             "google-api-core[grpc]>=2.1.1",
             "google-cloud-core>=2.2.0",
         )
+
+        # Just install the type info directly, since "mypy --install-types" might
+        # require an additional pass.
+        # Exclude types-protobuf==4.24.0.20240106
+        # See https://github.com/python/typeshed/issues/11254
+        session.install("types-protobuf!=4.24.0.20240106", "types-setuptools")
 
         # TODO: Only check the hand-written layer, the generated code does not pass
         # mypy checks yet.
