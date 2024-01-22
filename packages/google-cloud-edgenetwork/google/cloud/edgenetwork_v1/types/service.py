@@ -1158,12 +1158,38 @@ class DiagnoseNetworkResponse(proto.Message):
             subnet_status (MutableSequence[google.cloud.edgenetwork_v1.types.SubnetStatus]):
                 A list of status for the subnets under the
                 current network.
+            macsec_status_internal_links (google.cloud.edgenetwork_v1.types.DiagnoseNetworkResponse.NetworkStatus.MacsecStatus):
+                The MACsec status of internal links.
         """
+
+        class MacsecStatus(proto.Enum):
+            r"""Denotes the status of MACsec sessions for the links of a
+            zone.
+
+            Values:
+                MACSEC_STATUS_UNSPECIFIED (0):
+                    MACsec status not specified, likely due to
+                    missing metrics.
+                SECURE (1):
+                    All relevant links have at least one MACsec
+                    session up.
+                UNSECURE (2):
+                    At least one relevant link does not have any
+                    MACsec sessions up.
+            """
+            MACSEC_STATUS_UNSPECIFIED = 0
+            SECURE = 1
+            UNSECURE = 2
 
         subnet_status: MutableSequence[resources.SubnetStatus] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
             message=resources.SubnetStatus,
+        )
+        macsec_status_internal_links: "DiagnoseNetworkResponse.NetworkStatus.MacsecStatus" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="DiagnoseNetworkResponse.NetworkStatus.MacsecStatus",
         )
 
     update_time: timestamp_pb2.Timestamp = proto.Field(
