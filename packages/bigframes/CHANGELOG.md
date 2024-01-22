@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [0.19.2](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.19.1...v0.19.2) (2024-01-22)
+
+
+### Bug Fixes
+
+* Read_gbq large response issue ([#332](https://github.com/googleapis/python-bigquery-dataframes/issues/332)) ([b8178b9](https://github.com/googleapis/python-bigquery-dataframes/commit/b8178b9a47958d9176d99dfd8833556a64d9724d))
+* Use object dtype for ARRAY columns in `to_pandas()` with pandas 1.x ([#329](https://github.com/googleapis/python-bigquery-dataframes/issues/329)) ([374ddb5](https://github.com/googleapis/python-bigquery-dataframes/commit/374ddb534777895d93a1e2ae2f9c6dbe5f10bf8c))
+
+
+### Documentation
+
+* Add `DataFrame.applymap` documentation ([#326](https://github.com/googleapis/python-bigquery-dataframes/issues/326)) ([bd531a1](https://github.com/googleapis/python-bigquery-dataframes/commit/bd531a1557c08bcee6a0d275747f0939cdd33e81))
+* Add code samples for series methods ([#323](https://github.com/googleapis/python-bigquery-dataframes/issues/323)) ([32cc6fa](https://github.com/googleapis/python-bigquery-dataframes/commit/32cc6fa73dea80e31985d380d550d8042e5f5566))
+* Add remote model requirements ([#333](https://github.com/googleapis/python-bigquery-dataframes/issues/333)) ([c91f70c](https://github.com/googleapis/python-bigquery-dataframes/commit/c91f70ca7b9793cc62578d7845c3aa31cf8a4507))
+
 ## [0.19.1](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.19.0...v0.19.1) (2024-01-17)
 
 
