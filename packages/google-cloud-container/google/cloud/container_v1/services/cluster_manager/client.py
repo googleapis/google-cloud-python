@@ -2756,8 +2756,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.GetJSONWebKeysResponse:
         r"""Gets the public component of the cluster signing keys
         in JSON Web Key format.
-        This API is not yet intended for general use, and is not
-        available for all clusters.
 
         .. code-block:: python
 

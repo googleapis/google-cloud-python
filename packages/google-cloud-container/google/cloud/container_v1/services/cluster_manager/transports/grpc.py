@@ -724,8 +724,6 @@ class ClusterManagerGrpcTransport(ClusterManagerTransport):
 
         Gets the public component of the cluster signing keys
         in JSON Web Key format.
-        This API is not yet intended for general use, and is not
-        available for all clusters.
 
         Returns:
             Callable[[~.GetJSONWebKeysRequest],
