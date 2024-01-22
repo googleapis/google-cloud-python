@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.7...google-cloud-batch-v0.17.8) (2024-01-22)
+
+
+### Bug Fixes
+
+* **v1alpha:** [google-cloud-batch] remove deprecated field enableOslogin ([#12210](https://github.com/googleapis/google-cloud-python/issues/12210)) ([527862b](https://github.com/googleapis/google-cloud-python/commit/527862b9f38f9ef47b33584912d18aed191aaa6a))
+
 ## [0.17.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.6...google-cloud-batch-v0.17.7) (2024-01-12)
 
 

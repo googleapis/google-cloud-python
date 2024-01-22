@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.38.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.37.0...google-cloud-container-v2.38.0) (2024-01-22)
+
+
+### Features
+
+* Add fields desired_in_transit_encryption_config and in_transit_encryption_config ([c25ed93](https://github.com/googleapis/google-cloud-python/commit/c25ed93f4b0ffcfad99818e47dfcaf1bafc7c851))
+
+
+### Documentation
+
+* Remove Not GA comments for GetOpenIDConfig and GetJSONWebKeys ([c25ed93](https://github.com/googleapis/google-cloud-python/commit/c25ed93f4b0ffcfad99818e47dfcaf1bafc7c851))
+
 ## [2.37.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.36.0...google-cloud-container-v2.37.0) (2024-01-04)
 
 

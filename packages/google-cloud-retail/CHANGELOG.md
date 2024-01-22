@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.17.0...google-cloud-retail-v1.18.0) (2024-01-22)
+
+
+### Features
+
+* **v2alpha:** Add analytics service ([266cb0c](https://github.com/googleapis/google-cloud-python/commit/266cb0cbf245e28ac61ae940f83d732b768fc38f))
+* **v2beta:** Add analytics service ([266cb0c](https://github.com/googleapis/google-cloud-python/commit/266cb0cbf245e28ac61ae940f83d732b768fc38f))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.16.3...google-cloud-retail-v1.17.0) (2023-12-07)
 
 
