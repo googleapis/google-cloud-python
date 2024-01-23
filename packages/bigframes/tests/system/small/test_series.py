@@ -2987,3 +2987,13 @@ def test_sample(scalars_dfs, frac, n, random_state):
     n = 1 if n is None else n
     expected_sample_size = round(frac * scalars_df.shape[0]) if frac is not None else n
     assert bf_result.shape[0] == expected_sample_size
+
+
+def test_series_iter(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    for bf_i, pd_i in zip(
+        scalars_df_index["int64_too"], scalars_pandas_df_index["int64_too"]
+    ):
+        assert bf_i == pd_i

@@ -155,7 +155,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def __iter__(self) -> typing.Iterator:
         return itertools.chain.from_iterable(
-            map(lambda x: x.index, self._block.to_pandas_batches())
+            map(lambda x: x.squeeze(axis=1), self._block.to_pandas_batches())
         )
 
     def copy(self) -> Series:

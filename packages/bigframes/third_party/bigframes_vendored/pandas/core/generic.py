@@ -50,10 +50,10 @@ class NDFrame(indexing.IndexingMixin):
 
     def __iter__(self) -> Iterator:
         """
-        Iterate over info axis.
+        Iterate over column axis for DataFrame, or values for Series.
 
-        Returns
-            iterator: Info axis as iterator.
+        Returns:
+            iterator
 
         **Examples:**
             >>> import bigframes.pandas as bpd
@@ -71,9 +71,9 @@ class NDFrame(indexing.IndexingMixin):
             >>> series = bpd.Series(["a", "b", "c"], index=[10, 20, 30])
             >>> for x in series:
             ...     print(x)
-            10
-            20
-            30
+            a
+            b
+            c
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
