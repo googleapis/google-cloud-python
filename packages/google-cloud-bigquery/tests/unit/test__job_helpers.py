@@ -23,6 +23,9 @@ import pytest
 
 from google.cloud.bigquery.client import Client
 from google.cloud.bigquery import _job_helpers
+from google.cloud.bigquery.job import copy_ as job_copy
+from google.cloud.bigquery.job import extract as job_extract
+from google.cloud.bigquery.job import load as job_load
 from google.cloud.bigquery.job import query as job_query
 from google.cloud.bigquery.query import ConnectionProperty, ScalarQueryParameter
 
@@ -57,9 +60,34 @@ def make_query_response(
 @pytest.mark.parametrize(
     ("job_config", "expected"),
     (
-        (None, make_query_request()),
-        (job_query.QueryJobConfig(), make_query_request()),
-        (
+        pytest.param(
+            None,
+            make_query_request(),
+            id="job_config=None-default-request",
+        ),
+        pytest.param(
+            job_query.QueryJobConfig(),
+            make_query_request(),
+            id="job_config=QueryJobConfig()-default-request",
+        ),
+        pytest.param(
+            job_query.QueryJobConfig.from_api_repr(
+                {
+                    "unknownTopLevelProperty": "some-test-value",
+                    "query": {
+                        "unknownQueryProperty": "some-other-value",
+                    },
+                },
+            ),
+            make_query_request(
+                {
+                    "unknownTopLevelProperty": "some-test-value",
+                    "unknownQueryProperty": "some-other-value",
+                }
+            ),
+            id="job_config-with-unknown-properties-includes-all-properties-in-request",
+        ),
+        pytest.param(
             job_query.QueryJobConfig(default_dataset="my-project.my_dataset"),
             make_query_request(
                 {
@@ -69,17 +97,24 @@ def make_query_response(
                     }
                 }
             ),
+            id="job_config-with-default_dataset",
         ),
-        (job_query.QueryJobConfig(dry_run=True), make_query_request({"dryRun": True})),
-        (
+        pytest.param(
+            job_query.QueryJobConfig(dry_run=True),
+            make_query_request({"dryRun": True}),
+            id="job_config-with-dry_run",
+        ),
+        pytest.param(
             job_query.QueryJobConfig(use_query_cache=False),
             make_query_request({"useQueryCache": False}),
+            id="job_config-with-use_query_cache",
         ),
-        (
+        pytest.param(
             job_query.QueryJobConfig(use_legacy_sql=True),
             make_query_request({"useLegacySql": True}),
+            id="job_config-with-use_legacy_sql",
         ),
-        (
+        pytest.param(
             job_query.QueryJobConfig(
                 query_parameters=[
                     ScalarQueryParameter("named_param1", "STRING", "param-value"),
@@ -103,8 +138,9 @@ def make_query_response(
                     ],
                 }
             ),
+            id="job_config-with-query_parameters-named",
         ),
-        (
+        pytest.param(
             job_query.QueryJobConfig(
                 query_parameters=[
                     ScalarQueryParameter(None, "STRING", "param-value"),
@@ -126,8 +162,9 @@ def make_query_response(
                     ],
                 }
             ),
+            id="job_config-with-query_parameters-positional",
         ),
-        (
+        pytest.param(
             job_query.QueryJobConfig(
                 connection_properties=[
                     ConnectionProperty(key="time_zone", value="America/Chicago"),
@@ -142,14 +179,17 @@ def make_query_response(
                     ]
                 }
             ),
+            id="job_config-with-connection_properties",
         ),
-        (
+        pytest.param(
             job_query.QueryJobConfig(labels={"abc": "def"}),
             make_query_request({"labels": {"abc": "def"}}),
+            id="job_config-with-labels",
         ),
-        (
+        pytest.param(
             job_query.QueryJobConfig(maximum_bytes_billed=987654),
             make_query_request({"maximumBytesBilled": "987654"}),
+            id="job_config-with-maximum_bytes_billed",
         ),
     ),
 )
@@ -157,6 +197,19 @@ def test__to_query_request(job_config, expected):
     result = _job_helpers._to_query_request(job_config, query="SELECT 1")
     expected["query"] = "SELECT 1"
     assert result == expected
+
+
+@pytest.mark.parametrize(
+    ("job_config", "invalid_key"),
+    (
+        pytest.param(job_copy.CopyJobConfig(), "copy", id="copy"),
+        pytest.param(job_extract.ExtractJobConfig(), "extract", id="extract"),
+        pytest.param(job_load.LoadJobConfig(), "load", id="load"),
+    ),
+)
+def test__to_query_request_raises_for_invalid_config(job_config, invalid_key):
+    with pytest.raises(ValueError, match=f"{repr(invalid_key)} in job_config"):
+        _job_helpers._to_query_request(job_config, query="SELECT 1")
 
 
 def test__to_query_job_defaults():

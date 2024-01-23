@@ -166,6 +166,14 @@ def query_jobs_insert(
     return future
 
 
+def _validate_job_config(request_body: Dict[str, Any], invalid_key: str):
+    """Catch common mistakes, such as passing in a *JobConfig object of the
+    wrong type.
+    """
+    if invalid_key in request_body:
+        raise ValueError(f"got unexpected key {repr(invalid_key)} in job_config")
+
+
 def _to_query_request(
     job_config: Optional[job.QueryJobConfig] = None,
     *,
@@ -179,17 +187,15 @@ def _to_query_request(
     QueryRequest. If any configuration property is set that is not available in
     jobs.query, it will result in a server-side error.
     """
-    request_body = {}
-    job_config_resource = job_config.to_api_repr() if job_config else {}
-    query_config_resource = job_config_resource.get("query", {})
+    request_body = copy.copy(job_config.to_api_repr()) if job_config else {}
 
+    _validate_job_config(request_body, job.CopyJob._JOB_TYPE)
+    _validate_job_config(request_body, job.ExtractJob._JOB_TYPE)
+    _validate_job_config(request_body, job.LoadJob._JOB_TYPE)
+
+    # Move query.* properties to top-level.
+    query_config_resource = request_body.pop("query", {})
     request_body.update(query_config_resource)
-
-    # These keys are top level in job resource and query resource.
-    if "labels" in job_config_resource:
-        request_body["labels"] = job_config_resource["labels"]
-    if "dryRun" in job_config_resource:
-        request_body["dryRun"] = job_config_resource["dryRun"]
 
     # Default to standard SQL.
     request_body.setdefault("useLegacySql", False)
