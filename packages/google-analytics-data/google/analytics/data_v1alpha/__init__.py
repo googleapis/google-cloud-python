@@ -43,6 +43,7 @@ from .types.analytics_data_api import (
     RunFunnelReportResponse,
     SheetExportAudienceListRequest,
     SheetExportAudienceListResponse,
+    WebhookNotification,
 )
 from .types.data import (
     BetweenFilter,
@@ -196,4 +197,5 @@ __all__ = (
     "UserSegmentExclusion",
     "UserSegmentSequenceGroup",
     "UserSequenceStep",
+    "WebhookNotification",
 )

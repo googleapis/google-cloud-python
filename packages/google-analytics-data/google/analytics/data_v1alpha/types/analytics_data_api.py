@@ -27,6 +27,7 @@ __protobuf__ = proto.module(
     manifest={
         "CreateRecurringAudienceListRequest",
         "RecurringAudienceList",
+        "WebhookNotification",
         "GetRecurringAudienceListRequest",
         "ListRecurringAudienceListsRequest",
         "ListRecurringAudienceListsResponse",
@@ -129,6 +130,27 @@ class RecurringAudienceList(proto.Message):
 
             This list is ordered with the most recently
             created audience list first.
+        webhook_notification (google.analytics.data_v1alpha.types.WebhookNotification):
+            Optional. Configures webhook notifications to
+            be sent from the Google Analytics Data API to
+            your webhook server. Use of webhooks is
+            optional. If unused, you'll need to poll this
+            API to determine when a recurring audience list
+            creates new audience lists. Webhooks allow a
+            notification to be sent to your servers & avoid
+            the need for polling.
+
+            Two POST requests will be sent each time a
+            recurring audience list creates an audience
+            list. This happens once per day until a
+            recurring audience list reaches 0 active days
+            remaining. The first request will be sent
+            showing a newly created audience list in its
+            CREATING state. The second request will be sent
+            after the audience list completes creation
+            (either the ACTIVE or FAILED state).
+
+            This field is a member of `oneof`_ ``_webhook_notification``.
     """
 
     name: str = proto.Field(
@@ -156,6 +178,95 @@ class RecurringAudienceList(proto.Message):
     audience_lists: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=6,
+    )
+    webhook_notification: "WebhookNotification" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        optional=True,
+        message="WebhookNotification",
+    )
+
+
+class WebhookNotification(proto.Message):
+    r"""Configures a long-running operation resource to send a
+    webhook notification from the Google Analytics Data API to your
+    webhook server when the resource updates.
+
+    Notification configurations contain private values & are only
+    visible to your GCP project. Different GCP projects may attach
+    different webhook notifications to the same long-running
+    operation resource.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        uri (str):
+            Optional. The web address that will receive the webhook
+            notification. This address will receive POST requests as the
+            state of the long running operation resource changes. The
+            POST request will contain both a JSON version of the long
+            running operation resource in the body and a
+            ``sentTimestamp`` field. The sent timestamp will specify the
+            unix microseconds since the epoch that the request was sent;
+            this lets you identify replayed notifications.
+
+            An example URI is
+            ``https://us-central1-example-project-id.cloudfunctions.net/example-function-1``.
+
+            The URI must use HTTPS and point to a site with a valid SSL
+            certificate on the web server. The URI must have a maximum
+            string length of 128 characters & use only the allowlisted
+            characters from `RFC
+            1738 <https://www.rfc-editor.org/rfc/rfc1738>`__.
+
+            When your webhook server receives a notification, it is
+            expected to reply with an HTTP response status code of 200
+            within 5 seconds.
+
+            A URI is required to use webhook notifications.
+
+            Requests to this webhook server will contain an ID token
+            authenticating the service account
+            ``google-analytics-audience-export@system.gserviceaccount.com``.
+            To learn more about ID tokens, see
+            https://cloud.google.com/docs/authentication/token-types#id.
+            For Google Cloud Functions, this lets you configure your
+            function to require authentication. In Cloud IAM, you will
+            need to grant the service account permissions to the Cloud
+            Run Invoker (``roles/run.invoker``) & Cloud Functions
+            Invoker (``roles/cloudfunctions.invoker``) roles for the
+            webhook post request to pass Google Cloud Functions
+            authentication. This API can send webhook notifications to
+            arbitrary URIs; for webhook servers other than Google Cloud
+            Functions, this ID token in the authorization bearer header
+            should be ignored if it is not needed.
+
+            This field is a member of `oneof`_ ``_uri``.
+        channel_token (str):
+            Optional. The channel token is an arbitrary string value and
+            must have a maximum string length of 64 characters. Channel
+            tokens allow you to verify the source of a webhook
+            notification. This guards against the message being spoofed.
+            The channel token will be specified in the
+            ``X-Goog-Channel-Token`` HTTP header of the webhook POST
+            request.
+
+            A channel token is not required to use webhook
+            notifications.
+
+            This field is a member of `oneof`_ ``_channel_token``.
+    """
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+        optional=True,
+    )
+    channel_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+        optional=True,
     )
 
 
@@ -427,6 +538,33 @@ class AudienceList(proto.Message):
             and this field will be blank.
 
             This field is a member of `oneof`_ ``_recurring_audience_list``.
+        webhook_notification (google.analytics.data_v1alpha.types.WebhookNotification):
+            Optional. Configures webhook notifications to
+            be sent from the Google Analytics Data API to
+            your webhook server. Use of webhooks is
+            optional. If unused, you'll need to poll this
+            API to determine when an audience list is ready
+            to be used. Webhooks allow a notification to be
+            sent to your servers & avoid the need for
+            polling.
+
+            Either one or two POST requests will be sent to
+            the webhook. The first POST request will be sent
+            immediately showing the newly created audience
+            list in its CREATING state. The second POST
+            request will be sent after the audience list
+            completes creation (either the ACTIVE or FAILED
+            state).
+
+            If identical audience lists are requested in
+            quick succession, the second & subsequent
+            audience lists can be served from cache. In that
+            case, the audience list create method can return
+            an audience list is already ACTIVE. In this
+            scenario, only one POST request will be sent to
+            the webhook.
+
+            This field is a member of `oneof`_ ``_webhook_notification``.
     """
 
     class State(proto.Enum):
@@ -507,6 +645,12 @@ class AudienceList(proto.Message):
         proto.STRING,
         number=12,
         optional=True,
+    )
+    webhook_notification: "WebhookNotification" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        optional=True,
+        message="WebhookNotification",
     )
 
 

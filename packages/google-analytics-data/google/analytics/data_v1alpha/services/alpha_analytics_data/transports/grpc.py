@@ -319,9 +319,9 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         see https://support.google.com/analytics/answer/9267572.
         Audience lists contain the users in each audience.
 
-        This method is introduced at alpha stability with the intention
-        of gathering feedback on syntax and capabilities before entering
-        beta. To give your feedback on this API, complete the `Google
+        This method is available at beta stability at
+        `audienceExports.create <https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties.audienceExports/create>`__.
+        To give your feedback on this API, complete the `Google
         Analytics Audience Export API
         Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
@@ -366,9 +366,9 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         in the ways that are important to your business. To learn more,
         see https://support.google.com/analytics/answer/9267572.
 
-        This method is introduced at alpha stability with the intention
-        of gathering feedback on syntax and capabilities before entering
-        beta. To give your feedback on this API, complete the `Google
+        This method is available at beta stability at
+        `audienceExports.query <https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties.audienceExports/query>`__.
+        To give your feedback on this API, complete the `Google
         Analytics Audience Export API
         Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
@@ -454,9 +454,9 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
         for an introduction to Audience Lists with examples.
 
-        This method is introduced at alpha stability with the intention
-        of gathering feedback on syntax and capabilities before entering
-        beta. To give your feedback on this API, complete the `Google
+        This method is available at beta stability at
+        `audienceExports.get <https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties.audienceExports/get>`__.
+        To give your feedback on this API, complete the `Google
         Analytics Audience Export API
         Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
@@ -497,9 +497,9 @@ class AlphaAnalyticsDataGrpcTransport(AlphaAnalyticsDataTransport):
         List <https://developers.google.com/analytics/devguides/reporting/data/v1/audience-list-basics>`__
         for an introduction to Audience Lists with examples.
 
-        This method is introduced at alpha stability with the intention
-        of gathering feedback on syntax and capabilities before entering
-        beta. To give your feedback on this API, complete the `Google
+        This method is available at beta stability at
+        `audienceExports.list <https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/properties.audienceExports/list>`__.
+        To give your feedback on this API, complete the `Google
         Analytics Audience Export API
         Feedback <https://forms.gle/EeA5u5LW6PEggtCEA>`__ form.
 
