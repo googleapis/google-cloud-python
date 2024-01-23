@@ -85,7 +85,10 @@ def test_method_matches_session(method_name: str):
 
 
 def test_cut_raises_with_labels():
-    with pytest.raises(NotImplementedError, match="Only labels=False"):
+    with pytest.raises(
+        NotImplementedError,
+        match="The 'labels' parameter must be either False or None.",
+    ):
         mock_series = mock.create_autospec(bigframes.pandas.Series, instance=True)
         bigframes.pandas.cut(mock_series, 4, labels=["a", "b", "c", "d"])
 

@@ -129,12 +129,15 @@ def cut(
         if bins.is_overlapping:
             raise ValueError("Overlapping IntervalIndex is not accepted.")
 
-    if labels is not False:
+    if labels is not None and labels is not False:
         raise NotImplementedError(
-            f"Only labels=False is supported in BigQuery DataFrames so far. {constants.FEEDBACK_LINK}"
+            "The 'labels' parameter must be either False or None. "
+            "Please provide a valid value for 'labels'."
         )
 
-    return x._apply_window_op(agg_ops.CutOp(bins), window_spec=core.WindowSpec())
+    return x._apply_window_op(
+        agg_ops.CutOp(bins, labels=labels), window_spec=core.WindowSpec()
+    )
 
 
 def qcut(

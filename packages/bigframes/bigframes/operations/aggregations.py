@@ -229,7 +229,7 @@ class CountOp(AggregateOp):
 
 
 class CutOp(WindowOp):
-    def __init__(self, bins: typing.Union[int, pd.IntervalIndex]):
+    def __init__(self, bins: typing.Union[int, pd.IntervalIndex], labels=None):
         if isinstance(bins, int):
             if not bins > 0:
                 raise ValueError("`bins` should be a positive integer.")
@@ -239,6 +239,8 @@ class CutOp(WindowOp):
             self._bins_int = 0
             self._bins = bins
 
+        self._labels = labels
+
     def _as_ibis(self, x: ibis_types.Column, window=None):
         out = ibis.case()
 
@@ -247,12 +249,37 @@ class CutOp(WindowOp):
             col_max = _apply_window_if_present(x.max(), window)
             bin_width = (col_max - col_min) / self._bins
 
-            for this_bin in range(self._bins_int - 1):
-                out = out.when(
-                    x <= (col_min + (this_bin + 1) * bin_width),
-                    dtypes.literal_to_ibis_scalar(this_bin, force_dtype=Int64Dtype()),
-                )
-            out = out.when(x.notnull(), self._bins - 1)
+            if self._labels is False:
+                for this_bin in range(self._bins_int - 1):
+                    out = out.when(
+                        x <= (col_min + (this_bin + 1) * bin_width),
+                        dtypes.literal_to_ibis_scalar(
+                            this_bin, force_dtype=Int64Dtype()
+                        ),
+                    )
+                out = out.when(x.notnull(), self._bins - 1)
+            else:
+                interval_struct = None
+                adj = (col_max - col_min) * 0.001
+                for this_bin in range(self._bins_int):
+                    left_edge = (
+                        col_min + this_bin * bin_width - (0 if this_bin > 0 else adj)
+                    )
+                    right_edge = col_min + (this_bin + 1) * bin_width
+                    interval_struct = ibis.struct(
+                        {
+                            "left_exclusive": left_edge,
+                            "right_inclusive": right_edge,
+                        }
+                    )
+
+                    if this_bin < self._bins_int - 1:
+                        out = out.when(
+                            x <= (col_min + (this_bin + 1) * bin_width),
+                            interval_struct,
+                        )
+                    else:
+                        out = out.when(x.notnull(), interval_struct)
         else:
             for interval in self._bins:
                 condition = (x > interval.left) & (x <= interval.right)
