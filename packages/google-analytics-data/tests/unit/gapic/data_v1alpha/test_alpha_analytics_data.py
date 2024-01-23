@@ -3535,6 +3535,10 @@ def test_create_audience_list_rest(request_type):
         "error_message": "error_message_value",
         "percentage_completed": 0.2106,
         "recurring_audience_list": "recurring_audience_list_value",
+        "webhook_notification": {
+            "uri": "uri_value",
+            "channel_token": "channel_token_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5074,6 +5078,10 @@ def test_create_recurring_audience_list_rest(request_type):
         "dimensions": [{"dimension_name": "dimension_name_value"}],
         "active_days_remaining": 2213,
         "audience_lists": ["audience_lists_value1", "audience_lists_value2"],
+        "webhook_notification": {
+            "uri": "uri_value",
+            "channel_token": "channel_token_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

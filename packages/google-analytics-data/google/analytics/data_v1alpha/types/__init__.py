@@ -34,6 +34,7 @@ from .analytics_data_api import (
     RunFunnelReportResponse,
     SheetExportAudienceListRequest,
     SheetExportAudienceListResponse,
+    WebhookNotification,
 )
 from .data import (
     BetweenFilter,
@@ -122,6 +123,7 @@ __all__ = (
     "RunFunnelReportResponse",
     "SheetExportAudienceListRequest",
     "SheetExportAudienceListResponse",
+    "WebhookNotification",
     "BetweenFilter",
     "DateRange",
     "Dimension",
