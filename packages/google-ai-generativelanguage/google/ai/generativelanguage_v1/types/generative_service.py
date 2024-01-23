@@ -442,6 +442,9 @@ class EmbedContentRequest(proto.Message):
             Optional. An optional title for the text. Only applicable
             when TaskType is ``RETRIEVAL_DOCUMENT``.
 
+            Note: Specifying a ``title`` for ``RETRIEVAL_DOCUMENT``
+            provides better quality embeddings for retrieval.
+
             This field is a member of `oneof`_ ``_title``.
     """
 
