@@ -339,10 +339,10 @@ class Schema(proto.Message):
 
     Attributes:
         type_ (google.ai.generativelanguage_v1beta.types.Type):
-            Optional. Data type.
+            Required. Data type.
         format_ (str):
             Optional. The format of the data. This is
-            used obnly for primative datatypes. Supported
+            used only for primitive datatypes. Supported
             formats:
 
              for NUMBER type: float, double

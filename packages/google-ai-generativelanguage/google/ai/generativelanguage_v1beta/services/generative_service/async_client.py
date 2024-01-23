@@ -426,6 +426,9 @@ class GenerativeServiceAsyncClient:
                 the last ``Content`` in the list containing the
                 question.
 
+                Note: GenerateAnswer currently only supports queries in
+                English.
+
                 This corresponds to the ``contents`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.

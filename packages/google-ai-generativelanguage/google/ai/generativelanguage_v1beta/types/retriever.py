@@ -50,7 +50,7 @@ class Corpus(proto.Message):
             Example: ``corpora/my-awesome-corpora-123a456b789c``
         display_name (str):
             Optional. The human-readable display name for the
-            ``Corpus``. The display name must be no more than 128
+            ``Corpus``. The display name must be no more than 512
             characters in length, including spaces. Example: "Docs on
             Semantic Retriever".
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -88,7 +88,7 @@ class Document(proto.Message):
     Attributes:
         name (str):
             Immutable. Identifier. The ``Document`` resource name. The
-            ID (name excluding the `corpora/*/documents/` prefix) can
+            ID (name excluding the "corpora/*/documents/" prefix) can
             contain up to 40 characters that are lowercase alphanumeric
             or dashes (-). The ID cannot start or end with a dash. If
             the name is empty on create, a unique name will be derived
@@ -315,7 +315,7 @@ class Chunk(proto.Message):
     Attributes:
         name (str):
             Immutable. Identifier. The ``Chunk`` resource name. The ID
-            (name excluding the `corpora/*/documents/*/chunks/` prefix)
+            (name excluding the "corpora/*/documents/*/chunks/" prefix)
             can contain up to 40 characters that are lowercase
             alphanumeric or dashes (-). The ID cannot start or end with
             a dash. If the name is empty on create, a random
