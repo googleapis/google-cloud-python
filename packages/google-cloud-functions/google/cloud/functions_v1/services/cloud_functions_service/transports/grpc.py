@@ -310,7 +310,7 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
 
         Creates a new function. If a function with the given name
         already exists in the specified project, the long running
-        operation returns an ``ALREADY_EXISTS`` error.
+        operation will return ``ALREADY_EXISTS`` error.
 
         Returns:
             Callable[[~.CreateFunctionRequest],
@@ -364,7 +364,8 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
 
         Deletes a function with the given name from the
         specified project. If the given function is used by some
-        trigger, the trigger is updated to remove this function.
+        trigger, the trigger will be updated to remove this
+        function.
 
         Returns:
             Callable[[~.DeleteFunctionRequest],
@@ -440,13 +441,13 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
            credentials would be used, but that identity does not have
            permissions to upload files to the URL.
 
-        When making an HTTP PUT request, these two headers must be
+        When making a HTTP PUT request, these two headers need to be
         specified:
 
         -  ``content-type: application/zip``
         -  ``x-goog-content-length-range: 0,104857600``
 
-        And this header must NOT be specified:
+        And this header SHOULD NOT be specified:
 
         -  ``Authorization: Bearer YOUR_TOKEN``
 
@@ -478,9 +479,9 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
 
         Returns a signed URL for downloading deployed
         function source code. The URL is only valid for a
-        limited period and must be used within minutes after
+        limited period and should be used within minutes after
         generation.
-        For more information about the signed URL usage, see:
+        For more information about the signed URL usage see:
 
         https://cloud.google.com/storage/docs/access-control/signed-urls
 
@@ -567,8 +568,8 @@ class CloudFunctionsServiceGrpcTransport(CloudFunctionsServiceTransport):
         r"""Return a callable for the test iam permissions method over gRPC.
 
         Tests the specified permissions against the IAM access control
-        policy for a function. If the function does not exist, this
-        returns an empty set of permissions, not a NOT_FOUND error.
+        policy for a function. If the function does not exist, this will
+        return an empty set of permissions, not a NOT_FOUND error.
 
         Returns:
             Callable[[~.TestIamPermissionsRequest],

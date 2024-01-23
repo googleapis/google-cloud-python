@@ -44,7 +44,7 @@ class functionsCallTransformer(cst.CSTTransformer):
         'delete_function': ('name', ),
         'generate_download_url': ('name', 'version_id', ),
         'generate_upload_url': ('parent', 'kms_key_name', ),
-        'get_function': ('name', ),
+        'get_function': ('name', 'version_id', ),
         'get_iam_policy': ('resource', 'options', ),
         'list_functions': ('parent', 'page_size', 'page_token', ),
         'set_iam_policy': ('resource', 'policy', 'update_mask', ),
