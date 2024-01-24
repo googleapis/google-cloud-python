@@ -73,7 +73,7 @@ This is the time to wait per request. To adjust the total wait time, set a
 deadline on the retry object.
 """
 
-job_retry_reasons = "rateLimitExceeded", "backendError"
+job_retry_reasons = "rateLimitExceeded", "backendError", "jobRateLimitExceeded"
 
 
 def _job_should_retry(exc):

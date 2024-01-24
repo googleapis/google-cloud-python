@@ -22,6 +22,10 @@ import google.api_core.exceptions
 import google.api_core.retry
 import freezegun
 
+from google.cloud.bigquery.client import Client
+from google.cloud.bigquery import _job_helpers
+from google.cloud.bigquery.retry import DEFAULT_JOB_RETRY
+
 from .helpers import make_connection
 
 
@@ -240,3 +244,79 @@ def test_raises_on_job_retry_on_result_with_non_retryable_jobs(client):
         ),
     ):
         job.result(job_retry=google.api_core.retry.Retry())
+
+
+def test_query_and_wait_retries_job_for_DDL_queries():
+    """
+    Specific test for retrying DDL queries with "jobRateLimitExceeded" error:
+    https://github.com/googleapis/python-bigquery/issues/1790
+    """
+    freezegun.freeze_time(auto_tick_seconds=1)
+    client = mock.create_autospec(Client)
+    client._call_api.__name__ = "_call_api"
+    client._call_api.__qualname__ = "Client._call_api"
+    client._call_api.__annotations__ = {}
+    client._call_api.__type_params__ = ()
+    client._call_api.side_effect = (
+        {
+            "jobReference": {
+                "projectId": "response-project",
+                "jobId": "abc",
+                "location": "response-location",
+            },
+            "jobComplete": False,
+        },
+        google.api_core.exceptions.InternalServerError(
+            "job_retry me", errors=[{"reason": "jobRateLimitExceeded"}]
+        ),
+        google.api_core.exceptions.BadRequest(
+            "retry me", errors=[{"reason": "jobRateLimitExceeded"}]
+        ),
+        {
+            "jobReference": {
+                "projectId": "response-project",
+                "jobId": "abc",
+                "location": "response-location",
+            },
+            "jobComplete": True,
+            "schema": {
+                "fields": [
+                    {"name": "full_name", "type": "STRING", "mode": "REQUIRED"},
+                    {"name": "age", "type": "INT64", "mode": "NULLABLE"},
+                ],
+            },
+            "rows": [
+                {"f": [{"v": "Whillma Phlyntstone"}, {"v": "27"}]},
+                {"f": [{"v": "Bhetty Rhubble"}, {"v": "28"}]},
+                {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
+                {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
+            ],
+        },
+    )
+    rows = _job_helpers.query_and_wait(
+        client,
+        query="SELECT 1",
+        location="request-location",
+        project="request-project",
+        job_config=None,
+        page_size=None,
+        max_results=None,
+        retry=DEFAULT_JOB_RETRY,
+        job_retry=DEFAULT_JOB_RETRY,
+    )
+    assert len(list(rows)) == 4
+
+    # Relevant docs for the REST API path: https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query
+    # and https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/getQueryResults
+    query_request_path = "/projects/request-project/queries"
+
+    calls = client._call_api.call_args_list
+    _, kwargs = calls[0]
+    assert kwargs["method"] == "POST"
+    assert kwargs["path"] == query_request_path
+
+    # TODO: Add assertion statements for response paths after PR#1797 is fixed
+
+    _, kwargs = calls[3]
+    assert kwargs["method"] == "POST"
+    assert kwargs["path"] == query_request_path
