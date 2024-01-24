@@ -75,6 +75,6 @@
         }
     ],
     "default_version": "v2",
-    "codeowner_team": "@googleapis/api-bigtable",
+    "codeowner_team": "@googleapis/api-bigtable @googleapis/api-bigtable-partners",
     "api_shortname": "bigtable"
 }
