@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.18.3](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.2...google-analytics-data-v0.18.3) (2024-01-24)
+
+
+### Features
+
+* add the `webhook_notification` field to the `AudienceList` resource ([29e65f8](https://github.com/googleapis/google-cloud-python/commit/29e65f8f6e32636e934bd494f15448656f0ce7d7))
+* add the `webhook_notification` field to the `RecurringAudienceList` resource ([29e65f8](https://github.com/googleapis/google-cloud-python/commit/29e65f8f6e32636e934bd494f15448656f0ce7d7))
+* add the `WebhookNotification` type ([29e65f8](https://github.com/googleapis/google-cloud-python/commit/29e65f8f6e32636e934bd494f15448656f0ce7d7))
+
+
+### Documentation
+
+* announce that `ListAudienceLists`, `GetAudienceList`, `QueryAudienceList`, `CreateAudienceList` methods are now available in the v1beta version of the Data API ([29e65f8](https://github.com/googleapis/google-cloud-python/commit/29e65f8f6e32636e934bd494f15448656f0ce7d7))
+
 ## [0.18.2](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.1...google-analytics-data-v0.18.2) (2023-12-09)
 
 

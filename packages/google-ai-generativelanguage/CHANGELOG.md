@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.5.0](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.4.1...google-ai-generativelanguage-v0.5.0) (2024-01-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* Fix content.proto's Schema - `type` should be required
+
+### Features
+
+* Update GenAI libraries to include input_safety_feedback ([d2004d4](https://github.com/googleapis/google-cloud-python/commit/d2004d4a1c95333017b585ba905d5e0c4af45776))
+
+
+### Bug Fixes
+
+* Fix content.proto's Schema - `type` should be required ([d2004d4](https://github.com/googleapis/google-cloud-python/commit/d2004d4a1c95333017b585ba905d5e0c4af45776))
+
+
+### Documentation
+
+* Minor docs updates ([d2004d4](https://github.com/googleapis/google-cloud-python/commit/d2004d4a1c95333017b585ba905d5e0c4af45776))
+* Update summary, improve description for `title` in `EmbedContentRequest` ([d2004d4](https://github.com/googleapis/google-cloud-python/commit/d2004d4a1c95333017b585ba905d5e0c4af45776))
+
 ## [0.4.1](https://github.com/googleapis/google-cloud-python/compare/google-ai-generativelanguage-v0.4.0...google-ai-generativelanguage-v0.4.1) (2024-01-22)
 
 

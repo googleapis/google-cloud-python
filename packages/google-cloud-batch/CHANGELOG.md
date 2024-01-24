@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.17.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.8...google-cloud-batch-v0.17.9) (2024-01-24)
+
+
+### Features
+
+* Add `run_as_non_root` field to allow user's runnable be executed as non root ([7d78274](https://github.com/googleapis/google-cloud-python/commit/7d78274ac9fb2f535e222c538d7908d8705a3314))
+* Add `tags` field in Job's AllocationPolicy field in v1 ([7d78274](https://github.com/googleapis/google-cloud-python/commit/7d78274ac9fb2f535e222c538d7908d8705a3314))
+* Add Batch Image Streaming support for v1 ([7d78274](https://github.com/googleapis/google-cloud-python/commit/7d78274ac9fb2f535e222c538d7908d8705a3314))
+
+
+### Documentation
+
+* [google-cloud-batch] Polish the field descriptions for enableImageStreaming and CloudLoggingOptions ([#12216](https://github.com/googleapis/google-cloud-python/issues/12216)) ([d23ec54](https://github.com/googleapis/google-cloud-python/commit/d23ec544504af029ac9530cc5cb435eb0f02e384))
+
 ## [0.17.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.7...google-cloud-batch-v0.17.8) (2024-01-22)
 
 
