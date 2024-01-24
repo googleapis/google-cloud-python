@@ -5,6 +5,28 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.17.0](https://github.com/googleapis/python-bigquery/compare/v3.16.0...v3.17.0) (2024-01-24)
+
+
+### Features
+
+* Support universe resolution ([#1774](https://github.com/googleapis/python-bigquery/issues/1774)) ([0b5c1d5](https://github.com/googleapis/python-bigquery/commit/0b5c1d597cdec3a05a16fb935595f773c5840bd4))
+
+
+### Bug Fixes
+
+* `query_and_wait` now retains unknown query configuration `_properties` ([#1793](https://github.com/googleapis/python-bigquery/issues/1793)) ([4ba4342](https://github.com/googleapis/python-bigquery/commit/4ba434287a0a25f027e3b63a80f8881a9b16723e))
+* Raise `ValueError` in `query_and_wait` with wrong `job_config` type ([4ba4342](https://github.com/googleapis/python-bigquery/commit/4ba434287a0a25f027e3b63a80f8881a9b16723e))
+
+
+### Documentation
+
+* Remove unused query code sample ([#1769](https://github.com/googleapis/python-bigquery/issues/1769)) ([1f96439](https://github.com/googleapis/python-bigquery/commit/1f96439b3dbd27f11be5e2af84f290ec6094d0a4))
+* Update `snippets.py` to use `query_and_wait` ([#1773](https://github.com/googleapis/python-bigquery/issues/1773)) ([d90602d](https://github.com/googleapis/python-bigquery/commit/d90602de87e58b665cb974401a327a640805822f))
+* Update multiple samples to change query to query_and_wait ([#1784](https://github.com/googleapis/python-bigquery/issues/1784)) ([d1161dd](https://github.com/googleapis/python-bigquery/commit/d1161dddde41a7d35b30033ccbf6984a5de640bd))
+* Update the query with no cache sample to use query_and_wait API ([#1770](https://github.com/googleapis/python-bigquery/issues/1770)) ([955a4cd](https://github.com/googleapis/python-bigquery/commit/955a4cd99e21cbca1b2f9c1dc6aa3fd8070cd61f))
+* Updates `query` to `query and wait` in samples/desktopapp/user_credentials.py ([#1787](https://github.com/googleapis/python-bigquery/issues/1787)) ([89f1299](https://github.com/googleapis/python-bigquery/commit/89f1299b3164b51fb0f29bc600a34ded59c10682))
+
 ## [3.16.0](https://github.com/googleapis/python-bigquery/compare/v3.15.0...v3.16.0) (2024-01-12)
 
 
