@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.27.0](https://github.com/googleapis/google-auth-library-python/compare/v2.26.2...v2.27.0) (2024-01-24)
+
+
+### Features
+
+* Add optional account association for Authorized User credentials. ([#1458](https://github.com/googleapis/google-auth-library-python/issues/1458)) ([988153d](https://github.com/googleapis/google-auth-library-python/commit/988153dbc927de112969b952e3d0bb6edc27bb0a))
+
+
+### Bug Fixes
+
+* Allow custom universe domain for gce creds ([#1460](https://github.com/googleapis/google-auth-library-python/issues/1460)) ([7db5823](https://github.com/googleapis/google-auth-library-python/commit/7db5823b599150c597e67b0a350e04600ea6434e))
+* Conditionally import requests only if no request was passed by the caller. ([#1456](https://github.com/googleapis/google-auth-library-python/issues/1456)) ([9cd6742](https://github.com/googleapis/google-auth-library-python/commit/9cd67425e95faab15e57b258a70506b02bccb799))
+
 ## [2.26.2](https://github.com/googleapis/google-auth-library-python/compare/v2.26.1...v2.26.2) (2024-01-11)
 
 
