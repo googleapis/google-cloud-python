@@ -542,7 +542,12 @@ def prerelease(session: nox.sessions.Session, tests_path):
         # TODO(shobs): Remove excluding version 2.2.0rc0 after
         # https://github.com/pandas-dev/pandas/issues/56646 and
         # https://github.com/pandas-dev/pandas/issues/56651 are resolved.
-        "pandas!=2.1.4,!=2.2.0rc0",
+        #
+        # TODO(shobs): Remove excluding version 2.2.0 after
+        # https://github.com/googleapis/python-bigquery-dataframes/issues/341
+        # https://github.com/googleapis/python-bigquery-dataframes/issues/337
+        # are resolved
+        "pandas!=2.1.4, !=2.2.0rc0, !=2.2.0",
     )
     already_installed.add("pandas")
 
