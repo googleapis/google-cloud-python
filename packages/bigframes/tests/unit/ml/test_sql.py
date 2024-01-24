@@ -273,6 +273,19 @@ def test_ml_evaluate_produces_correct_sql(
     )
 
 
+def test_ml_arima_evaluate_produces_correct_sql(
+    model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
+):
+    sql = model_manipulation_sql_generator.ml_arima_evaluate(
+        show_all_candidate_models=True
+    )
+    assert (
+        sql
+        == """SELECT * FROM ML.ARIMA_EVALUATE(MODEL `my_project_id.my_dataset_id.my_model_id`,
+            STRUCT(True AS show_all_candidate_models))"""
+    )
+
+
 def test_ml_evaluate_no_source_produces_correct_sql(
     model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
 ):

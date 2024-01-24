@@ -151,6 +151,31 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
         input_data = X.join(y, how="outer")
         return self._bqml_model.evaluate(input_data)
 
+    def summary(
+        self,
+        show_all_candidate_models: bool = False,
+    ) -> bpd.DataFrame:
+        """Summary of the evaluation metrics of the time series model.
+
+        .. note::
+
+            Output matches that of the BigQuery ML.ARIMA_EVALUATE function.
+            See: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-arima-evaluate
+            for the outputs relevant to this model type.
+
+        Args:
+            show_all_candidate_models (bool, default to False):
+                Whether to show evaluation metrics or an error message for either
+                all candidate models or for only the best model with the lowest
+                AIC. Default to False.
+
+        Returns:
+            bigframes.dataframe.DataFrame: A DataFrame as evaluation result.
+        """
+        if not self._bqml_model:
+            raise RuntimeError("A model must be fitted before score")
+        return self._bqml_model.arima_evaluate(show_all_candidate_models)
+
     def to_gbq(self, model_name: str, replace: bool = False) -> ARIMAPlus:
         """Save the model to BigQuery.
 

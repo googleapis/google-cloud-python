@@ -20,6 +20,20 @@ import pytz
 
 from bigframes.ml import forecasting
 
+ARIMA_EVALUATE_OUTPUT_COL = [
+    "non_seasonal_p",
+    "non_seasonal_d",
+    "non_seasonal_q",
+    "log_likelihood",
+    "AIC",
+    "variance",
+    "seasonal_periods",
+    "has_holiday_effect",
+    "has_spikes_and_dips",
+    "has_step_changes",
+    "error_message",
+]
+
 
 def test_model_predict_default(time_series_arima_plus_model: forecasting.ARIMAPlus):
     utc = pytz.utc
@@ -104,6 +118,24 @@ def test_model_score(
     )
 
 
+def test_model_summary(
+    time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
+):
+    result = time_series_arima_plus_model.summary()
+    assert result.shape == (1, 12)
+    assert all(column in result.columns for column in ARIMA_EVALUATE_OUTPUT_COL)
+
+
+def test_model_summary_show_all_candidates(
+    time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
+):
+    result = time_series_arima_plus_model.summary(
+        show_all_candidate_models=True,
+    )
+    assert result.shape[0] > 1
+    assert all(column in result.columns for column in ARIMA_EVALUATE_OUTPUT_COL)
+
+
 def test_model_score_series(
     time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
 ):
@@ -126,3 +158,11 @@ def test_model_score_series(
         rtol=0.1,
         check_index_type=False,
     )
+
+
+def test_model_summary_series(
+    time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
+):
+    result = time_series_arima_plus_model.summary()
+    assert result.shape == (1, 12)
+    assert all(column in result.columns for column in ARIMA_EVALUATE_OUTPUT_COL)

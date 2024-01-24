@@ -260,6 +260,12 @@ class ModelManipulationSqlGenerator(BaseSqlGenerator):
             return f"""SELECT * FROM ML.EVALUATE(MODEL `{self._model_name}`,
   ({source_sql}))"""
 
+    # ML evaluation TVFs
+    def ml_arima_evaluate(self, show_all_candidate_models: bool = False) -> str:
+        """Encode ML.ARMIA_EVALUATE for BQML"""
+        return f"""SELECT * FROM ML.ARIMA_EVALUATE(MODEL `{self._model_name}`,
+            STRUCT({show_all_candidate_models} AS show_all_candidate_models))"""
+
     def ml_centroids(self) -> str:
         """Encode ML.CENTROIDS for BQML"""
         return f"""SELECT * FROM ML.CENTROIDS(MODEL `{self._model_name}`)"""

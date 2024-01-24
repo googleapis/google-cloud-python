@@ -16,6 +16,20 @@ import pandas as pd
 
 from bigframes.ml import forecasting
 
+ARIMA_EVALUATE_OUTPUT_COL = [
+    "non_seasonal_p",
+    "non_seasonal_d",
+    "non_seasonal_q",
+    "log_likelihood",
+    "AIC",
+    "variance",
+    "seasonal_periods",
+    "has_holiday_effect",
+    "has_spikes_and_dips",
+    "has_step_changes",
+    "error_message",
+]
+
 
 def test_arima_plus_model_fit_score(
     time_series_df_default_index, dataset_id, new_time_series_df
@@ -42,7 +56,24 @@ def test_arima_plus_model_fit_score(
     pd.testing.assert_frame_equal(result, expected, check_exact=False, rtol=0.1)
 
     # save, load to ensure configuration was kept
-    reloaded_model = model.to_gbq(f"{dataset_id}.temp_configured_model", replace=True)
+    reloaded_model = model.to_gbq(f"{dataset_id}.temp_arima_plus_model", replace=True)
     assert (
-        f"{dataset_id}.temp_configured_model" in reloaded_model._bqml_model.model_name
+        f"{dataset_id}.temp_arima_plus_model" in reloaded_model._bqml_model.model_name
+    )
+
+
+def test_arima_plus_model_fit_summary(time_series_df_default_index, dataset_id):
+    model = forecasting.ARIMAPlus()
+    X_train = time_series_df_default_index[["parsed_date"]]
+    y_train = time_series_df_default_index[["total_visits"]]
+    model.fit(X_train, y_train)
+
+    result = model.summary()
+    assert result.shape == (1, 12)
+    assert all(column in result.columns for column in ARIMA_EVALUATE_OUTPUT_COL)
+
+    # save, load to ensure configuration was kept
+    reloaded_model = model.to_gbq(f"{dataset_id}.temp_arima_plus_model", replace=True)
+    assert (
+        f"{dataset_id}.temp_arima_plus_model" in reloaded_model._bqml_model.model_name
     )

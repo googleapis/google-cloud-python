@@ -136,6 +136,13 @@ class BqmlModel:
 
         return self._session.read_gbq(sql)
 
+    def arima_evaluate(self, show_all_candidate_models: bool = False):
+        sql = self._model_manipulation_sql_generator.ml_arima_evaluate(
+            show_all_candidate_models
+        )
+
+        return self._session.read_gbq(sql)
+
     def centroids(self) -> bpd.DataFrame:
         assert self._model.model_type == "KMEANS"
 
