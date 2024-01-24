@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-functions-v1.14.0...google-cloud-functions-v1.15.0) (2024-01-24)
+
+
+### Features
+
+* Add fields for automatic runtime updates ([82e676d](https://github.com/googleapis/google-cloud-python/commit/82e676dd9a49d54a88fe37c264b8b0145d2ca147))
+* Add optional parameter `version_id` to `GetFunctionRequest` ([82e676d](https://github.com/googleapis/google-cloud-python/commit/82e676dd9a49d54a88fe37c264b8b0145d2ca147))
+
+
+### Documentation
+
+* Deprecate `network` field of `CloudFunction` ([82e676d](https://github.com/googleapis/google-cloud-python/commit/82e676dd9a49d54a88fe37c264b8b0145d2ca147))
+* Minor updates in comments throughout ([82e676d](https://github.com/googleapis/google-cloud-python/commit/82e676dd9a49d54a88fe37c264b8b0145d2ca147))
+* Update description for docker_registry to reflect transition to Artifact Registry ([82e676d](https://github.com/googleapis/google-cloud-python/commit/82e676dd9a49d54a88fe37c264b8b0145d2ca147))
+
 ## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-functions-v1.13.3...google-cloud-functions-v1.14.0) (2023-12-07)
 
 

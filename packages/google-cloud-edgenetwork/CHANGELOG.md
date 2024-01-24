@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.1...google-cloud-edgenetwork-v0.1.2) (2024-01-24)
+
+
+### Features
+
+* [google-cloud-edgenetwork] add MACsec status for internal links ([#12213](https://github.com/googleapis/google-cloud-python/issues/12213)) ([313f567](https://github.com/googleapis/google-cloud-python/commit/313f5672c1d16681dd4db2c4a995c5668259ea7d))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.0...google-cloud-edgenetwork-v0.1.1) (2023-12-07)
 
 
