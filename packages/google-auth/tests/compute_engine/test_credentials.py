@@ -50,13 +50,27 @@ ID_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
     "gl-python/3.7 auth/1.1 auth-request-type/it cred-type/mds"
 )
 
+FAKE_SERVICE_ACCOUNT_EMAIL = "foo@bar.com"
+FAKE_QUOTA_PROJECT_ID = "fake-quota-project"
+FAKE_SCOPES = ["scope1", "scope2"]
+FAKE_DEFAULT_SCOPES = ["scope3", "scope4"]
+FAKE_UNIVERSE_DOMAIN = "fake-universe-domain"
+
 
 class TestCredentials(object):
     credentials = None
+    credentials_with_all_fields = None
 
     @pytest.fixture(autouse=True)
     def credentials_fixture(self):
         self.credentials = credentials.Credentials()
+        self.credentials_with_all_fields = credentials.Credentials(
+            service_account_email=FAKE_SERVICE_ACCOUNT_EMAIL,
+            quota_project_id=FAKE_QUOTA_PROJECT_ID,
+            scopes=FAKE_SCOPES,
+            default_scopes=FAKE_DEFAULT_SCOPES,
+            universe_domain=FAKE_UNIVERSE_DOMAIN,
+        )
 
     def test_default_state(self):
         assert not self.credentials.valid
@@ -68,6 +82,9 @@ class TestCredentials(object):
         assert self.credentials.service_account_email == "default"
         # No quota project
         assert not self.credentials._quota_project_id
+        # Universe domain is the default and not cached
+        assert self.credentials._universe_domain == "googleapis.com"
+        assert not self.credentials._universe_domain_cached
 
     @mock.patch(
         "google.auth._helpers.utcnow",
@@ -187,17 +204,35 @@ class TestCredentials(object):
         assert self.credentials.valid
 
     def test_with_quota_project(self):
-        quota_project_creds = self.credentials.with_quota_project("project-foo")
+        creds = self.credentials_with_all_fields.with_quota_project("project-foo")
 
-        assert quota_project_creds._quota_project_id == "project-foo"
+        assert creds._quota_project_id == "project-foo"
+        assert creds._service_account_email == FAKE_SERVICE_ACCOUNT_EMAIL
+        assert creds._scopes == FAKE_SCOPES
+        assert creds._default_scopes == FAKE_DEFAULT_SCOPES
+        assert creds.universe_domain == FAKE_UNIVERSE_DOMAIN
+        assert creds._universe_domain_cached
 
     def test_with_scopes(self):
-        assert self.credentials._scopes is None
-
         scopes = ["one", "two"]
-        self.credentials = self.credentials.with_scopes(scopes)
+        creds = self.credentials_with_all_fields.with_scopes(scopes)
 
-        assert self.credentials._scopes == scopes
+        assert creds._scopes == scopes
+        assert creds._quota_project_id == FAKE_QUOTA_PROJECT_ID
+        assert creds._service_account_email == FAKE_SERVICE_ACCOUNT_EMAIL
+        assert creds._default_scopes is None
+        assert creds.universe_domain == FAKE_UNIVERSE_DOMAIN
+        assert creds._universe_domain_cached
+
+    def test_with_universe_domain(self):
+        creds = self.credentials_with_all_fields.with_universe_domain("universe_domain")
+
+        assert creds._scopes == FAKE_SCOPES
+        assert creds._quota_project_id == FAKE_QUOTA_PROJECT_ID
+        assert creds._service_account_email == FAKE_SERVICE_ACCOUNT_EMAIL
+        assert creds._default_scopes == FAKE_DEFAULT_SCOPES
+        assert creds.universe_domain == "universe_domain"
+        assert creds._universe_domain_cached
 
     def test_token_usage_metrics(self):
         self.credentials.token = "token"
@@ -213,8 +248,9 @@ class TestCredentials(object):
         return_value="fake_universe_domain",
     )
     def test_universe_domain(self, get_universe_domain):
-        self.credentials._universe_domain_cached = False
-        self.credentials._universe_domain = "googleapis.com"
+        # Check the default state
+        assert not self.credentials._universe_domain_cached
+        assert self.credentials._universe_domain == "googleapis.com"
 
         # calling the universe_domain property should trigger a call to
         # get_universe_domain to fetch the value. The value should be cached.
@@ -231,6 +267,15 @@ class TestCredentials(object):
         get_universe_domain.assert_called_once_with(
             self.credentials._universe_domain_request
         )
+
+    @mock.patch("google.auth.compute_engine._metadata.get_universe_domain")
+    def test_user_provided_universe_domain(self, get_universe_domain):
+        assert self.credentials_with_all_fields.universe_domain == FAKE_UNIVERSE_DOMAIN
+        assert self.credentials_with_all_fields._universe_domain_cached
+
+        # Since user provided universe_domain, we will not call the universe
+        # domain endpoint.
+        get_universe_domain.assert_not_called()
 
 
 class TestIDTokenCredentials(object):
