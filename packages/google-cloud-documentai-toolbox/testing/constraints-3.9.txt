@@ -4,6 +4,7 @@
 google-api-core
 libcst
 pandas
+pyarrow # Required by Pandas #237
 proto-plus
 grpc-google-iam-v1
 google-cloud-bigquery
