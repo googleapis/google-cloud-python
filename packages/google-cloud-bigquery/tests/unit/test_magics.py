@@ -2053,3 +2053,21 @@ def test_bigquery_magic_create_dataset_fails():
         )
 
     assert close_transports.called
+
+
+@pytest.mark.usefixtures("ipython_interactive")
+def test_bigquery_magic_with_location():
+    ip = IPython.get_ipython()
+    ip.extension_manager.load_extension("google.cloud.bigquery")
+    magics.context.credentials = mock.create_autospec(
+        google.auth.credentials.Credentials, instance=True
+    )
+
+    run_query_patch = mock.patch(
+        "google.cloud.bigquery.magics.magics._run_query", autospec=True
+    )
+    with run_query_patch as run_query_mock:
+        ip.run_cell_magic("bigquery", "--location=us-east1", "SELECT 17 AS num")
+
+        client_options_used = run_query_mock.call_args_list[0][0][0]
+        assert client_options_used.location == "us-east1"

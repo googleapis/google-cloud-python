@@ -508,6 +508,15 @@ def _create_dataset_if_necessary(client, dataset_id):
         "Defaults to use tqdm_notebook. Install the ``tqdm`` package to use this feature."
     ),
 )
+@magic_arguments.argument(
+    "--location",
+    type=str,
+    default=None,
+    help=(
+        "Set the location to execute query."
+        "Defaults to location set in query setting in console."
+    ),
+)
 def _cell_magic(line, query):
     """Underlying function for bigquery cell magic
 
@@ -551,6 +560,7 @@ def _cell_magic(line, query):
             category=DeprecationWarning,
         )
     use_bqstorage_api = not args.use_rest_api
+    location = args.location
 
     params = []
     if params_option_value:
@@ -579,6 +589,7 @@ def _cell_magic(line, query):
         default_query_job_config=context.default_query_job_config,
         client_info=client_info.ClientInfo(user_agent=IPYTHON_USER_AGENT),
         client_options=bigquery_client_options,
+        location=location,
     )
     if context._connection:
         client._connection = context._connection
