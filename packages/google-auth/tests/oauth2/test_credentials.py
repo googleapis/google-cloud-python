@@ -793,6 +793,12 @@ class TestCredentials(object):
         new_creds = creds.with_universe_domain("dummy_universe.com")
         assert new_creds.universe_domain == "dummy_universe.com"
 
+    def test_with_account(self):
+        creds = credentials.Credentials(token="token")
+        assert creds.account == ""
+        new_creds = creds.with_account("mock@example.com")
+        assert new_creds.account == "mock@example.com"
+
     def test_with_token_uri(self):
         info = AUTH_USER_INFO.copy()
 
@@ -888,6 +894,7 @@ class TestCredentials(object):
         assert json_asdict.get("client_secret") == creds.client_secret
         assert json_asdict.get("expiry") == info["expiry"]
         assert json_asdict.get("universe_domain") == creds.universe_domain
+        assert json_asdict.get("account") == creds.account
 
         # Test with a `strip` arg
         json_output = creds.to_json(strip=["client_secret"])
