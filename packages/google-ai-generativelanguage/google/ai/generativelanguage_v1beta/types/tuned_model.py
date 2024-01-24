@@ -333,8 +333,7 @@ class Dataset(proto.Message):
 
 
 class TuningExamples(proto.Message):
-    r"""A set of tuning examples. Can be training or validatation
-    data.
+    r"""A set of tuning examples. Can be training or validation data.
 
     Attributes:
         examples (MutableSequence[google.ai.generativelanguage_v1beta.types.TuningExample]):

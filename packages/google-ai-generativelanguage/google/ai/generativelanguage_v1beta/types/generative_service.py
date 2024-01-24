@@ -636,6 +636,9 @@ class GenerateAnswerRequest(proto.Message):
             answer. For multi-turn queries, this is a repeated field
             that contains conversation history and the last ``Content``
             in the list containing the question.
+
+            Note: GenerateAnswer currently only supports queries in
+            English.
         answer_style (google.ai.generativelanguage_v1beta.types.GenerateAnswerRequest.AnswerStyle):
             Required. Style in which answers should be
             returned.
@@ -757,7 +760,71 @@ class GenerateAnswerResponse(proto.Message):
                cases. 0.5 is a good starting threshold.
 
             This field is a member of `oneof`_ ``_answerable_probability``.
+        input_feedback (google.ai.generativelanguage_v1beta.types.GenerateAnswerResponse.InputFeedback):
+            Output only. Feedback related to the input data used to
+            answer the question, as opposed to model-generated response
+            to the question.
+
+            "Input data" can be one or more of the following:
+
+            -  Question specified by the last entry in
+               ``GenerateAnswerRequest.content``
+            -  Conversation history specified by the other entries in
+               ``GenerateAnswerRequest.content``
+            -  Grounding sources
+               (``GenerateAnswerRequest.semantic_retriever`` or
+               ``GenerateAnswerRequest.inline_passages``)
+
+            This field is a member of `oneof`_ ``_input_feedback``.
     """
+
+    class InputFeedback(proto.Message):
+        r"""Feedback related to the input data used to answer the
+        question, as opposed to model-generated response to the
+        question.
+
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            block_reason (google.ai.generativelanguage_v1beta.types.GenerateAnswerResponse.InputFeedback.BlockReason):
+                Optional. If set, the input was blocked and
+                no candidates are returned. Rephrase your input.
+
+                This field is a member of `oneof`_ ``_block_reason``.
+            safety_ratings (MutableSequence[google.ai.generativelanguage_v1beta.types.SafetyRating]):
+                Ratings for safety of the input.
+                There is at most one rating per category.
+        """
+
+        class BlockReason(proto.Enum):
+            r"""Specifies what was the reason why input was blocked.
+
+            Values:
+                BLOCK_REASON_UNSPECIFIED (0):
+                    Default value. This value is unused.
+                SAFETY (1):
+                    Input was blocked due to safety reasons. You can inspect
+                    ``safety_ratings`` to understand which safety category
+                    blocked it.
+                OTHER (2):
+                    Input was blocked due to other reasons.
+            """
+            BLOCK_REASON_UNSPECIFIED = 0
+            SAFETY = 1
+            OTHER = 2
+
+        block_reason: "GenerateAnswerResponse.InputFeedback.BlockReason" = proto.Field(
+            proto.ENUM,
+            number=1,
+            optional=True,
+            enum="GenerateAnswerResponse.InputFeedback.BlockReason",
+        )
+        safety_ratings: MutableSequence[safety.SafetyRating] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message=safety.SafetyRating,
+        )
 
     answer: "Candidate" = proto.Field(
         proto.MESSAGE,
@@ -768,6 +835,12 @@ class GenerateAnswerResponse(proto.Message):
         proto.FLOAT,
         number=2,
         optional=True,
+    )
+    input_feedback: InputFeedback = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        optional=True,
+        message=InputFeedback,
     )
 
 
@@ -796,6 +869,9 @@ class EmbedContentRequest(proto.Message):
         title (str):
             Optional. An optional title for the text. Only applicable
             when TaskType is ``RETRIEVAL_DOCUMENT``.
+
+            Note: Specifying a ``title`` for ``RETRIEVAL_DOCUMENT``
+            provides better quality embeddings for retrieval.
 
             This field is a member of `oneof`_ ``_title``.
     """
