@@ -35,6 +35,9 @@ RE_RUN_BATCH = re.compile(r"^\s*(RUN)\s+(BATCH)", re.IGNORECASE)
 RE_ABORT_BATCH = re.compile(r"^\s*(ABORT)\s+(BATCH)", re.IGNORECASE)
 RE_PARTITION_QUERY = re.compile(r"^\s*(PARTITION)\s+(.+)", re.IGNORECASE)
 RE_RUN_PARTITION = re.compile(r"^\s*(RUN)\s+(PARTITION)\s+(.+)", re.IGNORECASE)
+RE_RUN_PARTITIONED_QUERY = re.compile(
+    r"^\s*(RUN)\s+(PARTITIONED)\s+(QUERY)\s+(.+)", re.IGNORECASE
+)
 
 
 def parse_stmt(query):
@@ -53,25 +56,29 @@ def parse_stmt(query):
     client_side_statement_params = []
     if RE_COMMIT.match(query):
         client_side_statement_type = ClientSideStatementType.COMMIT
-    if RE_BEGIN.match(query):
-        client_side_statement_type = ClientSideStatementType.BEGIN
-    if RE_ROLLBACK.match(query):
+    elif RE_ROLLBACK.match(query):
         client_side_statement_type = ClientSideStatementType.ROLLBACK
-    if RE_SHOW_COMMIT_TIMESTAMP.match(query):
+    elif RE_SHOW_COMMIT_TIMESTAMP.match(query):
         client_side_statement_type = ClientSideStatementType.SHOW_COMMIT_TIMESTAMP
-    if RE_SHOW_READ_TIMESTAMP.match(query):
+    elif RE_SHOW_READ_TIMESTAMP.match(query):
         client_side_statement_type = ClientSideStatementType.SHOW_READ_TIMESTAMP
-    if RE_START_BATCH_DML.match(query):
+    elif RE_START_BATCH_DML.match(query):
         client_side_statement_type = ClientSideStatementType.START_BATCH_DML
-    if RE_RUN_BATCH.match(query):
+    elif RE_BEGIN.match(query):
+        client_side_statement_type = ClientSideStatementType.BEGIN
+    elif RE_RUN_BATCH.match(query):
         client_side_statement_type = ClientSideStatementType.RUN_BATCH
-    if RE_ABORT_BATCH.match(query):
+    elif RE_ABORT_BATCH.match(query):
         client_side_statement_type = ClientSideStatementType.ABORT_BATCH
-    if RE_PARTITION_QUERY.match(query):
+    elif RE_RUN_PARTITIONED_QUERY.match(query):
+        match = re.search(RE_RUN_PARTITIONED_QUERY, query)
+        client_side_statement_params.append(match.group(4))
+        client_side_statement_type = ClientSideStatementType.RUN_PARTITIONED_QUERY
+    elif RE_PARTITION_QUERY.match(query):
         match = re.search(RE_PARTITION_QUERY, query)
         client_side_statement_params.append(match.group(2))
         client_side_statement_type = ClientSideStatementType.PARTITION_QUERY
-    if RE_RUN_PARTITION.match(query):
+    elif RE_RUN_PARTITION.match(query):
         match = re.search(RE_RUN_PARTITION, query)
         client_side_statement_params.append(match.group(3))
         client_side_statement_type = ClientSideStatementType.RUN_PARTITION

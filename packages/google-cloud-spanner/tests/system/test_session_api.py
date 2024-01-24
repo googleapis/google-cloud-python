@@ -2521,6 +2521,24 @@ def test_partition_query(sessions_database, not_emulator):
     batch_txn.close()
 
 
+def test_run_partition_query(sessions_database, not_emulator):
+    row_count = 40
+    sql = f"SELECT * FROM {_sample_data.TABLE}"
+    committed = _set_up_table(sessions_database, row_count)
+
+    # Paritioned query does not support ORDER BY
+    all_data_rows = set(_row_data(row_count))
+    union = set()
+    batch_txn = sessions_database.batch_snapshot(read_timestamp=committed)
+    p_results_iter = batch_txn.run_partitioned_query(sql, data_boost_enabled=True)
+    # Lists aren't hashable so the results need to be converted
+    rows = [tuple(result) for result in p_results_iter]
+    union.update(set(rows))
+
+    assert union == all_data_rows
+    batch_txn.close()
+
+
 def test_mutation_groups_insert_or_update_then_query(not_emulator, sessions_database):
     sd = _sample_data
     num_groups = 3

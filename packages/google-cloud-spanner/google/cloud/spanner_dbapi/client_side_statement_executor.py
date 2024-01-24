@@ -103,6 +103,8 @@ def execute(cursor: "Cursor", parsed_statement: ParsedStatement):
         return connection.run_partition(
             parsed_statement.client_side_statement_params[0]
         )
+    if statement_type == ClientSideStatementType.RUN_PARTITIONED_QUERY:
+        return connection.run_partitioned_query(parsed_statement)
 
 
 def _get_streamed_result_set(column_name, type_code, column_values):

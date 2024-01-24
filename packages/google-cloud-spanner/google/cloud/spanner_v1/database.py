@@ -54,6 +54,7 @@ from google.cloud.spanner_v1._helpers import (
 from google.cloud.spanner_v1.batch import Batch
 from google.cloud.spanner_v1.batch import MutationGroups
 from google.cloud.spanner_v1.keyset import KeySet
+from google.cloud.spanner_v1.merged_result_set import MergedResultSet
 from google.cloud.spanner_v1.pool import BurstyPool
 from google.cloud.spanner_v1.pool import SessionCheckout
 from google.cloud.spanner_v1.session import Session
@@ -1416,11 +1417,6 @@ class BatchSnapshot(object):
             (Optional) desired size for each partition generated.  The service
             uses this as a hint, the actual partition size may differ.
 
-        :type partition_size_bytes: int
-        :param partition_size_bytes:
-            (Optional) desired size for each partition generated.  The service
-            uses this as a hint, the actual partition size may differ.
-
         :type max_partitions: int
         :param max_partitions:
             (Optional) desired maximum number of partitions generated. The
@@ -1512,6 +1508,72 @@ class BatchSnapshot(object):
         return self._get_snapshot().execute_sql(
             partition=batch["partition"], **batch["query"], retry=retry, timeout=timeout
         )
+
+    def run_partitioned_query(
+        self,
+        sql,
+        params=None,
+        param_types=None,
+        partition_size_bytes=None,
+        max_partitions=None,
+        query_options=None,
+        data_boost_enabled=False,
+    ):
+        """Start a partitioned query operation to get list of partitions and
+        then executes each partition on a separate thread
+
+        :type sql: str
+        :param sql: SQL query statement
+
+        :type params: dict, {str -> column value}
+        :param params: values for parameter replacement.  Keys must match
+                       the names used in ``sql``.
+
+        :type param_types: dict[str -> Union[dict, .types.Type]]
+        :param param_types:
+            (Optional) maps explicit types for one or more param values;
+            required if parameters are passed.
+
+        :type partition_size_bytes: int
+        :param partition_size_bytes:
+            (Optional) desired size for each partition generated.  The service
+            uses this as a hint, the actual partition size may differ.
+
+        :type max_partitions: int
+        :param max_partitions:
+            (Optional) desired maximum number of partitions generated. The
+            service uses this as a hint, the actual number of partitions may
+            differ.
+
+        :type query_options:
+            :class:`~google.cloud.spanner_v1.types.ExecuteSqlRequest.QueryOptions`
+            or :class:`dict`
+        :param query_options:
+                (Optional) Query optimizer configuration to use for the given query.
+                If a dict is provided, it must be of the same form as the protobuf
+                message :class:`~google.cloud.spanner_v1.types.QueryOptions`
+
+        :type data_boost_enabled:
+        :param data_boost_enabled:
+                (Optional) If this is for a partitioned query and this field is
+                set ``true``, the request will be executed using data boost.
+                Please see https://cloud.google.com/spanner/docs/databoost/databoost-overview
+
+        :rtype: :class:`~google.cloud.spanner_v1.merged_result_set.MergedResultSet`
+        :returns: a result set instance which can be used to consume rows.
+        """
+        partitions = list(
+            self.generate_query_batches(
+                sql,
+                params,
+                param_types,
+                partition_size_bytes,
+                max_partitions,
+                query_options,
+                data_boost_enabled,
+            )
+        )
+        return MergedResultSet(self, partitions, 0)
 
     def process(self, batch):
         """Process a single, partitioned query or read.

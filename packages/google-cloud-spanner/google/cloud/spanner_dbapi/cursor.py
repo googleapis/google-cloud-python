@@ -49,6 +49,7 @@ from google.cloud.spanner_dbapi.parsed_statement import (
 from google.cloud.spanner_dbapi.transaction_helper import CursorStatementType
 from google.cloud.spanner_dbapi.utils import PeekIterator
 from google.cloud.spanner_dbapi.utils import StreamedManyResultSets
+from google.cloud.spanner_v1.merged_result_set import MergedResultSet
 
 ColumnDetails = namedtuple("column_details", ["null_ok", "spanner_type"])
 
@@ -248,7 +249,9 @@ class Cursor(object):
                     self, self._parsed_statement
                 )
                 if self._result_set is not None:
-                    if isinstance(self._result_set, StreamedManyResultSets):
+                    if isinstance(
+                        self._result_set, StreamedManyResultSets
+                    ) or isinstance(self._result_set, MergedResultSet):
                         self._itr = self._result_set
                     else:
                         self._itr = PeekIterator(self._result_set)
