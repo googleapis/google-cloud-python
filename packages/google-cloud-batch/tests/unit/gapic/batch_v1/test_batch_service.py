@@ -2538,6 +2538,7 @@ def test_create_job_rest(request_type):
                                 "block_external_network": True,
                                 "username": "username_value",
                                 "password": "password_value",
+                                "enable_image_streaming": True,
                             },
                             "script": {"path": "path_value", "text": "text_value"},
                             "barrier": {"name": "name_value"},
@@ -2592,6 +2593,7 @@ def test_create_job_rest(request_type):
                 "task_count_per_node": 2022,
                 "require_hosts_file": True,
                 "permissive_ssh": True,
+                "run_as_non_root": True,
             }
         ],
         "allocation_policy": {
@@ -2650,6 +2652,7 @@ def test_create_job_rest(request_type):
                 ]
             },
             "placement": {"collocation": "collocation_value", "max_distance": 1264},
+            "tags": ["tags_value1", "tags_value2"],
         },
         "labels": {},
         "status": {
@@ -2671,7 +2674,7 @@ def test_create_job_rest(request_type):
         "logs_policy": {
             "destination": 1,
             "logs_path": "logs_path_value",
-            "cloud_logging_option": {},
+            "cloud_logging_option": {"use_generic_task_monitored_resource": True},
         },
         "notifications": [
             {
