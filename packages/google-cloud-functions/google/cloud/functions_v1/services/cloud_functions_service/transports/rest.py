@@ -1112,7 +1112,7 @@ class CloudFunctionsServiceRestTransport(CloudFunctionsServiceTransport):
                 ~.functions.CloudFunction:
                     Describes a Cloud Function that
                 contains user computation executed in
-                response to an event. It encapsulates
+                response to an event. It encapsulate
                 function and triggers configurations.
 
             """

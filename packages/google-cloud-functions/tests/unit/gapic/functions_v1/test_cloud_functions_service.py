@@ -3517,6 +3517,8 @@ def test_get_function_rest_required_fields(request_type=functions.GetFunctionReq
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
     ).get_function._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("version_id",))
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -3570,7 +3572,7 @@ def test_get_function_rest_unset_required_fields():
     )
 
     unset_fields = transport.get_function._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    assert set(unset_fields) == (set(("versionId",)) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -3784,6 +3786,8 @@ def test_create_function_rest(request_type):
         "source_token": "source_token_value",
         "docker_repository": "docker_repository_value",
         "docker_registry": 1,
+        "automatic_update_policy": {},
+        "on_deploy_update_policy": {"runtime_version": "runtime_version_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4181,6 +4185,8 @@ def test_update_function_rest(request_type):
         "source_token": "source_token_value",
         "docker_repository": "docker_repository_value",
         "docker_registry": 1,
+        "automatic_update_policy": {},
+        "on_deploy_update_policy": {"runtime_version": "runtime_version_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

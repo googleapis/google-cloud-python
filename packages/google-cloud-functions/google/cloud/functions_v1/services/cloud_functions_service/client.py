@@ -653,7 +653,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
             google.cloud.functions_v1.types.CloudFunction:
                 Describes a Cloud Function that
                 contains user computation executed in
-                response to an event. It encapsulates
+                response to an event. It encapsulate
                 function and triggers configurations.
 
         """
@@ -711,7 +711,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a new function. If a function with the given name
         already exists in the specified project, the long running
-        operation returns an ``ALREADY_EXISTS`` error.
+        operation will return ``ALREADY_EXISTS`` error.
 
         .. code-block:: python
 
@@ -774,7 +774,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
-                   response to an event. It encapsulates function and
+                   response to an event. It encapsulate function and
                    triggers configurations.
 
         """
@@ -895,7 +895,7 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
                 An object representing a long-running operation.
 
                 The result type for the operation will be :class:`google.cloud.functions_v1.types.CloudFunction` Describes a Cloud Function that contains user computation executed in
-                   response to an event. It encapsulates function and
+                   response to an event. It encapsulate function and
                    triggers configurations.
 
         """
@@ -962,7 +962,8 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a function with the given name from the
         specified project. If the given function is used by some
-        trigger, the trigger is updated to remove this function.
+        trigger, the trigger will be updated to remove this
+        function.
 
         .. code-block:: python
 
@@ -1216,13 +1217,13 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
            credentials would be used, but that identity does not have
            permissions to upload files to the URL.
 
-        When making an HTTP PUT request, these two headers must be
+        When making a HTTP PUT request, these two headers need to be
         specified:
 
         -  ``content-type: application/zip``
         -  ``x-goog-content-length-range: 0,104857600``
 
-        And this header must NOT be specified:
+        And this header SHOULD NOT be specified:
 
         -  ``Authorization: Bearer YOUR_TOKEN``
 
@@ -1303,9 +1304,9 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
     ) -> functions.GenerateDownloadUrlResponse:
         r"""Returns a signed URL for downloading deployed
         function source code. The URL is only valid for a
-        limited period and must be used within minutes after
+        limited period and should be used within minutes after
         generation.
-        For more information about the signed URL usage, see:
+        For more information about the signed URL usage see:
 
         https://cloud.google.com/storage/docs/access-control/signed-urls
 
@@ -1608,8 +1609,8 @@ class CloudFunctionsServiceClient(metaclass=CloudFunctionsServiceClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests the specified permissions against the IAM access control
-        policy for a function. If the function does not exist, this
-        returns an empty set of permissions, not a NOT_FOUND error.
+        policy for a function. If the function does not exist, this will
+        return an empty set of permissions, not a NOT_FOUND error.
 
         .. code-block:: python
 
