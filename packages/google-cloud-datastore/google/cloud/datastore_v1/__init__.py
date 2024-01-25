@@ -61,9 +61,6 @@ from .types.query import PropertyOrder
 from .types.query import PropertyReference
 from .types.query import Query
 from .types.query import QueryResultBatch
-from .types.query_profile import QueryPlan
-from .types.query_profile import ResultSetStats
-from .types.query_profile import QueryMode
 
 __all__ = (
     "DatastoreAsyncClient",
@@ -96,13 +93,10 @@ __all__ = (
     "PropertyOrder",
     "PropertyReference",
     "Query",
-    "QueryMode",
-    "QueryPlan",
     "QueryResultBatch",
     "ReadOptions",
     "ReserveIdsRequest",
     "ReserveIdsResponse",
-    "ResultSetStats",
     "RollbackRequest",
     "RollbackResponse",
     "RunAggregationQueryRequest",

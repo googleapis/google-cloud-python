@@ -51,7 +51,6 @@ from google.cloud.datastore_v1.types import aggregation_result
 from google.cloud.datastore_v1.types import datastore
 from google.cloud.datastore_v1.types import entity
 from google.cloud.datastore_v1.types import query
-from google.cloud.datastore_v1.types import query_profile
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import struct_pb2  # type: ignore
