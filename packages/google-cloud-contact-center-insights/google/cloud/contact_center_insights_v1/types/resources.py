@@ -126,6 +126,9 @@ class Conversation(proto.Message):
             fields. A maximum of 20 labels per conversation
             is allowed, with a maximum of 256 characters per
             entry.
+        quality_metadata (google.cloud.contact_center_insights_v1.types.Conversation.QualityMetadata):
+            Conversation metadata related to quality
+            management.
         transcript (google.cloud.contact_center_insights_v1.types.Conversation.Transcript):
             Output only. The conversation transcript.
         medium (google.cloud.contact_center_insights_v1.types.Conversation.Medium):
@@ -192,6 +195,79 @@ class Conversation(proto.Message):
         agent_channel: int = proto.Field(
             proto.INT32,
             number=2,
+        )
+
+    class QualityMetadata(proto.Message):
+        r"""Conversation metadata related to quality management.
+
+        Attributes:
+            customer_satisfaction_rating (int):
+                An arbitrary integer value indicating the
+                customer's satisfaction rating.
+            wait_duration (google.protobuf.duration_pb2.Duration):
+                The amount of time the customer waited to
+                connect with an agent.
+            menu_path (str):
+                An arbitrary string value specifying the menu
+                path the customer took.
+            agent_info (MutableSequence[google.cloud.contact_center_insights_v1.types.Conversation.QualityMetadata.AgentInfo]):
+                Information about agents involved in the
+                call.
+        """
+
+        class AgentInfo(proto.Message):
+            r"""Information about an agent involved in the conversation.
+
+            Attributes:
+                agent_id (str):
+                    A user-specified string representing the
+                    agent.
+                display_name (str):
+                    The agent's name.
+                team (str):
+                    A user-specified string representing the
+                    agent's team.
+                disposition_code (str):
+                    A user-provided string indicating the outcome
+                    of the agent's segment of the call.
+            """
+
+            agent_id: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            display_name: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            team: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            disposition_code: str = proto.Field(
+                proto.STRING,
+                number=4,
+            )
+
+        customer_satisfaction_rating: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        wait_duration: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
+        )
+        menu_path: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        agent_info: MutableSequence[
+            "Conversation.QualityMetadata.AgentInfo"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=4,
+            message="Conversation.QualityMetadata.AgentInfo",
         )
 
     class Transcript(proto.Message):
@@ -400,6 +476,11 @@ class Conversation(proto.Message):
         proto.STRING,
         proto.STRING,
         number=6,
+    )
+    quality_metadata: QualityMetadata = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message=QualityMetadata,
     )
     transcript: Transcript = proto.Field(
         proto.MESSAGE,

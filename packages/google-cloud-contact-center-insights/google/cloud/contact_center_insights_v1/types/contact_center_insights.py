@@ -684,17 +684,15 @@ class IngestConversationsRequest(proto.Message):
                 An opaque, user-specified string representing
                 the human agent who handled the conversations.
             agent_channel (int):
-                Optional. For audio conversations, this field
-                indicates which of the channels, 1 or 2,
-                contains the agent. Note that this must be set
-                for audio conversations to be properly displayed
+                Optional. Indicates which of the channels, 1
+                or 2, contains the agent. Note that this must be
+                set for conversations to be properly displayed
                 and analyzed.
             customer_channel (int):
-                Optional. For audio conversations, this field
-                indicates which of the channels, 1 or 2,
-                contains the customer. Note that this must be
-                set for audio conversations to be properly
-                displayed and analyzed.
+                Optional. Indicates which of the channels, 1
+                or 2, contains the agent. Note that this must be
+                set for conversations to be properly displayed
+                and analyzed.
         """
 
         agent_id: str = proto.Field(
