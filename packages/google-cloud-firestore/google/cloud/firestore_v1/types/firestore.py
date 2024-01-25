@@ -23,7 +23,6 @@ from google.cloud.firestore_v1.types import aggregation_result
 from google.cloud.firestore_v1.types import common
 from google.cloud.firestore_v1.types import document as gf_document
 from google.cloud.firestore_v1.types import query as gf_query
-from google.cloud.firestore_v1.types import query_profile
 from google.cloud.firestore_v1.types import write
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
@@ -721,11 +720,6 @@ class RunQueryRequest(proto.Message):
             minute timestamp within the past 7 days.
 
             This field is a member of `oneof`_ ``consistency_selector``.
-        mode (google.cloud.firestore_v1.types.QueryMode):
-            Optional. The mode in which the query request is processed.
-            This field is optional, and when not provided, it defaults
-            to ``NORMAL`` mode where no additional statistics will be
-            returned with the query results.
     """
 
     parent: str = proto.Field(
@@ -754,11 +748,6 @@ class RunQueryRequest(proto.Message):
         number=7,
         oneof="consistency_selector",
         message=timestamp_pb2.Timestamp,
-    )
-    mode: query_profile.QueryMode = proto.Field(
-        proto.ENUM,
-        number=9,
-        enum=query_profile.QueryMode,
     )
 
 
@@ -798,13 +787,6 @@ class RunQueryResponse(proto.Message):
             returned.
 
             This field is a member of `oneof`_ ``continuation_selector``.
-        stats (google.cloud.firestore_v1.types.ResultSetStats):
-            Query plan and execution statistics. Note that the returned
-            stats are subject to change as Firestore evolves.
-
-            This is only present when the request specifies a mode other
-            than ``NORMAL`` and is sent only once with the last response
-            in the stream.
     """
 
     transaction: bytes = proto.Field(
@@ -829,11 +811,6 @@ class RunQueryResponse(proto.Message):
         proto.BOOL,
         number=6,
         oneof="continuation_selector",
-    )
-    stats: query_profile.ResultSetStats = proto.Field(
-        proto.MESSAGE,
-        number=7,
-        message=query_profile.ResultSetStats,
     )
 
 
@@ -884,11 +861,6 @@ class RunAggregationQueryRequest(proto.Message):
             minute timestamp within the past 7 days.
 
             This field is a member of `oneof`_ ``consistency_selector``.
-        mode (google.cloud.firestore_v1.types.QueryMode):
-            Optional. The mode in which the query request is processed.
-            This field is optional, and when not provided, it defaults
-            to ``NORMAL`` mode where no additional statistics will be
-            returned with the query results.
     """
 
     parent: str = proto.Field(
@@ -918,11 +890,6 @@ class RunAggregationQueryRequest(proto.Message):
         oneof="consistency_selector",
         message=timestamp_pb2.Timestamp,
     )
-    mode: query_profile.QueryMode = proto.Field(
-        proto.ENUM,
-        number=7,
-        enum=query_profile.QueryMode,
-    )
 
 
 class RunAggregationQueryResponse(proto.Message):
@@ -948,13 +915,6 @@ class RunAggregationQueryResponse(proto.Message):
             If the query returns no results, a response with
             ``read_time`` and no ``result`` will be sent, and this
             represents the time at which the query was run.
-        stats (google.cloud.firestore_v1.types.ResultSetStats):
-            Query plan and execution statistics. Note that the returned
-            stats are subject to change as Firestore evolves.
-
-            This is only present when the request specifies a mode other
-            than ``NORMAL`` and is sent only once with the last response
-            in the stream.
     """
 
     result: aggregation_result.AggregationResult = proto.Field(
@@ -970,11 +930,6 @@ class RunAggregationQueryResponse(proto.Message):
         proto.MESSAGE,
         number=3,
         message=timestamp_pb2.Timestamp,
-    )
-    stats: query_profile.ResultSetStats = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        message=query_profile.ResultSetStats,
     )
 
 

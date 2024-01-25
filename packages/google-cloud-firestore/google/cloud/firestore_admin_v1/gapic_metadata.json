@@ -20,11 +20,6 @@
                 "create_index"
               ]
             },
-            "DeleteDatabase": {
-              "methods": [
-                "delete_database"
-              ]
-            },
             "DeleteIndex": {
               "methods": [
                 "delete_index"
@@ -95,11 +90,6 @@
                 "create_index"
               ]
             },
-            "DeleteDatabase": {
-              "methods": [
-                "delete_database"
-              ]
-            },
             "DeleteIndex": {
               "methods": [
                 "delete_index"
@@ -168,11 +158,6 @@
             "CreateIndex": {
               "methods": [
                 "create_index"
-              ]
-            },
-            "DeleteDatabase": {
-              "methods": [
-                "delete_database"
               ]
             },
             "DeleteIndex": {

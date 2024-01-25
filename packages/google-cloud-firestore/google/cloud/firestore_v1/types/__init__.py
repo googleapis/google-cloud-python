@@ -67,11 +67,6 @@ from .query import (
     StructuredAggregationQuery,
     StructuredQuery,
 )
-from .query_profile import (
-    QueryPlan,
-    ResultSetStats,
-    QueryMode,
-)
 from .write import (
     DocumentChange,
     DocumentDelete,
@@ -125,9 +120,6 @@ __all__ = (
     "Cursor",
     "StructuredAggregationQuery",
     "StructuredQuery",
-    "QueryPlan",
-    "ResultSetStats",
-    "QueryMode",
     "DocumentChange",
     "DocumentDelete",
     "DocumentRemove",

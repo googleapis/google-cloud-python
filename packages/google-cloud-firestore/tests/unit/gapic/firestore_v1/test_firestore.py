@@ -54,7 +54,6 @@ from google.cloud.firestore_v1.types import document
 from google.cloud.firestore_v1.types import document as gf_document
 from google.cloud.firestore_v1.types import firestore
 from google.cloud.firestore_v1.types import query
-from google.cloud.firestore_v1.types import query_profile
 from google.cloud.firestore_v1.types import write as gf_write
 from google.cloud.location import locations_pb2
 from google.longrunning import operations_pb2  # type: ignore

@@ -32,24 +32,14 @@ __protobuf__ = proto.module(
 
 
 class Database(proto.Message):
-    r"""A Cloud Firestore Database.
+    r"""A Cloud Firestore Database. Currently only one database is allowed
+    per cloud project; this database must have a ``database_id`` of
+    '(default)'.
 
     Attributes:
         name (str):
             The resource name of the Database. Format:
             ``projects/{project}/databases/{database}``
-        uid (str):
-            Output only. The system-generated UUID4 for
-            this Database.
-        create_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The timestamp at which this database was
-            created. Databases created before 2016 do not populate
-            create_time.
-        update_time (google.protobuf.timestamp_pb2.Timestamp):
-            Output only. The timestamp at which this
-            database was most recently updated. Note this
-            only includes updates to the database resource
-            and not data contained by the database.
         location_id (str):
             The location of the database. Available
             locations are listed at
@@ -101,8 +91,6 @@ class Database(proto.Message):
             This value may be empty in which case the appid to use for
             URL-encoded keys is the project_id (eg: foo instead of
             v~foo).
-        delete_protection_state (google.cloud.firestore_admin_v1.types.Database.DeleteProtectionState):
-            State of delete protection for the database.
         etag (str):
             This checksum is computed by the server based
             on the value of other fields, and may be sent on
@@ -209,39 +197,9 @@ class Database(proto.Message):
         ENABLED = 1
         DISABLED = 2
 
-    class DeleteProtectionState(proto.Enum):
-        r"""The delete protection state of the database.
-
-        Values:
-            DELETE_PROTECTION_STATE_UNSPECIFIED (0):
-                The default value. Delete protection type is
-                not specified
-            DELETE_PROTECTION_DISABLED (1):
-                Delete protection is disabled
-            DELETE_PROTECTION_ENABLED (2):
-                Delete protection is enabled
-        """
-        DELETE_PROTECTION_STATE_UNSPECIFIED = 0
-        DELETE_PROTECTION_DISABLED = 1
-        DELETE_PROTECTION_ENABLED = 2
-
     name: str = proto.Field(
         proto.STRING,
         number=1,
-    )
-    uid: str = proto.Field(
-        proto.STRING,
-        number=3,
-    )
-    create_time: timestamp_pb2.Timestamp = proto.Field(
-        proto.MESSAGE,
-        number=5,
-        message=timestamp_pb2.Timestamp,
-    )
-    update_time: timestamp_pb2.Timestamp = proto.Field(
-        proto.MESSAGE,
-        number=6,
-        message=timestamp_pb2.Timestamp,
     )
     location_id: str = proto.Field(
         proto.STRING,
@@ -280,11 +238,6 @@ class Database(proto.Message):
     key_prefix: str = proto.Field(
         proto.STRING,
         number=20,
-    )
-    delete_protection_state: DeleteProtectionState = proto.Field(
-        proto.ENUM,
-        number=22,
-        enum=DeleteProtectionState,
     )
     etag: str = proto.Field(
         proto.STRING,
