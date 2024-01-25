@@ -29,12 +29,16 @@ if typing.TYPE_CHECKING:
     import bigframes.session
 
 
-def compile_ordered(node: nodes.BigFrameNode) -> compiled.OrderedIR:
+def compile_ordered_ir(node: nodes.BigFrameNode) -> compiled.OrderedIR:
     return typing.cast(compiled.OrderedIR, compile_node(node, True))
 
 
-def compile_unordered(node: nodes.BigFrameNode) -> compiled.UnorderedIR:
+def compile_unordered_ir(node: nodes.BigFrameNode) -> compiled.UnorderedIR:
     return typing.cast(compiled.UnorderedIR, compile_node(node, False))
+
+
+def compile_peak_sql(node: nodes.BigFrameNode, n_rows: int) -> typing.Optional[str]:
+    return compile_unordered_ir(node).peek_sql(n_rows)
 
 
 @functools.cache
@@ -56,8 +60,8 @@ def _compile_node(
 @_compile_node.register
 def compile_join(node: nodes.JoinNode, ordered: bool = True):
     if ordered:
-        left_ordered = compile_ordered(node.left_child)
-        right_ordered = compile_ordered(node.right_child)
+        left_ordered = compile_ordered_ir(node.left_child)
+        right_ordered = compile_ordered_ir(node.right_child)
         return bigframes.core.compile.single_column.join_by_column_ordered(
             left=left_ordered,
             right=right_ordered,
@@ -65,8 +69,8 @@ def compile_join(node: nodes.JoinNode, ordered: bool = True):
             allow_row_identity_join=node.allow_row_identity_join,
         )
     else:
-        left_unordered = compile_unordered(node.left_child)
-        right_unordered = compile_unordered(node.right_child)
+        left_unordered = compile_unordered_ir(node.left_child)
+        right_unordered = compile_unordered_ir(node.right_child)
         return bigframes.core.compile.single_column.join_by_column_unordered(
             left=left_unordered,
             right=right_unordered,
@@ -103,7 +107,7 @@ def compile_readgbq(node: nodes.ReadGbqNode, ordered: bool = True):
 
 @_compile_node.register
 def compile_promote_offsets(node: nodes.PromoteOffsetsNode, ordered: bool = True):
-    result = compile_ordered(node.child).promote_offsets(node.col_id)
+    result = compile_ordered_ir(node.child).promote_offsets(node.col_id)
     return result if ordered else result.to_unordered()
 
 
@@ -115,17 +119,17 @@ def compile_filter(node: nodes.FilterNode, ordered: bool = True):
 @_compile_node.register
 def compile_orderby(node: nodes.OrderByNode, ordered: bool = True):
     if ordered:
-        return compile_ordered(node.child).order_by(node.by)
+        return compile_ordered_ir(node.child).order_by(node.by)
     else:
-        return compile_unordered(node.child)
+        return compile_unordered_ir(node.child)
 
 
 @_compile_node.register
 def compile_reversed(node: nodes.ReversedNode, ordered: bool = True):
     if ordered:
-        return compile_ordered(node.child).reversed()
+        return compile_ordered_ir(node.child).reversed()
     else:
-        return compile_unordered(node.child)
+        return compile_unordered_ir(node.child)
 
 
 @_compile_node.register
@@ -137,22 +141,22 @@ def compile_projection(node: nodes.ProjectionNode, ordered: bool = True):
 @_compile_node.register
 def compile_concat(node: nodes.ConcatNode, ordered: bool = True):
     if ordered:
-        compiled_ordered = [compile_ordered(node) for node in node.children]
+        compiled_ordered = [compile_ordered_ir(node) for node in node.children]
         return concat_impl.concat_ordered(compiled_ordered)
     else:
-        compiled_unordered = [compile_unordered(node) for node in node.children]
+        compiled_unordered = [compile_unordered_ir(node) for node in node.children]
         return concat_impl.concat_unordered(compiled_unordered)
 
 
 @_compile_node.register
 def compile_rowcount(node: nodes.RowCountNode, ordered: bool = True):
-    result = compile_unordered(node.child).row_count()
+    result = compile_unordered_ir(node.child).row_count()
     return result if ordered else result.to_unordered()
 
 
 @_compile_node.register
 def compile_aggregate(node: nodes.AggregateNode, ordered: bool = True):
-    result = compile_unordered(node.child).aggregate(
+    result = compile_unordered_ir(node.child).aggregate(
         node.aggregations, node.by_column_ids, node.dropna
     )
     return result if ordered else result.to_unordered()
@@ -160,13 +164,13 @@ def compile_aggregate(node: nodes.AggregateNode, ordered: bool = True):
 
 @_compile_node.register
 def compile_corr(node: nodes.CorrNode, ordered: bool = True):
-    result = compile_unordered(node.child).corr_aggregate(node.corr_aggregations)
+    result = compile_unordered_ir(node.child).corr_aggregate(node.corr_aggregations)
     return result if ordered else result.to_unordered()
 
 
 @_compile_node.register
 def compile_window(node: nodes.WindowOpNode, ordered: bool = True):
-    result = compile_ordered(node.child).project_window_op(
+    result = compile_ordered_ir(node.child).project_window_op(
         node.column_name,
         node.op,
         node.window_spec,

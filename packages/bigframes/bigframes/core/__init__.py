@@ -106,10 +106,10 @@ class ArrayValue:
         return self._compile_ordered().get_column_type(key)
 
     def _compile_ordered(self) -> compiling.OrderedIR:
-        return compiling.compile_ordered(self.node)
+        return compiling.compile_ordered_ir(self.node)
 
     def _compile_unordered(self) -> compiling.UnorderedIR:
-        return compiling.compile_unordered(self.node)
+        return compiling.compile_unordered_ir(self.node)
 
     def row_count(self) -> ArrayValue:
         """Get number of rows in ArrayValue as a single-entry ArrayValue."""

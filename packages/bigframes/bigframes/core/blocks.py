@@ -432,7 +432,17 @@ class Block:
                 downsampling=sampling, ordered=ordered
             )
         )
+        df.set_axis(self.column_labels, axis=1, copy=False)
         return df, query_job
+
+    def try_peek(self, n: int = 20) -> typing.Optional[pd.DataFrame]:
+        if self.expr.node.peekable:
+            iterator, _ = self.session._peek(self.expr, n)
+            df = self._to_dataframe(iterator)
+            self._copy_index_to_pandas(df)
+            return df
+        else:
+            return None
 
     def to_pandas_batches(self):
         """Download results one message at a time."""

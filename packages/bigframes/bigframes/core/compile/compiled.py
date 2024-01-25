@@ -208,6 +208,13 @@ class UnorderedIR(BaseIbisIR):
             predicates=self._predicates,
         )
 
+    def peek_sql(self, n: int):
+        # Peek currently implemented as top level LIMIT op.
+        # Execution engine handles limit pushdown.
+        # In future, may push down limit/filters in compilation.
+        sql = ibis_bigquery.Backend().compile(self._to_ibis_expr().limit(n))
+        return typing.cast(str, sql)
+
     def to_sql(
         self,
         offset_column: typing.Optional[str] = None,

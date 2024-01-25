@@ -412,6 +412,37 @@ def test_rename(scalars_dfs):
     )
 
 
+def test_df_peek(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    peek_result = scalars_df.peek(n=3)
+    pd.testing.assert_index_equal(scalars_pandas_df.columns, peek_result.columns)
+    assert len(peek_result) == 3
+
+
+def test_df_peek_filtered(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    peek_result = scalars_df[scalars_df.int64_col != 0].peek(n=3)
+    pd.testing.assert_index_equal(scalars_pandas_df.columns, peek_result.columns)
+    assert len(peek_result) == 3
+
+
+def test_df_peek_exception(scalars_dfs):
+    scalars_df, _ = scalars_dfs
+
+    with pytest.raises(ValueError):
+        # Window ops aren't compatible with efficient peeking
+        scalars_df[["int64_col", "int64_too"]].cumsum().peek(n=3, force=False)
+
+
+def test_df_peek_force(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    peek_result = scalars_df[["int64_col", "int64_too"]].cumsum().peek(n=3, force=True)
+    pd.testing.assert_index_equal(
+        scalars_pandas_df[["int64_col", "int64_too"]].columns, peek_result.columns
+    )
+    assert len(peek_result) == 3
+
+
 def test_repr_w_all_rows(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
 

@@ -1508,6 +1508,17 @@ class Session(
             job_config=job_config,
         )
 
+    def _peek(
+        self, array_value: core.ArrayValue, n_rows: int
+    ) -> tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
+        """A 'peek' efficiently accesses a small number of rows in the dataframe."""
+        if not array_value.node.peekable:
+            raise NotImplementedError("cannot efficient peek this dataframe")
+        sql = self._compile_unordered(array_value).peek_sql(n_rows)
+        return self._start_query(
+            sql=sql,
+        )
+
     def _to_sql(
         self,
         array_value: core.ArrayValue,
@@ -1528,12 +1539,12 @@ class Session(
     def _compile_ordered(
         self, array_value: core.ArrayValue
     ) -> bigframes.core.compile.OrderedIR:
-        return bigframes.core.compile.compile_ordered(array_value.node)
+        return bigframes.core.compile.compile_ordered_ir(array_value.node)
 
     def _compile_unordered(
         self, array_value: core.ArrayValue
     ) -> bigframes.core.compile.UnorderedIR:
-        return bigframes.core.compile.compile_unordered(array_value.node)
+        return bigframes.core.compile.compile_unordered_ir(array_value.node)
 
     def _get_table_size(self, destination_table):
         table = self.bqclient.get_table(destination_table)
