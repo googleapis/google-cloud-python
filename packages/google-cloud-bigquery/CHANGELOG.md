@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.17.1](https://github.com/googleapis/python-bigquery/compare/v3.17.0...v3.17.1) (2024-01-24)
+
+
+### Bug Fixes
+
+* Add pyarrow.large_strign to the _ARROW_SCALAR_IDS_TO_BQ map ([#1796](https://github.com/googleapis/python-bigquery/issues/1796)) ([b402a6d](https://github.com/googleapis/python-bigquery/commit/b402a6df92e656aee10dd2c11c48f6ed93c74fd7))
+* Retry 'job exceeded rate limits' for DDL queries ([#1794](https://github.com/googleapis/python-bigquery/issues/1794)) ([39f33b2](https://github.com/googleapis/python-bigquery/commit/39f33b210ecbe9c2fd390825d29393c2d80257f5))
+
 ## [3.17.0](https://github.com/googleapis/python-bigquery/compare/v3.16.0...v3.17.0) (2024-01-24)
 
 
