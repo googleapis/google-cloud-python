@@ -28,6 +28,12 @@ with open(os.path.join(PACKAGE_ROOT, "google/cloud/ndb/version.py")) as fp:
     assert len(version_candidates) == 1
     version = version_candidates[0]
 
+packages = [
+    package
+    for package in setuptools.find_namespace_packages()
+    if package.startswith("google")
+]
+
 def main():
     package_root = os.path.abspath(os.path.dirname(__file__))
     readme_filename = os.path.join(package_root, "README.md")
@@ -73,8 +79,7 @@ def main():
             "Topic :: Internet",
         ],
         platforms="Posix; MacOS X; Windows",
-        packages=setuptools.find_packages(),
-        namespace_packages=["google", "google.cloud"],
+        packages=packages,
         install_requires=dependencies,
         extras_require={},
         python_requires=">=3.7",
