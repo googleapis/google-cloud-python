@@ -3793,6 +3793,145 @@ class AnalyticsAdminServiceGrpcTransport(AnalyticsAdminServiceTransport):
         return self._stubs["get_data_redaction_settings"]
 
     @property
+    def get_calculated_metric(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetCalculatedMetricRequest], resources.CalculatedMetric
+    ]:
+        r"""Return a callable for the get calculated metric method over gRPC.
+
+        Lookup for a single CalculatedMetric.
+
+        Returns:
+            Callable[[~.GetCalculatedMetricRequest],
+                    ~.CalculatedMetric]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_calculated_metric" not in self._stubs:
+            self._stubs["get_calculated_metric"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetCalculatedMetric",
+                request_serializer=analytics_admin.GetCalculatedMetricRequest.serialize,
+                response_deserializer=resources.CalculatedMetric.deserialize,
+            )
+        return self._stubs["get_calculated_metric"]
+
+    @property
+    def create_calculated_metric(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateCalculatedMetricRequest], resources.CalculatedMetric
+    ]:
+        r"""Return a callable for the create calculated metric method over gRPC.
+
+        Creates a CalculatedMetric.
+
+        Returns:
+            Callable[[~.CreateCalculatedMetricRequest],
+                    ~.CalculatedMetric]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_calculated_metric" not in self._stubs:
+            self._stubs["create_calculated_metric"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateCalculatedMetric",
+                request_serializer=analytics_admin.CreateCalculatedMetricRequest.serialize,
+                response_deserializer=resources.CalculatedMetric.deserialize,
+            )
+        return self._stubs["create_calculated_metric"]
+
+    @property
+    def list_calculated_metrics(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListCalculatedMetricsRequest],
+        analytics_admin.ListCalculatedMetricsResponse,
+    ]:
+        r"""Return a callable for the list calculated metrics method over gRPC.
+
+        Lists CalculatedMetrics on a property.
+
+        Returns:
+            Callable[[~.ListCalculatedMetricsRequest],
+                    ~.ListCalculatedMetricsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_calculated_metrics" not in self._stubs:
+            self._stubs["list_calculated_metrics"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListCalculatedMetrics",
+                request_serializer=analytics_admin.ListCalculatedMetricsRequest.serialize,
+                response_deserializer=analytics_admin.ListCalculatedMetricsResponse.deserialize,
+            )
+        return self._stubs["list_calculated_metrics"]
+
+    @property
+    def update_calculated_metric(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateCalculatedMetricRequest], resources.CalculatedMetric
+    ]:
+        r"""Return a callable for the update calculated metric method over gRPC.
+
+        Updates a CalculatedMetric on a property.
+
+        Returns:
+            Callable[[~.UpdateCalculatedMetricRequest],
+                    ~.CalculatedMetric]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_calculated_metric" not in self._stubs:
+            self._stubs["update_calculated_metric"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateCalculatedMetric",
+                request_serializer=analytics_admin.UpdateCalculatedMetricRequest.serialize,
+                response_deserializer=resources.CalculatedMetric.deserialize,
+            )
+        return self._stubs["update_calculated_metric"]
+
+    @property
+    def delete_calculated_metric(
+        self,
+    ) -> Callable[[analytics_admin.DeleteCalculatedMetricRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete calculated metric method over gRPC.
+
+        Deletes a CalculatedMetric on a property.
+
+        Returns:
+            Callable[[~.DeleteCalculatedMetricRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_calculated_metric" not in self._stubs:
+            self._stubs["delete_calculated_metric"] = self.grpc_channel.unary_unary(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteCalculatedMetric",
+                request_serializer=analytics_admin.DeleteCalculatedMetricRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_calculated_metric"]
+
+    @property
     def create_rollup_property(
         self,
     ) -> Callable[

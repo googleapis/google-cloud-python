@@ -75,6 +75,11 @@
                 "create_audience"
               ]
             },
+            "CreateCalculatedMetric": {
+              "methods": [
+                "create_calculated_metric"
+              ]
+            },
             "CreateChannelGroup": {
               "methods": [
                 "create_channel_group"
@@ -188,6 +193,11 @@
             "DeleteAdSenseLink": {
               "methods": [
                 "delete_ad_sense_link"
+              ]
+            },
+            "DeleteCalculatedMetric": {
+              "methods": [
+                "delete_calculated_metric"
               ]
             },
             "DeleteChannelGroup": {
@@ -308,6 +318,11 @@
             "GetBigQueryLink": {
               "methods": [
                 "get_big_query_link"
+              ]
+            },
+            "GetCalculatedMetric": {
+              "methods": [
+                "get_calculated_metric"
               ]
             },
             "GetChannelGroup": {
@@ -445,6 +460,11 @@
                 "list_big_query_links"
               ]
             },
+            "ListCalculatedMetrics": {
+              "methods": [
+                "list_calculated_metrics"
+              ]
+            },
             "ListChannelGroups": {
               "methods": [
                 "list_channel_groups"
@@ -573,6 +593,11 @@
             "UpdateAudience": {
               "methods": [
                 "update_audience"
+              ]
+            },
+            "UpdateCalculatedMetric": {
+              "methods": [
+                "update_calculated_metric"
               ]
             },
             "UpdateChannelGroup": {
@@ -735,6 +760,11 @@
                 "create_audience"
               ]
             },
+            "CreateCalculatedMetric": {
+              "methods": [
+                "create_calculated_metric"
+              ]
+            },
             "CreateChannelGroup": {
               "methods": [
                 "create_channel_group"
@@ -848,6 +878,11 @@
             "DeleteAdSenseLink": {
               "methods": [
                 "delete_ad_sense_link"
+              ]
+            },
+            "DeleteCalculatedMetric": {
+              "methods": [
+                "delete_calculated_metric"
               ]
             },
             "DeleteChannelGroup": {
@@ -968,6 +1003,11 @@
             "GetBigQueryLink": {
               "methods": [
                 "get_big_query_link"
+              ]
+            },
+            "GetCalculatedMetric": {
+              "methods": [
+                "get_calculated_metric"
               ]
             },
             "GetChannelGroup": {
@@ -1105,6 +1145,11 @@
                 "list_big_query_links"
               ]
             },
+            "ListCalculatedMetrics": {
+              "methods": [
+                "list_calculated_metrics"
+              ]
+            },
             "ListChannelGroups": {
               "methods": [
                 "list_channel_groups"
@@ -1233,6 +1278,11 @@
             "UpdateAudience": {
               "methods": [
                 "update_audience"
+              ]
+            },
+            "UpdateCalculatedMetric": {
+              "methods": [
+                "update_calculated_metric"
               ]
             },
             "UpdateChannelGroup": {
@@ -1395,6 +1445,11 @@
                 "create_audience"
               ]
             },
+            "CreateCalculatedMetric": {
+              "methods": [
+                "create_calculated_metric"
+              ]
+            },
             "CreateChannelGroup": {
               "methods": [
                 "create_channel_group"
@@ -1508,6 +1563,11 @@
             "DeleteAdSenseLink": {
               "methods": [
                 "delete_ad_sense_link"
+              ]
+            },
+            "DeleteCalculatedMetric": {
+              "methods": [
+                "delete_calculated_metric"
               ]
             },
             "DeleteChannelGroup": {
@@ -1628,6 +1688,11 @@
             "GetBigQueryLink": {
               "methods": [
                 "get_big_query_link"
+              ]
+            },
+            "GetCalculatedMetric": {
+              "methods": [
+                "get_calculated_metric"
               ]
             },
             "GetChannelGroup": {
@@ -1765,6 +1830,11 @@
                 "list_big_query_links"
               ]
             },
+            "ListCalculatedMetrics": {
+              "methods": [
+                "list_calculated_metrics"
+              ]
+            },
             "ListChannelGroups": {
               "methods": [
                 "list_channel_groups"
@@ -1893,6 +1963,11 @@
             "UpdateAudience": {
               "methods": [
                 "update_audience"
+              ]
+            },
+            "UpdateCalculatedMetric": {
+              "methods": [
+                "update_calculated_metric"
               ]
             },
             "UpdateChannelGroup": {

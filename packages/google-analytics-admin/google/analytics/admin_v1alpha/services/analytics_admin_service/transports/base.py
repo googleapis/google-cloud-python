@@ -742,6 +742,31 @@ class AnalyticsAdminServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_calculated_metric: gapic_v1.method.wrap_method(
+                self.get_calculated_metric,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_calculated_metric: gapic_v1.method.wrap_method(
+                self.create_calculated_metric,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_calculated_metrics: gapic_v1.method.wrap_method(
+                self.list_calculated_metrics,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_calculated_metric: gapic_v1.method.wrap_method(
+                self.update_calculated_metric,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_calculated_metric: gapic_v1.method.wrap_method(
+                self.delete_calculated_metric,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.create_rollup_property: gapic_v1.method.wrap_method(
                 self.create_rollup_property,
                 default_timeout=None,
@@ -2067,6 +2092,54 @@ class AnalyticsAdminServiceTransport(abc.ABC):
         Union[
             resources.DataRedactionSettings, Awaitable[resources.DataRedactionSettings]
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_calculated_metric(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetCalculatedMetricRequest],
+        Union[resources.CalculatedMetric, Awaitable[resources.CalculatedMetric]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_calculated_metric(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateCalculatedMetricRequest],
+        Union[resources.CalculatedMetric, Awaitable[resources.CalculatedMetric]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_calculated_metrics(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListCalculatedMetricsRequest],
+        Union[
+            analytics_admin.ListCalculatedMetricsResponse,
+            Awaitable[analytics_admin.ListCalculatedMetricsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_calculated_metric(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateCalculatedMetricRequest],
+        Union[resources.CalculatedMetric, Awaitable[resources.CalculatedMetric]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_calculated_metric(
+        self,
+    ) -> Callable[
+        [analytics_admin.DeleteCalculatedMetricRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

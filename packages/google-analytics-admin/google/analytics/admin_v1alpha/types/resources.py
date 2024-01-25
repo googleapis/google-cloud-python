@@ -66,6 +66,7 @@ __protobuf__ = proto.module(
         "GoogleSignalsSettings",
         "CustomDimension",
         "CustomMetric",
+        "CalculatedMetric",
         "DataRetentionSettings",
         "AttributionSettings",
         "AccessBinding",
@@ -279,6 +280,8 @@ class ChangeHistoryResourceType(proto.Enum):
             Audience resource
         EVENT_CREATE_RULE (29):
             EventCreateRule resource
+        CALCULATED_METRIC (31):
+            CalculatedMetric resource
     """
     CHANGE_HISTORY_RESOURCE_TYPE_UNSPECIFIED = 0
     ACCOUNT = 1
@@ -304,6 +307,7 @@ class ChangeHistoryResourceType(proto.Enum):
     ADSENSE_LINK = 27
     AUDIENCE = 28
     EVENT_CREATE_RULE = 29
+    CALCULATED_METRIC = 31
 
 
 class GoogleSignalsState(proto.Enum):
@@ -1569,6 +1573,11 @@ class ChangeHistoryChange(proto.Message):
                 change history.
 
                 This field is a member of `oneof`_ ``resource``.
+            calculated_metric (google.analytics.admin_v1alpha.types.CalculatedMetric):
+                A snapshot of a CalculatedMetric resource in
+                change history.
+
+                This field is a member of `oneof`_ ``resource``.
         """
 
         account: "Account" = proto.Field(
@@ -1718,6 +1727,12 @@ class ChangeHistoryChange(proto.Message):
             number=29,
             oneof="resource",
             message=event_create_and_edit.EventCreateRule,
+        )
+        calculated_metric: "CalculatedMetric" = proto.Field(
+            proto.MESSAGE,
+            number=31,
+            oneof="resource",
+            message="CalculatedMetric",
         )
 
     resource: str = proto.Field(
@@ -2082,7 +2097,7 @@ class ConversionEvent(proto.Message):
                 When a conversion event for this event_name has no set
                 currency, this currency will be applied as the default. Must
                 be in ISO 4217 currency code format. See
-                https://en.wikipedia.org/wiki/ISO_4217 for more.
+                https://en.wikipedia.org/wiki/ISO_4217 for more information.
 
                 This field is a member of `oneof`_ ``_currency_code``.
         """
@@ -2395,6 +2410,144 @@ class CustomMetric(proto.Message):
         proto.ENUM,
         number=8,
         enum=RestrictedMetricType,
+    )
+
+
+class CalculatedMetric(proto.Message):
+    r"""A definition for a calculated metric.
+
+    Attributes:
+        name (str):
+            Output only. Resource name for this CalculatedMetric.
+            Format:
+            'properties/{property_id}/calculatedMetrics/{calculated_metric_id}'
+        description (str):
+            Optional. Description for this calculated
+            metric. Max length of 4096 characters.
+        display_name (str):
+            Required. Display name for this calculated
+            metric as shown in the Google Analytics UI. Max
+            length 82 characters.
+        calculated_metric_id (str):
+            Output only. The ID to use for the calculated metric. In the
+            UI, this is referred to as the "API name."
+
+            The calculated_metric_id is used when referencing this
+            calculated metric from external APIs. For example,
+            "calcMetric:{calculated_metric_id}".
+        metric_unit (google.analytics.admin_v1alpha.types.CalculatedMetric.MetricUnit):
+            Required. The type for the calculated
+            metric's value.
+        restricted_metric_type (MutableSequence[google.analytics.admin_v1alpha.types.CalculatedMetric.RestrictedMetricType]):
+            Output only. Types of restricted data that
+            this metric contains.
+        formula (str):
+            Required. The calculated metric's definition. Maximum number
+            of unique referenced custom metrics is 5. Formulas supports
+            the following operations:
+
+            -  (addition), - (subtraction), - (negative), \*
+               (multiplication), / (division), () (parenthesis). Any
+               valid real numbers are acceptable that fit in a Long
+               (64bit integer) or a Double (64 bit floating point
+               number). Example formula: "( customEvent:parameter_name +
+               cartPurchaseQuantity ) / 2.0".
+        invalid_metric_reference (bool):
+            Output only. If true, this calculated metric has a invalid
+            metric reference. Anything using a calculated metric with
+            invalid_metric_reference set to true may fail, produce
+            warnings, or produce unexpected results.
+    """
+
+    class MetricUnit(proto.Enum):
+        r"""Possible types of representing the calculated metric's value.
+
+        Values:
+            METRIC_UNIT_UNSPECIFIED (0):
+                MetricUnit unspecified or missing.
+            STANDARD (1):
+                This metric uses default units.
+            CURRENCY (2):
+                This metric measures a currency.
+            FEET (3):
+                This metric measures feet.
+            MILES (4):
+                This metric measures miles.
+            METERS (5):
+                This metric measures meters.
+            KILOMETERS (6):
+                This metric measures kilometers.
+            MILLISECONDS (7):
+                This metric measures milliseconds.
+            SECONDS (8):
+                This metric measures seconds.
+            MINUTES (9):
+                This metric measures minutes.
+            HOURS (10):
+                This metric measures hours.
+        """
+        METRIC_UNIT_UNSPECIFIED = 0
+        STANDARD = 1
+        CURRENCY = 2
+        FEET = 3
+        MILES = 4
+        METERS = 5
+        KILOMETERS = 6
+        MILLISECONDS = 7
+        SECONDS = 8
+        MINUTES = 9
+        HOURS = 10
+
+    class RestrictedMetricType(proto.Enum):
+        r"""Labels that mark the data in calculated metric used in
+        conjunction with user roles that restrict access to cost and/or
+        revenue metrics.
+
+        Values:
+            RESTRICTED_METRIC_TYPE_UNSPECIFIED (0):
+                Type unknown or unspecified.
+            COST_DATA (1):
+                Metric reports cost data.
+            REVENUE_DATA (2):
+                Metric reports revenue data.
+        """
+        RESTRICTED_METRIC_TYPE_UNSPECIFIED = 0
+        COST_DATA = 1
+        REVENUE_DATA = 2
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_name: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    calculated_metric_id: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    metric_unit: MetricUnit = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=MetricUnit,
+    )
+    restricted_metric_type: MutableSequence[RestrictedMetricType] = proto.RepeatedField(
+        proto.ENUM,
+        number=6,
+        enum=RestrictedMetricType,
+    )
+    formula: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    invalid_metric_reference: bool = proto.Field(
+        proto.BOOL,
+        number=9,
     )
 
 
