@@ -11103,6 +11103,19 @@ def test_create_conversation_rest(request_type):
         "language_code": "language_code_value",
         "agent_id": "agent_id_value",
         "labels": {},
+        "quality_metadata": {
+            "customer_satisfaction_rating": 3005,
+            "wait_duration": {},
+            "menu_path": "menu_path_value",
+            "agent_info": [
+                {
+                    "agent_id": "agent_id_value",
+                    "display_name": "display_name_value",
+                    "team": "team_value",
+                    "disposition_code": "disposition_code_value",
+                }
+            ],
+        },
         "transcript": {
             "transcript_segments": [
                 {
@@ -11873,6 +11886,19 @@ def test_update_conversation_rest(request_type):
         "language_code": "language_code_value",
         "agent_id": "agent_id_value",
         "labels": {},
+        "quality_metadata": {
+            "customer_satisfaction_rating": 3005,
+            "wait_duration": {},
+            "menu_path": "menu_path_value",
+            "agent_info": [
+                {
+                    "agent_id": "agent_id_value",
+                    "display_name": "display_name_value",
+                    "team": "team_value",
+                    "disposition_code": "disposition_code_value",
+                }
+            ],
+        },
         "transcript": {
             "transcript_segments": [
                 {
