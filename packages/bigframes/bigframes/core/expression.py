@@ -18,16 +18,13 @@ import abc
 import dataclasses
 import itertools
 import typing
-from typing import Optional
 
-import bigframes.dtypes
+import bigframes.dtypes as dtypes
 import bigframes.operations
 
 
-def const(
-    value: typing.Hashable, dtype: Optional[bigframes.dtypes.Dtype] = None
-) -> Expression:
-    return ScalarConstantExpression(value, dtype)
+def const(value: typing.Hashable, dtype: dtypes.ExpressionType = None) -> Expression:
+    return ScalarConstantExpression(value, dtype or dtypes.infer_literal_type(value))
 
 
 def free_var(id: str) -> Expression:
@@ -45,9 +42,16 @@ class Expression(abc.ABC):
     def rename(self, name_mapping: dict[str, str]) -> Expression:
         return self
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def is_const(self) -> bool:
-        return False
+        ...
+
+    @abc.abstractmethod
+    def output_type(
+        self, input_types: dict[str, dtypes.ExpressionType]
+    ) -> dtypes.ExpressionType:
+        ...
 
 
 @dataclasses.dataclass(frozen=True)
@@ -56,11 +60,16 @@ class ScalarConstantExpression(Expression):
 
     # TODO: Further constrain?
     value: typing.Hashable
-    dtype: Optional[bigframes.dtypes.Dtype] = None
+    dtype: dtypes.ExpressionType = None
 
     @property
     def is_const(self) -> bool:
         return True
+
+    def output_type(
+        self, input_types: dict[str, bigframes.dtypes.Dtype]
+    ) -> dtypes.ExpressionType:
+        return self.dtype
 
 
 @dataclasses.dataclass(frozen=True)
@@ -82,6 +91,14 @@ class UnboundVariableExpression(Expression):
     @property
     def is_const(self) -> bool:
         return False
+
+    def output_type(
+        self, input_types: dict[str, bigframes.dtypes.Dtype]
+    ) -> dtypes.ExpressionType:
+        if self.id in input_types:
+            return input_types[self.id]
+        else:
+            raise ValueError("Type of variable has not been fixed.")
 
 
 @dataclasses.dataclass(frozen=True)
@@ -110,3 +127,11 @@ class OpExpression(Expression):
     @property
     def is_const(self) -> bool:
         return all(child.is_const for child in self.inputs)
+
+    def output_type(
+        self, input_types: dict[str, dtypes.ExpressionType]
+    ) -> dtypes.ExpressionType:
+        operand_types = tuple(
+            map(lambda x: x.output_type(input_types=input_types), self.inputs)
+        )
+        return self.op.output_type(*operand_types)

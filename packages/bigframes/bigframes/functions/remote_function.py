@@ -46,32 +46,18 @@ import google.iam.v1
 from ibis.backends.bigquery.compiler import compiles
 from ibis.backends.bigquery.datatypes import BigQueryType
 from ibis.expr.datatypes.core import DataType as IbisDataType
-from ibis.expr.datatypes.core import dtype as python_type_to_bigquery_type
 import ibis.expr.operations as ops
 import ibis.expr.rules as rlz
 
 from bigframes import clients
 import bigframes.constants as constants
+import bigframes.dtypes
 
 logger = logging.getLogger(__name__)
 
 # Protocol version 4 is available in python version 3.4 and above
 # https://docs.python.org/3/library/pickle.html#data-stream-format
 _pickle_protocol_version = 4
-
-# Input and output types supported by BigQuery DataFrames remote functions.
-# TODO(shobs): Extend the support to all types supported by BQ remote functions
-# https://cloud.google.com/bigquery/docs/remote-functions#limitations
-SUPPORTED_IO_PYTHON_TYPES = {bool, float, int, str}
-SUPPORTED_IO_BIGQUERY_TYPEKINDS = {
-    "BOOLEAN",
-    "BOOL",
-    "FLOAT",
-    "FLOAT64",
-    "INT64",
-    "INTEGER",
-    "STRING",
-}
 
 
 def get_remote_function_locations(bq_location):
@@ -558,24 +544,6 @@ def remote_function_node(
     return f
 
 
-class UnsupportedTypeError(ValueError):
-    def __init__(self, type_, supported_types):
-        self.type = type_
-        self.supported_types = supported_types
-
-
-def ibis_type_from_python_type(t: type) -> IbisDataType:
-    if t not in SUPPORTED_IO_PYTHON_TYPES:
-        raise UnsupportedTypeError(t, SUPPORTED_IO_PYTHON_TYPES)
-    return python_type_to_bigquery_type(t)
-
-
-def ibis_type_from_type_kind(tk: bigquery.StandardSqlTypeNames) -> IbisDataType:
-    if tk not in SUPPORTED_IO_BIGQUERY_TYPEKINDS:
-        raise UnsupportedTypeError(tk, SUPPORTED_IO_BIGQUERY_TYPEKINDS)
-    return BigQueryType.to_ibis(tk)
-
-
 def ibis_signature_from_python_signature(
     signature: inspect.Signature,
     input_types: Sequence[type],
@@ -583,8 +551,10 @@ def ibis_signature_from_python_signature(
 ) -> IbisSignature:
     return IbisSignature(
         parameter_names=list(signature.parameters.keys()),
-        input_types=[ibis_type_from_python_type(t) for t in input_types],
-        output_type=ibis_type_from_python_type(output_type),
+        input_types=[
+            bigframes.dtypes.ibis_type_from_python_type(t) for t in input_types
+        ],
+        output_type=bigframes.dtypes.ibis_type_from_python_type(output_type),
     )
 
 
@@ -599,10 +569,14 @@ def ibis_signature_from_routine(routine: bigquery.Routine) -> IbisSignature:
     return IbisSignature(
         parameter_names=[arg.name for arg in routine.arguments],
         input_types=[
-            ibis_type_from_type_kind(arg.data_type.type_kind) if arg.data_type else None
+            bigframes.dtypes.ibis_type_from_type_kind(arg.data_type.type_kind)
+            if arg.data_type
+            else None
             for arg in routine.arguments
         ],
-        output_type=ibis_type_from_type_kind(routine.return_type.type_kind),
+        output_type=bigframes.dtypes.ibis_type_from_type_kind(
+            routine.return_type.type_kind
+        ),
     )
 
 
@@ -908,7 +882,7 @@ def read_gbq_function(
         raise ValueError(
             "Function return type must be specified. {constants.FEEDBACK_LINK}"
         )
-    except UnsupportedTypeError as e:
+    except bigframes.dtypes.UnsupportedTypeError as e:
         raise ValueError(
             f"Type {e.type} not supported, supported types are {e.supported_types}. "
             f"{constants.FEEDBACK_LINK}"

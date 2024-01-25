@@ -241,9 +241,7 @@ def test_literal_to_ibis_scalar_throws_on_incompatible_literal():
 def test_remote_function_io_types_are_supported_bigframes_types():
     from ibis.expr.datatypes.core import dtype as python_type_to_bigquery_type
 
-    from bigframes.functions.remote_function import (
-        SUPPORTED_IO_PYTHON_TYPES as rf_supported_io_types,
-    )
+    from bigframes.dtypes import SUPPORTED_IO_PYTHON_TYPES as rf_supported_io_types
 
     for python_type in rf_supported_io_types:
         ibis_type = python_type_to_bigquery_type(python_type)

@@ -15,14 +15,17 @@
 from ibis.backends.bigquery import datatypes as bq_types
 from ibis.expr import datatypes as ibis_types
 
-from bigframes.functions import remote_function as rf
+import bigframes.dtypes
 
 
 def test_supported_types_correspond():
     # The same types should be representable by the supported Python and BigQuery types.
-    ibis_types_from_python = {ibis_types.dtype(t) for t in rf.SUPPORTED_IO_PYTHON_TYPES}
+    ibis_types_from_python = {
+        ibis_types.dtype(t) for t in bigframes.dtypes.SUPPORTED_IO_PYTHON_TYPES
+    }
     ibis_types_from_bigquery = {
-        bq_types.BigQueryType.to_ibis(tk) for tk in rf.SUPPORTED_IO_BIGQUERY_TYPEKINDS
+        bq_types.BigQueryType.to_ibis(tk)
+        for tk in bigframes.dtypes.SUPPORTED_IO_BIGQUERY_TYPEKINDS
     }
 
     assert ibis_types_from_python == ibis_types_from_bigquery

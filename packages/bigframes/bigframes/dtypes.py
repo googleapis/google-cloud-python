@@ -23,7 +23,9 @@ from typing import Any, Dict, Iterable, Literal, Tuple, Union
 import geopandas as gpd  # type: ignore
 import google.cloud.bigquery as bigquery
 import ibis
+from ibis.backends.bigquery.datatypes import BigQueryType
 import ibis.expr.datatypes as ibis_dtypes
+from ibis.expr.datatypes.core import dtype as python_type_to_bigquery_type
 import ibis.expr.types as ibis_types
 import numpy as np
 import pandas as pd
@@ -42,6 +44,14 @@ Dtype = Union[
     pd.ArrowDtype,
     gpd.array.GeometryDtype,
 ]
+# Represents both column types (dtypes) and local-only types
+# None represents the type of a None scalar.
+ExpressionType = typing.Optional[Dtype]
+
+INT_DTYPE = pd.Int64Dtype()
+FLOAT_DTYPE = pd.Float64Dtype()
+BOOL_DTYPE = pd.BooleanDtype()
+STRING_DTYPE = pd.StringDtype(storage="pyarrow")
 
 # On BQ side, ARRAY, STRUCT, GEOGRAPHY, JSON are not orderable
 UNORDERED_DTYPES = [gpd.array.GeometryDtype()]
@@ -539,25 +549,33 @@ def is_compatible(scalar: typing.Any, dtype: Dtype) -> typing.Optional[Dtype]:
             return lcd_type(pd.Int64Dtype(), dtype)
         if isinstance(scalar, decimal.Decimal):
             # TODO: Check context to see if can use NUMERIC instead of BIGNUMERIC
-            return lcd_type(pd.ArrowDtype(pa.decimal128(76, 38)), dtype)
+            return lcd_type(pd.ArrowDtype(pa.decimal256(76, 38)), dtype)
     return None
 
 
-def lcd_type(dtype1: Dtype, dtype2: Dtype) -> typing.Optional[Dtype]:
+def lcd_type(dtype1: Dtype, dtype2: Dtype) -> Dtype:
     if dtype1 == dtype2:
         return dtype1
     # Implicit conversion currently only supported for numeric types
     hierarchy: list[Dtype] = [
         pd.BooleanDtype(),
         pd.Int64Dtype(),
-        pd.Float64Dtype(),
         pd.ArrowDtype(pa.decimal128(38, 9)),
         pd.ArrowDtype(pa.decimal256(76, 38)),
+        pd.Float64Dtype(),
     ]
     if (dtype1 not in hierarchy) or (dtype2 not in hierarchy):
         return None
     lcd_index = max(hierarchy.index(dtype1), hierarchy.index(dtype2))
     return hierarchy[lcd_index]
+
+
+def lcd_etype(etype1: ExpressionType, etype2: ExpressionType) -> ExpressionType:
+    if etype1 is None:
+        return etype2
+    if etype2 is None:
+        return etype1
+    return lcd_type_or_throw(etype1, etype2)
 
 
 def lcd_type_or_throw(dtype1: Dtype, dtype2: Dtype) -> Dtype:
@@ -567,3 +585,44 @@ def lcd_type_or_throw(dtype1: Dtype, dtype2: Dtype) -> Dtype:
             f"BigFrames cannot upcast {dtype1} and {dtype2} to common type. {constants.FEEDBACK_LINK}"
         )
     return result
+
+
+def infer_literal_type(literal) -> typing.Optional[Dtype]:
+    if pd.isna(literal):
+        return None  # Null value without a definite type
+    # Temporary logic, use ibis inferred type
+    ibis_literal = literal_to_ibis_scalar(literal)
+    return ibis_dtype_to_bigframes_dtype(ibis_literal.type())
+
+
+# Input and output types supported by BigQuery DataFrames remote functions.
+# TODO(shobs): Extend the support to all types supported by BQ remote functions
+# https://cloud.google.com/bigquery/docs/remote-functions#limitations
+SUPPORTED_IO_PYTHON_TYPES = {bool, float, int, str}
+SUPPORTED_IO_BIGQUERY_TYPEKINDS = {
+    "BOOLEAN",
+    "BOOL",
+    "FLOAT",
+    "FLOAT64",
+    "INT64",
+    "INTEGER",
+    "STRING",
+}
+
+
+class UnsupportedTypeError(ValueError):
+    def __init__(self, type_, supported_types):
+        self.type = type_
+        self.supported_types = supported_types
+
+
+def ibis_type_from_python_type(t: type) -> ibis_dtypes.DataType:
+    if t not in SUPPORTED_IO_PYTHON_TYPES:
+        raise UnsupportedTypeError(t, SUPPORTED_IO_PYTHON_TYPES)
+    return python_type_to_bigquery_type(t)
+
+
+def ibis_type_from_type_kind(tk: bigquery.StandardSqlTypeNames) -> ibis_dtypes.DataType:
+    if tk not in SUPPORTED_IO_BIGQUERY_TYPEKINDS:
+        raise UnsupportedTypeError(tk, SUPPORTED_IO_BIGQUERY_TYPEKINDS)
+    return BigQueryType.to_ibis(tk)
