@@ -120,6 +120,12 @@ __protobuf__ = proto.module(
         "ListCustomMetricsResponse",
         "ArchiveCustomMetricRequest",
         "GetCustomMetricRequest",
+        "CreateCalculatedMetricRequest",
+        "UpdateCalculatedMetricRequest",
+        "DeleteCalculatedMetricRequest",
+        "ListCalculatedMetricsRequest",
+        "ListCalculatedMetricsResponse",
+        "GetCalculatedMetricRequest",
         "GetDataRetentionSettingsRequest",
         "UpdateDataRetentionSettingsRequest",
         "CreateDataStreamRequest",
@@ -1116,11 +1122,14 @@ class SearchChangeHistoryEventsRequest(proto.Message):
     Attributes:
         account (str):
             Required. The account resource for which to
-            return change history resources.
+            return change history resources. Format:
+            accounts/{account} Example: "accounts/100".
         property (str):
             Optional. Resource name for a child property.
             If set, only return changes made to this
-            property or its child resources.
+            property or its child resources. Format:
+            properties/{propertyId}
+            Example: "properties/100".
         resource_type (MutableSequence[google.analytics.admin_v1alpha.types.ChangeHistoryResourceType]):
             Optional. If set, only return changes if they
             are for a resource that matches at least one of
@@ -2456,6 +2465,164 @@ class GetCustomMetricRequest(proto.Message):
             Required. The name of the CustomMetric to
             get. Example format:
             properties/1234/customMetrics/5678
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateCalculatedMetricRequest(proto.Message):
+    r"""Request message for CreateCalculatedMetric RPC.
+
+    Attributes:
+        parent (str):
+            Required. Format: properties/{property_id} Example:
+            properties/1234
+        calculated_metric_id (str):
+            Required. The ID to use for the calculated metric which will
+            become the final component of the calculated metric's
+            resource name.
+
+            This value should be 1-80 characters and valid characters
+            are /[a-zA-Z0-9_]/, no spaces allowed. calculated_metric_id
+            must be unique between all calculated metrics under a
+            property. The calculated_metric_id is used when referencing
+            this calculated metric from external APIs, for example,
+            "calcMetric:{calculated_metric_id}".
+        calculated_metric (google.analytics.admin_v1alpha.types.CalculatedMetric):
+            Required. The CalculatedMetric to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    calculated_metric_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    calculated_metric: resources.CalculatedMetric = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.CalculatedMetric,
+    )
+
+
+class UpdateCalculatedMetricRequest(proto.Message):
+    r"""Request message for UpdateCalculatedMetric RPC.
+
+    Attributes:
+        calculated_metric (google.analytics.admin_v1alpha.types.CalculatedMetric):
+            Required. The CalculatedMetric to update
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Required. The list of fields to be updated. Omitted fields
+            will not be updated. To replace the entire entity, use one
+            path with the string "*" to match all fields.
+    """
+
+    calculated_metric: resources.CalculatedMetric = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.CalculatedMetric,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class DeleteCalculatedMetricRequest(proto.Message):
+    r"""Request message for DeleteCalculatedMetric RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the CalculatedMetric to delete.
+            Format:
+            properties/{property_id}/calculatedMetrics/{calculated_metric_id}
+            Example: properties/1234/calculatedMetrics/Metric01
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListCalculatedMetricsRequest(proto.Message):
+    r"""Request message for ListCalculatedMetrics RPC.
+
+    Attributes:
+        parent (str):
+            Required. Example format: properties/1234
+        page_size (int):
+            Optional. The maximum number of resources to
+            return. If unspecified, at most 50 resources
+            will be returned. The maximum value is 200
+            (higher values will be coerced to the maximum).
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListCalculatedMetrics`` call. Provide this to retrieve the
+            subsequent page.
+
+            When paginating, all other parameters provided to
+            ``ListCalculatedMetrics`` must match the call that provided
+            the page token.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ListCalculatedMetricsResponse(proto.Message):
+    r"""Response message for ListCalculatedMetrics RPC.
+
+    Attributes:
+        calculated_metrics (MutableSequence[google.analytics.admin_v1alpha.types.CalculatedMetric]):
+            List of CalculatedMetrics.
+        next_page_token (str):
+            A token, which can be sent as ``page_token`` to retrieve the
+            next page. If this field is omitted, there are no subsequent
+            pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    calculated_metrics: MutableSequence[
+        resources.CalculatedMetric
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.CalculatedMetric,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class GetCalculatedMetricRequest(proto.Message):
+    r"""Request message for GetCalculatedMetric RPC.
+
+    Attributes:
+        name (str):
+            Required. The name of the CalculatedMetric to get. Format:
+            properties/{property_id}/calculatedMetrics/{calculated_metric_id}
+            Example: properties/1234/calculatedMetrics/Metric01
     """
 
     name: str = proto.Field(

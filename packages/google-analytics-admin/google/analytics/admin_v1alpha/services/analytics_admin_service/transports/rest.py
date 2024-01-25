@@ -167,6 +167,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_calculated_metric(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_calculated_metric(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_create_channel_group(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -339,6 +347,10 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_delete_calculated_metric(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_delete_channel_group(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -468,6 +480,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_get_big_query_link(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_calculated_metric(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_calculated_metric(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -687,6 +707,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_calculated_metrics(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_calculated_metrics(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_channel_groups(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -892,6 +920,14 @@ class AnalyticsAdminServiceRestInterceptor:
                 return request, metadata
 
             def post_update_audience(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_calculated_metric(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_calculated_metric(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -1312,6 +1348,31 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: gaa_audience.Audience
     ) -> gaa_audience.Audience:
         """Post-rpc interceptor for create_audience
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_calculated_metric(
+        self,
+        request: analytics_admin.CreateCalculatedMetricRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.CreateCalculatedMetricRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_calculated_metric
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_create_calculated_metric(
+        self, response: resources.CalculatedMetric
+    ) -> resources.CalculatedMetric:
+        """Post-rpc interceptor for create_calculated_metric
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -1833,6 +1894,20 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return request, metadata
 
+    def pre_delete_calculated_metric(
+        self,
+        request: analytics_admin.DeleteCalculatedMetricRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.DeleteCalculatedMetricRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_calculated_metric
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
     def pre_delete_channel_group(
         self,
         request: analytics_admin.DeleteChannelGroupRequest,
@@ -2234,6 +2309,29 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: resources.BigQueryLink
     ) -> resources.BigQueryLink:
         """Post-rpc interceptor for get_big_query_link
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_calculated_metric(
+        self,
+        request: analytics_admin.GetCalculatedMetricRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.GetCalculatedMetricRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_calculated_metric
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_get_calculated_metric(
+        self, response: resources.CalculatedMetric
+    ) -> resources.CalculatedMetric:
+        """Post-rpc interceptor for get_calculated_metric
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -2885,6 +2983,29 @@ class AnalyticsAdminServiceRestInterceptor:
         """
         return response
 
+    def pre_list_calculated_metrics(
+        self,
+        request: analytics_admin.ListCalculatedMetricsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[analytics_admin.ListCalculatedMetricsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_calculated_metrics
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_list_calculated_metrics(
+        self, response: analytics_admin.ListCalculatedMetricsResponse
+    ) -> analytics_admin.ListCalculatedMetricsResponse:
+        """Post-rpc interceptor for list_calculated_metrics
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_channel_groups(
         self,
         request: analytics_admin.ListChannelGroupsRequest,
@@ -3499,6 +3620,31 @@ class AnalyticsAdminServiceRestInterceptor:
         self, response: gaa_audience.Audience
     ) -> gaa_audience.Audience:
         """Post-rpc interceptor for update_audience
+
+        Override in a subclass to manipulate the response
+        after it is returned by the AnalyticsAdminService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_calculated_metric(
+        self,
+        request: analytics_admin.UpdateCalculatedMetricRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        analytics_admin.UpdateCalculatedMetricRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_calculated_metric
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the AnalyticsAdminService server.
+        """
+        return request, metadata
+
+    def post_update_calculated_metric(
+        self, response: resources.CalculatedMetric
+    ) -> resources.CalculatedMetric:
+        """Post-rpc interceptor for update_calculated_metric
 
         Override in a subclass to manipulate the response
         after it is returned by the AnalyticsAdminService server but before
@@ -5339,6 +5485,106 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_audience(resp)
+            return resp
+
+    class _CreateCalculatedMetric(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("CreateCalculatedMetric")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "calculatedMetricId": "",
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.CreateCalculatedMetricRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.CalculatedMetric:
+            r"""Call the create calculated metric method over HTTP.
+
+            Args:
+                request (~.analytics_admin.CreateCalculatedMetricRequest):
+                    The request object. Request message for
+                CreateCalculatedMetric RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.CalculatedMetric:
+                    A definition for a calculated metric.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1alpha/{parent=properties/*}/calculatedMetrics",
+                    "body": "calculated_metric",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_calculated_metric(
+                request, metadata
+            )
+            pb_request = analytics_admin.CreateCalculatedMetricRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.CalculatedMetric()
+            pb_resp = resources.CalculatedMetric.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_calculated_metric(resp)
             return resp
 
     class _CreateChannelGroup(AnalyticsAdminServiceRestStub):
@@ -7632,6 +7878,83 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _DeleteCalculatedMetric(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("DeleteCalculatedMetric")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.DeleteCalculatedMetricRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete calculated metric method over HTTP.
+
+            Args:
+                request (~.analytics_admin.DeleteCalculatedMetricRequest):
+                    The request object. Request message for
+                DeleteCalculatedMetric RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1alpha/{name=properties/*/calculatedMetrics/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_calculated_metric(
+                request, metadata
+            )
+            pb_request = analytics_admin.DeleteCalculatedMetricRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _DeleteChannelGroup(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("DeleteChannelGroup")
@@ -9660,6 +9983,95 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_big_query_link(resp)
+            return resp
+
+    class _GetCalculatedMetric(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("GetCalculatedMetric")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.GetCalculatedMetricRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.CalculatedMetric:
+            r"""Call the get calculated metric method over HTTP.
+
+            Args:
+                request (~.analytics_admin.GetCalculatedMetricRequest):
+                    The request object. Request message for
+                GetCalculatedMetric RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.CalculatedMetric:
+                    A definition for a calculated metric.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=properties/*/calculatedMetrics/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_calculated_metric(
+                request, metadata
+            )
+            pb_request = analytics_admin.GetCalculatedMetricRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.CalculatedMetric()
+            pb_resp = resources.CalculatedMetric.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_calculated_metric(resp)
             return resp
 
     class _GetChannelGroup(AnalyticsAdminServiceRestStub):
@@ -12146,6 +12558,97 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_list_big_query_links(resp)
             return resp
 
+    class _ListCalculatedMetrics(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("ListCalculatedMetrics")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.ListCalculatedMetricsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> analytics_admin.ListCalculatedMetricsResponse:
+            r"""Call the list calculated metrics method over HTTP.
+
+            Args:
+                request (~.analytics_admin.ListCalculatedMetricsRequest):
+                    The request object. Request message for
+                ListCalculatedMetrics RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.analytics_admin.ListCalculatedMetricsResponse:
+                    Response message for
+                ListCalculatedMetrics RPC.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{parent=properties/*}/calculatedMetrics",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_calculated_metrics(
+                request, metadata
+            )
+            pb_request = analytics_admin.ListCalculatedMetricsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = analytics_admin.ListCalculatedMetricsResponse()
+            pb_resp = analytics_admin.ListCalculatedMetricsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_calculated_metrics(resp)
+            return resp
+
     class _ListChannelGroups(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("ListChannelGroups")
@@ -14630,6 +15133,106 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
             resp = self._interceptor.post_update_audience(resp)
             return resp
 
+    class _UpdateCalculatedMetric(AnalyticsAdminServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateCalculatedMetric")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {
+            "updateMask": {},
+        }
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: analytics_admin.UpdateCalculatedMetricRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> resources.CalculatedMetric:
+            r"""Call the update calculated metric method over HTTP.
+
+            Args:
+                request (~.analytics_admin.UpdateCalculatedMetricRequest):
+                    The request object. Request message for
+                UpdateCalculatedMetric RPC.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.resources.CalculatedMetric:
+                    A definition for a calculated metric.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{calculated_metric.name=properties/*/calculatedMetrics/*}",
+                    "body": "calculated_metric",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_calculated_metric(
+                request, metadata
+            )
+            pb_request = analytics_admin.UpdateCalculatedMetricRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = resources.CalculatedMetric()
+            pb_resp = resources.CalculatedMetric.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_calculated_metric(resp)
+            return resp
+
     class _UpdateChannelGroup(AnalyticsAdminServiceRestStub):
         def __hash__(self):
             return hash("UpdateChannelGroup")
@@ -16633,6 +17236,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._CreateAudience(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def create_calculated_metric(
+        self,
+    ) -> Callable[
+        [analytics_admin.CreateCalculatedMetricRequest], resources.CalculatedMetric
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateCalculatedMetric(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def create_channel_group(
         self,
     ) -> Callable[
@@ -16860,6 +17473,14 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         return self._DeleteAdSenseLink(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def delete_calculated_metric(
+        self,
+    ) -> Callable[[analytics_admin.DeleteCalculatedMetricRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteCalculatedMetric(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def delete_channel_group(
         self,
     ) -> Callable[[analytics_admin.DeleteChannelGroupRequest], empty_pb2.Empty]:
@@ -17071,6 +17692,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetBigQueryLink(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_calculated_metric(
+        self,
+    ) -> Callable[
+        [analytics_admin.GetCalculatedMetricRequest], resources.CalculatedMetric
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetCalculatedMetric(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_channel_group(
@@ -17346,6 +17977,17 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListBigQueryLinks(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_calculated_metrics(
+        self,
+    ) -> Callable[
+        [analytics_admin.ListCalculatedMetricsRequest],
+        analytics_admin.ListCalculatedMetricsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListCalculatedMetrics(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_channel_groups(
@@ -17624,6 +18266,16 @@ class AnalyticsAdminServiceRestTransport(AnalyticsAdminServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateAudience(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_calculated_metric(
+        self,
+    ) -> Callable[
+        [analytics_admin.UpdateCalculatedMetricRequest], resources.CalculatedMetric
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateCalculatedMetric(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_channel_group(

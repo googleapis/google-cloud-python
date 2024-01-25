@@ -317,6 +317,26 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def calculated_metric_path(
+        property: str,
+        calculated_metric: str,
+    ) -> str:
+        """Returns a fully-qualified calculated_metric string."""
+        return "properties/{property}/calculatedMetrics/{calculated_metric}".format(
+            property=property,
+            calculated_metric=calculated_metric,
+        )
+
+    @staticmethod
+    def parse_calculated_metric_path(path: str) -> Dict[str, str]:
+        """Parses a calculated_metric path into its component segments."""
+        m = re.match(
+            r"^properties/(?P<property>.+?)/calculatedMetrics/(?P<calculated_metric>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def channel_group_path(
         property: str,
         channel_group: str,
@@ -10881,6 +10901,440 @@ class AnalyticsAdminServiceClient(metaclass=AnalyticsAdminServiceClientMeta):
 
         # Done; return the response.
         return response
+
+    def get_calculated_metric(
+        self,
+        request: Optional[
+            Union[analytics_admin.GetCalculatedMetricRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.CalculatedMetric:
+        r"""Lookup for a single CalculatedMetric.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.GetCalculatedMetricRequest, dict]):
+                The request object. Request message for
+                GetCalculatedMetric RPC.
+            name (str):
+                Required. The name of the CalculatedMetric to get.
+                Format:
+                properties/{property_id}/calculatedMetrics/{calculated_metric_id}
+                Example: properties/1234/calculatedMetrics/Metric01
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.CalculatedMetric:
+                A definition for a calculated metric.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.GetCalculatedMetricRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.GetCalculatedMetricRequest):
+            request = analytics_admin.GetCalculatedMetricRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_calculated_metric]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_calculated_metric(
+        self,
+        request: Optional[
+            Union[analytics_admin.CreateCalculatedMetricRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        calculated_metric: Optional[resources.CalculatedMetric] = None,
+        calculated_metric_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.CalculatedMetric:
+        r"""Creates a CalculatedMetric.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.CreateCalculatedMetricRequest, dict]):
+                The request object. Request message for
+                CreateCalculatedMetric RPC.
+            parent (str):
+                Required. Format: properties/{property_id} Example:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            calculated_metric (google.analytics.admin_v1alpha.types.CalculatedMetric):
+                Required. The CalculatedMetric to
+                create.
+
+                This corresponds to the ``calculated_metric`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            calculated_metric_id (str):
+                Required. The ID to use for the calculated metric which
+                will become the final component of the calculated
+                metric's resource name.
+
+                This value should be 1-80 characters and valid
+                characters are /[a-zA-Z0-9_]/, no spaces allowed.
+                calculated_metric_id must be unique between all
+                calculated metrics under a property. The
+                calculated_metric_id is used when referencing this
+                calculated metric from external APIs, for example,
+                "calcMetric:{calculated_metric_id}".
+
+                This corresponds to the ``calculated_metric_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.CalculatedMetric:
+                A definition for a calculated metric.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, calculated_metric, calculated_metric_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.CreateCalculatedMetricRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.CreateCalculatedMetricRequest):
+            request = analytics_admin.CreateCalculatedMetricRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if calculated_metric is not None:
+                request.calculated_metric = calculated_metric
+            if calculated_metric_id is not None:
+                request.calculated_metric_id = calculated_metric_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_calculated_metric]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_calculated_metrics(
+        self,
+        request: Optional[
+            Union[analytics_admin.ListCalculatedMetricsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListCalculatedMetricsPager:
+        r"""Lists CalculatedMetrics on a property.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.ListCalculatedMetricsRequest, dict]):
+                The request object. Request message for
+                ListCalculatedMetrics RPC.
+            parent (str):
+                Required. Example format:
+                properties/1234
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.services.analytics_admin_service.pagers.ListCalculatedMetricsPager:
+                Response message for
+                ListCalculatedMetrics RPC.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.ListCalculatedMetricsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.ListCalculatedMetricsRequest):
+            request = analytics_admin.ListCalculatedMetricsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_calculated_metrics]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListCalculatedMetricsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_calculated_metric(
+        self,
+        request: Optional[
+            Union[analytics_admin.UpdateCalculatedMetricRequest, dict]
+        ] = None,
+        *,
+        calculated_metric: Optional[resources.CalculatedMetric] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> resources.CalculatedMetric:
+        r"""Updates a CalculatedMetric on a property.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.UpdateCalculatedMetricRequest, dict]):
+                The request object. Request message for
+                UpdateCalculatedMetric RPC.
+            calculated_metric (google.analytics.admin_v1alpha.types.CalculatedMetric):
+                Required. The CalculatedMetric to
+                update
+
+                This corresponds to the ``calculated_metric`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The list of fields to be updated. Omitted
+                fields will not be updated. To replace the entire
+                entity, use one path with the string "*" to match all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.analytics.admin_v1alpha.types.CalculatedMetric:
+                A definition for a calculated metric.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([calculated_metric, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.UpdateCalculatedMetricRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.UpdateCalculatedMetricRequest):
+            request = analytics_admin.UpdateCalculatedMetricRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if calculated_metric is not None:
+                request.calculated_metric = calculated_metric
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_calculated_metric]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("calculated_metric.name", request.calculated_metric.name),)
+            ),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_calculated_metric(
+        self,
+        request: Optional[
+            Union[analytics_admin.DeleteCalculatedMetricRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a CalculatedMetric on a property.
+
+        Args:
+            request (Union[google.analytics.admin_v1alpha.types.DeleteCalculatedMetricRequest, dict]):
+                The request object. Request message for
+                DeleteCalculatedMetric RPC.
+            name (str):
+                Required. The name of the CalculatedMetric to delete.
+                Format:
+                properties/{property_id}/calculatedMetrics/{calculated_metric_id}
+                Example: properties/1234/calculatedMetrics/Metric01
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a analytics_admin.DeleteCalculatedMetricRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, analytics_admin.DeleteCalculatedMetricRequest):
+            request = analytics_admin.DeleteCalculatedMetricRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_calculated_metric]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     def create_rollup_property(
         self,
