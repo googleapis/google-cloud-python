@@ -9,6 +9,8 @@ import concurrent.futures
 from unittest import mock
 
 import freezegun
+import google.api_core.exceptions
+import google.auth.exceptions
 import google.cloud.bigquery
 import pytest
 
@@ -19,6 +21,128 @@ import pandas_gbq.query as module_under_test
 
 def _make_connector(project_id: str = "some-project", **kwargs):
     return pandas_gbq.gbq.GbqConnector(project_id, **kwargs)
+
+
+def test_query_and_wait_via_client_library_apierror_raises_genericgbqexception(
+    mock_bigquery_client,
+):
+    if not hasattr(mock_bigquery_client, "query_and_wait"):
+        pytest.skip(
+            f"google-cloud-bigquery {google.cloud.bigquery.__version__} does not have query_and_wait"
+        )
+
+    connector = _make_connector()
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.query_and_wait.side_effect = (
+        google.api_core.exceptions.GoogleAPIError()
+    )
+
+    with pytest.raises(pandas_gbq.exceptions.GenericGBQException):
+        module_under_test.query_and_wait_via_client_library(
+            connector,
+            mock_bigquery_client,
+            "SELECT 1",
+            job_config=google.cloud.bigquery.QueryJobConfig(),
+            location=None,
+            project_id=None,
+            max_results=None,
+            timeout_ms=None,
+        )
+
+
+def test_query_and_wait_via_client_library_refresherror_raises_accessdenied_service_account(
+    mock_bigquery_client,
+):
+    if not hasattr(mock_bigquery_client, "query_and_wait"):
+        pytest.skip(
+            f"google-cloud-bigquery {google.cloud.bigquery.__version__} does not have query_and_wait"
+        )
+
+    connector = _make_connector()
+    connector.private_key = "abc"
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.query_and_wait.side_effect = (
+        google.auth.exceptions.RefreshError()
+    )
+
+    with pytest.raises(pandas_gbq.exceptions.AccessDenied, match="service account"):
+        module_under_test.query_and_wait_via_client_library(
+            connector,
+            mock_bigquery_client,
+            "SELECT 1",
+            job_config=google.cloud.bigquery.QueryJobConfig(),
+            location=None,
+            project_id=None,
+            max_results=None,
+            timeout_ms=None,
+        )
+
+
+def test_query_and_wait_via_client_library_refresherror_raises_accessdenied_user_credentials(
+    mock_bigquery_client,
+):
+    if not hasattr(mock_bigquery_client, "query_and_wait"):
+        pytest.skip(
+            f"google-cloud-bigquery {google.cloud.bigquery.__version__} does not have query_and_wait"
+        )
+
+    connector = _make_connector()
+    connector.client = mock_bigquery_client
+    mock_bigquery_client.query_and_wait.side_effect = (
+        google.auth.exceptions.RefreshError()
+    )
+
+    with pytest.raises(pandas_gbq.exceptions.AccessDenied, match="revoked or expired"):
+        module_under_test.query_and_wait_via_client_library(
+            connector,
+            mock_bigquery_client,
+            "SELECT 1",
+            job_config=google.cloud.bigquery.QueryJobConfig(),
+            location=None,
+            project_id=None,
+            max_results=None,
+            timeout_ms=None,
+        )
+
+
+def test_query_and_wait_via_client_library_timeout_raises_querytimeout(
+    mock_bigquery_client,
+):
+    if not hasattr(mock_bigquery_client, "query_and_wait"):
+        pytest.skip(
+            f"google-cloud-bigquery {google.cloud.bigquery.__version__} does not have query_and_wait"
+        )
+
+    connector = _make_connector()
+    connector.client = mock_bigquery_client
+    connector.start = datetime.datetime(2020, 1, 1).timestamp()
+
+    mock_bigquery_client.query_and_wait.side_effect = concurrent.futures.TimeoutError(
+        "fake timeout"
+    )
+
+    with freezegun.freeze_time(
+        "2020-01-01 00:00:00", auto_tick_seconds=15
+    ), pytest.raises(pandas_gbq.exceptions.QueryTimeout):
+        module_under_test.query_and_wait_via_client_library(
+            connector,
+            mock_bigquery_client,
+            "SELECT 1",
+            job_config=google.cloud.bigquery.QueryJobConfig(),
+            location="EU",
+            project_id="test-query-and-wait",
+            max_results=123,
+            timeout_ms=500,
+        )
+
+    mock_bigquery_client.query_and_wait.assert_called_with(
+        "SELECT 1",
+        job_config=mock.ANY,
+        location="EU",
+        project="test-query-and-wait",
+        max_results=123,
+        wait_timeout=0.5,
+    )
 
 
 @pytest.mark.parametrize(

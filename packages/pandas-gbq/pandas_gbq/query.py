@@ -5,9 +5,11 @@
 from __future__ import annotations
 
 import concurrent.futures
+import functools
 import logging
 from typing import Optional
 
+import google.auth.exceptions
 from google.cloud import bigquery
 
 import pandas_gbq.exceptions
@@ -78,6 +80,26 @@ def _wait_for_query_job(
             connector.process_http_error(ex)
 
 
+def try_query(connector, query_fn):
+    try:
+        logger.debug("Requesting query... ")
+        return query_fn()
+    except concurrent.futures.TimeoutError as ex:
+        raise pandas_gbq.exceptions.QueryTimeout("Reason: {0}".format(ex))
+    except (google.auth.exceptions.RefreshError, ValueError) as ex:
+        if connector.private_key:
+            raise pandas_gbq.exceptions.AccessDenied(
+                f"The service account credentials are not valid: {ex}"
+            )
+        else:
+            raise pandas_gbq.exceptions.AccessDenied(
+                "The credentials have been revoked or expired, "
+                f"please re-run the application to re-authorize: {ex}"
+            )
+    except connector.http_error as ex:
+        connector.process_http_error(ex)
+
+
 def query_and_wait(
     connector,
     client: bigquery.Client,
@@ -122,29 +144,17 @@ def query_and_wait(
             Result iterator from which we can download the results in the
             desired format (pandas.DataFrame).
     """
-    from google.auth.exceptions import RefreshError
-
-    try:
-        logger.debug("Requesting query... ")
-        query_reply = client.query(
+    query_reply = try_query(
+        connector,
+        functools.partial(
+            client.query,
             query,
             job_config=job_config,
             location=location,
             project=project_id,
-        )
-        logger.debug("Query running...")
-    except (RefreshError, ValueError) as ex:
-        if connector.private_key:
-            raise pandas_gbq.exceptions.AccessDenied(
-                f"The service account credentials are not valid: {ex}"
-            )
-        else:
-            raise pandas_gbq.exceptions.AccessDenied(
-                "The credentials have been revoked or expired, "
-                f"please re-run the application to re-authorize: {ex}"
-            )
-    except connector.http_error as ex:
-        connector.process_http_error(ex)
+        ),
+    )
+    logger.debug("Query running...")
 
     job_id = query_reply.job_id
     logger.debug("Job ID: %s" % job_id)
@@ -173,3 +183,30 @@ def query_and_wait(
         return query_reply.result(max_results=max_results)
     except connector.http_error as ex:
         connector.process_http_error(ex)
+
+
+def query_and_wait_via_client_library(
+    connector,
+    client: bigquery.Client,
+    query: str,
+    *,
+    job_config: bigquery.QueryJobConfig,
+    location: Optional[str],
+    project_id: Optional[str],
+    max_results: Optional[int],
+    timeout_ms: Optional[int],
+):
+    rows_iter = try_query(
+        connector,
+        functools.partial(
+            client.query_and_wait,
+            query,
+            job_config=job_config,
+            location=location,
+            project=project_id,
+            max_results=max_results,
+            wait_timeout=timeout_ms / 1000.0 if timeout_ms else None,
+        ),
+    )
+    logger.debug("Query done.\n")
+    return rows_iter

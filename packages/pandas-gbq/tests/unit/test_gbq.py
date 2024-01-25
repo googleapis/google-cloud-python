@@ -9,12 +9,15 @@ import datetime
 from unittest import mock
 
 import google.api_core.exceptions
+import google.cloud.bigquery
 import numpy
+import packaging.version
 import pandas
 from pandas import DataFrame
 import pytest
 
 from pandas_gbq import gbq
+import pandas_gbq.features
 from pandas_gbq.features import FEATURES
 
 
@@ -40,29 +43,40 @@ def mock_query_job():
     return mock_query
 
 
-@pytest.fixture(autouse=True)
-def default_bigquery_client(mock_bigquery_client, mock_query_job):
+@pytest.fixture
+def mock_row_iterator(mock_bigquery_client):
     mock_rows = mock.create_autospec(google.cloud.bigquery.table.RowIterator)
     mock_rows.total_rows = 1
-
     mock_rows.__iter__.return_value = [(1,)]
-    mock_query_job.result.return_value = mock_rows
-    mock_bigquery_client.list_rows.return_value = mock_rows
-    mock_bigquery_client.query.return_value = mock_query_job
 
     # Mock out SELECT 1 query results.
     def generate_schema():
-        query = (
-            mock_bigquery_client.query.call_args[0][0]
-            if mock_bigquery_client.query.call_args
-            else ""
-        )
+        if mock_bigquery_client.query.call_args:
+            query = mock_bigquery_client.query.call_args[0][0]
+        elif (
+            hasattr(mock_bigquery_client, "query_and_wait")
+            and mock_bigquery_client.query_and_wait.call_args
+        ):
+            query = mock_bigquery_client.query_and_wait.call_args[0][0]
+        else:
+            query = ""
         if query == "SELECT 1 AS int_col":
             return [google.cloud.bigquery.SchemaField("int_col", "INTEGER")]
         else:
             return [google.cloud.bigquery.SchemaField("_f0", "INTEGER")]
 
     type(mock_rows).schema = mock.PropertyMock(side_effect=generate_schema)
+    return mock_rows
+
+
+@pytest.fixture(autouse=True)
+def default_bigquery_client(mock_bigquery_client, mock_query_job, mock_row_iterator):
+    mock_query_job.result.return_value = mock_row_iterator
+    mock_bigquery_client.list_rows.return_value = mock_row_iterator
+    mock_bigquery_client.query.return_value = mock_query_job
+
+    if hasattr(mock_bigquery_client, "query_and_wait"):
+        mock_bigquery_client.query_and_wait.return_value = mock_row_iterator
 
     # Mock out get_table.
     def get_table(table_ref_or_id, **kwargs):
@@ -441,15 +455,51 @@ def test_read_gbq_with_no_project_id_given_should_fail(monkeypatch):
         gbq.read_gbq("SELECT 1", dialect="standard")
 
 
-def test_read_gbq_with_inferred_project_id(mock_bigquery_client):
+def test_read_gbq_with_inferred_project_id_with_query(
+    monkeypatch, mock_bigquery_client, mock_query_job
+):
+    monkeypatch.setattr(
+        pandas_gbq.features.FEATURES,
+        "_bigquery_installed_version",
+        packaging.version.parse(pandas_gbq.features.BIGQUERY_MINIMUM_VERSION),
+    )
+    type(mock_query_job).cache_hit = mock.PropertyMock(return_value=False)
+    type(mock_query_job).total_bytes_billed = mock.PropertyMock(return_value=10_000_000)
+    type(mock_query_job).total_bytes_processed = mock.PropertyMock(return_value=12345)
+
     df = gbq.read_gbq("SELECT 1", dialect="standard")
     assert df is not None
     mock_bigquery_client.query.assert_called_once()
 
 
-def test_read_gbq_with_inferred_project_id_from_service_account_credentials(
-    mock_bigquery_client, mock_service_account_credentials
+def test_read_gbq_with_inferred_project_id_with_query_and_wait(
+    monkeypatch, mock_bigquery_client
 ):
+    if not hasattr(mock_bigquery_client, "query_and_wait"):
+        pytest.skip(
+            f"google-cloud-bigquery {google.cloud.bigquery.__version__} does not have query_and_wait"
+        )
+
+    monkeypatch.setattr(
+        pandas_gbq.features.FEATURES,
+        "_bigquery_installed_version",
+        packaging.version.parse(pandas_gbq.features.BIGQUERY_QUERY_AND_WAIT_VERSION),
+    )
+
+    df = gbq.read_gbq("SELECT 1", dialect="standard")
+    assert df is not None
+    mock_bigquery_client.query_and_wait.assert_called_once()
+
+
+def test_read_gbq_with_inferred_project_id_from_service_account_credentials_with_query(
+    monkeypatch, mock_bigquery_client, mock_service_account_credentials
+):
+    monkeypatch.setattr(
+        pandas_gbq.features.FEATURES,
+        "_bigquery_installed_version",
+        packaging.version.parse(pandas_gbq.features.BIGQUERY_MINIMUM_VERSION),
+    )
+
     mock_service_account_credentials.project_id = "service_account_project_id"
     df = gbq.read_gbq(
         "SELECT 1",
@@ -462,6 +512,37 @@ def test_read_gbq_with_inferred_project_id_from_service_account_credentials(
         job_config=mock.ANY,
         location=None,
         project="service_account_project_id",
+    )
+
+
+def test_read_gbq_with_inferred_project_id_from_service_account_credentials_with_query_and_wait(
+    monkeypatch, mock_bigquery_client, mock_service_account_credentials
+):
+    if not hasattr(mock_bigquery_client, "query_and_wait"):
+        pytest.skip(
+            f"google-cloud-bigquery {google.cloud.bigquery.__version__} does not have query_and_wait"
+        )
+
+    monkeypatch.setattr(
+        pandas_gbq.features.FEATURES,
+        "_bigquery_installed_version",
+        packaging.version.parse(pandas_gbq.features.BIGQUERY_QUERY_AND_WAIT_VERSION),
+    )
+
+    mock_service_account_credentials.project_id = "service_account_project_id"
+    df = gbq.read_gbq(
+        "SELECT 1",
+        dialect="standard",
+        credentials=mock_service_account_credentials,
+    )
+    assert df is not None
+    mock_bigquery_client.query_and_wait.assert_called_once_with(
+        "SELECT 1",
+        job_config=mock.ANY,
+        location=None,
+        project="service_account_project_id",
+        max_results=None,
+        wait_timeout=None,
     )
 
 
@@ -481,10 +562,40 @@ def test_read_gbq_with_max_results_zero(monkeypatch):
     assert df is None
 
 
-def test_read_gbq_with_max_results_ten(monkeypatch, mock_query_job):
+def test_read_gbq_with_max_results_ten_query(monkeypatch, mock_query_job):
+    monkeypatch.setattr(
+        pandas_gbq.features.FEATURES,
+        "_bigquery_installed_version",
+        packaging.version.parse(pandas_gbq.features.BIGQUERY_MINIMUM_VERSION),
+    )
     df = gbq.read_gbq("SELECT 1", dialect="standard", max_results=10)
     assert df is not None
     mock_query_job.result.assert_called_with(max_results=10)
+
+
+def test_read_gbq_with_max_results_ten_query_and_wait(
+    monkeypatch, mock_bigquery_client
+):
+    if not hasattr(mock_bigquery_client, "query_and_wait"):
+        pytest.skip(
+            f"google-cloud-bigquery {google.cloud.bigquery.__version__} does not have query_and_wait"
+        )
+
+    monkeypatch.setattr(
+        pandas_gbq.features.FEATURES,
+        "_bigquery_installed_version",
+        packaging.version.parse(pandas_gbq.features.BIGQUERY_QUERY_AND_WAIT_VERSION),
+    )
+    df = gbq.read_gbq("SELECT 1", dialect="standard", max_results=10)
+    assert df is not None
+    mock_bigquery_client.query_and_wait.assert_called_with(
+        "SELECT 1",
+        job_config=mock.ANY,
+        location=mock.ANY,
+        project=mock.ANY,
+        max_results=10,
+        wait_timeout=None,
+    )
 
 
 @pytest.mark.parametrize(["verbose"], [(True,), (False,)])
@@ -509,8 +620,6 @@ def test_read_gbq_wo_verbose_w_new_pandas_no_warnings(monkeypatch, recwarn):
 
 
 def test_read_gbq_with_old_bq_raises_importerror(monkeypatch):
-    import google.cloud.bigquery
-
     monkeypatch.setattr(google.cloud.bigquery, "__version__", "0.27.0")
     monkeypatch.setattr(FEATURES, "_bigquery_installed_version", None)
     with pytest.raises(ImportError, match="google-cloud-bigquery"):
@@ -665,7 +774,7 @@ def test_load_modifies_schema(mock_bigquery_client):
     assert new_schema == new_schema_cp
 
 
-def test_read_gbq_passes_dtypes(mock_bigquery_client, mock_service_account_credentials):
+def test_read_gbq_passes_dtypes(mock_service_account_credentials, mock_row_iterator):
     mock_service_account_credentials.project_id = "service_account_project_id"
     df = gbq.read_gbq(
         "SELECT 1 AS int_col",
@@ -675,14 +784,13 @@ def test_read_gbq_passes_dtypes(mock_bigquery_client, mock_service_account_crede
     )
     assert df is not None
 
-    mock_list_rows = mock_bigquery_client.list_rows("dest", max_results=100)
-
-    _, to_dataframe_kwargs = mock_list_rows.to_dataframe.call_args
+    _, to_dataframe_kwargs = mock_row_iterator.to_dataframe.call_args
     assert to_dataframe_kwargs["dtypes"] == {"int_col": "my-custom-dtype"}
 
 
 def test_read_gbq_use_bqstorage_api(
-    mock_bigquery_client, mock_service_account_credentials
+    mock_service_account_credentials,
+    mock_row_iterator,
 ):
     mock_service_account_credentials.project_id = "service_account_project_id"
     df = gbq.read_gbq(
@@ -693,15 +801,14 @@ def test_read_gbq_use_bqstorage_api(
     )
     assert df is not None
 
-    mock_list_rows = mock_bigquery_client.list_rows("dest", max_results=100)
-    mock_list_rows.to_dataframe.assert_called_once_with(
+    mock_row_iterator.to_dataframe.assert_called_once_with(
         create_bqstorage_client=True,
         dtypes=mock.ANY,
         progress_bar_type=mock.ANY,
     )
 
 
-def test_read_gbq_calls_tqdm(mock_bigquery_client, mock_service_account_credentials):
+def test_read_gbq_calls_tqdm(mock_service_account_credentials, mock_row_iterator):
     mock_service_account_credentials.project_id = "service_account_project_id"
     df = gbq.read_gbq(
         "SELECT 1",
@@ -711,9 +818,7 @@ def test_read_gbq_calls_tqdm(mock_bigquery_client, mock_service_account_credenti
     )
     assert df is not None
 
-    mock_list_rows = mock_bigquery_client.list_rows("dest", max_results=100)
-
-    _, to_dataframe_kwargs = mock_list_rows.to_dataframe.call_args
+    _, to_dataframe_kwargs = mock_row_iterator.to_dataframe.call_args
     assert to_dataframe_kwargs["progress_bar_type"] == "foobar"
 
 

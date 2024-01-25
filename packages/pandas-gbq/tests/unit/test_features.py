@@ -14,6 +14,23 @@ def fresh_bigquery_version(monkeypatch):
 
 
 @pytest.mark.parametrize(
+    ["bigquery_version", "expected"],
+    [
+        ("1.99.100", False),
+        ("2.99.999", False),
+        ("3.13.11", False),
+        ("3.14.0", True),
+        ("4.999.999", True),
+    ],
+)
+def test_bigquery_has_query_and_wait(monkeypatch, bigquery_version, expected):
+    import google.cloud.bigquery
+
+    monkeypatch.setattr(google.cloud.bigquery, "__version__", bigquery_version)
+    assert FEATURES.bigquery_has_query_and_wait == expected
+
+
+@pytest.mark.parametrize(
     ["pandas_version", "expected"],
     [
         ("0.14.7", False),

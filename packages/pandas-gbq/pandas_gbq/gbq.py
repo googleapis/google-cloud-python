@@ -351,12 +351,17 @@ class GbqConnector(object):
         # See `BigQuery Troubleshooting Errors
         # <https://cloud.google.com/bigquery/troubleshooting-errors>`__
 
-        if "cancelled" in ex.message:
+        message = (
+            ex.message.casefold()
+            if hasattr(ex, "message") and ex.message is not None
+            else ""
+        )
+        if "cancelled" in message:
             raise QueryTimeout("Reason: {0}".format(ex))
-        elif "Provided Schema does not match" in ex.message:
+        elif "schema does not match" in message:
             error_message = ex.errors[0]["message"]
             raise InvalidSchema(f"Reason: {error_message}")
-        elif "Already Exists: Table" in ex.message:
+        elif "already exists: table" in message:
             error_message = ex.errors[0]["message"]
             raise TableCreationError(f"Reason: {error_message}")
         else:
@@ -410,16 +415,29 @@ class GbqConnector(object):
 
         self._start_timer()
         job_config = bigquery.QueryJobConfig.from_api_repr(job_config_dict)
-        rows_iter = pandas_gbq.query.query_and_wait(
-            self,
-            self.client,
-            query,
-            location=self.location,
-            project_id=self.project_id,
-            job_config=job_config,
-            max_results=max_results,
-            timeout_ms=timeout_ms,
-        )
+
+        if FEATURES.bigquery_has_query_and_wait:
+            rows_iter = pandas_gbq.query.query_and_wait_via_client_library(
+                self,
+                self.client,
+                query,
+                location=self.location,
+                project_id=self.project_id,
+                job_config=job_config,
+                max_results=max_results,
+                timeout_ms=timeout_ms,
+            )
+        else:
+            rows_iter = pandas_gbq.query.query_and_wait(
+                self,
+                self.client,
+                query,
+                location=self.location,
+                project_id=self.project_id,
+                job_config=job_config,
+                max_results=max_results,
+                timeout_ms=timeout_ms,
+            )
 
         dtypes = kwargs.get("dtypes")
         return self._download_results(
