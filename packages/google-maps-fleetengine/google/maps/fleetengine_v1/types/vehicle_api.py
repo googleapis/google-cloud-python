@@ -902,7 +902,9 @@ class ListVehiclesResponse(proto.Message):
 
 
 class Waypoint(proto.Message):
-    r"""Describes intermediate points along a route.
+    r"""Describes intermediate points along a route for a ``VehicleMatch``
+    in a ``SearchVehiclesResponse``. This concept is represented as a
+    ``TripWaypoint`` in all other endpoints.
 
     Attributes:
         lat_lng (google.type.latlng_pb2.LatLng):
