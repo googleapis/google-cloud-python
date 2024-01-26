@@ -285,7 +285,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Cache Bazel files
         id: cache-bazel
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.cache/bazel
           # Note: if the container is updated, the key needs to be updated as well.
