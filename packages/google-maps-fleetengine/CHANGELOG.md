@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.1.4...google-maps-fleetengine-v0.1.5) (2024-01-26)
+
+
+### Documentation
+
+* [google-maps-fleetengine] update comment on Waypoint ([#12225](https://github.com/googleapis/google-cloud-python/issues/12225)) ([f5987c9](https://github.com/googleapis/google-cloud-python/commit/f5987c9b3c7191b3cee0dbe4f7109b9f5b547181))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-v0.1.3...google-maps-fleetengine-v0.1.4) (2024-01-12)
 
 

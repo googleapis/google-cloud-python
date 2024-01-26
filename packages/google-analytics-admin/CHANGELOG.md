@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.22.3](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.2...google-analytics-admin-v0.22.3) (2024-01-26)
+
+
+### Features
+
+* Add `GetCalculatedMetric`, `CreateCalculatedMetric`, `ListCalculatedMetrics`, `UpdateCalculatedMetric`, `DeleteCalculatedMetric` methods to the Admin API v1alpha ([dea3367](https://github.com/googleapis/google-cloud-python/commit/dea3367d61b292c8d0a282ca937f4fc4f87981b7))
+* Add the `calculated_metric` field to the `ChangeHistoryResource.resource` oneof field ([dea3367](https://github.com/googleapis/google-cloud-python/commit/dea3367d61b292c8d0a282ca937f4fc4f87981b7))
+* Add the `CALCULATED_METRIC` option to the `ChangeHistoryResourceType` enum ([dea3367](https://github.com/googleapis/google-cloud-python/commit/dea3367d61b292c8d0a282ca937f4fc4f87981b7))
+* Add the `CalculatedMetric` resource ([dea3367](https://github.com/googleapis/google-cloud-python/commit/dea3367d61b292c8d0a282ca937f4fc4f87981b7))
+
 ## [0.22.2](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.1...google-analytics-admin-v0.22.2) (2024-01-04)
 
 
