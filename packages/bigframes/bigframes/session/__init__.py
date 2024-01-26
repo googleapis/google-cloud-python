@@ -597,9 +597,16 @@ class Session(
                 ).result()
             )[0][0]
             self._df_snapshot[table_ref] = snapshot_timestamp
-        table_expression = self.ibis_client.sql(
-            bigframes_io.create_snapshot_sql(table_ref, snapshot_timestamp)
-        )
+
+        try:
+            table_expression = self.ibis_client.sql(
+                bigframes_io.create_snapshot_sql(table_ref, snapshot_timestamp)
+            )
+        except google.api_core.exceptions.Forbidden as ex:
+            if "Drive credentials" in ex.message:
+                ex.message += "\nCheck https://cloud.google.com/bigquery/docs/query-drive-data#Google_Drive_permissions."
+            raise
+
         return table_expression, primary_keys
 
     def _read_gbq_table(
@@ -1451,7 +1458,13 @@ class Session(
         job_config.labels = bigframes_io.create_job_configs_labels(
             job_configs_labels=job_config.labels, api_methods=api_methods
         )
-        query_job = self.bqclient.query(sql, job_config=job_config)
+
+        try:
+            query_job = self.bqclient.query(sql, job_config=job_config)
+        except google.api_core.exceptions.Forbidden as ex:
+            if "Drive credentials" in ex.message:
+                ex.message += "\nCheck https://cloud.google.com/bigquery/docs/query-drive-data#Google_Drive_permissions."
+            raise
 
         opts = bigframes.options.display
         if opts.progress_bar is not None and not query_job.configuration.dry_run:

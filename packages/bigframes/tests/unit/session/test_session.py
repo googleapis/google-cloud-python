@@ -35,7 +35,7 @@ def test_read_gbq_missing_parts(missing_parts_table_id):
     "not_found_table_id",
     [("unknown.dataset.table"), ("project.unknown.table"), ("project.dataset.unknown")],
 )
-def test_read_gdb_not_found_tables(not_found_table_id):
+def test_read_gbq_not_found_tables(not_found_table_id):
     bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
     bqclient.project = "test-project"
     bqclient.get_table.side_effect = google.api_core.exceptions.NotFound(
@@ -45,6 +45,34 @@ def test_read_gdb_not_found_tables(not_found_table_id):
 
     with pytest.raises(google.api_core.exceptions.NotFound):
         session.read_gbq(not_found_table_id)
+
+
+@pytest.mark.parametrize(
+    ("api_name", "query_or_table"),
+    [
+        ("read_gbq", "project.dataset.table"),
+        ("read_gbq_table", "project.dataset.table"),
+        ("read_gbq", "SELECT * FROM project.dataset.table"),
+        ("read_gbq_query", "SELECT * FROM project.dataset.table"),
+    ],
+    ids=[
+        "read_gbq_on_table",
+        "read_gbq_table",
+        "read_gbq_on_query",
+        "read_gbq_query",
+    ],
+)
+def test_read_gbq_external_table_no_drive_access(api_name, query_or_table):
+    bqclient = mock.create_autospec(google.cloud.bigquery.Client, instance=True)
+    bqclient.project = "test-project"
+    bqclient.get_table.side_effect = google.api_core.exceptions.Forbidden(
+        "Access Denied: BigQuery BigQuery: Permission denied while getting Drive credentials."
+    )
+    session = resources.create_bigquery_session(bqclient=bqclient)
+
+    api = getattr(session, api_name)
+    with pytest.raises(google.api_core.exceptions.Forbidden):
+        api(query_or_table)
 
 
 @mock.patch.dict(os.environ, {}, clear=True)
