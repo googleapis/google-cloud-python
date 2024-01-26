@@ -4714,7 +4714,7 @@ class DataFrame(NDFrame):
             <BLANKLINE>
             [3 rows x 3 columns]
             >>> df.index # doctest: +ELLIPSIS
-            <bigframes.core.indexes.index.Index object at ...>
+            Index([10, 20, 30], dtype='Int64')
             >>> df.index.values
             array([10, 20, 30], dtype=object)
 
@@ -4731,7 +4731,10 @@ class DataFrame(NDFrame):
             <BLANKLINE>
             [3 rows x 1 columns]
             >>> df1.index # doctest: +ELLIPSIS
-            <bigframes.core.indexes.index.Index object at ...>
+            MultiIndex([( 'Alice',  'Seattle'),
+                (   'Bob', 'New York'),
+                ('Aritra',     'Kona')],
+               name='Name')
             >>> df1.index.values
             array([('Alice', 'Seattle'), ('Bob', 'New York'), ('Aritra', 'Kona')],
                 dtype=object)

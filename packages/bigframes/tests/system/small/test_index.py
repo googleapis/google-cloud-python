@@ -16,7 +16,42 @@ import numpy
 import pandas as pd
 import pytest
 
+import bigframes.pandas as bpd
 from tests.system.utils import assert_pandas_index_equal_ignore_index_type
+
+
+def test_index_construct_from_list():
+    bf_result = bpd.Index(
+        [3, 14, 159], dtype=pd.Int64Dtype(), name="my_index"
+    ).to_pandas()
+    pd_result = pd.Index([3, 14, 159], dtype=pd.Int64Dtype(), name="my_index")
+    pd.testing.assert_index_equal(bf_result, pd_result)
+
+
+def test_index_construct_from_series():
+    bf_result = bpd.Index(
+        bpd.Series([3, 14, 159], dtype=pd.Float64Dtype(), name="series_name"),
+        name="index_name",
+        dtype=pd.Int64Dtype(),
+    ).to_pandas()
+    pd_result = pd.Index(
+        pd.Series([3, 14, 159], dtype=pd.Float64Dtype(), name="series_name"),
+        name="index_name",
+        dtype=pd.Int64Dtype(),
+    )
+    pd.testing.assert_index_equal(bf_result, pd_result)
+
+
+def test_index_construct_from_index():
+    bf_index_input = bpd.Index(
+        [3, 14, 159], dtype=pd.Float64Dtype(), name="series_name"
+    )
+    bf_result = bpd.Index(
+        bf_index_input, dtype=pd.Int64Dtype(), name="index_name"
+    ).to_pandas()
+    pd_index_input = pd.Index([3, 14, 159], dtype=pd.Float64Dtype(), name="series_name")
+    pd_result = pd.Index(pd_index_input, dtype=pd.Int64Dtype(), name="index_name")
+    pd.testing.assert_index_equal(bf_result, pd_result)
 
 
 def test_get_index(scalars_df_index, scalars_pandas_df_index):
@@ -238,6 +273,43 @@ def test_index_value_counts(scalars_df_index, scalars_pandas_df_index):
     ).index.value_counts()
 
     pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+@pytest.mark.parametrize(
+    ("level",),
+    [
+        ("int64_too",),
+        ("rowindex_2",),
+        (1,),
+    ],
+)
+def test_index_get_level_values(scalars_df_index, scalars_pandas_df_index, level):
+    bf_result = (
+        scalars_df_index.set_index(["int64_too", "rowindex_2"])
+        .index.get_level_values(level)
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df_index.set_index(
+        ["int64_too", "rowindex_2"]
+    ).index.get_level_values(level)
+
+    pd.testing.assert_index_equal(bf_result, pd_result)
+
+
+def test_index_to_series(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    bf_result = (
+        scalars_df_index.set_index(["int64_too"])
+        .index.to_series(index=scalars_df_index["float64_col"], name="new_name")
+        .to_pandas()
+    )
+    pd_result = scalars_pandas_df_index.set_index(["int64_too"]).index.to_series(
+        index=scalars_pandas_df_index["float64_col"], name="new_name"
+    )
+
+    pd.testing.assert_series_equal(bf_result, pd_result)
 
 
 @pytest.mark.parametrize(

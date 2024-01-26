@@ -146,10 +146,15 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 block = result_index._block
 
         if block:
-            if index:
-                raise NotImplementedError(
-                    "DataFrame 'index' constructor parameter not supported "
-                    f"when passing BigQuery-backed objects. {constants.FEEDBACK_LINK}"
+            if index is not None:
+                bf_index = indexes.Index(index)
+                idx_block = bf_index._block
+                idx_cols = idx_block.index_columns
+                join_idx, (_, r_mapping) = block.reset_index().index.join(
+                    bf_index._block.reset_index().index, how="inner"
+                )
+                block = join_idx._block.set_index(
+                    [r_mapping[idx_col] for idx_col in idx_cols]
                 )
             if columns:
                 block = block.select_columns(list(columns))  # type:ignore
@@ -250,7 +255,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def index(
         self,
     ) -> indexes.Index:
-        return indexes.Index(self)
+        return indexes.Index.from_frame(self)
 
     @index.setter
     def index(self, value):
@@ -661,6 +666,14 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ):
         if isinstance(other, (float, int)):
             return self._apply_scalar_binop(other, op, reverse=reverse)
+        elif isinstance(other, indexes.Index):
+            return self._apply_series_binop(
+                other.to_series(index=self.index),
+                op,
+                axis=axis,
+                how=how,
+                reverse=reverse,
+            )
         elif isinstance(other, bigframes.series.Series):
             return self._apply_series_binop(
                 other, op, axis=axis, how=how, reverse=reverse
@@ -1183,7 +1196,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         return DataFrame(block)
 
     def _drop_by_index(self, index: indexes.Index) -> DataFrame:
-        block = index._data._get_block()
+        block = index._block
         block, ordering_col = block.promote_offsets()
         joined_index, (get_column_left, get_column_right) = self._block.index.join(
             block.index
@@ -1319,9 +1332,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 f"Length of values ({given_rows}) does not match length of index ({actual_rows})"
             )
 
-        local_df = bigframes.dataframe.DataFrame(
-            {k: v}, session=self._get_block().expr.session
-        )
+        local_df = DataFrame({k: v}, session=self._get_block().expr.session)
         # local_df is likely (but not guaranteed) to be cached locally
         # since the original list came from memory and so is probably < MAX_INLINE_DF_SIZE
 
@@ -1622,7 +1633,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise ValueError("Original index must be unique to reindex")
         keep_original_names = False
         if isinstance(index, indexes.Index):
-            new_indexer = DataFrame(data=index._data._get_block())[[]]
+            new_indexer = DataFrame(data=index._block)[[]]
         else:
             if not isinstance(index, pandas.Index):
                 keep_original_names = True

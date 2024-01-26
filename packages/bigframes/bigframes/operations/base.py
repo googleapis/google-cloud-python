@@ -21,6 +21,7 @@ import pandas as pd
 import bigframes.constants as constants
 import bigframes.core.blocks as blocks
 import bigframes.core.expression as ex
+import bigframes.core.indexes as indexes
 import bigframes.core.scalar as scalars
 import bigframes.dtypes
 import bigframes.operations as ops
@@ -54,10 +55,34 @@ class SeriesMethods:
         if isinstance(data, blocks.Block):
             assert len(data.value_columns) == 1
             assert len(data.column_labels) == 1
+            assert index is None
             block = data
 
         elif isinstance(data, SeriesMethods):
-            block = data._get_block()
+            block = data._block
+            if index is not None:
+                # reindex
+                bf_index = indexes.Index(index)
+                idx_block = bf_index._block
+                idx_cols = idx_block.value_columns
+                block_idx, _ = idx_block.index.join(block.index, how="left")
+                block = block_idx._block.with_index_labels(bf_index.names)
+
+        elif isinstance(data, indexes.Index):
+            if data.nlevels != 1:
+                raise NotImplementedError("Cannot interpret multi-index as Series.")
+            # Reset index to promote index columns to value columns, set default index
+            block = data._block.reset_index(drop=False)
+            if index is not None:
+                # Align by offset
+                bf_index = indexes.Index(index)
+                idx_block = bf_index._block.reset_index(drop=False)
+                idx_cols = idx_block.value_columns
+                block_idx, (l_mapping, _) = idx_block.index.join(
+                    block.index, how="left"
+                )
+                block = block_idx._block.set_index([l_mapping[col] for col in idx_cols])
+                block = block.with_index_labels(bf_index.names)
 
         if block:
             if name:
@@ -66,16 +91,10 @@ class SeriesMethods:
                         f"BigQuery DataFrames only supports hashable series names. {constants.FEEDBACK_LINK}"
                     )
                 block = block.with_column_labels([name])
-            if index:
-                raise NotImplementedError(
-                    f"Series 'index' constructor parameter not supported when passing BigQuery-backed objects. {constants.FEEDBACK_LINK}"
-                )
             if dtype:
                 block = block.multi_apply_unary_op(
                     block.value_columns, ops.AsTypeOp(to_type=dtype)
                 )
-            self._block = block
-
         else:
             import bigframes.pandas
 
@@ -95,14 +114,15 @@ class SeriesMethods:
                     if isinstance(dt, pd.ArrowDtype)
                 )
             ):
-                self._block = blocks.block_from_local(pd_dataframe)
+                block = blocks.block_from_local(pd_dataframe)
             elif session:
-                self._block = session.read_pandas(pd_dataframe)._get_block()
+                block = session.read_pandas(pd_dataframe)._get_block()
             else:
                 # Uses default global session
-                self._block = bigframes.pandas.read_pandas(pd_dataframe)._get_block()
+                block = bigframes.pandas.read_pandas(pd_dataframe)._get_block()
             if pd_series.name is None:
-                self._block = self._block.with_column_labels([None])
+                block = block.with_column_labels([None])
+        self._block: blocks.Block = block
 
     @property
     def _value_column(self) -> str:

@@ -69,7 +69,7 @@ class Series(NDFrame):  # type: ignore[misc]
             30    35
             Name: Age, dtype: Int64
             >>> s.index # doctest: +ELLIPSIS
-            <bigframes.core.indexes.index.Index object at ...>
+            Index([10, 20, 30], dtype='Int64')
             >>> s.index.values
             array([10, 20, 30], dtype=object)
 
@@ -84,7 +84,10 @@ class Series(NDFrame):  # type: ignore[misc]
             Aritra  Kona        35
             Name: Age, dtype: Int64
             >>> s1.index # doctest: +ELLIPSIS
-            <bigframes.core.indexes.index.Index object at ...>
+            MultiIndex([( 'Alice',  'Seattle'),
+                (   'Bob', 'New York'),
+                ('Aritra',     'Kona')],
+               name='Name')
             >>> s1.index.values
             array([('Alice', 'Seattle'), ('Bob', 'New York'), ('Aritra', 'Kona')],
                 dtype=object)

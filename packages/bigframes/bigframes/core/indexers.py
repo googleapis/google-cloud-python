@@ -294,7 +294,7 @@ def _loc_getitem_series_or_dataframe(
         keys_df = keys_df.set_index(temp_name, drop=True)
         return _perform_loc_list_join(series_or_dataframe, keys_df)
     elif isinstance(key, bigframes.core.indexes.Index):
-        block = key._data._get_block()
+        block = key._block
         block = block.select_columns(())
         keys_df = bigframes.dataframe.DataFrame(block)
         return _perform_loc_list_join(series_or_dataframe, keys_df)

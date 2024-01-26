@@ -58,6 +58,23 @@ class Index:
         """Return the transpose, which is by definition self."""
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    def copy(
+        self,
+        name=None,
+    ) -> Index:
+        """
+        Make a copy of this object.
+
+        Name is set on the new object.
+
+        Args:
+            name (Label, optional):
+                Set name for new object.
+        Returns:
+            Index: Index refer to new object which is a copy of this object.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def transpose(self) -> Index:
         """
         Return the transpose, which is by definition self.
@@ -78,6 +95,40 @@ class Index:
 
         Returns:
             Index: Index with values cast to specified dtype.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def get_level_values(self, level) -> Index:
+        """
+        Return an Index of values for requested level.
+
+        This is primarily useful to get an individual level of values from a
+        MultiIndex, but is provided on Index as well for compatibility.
+
+        Args:
+            level (int or str):
+                It is either the integer position or the name of the level.
+
+        Returns:
+            Index: Calling object, as there is only one level in the Index.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def to_series(self):
+        """
+        Create a Series with both index and values equal to the index keys.
+
+        Useful with map for returning an indexer based on an index.
+
+        Args:
+            index (Index, optional):
+                Index of resulting Series. If None, defaults to original index.
+            name (str, optional):
+                Name of resulting Series. If None, defaults to name of original
+                index.
+
+        Returns:
+            Series: The dtype will be based on the type of the Index values.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
