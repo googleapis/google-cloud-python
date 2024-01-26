@@ -50,3 +50,7 @@ htmlcov
 
 # Built documentation
 docs/_build
+
+# Test logs
+coverage.xml
+*sponge_log.xml
