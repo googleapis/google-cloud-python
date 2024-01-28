@@ -2377,6 +2377,7 @@ def test_get_database_ddl(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = spanner_database_admin.GetDatabaseDdlResponse(
             statements=["statements_value"],
+            proto_descriptors=b"proto_descriptors_blob",
         )
         response = client.get_database_ddl(request)
 
@@ -2388,6 +2389,7 @@ def test_get_database_ddl(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner_database_admin.GetDatabaseDdlResponse)
     assert response.statements == ["statements_value"]
+    assert response.proto_descriptors == b"proto_descriptors_blob"
 
 
 def test_get_database_ddl_empty_call():
@@ -2426,6 +2428,7 @@ async def test_get_database_ddl_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             spanner_database_admin.GetDatabaseDdlResponse(
                 statements=["statements_value"],
+                proto_descriptors=b"proto_descriptors_blob",
             )
         )
         response = await client.get_database_ddl(request)
@@ -2438,6 +2441,7 @@ async def test_get_database_ddl_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner_database_admin.GetDatabaseDdlResponse)
     assert response.statements == ["statements_value"]
+    assert response.proto_descriptors == b"proto_descriptors_blob"
 
 
 @pytest.mark.asyncio
@@ -8444,6 +8448,7 @@ def test_get_database_ddl_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = spanner_database_admin.GetDatabaseDdlResponse(
             statements=["statements_value"],
+            proto_descriptors=b"proto_descriptors_blob",
         )
 
         # Wrap the value into a proper Response obj
@@ -8460,6 +8465,7 @@ def test_get_database_ddl_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, spanner_database_admin.GetDatabaseDdlResponse)
     assert response.statements == ["statements_value"]
+    assert response.proto_descriptors == b"proto_descriptors_blob"
 
 
 def test_get_database_ddl_rest_required_fields(
