@@ -124,7 +124,13 @@ class Cursor(object):
         :rtype: tuple
         :returns: The result columns' description.
         """
-        if not getattr(self._result_set, "metadata", None):
+        if (
+            self._result_set is None
+            or self._result_set.metadata is None
+            or self._result_set.metadata.row_type is None
+            or self._result_set.metadata.row_type.fields is None
+            or len(self._result_set.metadata.row_type.fields) == 0
+        ):
             return
 
         columns = []

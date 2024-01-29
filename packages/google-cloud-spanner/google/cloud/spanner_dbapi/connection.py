@@ -273,10 +273,11 @@ class Connection:
 
         The session will be returned into the sessions pool.
         """
+        if self._session is None:
+            return
         if self.database is None:
             raise ValueError("Database needs to be passed for this operation")
-        if self._session is not None:
-            self.database._pool.put(self._session)
+        self.database._pool.put(self._session)
         self._session = None
 
     def transaction_checkout(self):

@@ -160,6 +160,7 @@ class TestConnection(unittest.TestCase):
 
     def test_release_session_database_error(self):
         connection = Connection(INSTANCE)
+        connection._session = "session"
         with pytest.raises(ValueError):
             connection._release_session()
 
