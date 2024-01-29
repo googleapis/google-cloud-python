@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.15.0...google-cloud-contact-center-insights-v1.16.0) (2024-01-26)
+
+
+### Features
+
+* Add Conversation QualityMetadata ([7e81f5b](https://github.com/googleapis/google-cloud-python/commit/7e81f5bfb327e9453007ff6a23b63b383592e294))
+
+
+### Documentation
+
+* Clarify usage of agent and customer channel fields in IngestConversationsRequest ([7e81f5b](https://github.com/googleapis/google-cloud-python/commit/7e81f5bfb327e9453007ff6a23b63b383592e294))
+
 ## [1.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contact-center-insights-v1.14.1...google-cloud-contact-center-insights-v1.15.0) (2023-12-07)
 
 
