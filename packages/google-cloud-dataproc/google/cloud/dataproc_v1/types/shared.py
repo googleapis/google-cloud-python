@@ -39,6 +39,8 @@ __protobuf__ = proto.module(
         "KubernetesSoftwareConfig",
         "GkeNodePoolTarget",
         "GkeNodePoolConfig",
+        "RepositoryConfig",
+        "PyPiRepositoryConfig",
     },
 )
 
@@ -51,12 +53,10 @@ class Component(proto.Enum):
             Unspecified component. Specifying this will
             cause Cluster creation to fail.
         ANACONDA (5):
-            The Anaconda python distribution. The
-            Anaconda component is not supported in the
-            Dataproc <a
-            href="/dataproc/docs/concepts/versioning/dataproc-release-2.0">2.0
-            image</a>. The 2.0 image is pre-installed with
-            Miniconda.
+            The Anaconda python distribution. The Anaconda component is
+            not supported in the Dataproc [2.0 image]
+            (/https://cloud.google.com/dataproc/docs/concepts/versioning/dataproc-release-2.0).
+            The 2.0 image is pre-installed with Miniconda.
         DOCKER (13):
             Docker
         DRUID (9):
@@ -135,6 +135,9 @@ class RuntimeConfig(proto.Message):
             Optional. A mapping of property names to
             values, which are used to configure workload
             execution.
+        repository_config (google.cloud.dataproc_v1.types.RepositoryConfig):
+            Optional. Dependency repository
+            configuration.
     """
 
     version: str = proto.Field(
@@ -149,6 +152,11 @@ class RuntimeConfig(proto.Message):
         proto.STRING,
         proto.STRING,
         number=3,
+    )
+    repository_config: "RepositoryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="RepositoryConfig",
     )
 
 
@@ -205,18 +213,35 @@ class ExecutionConfig(proto.Message):
         kms_key (str):
             Optional. The Cloud KMS key to use for
             encryption.
+        idle_ttl (google.protobuf.duration_pb2.Duration):
+            Optional. Applies to sessions only. The duration to keep the
+            session alive while it's idling. Exceeding this threshold
+            causes the session to terminate. This field cannot be set on
+            a batch workload. Minimum value is 10 minutes; maximum value
+            is 14 days (see JSON representation of
+            `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
+            Defaults to 1 hour if not set. If both ``ttl`` and
+            ``idle_ttl`` are specified for an interactive session, the
+            conditions are treated as ``OR`` conditions: the workload
+            will be terminated when it has been idle for ``idle_ttl`` or
+            when ``ttl`` has been exceeded, whichever occurs first.
         ttl (google.protobuf.duration_pb2.Duration):
             Optional. The duration after which the workload will be
-            terminated. When the workload passes this ttl, it will be
-            unconditionally killed without waiting for ongoing work to
-            finish. Minimum value is 10 minutes; maximum value is 14
-            days (see JSON representation of
-            `Duration <https://developers.google.com/protocol-buffers/docs/proto3#json>`__).
-            If both ttl and idle_ttl are specified, the conditions are
-            treated as and OR: the workload will be terminated when it
-            has been idle for idle_ttl or when the ttl has passed,
-            whichever comes first. If ttl is not specified for a
-            session, it defaults to 24h.
+            terminated, specified as the JSON representation for
+            `Duration <https://protobuf.dev/programming-guides/proto3/#json>`__.
+            When the workload exceeds this duration, it will be
+            unconditionally terminated without waiting for ongoing work
+            to finish. If ``ttl`` is not specified for a batch workload,
+            the workload will be allowed to run until it exits naturally
+            (or run forever without exiting). If ``ttl`` is not
+            specified for an interactive session, it defaults to 24
+            hours. If ``ttl`` is not specified for a batch that uses
+            2.1+ runtime version, it defaults to 4 hours. Minimum value
+            is 10 minutes; maximum value is 14 days. If both ``ttl`` and
+            ``idle_ttl`` are specified (for an interactive session), the
+            conditions are treated as ``OR`` conditions: the workload
+            will be terminated when it has been idle for ``idle_ttl`` or
+            when ``ttl`` has been exceeded, whichever occurs first.
         staging_bucket (str):
             Optional. A Cloud Storage bucket used to stage workload
             dependencies, config files, and store workload output and
@@ -250,6 +275,11 @@ class ExecutionConfig(proto.Message):
     kms_key: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    idle_ttl: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=duration_pb2.Duration,
     )
     ttl: duration_pb2.Duration = proto.Field(
         proto.MESSAGE,
@@ -322,9 +352,18 @@ class RuntimeInfo(proto.Message):
             Output only. A URI pointing to the location
             of the diagnostics tarball.
         approximate_usage (google.cloud.dataproc_v1.types.UsageMetrics):
-            Output only. Approximate workload resource usage calculated
-            after workload finishes (see [Dataproc Serverless pricing]
+            Output only. Approximate workload resource usage, calculated
+            when the workload completes (see [Dataproc Serverless
+            pricing]
             (https://cloud.google.com/dataproc-serverless/pricing)).
+
+            **Note:** This metric calculation may change in the future,
+            for example, to capture cumulative workload resource
+            consumption during workload execution (see the [Dataproc
+            Serverless release notes]
+            (https://cloud.google.com/dataproc-serverless/docs/release-notes)
+            for announcements, changes, fixes and other Dataproc
+            developments).
         current_usage (google.cloud.dataproc_v1.types.UsageSnapshot):
             Output only. Snapshot of current workload
             resource usage.
@@ -369,6 +408,12 @@ class UsageMetrics(proto.Message):
             Optional. Shuffle storage usage in (``GB`` x ``seconds``)
             (see [Dataproc Serverless pricing]
             (https://cloud.google.com/dataproc-serverless/pricing)).
+        milli_accelerator_seconds (int):
+            Optional. Accelerator usage in (``milliAccelerator`` x
+            ``seconds``) (see [Dataproc Serverless pricing]
+            (https://cloud.google.com/dataproc-serverless/pricing)).
+        accelerator_type (str):
+            Optional. Accelerator type being used, if any
     """
 
     milli_dcu_seconds: int = proto.Field(
@@ -379,10 +424,18 @@ class UsageMetrics(proto.Message):
         proto.INT64,
         number=2,
     )
+    milli_accelerator_seconds: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    accelerator_type: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class UsageSnapshot(proto.Message):
-    r"""The usage snaphot represents the resources consumed by a
+    r"""The usage snapshot represents the resources consumed by a
     workload at a specified time.
 
     Attributes:
@@ -394,6 +447,21 @@ class UsageSnapshot(proto.Message):
             Optional. Shuffle Storage in gigabytes (GB). (see [Dataproc
             Serverless pricing]
             (https://cloud.google.com/dataproc-serverless/pricing))
+        milli_dcu_premium (int):
+            Optional. Milli (one-thousandth) Dataproc Compute Units
+            (DCUs) charged at premium tier (see [Dataproc Serverless
+            pricing]
+            (https://cloud.google.com/dataproc-serverless/pricing)).
+        shuffle_storage_gb_premium (int):
+            Optional. Shuffle Storage in gigabytes (GB) charged at
+            premium tier. (see [Dataproc Serverless pricing]
+            (https://cloud.google.com/dataproc-serverless/pricing))
+        milli_accelerator (int):
+            Optional. Milli (one-thousandth) accelerator. (see [Dataproc
+            Serverless pricing]
+            (https://cloud.google.com/dataproc-serverless/pricing))
+        accelerator_type (str):
+            Optional. Accelerator type being used, if any
         snapshot_time (google.protobuf.timestamp_pb2.Timestamp):
             Optional. The timestamp of the usage
             snapshot.
@@ -406,6 +474,22 @@ class UsageSnapshot(proto.Message):
     shuffle_storage_gb: int = proto.Field(
         proto.INT64,
         number=2,
+    )
+    milli_dcu_premium: int = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    shuffle_storage_gb_premium: int = proto.Field(
+        proto.INT64,
+        number=5,
+    )
+    milli_accelerator: int = proto.Field(
+        proto.INT64,
+        number=6,
+    )
+    accelerator_type: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
     snapshot_time: timestamp_pb2.Timestamp = proto.Field(
         proto.MESSAGE,
@@ -783,6 +867,35 @@ class GkeNodePoolConfig(proto.Message):
         proto.MESSAGE,
         number=4,
         message=GkeNodePoolAutoscalingConfig,
+    )
+
+
+class RepositoryConfig(proto.Message):
+    r"""Configuration for dependency repositories
+
+    Attributes:
+        pypi_repository_config (google.cloud.dataproc_v1.types.PyPiRepositoryConfig):
+            Optional. Configuration for PyPi repository.
+    """
+
+    pypi_repository_config: "PyPiRepositoryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="PyPiRepositoryConfig",
+    )
+
+
+class PyPiRepositoryConfig(proto.Message):
+    r"""Configuration for PyPi repository
+
+    Attributes:
+        pypi_repository (str):
+            Optional. PyPi repository address
+    """
+
+    pypi_repository: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

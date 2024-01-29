@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-dataproc",
-    "version": "5.8.0"
+    "version": "0.1.0"
   },
   "snippets": [
     {
@@ -4571,6 +4571,1634 @@
         }
       ],
       "title": "dataproc_v1_generated_node_group_controller_resize_node_group_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionControllerAsyncClient",
+          "shortName": "SessionControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionControllerAsyncClient.create_session",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionController.CreateSession",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionController",
+            "shortName": "SessionController"
+          },
+          "shortName": "CreateSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CreateSessionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "session",
+            "type": "google.cloud.dataproc_v1.types.Session"
+          },
+          {
+            "name": "session_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_session"
+      },
+      "description": "Sample for CreateSession",
+      "file": "dataproc_v1_generated_session_controller_create_session_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionController_CreateSession_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_controller_create_session_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionControllerClient",
+          "shortName": "SessionControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionControllerClient.create_session",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionController.CreateSession",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionController",
+            "shortName": "SessionController"
+          },
+          "shortName": "CreateSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CreateSessionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "session",
+            "type": "google.cloud.dataproc_v1.types.Session"
+          },
+          {
+            "name": "session_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_session"
+      },
+      "description": "Sample for CreateSession",
+      "file": "dataproc_v1_generated_session_controller_create_session_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionController_CreateSession_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_controller_create_session_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionControllerAsyncClient",
+          "shortName": "SessionControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionControllerAsyncClient.delete_session",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionController.DeleteSession",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionController",
+            "shortName": "SessionController"
+          },
+          "shortName": "DeleteSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_session"
+      },
+      "description": "Sample for DeleteSession",
+      "file": "dataproc_v1_generated_session_controller_delete_session_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionController_DeleteSession_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_controller_delete_session_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionControllerClient",
+          "shortName": "SessionControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionControllerClient.delete_session",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionController.DeleteSession",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionController",
+            "shortName": "SessionController"
+          },
+          "shortName": "DeleteSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_session"
+      },
+      "description": "Sample for DeleteSession",
+      "file": "dataproc_v1_generated_session_controller_delete_session_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionController_DeleteSession_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_controller_delete_session_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionControllerAsyncClient",
+          "shortName": "SessionControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionControllerAsyncClient.get_session",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionController.GetSession",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionController",
+            "shortName": "SessionController"
+          },
+          "shortName": "GetSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Session",
+        "shortName": "get_session"
+      },
+      "description": "Sample for GetSession",
+      "file": "dataproc_v1_generated_session_controller_get_session_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionController_GetSession_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_controller_get_session_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionControllerClient",
+          "shortName": "SessionControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionControllerClient.get_session",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionController.GetSession",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionController",
+            "shortName": "SessionController"
+          },
+          "shortName": "GetSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.Session",
+        "shortName": "get_session"
+      },
+      "description": "Sample for GetSession",
+      "file": "dataproc_v1_generated_session_controller_get_session_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionController_GetSession_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_controller_get_session_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionControllerAsyncClient",
+          "shortName": "SessionControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionControllerAsyncClient.list_sessions",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionController.ListSessions",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionController",
+            "shortName": "SessionController"
+          },
+          "shortName": "ListSessions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListSessionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.session_controller.pagers.ListSessionsAsyncPager",
+        "shortName": "list_sessions"
+      },
+      "description": "Sample for ListSessions",
+      "file": "dataproc_v1_generated_session_controller_list_sessions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionController_ListSessions_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_controller_list_sessions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionControllerClient",
+          "shortName": "SessionControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionControllerClient.list_sessions",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionController.ListSessions",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionController",
+            "shortName": "SessionController"
+          },
+          "shortName": "ListSessions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListSessionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.session_controller.pagers.ListSessionsPager",
+        "shortName": "list_sessions"
+      },
+      "description": "Sample for ListSessions",
+      "file": "dataproc_v1_generated_session_controller_list_sessions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionController_ListSessions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_controller_list_sessions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionControllerAsyncClient",
+          "shortName": "SessionControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionControllerAsyncClient.terminate_session",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionController.TerminateSession",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionController",
+            "shortName": "SessionController"
+          },
+          "shortName": "TerminateSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.TerminateSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "terminate_session"
+      },
+      "description": "Sample for TerminateSession",
+      "file": "dataproc_v1_generated_session_controller_terminate_session_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionController_TerminateSession_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_controller_terminate_session_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionControllerClient",
+          "shortName": "SessionControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionControllerClient.terminate_session",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionController.TerminateSession",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionController",
+            "shortName": "SessionController"
+          },
+          "shortName": "TerminateSession"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.TerminateSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "terminate_session"
+      },
+      "description": "Sample for TerminateSession",
+      "file": "dataproc_v1_generated_session_controller_terminate_session_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionController_TerminateSession_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_controller_terminate_session_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerAsyncClient",
+          "shortName": "SessionTemplateControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerAsyncClient.create_session_template",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionTemplateController.CreateSessionTemplate",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionTemplateController",
+            "shortName": "SessionTemplateController"
+          },
+          "shortName": "CreateSessionTemplate"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CreateSessionTemplateRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "session_template",
+            "type": "google.cloud.dataproc_v1.types.SessionTemplate"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.SessionTemplate",
+        "shortName": "create_session_template"
+      },
+      "description": "Sample for CreateSessionTemplate",
+      "file": "dataproc_v1_generated_session_template_controller_create_session_template_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionTemplateController_CreateSessionTemplate_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_template_controller_create_session_template_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerClient",
+          "shortName": "SessionTemplateControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerClient.create_session_template",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionTemplateController.CreateSessionTemplate",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionTemplateController",
+            "shortName": "SessionTemplateController"
+          },
+          "shortName": "CreateSessionTemplate"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.CreateSessionTemplateRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "session_template",
+            "type": "google.cloud.dataproc_v1.types.SessionTemplate"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.SessionTemplate",
+        "shortName": "create_session_template"
+      },
+      "description": "Sample for CreateSessionTemplate",
+      "file": "dataproc_v1_generated_session_template_controller_create_session_template_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionTemplateController_CreateSessionTemplate_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_template_controller_create_session_template_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerAsyncClient",
+          "shortName": "SessionTemplateControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerAsyncClient.delete_session_template",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionTemplateController.DeleteSessionTemplate",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionTemplateController",
+            "shortName": "SessionTemplateController"
+          },
+          "shortName": "DeleteSessionTemplate"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteSessionTemplateRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_session_template"
+      },
+      "description": "Sample for DeleteSessionTemplate",
+      "file": "dataproc_v1_generated_session_template_controller_delete_session_template_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionTemplateController_DeleteSessionTemplate_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_template_controller_delete_session_template_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerClient",
+          "shortName": "SessionTemplateControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerClient.delete_session_template",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionTemplateController.DeleteSessionTemplate",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionTemplateController",
+            "shortName": "SessionTemplateController"
+          },
+          "shortName": "DeleteSessionTemplate"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.DeleteSessionTemplateRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_session_template"
+      },
+      "description": "Sample for DeleteSessionTemplate",
+      "file": "dataproc_v1_generated_session_template_controller_delete_session_template_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionTemplateController_DeleteSessionTemplate_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_template_controller_delete_session_template_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerAsyncClient",
+          "shortName": "SessionTemplateControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerAsyncClient.get_session_template",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionTemplateController.GetSessionTemplate",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionTemplateController",
+            "shortName": "SessionTemplateController"
+          },
+          "shortName": "GetSessionTemplate"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetSessionTemplateRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.SessionTemplate",
+        "shortName": "get_session_template"
+      },
+      "description": "Sample for GetSessionTemplate",
+      "file": "dataproc_v1_generated_session_template_controller_get_session_template_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionTemplateController_GetSessionTemplate_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_template_controller_get_session_template_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerClient",
+          "shortName": "SessionTemplateControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerClient.get_session_template",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionTemplateController.GetSessionTemplate",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionTemplateController",
+            "shortName": "SessionTemplateController"
+          },
+          "shortName": "GetSessionTemplate"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.GetSessionTemplateRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.SessionTemplate",
+        "shortName": "get_session_template"
+      },
+      "description": "Sample for GetSessionTemplate",
+      "file": "dataproc_v1_generated_session_template_controller_get_session_template_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionTemplateController_GetSessionTemplate_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_template_controller_get_session_template_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerAsyncClient",
+          "shortName": "SessionTemplateControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerAsyncClient.list_session_templates",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionTemplateController.ListSessionTemplates",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionTemplateController",
+            "shortName": "SessionTemplateController"
+          },
+          "shortName": "ListSessionTemplates"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListSessionTemplatesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.session_template_controller.pagers.ListSessionTemplatesAsyncPager",
+        "shortName": "list_session_templates"
+      },
+      "description": "Sample for ListSessionTemplates",
+      "file": "dataproc_v1_generated_session_template_controller_list_session_templates_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionTemplateController_ListSessionTemplates_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_template_controller_list_session_templates_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerClient",
+          "shortName": "SessionTemplateControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerClient.list_session_templates",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionTemplateController.ListSessionTemplates",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionTemplateController",
+            "shortName": "SessionTemplateController"
+          },
+          "shortName": "ListSessionTemplates"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.ListSessionTemplatesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.services.session_template_controller.pagers.ListSessionTemplatesPager",
+        "shortName": "list_session_templates"
+      },
+      "description": "Sample for ListSessionTemplates",
+      "file": "dataproc_v1_generated_session_template_controller_list_session_templates_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionTemplateController_ListSessionTemplates_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_template_controller_list_session_templates_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerAsyncClient",
+          "shortName": "SessionTemplateControllerAsyncClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerAsyncClient.update_session_template",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionTemplateController.UpdateSessionTemplate",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionTemplateController",
+            "shortName": "SessionTemplateController"
+          },
+          "shortName": "UpdateSessionTemplate"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.UpdateSessionTemplateRequest"
+          },
+          {
+            "name": "session_template",
+            "type": "google.cloud.dataproc_v1.types.SessionTemplate"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.SessionTemplate",
+        "shortName": "update_session_template"
+      },
+      "description": "Sample for UpdateSessionTemplate",
+      "file": "dataproc_v1_generated_session_template_controller_update_session_template_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionTemplateController_UpdateSessionTemplate_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_template_controller_update_session_template_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerClient",
+          "shortName": "SessionTemplateControllerClient"
+        },
+        "fullName": "google.cloud.dataproc_v1.SessionTemplateControllerClient.update_session_template",
+        "method": {
+          "fullName": "google.cloud.dataproc.v1.SessionTemplateController.UpdateSessionTemplate",
+          "service": {
+            "fullName": "google.cloud.dataproc.v1.SessionTemplateController",
+            "shortName": "SessionTemplateController"
+          },
+          "shortName": "UpdateSessionTemplate"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataproc_v1.types.UpdateSessionTemplateRequest"
+          },
+          {
+            "name": "session_template",
+            "type": "google.cloud.dataproc_v1.types.SessionTemplate"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataproc_v1.types.SessionTemplate",
+        "shortName": "update_session_template"
+      },
+      "description": "Sample for UpdateSessionTemplate",
+      "file": "dataproc_v1_generated_session_template_controller_update_session_template_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dataproc_v1_generated_SessionTemplateController_UpdateSessionTemplate_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dataproc_v1_generated_session_template_controller_update_session_template_sync.py"
     },
     {
       "canonical": true,

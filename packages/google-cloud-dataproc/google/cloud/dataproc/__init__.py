@@ -46,6 +46,18 @@ from google.cloud.dataproc_v1.services.node_group_controller.async_client import
 from google.cloud.dataproc_v1.services.node_group_controller.client import (
     NodeGroupControllerClient,
 )
+from google.cloud.dataproc_v1.services.session_controller.async_client import (
+    SessionControllerAsyncClient,
+)
+from google.cloud.dataproc_v1.services.session_controller.client import (
+    SessionControllerClient,
+)
+from google.cloud.dataproc_v1.services.session_template_controller.async_client import (
+    SessionTemplateControllerAsyncClient,
+)
+from google.cloud.dataproc_v1.services.session_template_controller.client import (
+    SessionTemplateControllerClient,
+)
 from google.cloud.dataproc_v1.services.workflow_template_service.async_client import (
     WorkflowTemplateServiceAsyncClient,
 )
@@ -157,6 +169,26 @@ from google.cloud.dataproc_v1.types.operations import (
     ClusterOperationMetadata,
     ClusterOperationStatus,
     NodeGroupOperationMetadata,
+    SessionOperationMetadata,
+)
+from google.cloud.dataproc_v1.types.session_templates import (
+    CreateSessionTemplateRequest,
+    DeleteSessionTemplateRequest,
+    GetSessionTemplateRequest,
+    ListSessionTemplatesRequest,
+    ListSessionTemplatesResponse,
+    SessionTemplate,
+    UpdateSessionTemplateRequest,
+)
+from google.cloud.dataproc_v1.types.sessions import (
+    CreateSessionRequest,
+    DeleteSessionRequest,
+    GetSessionRequest,
+    JupyterConfig,
+    ListSessionsRequest,
+    ListSessionsResponse,
+    Session,
+    TerminateSessionRequest,
 )
 from google.cloud.dataproc_v1.types.shared import (
     Component,
@@ -169,6 +201,8 @@ from google.cloud.dataproc_v1.types.shared import (
     KubernetesClusterConfig,
     KubernetesSoftwareConfig,
     PeripheralsConfig,
+    PyPiRepositoryConfig,
+    RepositoryConfig,
     RuntimeConfig,
     RuntimeInfo,
     SparkHistoryServerConfig,
@@ -210,6 +244,10 @@ __all__ = (
     "JobControllerAsyncClient",
     "NodeGroupControllerClient",
     "NodeGroupControllerAsyncClient",
+    "SessionControllerClient",
+    "SessionControllerAsyncClient",
+    "SessionTemplateControllerClient",
+    "SessionTemplateControllerAsyncClient",
     "WorkflowTemplateServiceClient",
     "WorkflowTemplateServiceAsyncClient",
     "AutoscalingPolicy",
@@ -306,6 +344,22 @@ __all__ = (
     "ClusterOperationMetadata",
     "ClusterOperationStatus",
     "NodeGroupOperationMetadata",
+    "SessionOperationMetadata",
+    "CreateSessionTemplateRequest",
+    "DeleteSessionTemplateRequest",
+    "GetSessionTemplateRequest",
+    "ListSessionTemplatesRequest",
+    "ListSessionTemplatesResponse",
+    "SessionTemplate",
+    "UpdateSessionTemplateRequest",
+    "CreateSessionRequest",
+    "DeleteSessionRequest",
+    "GetSessionRequest",
+    "JupyterConfig",
+    "ListSessionsRequest",
+    "ListSessionsResponse",
+    "Session",
+    "TerminateSessionRequest",
     "EnvironmentConfig",
     "ExecutionConfig",
     "GkeClusterConfig",
@@ -314,6 +368,8 @@ __all__ = (
     "KubernetesClusterConfig",
     "KubernetesSoftwareConfig",
     "PeripheralsConfig",
+    "PyPiRepositoryConfig",
+    "RepositoryConfig",
     "RuntimeConfig",
     "RuntimeInfo",
     "SparkHistoryServerConfig",

@@ -57,13 +57,13 @@ import pytest
 from requests import PreparedRequest, Request, Response
 from requests.sessions import Session
 
-from google.cloud.dataproc_v1.services.batch_controller import (
-    BatchControllerAsyncClient,
-    BatchControllerClient,
+from google.cloud.dataproc_v1.services.session_controller import (
+    SessionControllerAsyncClient,
+    SessionControllerClient,
     pagers,
     transports,
 )
-from google.cloud.dataproc_v1.types import batches, operations, shared
+from google.cloud.dataproc_v1.types import operations, sessions, shared
 
 
 def client_cert_source_callback():
@@ -88,37 +88,38 @@ def test__get_default_mtls_endpoint():
     sandbox_mtls_endpoint = "example.mtls.sandbox.googleapis.com"
     non_googleapi = "api.example.com"
 
-    assert BatchControllerClient._get_default_mtls_endpoint(None) is None
+    assert SessionControllerClient._get_default_mtls_endpoint(None) is None
     assert (
-        BatchControllerClient._get_default_mtls_endpoint(api_endpoint)
+        SessionControllerClient._get_default_mtls_endpoint(api_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        BatchControllerClient._get_default_mtls_endpoint(api_mtls_endpoint)
+        SessionControllerClient._get_default_mtls_endpoint(api_mtls_endpoint)
         == api_mtls_endpoint
     )
     assert (
-        BatchControllerClient._get_default_mtls_endpoint(sandbox_endpoint)
+        SessionControllerClient._get_default_mtls_endpoint(sandbox_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        BatchControllerClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
+        SessionControllerClient._get_default_mtls_endpoint(sandbox_mtls_endpoint)
         == sandbox_mtls_endpoint
     )
     assert (
-        BatchControllerClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
+        SessionControllerClient._get_default_mtls_endpoint(non_googleapi)
+        == non_googleapi
     )
 
 
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (BatchControllerClient, "grpc"),
-        (BatchControllerAsyncClient, "grpc_asyncio"),
-        (BatchControllerClient, "rest"),
+        (SessionControllerClient, "grpc"),
+        (SessionControllerAsyncClient, "grpc_asyncio"),
+        (SessionControllerClient, "rest"),
     ],
 )
-def test_batch_controller_client_from_service_account_info(
+def test_session_controller_client_from_service_account_info(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -141,12 +142,12 @@ def test_batch_controller_client_from_service_account_info(
 @pytest.mark.parametrize(
     "transport_class,transport_name",
     [
-        (transports.BatchControllerGrpcTransport, "grpc"),
-        (transports.BatchControllerGrpcAsyncIOTransport, "grpc_asyncio"),
-        (transports.BatchControllerRestTransport, "rest"),
+        (transports.SessionControllerGrpcTransport, "grpc"),
+        (transports.SessionControllerGrpcAsyncIOTransport, "grpc_asyncio"),
+        (transports.SessionControllerRestTransport, "rest"),
     ],
 )
-def test_batch_controller_client_service_account_always_use_jwt(
+def test_session_controller_client_service_account_always_use_jwt(
     transport_class, transport_name
 ):
     with mock.patch.object(
@@ -167,12 +168,12 @@ def test_batch_controller_client_service_account_always_use_jwt(
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
-        (BatchControllerClient, "grpc"),
-        (BatchControllerAsyncClient, "grpc_asyncio"),
-        (BatchControllerClient, "rest"),
+        (SessionControllerClient, "grpc"),
+        (SessionControllerAsyncClient, "grpc_asyncio"),
+        (SessionControllerClient, "rest"),
     ],
 )
-def test_batch_controller_client_from_service_account_file(
+def test_session_controller_client_from_service_account_file(
     client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
@@ -199,51 +200,51 @@ def test_batch_controller_client_from_service_account_file(
         )
 
 
-def test_batch_controller_client_get_transport_class():
-    transport = BatchControllerClient.get_transport_class()
+def test_session_controller_client_get_transport_class():
+    transport = SessionControllerClient.get_transport_class()
     available_transports = [
-        transports.BatchControllerGrpcTransport,
-        transports.BatchControllerRestTransport,
+        transports.SessionControllerGrpcTransport,
+        transports.SessionControllerRestTransport,
     ]
     assert transport in available_transports
 
-    transport = BatchControllerClient.get_transport_class("grpc")
-    assert transport == transports.BatchControllerGrpcTransport
+    transport = SessionControllerClient.get_transport_class("grpc")
+    assert transport == transports.SessionControllerGrpcTransport
 
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (BatchControllerClient, transports.BatchControllerGrpcTransport, "grpc"),
+        (SessionControllerClient, transports.SessionControllerGrpcTransport, "grpc"),
         (
-            BatchControllerAsyncClient,
-            transports.BatchControllerGrpcAsyncIOTransport,
+            SessionControllerAsyncClient,
+            transports.SessionControllerGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (BatchControllerClient, transports.BatchControllerRestTransport, "rest"),
+        (SessionControllerClient, transports.SessionControllerRestTransport, "rest"),
     ],
 )
 @mock.patch.object(
-    BatchControllerClient,
+    SessionControllerClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(BatchControllerClient),
+    modify_default_endpoint(SessionControllerClient),
 )
 @mock.patch.object(
-    BatchControllerAsyncClient,
+    SessionControllerAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(BatchControllerAsyncClient),
+    modify_default_endpoint(SessionControllerAsyncClient),
 )
-def test_batch_controller_client_client_options(
+def test_session_controller_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
-    with mock.patch.object(BatchControllerClient, "get_transport_class") as gtc:
+    with mock.patch.object(SessionControllerClient, "get_transport_class") as gtc:
         transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
     # Check that if channel is provided via str we will create a new one.
-    with mock.patch.object(BatchControllerClient, "get_transport_class") as gtc:
+    with mock.patch.object(SessionControllerClient, "get_transport_class") as gtc:
         client = client_class(transport=transport_name)
         gtc.assert_called()
 
@@ -353,55 +354,55 @@ def test_batch_controller_client_client_options(
     "client_class,transport_class,transport_name,use_client_cert_env",
     [
         (
-            BatchControllerClient,
-            transports.BatchControllerGrpcTransport,
+            SessionControllerClient,
+            transports.SessionControllerGrpcTransport,
             "grpc",
             "true",
         ),
         (
-            BatchControllerAsyncClient,
-            transports.BatchControllerGrpcAsyncIOTransport,
+            SessionControllerAsyncClient,
+            transports.SessionControllerGrpcAsyncIOTransport,
             "grpc_asyncio",
             "true",
         ),
         (
-            BatchControllerClient,
-            transports.BatchControllerGrpcTransport,
+            SessionControllerClient,
+            transports.SessionControllerGrpcTransport,
             "grpc",
             "false",
         ),
         (
-            BatchControllerAsyncClient,
-            transports.BatchControllerGrpcAsyncIOTransport,
+            SessionControllerAsyncClient,
+            transports.SessionControllerGrpcAsyncIOTransport,
             "grpc_asyncio",
             "false",
         ),
         (
-            BatchControllerClient,
-            transports.BatchControllerRestTransport,
+            SessionControllerClient,
+            transports.SessionControllerRestTransport,
             "rest",
             "true",
         ),
         (
-            BatchControllerClient,
-            transports.BatchControllerRestTransport,
+            SessionControllerClient,
+            transports.SessionControllerRestTransport,
             "rest",
             "false",
         ),
     ],
 )
 @mock.patch.object(
-    BatchControllerClient,
+    SessionControllerClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(BatchControllerClient),
+    modify_default_endpoint(SessionControllerClient),
 )
 @mock.patch.object(
-    BatchControllerAsyncClient,
+    SessionControllerAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(BatchControllerAsyncClient),
+    modify_default_endpoint(SessionControllerAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
-def test_batch_controller_client_mtls_env_auto(
+def test_session_controller_client_mtls_env_auto(
     client_class, transport_class, transport_name, use_client_cert_env
 ):
     # This tests the endpoint autoswitch behavior. Endpoint is autoswitched to the default
@@ -498,19 +499,19 @@ def test_batch_controller_client_mtls_env_auto(
 
 
 @pytest.mark.parametrize(
-    "client_class", [BatchControllerClient, BatchControllerAsyncClient]
+    "client_class", [SessionControllerClient, SessionControllerAsyncClient]
 )
 @mock.patch.object(
-    BatchControllerClient,
+    SessionControllerClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(BatchControllerClient),
+    modify_default_endpoint(SessionControllerClient),
 )
 @mock.patch.object(
-    BatchControllerAsyncClient,
+    SessionControllerAsyncClient,
     "DEFAULT_ENDPOINT",
-    modify_default_endpoint(BatchControllerAsyncClient),
+    modify_default_endpoint(SessionControllerAsyncClient),
 )
-def test_batch_controller_client_get_mtls_endpoint_and_cert_source(client_class):
+def test_session_controller_client_get_mtls_endpoint_and_cert_source(client_class):
     mock_client_cert_source = mock.Mock()
 
     # Test the case GOOGLE_API_USE_CLIENT_CERTIFICATE is "true".
@@ -581,16 +582,16 @@ def test_batch_controller_client_get_mtls_endpoint_and_cert_source(client_class)
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
     [
-        (BatchControllerClient, transports.BatchControllerGrpcTransport, "grpc"),
+        (SessionControllerClient, transports.SessionControllerGrpcTransport, "grpc"),
         (
-            BatchControllerAsyncClient,
-            transports.BatchControllerGrpcAsyncIOTransport,
+            SessionControllerAsyncClient,
+            transports.SessionControllerGrpcAsyncIOTransport,
             "grpc_asyncio",
         ),
-        (BatchControllerClient, transports.BatchControllerRestTransport, "rest"),
+        (SessionControllerClient, transports.SessionControllerRestTransport, "rest"),
     ],
 )
-def test_batch_controller_client_client_options_scopes(
+def test_session_controller_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
@@ -617,21 +618,26 @@ def test_batch_controller_client_client_options_scopes(
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            BatchControllerClient,
-            transports.BatchControllerGrpcTransport,
+            SessionControllerClient,
+            transports.SessionControllerGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            BatchControllerAsyncClient,
-            transports.BatchControllerGrpcAsyncIOTransport,
+            SessionControllerAsyncClient,
+            transports.SessionControllerGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
-        (BatchControllerClient, transports.BatchControllerRestTransport, "rest", None),
+        (
+            SessionControllerClient,
+            transports.SessionControllerRestTransport,
+            "rest",
+            None,
+        ),
     ],
 )
-def test_batch_controller_client_client_options_credentials_file(
+def test_session_controller_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -653,12 +659,12 @@ def test_batch_controller_client_client_options_credentials_file(
         )
 
 
-def test_batch_controller_client_client_options_from_dict():
+def test_session_controller_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.dataproc_v1.services.batch_controller.transports.BatchControllerGrpcTransport.__init__"
+        "google.cloud.dataproc_v1.services.session_controller.transports.SessionControllerGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
-        client = BatchControllerClient(
+        client = SessionControllerClient(
             client_options={"api_endpoint": "squid.clam.whelk"}
         )
         grpc_transport.assert_called_once_with(
@@ -678,20 +684,20 @@ def test_batch_controller_client_client_options_from_dict():
     "client_class,transport_class,transport_name,grpc_helpers",
     [
         (
-            BatchControllerClient,
-            transports.BatchControllerGrpcTransport,
+            SessionControllerClient,
+            transports.SessionControllerGrpcTransport,
             "grpc",
             grpc_helpers,
         ),
         (
-            BatchControllerAsyncClient,
-            transports.BatchControllerGrpcAsyncIOTransport,
+            SessionControllerAsyncClient,
+            transports.SessionControllerGrpcAsyncIOTransport,
             "grpc_asyncio",
             grpc_helpers_async,
         ),
     ],
 )
-def test_batch_controller_client_create_channel_credentials_file(
+def test_session_controller_client_create_channel_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
 ):
     # Check the case credentials file is provided.
@@ -744,12 +750,12 @@ def test_batch_controller_client_create_channel_credentials_file(
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.CreateBatchRequest,
+        sessions.CreateSessionRequest,
         dict,
     ],
 )
-def test_create_batch(request_type, transport: str = "grpc"):
-    client = BatchControllerClient(
+def test_create_session(request_type, transport: str = "grpc"):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -759,41 +765,41 @@ def test_create_batch(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_batch), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/spam")
-        response = client.create_batch(request)
+        response = client.create_session(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.CreateBatchRequest()
+        assert args[0] == sessions.CreateSessionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
-def test_create_batch_empty_call():
+def test_create_session_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_batch), "__call__") as call:
-        client.create_batch()
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
+        client.create_session()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.CreateBatchRequest()
+        assert args[0] == sessions.CreateSessionRequest()
 
 
 @pytest.mark.asyncio
-async def test_create_batch_async(
-    transport: str = "grpc_asyncio", request_type=batches.CreateBatchRequest
+async def test_create_session_async(
+    transport: str = "grpc_asyncio", request_type=sessions.CreateSessionRequest
 ):
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -803,42 +809,42 @@ async def test_create_batch_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_batch), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/spam")
         )
-        response = await client.create_batch(request)
+        response = await client.create_session(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.CreateBatchRequest()
+        assert args[0] == sessions.CreateSessionRequest()
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
 
 
 @pytest.mark.asyncio
-async def test_create_batch_async_from_dict():
-    await test_create_batch_async(request_type=dict)
+async def test_create_session_async_from_dict():
+    await test_create_session_async(request_type=dict)
 
 
-def test_create_batch_field_headers():
-    client = BatchControllerClient(
+def test_create_session_field_headers():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = batches.CreateBatchRequest()
+    request = sessions.CreateSessionRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_batch), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
         call.return_value = operations_pb2.Operation(name="operations/op")
-        client.create_batch(request)
+        client.create_session(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -854,23 +860,23 @@ def test_create_batch_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_create_batch_field_headers_async():
-    client = BatchControllerAsyncClient(
+async def test_create_session_field_headers_async():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = batches.CreateBatchRequest()
+    request = sessions.CreateSessionRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_batch), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             operations_pb2.Operation(name="operations/op")
         )
-        await client.create_batch(request)
+        await client.create_session(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -885,21 +891,21 @@ async def test_create_batch_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_create_batch_flattened():
-    client = BatchControllerClient(
+def test_create_session_flattened():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_batch), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.create_batch(
+        client.create_session(
             parent="parent_value",
-            batch=batches.Batch(name="name_value"),
-            batch_id="batch_id_value",
+            session=sessions.Session(name="name_value"),
+            session_id="session_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -909,38 +915,38 @@ def test_create_batch_flattened():
         arg = args[0].parent
         mock_val = "parent_value"
         assert arg == mock_val
-        arg = args[0].batch
-        mock_val = batches.Batch(name="name_value")
+        arg = args[0].session
+        mock_val = sessions.Session(name="name_value")
         assert arg == mock_val
-        arg = args[0].batch_id
-        mock_val = "batch_id_value"
+        arg = args[0].session_id
+        mock_val = "session_id_value"
         assert arg == mock_val
 
 
-def test_create_batch_flattened_error():
-    client = BatchControllerClient(
+def test_create_session_flattened_error():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.create_batch(
-            batches.CreateBatchRequest(),
+        client.create_session(
+            sessions.CreateSessionRequest(),
             parent="parent_value",
-            batch=batches.Batch(name="name_value"),
-            batch_id="batch_id_value",
+            session=sessions.Session(name="name_value"),
+            session_id="session_id_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_create_batch_flattened_async():
-    client = BatchControllerAsyncClient(
+async def test_create_session_flattened_async():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.create_batch), "__call__") as call:
+    with mock.patch.object(type(client.transport.create_session), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = operations_pb2.Operation(name="operations/op")
 
@@ -949,10 +955,10 @@ async def test_create_batch_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.create_batch(
+        response = await client.create_session(
             parent="parent_value",
-            batch=batches.Batch(name="name_value"),
-            batch_id="batch_id_value",
+            session=sessions.Session(name="name_value"),
+            session_id="session_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -962,40 +968,40 @@ async def test_create_batch_flattened_async():
         arg = args[0].parent
         mock_val = "parent_value"
         assert arg == mock_val
-        arg = args[0].batch
-        mock_val = batches.Batch(name="name_value")
+        arg = args[0].session
+        mock_val = sessions.Session(name="name_value")
         assert arg == mock_val
-        arg = args[0].batch_id
-        mock_val = "batch_id_value"
+        arg = args[0].session_id
+        mock_val = "session_id_value"
         assert arg == mock_val
 
 
 @pytest.mark.asyncio
-async def test_create_batch_flattened_error_async():
-    client = BatchControllerAsyncClient(
+async def test_create_session_flattened_error_async():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.create_batch(
-            batches.CreateBatchRequest(),
+        await client.create_session(
+            sessions.CreateSessionRequest(),
             parent="parent_value",
-            batch=batches.Batch(name="name_value"),
-            batch_id="batch_id_value",
+            session=sessions.Session(name="name_value"),
+            session_id="session_id_value",
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.GetBatchRequest,
+        sessions.GetSessionRequest,
         dict,
     ],
 )
-def test_get_batch(request_type, transport: str = "grpc"):
-    client = BatchControllerClient(
+def test_get_session(request_type, transport: str = "grpc"):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1005,54 +1011,56 @@ def test_get_batch(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_batch), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = batches.Batch(
+        call.return_value = sessions.Session(
             name="name_value",
             uuid="uuid_value",
-            state=batches.Batch.State.PENDING,
+            state=sessions.Session.State.CREATING,
             state_message="state_message_value",
             creator="creator_value",
-            operation="operation_value",
+            user="user_value",
+            session_template="session_template_value",
         )
-        response = client.get_batch(request)
+        response = client.get_session(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.GetBatchRequest()
+        assert args[0] == sessions.GetSessionRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, batches.Batch)
+    assert isinstance(response, sessions.Session)
     assert response.name == "name_value"
     assert response.uuid == "uuid_value"
-    assert response.state == batches.Batch.State.PENDING
+    assert response.state == sessions.Session.State.CREATING
     assert response.state_message == "state_message_value"
     assert response.creator == "creator_value"
-    assert response.operation == "operation_value"
+    assert response.user == "user_value"
+    assert response.session_template == "session_template_value"
 
 
-def test_get_batch_empty_call():
+def test_get_session_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_batch), "__call__") as call:
-        client.get_batch()
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        client.get_session()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.GetBatchRequest()
+        assert args[0] == sessions.GetSessionRequest()
 
 
 @pytest.mark.asyncio
-async def test_get_batch_async(
-    transport: str = "grpc_asyncio", request_type=batches.GetBatchRequest
+async def test_get_session_async(
+    transport: str = "grpc_asyncio", request_type=sessions.GetSessionRequest
 ):
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1062,55 +1070,57 @@ async def test_get_batch_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_batch), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            batches.Batch(
+            sessions.Session(
                 name="name_value",
                 uuid="uuid_value",
-                state=batches.Batch.State.PENDING,
+                state=sessions.Session.State.CREATING,
                 state_message="state_message_value",
                 creator="creator_value",
-                operation="operation_value",
+                user="user_value",
+                session_template="session_template_value",
             )
         )
-        response = await client.get_batch(request)
+        response = await client.get_session(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.GetBatchRequest()
+        assert args[0] == sessions.GetSessionRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, batches.Batch)
+    assert isinstance(response, sessions.Session)
     assert response.name == "name_value"
     assert response.uuid == "uuid_value"
-    assert response.state == batches.Batch.State.PENDING
+    assert response.state == sessions.Session.State.CREATING
     assert response.state_message == "state_message_value"
     assert response.creator == "creator_value"
-    assert response.operation == "operation_value"
+    assert response.user == "user_value"
+    assert response.session_template == "session_template_value"
 
 
 @pytest.mark.asyncio
-async def test_get_batch_async_from_dict():
-    await test_get_batch_async(request_type=dict)
+async def test_get_session_async_from_dict():
+    await test_get_session_async(request_type=dict)
 
 
-def test_get_batch_field_headers():
-    client = BatchControllerClient(
+def test_get_session_field_headers():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = batches.GetBatchRequest()
+    request = sessions.GetSessionRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_batch), "__call__") as call:
-        call.return_value = batches.Batch()
-        client.get_batch(request)
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        call.return_value = sessions.Session()
+        client.get_session(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -1126,21 +1136,21 @@ def test_get_batch_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_get_batch_field_headers_async():
-    client = BatchControllerAsyncClient(
+async def test_get_session_field_headers_async():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = batches.GetBatchRequest()
+    request = sessions.GetSessionRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_batch), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(batches.Batch())
-        await client.get_batch(request)
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(sessions.Session())
+        await client.get_session(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -1155,18 +1165,18 @@ async def test_get_batch_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_get_batch_flattened():
-    client = BatchControllerClient(
+def test_get_session_flattened():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_batch), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = batches.Batch()
+        call.return_value = sessions.Session()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_batch(
+        client.get_session(
             name="name_value",
         )
 
@@ -1179,35 +1189,35 @@ def test_get_batch_flattened():
         assert arg == mock_val
 
 
-def test_get_batch_flattened_error():
-    client = BatchControllerClient(
+def test_get_session_flattened_error():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.get_batch(
-            batches.GetBatchRequest(),
+        client.get_session(
+            sessions.GetSessionRequest(),
             name="name_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_get_batch_flattened_async():
-    client = BatchControllerAsyncClient(
+async def test_get_session_flattened_async():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_batch), "__call__") as call:
+    with mock.patch.object(type(client.transport.get_session), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = batches.Batch()
+        call.return_value = sessions.Session()
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(batches.Batch())
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(sessions.Session())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_batch(
+        response = await client.get_session(
             name="name_value",
         )
 
@@ -1221,16 +1231,16 @@ async def test_get_batch_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_get_batch_flattened_error_async():
-    client = BatchControllerAsyncClient(
+async def test_get_session_flattened_error_async():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.get_batch(
-            batches.GetBatchRequest(),
+        await client.get_session(
+            sessions.GetSessionRequest(),
             name="name_value",
         )
 
@@ -1238,12 +1248,12 @@ async def test_get_batch_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.ListBatchesRequest,
+        sessions.ListSessionsRequest,
         dict,
     ],
 )
-def test_list_batches(request_type, transport: str = "grpc"):
-    client = BatchControllerClient(
+def test_list_sessions(request_type, transport: str = "grpc"):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1253,44 +1263,44 @@ def test_list_batches(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = batches.ListBatchesResponse(
+        call.return_value = sessions.ListSessionsResponse(
             next_page_token="next_page_token_value",
         )
-        response = client.list_batches(request)
+        response = client.list_sessions(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.ListBatchesRequest()
+        assert args[0] == sessions.ListSessionsRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListBatchesPager)
+    assert isinstance(response, pagers.ListSessionsPager)
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_batches_empty_call():
+def test_list_sessions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
-        client.list_batches()
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        client.list_sessions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.ListBatchesRequest()
+        assert args[0] == sessions.ListSessionsRequest()
 
 
 @pytest.mark.asyncio
-async def test_list_batches_async(
-    transport: str = "grpc_asyncio", request_type=batches.ListBatchesRequest
+async def test_list_sessions_async(
+    transport: str = "grpc_asyncio", request_type=sessions.ListSessionsRequest
 ):
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1300,45 +1310,45 @@ async def test_list_batches_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            batches.ListBatchesResponse(
+            sessions.ListSessionsResponse(
                 next_page_token="next_page_token_value",
             )
         )
-        response = await client.list_batches(request)
+        response = await client.list_sessions(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.ListBatchesRequest()
+        assert args[0] == sessions.ListSessionsRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListBatchesAsyncPager)
+    assert isinstance(response, pagers.ListSessionsAsyncPager)
     assert response.next_page_token == "next_page_token_value"
 
 
 @pytest.mark.asyncio
-async def test_list_batches_async_from_dict():
-    await test_list_batches_async(request_type=dict)
+async def test_list_sessions_async_from_dict():
+    await test_list_sessions_async(request_type=dict)
 
 
-def test_list_batches_field_headers():
-    client = BatchControllerClient(
+def test_list_sessions_field_headers():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = batches.ListBatchesRequest()
+    request = sessions.ListSessionsRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
-        call.return_value = batches.ListBatchesResponse()
-        client.list_batches(request)
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
+        call.return_value = sessions.ListSessionsResponse()
+        client.list_sessions(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -1354,23 +1364,23 @@ def test_list_batches_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_list_batches_field_headers_async():
-    client = BatchControllerAsyncClient(
+async def test_list_sessions_field_headers_async():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = batches.ListBatchesRequest()
+    request = sessions.ListSessionsRequest()
 
     request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            batches.ListBatchesResponse()
+            sessions.ListSessionsResponse()
         )
-        await client.list_batches(request)
+        await client.list_sessions(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -1385,18 +1395,18 @@ async def test_list_batches_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_list_batches_flattened():
-    client = BatchControllerClient(
+def test_list_sessions_flattened():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = batches.ListBatchesResponse()
+        call.return_value = sessions.ListSessionsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_batches(
+        client.list_sessions(
             parent="parent_value",
         )
 
@@ -1409,37 +1419,37 @@ def test_list_batches_flattened():
         assert arg == mock_val
 
 
-def test_list_batches_flattened_error():
-    client = BatchControllerClient(
+def test_list_sessions_flattened_error():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.list_batches(
-            batches.ListBatchesRequest(),
+        client.list_sessions(
+            sessions.ListSessionsRequest(),
             parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_list_batches_flattened_async():
-    client = BatchControllerAsyncClient(
+async def test_list_sessions_flattened_async():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = batches.ListBatchesResponse()
+        call.return_value = sessions.ListSessionsResponse()
 
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            batches.ListBatchesResponse()
+            sessions.ListSessionsResponse()
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_batches(
+        response = await client.list_sessions(
             parent="parent_value",
         )
 
@@ -1453,52 +1463,52 @@ async def test_list_batches_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_list_batches_flattened_error_async():
-    client = BatchControllerAsyncClient(
+async def test_list_sessions_flattened_error_async():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.list_batches(
-            batches.ListBatchesRequest(),
+        await client.list_sessions(
+            sessions.ListSessionsRequest(),
             parent="parent_value",
         )
 
 
-def test_list_batches_pager(transport_name: str = "grpc"):
-    client = BatchControllerClient(
+def test_list_sessions_pager(transport_name: str = "grpc"):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials,
         transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
-                    batches.Batch(),
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
+                    sessions.Session(),
+                    sessions.Session(),
                 ],
                 next_page_token="abc",
             ),
-            batches.ListBatchesResponse(
-                batches=[],
+            sessions.ListSessionsResponse(
+                sessions=[],
                 next_page_token="def",
             ),
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
                 ],
                 next_page_token="ghi",
             ),
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
+                    sessions.Session(),
                 ],
             ),
             RuntimeError,
@@ -1508,95 +1518,95 @@ def test_list_batches_pager(transport_name: str = "grpc"):
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
         )
-        pager = client.list_batches(request={})
+        pager = client.list_sessions(request={})
 
         assert pager._metadata == metadata
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, batches.Batch) for i in results)
+        assert all(isinstance(i, sessions.Session) for i in results)
 
 
-def test_list_batches_pages(transport_name: str = "grpc"):
-    client = BatchControllerClient(
+def test_list_sessions_pages(transport_name: str = "grpc"):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials,
         transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.list_batches), "__call__") as call:
+    with mock.patch.object(type(client.transport.list_sessions), "__call__") as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
-                    batches.Batch(),
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
+                    sessions.Session(),
+                    sessions.Session(),
                 ],
                 next_page_token="abc",
             ),
-            batches.ListBatchesResponse(
-                batches=[],
+            sessions.ListSessionsResponse(
+                sessions=[],
                 next_page_token="def",
             ),
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
                 ],
                 next_page_token="ghi",
             ),
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
+                    sessions.Session(),
                 ],
             ),
             RuntimeError,
         )
-        pages = list(client.list_batches(request={}).pages)
+        pages = list(client.list_sessions(request={}).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
 
 @pytest.mark.asyncio
-async def test_list_batches_async_pager():
-    client = BatchControllerAsyncClient(
+async def test_list_sessions_async_pager():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_batches), "__call__", new_callable=mock.AsyncMock
+        type(client.transport.list_sessions), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
-                    batches.Batch(),
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
+                    sessions.Session(),
+                    sessions.Session(),
                 ],
                 next_page_token="abc",
             ),
-            batches.ListBatchesResponse(
-                batches=[],
+            sessions.ListSessionsResponse(
+                sessions=[],
                 next_page_token="def",
             ),
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
                 ],
                 next_page_token="ghi",
             ),
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
+                    sessions.Session(),
                 ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_batches(
+        async_pager = await client.list_sessions(
             request={},
         )
         assert async_pager.next_page_token == "abc"
@@ -1605,43 +1615,43 @@ async def test_list_batches_async_pager():
             responses.append(response)
 
         assert len(responses) == 6
-        assert all(isinstance(i, batches.Batch) for i in responses)
+        assert all(isinstance(i, sessions.Session) for i in responses)
 
 
 @pytest.mark.asyncio
-async def test_list_batches_async_pages():
-    client = BatchControllerAsyncClient(
+async def test_list_sessions_async_pages():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
-        type(client.transport.list_batches), "__call__", new_callable=mock.AsyncMock
+        type(client.transport.list_sessions), "__call__", new_callable=mock.AsyncMock
     ) as call:
         # Set the response to a series of pages.
         call.side_effect = (
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
-                    batches.Batch(),
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
+                    sessions.Session(),
+                    sessions.Session(),
                 ],
                 next_page_token="abc",
             ),
-            batches.ListBatchesResponse(
-                batches=[],
+            sessions.ListSessionsResponse(
+                sessions=[],
                 next_page_token="def",
             ),
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
                 ],
                 next_page_token="ghi",
             ),
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
+                    sessions.Session(),
                 ],
             ),
             RuntimeError,
@@ -1650,7 +1660,7 @@ async def test_list_batches_async_pages():
         # Workaround issue in python 3.9 related to code coverage by adding `# pragma: no branch`
         # See https://github.com/googleapis/gapic-generator-python/pull/1174#issuecomment-1025132372
         async for page_ in (  # pragma: no branch
-            await client.list_batches(request={})
+            await client.list_sessions(request={})
         ).pages:
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
@@ -1660,12 +1670,12 @@ async def test_list_batches_async_pages():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.DeleteBatchRequest,
+        sessions.TerminateSessionRequest,
         dict,
     ],
 )
-def test_delete_batch(request_type, transport: str = "grpc"):
-    client = BatchControllerClient(
+def test_terminate_session(request_type, transport: str = "grpc"):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1675,41 +1685,45 @@ def test_delete_batch(request_type, transport: str = "grpc"):
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_batch), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.terminate_session), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = None
-        response = client.delete_batch(request)
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.terminate_session(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.DeleteBatchRequest()
+        assert args[0] == sessions.TerminateSessionRequest()
 
     # Establish that the response is the type that we expect.
-    assert response is None
+    assert isinstance(response, future.Future)
 
 
-def test_delete_batch_empty_call():
+def test_terminate_session_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_batch), "__call__") as call:
-        client.delete_batch()
+    with mock.patch.object(
+        type(client.transport.terminate_session), "__call__"
+    ) as call:
+        client.terminate_session()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.DeleteBatchRequest()
+        assert args[0] == sessions.TerminateSessionRequest()
 
 
 @pytest.mark.asyncio
-async def test_delete_batch_async(
-    transport: str = "grpc_asyncio", request_type=batches.DeleteBatchRequest
+async def test_terminate_session_async(
+    transport: str = "grpc_asyncio", request_type=sessions.TerminateSessionRequest
 ):
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -1719,40 +1733,46 @@ async def test_delete_batch_async(
     request = request_type()
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_batch), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.terminate_session), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        response = await client.delete_batch(request)
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.terminate_session(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == batches.DeleteBatchRequest()
+        assert args[0] == sessions.TerminateSessionRequest()
 
     # Establish that the response is the type that we expect.
-    assert response is None
+    assert isinstance(response, future.Future)
 
 
 @pytest.mark.asyncio
-async def test_delete_batch_async_from_dict():
-    await test_delete_batch_async(request_type=dict)
+async def test_terminate_session_async_from_dict():
+    await test_terminate_session_async(request_type=dict)
 
 
-def test_delete_batch_field_headers():
-    client = BatchControllerClient(
+def test_terminate_session_field_headers():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = batches.DeleteBatchRequest()
+    request = sessions.TerminateSessionRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_batch), "__call__") as call:
-        call.return_value = None
-        client.delete_batch(request)
+    with mock.patch.object(
+        type(client.transport.terminate_session), "__call__"
+    ) as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.terminate_session(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -1768,21 +1788,25 @@ def test_delete_batch_field_headers():
 
 
 @pytest.mark.asyncio
-async def test_delete_batch_field_headers_async():
-    client = BatchControllerAsyncClient(
+async def test_terminate_session_field_headers_async():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
-    request = batches.DeleteBatchRequest()
+    request = sessions.TerminateSessionRequest()
 
     request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_batch), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
-        await client.delete_batch(request)
+    with mock.patch.object(
+        type(client.transport.terminate_session), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.terminate_session(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -1797,18 +1821,20 @@ async def test_delete_batch_field_headers_async():
     ) in kw["metadata"]
 
 
-def test_delete_batch_flattened():
-    client = BatchControllerClient(
+def test_terminate_session_flattened():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_batch), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.terminate_session), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = None
+        call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_batch(
+        client.terminate_session(
             name="name_value",
         )
 
@@ -1821,35 +1847,39 @@ def test_delete_batch_flattened():
         assert arg == mock_val
 
 
-def test_delete_batch_flattened_error():
-    client = BatchControllerClient(
+def test_terminate_session_flattened_error():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete_batch(
-            batches.DeleteBatchRequest(),
+        client.terminate_session(
+            sessions.TerminateSessionRequest(),
             name="name_value",
         )
 
 
 @pytest.mark.asyncio
-async def test_delete_batch_flattened_async():
-    client = BatchControllerAsyncClient(
+async def test_terminate_session_flattened_async():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.delete_batch), "__call__") as call:
+    with mock.patch.object(
+        type(client.transport.terminate_session), "__call__"
+    ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = None
+        call.return_value = operations_pb2.Operation(name="operations/op")
 
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_batch(
+        response = await client.terminate_session(
             name="name_value",
         )
 
@@ -1863,16 +1893,16 @@ async def test_delete_batch_flattened_async():
 
 
 @pytest.mark.asyncio
-async def test_delete_batch_flattened_error_async():
-    client = BatchControllerAsyncClient(
+async def test_terminate_session_flattened_error_async():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        await client.delete_batch(
-            batches.DeleteBatchRequest(),
+        await client.terminate_session(
+            sessions.TerminateSessionRequest(),
             name="name_value",
         )
 
@@ -1880,49 +1910,249 @@ async def test_delete_batch_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.CreateBatchRequest,
+        sessions.DeleteSessionRequest,
         dict,
     ],
 )
-def test_create_batch_rest(request_type):
-    client = BatchControllerClient(
+def test_delete_session(request_type, transport: str = "grpc"):
+    client = SessionControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == sessions.DeleteSessionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_session_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SessionControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        client.delete_session()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == sessions.DeleteSessionRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_session_async(
+    transport: str = "grpc_asyncio", request_type=sessions.DeleteSessionRequest
+):
+    client = SessionControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == sessions.DeleteSessionRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_session_async_from_dict():
+    await test_delete_session_async(request_type=dict)
+
+
+def test_delete_session_field_headers():
+    client = SessionControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = sessions.DeleteSessionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_session_field_headers_async():
+    client = SessionControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = sessions.DeleteSessionRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_session(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_session_flattened():
+    client = SessionControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_session(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_session_flattened_error():
+    client = SessionControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_session(
+            sessions.DeleteSessionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_session_flattened_async():
+    client = SessionControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_session), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_session(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_session_flattened_error_async():
+    client = SessionControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_session(
+            sessions.DeleteSessionRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sessions.CreateSessionRequest,
+        dict,
+    ],
+)
+def test_create_session_rest(request_type):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
     request_init = {"parent": "projects/sample1/locations/sample2"}
-    request_init["batch"] = {
+    request_init["session"] = {
         "name": "name_value",
         "uuid": "uuid_value",
         "create_time": {"seconds": 751, "nanos": 543},
-        "pyspark_batch": {
-            "main_python_file_uri": "main_python_file_uri_value",
-            "args": ["args_value1", "args_value2"],
-            "python_file_uris": ["python_file_uris_value1", "python_file_uris_value2"],
-            "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
-            "file_uris": ["file_uris_value1", "file_uris_value2"],
-            "archive_uris": ["archive_uris_value1", "archive_uris_value2"],
-        },
-        "spark_batch": {
-            "main_jar_file_uri": "main_jar_file_uri_value",
-            "main_class": "main_class_value",
-            "args": ["args_value1", "args_value2"],
-            "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
-            "file_uris": ["file_uris_value1", "file_uris_value2"],
-            "archive_uris": ["archive_uris_value1", "archive_uris_value2"],
-        },
-        "spark_r_batch": {
-            "main_r_file_uri": "main_r_file_uri_value",
-            "args": ["args_value1", "args_value2"],
-            "file_uris": ["file_uris_value1", "file_uris_value2"],
-            "archive_uris": ["archive_uris_value1", "archive_uris_value2"],
-        },
-        "spark_sql_batch": {
-            "query_file_uri": "query_file_uri_value",
-            "query_variables": {},
-            "jar_file_uris": ["jar_file_uris_value1", "jar_file_uris_value2"],
-        },
+        "jupyter_session": {"kernel": 1, "display_name": "display_name_value"},
         "runtime_info": {
             "endpoints": {},
             "output_uri": "output_uri_value",
@@ -1974,17 +2204,18 @@ def test_create_batch_rest(request_type):
                 },
             },
         },
-        "operation": "operation_value",
+        "user": "user_value",
         "state_history": [
             {"state": 1, "state_message": "state_message_value", "state_start_time": {}}
         ],
+        "session_template": "session_template_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
     # See https://github.com/googleapis/gapic-generator-python/issues/1748
 
     # Determine if the message type is proto-plus or protobuf
-    test_field = batches.CreateBatchRequest.meta.fields["batch"]
+    test_field = sessions.CreateSessionRequest.meta.fields["session"]
 
     def get_message_fields(field):
         # Given a field which is a message (composite type), return a list with
@@ -2012,7 +2243,7 @@ def test_create_batch_rest(request_type):
 
     # For each item in the sample request, create a list of sub fields which are not present at runtime
     # Add `# pragma: NO COVER` because this test code will not run if all subfields are present at runtime
-    for field, value in request_init["batch"].items():  # pragma: NO COVER
+    for field, value in request_init["session"].items():  # pragma: NO COVER
         result = None
         is_repeated = False
         # For repeated fields
@@ -2042,10 +2273,10 @@ def test_create_batch_rest(request_type):
         subfield = subfield_to_delete.get("subfield")
         if subfield:
             if field_repeated:
-                for i in range(0, len(request_init["batch"][field])):
-                    del request_init["batch"][field][i][subfield]
+                for i in range(0, len(request_init["session"][field])):
+                    del request_init["session"][field][i][subfield]
             else:
-                del request_init["batch"][field][subfield]
+                del request_init["session"][field][subfield]
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
@@ -2060,17 +2291,20 @@ def test_create_batch_rest(request_type):
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.create_batch(request)
+        response = client.create_session(request)
 
     # Establish that the response is the type that we expect.
     assert response.operation.name == "operations/spam"
 
 
-def test_create_batch_rest_required_fields(request_type=batches.CreateBatchRequest):
-    transport_class = transports.BatchControllerRestTransport
+def test_create_session_rest_required_fields(
+    request_type=sessions.CreateSessionRequest,
+):
+    transport_class = transports.SessionControllerRestTransport
 
     request_init = {}
     request_init["parent"] = ""
+    request_init["session_id"] = ""
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
@@ -2082,24 +2316,28 @@ def test_create_batch_rest_required_fields(request_type=batches.CreateBatchReque
     )
 
     # verify fields with default values are dropped
+    assert "sessionId" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).create_batch._get_unset_required_fields(jsonified_request)
+    ).create_session._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
+    assert "sessionId" in jsonified_request
+    assert jsonified_request["sessionId"] == request_init["session_id"]
 
     jsonified_request["parent"] = "parent_value"
+    jsonified_request["sessionId"] = "session_id_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).create_batch._get_unset_required_fields(jsonified_request)
+    ).create_session._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
-            "batch_id",
             "request_id",
+            "session_id",
         )
     )
     jsonified_request.update(unset_fields)
@@ -2107,8 +2345,10 @@ def test_create_batch_rest_required_fields(request_type=batches.CreateBatchReque
     # verify required fields with non-default values are left alone
     assert "parent" in jsonified_request
     assert jsonified_request["parent"] == "parent_value"
+    assert "sessionId" in jsonified_request
+    assert jsonified_request["sessionId"] == "session_id_value"
 
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2140,44 +2380,51 @@ def test_create_batch_rest_required_fields(request_type=batches.CreateBatchReque
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.create_batch(request)
+            response = client.create_session(request)
 
-            expected_params = [("$alt", "json;enum-encoding=int")]
+            expected_params = [
+                (
+                    "sessionId",
+                    "",
+                ),
+                ("$alt", "json;enum-encoding=int"),
+            ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_create_batch_rest_unset_required_fields():
-    transport = transports.BatchControllerRestTransport(
+def test_create_session_rest_unset_required_fields():
+    transport = transports.SessionControllerRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.create_batch._get_unset_required_fields({})
+    unset_fields = transport.create_session._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(
             (
-                "batchId",
                 "requestId",
+                "sessionId",
             )
         )
         & set(
             (
                 "parent",
-                "batch",
+                "session",
+                "sessionId",
             )
         )
     )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_create_batch_rest_interceptors(null_interceptor):
-    transport = transports.BatchControllerRestTransport(
+def test_create_session_rest_interceptors(null_interceptor):
+    transport = transports.SessionControllerRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.BatchControllerRestInterceptor(),
+        else transports.SessionControllerRestInterceptor(),
     )
-    client = BatchControllerClient(transport=transport)
+    client = SessionControllerClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
@@ -2185,13 +2432,13 @@ def test_create_batch_rest_interceptors(null_interceptor):
     ) as transcode, mock.patch.object(
         operation.Operation, "_set_result_from_operation"
     ), mock.patch.object(
-        transports.BatchControllerRestInterceptor, "post_create_batch"
+        transports.SessionControllerRestInterceptor, "post_create_session"
     ) as post, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "pre_create_batch"
+        transports.SessionControllerRestInterceptor, "pre_create_session"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = batches.CreateBatchRequest.pb(batches.CreateBatchRequest())
+        pb_message = sessions.CreateSessionRequest.pb(sessions.CreateSessionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -2206,7 +2453,7 @@ def test_create_batch_rest_interceptors(null_interceptor):
             operations_pb2.Operation()
         )
 
-        request = batches.CreateBatchRequest()
+        request = sessions.CreateSessionRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
@@ -2214,7 +2461,7 @@ def test_create_batch_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = operations_pb2.Operation()
 
-        client.create_batch(
+        client.create_session(
             request,
             metadata=[
                 ("key", "val"),
@@ -2226,10 +2473,10 @@ def test_create_batch_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_create_batch_rest_bad_request(
-    transport: str = "rest", request_type=batches.CreateBatchRequest
+def test_create_session_rest_bad_request(
+    transport: str = "rest", request_type=sessions.CreateSessionRequest
 ):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2247,11 +2494,11 @@ def test_create_batch_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.create_batch(request)
+        client.create_session(request)
 
 
-def test_create_batch_rest_flattened():
-    client = BatchControllerClient(
+def test_create_session_rest_flattened():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2267,8 +2514,8 @@ def test_create_batch_rest_flattened():
         # get truthy value for each flattened field
         mock_args = dict(
             parent="parent_value",
-            batch=batches.Batch(name="name_value"),
-            batch_id="batch_id_value",
+            session=sessions.Session(name="name_value"),
+            session_id="session_id_value",
         )
         mock_args.update(sample_request)
 
@@ -2279,20 +2526,20 @@ def test_create_batch_rest_flattened():
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.create_batch(**mock_args)
+        client.create_session(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/batches" % client.transport._host,
+            "%s/v1/{parent=projects/*/locations/*}/sessions" % client.transport._host,
             args[1],
         )
 
 
-def test_create_batch_rest_flattened_error(transport: str = "rest"):
-    client = BatchControllerClient(
+def test_create_session_rest_flattened_error(transport: str = "rest"):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2300,16 +2547,16 @@ def test_create_batch_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.create_batch(
-            batches.CreateBatchRequest(),
+        client.create_session(
+            sessions.CreateSessionRequest(),
             parent="parent_value",
-            batch=batches.Batch(name="name_value"),
-            batch_id="batch_id_value",
+            session=sessions.Session(name="name_value"),
+            session_id="session_id_value",
         )
 
 
-def test_create_batch_rest_error():
-    client = BatchControllerClient(
+def test_create_session_rest_error():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -2317,55 +2564,57 @@ def test_create_batch_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.GetBatchRequest,
+        sessions.GetSessionRequest,
         dict,
     ],
 )
-def test_get_batch_rest(request_type):
-    client = BatchControllerClient(
+def test_get_session_rest(request_type):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/batches/sample3"}
+    request_init = {"name": "projects/sample1/locations/sample2/sessions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = batches.Batch(
+        return_value = sessions.Session(
             name="name_value",
             uuid="uuid_value",
-            state=batches.Batch.State.PENDING,
+            state=sessions.Session.State.CREATING,
             state_message="state_message_value",
             creator="creator_value",
-            operation="operation_value",
+            user="user_value",
+            session_template="session_template_value",
         )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = batches.Batch.pb(return_value)
+        return_value = sessions.Session.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.get_batch(request)
+        response = client.get_session(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, batches.Batch)
+    assert isinstance(response, sessions.Session)
     assert response.name == "name_value"
     assert response.uuid == "uuid_value"
-    assert response.state == batches.Batch.State.PENDING
+    assert response.state == sessions.Session.State.CREATING
     assert response.state_message == "state_message_value"
     assert response.creator == "creator_value"
-    assert response.operation == "operation_value"
+    assert response.user == "user_value"
+    assert response.session_template == "session_template_value"
 
 
-def test_get_batch_rest_required_fields(request_type=batches.GetBatchRequest):
-    transport_class = transports.BatchControllerRestTransport
+def test_get_session_rest_required_fields(request_type=sessions.GetSessionRequest):
+    transport_class = transports.SessionControllerRestTransport
 
     request_init = {}
     request_init["name"] = ""
@@ -2383,7 +2632,7 @@ def test_get_batch_rest_required_fields(request_type=batches.GetBatchRequest):
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).get_batch._get_unset_required_fields(jsonified_request)
+    ).get_session._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2392,21 +2641,21 @@ def test_get_batch_rest_required_fields(request_type=batches.GetBatchRequest):
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).get_batch._get_unset_required_fields(jsonified_request)
+    ).get_session._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == "name_value"
 
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = batches.Batch()
+    return_value = sessions.Session()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -2427,49 +2676,49 @@ def test_get_batch_rest_required_fields(request_type=batches.GetBatchRequest):
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = batches.Batch.pb(return_value)
+            return_value = sessions.Session.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.get_batch(request)
+            response = client.get_session(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_get_batch_rest_unset_required_fields():
-    transport = transports.BatchControllerRestTransport(
+def test_get_session_rest_unset_required_fields():
+    transport = transports.SessionControllerRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.get_batch._get_unset_required_fields({})
+    unset_fields = transport.get_session._get_unset_required_fields({})
     assert set(unset_fields) == (set(()) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_get_batch_rest_interceptors(null_interceptor):
-    transport = transports.BatchControllerRestTransport(
+def test_get_session_rest_interceptors(null_interceptor):
+    transport = transports.SessionControllerRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.BatchControllerRestInterceptor(),
+        else transports.SessionControllerRestInterceptor(),
     )
-    client = BatchControllerClient(transport=transport)
+    client = SessionControllerClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "post_get_batch"
+        transports.SessionControllerRestInterceptor, "post_get_session"
     ) as post, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "pre_get_batch"
+        transports.SessionControllerRestInterceptor, "pre_get_session"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = batches.GetBatchRequest.pb(batches.GetBatchRequest())
+        pb_message = sessions.GetSessionRequest.pb(sessions.GetSessionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -2480,17 +2729,17 @@ def test_get_batch_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = batches.Batch.to_json(batches.Batch())
+        req.return_value._content = sessions.Session.to_json(sessions.Session())
 
-        request = batches.GetBatchRequest()
+        request = sessions.GetSessionRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = batches.Batch()
+        post.return_value = sessions.Session()
 
-        client.get_batch(
+        client.get_session(
             request,
             metadata=[
                 ("key", "val"),
@@ -2502,16 +2751,16 @@ def test_get_batch_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_get_batch_rest_bad_request(
-    transport: str = "rest", request_type=batches.GetBatchRequest
+def test_get_session_rest_bad_request(
+    transport: str = "rest", request_type=sessions.GetSessionRequest
 ):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/batches/sample3"}
+    request_init = {"name": "projects/sample1/locations/sample2/sessions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -2523,11 +2772,11 @@ def test_get_batch_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.get_batch(request)
+        client.get_session(request)
 
 
-def test_get_batch_rest_flattened():
-    client = BatchControllerClient(
+def test_get_session_rest_flattened():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2535,10 +2784,10 @@ def test_get_batch_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = batches.Batch()
+        return_value = sessions.Session()
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "projects/sample1/locations/sample2/batches/sample3"}
+        sample_request = {"name": "projects/sample1/locations/sample2/sessions/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -2550,25 +2799,25 @@ def test_get_batch_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = batches.Batch.pb(return_value)
+        return_value = sessions.Session.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.get_batch(**mock_args)
+        client.get_session(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/batches/*}" % client.transport._host,
+            "%s/v1/{name=projects/*/locations/*/sessions/*}" % client.transport._host,
             args[1],
         )
 
 
-def test_get_batch_rest_flattened_error(transport: str = "rest"):
-    client = BatchControllerClient(
+def test_get_session_rest_flattened_error(transport: str = "rest"):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2576,14 +2825,14 @@ def test_get_batch_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.get_batch(
-            batches.GetBatchRequest(),
+        client.get_session(
+            sessions.GetSessionRequest(),
             name="name_value",
         )
 
 
-def test_get_batch_rest_error():
-    client = BatchControllerClient(
+def test_get_session_rest_error():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
@@ -2591,12 +2840,12 @@ def test_get_batch_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.ListBatchesRequest,
+        sessions.ListSessionsRequest,
         dict,
     ],
 )
-def test_list_batches_rest(request_type):
-    client = BatchControllerClient(
+def test_list_sessions_rest(request_type):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2608,7 +2857,7 @@ def test_list_batches_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = batches.ListBatchesResponse(
+        return_value = sessions.ListSessionsResponse(
             next_page_token="next_page_token_value",
         )
 
@@ -2616,20 +2865,20 @@ def test_list_batches_rest(request_type):
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = batches.ListBatchesResponse.pb(return_value)
+        return_value = sessions.ListSessionsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.list_batches(request)
+        response = client.list_sessions(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, pagers.ListBatchesPager)
+    assert isinstance(response, pagers.ListSessionsPager)
     assert response.next_page_token == "next_page_token_value"
 
 
-def test_list_batches_rest_required_fields(request_type=batches.ListBatchesRequest):
-    transport_class = transports.BatchControllerRestTransport
+def test_list_sessions_rest_required_fields(request_type=sessions.ListSessionsRequest):
+    transport_class = transports.SessionControllerRestTransport
 
     request_init = {}
     request_init["parent"] = ""
@@ -2647,7 +2896,7 @@ def test_list_batches_rest_required_fields(request_type=batches.ListBatchesReque
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).list_batches._get_unset_required_fields(jsonified_request)
+    ).list_sessions._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2656,12 +2905,11 @@ def test_list_batches_rest_required_fields(request_type=batches.ListBatchesReque
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).list_batches._get_unset_required_fields(jsonified_request)
+    ).list_sessions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
         (
             "filter",
-            "order_by",
             "page_size",
             "page_token",
         )
@@ -2672,14 +2920,14 @@ def test_list_batches_rest_required_fields(request_type=batches.ListBatchesReque
     assert "parent" in jsonified_request
     assert jsonified_request["parent"] == "parent_value"
 
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = batches.ListBatchesResponse()
+    return_value = sessions.ListSessionsResponse()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -2700,30 +2948,29 @@ def test_list_batches_rest_required_fields(request_type=batches.ListBatchesReque
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = batches.ListBatchesResponse.pb(return_value)
+            return_value = sessions.ListSessionsResponse.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.list_batches(request)
+            response = client.list_sessions(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_list_batches_rest_unset_required_fields():
-    transport = transports.BatchControllerRestTransport(
+def test_list_sessions_rest_unset_required_fields():
+    transport = transports.SessionControllerRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.list_batches._get_unset_required_fields({})
+    unset_fields = transport.list_sessions._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(
             (
                 "filter",
-                "orderBy",
                 "pageSize",
                 "pageToken",
             )
@@ -2733,26 +2980,26 @@ def test_list_batches_rest_unset_required_fields():
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_list_batches_rest_interceptors(null_interceptor):
-    transport = transports.BatchControllerRestTransport(
+def test_list_sessions_rest_interceptors(null_interceptor):
+    transport = transports.SessionControllerRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.BatchControllerRestInterceptor(),
+        else transports.SessionControllerRestInterceptor(),
     )
-    client = BatchControllerClient(transport=transport)
+    client = SessionControllerClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "post_list_batches"
+        transports.SessionControllerRestInterceptor, "post_list_sessions"
     ) as post, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "pre_list_batches"
+        transports.SessionControllerRestInterceptor, "pre_list_sessions"
     ) as pre:
         pre.assert_not_called()
         post.assert_not_called()
-        pb_message = batches.ListBatchesRequest.pb(batches.ListBatchesRequest())
+        pb_message = sessions.ListSessionsRequest.pb(sessions.ListSessionsRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -2763,19 +3010,19 @@ def test_list_batches_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = batches.ListBatchesResponse.to_json(
-            batches.ListBatchesResponse()
+        req.return_value._content = sessions.ListSessionsResponse.to_json(
+            sessions.ListSessionsResponse()
         )
 
-        request = batches.ListBatchesRequest()
+        request = sessions.ListSessionsRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = batches.ListBatchesResponse()
+        post.return_value = sessions.ListSessionsResponse()
 
-        client.list_batches(
+        client.list_sessions(
             request,
             metadata=[
                 ("key", "val"),
@@ -2787,10 +3034,10 @@ def test_list_batches_rest_interceptors(null_interceptor):
         post.assert_called_once()
 
 
-def test_list_batches_rest_bad_request(
-    transport: str = "rest", request_type=batches.ListBatchesRequest
+def test_list_sessions_rest_bad_request(
+    transport: str = "rest", request_type=sessions.ListSessionsRequest
 ):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2808,11 +3055,11 @@ def test_list_batches_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.list_batches(request)
+        client.list_sessions(request)
 
 
-def test_list_batches_rest_flattened():
-    client = BatchControllerClient(
+def test_list_sessions_rest_flattened():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -2820,7 +3067,7 @@ def test_list_batches_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = batches.ListBatchesResponse()
+        return_value = sessions.ListSessionsResponse()
 
         # get arguments that satisfy an http rule for this method
         sample_request = {"parent": "projects/sample1/locations/sample2"}
@@ -2835,25 +3082,25 @@ def test_list_batches_rest_flattened():
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = batches.ListBatchesResponse.pb(return_value)
+        return_value = sessions.ListSessionsResponse.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.list_batches(**mock_args)
+        client.list_sessions(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{parent=projects/*/locations/*}/batches" % client.transport._host,
+            "%s/v1/{parent=projects/*/locations/*}/sessions" % client.transport._host,
             args[1],
         )
 
 
-def test_list_batches_rest_flattened_error(transport: str = "rest"):
-    client = BatchControllerClient(
+def test_list_sessions_rest_flattened_error(transport: str = "rest"):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2861,14 +3108,14 @@ def test_list_batches_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.list_batches(
-            batches.ListBatchesRequest(),
+        client.list_sessions(
+            sessions.ListSessionsRequest(),
             parent="parent_value",
         )
 
 
-def test_list_batches_rest_pager(transport: str = "rest"):
-    client = BatchControllerClient(
+def test_list_sessions_rest_pager(transport: str = "rest"):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -2879,28 +3126,28 @@ def test_list_batches_rest_pager(transport: str = "rest"):
         # with mock.patch.object(path_template, 'transcode') as transcode:
         # Set the response as a series of pages
         response = (
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
-                    batches.Batch(),
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
+                    sessions.Session(),
+                    sessions.Session(),
                 ],
                 next_page_token="abc",
             ),
-            batches.ListBatchesResponse(
-                batches=[],
+            sessions.ListSessionsResponse(
+                sessions=[],
                 next_page_token="def",
             ),
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
                 ],
                 next_page_token="ghi",
             ),
-            batches.ListBatchesResponse(
-                batches=[
-                    batches.Batch(),
-                    batches.Batch(),
+            sessions.ListSessionsResponse(
+                sessions=[
+                    sessions.Session(),
+                    sessions.Session(),
                 ],
             ),
         )
@@ -2908,7 +3155,7 @@ def test_list_batches_rest_pager(transport: str = "rest"):
         response = response + response
 
         # Wrap the values into proper Response objs
-        response = tuple(batches.ListBatchesResponse.to_json(x) for x in response)
+        response = tuple(sessions.ListSessionsResponse.to_json(x) for x in response)
         return_values = tuple(Response() for i in response)
         for return_val, response_val in zip(return_values, response):
             return_val._content = response_val.encode("UTF-8")
@@ -2917,13 +3164,13 @@ def test_list_batches_rest_pager(transport: str = "rest"):
 
         sample_request = {"parent": "projects/sample1/locations/sample2"}
 
-        pager = client.list_batches(request=sample_request)
+        pager = client.list_sessions(request=sample_request)
 
         results = list(pager)
         assert len(results) == 6
-        assert all(isinstance(i, batches.Batch) for i in results)
+        assert all(isinstance(i, sessions.Session) for i in results)
 
-        pages = list(client.list_batches(request=sample_request).pages)
+        pages = list(client.list_sessions(request=sample_request).pages)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
 
@@ -2931,40 +3178,42 @@ def test_list_batches_rest_pager(transport: str = "rest"):
 @pytest.mark.parametrize(
     "request_type",
     [
-        batches.DeleteBatchRequest,
+        sessions.TerminateSessionRequest,
         dict,
     ],
 )
-def test_delete_batch_rest(request_type):
-    client = BatchControllerClient(
+def test_terminate_session_rest(request_type):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/batches/sample3"}
+    request_init = {"name": "projects/sample1/locations/sample2/sessions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = None
+        return_value = operations_pb2.Operation(name="operations/spam")
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = ""
+        json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
-        response = client.delete_batch(request)
+        response = client.terminate_session(request)
 
     # Establish that the response is the type that we expect.
-    assert response is None
+    assert response.operation.name == "operations/spam"
 
 
-def test_delete_batch_rest_required_fields(request_type=batches.DeleteBatchRequest):
-    transport_class = transports.BatchControllerRestTransport
+def test_terminate_session_rest_required_fields(
+    request_type=sessions.TerminateSessionRequest,
+):
+    transport_class = transports.SessionControllerRestTransport
 
     request_init = {}
     request_init["name"] = ""
@@ -2982,7 +3231,7 @@ def test_delete_batch_rest_required_fields(request_type=batches.DeleteBatchReque
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).delete_batch._get_unset_required_fields(jsonified_request)
+    ).terminate_session._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -2991,21 +3240,287 @@ def test_delete_batch_rest_required_fields(request_type=batches.DeleteBatchReque
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
-    ).delete_batch._get_unset_required_fields(jsonified_request)
+    ).terminate_session._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
     assert "name" in jsonified_request
     assert jsonified_request["name"] == "name_value"
 
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = None
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.terminate_session(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_terminate_session_rest_unset_required_fields():
+    transport = transports.SessionControllerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.terminate_session._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_terminate_session_rest_interceptors(null_interceptor):
+    transport = transports.SessionControllerRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SessionControllerRestInterceptor(),
+    )
+    client = SessionControllerClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.SessionControllerRestInterceptor, "post_terminate_session"
+    ) as post, mock.patch.object(
+        transports.SessionControllerRestInterceptor, "pre_terminate_session"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = sessions.TerminateSessionRequest.pb(
+            sessions.TerminateSessionRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = sessions.TerminateSessionRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.terminate_session(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_terminate_session_rest_bad_request(
+    transport: str = "rest", request_type=sessions.TerminateSessionRequest
+):
+    client = SessionControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/sessions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.terminate_session(request)
+
+
+def test_terminate_session_rest_flattened():
+    client = SessionControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/locations/sample2/sessions/sample3"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.terminate_session(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/locations/*/sessions/*}:terminate"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_terminate_session_rest_flattened_error(transport: str = "rest"):
+    client = SessionControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.terminate_session(
+            sessions.TerminateSessionRequest(),
+            name="name_value",
+        )
+
+
+def test_terminate_session_rest_error():
+    client = SessionControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        sessions.DeleteSessionRequest,
+        dict,
+    ],
+)
+def test_delete_session_rest(request_type):
+    client = SessionControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/locations/sample2/sessions/sample3"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_session(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_session_rest_required_fields(
+    request_type=sessions.DeleteSessionRequest,
+):
+    transport_class = transports.SessionControllerRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_session._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_session._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = SessionControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -3024,45 +3539,50 @@ def test_delete_batch_rest_required_fields(request_type=batches.DeleteBatchReque
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = ""
+            json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
 
-            response = client.delete_batch(request)
+            response = client.delete_session(request)
 
             expected_params = [("$alt", "json;enum-encoding=int")]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
 
-def test_delete_batch_rest_unset_required_fields():
-    transport = transports.BatchControllerRestTransport(
+def test_delete_session_rest_unset_required_fields():
+    transport = transports.SessionControllerRestTransport(
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.delete_batch._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("name",)))
+    unset_fields = transport.delete_session._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("requestId",)) & set(("name",)))
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
-def test_delete_batch_rest_interceptors(null_interceptor):
-    transport = transports.BatchControllerRestTransport(
+def test_delete_session_rest_interceptors(null_interceptor):
+    transport = transports.SessionControllerRestTransport(
         credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
-        else transports.BatchControllerRestInterceptor(),
+        else transports.SessionControllerRestInterceptor(),
     )
-    client = BatchControllerClient(transport=transport)
+    client = SessionControllerClient(transport=transport)
     with mock.patch.object(
         type(client.transport._session), "request"
     ) as req, mock.patch.object(
         path_template, "transcode"
     ) as transcode, mock.patch.object(
-        transports.BatchControllerRestInterceptor, "pre_delete_batch"
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.SessionControllerRestInterceptor, "post_delete_session"
+    ) as post, mock.patch.object(
+        transports.SessionControllerRestInterceptor, "pre_delete_session"
     ) as pre:
         pre.assert_not_called()
-        pb_message = batches.DeleteBatchRequest.pb(batches.DeleteBatchRequest())
+        post.assert_not_called()
+        pb_message = sessions.DeleteSessionRequest.pb(sessions.DeleteSessionRequest())
         transcode.return_value = {
             "method": "post",
             "uri": "my_uri",
@@ -3073,15 +3593,19 @@ def test_delete_batch_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
 
-        request = batches.DeleteBatchRequest()
+        request = sessions.DeleteSessionRequest()
         metadata = [
             ("key", "val"),
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
 
-        client.delete_batch(
+        client.delete_session(
             request,
             metadata=[
                 ("key", "val"),
@@ -3090,18 +3614,19 @@ def test_delete_batch_rest_interceptors(null_interceptor):
         )
 
         pre.assert_called_once()
+        post.assert_called_once()
 
 
-def test_delete_batch_rest_bad_request(
-    transport: str = "rest", request_type=batches.DeleteBatchRequest
+def test_delete_session_rest_bad_request(
+    transport: str = "rest", request_type=sessions.DeleteSessionRequest
 ):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
     # send a request that will satisfy transcoding
-    request_init = {"name": "projects/sample1/locations/sample2/batches/sample3"}
+    request_init = {"name": "projects/sample1/locations/sample2/sessions/sample3"}
     request = request_type(**request_init)
 
     # Mock the http request call within the method and fake a BadRequest error.
@@ -3113,11 +3638,11 @@ def test_delete_batch_rest_bad_request(
         response_value.status_code = 400
         response_value.request = Request()
         req.return_value = response_value
-        client.delete_batch(request)
+        client.delete_session(request)
 
 
-def test_delete_batch_rest_flattened():
-    client = BatchControllerClient(
+def test_delete_session_rest_flattened():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -3125,10 +3650,10 @@ def test_delete_batch_rest_flattened():
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = None
+        return_value = operations_pb2.Operation(name="operations/spam")
 
         # get arguments that satisfy an http rule for this method
-        sample_request = {"name": "projects/sample1/locations/sample2/batches/sample3"}
+        sample_request = {"name": "projects/sample1/locations/sample2/sessions/sample3"}
 
         # get truthy value for each flattened field
         mock_args = dict(
@@ -3139,24 +3664,24 @@ def test_delete_batch_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = ""
+        json_return_value = json_format.MessageToJson(return_value)
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
 
-        client.delete_batch(**mock_args)
+        client.delete_session(**mock_args)
 
         # Establish that the underlying call was made with the expected
         # request object values.
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1/{name=projects/*/locations/*/batches/*}" % client.transport._host,
+            "%s/v1/{name=projects/*/locations/*/sessions/*}" % client.transport._host,
             args[1],
         )
 
 
-def test_delete_batch_rest_flattened_error(transport: str = "rest"):
-    client = BatchControllerClient(
+def test_delete_session_rest_flattened_error(transport: str = "rest"):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -3164,47 +3689,47 @@ def test_delete_batch_rest_flattened_error(transport: str = "rest"):
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
-        client.delete_batch(
-            batches.DeleteBatchRequest(),
+        client.delete_session(
+            sessions.DeleteSessionRequest(),
             name="name_value",
         )
 
 
-def test_delete_batch_rest_error():
-    client = BatchControllerClient(
+def test_delete_session_rest_error():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
-    transport = transports.BatchControllerGrpcTransport(
+    transport = transports.SessionControllerGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = BatchControllerClient(
+        client = SessionControllerClient(
             credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
-    transport = transports.BatchControllerGrpcTransport(
+    transport = transports.SessionControllerGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = BatchControllerClient(
+        client = SessionControllerClient(
             client_options={"credentials_file": "credentials.json"},
             transport=transport,
         )
 
     # It is an error to provide an api_key and a transport instance.
-    transport = transports.BatchControllerGrpcTransport(
+    transport = transports.SessionControllerGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = BatchControllerClient(
+        client = SessionControllerClient(
             client_options=options,
             transport=transport,
         )
@@ -3213,16 +3738,16 @@ def test_credentials_transport_error():
     options = mock.Mock()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = BatchControllerClient(
+        client = SessionControllerClient(
             client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
-    transport = transports.BatchControllerGrpcTransport(
+    transport = transports.SessionControllerGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = BatchControllerClient(
+        client = SessionControllerClient(
             client_options={"scopes": ["1", "2"]},
             transport=transport,
         )
@@ -3230,22 +3755,22 @@ def test_credentials_transport_error():
 
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.BatchControllerGrpcTransport(
+    transport = transports.SessionControllerGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    client = BatchControllerClient(transport=transport)
+    client = SessionControllerClient(transport=transport)
     assert client.transport is transport
 
 
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
-    transport = transports.BatchControllerGrpcTransport(
+    transport = transports.SessionControllerGrpcTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
-    transport = transports.BatchControllerGrpcAsyncIOTransport(
+    transport = transports.SessionControllerGrpcAsyncIOTransport(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
@@ -3255,9 +3780,9 @@ def test_transport_get_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.BatchControllerGrpcTransport,
-        transports.BatchControllerGrpcAsyncIOTransport,
-        transports.BatchControllerRestTransport,
+        transports.SessionControllerGrpcTransport,
+        transports.SessionControllerGrpcAsyncIOTransport,
+        transports.SessionControllerRestTransport,
     ],
 )
 def test_transport_adc(transport_class):
@@ -3276,7 +3801,7 @@ def test_transport_adc(transport_class):
     ],
 )
 def test_transport_kind(transport_name):
-    transport = BatchControllerClient.get_transport_class(transport_name)(
+    transport = SessionControllerClient.get_transport_class(transport_name)(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
@@ -3284,41 +3809,42 @@ def test_transport_kind(transport_name):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
-        transports.BatchControllerGrpcTransport,
+        transports.SessionControllerGrpcTransport,
     )
 
 
-def test_batch_controller_base_transport_error():
+def test_session_controller_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
-        transport = transports.BatchControllerTransport(
+        transport = transports.SessionControllerTransport(
             credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
 
-def test_batch_controller_base_transport():
+def test_session_controller_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.dataproc_v1.services.batch_controller.transports.BatchControllerTransport.__init__"
+        "google.cloud.dataproc_v1.services.session_controller.transports.SessionControllerTransport.__init__"
     ) as Transport:
         Transport.return_value = None
-        transport = transports.BatchControllerTransport(
+        transport = transports.SessionControllerTransport(
             credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
     methods = (
-        "create_batch",
-        "get_batch",
-        "list_batches",
-        "delete_batch",
+        "create_session",
+        "get_session",
+        "list_sessions",
+        "terminate_session",
+        "delete_session",
         "set_iam_policy",
         "get_iam_policy",
         "test_iam_permissions",
@@ -3348,16 +3874,16 @@ def test_batch_controller_base_transport():
             getattr(transport, r)()
 
 
-def test_batch_controller_base_transport_with_credentials_file():
+def test_session_controller_base_transport_with_credentials_file():
     # Instantiate the base transport with a credentials file
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.dataproc_v1.services.batch_controller.transports.BatchControllerTransport._prep_wrapped_messages"
+        "google.cloud.dataproc_v1.services.session_controller.transports.SessionControllerTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.BatchControllerTransport(
+        transport = transports.SessionControllerTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
         )
@@ -3369,22 +3895,22 @@ def test_batch_controller_base_transport_with_credentials_file():
         )
 
 
-def test_batch_controller_base_transport_with_adc():
+def test_session_controller_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.dataproc_v1.services.batch_controller.transports.BatchControllerTransport._prep_wrapped_messages"
+        "google.cloud.dataproc_v1.services.session_controller.transports.SessionControllerTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        transport = transports.BatchControllerTransport()
+        transport = transports.SessionControllerTransport()
         adc.assert_called_once()
 
 
-def test_batch_controller_auth_adc():
+def test_session_controller_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
-        BatchControllerClient()
+        SessionControllerClient()
         adc.assert_called_once_with(
             scopes=None,
             default_scopes=("https://www.googleapis.com/auth/cloud-platform",),
@@ -3395,11 +3921,11 @@ def test_batch_controller_auth_adc():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.BatchControllerGrpcTransport,
-        transports.BatchControllerGrpcAsyncIOTransport,
+        transports.SessionControllerGrpcTransport,
+        transports.SessionControllerGrpcAsyncIOTransport,
     ],
 )
-def test_batch_controller_transport_auth_adc(transport_class):
+def test_session_controller_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
@@ -3415,12 +3941,12 @@ def test_batch_controller_transport_auth_adc(transport_class):
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.BatchControllerGrpcTransport,
-        transports.BatchControllerGrpcAsyncIOTransport,
-        transports.BatchControllerRestTransport,
+        transports.SessionControllerGrpcTransport,
+        transports.SessionControllerGrpcAsyncIOTransport,
+        transports.SessionControllerRestTransport,
     ],
 )
-def test_batch_controller_transport_auth_gdch_credentials(transport_class):
+def test_session_controller_transport_auth_gdch_credentials(transport_class):
     host = "https://language.com"
     api_audience_tests = [None, "https://language2.com"]
     api_audience_expect = [host, "https://language2.com"]
@@ -3438,11 +3964,11 @@ def test_batch_controller_transport_auth_gdch_credentials(transport_class):
 @pytest.mark.parametrize(
     "transport_class,grpc_helpers",
     [
-        (transports.BatchControllerGrpcTransport, grpc_helpers),
-        (transports.BatchControllerGrpcAsyncIOTransport, grpc_helpers_async),
+        (transports.SessionControllerGrpcTransport, grpc_helpers),
+        (transports.SessionControllerGrpcAsyncIOTransport, grpc_helpers_async),
     ],
 )
-def test_batch_controller_transport_create_channel(transport_class, grpc_helpers):
+def test_session_controller_transport_create_channel(transport_class, grpc_helpers):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(
@@ -3473,11 +3999,11 @@ def test_batch_controller_transport_create_channel(transport_class, grpc_helpers
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.BatchControllerGrpcTransport,
-        transports.BatchControllerGrpcAsyncIOTransport,
+        transports.SessionControllerGrpcTransport,
+        transports.SessionControllerGrpcAsyncIOTransport,
     ],
 )
-def test_batch_controller_grpc_transport_client_cert_source_for_mtls(transport_class):
+def test_session_controller_grpc_transport_client_cert_source_for_mtls(transport_class):
     cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
@@ -3515,19 +4041,19 @@ def test_batch_controller_grpc_transport_client_cert_source_for_mtls(transport_c
             )
 
 
-def test_batch_controller_http_transport_client_cert_source_for_mtls():
+def test_session_controller_http_transport_client_cert_source_for_mtls():
     cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
-        transports.BatchControllerRestTransport(
+        transports.SessionControllerRestTransport(
             credentials=cred, client_cert_source_for_mtls=client_cert_source_callback
         )
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-def test_batch_controller_rest_lro_client():
-    client = BatchControllerClient(
+def test_session_controller_rest_lro_client():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -3551,8 +4077,8 @@ def test_batch_controller_rest_lro_client():
         "rest",
     ],
 )
-def test_batch_controller_host_no_port(transport_name):
-    client = BatchControllerClient(
+def test_session_controller_host_no_port(transport_name):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="dataproc.googleapis.com"
@@ -3574,8 +4100,8 @@ def test_batch_controller_host_no_port(transport_name):
         "rest",
     ],
 )
-def test_batch_controller_host_with_port(transport_name):
-    client = BatchControllerClient(
+def test_session_controller_host_with_port(transport_name):
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="dataproc.googleapis.com:8000"
@@ -3595,36 +4121,39 @@ def test_batch_controller_host_with_port(transport_name):
         "rest",
     ],
 )
-def test_batch_controller_client_transport_session_collision(transport_name):
+def test_session_controller_client_transport_session_collision(transport_name):
     creds1 = ga_credentials.AnonymousCredentials()
     creds2 = ga_credentials.AnonymousCredentials()
-    client1 = BatchControllerClient(
+    client1 = SessionControllerClient(
         credentials=creds1,
         transport=transport_name,
     )
-    client2 = BatchControllerClient(
+    client2 = SessionControllerClient(
         credentials=creds2,
         transport=transport_name,
     )
-    session1 = client1.transport.create_batch._session
-    session2 = client2.transport.create_batch._session
+    session1 = client1.transport.create_session._session
+    session2 = client2.transport.create_session._session
     assert session1 != session2
-    session1 = client1.transport.get_batch._session
-    session2 = client2.transport.get_batch._session
+    session1 = client1.transport.get_session._session
+    session2 = client2.transport.get_session._session
     assert session1 != session2
-    session1 = client1.transport.list_batches._session
-    session2 = client2.transport.list_batches._session
+    session1 = client1.transport.list_sessions._session
+    session2 = client2.transport.list_sessions._session
     assert session1 != session2
-    session1 = client1.transport.delete_batch._session
-    session2 = client2.transport.delete_batch._session
+    session1 = client1.transport.terminate_session._session
+    session2 = client2.transport.terminate_session._session
+    assert session1 != session2
+    session1 = client1.transport.delete_session._session
+    session2 = client2.transport.delete_session._session
     assert session1 != session2
 
 
-def test_batch_controller_grpc_transport_channel():
+def test_session_controller_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.BatchControllerGrpcTransport(
+    transport = transports.SessionControllerGrpcTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -3633,11 +4162,11 @@ def test_batch_controller_grpc_transport_channel():
     assert transport._ssl_channel_credentials == None
 
 
-def test_batch_controller_grpc_asyncio_transport_channel():
+def test_session_controller_grpc_asyncio_transport_channel():
     channel = aio.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.BatchControllerGrpcAsyncIOTransport(
+    transport = transports.SessionControllerGrpcAsyncIOTransport(
         host="squid.clam.whelk",
         channel=channel,
     )
@@ -3651,11 +4180,11 @@ def test_batch_controller_grpc_asyncio_transport_channel():
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.BatchControllerGrpcTransport,
-        transports.BatchControllerGrpcAsyncIOTransport,
+        transports.SessionControllerGrpcTransport,
+        transports.SessionControllerGrpcAsyncIOTransport,
     ],
 )
-def test_batch_controller_transport_channel_mtls_with_client_cert_source(
+def test_session_controller_transport_channel_mtls_with_client_cert_source(
     transport_class,
 ):
     with mock.patch(
@@ -3705,11 +4234,11 @@ def test_batch_controller_transport_channel_mtls_with_client_cert_source(
 @pytest.mark.parametrize(
     "transport_class",
     [
-        transports.BatchControllerGrpcTransport,
-        transports.BatchControllerGrpcAsyncIOTransport,
+        transports.SessionControllerGrpcTransport,
+        transports.SessionControllerGrpcAsyncIOTransport,
     ],
 )
-def test_batch_controller_transport_channel_mtls_with_adc(transport_class):
+def test_session_controller_transport_channel_mtls_with_adc(transport_class):
     mock_ssl_cred = mock.Mock()
     with mock.patch.multiple(
         "google.auth.transport.grpc.SslCredentials",
@@ -3746,8 +4275,8 @@ def test_batch_controller_transport_channel_mtls_with_adc(transport_class):
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_batch_controller_grpc_lro_client():
-    client = BatchControllerClient(
+def test_session_controller_grpc_lro_client():
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
@@ -3763,8 +4292,8 @@ def test_batch_controller_grpc_lro_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_batch_controller_grpc_lro_async_client():
-    client = BatchControllerAsyncClient(
+def test_session_controller_grpc_lro_async_client():
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -3780,158 +4309,186 @@ def test_batch_controller_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
-def test_batch_path():
+def test_service_path():
     project = "squid"
     location = "clam"
-    batch = "whelk"
-    expected = "projects/{project}/locations/{location}/batches/{batch}".format(
-        project=project,
-        location=location,
-        batch=batch,
-    )
-    actual = BatchControllerClient.batch_path(project, location, batch)
-    assert expected == actual
-
-
-def test_parse_batch_path():
-    expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "batch": "nudibranch",
-    }
-    path = BatchControllerClient.batch_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = BatchControllerClient.parse_batch_path(path)
-    assert expected == actual
-
-
-def test_service_path():
-    project = "cuttlefish"
-    location = "mussel"
-    service = "winkle"
+    service = "whelk"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
         project=project,
         location=location,
         service=service,
     )
-    actual = BatchControllerClient.service_path(project, location, service)
+    actual = SessionControllerClient.service_path(project, location, service)
     assert expected == actual
 
 
 def test_parse_service_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "service": "abalone",
+        "project": "octopus",
+        "location": "oyster",
+        "service": "nudibranch",
     }
-    path = BatchControllerClient.service_path(**expected)
+    path = SessionControllerClient.service_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = BatchControllerClient.parse_service_path(path)
+    actual = SessionControllerClient.parse_service_path(path)
+    assert expected == actual
+
+
+def test_session_path():
+    project = "cuttlefish"
+    location = "mussel"
+    session = "winkle"
+    expected = "projects/{project}/locations/{location}/sessions/{session}".format(
+        project=project,
+        location=location,
+        session=session,
+    )
+    actual = SessionControllerClient.session_path(project, location, session)
+    assert expected == actual
+
+
+def test_parse_session_path():
+    expected = {
+        "project": "nautilus",
+        "location": "scallop",
+        "session": "abalone",
+    }
+    path = SessionControllerClient.session_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SessionControllerClient.parse_session_path(path)
+    assert expected == actual
+
+
+def test_session_template_path():
+    project = "squid"
+    location = "clam"
+    template = "whelk"
+    expected = (
+        "projects/{project}/locations/{location}/sessionTemplates/{template}".format(
+            project=project,
+            location=location,
+            template=template,
+        )
+    )
+    actual = SessionControllerClient.session_template_path(project, location, template)
+    assert expected == actual
+
+
+def test_parse_session_template_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "template": "nudibranch",
+    }
+    path = SessionControllerClient.session_template_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SessionControllerClient.parse_session_template_path(path)
     assert expected == actual
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "cuttlefish"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
-    actual = BatchControllerClient.common_billing_account_path(billing_account)
+    actual = SessionControllerClient.common_billing_account_path(billing_account)
     assert expected == actual
 
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "mussel",
     }
-    path = BatchControllerClient.common_billing_account_path(**expected)
+    path = SessionControllerClient.common_billing_account_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = BatchControllerClient.parse_common_billing_account_path(path)
+    actual = SessionControllerClient.parse_common_billing_account_path(path)
     assert expected == actual
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "winkle"
     expected = "folders/{folder}".format(
         folder=folder,
     )
-    actual = BatchControllerClient.common_folder_path(folder)
+    actual = SessionControllerClient.common_folder_path(folder)
     assert expected == actual
 
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nautilus",
     }
-    path = BatchControllerClient.common_folder_path(**expected)
+    path = SessionControllerClient.common_folder_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = BatchControllerClient.parse_common_folder_path(path)
+    actual = SessionControllerClient.parse_common_folder_path(path)
     assert expected == actual
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "scallop"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
-    actual = BatchControllerClient.common_organization_path(organization)
+    actual = SessionControllerClient.common_organization_path(organization)
     assert expected == actual
 
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "abalone",
     }
-    path = BatchControllerClient.common_organization_path(**expected)
+    path = SessionControllerClient.common_organization_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = BatchControllerClient.parse_common_organization_path(path)
+    actual = SessionControllerClient.parse_common_organization_path(path)
     assert expected == actual
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "squid"
     expected = "projects/{project}".format(
         project=project,
     )
-    actual = BatchControllerClient.common_project_path(project)
+    actual = SessionControllerClient.common_project_path(project)
     assert expected == actual
 
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "clam",
     }
-    path = BatchControllerClient.common_project_path(**expected)
+    path = SessionControllerClient.common_project_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = BatchControllerClient.parse_common_project_path(path)
+    actual = SessionControllerClient.parse_common_project_path(path)
     assert expected == actual
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "whelk"
+    location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
     )
-    actual = BatchControllerClient.common_location_path(project, location)
+    actual = SessionControllerClient.common_location_path(project, location)
     assert expected == actual
 
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
     }
-    path = BatchControllerClient.common_location_path(**expected)
+    path = SessionControllerClient.common_location_path(**expected)
 
     # Check that the path construction is reversible.
-    actual = BatchControllerClient.parse_common_location_path(path)
+    actual = SessionControllerClient.parse_common_location_path(path)
     assert expected == actual
 
 
@@ -3939,18 +4496,18 @@ def test_client_with_default_client_info():
     client_info = gapic_v1.client_info.ClientInfo()
 
     with mock.patch.object(
-        transports.BatchControllerTransport, "_prep_wrapped_messages"
+        transports.SessionControllerTransport, "_prep_wrapped_messages"
     ) as prep:
-        client = BatchControllerClient(
+        client = SessionControllerClient(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(
-        transports.BatchControllerTransport, "_prep_wrapped_messages"
+        transports.SessionControllerTransport, "_prep_wrapped_messages"
     ) as prep:
-        transport_class = BatchControllerClient.get_transport_class()
+        transport_class = SessionControllerClient.get_transport_class()
         transport = transport_class(
             credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
@@ -3960,7 +4517,7 @@ def test_client_with_default_client_info():
 
 @pytest.mark.asyncio
 async def test_transport_close_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
@@ -3975,7 +4532,7 @@ async def test_transport_close_async():
 def test_get_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4005,7 +4562,7 @@ def test_get_iam_policy_rest_bad_request(
     ],
 )
 def test_get_iam_policy_rest(request_type):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4033,7 +4590,7 @@ def test_get_iam_policy_rest(request_type):
 def test_set_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4063,7 +4620,7 @@ def test_set_iam_policy_rest_bad_request(
     ],
 )
 def test_set_iam_policy_rest(request_type):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4091,7 +4648,7 @@ def test_set_iam_policy_rest(request_type):
 def test_test_iam_permissions_rest_bad_request(
     transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
 ):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4121,7 +4678,7 @@ def test_test_iam_permissions_rest_bad_request(
     ],
 )
 def test_test_iam_permissions_rest(request_type):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4149,7 +4706,7 @@ def test_test_iam_permissions_rest(request_type):
 def test_cancel_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
 ):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4179,7 +4736,7 @@ def test_cancel_operation_rest_bad_request(
     ],
 )
 def test_cancel_operation_rest(request_type):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4207,7 +4764,7 @@ def test_cancel_operation_rest(request_type):
 def test_delete_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
 ):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4237,7 +4794,7 @@ def test_delete_operation_rest_bad_request(
     ],
 )
 def test_delete_operation_rest(request_type):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4265,7 +4822,7 @@ def test_delete_operation_rest(request_type):
 def test_get_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.GetOperationRequest
 ):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4295,7 +4852,7 @@ def test_get_operation_rest_bad_request(
     ],
 )
 def test_get_operation_rest(request_type):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4323,7 +4880,7 @@ def test_get_operation_rest(request_type):
 def test_list_operations_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
 ):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4353,7 +4910,7 @@ def test_list_operations_rest_bad_request(
     ],
 )
 def test_list_operations_rest(request_type):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
@@ -4379,7 +4936,7 @@ def test_list_operations_rest(request_type):
 
 
 def test_delete_operation(transport: str = "grpc"):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4404,7 +4961,7 @@ def test_delete_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4428,7 +4985,7 @@ async def test_delete_operation_async(transport: str = "grpc_asyncio"):
 
 
 def test_delete_operation_field_headers():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4457,7 +5014,7 @@ def test_delete_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4484,7 +5041,7 @@ async def test_delete_operation_field_headers_async():
 
 
 def test_delete_operation_from_dict():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4502,7 +5059,7 @@ def test_delete_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4518,7 +5075,7 @@ async def test_delete_operation_from_dict_async():
 
 
 def test_cancel_operation(transport: str = "grpc"):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4543,7 +5100,7 @@ def test_cancel_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4567,7 +5124,7 @@ async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
 
 
 def test_cancel_operation_field_headers():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4596,7 +5153,7 @@ def test_cancel_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4623,7 +5180,7 @@ async def test_cancel_operation_field_headers_async():
 
 
 def test_cancel_operation_from_dict():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4641,7 +5198,7 @@ def test_cancel_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4657,7 +5214,7 @@ async def test_cancel_operation_from_dict_async():
 
 
 def test_get_operation(transport: str = "grpc"):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4682,7 +5239,7 @@ def test_get_operation(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4708,7 +5265,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_operation_field_headers():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4737,7 +5294,7 @@ def test_get_operation_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4766,7 +5323,7 @@ async def test_get_operation_field_headers_async():
 
 
 def test_get_operation_from_dict():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4784,7 +5341,7 @@ def test_get_operation_from_dict():
 
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4802,7 +5359,7 @@ async def test_get_operation_from_dict_async():
 
 
 def test_list_operations(transport: str = "grpc"):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4827,7 +5384,7 @@ def test_list_operations(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4853,7 +5410,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
 
 
 def test_list_operations_field_headers():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4882,7 +5439,7 @@ def test_list_operations_field_headers():
 
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -4911,7 +5468,7 @@ async def test_list_operations_field_headers_async():
 
 
 def test_list_operations_from_dict():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4929,7 +5486,7 @@ def test_list_operations_from_dict():
 
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4947,7 +5504,7 @@ async def test_list_operations_from_dict_async():
 
 
 def test_set_iam_policy(transport: str = "grpc"):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -4980,7 +5537,7 @@ def test_set_iam_policy(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5015,7 +5572,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
 
 
 def test_set_iam_policy_field_headers():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5045,7 +5602,7 @@ def test_set_iam_policy_field_headers():
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5074,7 +5631,7 @@ async def test_set_iam_policy_field_headers_async():
 
 
 def test_set_iam_policy_from_dict():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5093,7 +5650,7 @@ def test_set_iam_policy_from_dict():
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5111,7 +5668,7 @@ async def test_set_iam_policy_from_dict_async():
 
 
 def test_get_iam_policy(transport: str = "grpc"):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5146,7 +5703,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5182,7 +5739,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_iam_policy_field_headers():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5212,7 +5769,7 @@ def test_get_iam_policy_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5241,7 +5798,7 @@ async def test_get_iam_policy_field_headers_async():
 
 
 def test_get_iam_policy_from_dict():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5260,7 +5817,7 @@ def test_get_iam_policy_from_dict():
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5278,7 +5835,7 @@ async def test_get_iam_policy_from_dict_async():
 
 
 def test_test_iam_permissions(transport: str = "grpc"):
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5312,7 +5869,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
@@ -5347,7 +5904,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
 
 
 def test_test_iam_permissions_field_headers():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5379,7 +5936,7 @@ def test_test_iam_permissions_field_headers():
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
 
@@ -5412,7 +5969,7 @@ async def test_test_iam_permissions_field_headers_async():
 
 
 def test_test_iam_permissions_from_dict():
-    client = BatchControllerClient(
+    client = SessionControllerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5433,7 +5990,7 @@ def test_test_iam_permissions_from_dict():
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
-    client = BatchControllerAsyncClient(
+    client = SessionControllerAsyncClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5461,7 +6018,7 @@ def test_transport_close():
     }
 
     for transport, close_name in transports.items():
-        client = BatchControllerClient(
+        client = SessionControllerClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
@@ -5478,7 +6035,7 @@ def test_client_ctx():
         "grpc",
     ]
     for transport in transports:
-        client = BatchControllerClient(
+        client = SessionControllerClient(
             credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
@@ -5492,8 +6049,11 @@ def test_client_ctx():
 @pytest.mark.parametrize(
     "client_class,transport_class",
     [
-        (BatchControllerClient, transports.BatchControllerGrpcTransport),
-        (BatchControllerAsyncClient, transports.BatchControllerGrpcAsyncIOTransport),
+        (SessionControllerClient, transports.SessionControllerGrpcTransport),
+        (
+            SessionControllerAsyncClient,
+            transports.SessionControllerGrpcAsyncIOTransport,
+        ),
     ],
 )
 def test_api_key_credentials(client_class, transport_class):
