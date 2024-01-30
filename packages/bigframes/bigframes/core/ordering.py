@@ -92,6 +92,14 @@ class ExpressionOrdering:
     # Therefore, any modifications(or drops) done to these columns must result in hidden copies being made.
     total_ordering_columns: frozenset[str] = field(default_factory=frozenset)
 
+    @classmethod
+    def from_offset_col(cls, col: str) -> ExpressionOrdering:
+        return ExpressionOrdering(
+            (OrderingColumnReference(col),),
+            integer_encoding=IntegerEncoding(True, is_sequential=True),
+            total_ordering_columns=frozenset({col}),
+        )
+
     def with_non_sequential(self):
         """Create a copy that is marked as non-sequential.
 

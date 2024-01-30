@@ -1695,10 +1695,19 @@ class Block:
             idx_labels,
         )
 
-    def cached(self) -> Block:
+    def cached(self, *, optimize_offsets=False, force: bool = False) -> Block:
         """Write the block to a session table and create a new block object that references it."""
+        # use a heuristic for whether something needs to be cached
+        if (not force) and self.session._is_trivially_executable(self.expr):
+            return self
+        if optimize_offsets:
+            expr = self.session._cache_with_offsets(self.expr)
+        else:
+            expr = self.session._cache_with_cluster_cols(
+                self.expr, cluster_cols=self.index_columns
+            )
         return Block(
-            self.session._execute_and_cache(self.expr, cluster_cols=self.index_columns),
+            expr,
             index_columns=self.index_columns,
             column_labels=self.column_labels,
             index_labels=self.index_labels,

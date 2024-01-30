@@ -247,9 +247,11 @@ class BqmlModelFactory:
         # Cache dataframes to make sure base table is not a snapshot
         # cached dataframe creates a full copy, never uses snapshot
         if y_train is None:
-            input_data = X_train._cached()
+            input_data = X_train._cached(force=True)
         else:
-            input_data = X_train._cached().join(y_train._cached(), how="outer")
+            input_data = X_train._cached(force=True).join(
+                y_train._cached(force=True), how="outer"
+            )
             options.update({"INPUT_LABEL_COLS": y_train.columns.tolist()})
 
         session = X_train._session
@@ -281,7 +283,9 @@ class BqmlModelFactory:
         options = dict(options)
         # Cache dataframes to make sure base table is not a snapshot
         # cached dataframe creates a full copy, never uses snapshot
-        input_data = X_train._cached().join(y_train._cached(), how="outer")
+        input_data = X_train._cached(force=True).join(
+            y_train._cached(force=True), how="outer"
+        )
         options.update({"TIME_SERIES_TIMESTAMP_COL": X_train.columns.tolist()[0]})
         options.update({"TIME_SERIES_DATA_COL": y_train.columns.tolist()[0]})
 

@@ -592,6 +592,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         max_results = opts.max_rows
         if opts.repr_mode == "deferred":
             return formatter.repr_query_job(self.query_job)
+
+        self._cached()
         # TODO(swast): pass max_columns and get the true column count back. Maybe
         # get 1 more column than we have requested so that pandas can add the
         # ... for us?
@@ -629,6 +631,8 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         max_results = bigframes.options.display.max_rows
         if opts.repr_mode == "deferred":
             return formatter.repr_query_job_html(self.query_job)
+
+        self._cached()
         # TODO(swast): pass max_columns and get the true column count back. Maybe
         # get 1 more column than we have requested so that pandas can add the
         # ... for us?
@@ -3100,8 +3104,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def _get_block(self) -> blocks.Block:
         return self._block
 
-    def _cached(self) -> DataFrame:
-        self._set_block(self._block.cached())
+    def _cached(self, *, force: bool = False) -> DataFrame:
+        """Materialize dataframe to a temporary table.
+        No-op if the dataframe represents a trivial transformation of an existing materialization.
+        Force=True is used for BQML integration where need to copy data rather than use snapshot.
+        """
+        self._set_block(self._block.cached(force=force))
         return self
 
     _DataFrameOrSeries = typing.TypeVar("_DataFrameOrSeries")
