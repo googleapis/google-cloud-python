@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.42.0](https://github.com/googleapis/python-spanner/compare/v3.41.0...v3.42.0) (2024-01-30)
+
+
+### Features
+
+* Add FLOAT32 enum to TypeCode  ([5b94dac](https://github.com/googleapis/python-spanner/commit/5b94dac507cebde2025d412da0a82373afdbdaf5))
+* Add max_commit_delay API ([#1078](https://github.com/googleapis/python-spanner/issues/1078)) ([ec87c08](https://github.com/googleapis/python-spanner/commit/ec87c082570259d6e16834326859a73f6ee8286a))
+* Add proto descriptors for proto and enum types in create/update/get database ddl requests ([5b94dac](https://github.com/googleapis/python-spanner/commit/5b94dac507cebde2025d412da0a82373afdbdaf5))
+* Fixing and refactoring transaction retry logic in dbapi. Also adding interceptors support for testing ([#1056](https://github.com/googleapis/python-spanner/issues/1056)) ([6640888](https://github.com/googleapis/python-spanner/commit/6640888b7845b7e273758ed9a6de3044e281f555))
+* Implementation of run partition query ([#1080](https://github.com/googleapis/python-spanner/issues/1080)) ([f3b23b2](https://github.com/googleapis/python-spanner/commit/f3b23b268766b6ff2704da18945a1b607a6c8909))
+
+
+### Bug Fixes
+
+* Few fixes in DBAPI ([#1085](https://github.com/googleapis/python-spanner/issues/1085)) ([1ed5a47](https://github.com/googleapis/python-spanner/commit/1ed5a47ce9cfe7be0805a2961b24d7b682cda2f3))
+* Small fix in description when metadata is not present in cursor's _result_set ([#1088](https://github.com/googleapis/python-spanner/issues/1088)) ([57643e6](https://github.com/googleapis/python-spanner/commit/57643e66a64d9befeb27fbbad360613ff69bd48c))
+* **spanner:** Add SpannerAsyncClient import to spanner_v1 package ([#1086](https://github.com/googleapis/python-spanner/issues/1086)) ([2d98b54](https://github.com/googleapis/python-spanner/commit/2d98b5478ee201d9fbb2775975f836def2817e33))
+
+
+### Documentation
+
+* Samples and tests for auto-generated createDatabase and createInstance APIs. ([#1065](https://github.com/googleapis/python-spanner/issues/1065)) ([16c510e](https://github.com/googleapis/python-spanner/commit/16c510eeed947beb87a134c64ca83a37f90b03fb))
+
 ## [3.41.0](https://github.com/googleapis/python-spanner/compare/v3.40.1...v3.41.0) (2024-01-10)
 
 
