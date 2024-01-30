@@ -21,6 +21,7 @@ from google.cloud.spanner_v1 import gapic_version as package_version
 __version__: str = package_version.__version__
 
 from .services.spanner import SpannerClient
+from .services.spanner import SpannerAsyncClient
 from .types.commit_response import CommitResponse
 from .types.keys import KeyRange as KeyRangePB
 from .types.keys import KeySet as KeySetPB
@@ -145,4 +146,5 @@ __all__ = (
     "JsonObject",
     # google.cloud.spanner_v1.services
     "SpannerClient",
+    "SpannerAsyncClient",
 )
