@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [0.20.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.19.2...v0.20.0) (2024-01-30)
+
+
+### Features
+
+* Add `DataFrame.peek()` as an efficient alternative to `head()` results preview ([#318](https://github.com/googleapis/python-bigquery-dataframes/issues/318)) ([9c34d83](https://github.com/googleapis/python-bigquery-dataframes/commit/9c34d834e83ca5514bee723ebb9a7ad1ad50e88d))
+* Add ARIMA_EVAULATE options in forecasting models ([#336](https://github.com/googleapis/python-bigquery-dataframes/issues/336)) ([73e997b](https://github.com/googleapis/python-bigquery-dataframes/commit/73e997b3e80f844a8120b52ed2ece8b046cf4ca9))
+* Add Index constructor, repr, copy, get_level_values, to_series ([#334](https://github.com/googleapis/python-bigquery-dataframes/issues/334)) ([e5d054e](https://github.com/googleapis/python-bigquery-dataframes/commit/e5d054e93a05f5c504e8db57b954c07d33e5f5b9))
+* Improve error message for drive based BQ table reads ([#344](https://github.com/googleapis/python-bigquery-dataframes/issues/344)) ([0794788](https://github.com/googleapis/python-bigquery-dataframes/commit/0794788a2d232d795d803cd0c5b3f7d51c562cf1))
+* Update cut to work without labels = False and show intervals as dict ([#335](https://github.com/googleapis/python-bigquery-dataframes/issues/335)) ([4ff53db](https://github.com/googleapis/python-bigquery-dataframes/commit/4ff53db48133b817bec5f123b634690244a610d3))
+
+
+### Bug Fixes
+
+* Chance default connection name in getting_started.ipnyb ([#347](https://github.com/googleapis/python-bigquery-dataframes/issues/347)) ([677f014](https://github.com/googleapis/python-bigquery-dataframes/commit/677f0146acf19def88fddbeb0527a078458948ae))
+* Series iteration correctly returns values instead of index ([#339](https://github.com/googleapis/python-bigquery-dataframes/issues/339)) ([2c6af9b](https://github.com/googleapis/python-bigquery-dataframes/commit/2c6af9ba8b362dae39a6e082cdc816c955c73517))
+
+
+### Documentation
+
+* Add code samples for `Series.{between, cumprod}` ([#353](https://github.com/googleapis/python-bigquery-dataframes/issues/353)) ([09a52fd](https://github.com/googleapis/python-bigquery-dataframes/commit/09a52fda19cde8efa6b20731d5b8e21f50b18a9a))
+
 ## [0.19.2](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.19.1...v0.19.2) (2024-01-22)
 
 
