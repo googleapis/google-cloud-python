@@ -27,3 +27,7 @@ def test_legacy_imports_retry_unary_async():
     #       next major version release
     #       (https://github.com/googleapis/python-api-core/issues/576)
     from google.api_core import retry_async  # noqa: F401
+
+    # See https://github.com/googleapis/python-api-core/issues/586
+    # for context on why we need to test this import this explicitly.
+    from google.api_core.retry_async import AsyncRetry  # noqa: F401
