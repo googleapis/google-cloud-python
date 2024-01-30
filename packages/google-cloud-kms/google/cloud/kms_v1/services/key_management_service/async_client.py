@@ -45,6 +45,7 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.location import locations_pb2  # type: ignore
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
@@ -1184,7 +1185,7 @@ class KeyManagementServiceAsyncClient:
 
         Returns:
             google.cloud.kms_v1.types.PublicKey:
-                The public key for a given
+                The public keys for a given
                    [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
                    Obtained via
                    [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
