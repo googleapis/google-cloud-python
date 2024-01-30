@@ -2833,8 +2833,22 @@ class Client(ClientWithProject):
 
         new_job_config.source_format = job.SourceFormat.NEWLINE_DELIMITED_JSON
 
-        if new_job_config.schema is None:
-            new_job_config.autodetect = True
+        # In specific conditions, we check if the table alread exists, and/or
+        # set the autodetect value for the user. For exact conditions, see table
+        # https://github.com/googleapis/python-bigquery/issues/1228#issuecomment-1910946297
+        if new_job_config.schema is None and new_job_config.autodetect is None:
+            if new_job_config.write_disposition in (
+                job.WriteDisposition.WRITE_TRUNCATE,
+                job.WriteDisposition.WRITE_EMPTY,
+            ):
+                new_job_config.autodetect = True
+            else:
+                try:
+                    self.get_table(destination)
+                except core_exceptions.NotFound:
+                    new_job_config.autodetect = True
+                else:
+                    new_job_config.autodetect = False
 
         if project is None:
             project = self.project

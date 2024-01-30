@@ -994,6 +994,45 @@ class TestBigQuery(unittest.TestCase):
         self.assertEqual(tuple(table.schema), table_schema)
         self.assertEqual(table.num_rows, 2)
 
+    # Autodetect makes best effort to infer the schema, but situations exist
+    # when the detected schema is wrong, and does not match existing schema.
+    # Thus the client sets autodetect = False when table exists and just uses
+    # the existing schema. This test case uses a special case where backend has
+    # no way to distinguish int from string.
+    def test_load_table_from_json_schema_autodetect_table_exists(self):
+        json_rows = [
+            {"name": "123", "age": 18, "birthday": "2001-10-15", "is_awesome": False},
+            {"name": "456", "age": 79, "birthday": "1940-03-10", "is_awesome": True},
+        ]
+
+        dataset_id = _make_dataset_id("bq_system_test")
+        self.temp_dataset(dataset_id)
+        table_id = "{}.{}.load_table_from_json_basic_use".format(
+            Config.CLIENT.project, dataset_id
+        )
+
+        # Use schema with NULLABLE fields, because schema autodetection
+        # defaults to field mode NULLABLE.
+        table_schema = (
+            bigquery.SchemaField("name", "STRING", mode="NULLABLE"),
+            bigquery.SchemaField("age", "INTEGER", mode="NULLABLE"),
+            bigquery.SchemaField("birthday", "DATE", mode="NULLABLE"),
+            bigquery.SchemaField("is_awesome", "BOOLEAN", mode="NULLABLE"),
+        )
+        # create the table before loading so that the column order is predictable
+        table = helpers.retry_403(Config.CLIENT.create_table)(
+            Table(table_id, schema=table_schema)
+        )
+        self.to_delete.insert(0, table)
+
+        # do not pass an explicit job config to trigger automatic schema detection
+        load_job = Config.CLIENT.load_table_from_json(json_rows, table_id)
+        load_job.result()
+
+        table = Config.CLIENT.get_table(table)
+        self.assertEqual(tuple(table.schema), table_schema)
+        self.assertEqual(table.num_rows, 2)
+
     def test_load_avro_from_uri_then_dump_table(self):
         from google.cloud.bigquery.job import CreateDisposition
         from google.cloud.bigquery.job import SourceFormat

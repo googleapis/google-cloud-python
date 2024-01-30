@@ -8951,6 +8951,8 @@ class TestClientUpload(object):
             SchemaField("x", "BIGNUMERIC", "NULLABLE", None),
         )
 
+    # With autodetect specified, we pass the value as is. For more info, see
+    # https://github.com/googleapis/python-bigquery/issues/1228#issuecomment-1910946297
     def test_load_table_from_json_basic_use(self):
         from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
         from google.cloud.bigquery import job
@@ -8962,12 +8964,28 @@ class TestClientUpload(object):
             {"name": "Two", "age": 22, "birthday": "1997-08-09", "adult": True},
         ]
 
+        job_config = job.LoadJobConfig(autodetect=True)
+
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
 
-        with load_patch as load_table_from_file:
-            client.load_table_from_json(json_rows, self.TABLE_REF)
+        # mock: remote table already exists
+        get_table_reference = {
+            "projectId": "project_id",
+            "datasetId": "test_dataset",
+            "tableId": "test_table",
+        }
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(table_reference=get_table_reference),
+        )
+
+        with load_patch as load_table_from_file, get_table_patch:
+            client.load_table_from_json(
+                json_rows, self.TABLE_REF, job_config=job_config
+            )
 
         load_table_from_file.assert_called_once_with(
             client,
@@ -9065,6 +9083,174 @@ class TestClientUpload(object):
             )
         err_msg = str(exc.value)
         assert "Expected an instance of LoadJobConfig" in err_msg
+
+    # When all following are true:
+    # (1) no schema provided;
+    # (2) no autodetect value provided;
+    # (3) writeDisposition == WRITE_APPEND or None;
+    # (4) table already exists,
+    # client sets autodetect == False
+    # For more details, see https://github.com/googleapis/python-bigquery/issues/1228#issuecomment-1910946297
+    def test_load_table_from_json_wo_schema_wo_autodetect_write_append_w_table(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.job import WriteDisposition
+
+        client = self._make_client()
+
+        json_rows = [
+            {"name": "One", "age": 11, "birthday": "2008-09-10", "adult": False},
+            {"name": "Two", "age": 22, "birthday": "1997-08-09", "adult": True},
+        ]
+
+        job_config = job.LoadJobConfig(write_disposition=WriteDisposition.WRITE_APPEND)
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        # mock: remote table already exists
+        get_table_reference = {
+            "projectId": "project_id",
+            "datasetId": "test_dataset",
+            "tableId": "test_table",
+        }
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(table_reference=get_table_reference),
+        )
+
+        with load_patch as load_table_from_file, get_table_patch:
+            client.load_table_from_json(
+                json_rows, self.TABLE_REF, job_config=job_config
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            size=mock.ANY,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=client.location,
+            project=client.project,
+            job_config=mock.ANY,
+            timeout=DEFAULT_TIMEOUT,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.NEWLINE_DELIMITED_JSON
+        assert sent_config.schema is None
+        assert not sent_config.autodetect
+
+    # When all following are true:
+    # (1) no schema provided;
+    # (2) no autodetect value provided;
+    # (3) writeDisposition == WRITE_APPEND or None;
+    # (4) table does NOT exist,
+    # client sets autodetect == True
+    # For more details, see https://github.com/googleapis/python-bigquery/issues/1228#issuecomment-1910946297
+    def test_load_table_from_json_wo_schema_wo_autodetect_write_append_wo_table(self):
+        import google.api_core.exceptions as core_exceptions
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.job import WriteDisposition
+
+        client = self._make_client()
+
+        json_rows = [
+            {"name": "One", "age": 11, "birthday": "2008-09-10", "adult": False},
+            {"name": "Two", "age": 22, "birthday": "1997-08-09", "adult": True},
+        ]
+
+        job_config = job.LoadJobConfig(write_disposition=WriteDisposition.WRITE_APPEND)
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        # mock: remote table doesn't exist
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            side_effect=core_exceptions.NotFound(""),
+        )
+
+        with load_patch as load_table_from_file, get_table_patch:
+            client.load_table_from_json(
+                json_rows, self.TABLE_REF, job_config=job_config
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            size=mock.ANY,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=client.location,
+            project=client.project,
+            job_config=mock.ANY,
+            timeout=DEFAULT_TIMEOUT,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.NEWLINE_DELIMITED_JSON
+        assert sent_config.schema is None
+        assert sent_config.autodetect
+
+    # When all following are true:
+    # (1) no schema provided;
+    # (2) no autodetect value provided;
+    # (3) writeDisposition == WRITE_TRUNCATE or WRITE_EMPTY;
+    # client sets autodetect == True
+    # For more details, see https://github.com/googleapis/python-bigquery/issues/1228#issuecomment-1910946297
+    def test_load_table_from_json_wo_schema_wo_autodetect_others(self):
+        from google.cloud.bigquery.client import _DEFAULT_NUM_RETRIES
+        from google.cloud.bigquery import job
+        from google.cloud.bigquery.job import WriteDisposition
+
+        client = self._make_client()
+
+        json_rows = [
+            {"name": "One", "age": 11, "birthday": "2008-09-10", "adult": False},
+            {"name": "Two", "age": 22, "birthday": "1997-08-09", "adult": True},
+        ]
+
+        job_config = job.LoadJobConfig(
+            write_disposition=WriteDisposition.WRITE_TRUNCATE
+        )
+
+        load_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
+        )
+
+        with load_patch as load_table_from_file:
+            client.load_table_from_json(
+                json_rows, self.TABLE_REF, job_config=job_config
+            )
+
+        load_table_from_file.assert_called_once_with(
+            client,
+            mock.ANY,
+            self.TABLE_REF,
+            size=mock.ANY,
+            num_retries=_DEFAULT_NUM_RETRIES,
+            job_id=mock.ANY,
+            job_id_prefix=None,
+            location=client.location,
+            project=client.project,
+            job_config=mock.ANY,
+            timeout=DEFAULT_TIMEOUT,
+        )
+
+        sent_config = load_table_from_file.mock_calls[0][2]["job_config"]
+        assert sent_config.source_format == job.SourceFormat.NEWLINE_DELIMITED_JSON
+        assert sent_config.schema is None
+        assert sent_config.autodetect
 
     def test_load_table_from_json_w_explicit_job_config_override(self):
         from google.cloud.bigquery import job
@@ -9190,8 +9376,19 @@ class TestClientUpload(object):
         load_patch = mock.patch(
             "google.cloud.bigquery.client.Client.load_table_from_file", autospec=True
         )
+        # mock: remote table already exists
+        get_table_reference = {
+            "projectId": "project_id",
+            "datasetId": "test_dataset",
+            "tableId": "test_table",
+        }
+        get_table_patch = mock.patch(
+            "google.cloud.bigquery.client.Client.get_table",
+            autospec=True,
+            return_value=mock.Mock(table_reference=get_table_reference),
+        )
 
-        with load_patch as load_table_from_file:
+        with load_patch as load_table_from_file, get_table_patch:
             client.load_table_from_json(json_rows, self.TABLE_REF)
 
         load_table_from_file.assert_called_once_with(
