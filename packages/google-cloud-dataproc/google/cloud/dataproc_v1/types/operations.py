@@ -24,6 +24,7 @@ __protobuf__ = proto.module(
     package="google.cloud.dataproc.v1",
     manifest={
         "BatchOperationMetadata",
+        "SessionOperationMetadata",
         "ClusterOperationStatus",
         "ClusterOperationMetadata",
         "NodeGroupOperationMetadata",
@@ -88,6 +89,85 @@ class BatchOperationMetadata(proto.Message):
         proto.ENUM,
         number=6,
         enum=BatchOperationType,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    warnings: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
+
+
+class SessionOperationMetadata(proto.Message):
+    r"""Metadata describing the Session operation.
+
+    Attributes:
+        session (str):
+            Name of the session for the operation.
+        session_uuid (str):
+            Session UUID for the operation.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the operation was created.
+        done_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the operation was finished.
+        operation_type (google.cloud.dataproc_v1.types.SessionOperationMetadata.SessionOperationType):
+            The operation type.
+        description (str):
+            Short description of the operation.
+        labels (MutableMapping[str, str]):
+            Labels associated with the operation.
+        warnings (MutableSequence[str]):
+            Warnings encountered during operation
+            execution.
+    """
+
+    class SessionOperationType(proto.Enum):
+        r"""Operation type for Session resources
+
+        Values:
+            SESSION_OPERATION_TYPE_UNSPECIFIED (0):
+                Session operation type is unknown.
+            CREATE (1):
+                Create Session operation type.
+            TERMINATE (2):
+                Terminate Session operation type.
+            DELETE (3):
+                Delete Session operation type.
+        """
+        SESSION_OPERATION_TYPE_UNSPECIFIED = 0
+        CREATE = 1
+        TERMINATE = 2
+        DELETE = 3
+
+    session: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    session_uuid: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    done_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    operation_type: SessionOperationType = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=SessionOperationType,
     )
     description: str = proto.Field(
         proto.STRING,
