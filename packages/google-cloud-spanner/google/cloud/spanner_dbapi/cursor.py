@@ -126,7 +126,7 @@ class Cursor(object):
         """
         if (
             self._result_set is None
-            or self._result_set.metadata is None
+            or not getattr(self._result_set, "metadata", None)
             or self._result_set.metadata.row_type is None
             or self._result_set.metadata.row_type.fields is None
             or len(self._result_set.metadata.row_type.fields) == 0
