@@ -79,7 +79,7 @@ class {{ service.name }}Transport(abc.ABC):
 
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
-                {{ ' ' }}The hostname to connect to.
+                {{ ' ' }}The hostname to connect to {% if service.host %}(default: '{{ service.host }}'){% endif %}.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -137,6 +137,9 @@ class {{ service.name }}Transport(abc.ABC):
             host += ':443'
         self._host = host
 
+    @property
+    def host(self):
+        return self._host
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.

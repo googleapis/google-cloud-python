@@ -55,7 +55,7 @@ class IAMCredentialsTransport(abc.ABC):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'iamcredentials.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -109,6 +109,10 @@ class IAMCredentialsTransport(abc.ABC):
         if ':' not in host:
             host += ':443'
         self._host = host
+
+    @property
+    def host(self):
+        return self._host
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.

@@ -76,7 +76,7 @@ class {{ service.name }}GrpcTransport({{ service.name }}Transport):
 
         Args:
             host ({% if service.host %}Optional[str]{% else %}str{% endif %}):
-                {{ ' ' }}The hostname to connect to.
+                {{ ' ' }}The hostname to connect to {% if service.host %}(default: '{{ service.host }}'){% endif %}.
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none

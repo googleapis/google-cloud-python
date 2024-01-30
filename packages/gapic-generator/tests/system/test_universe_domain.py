@@ -1,0 +1,77 @@
+import pytest
+
+import grpc
+
+# Define the parametrized data
+vary_transport = [
+    (grpc.insecure_channel, "grpc", "localhost:7469",
+     "googleapis.com", "googleapis.com"),
+    (grpc.insecure_channel, "rest", "localhost:7469",
+     "googleapis.com", "googleapis.com"),
+]
+
+vary_channel_transport_endpoints_universes = [
+    (grpc.insecure_channel, "grpc", "showcase.googleapis.com",
+     "showcase.googleapis.com", "googleapis.com"),
+    (grpc.insecure_channel, "grpc", "showcase.googleapis.com",
+     "localhost:7469", "googleapis.com"),
+    (grpc.insecure_channel, "grpc", "localhost:7469",
+     "showcase.googleapis.com", "googleapis.com"),
+    (grpc.insecure_channel, "grpc", "localhost:7469",
+     "localhost:7469", "googleapis.com"),
+    (grpc.insecure_channel, "rest", "showcase.googleapis.com",
+     "showcase.googleapis.com", "googleapis.com"),
+    (grpc.insecure_channel, "rest", "showcase.googleapis.com",
+     "localhost:7469", "googleapis.com"),
+    (grpc.insecure_channel, "rest", "localhost:7469",
+     "showcase.googleapis.com", "googleapis.com"),
+    (grpc.insecure_channel, "rest", "localhost:7469",
+     "localhost:7469", "googleapis.com"),
+]
+
+
+@pytest.mark.parametrize(
+    "channel_creator, transport_name, transport_endpoint, credential_universe, client_universe",
+    vary_transport
+)
+def test_universe_domain_validation_pass(parametrized_echo, channel_creator, transport_name, transport_endpoint, credential_universe, client_universe):
+    # Test that only the configured client universe and credentials universe are used for validation
+    assert parametrized_echo.universe_domain == client_universe
+    assert parametrized_echo.transport._credentials._universe_domain == credential_universe
+    if transport_name == "rest":
+        assert parametrized_echo.api_endpoint == "http://" + transport_endpoint
+    else:
+        assert parametrized_echo.api_endpoint == transport_endpoint
+    response = parametrized_echo.echo({
+        'content': 'Universe validation succeeded!'
+        })
+    assert response.content == "Universe validation succeeded!"
+
+
+# TODO: Test without passing a channel to gRPC transports in the test fixture
+# TODO: Test without creating a transport in the test fixture
+# TODO: Test asynchronous client as well.
+# @pytest.mark.parametrize("channel_creator", [grpc.insecure_channel, None])
+
+
+@pytest.mark.parametrize(
+    "channel_creator, transport_name, transport_endpoint, credential_universe, client_universe",
+    vary_channel_transport_endpoints_universes
+)
+def test_universe_domain_validation_fail(parametrized_echo, channel_creator, transport_name, transport_endpoint, credential_universe, client_universe):
+    """Test that only the client and credentials universes are used for validation, and not the endpoint."""
+    assert parametrized_echo.universe_domain == client_universe
+    assert parametrized_echo.transport._credentials._universe_domain == credential_universe
+    if transport_name == "rest":
+        assert parametrized_echo.api_endpoint == "http://" + transport_endpoint
+    elif channel_creator == grpc.insecure_channel:
+        # TODO: Investigate where this endpoint override is coming from
+        assert parametrized_echo.api_endpoint == "localhost:7469"
+    else:
+        assert parametrized_echo.api_endpoint == transport_endpoint
+    with pytest.raises(ValueError) as err:
+        parametrized_echo.echo({
+            'content': 'Universe validation failed!'
+            })
+    assert str(
+        err.value) == f"The configured universe domain ({client_universe}) does not match the universe domain found in the credentials ({credential_universe}). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."

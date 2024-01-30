@@ -183,6 +183,9 @@
         )
         {% endif %} {# method.explicit_routing #}
 
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
         # Send the request.
         {%+ if not method.void %}response = {% endif %}rpc(
             {% if not method.client_streaming %}

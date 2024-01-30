@@ -47,6 +47,9 @@
                 (("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -100,6 +103,9 @@
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -158,6 +164,9 @@
                 (("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
     {% endif %}
@@ -209,6 +218,9 @@
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -264,6 +276,9 @@
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -389,6 +404,9 @@
                 (("resource", request.resource),)),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -509,6 +527,9 @@
                 (("resource", request.resource),)),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -567,6 +588,9 @@
                 (("resource", request.resource),)),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -624,6 +648,9 @@
                 (("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request, retry=retry, timeout=timeout, metadata=metadata,)
@@ -676,6 +703,9 @@
             gapic_v1.routing_header.to_grpc_metadata(
                 (("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
