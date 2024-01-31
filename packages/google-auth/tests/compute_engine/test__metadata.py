@@ -398,6 +398,19 @@ def test_get_universe_domain_success():
     assert universe_domain == "fake_universe_domain"
 
 
+def test_get_universe_domain_success_empty_response():
+    request = make_request("", headers={"content-type": "text/plain"})
+
+    universe_domain = _metadata.get_universe_domain(request)
+
+    request.assert_called_once_with(
+        method="GET",
+        url=_metadata._METADATA_ROOT + "universe/universe_domain",
+        headers=_metadata._METADATA_HEADERS,
+    )
+    assert universe_domain == "googleapis.com"
+
+
 def test_get_universe_domain_not_found():
     # Test that if the universe domain endpoint returns 404 error, we should
     # use googleapis.com as the universe domain
