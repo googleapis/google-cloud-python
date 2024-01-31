@@ -169,6 +169,10 @@ class Status(proto.Enum):
         STATUS_PEERING (10):
             NFDeploy specific status. Peering in
             progress.
+        STATUS_NOT_APPLICABLE (11):
+            K8s objects such as
+            NetworkAttachmentDefinition don't have a defined
+            status.
     """
     STATUS_UNSPECIFIED = 0
     STATUS_IN_PROGRESS = 1
@@ -177,6 +181,7 @@ class Status(proto.Enum):
     STATUS_DELETING = 4
     STATUS_DELETED = 5
     STATUS_PEERING = 10
+    STATUS_NOT_APPLICABLE = 11
 
 
 class DeploymentLevel(proto.Enum):
@@ -203,11 +208,16 @@ class DeploymentLevel(proto.Enum):
             private catalog. b) Used to create a deployment on
             orchestration cluster which will create further hydrated
             deployments.
+        WORKLOAD_CLUSTER_DEPLOYMENT (4):
+            Blueprints at WORKLOAD_CLUSTER_DEPLOYMENT level can be a)
+            Modified in private catalog. b) Used to create a deployment
+            on workload cluster by the user, once approved.
     """
     DEPLOYMENT_LEVEL_UNSPECIFIED = 0
     HYDRATION = 1
     SINGLE_DEPLOYMENT = 2
     MULTI_DEPLOYMENT = 3
+    WORKLOAD_CLUSTER_DEPLOYMENT = 4
 
 
 class OrchestrationCluster(proto.Message):
@@ -666,8 +676,11 @@ class Deployment(proto.Message):
             a public blueprint, from which this deployment
             is created.
         workload_cluster (str):
-            Optional. Immutable. The WorkloadCluster on
-            which to create the Deployment.
+            Optional. Immutable. The WorkloadCluster on which to create
+            the Deployment. This field should only be passed when the
+            deployment_level of the source blueprint specifies
+            deployments on workload clusters e.g.
+            WORKLOAD_CLUSTER_DEPLOYMENT.
         deployment_level (google.cloud.telcoautomation_v1.types.DeploymentLevel):
             Output only. Attributes to where the deployment can inflict
             changes. The value can only be [SINGLE_DEPLOYMENT,
