@@ -895,16 +895,18 @@ class CryptoKeyVersion(proto.Message):
 
 
 class PublicKey(proto.Message):
-    r"""The public key for a given
+    r"""The public keys for a given
     [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion]. Obtained
     via
     [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
 
     Attributes:
         pem (str):
-            The public key, encoded in PEM format. For more information,
-            see the `RFC 7468 <https://tools.ietf.org/html/rfc7468>`__
-            sections for `General
+            A public key encoded in PEM format, populated only when
+            [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey]
+            returns one key. For more information, see the `RFC
+            7468 <https://tools.ietf.org/html/rfc7468>`__ sections for
+            `General
             Considerations <https://tools.ietf.org/html/rfc7468#section-2>`__
             and [Textual Encoding of Subject Public Key Info]
             (https://tools.ietf.org/html/rfc7468#section-13).
@@ -913,9 +915,11 @@ class PublicKey(proto.Message):
             [Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
             associated with this key.
         pem_crc32c (google.protobuf.wrappers_pb2.Int64Value):
-            Integrity verification field. A CRC32C checksum of the
+            Integrity verification field: A CRC32C checksum of the
             returned [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem].
-            An integrity check of
+            It is only populated when
+            [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey]
+            returns one key. An integrity check of
             [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem] can be
             performed by computing the CRC32C checksum of
             [PublicKey.pem][google.cloud.kms.v1.PublicKey.pem] and

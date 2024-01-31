@@ -41,6 +41,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.kms_v1.types import resources, service
 
@@ -2651,7 +2652,7 @@ class KeyManagementServiceRestTransport(KeyManagementServiceTransport):
 
             Returns:
                 ~.resources.PublicKey:
-                    The public key for a given
+                    The public keys for a given
                 [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
                 Obtained via
                 [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
