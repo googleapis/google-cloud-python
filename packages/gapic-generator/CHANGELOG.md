@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [1.14.0](https://github.com/googleapis/gapic-generator-python/compare/v1.13.1...v1.14.0) (2024-01-31)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain. ([#1898](https://github.com/googleapis/gapic-generator-python/issues/1898)) ([e5a55c1](https://github.com/googleapis/gapic-generator-python/commit/e5a55c1c01f0e1b3739927640c713057cd17b4ae))
+
+
+### Bug Fixes
+
+* Mock out configure_mtls_channel in rest transport for testing ([#1920](https://github.com/googleapis/gapic-generator-python/issues/1920)) ([9ade50d](https://github.com/googleapis/gapic-generator-python/commit/9ade50d2dfff0bb15fbe1fb2b00644047f6d2d38))
+
 ## [1.13.1](https://github.com/googleapis/gapic-generator-python/compare/v1.13.0...v1.13.1) (2024-01-17)
 
 
