@@ -621,7 +621,7 @@ class GovernanceEvent(proto.Message):
             GOVERNANCE_RULE_ERRORS (17):
                 Rule processing errors.
             GOVERNANCE_RULE_PROCESSING (18):
-                Governance rule prcoessing Event.
+                Governance rule processing Event.
         """
         EVENT_TYPE_UNSPECIFIED = 0
         RESOURCE_IAM_POLICY_UPDATE = 1
