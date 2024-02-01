@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.10.6...google-cloud-recommendations-ai-v0.10.7) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([4368029](https://github.com/googleapis/google-cloud-python/commit/436802904bfdafa7e90f94b128813506525e1605))
+
 ## [0.10.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.10.5...google-cloud-recommendations-ai-v0.10.6) (2023-12-07)
 
 

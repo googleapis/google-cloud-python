@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.16.1...google-cloud-recaptcha-enterprise-v1.17.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([4368029](https://github.com/googleapis/google-cloud-python/commit/436802904bfdafa7e90f94b128813506525e1605))
+
 ## [1.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.16.0...google-cloud-recaptcha-enterprise-v1.16.1) (2024-01-19)
 
 
