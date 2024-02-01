@@ -16,19 +16,19 @@
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-import grpc  # type: ignore
-
 from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
+import grpc  # type: ignore
+
 from google.cloud.automl_v1.types import annotation_spec
 from google.cloud.automl_v1.types import dataset
 from google.cloud.automl_v1.types import dataset as gca_dataset
 from google.cloud.automl_v1.types import model
 from google.cloud.automl_v1.types import model as gca_model
 from google.cloud.automl_v1.types import model_evaluation, service
-from google.longrunning import operations_pb2  # type: ignore
 
 from .base import DEFAULT_CLIENT_INFO, AutoMlTransport
 
@@ -83,7 +83,7 @@ class AutoMlGrpcTransport(AutoMlTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'automl.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none

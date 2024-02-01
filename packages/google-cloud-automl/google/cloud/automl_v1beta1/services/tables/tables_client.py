@@ -21,12 +21,13 @@ import logging
 
 from google.api_core import exceptions
 from google.api_core.gapic_v1 import client_info
+from google.protobuf import struct_pb2
+
 import google.cloud.automl_v1beta1
 from google.cloud.automl_v1beta1 import AutoMlClient, PredictionServiceClient
 from google.cloud.automl_v1beta1 import gapic_version as package_version
 from google.cloud.automl_v1beta1.services.tables import gcs_client
 from google.cloud.automl_v1beta1.types import data_items
-from google.protobuf import struct_pb2
 
 _GAPIC_LIBRARY_VERSION = package_version.__version__
 _LOGGER = logging.getLogger(__name__)

@@ -33,7 +33,7 @@ from google.api_core import (
     operations_v1,
     path_template,
 )
-from google.api_core import client_options
+from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
 from google.api_core import operation_async  # type: ignore
 import google.auth
@@ -87,6 +87,29 @@ def modify_default_endpoint(client):
     )
 
 
+# If default endpoint template is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint template so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint_template(client):
+    return (
+        "test.{UNIVERSE_DOMAIN}"
+        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
+        else client._DEFAULT_ENDPOINT_TEMPLATE
+    )
+
+
+# Anonymous Credentials with universe domain property. If no universe domain is provided, then
+# the default universe domain is "googleapis.com".
+class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
+    def __init__(self, universe_domain="googleapis.com"):
+        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
+        self._universe_domain = universe_domain
+
+    @property
+    def universe_domain(self):
+        return self._universe_domain
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -117,6 +140,284 @@ def test__get_default_mtls_endpoint():
     )
 
 
+def test__read_environment_variables():
+    assert DataMigrationServiceClient._read_environment_variables() == (
+        False,
+        "auto",
+        None,
+    )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        assert DataMigrationServiceClient._read_environment_variables() == (
+            True,
+            "auto",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        assert DataMigrationServiceClient._read_environment_variables() == (
+            False,
+            "auto",
+            None,
+        )
+
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError) as excinfo:
+            DataMigrationServiceClient._read_environment_variables()
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+    )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        assert DataMigrationServiceClient._read_environment_variables() == (
+            False,
+            "never",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        assert DataMigrationServiceClient._read_environment_variables() == (
+            False,
+            "always",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
+        assert DataMigrationServiceClient._read_environment_variables() == (
+            False,
+            "auto",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            DataMigrationServiceClient._read_environment_variables()
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+    )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
+        assert DataMigrationServiceClient._read_environment_variables() == (
+            False,
+            "auto",
+            "foo.com",
+        )
+
+
+def test__get_client_cert_source():
+    mock_provided_cert_source = mock.Mock()
+    mock_default_cert_source = mock.Mock()
+
+    assert DataMigrationServiceClient._get_client_cert_source(None, False) is None
+    assert (
+        DataMigrationServiceClient._get_client_cert_source(
+            mock_provided_cert_source, False
+        )
+        is None
+    )
+    assert (
+        DataMigrationServiceClient._get_client_cert_source(
+            mock_provided_cert_source, True
+        )
+        == mock_provided_cert_source
+    )
+
+    with mock.patch(
+        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
+    ):
+        with mock.patch(
+            "google.auth.transport.mtls.default_client_cert_source",
+            return_value=mock_default_cert_source,
+        ):
+            assert (
+                DataMigrationServiceClient._get_client_cert_source(None, True)
+                is mock_default_cert_source
+            )
+            assert (
+                DataMigrationServiceClient._get_client_cert_source(
+                    mock_provided_cert_source, "true"
+                )
+                is mock_provided_cert_source
+            )
+
+
+@mock.patch.object(
+    DataMigrationServiceClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(DataMigrationServiceClient),
+)
+@mock.patch.object(
+    DataMigrationServiceAsyncClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(DataMigrationServiceAsyncClient),
+)
+def test__get_api_endpoint():
+    api_override = "foo.com"
+    mock_client_cert_source = mock.Mock()
+    default_universe = DataMigrationServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = DataMigrationServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=default_universe
+    )
+    mock_universe = "bar.com"
+    mock_endpoint = DataMigrationServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=mock_universe
+    )
+
+    assert (
+        DataMigrationServiceClient._get_api_endpoint(
+            api_override, mock_client_cert_source, default_universe, "always"
+        )
+        == api_override
+    )
+    assert (
+        DataMigrationServiceClient._get_api_endpoint(
+            None, mock_client_cert_source, default_universe, "auto"
+        )
+        == DataMigrationServiceClient.DEFAULT_MTLS_ENDPOINT
+    )
+    assert (
+        DataMigrationServiceClient._get_api_endpoint(
+            None, None, default_universe, "auto"
+        )
+        == default_endpoint
+    )
+    assert (
+        DataMigrationServiceClient._get_api_endpoint(
+            None, None, default_universe, "always"
+        )
+        == DataMigrationServiceClient.DEFAULT_MTLS_ENDPOINT
+    )
+    assert (
+        DataMigrationServiceClient._get_api_endpoint(
+            None, mock_client_cert_source, default_universe, "always"
+        )
+        == DataMigrationServiceClient.DEFAULT_MTLS_ENDPOINT
+    )
+    assert (
+        DataMigrationServiceClient._get_api_endpoint(None, None, mock_universe, "never")
+        == mock_endpoint
+    )
+    assert (
+        DataMigrationServiceClient._get_api_endpoint(
+            None, None, default_universe, "never"
+        )
+        == default_endpoint
+    )
+
+    with pytest.raises(MutualTLSChannelError) as excinfo:
+        DataMigrationServiceClient._get_api_endpoint(
+            None, mock_client_cert_source, mock_universe, "auto"
+        )
+    assert (
+        str(excinfo.value)
+        == "mTLS is not supported in any universe other than googleapis.com."
+    )
+
+
+def test__get_universe_domain():
+    client_universe_domain = "foo.com"
+    universe_domain_env = "bar.com"
+
+    assert (
+        DataMigrationServiceClient._get_universe_domain(
+            client_universe_domain, universe_domain_env
+        )
+        == client_universe_domain
+    )
+    assert (
+        DataMigrationServiceClient._get_universe_domain(None, universe_domain_env)
+        == universe_domain_env
+    )
+    assert (
+        DataMigrationServiceClient._get_universe_domain(None, None)
+        == DataMigrationServiceClient._DEFAULT_UNIVERSE
+    )
+
+    with pytest.raises(ValueError) as excinfo:
+        DataMigrationServiceClient._get_universe_domain("", None)
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name",
+    [
+        (
+            DataMigrationServiceClient,
+            transports.DataMigrationServiceGrpcTransport,
+            "grpc",
+        ),
+    ],
+)
+def test__validate_universe_domain(client_class, transport_class, transport_name):
+    client = client_class(
+        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+    )
+    assert client._validate_universe_domain() == True
+
+    # Test the case when universe is already validated.
+    assert client._validate_universe_domain() == True
+
+    if transport_name == "grpc":
+        # Test the case where credentials are provided by the
+        # `local_channel_credentials`. The default universes in both match.
+        channel = grpc.secure_channel(
+            "http://localhost/", grpc.local_channel_credentials()
+        )
+        client = client_class(transport=transport_class(channel=channel))
+        assert client._validate_universe_domain() == True
+
+        # Test the case where credentials do not exist: e.g. a transport is provided
+        # with no credentials. Validation should still succeed because there is no
+        # mismatch with non-existent credentials.
+        channel = grpc.secure_channel(
+            "http://localhost/", grpc.local_channel_credentials()
+        )
+        transport = transport_class(channel=channel)
+        transport._credentials = None
+        client = client_class(transport=transport)
+        assert client._validate_universe_domain() == True
+
+    # Test the case when there is a universe mismatch from the credentials.
+    client = client_class(
+        transport=transport_class(
+            credentials=_AnonymousCredentialsWithUniverseDomain(
+                universe_domain="foo.com"
+            )
+        )
+    )
+    with pytest.raises(ValueError) as excinfo:
+        client._validate_universe_domain()
+    assert (
+        str(excinfo.value)
+        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+    )
+
+    # Test the case when there is a universe mismatch from the client.
+    #
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.15.0 or higher.
+    api_core_major, api_core_minor, _ = [
+        int(part) for part in api_core_version.__version__.split(".")
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+        client = client_class(
+            client_options={"universe_domain": "bar.com"},
+            transport=transport_class(
+                credentials=_AnonymousCredentialsWithUniverseDomain(),
+            ),
+        )
+        with pytest.raises(ValueError) as excinfo:
+            client._validate_universe_domain()
+        assert (
+            str(excinfo.value)
+            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+        )
+
+
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
@@ -127,7 +428,7 @@ def test__get_default_mtls_endpoint():
 def test_data_migration_service_client_from_service_account_info(
     client_class, transport_name
 ):
-    creds = ga_credentials.AnonymousCredentials()
+    creds = _AnonymousCredentialsWithUniverseDomain()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -175,7 +476,7 @@ def test_data_migration_service_client_service_account_always_use_jwt(
 def test_data_migration_service_client_from_service_account_file(
     client_class, transport_name
 ):
-    creds = ga_credentials.AnonymousCredentials()
+    creds = _AnonymousCredentialsWithUniverseDomain()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -223,20 +524,22 @@ def test_data_migration_service_client_get_transport_class():
 )
 @mock.patch.object(
     DataMigrationServiceClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(DataMigrationServiceClient),
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(DataMigrationServiceClient),
 )
 @mock.patch.object(
     DataMigrationServiceAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(DataMigrationServiceAsyncClient),
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(DataMigrationServiceAsyncClient),
 )
 def test_data_migration_service_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(DataMigrationServiceClient, "get_transport_class") as gtc:
-        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
+        transport = transport_class(
+            credentials=_AnonymousCredentialsWithUniverseDomain()
+        )
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -271,7 +574,9 @@ def test_data_migration_service_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                ),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -301,15 +606,23 @@ def test_data_migration_service_client_client_options(
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+    )
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as excinfo:
             client = client_class(transport=transport_name)
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+    )
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -319,7 +632,9 @@ def test_data_migration_service_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -337,7 +652,9 @@ def test_data_migration_service_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -378,13 +695,13 @@ def test_data_migration_service_client_client_options(
 )
 @mock.patch.object(
     DataMigrationServiceClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(DataMigrationServiceClient),
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(DataMigrationServiceClient),
 )
 @mock.patch.object(
     DataMigrationServiceAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(DataMigrationServiceAsyncClient),
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(DataMigrationServiceAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
 def test_data_migration_service_client_mtls_env_auto(
@@ -407,7 +724,9 @@ def test_data_migration_service_client_mtls_env_auto(
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client.DEFAULT_ENDPOINT
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                )
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -439,7 +758,9 @@ def test_data_migration_service_client_mtls_env_auto(
                     return_value=client_cert_source_callback,
                 ):
                     if use_client_cert_env == "false":
-                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                        )
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -473,7 +794,9 @@ def test_data_migration_service_client_mtls_env_auto(
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                    ),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -563,6 +886,118 @@ def test_data_migration_service_client_get_mtls_endpoint_and_cert_source(client_
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert (
+            str(excinfo.value)
+            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+        )
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert (
+            str(excinfo.value)
+            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        )
+
+
+@pytest.mark.parametrize(
+    "client_class", [DataMigrationServiceClient, DataMigrationServiceAsyncClient]
+)
+@mock.patch.object(
+    DataMigrationServiceClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(DataMigrationServiceClient),
+)
+@mock.patch.object(
+    DataMigrationServiceAsyncClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(DataMigrationServiceAsyncClient),
+)
+def test_data_migration_service_client_client_api_endpoint(client_class):
+    mock_client_cert_source = client_cert_source_callback
+    api_override = "foo.com"
+    default_universe = DataMigrationServiceClient._DEFAULT_UNIVERSE
+    default_endpoint = DataMigrationServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=default_universe
+    )
+    mock_universe = "bar.com"
+    mock_endpoint = DataMigrationServiceClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=mock_universe
+    )
+
+    # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
+    # use ClientOptions.api_endpoint as the api endpoint regardless.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+        ):
+            options = client_options.ClientOptions(
+                client_cert_source=mock_client_cert_source, api_endpoint=api_override
+            )
+            client = client_class(
+                client_options=options,
+                credentials=_AnonymousCredentialsWithUniverseDomain(),
+            )
+            assert client.api_endpoint == api_override
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        assert client.api_endpoint == default_endpoint
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
+    # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+
+    # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE="false" (default), default cert source doesn't exist,
+    # and ClientOptions.universe_domain="bar.com",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
+    options = client_options.ClientOptions()
+    universe_exists = hasattr(options, "universe_domain")
+    if universe_exists:
+        options = client_options.ClientOptions(universe_domain=mock_universe)
+        client = client_class(
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
+        )
+    else:
+        client = client_class(
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
+        )
+    assert client.api_endpoint == (
+        mock_endpoint if universe_exists else default_endpoint
+    )
+    assert client.universe_domain == (
+        mock_universe if universe_exists else default_universe
+    )
+
+    # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    options = client_options.ClientOptions()
+    if hasattr(options, "universe_domain"):
+        delattr(options, "universe_domain")
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
+        )
+        assert client.api_endpoint == default_endpoint
+
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
@@ -592,7 +1027,9 @@ def test_data_migration_service_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -631,7 +1068,9 @@ def test_data_migration_service_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -691,7 +1130,9 @@ def test_data_migration_service_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -708,8 +1149,8 @@ def test_data_migration_service_client_create_channel_credentials_file(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = ga_credentials.AnonymousCredentials()
-        file_creds = ga_credentials.AnonymousCredentials()
+        creds = _AnonymousCredentialsWithUniverseDomain()
+        file_creds = _AnonymousCredentialsWithUniverseDomain()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -738,7 +1179,7 @@ def test_data_migration_service_client_create_channel_credentials_file(
 )
 def test_list_migration_jobs(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -772,7 +1213,7 @@ def test_list_migration_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -791,7 +1232,7 @@ async def test_list_migration_jobs_async(
     transport: str = "grpc_asyncio", request_type=clouddms.ListMigrationJobsRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -830,7 +1271,7 @@ async def test_list_migration_jobs_async_from_dict():
 
 def test_list_migration_jobs_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -862,7 +1303,7 @@ def test_list_migration_jobs_field_headers():
 @pytest.mark.asyncio
 async def test_list_migration_jobs_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -895,7 +1336,7 @@ async def test_list_migration_jobs_field_headers_async():
 
 def test_list_migration_jobs_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -921,7 +1362,7 @@ def test_list_migration_jobs_flattened():
 
 def test_list_migration_jobs_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -936,7 +1377,7 @@ def test_list_migration_jobs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_migration_jobs_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -967,7 +1408,7 @@ async def test_list_migration_jobs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_migration_jobs_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -981,7 +1422,7 @@ async def test_list_migration_jobs_flattened_error_async():
 
 def test_list_migration_jobs_pager(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1033,7 +1474,7 @@ def test_list_migration_jobs_pager(transport_name: str = "grpc"):
 
 def test_list_migration_jobs_pages(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1077,7 +1518,7 @@ def test_list_migration_jobs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_migration_jobs_async_pager():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1129,7 +1570,7 @@ async def test_list_migration_jobs_async_pager():
 @pytest.mark.asyncio
 async def test_list_migration_jobs_async_pages():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1186,7 +1627,7 @@ async def test_list_migration_jobs_async_pages():
 )
 def test_get_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1236,7 +1677,7 @@ def test_get_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -1255,7 +1696,7 @@ async def test_get_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.GetMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1310,7 +1751,7 @@ async def test_get_migration_job_async_from_dict():
 
 def test_get_migration_job_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1342,7 +1783,7 @@ def test_get_migration_job_field_headers():
 @pytest.mark.asyncio
 async def test_get_migration_job_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1375,7 +1816,7 @@ async def test_get_migration_job_field_headers_async():
 
 def test_get_migration_job_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1401,7 +1842,7 @@ def test_get_migration_job_flattened():
 
 def test_get_migration_job_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1416,7 +1857,7 @@ def test_get_migration_job_flattened_error():
 @pytest.mark.asyncio
 async def test_get_migration_job_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1447,7 +1888,7 @@ async def test_get_migration_job_flattened_async():
 @pytest.mark.asyncio
 async def test_get_migration_job_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1468,7 +1909,7 @@ async def test_get_migration_job_flattened_error_async():
 )
 def test_create_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1497,7 +1938,7 @@ def test_create_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -1516,7 +1957,7 @@ async def test_create_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.CreateMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1550,7 +1991,7 @@ async def test_create_migration_job_async_from_dict():
 
 def test_create_migration_job_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1582,7 +2023,7 @@ def test_create_migration_job_field_headers():
 @pytest.mark.asyncio
 async def test_create_migration_job_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1615,7 +2056,7 @@ async def test_create_migration_job_field_headers_async():
 
 def test_create_migration_job_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1649,7 +2090,7 @@ def test_create_migration_job_flattened():
 
 def test_create_migration_job_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1666,7 +2107,7 @@ def test_create_migration_job_flattened_error():
 @pytest.mark.asyncio
 async def test_create_migration_job_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1705,7 +2146,7 @@ async def test_create_migration_job_flattened_async():
 @pytest.mark.asyncio
 async def test_create_migration_job_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1728,7 +2169,7 @@ async def test_create_migration_job_flattened_error_async():
 )
 def test_update_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1757,7 +2198,7 @@ def test_update_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -1776,7 +2217,7 @@ async def test_update_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.UpdateMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1810,7 +2251,7 @@ async def test_update_migration_job_async_from_dict():
 
 def test_update_migration_job_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1842,7 +2283,7 @@ def test_update_migration_job_field_headers():
 @pytest.mark.asyncio
 async def test_update_migration_job_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1875,7 +2316,7 @@ async def test_update_migration_job_field_headers_async():
 
 def test_update_migration_job_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1905,7 +2346,7 @@ def test_update_migration_job_flattened():
 
 def test_update_migration_job_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1921,7 +2362,7 @@ def test_update_migration_job_flattened_error():
 @pytest.mark.asyncio
 async def test_update_migration_job_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1956,7 +2397,7 @@ async def test_update_migration_job_flattened_async():
 @pytest.mark.asyncio
 async def test_update_migration_job_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1978,7 +2419,7 @@ async def test_update_migration_job_flattened_error_async():
 )
 def test_delete_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2007,7 +2448,7 @@ def test_delete_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -2026,7 +2467,7 @@ async def test_delete_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.DeleteMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2060,7 +2501,7 @@ async def test_delete_migration_job_async_from_dict():
 
 def test_delete_migration_job_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2092,7 +2533,7 @@ def test_delete_migration_job_field_headers():
 @pytest.mark.asyncio
 async def test_delete_migration_job_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2125,7 +2566,7 @@ async def test_delete_migration_job_field_headers_async():
 
 def test_delete_migration_job_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2151,7 +2592,7 @@ def test_delete_migration_job_flattened():
 
 def test_delete_migration_job_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2166,7 +2607,7 @@ def test_delete_migration_job_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_migration_job_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2197,7 +2638,7 @@ async def test_delete_migration_job_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_migration_job_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2218,7 +2659,7 @@ async def test_delete_migration_job_flattened_error_async():
 )
 def test_start_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2247,7 +2688,7 @@ def test_start_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -2266,7 +2707,7 @@ async def test_start_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.StartMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2300,7 +2741,7 @@ async def test_start_migration_job_async_from_dict():
 
 def test_start_migration_job_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2332,7 +2773,7 @@ def test_start_migration_job_field_headers():
 @pytest.mark.asyncio
 async def test_start_migration_job_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2372,7 +2813,7 @@ async def test_start_migration_job_field_headers_async():
 )
 def test_stop_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2401,7 +2842,7 @@ def test_stop_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -2420,7 +2861,7 @@ async def test_stop_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.StopMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2454,7 +2895,7 @@ async def test_stop_migration_job_async_from_dict():
 
 def test_stop_migration_job_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2486,7 +2927,7 @@ def test_stop_migration_job_field_headers():
 @pytest.mark.asyncio
 async def test_stop_migration_job_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2526,7 +2967,7 @@ async def test_stop_migration_job_field_headers_async():
 )
 def test_resume_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2555,7 +2996,7 @@ def test_resume_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -2574,7 +3015,7 @@ async def test_resume_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.ResumeMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2608,7 +3049,7 @@ async def test_resume_migration_job_async_from_dict():
 
 def test_resume_migration_job_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2640,7 +3081,7 @@ def test_resume_migration_job_field_headers():
 @pytest.mark.asyncio
 async def test_resume_migration_job_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2680,7 +3121,7 @@ async def test_resume_migration_job_field_headers_async():
 )
 def test_promote_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2709,7 +3150,7 @@ def test_promote_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -2728,7 +3169,7 @@ async def test_promote_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.PromoteMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2762,7 +3203,7 @@ async def test_promote_migration_job_async_from_dict():
 
 def test_promote_migration_job_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2794,7 +3235,7 @@ def test_promote_migration_job_field_headers():
 @pytest.mark.asyncio
 async def test_promote_migration_job_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2834,7 +3275,7 @@ async def test_promote_migration_job_field_headers_async():
 )
 def test_verify_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2863,7 +3304,7 @@ def test_verify_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -2882,7 +3323,7 @@ async def test_verify_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.VerifyMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2916,7 +3357,7 @@ async def test_verify_migration_job_async_from_dict():
 
 def test_verify_migration_job_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2948,7 +3389,7 @@ def test_verify_migration_job_field_headers():
 @pytest.mark.asyncio
 async def test_verify_migration_job_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2988,7 +3429,7 @@ async def test_verify_migration_job_field_headers_async():
 )
 def test_restart_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3017,7 +3458,7 @@ def test_restart_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -3036,7 +3477,7 @@ async def test_restart_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.RestartMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3070,7 +3511,7 @@ async def test_restart_migration_job_async_from_dict():
 
 def test_restart_migration_job_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3102,7 +3543,7 @@ def test_restart_migration_job_field_headers():
 @pytest.mark.asyncio
 async def test_restart_migration_job_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3142,7 +3583,7 @@ async def test_restart_migration_job_field_headers_async():
 )
 def test_generate_ssh_script(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3174,7 +3615,7 @@ def test_generate_ssh_script_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -3193,7 +3634,7 @@ async def test_generate_ssh_script_async(
     transport: str = "grpc_asyncio", request_type=clouddms.GenerateSshScriptRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3230,7 +3671,7 @@ async def test_generate_ssh_script_async_from_dict():
 
 def test_generate_ssh_script_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3262,7 +3703,7 @@ def test_generate_ssh_script_field_headers():
 @pytest.mark.asyncio
 async def test_generate_ssh_script_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3300,7 +3741,7 @@ async def test_generate_ssh_script_field_headers_async():
 )
 def test_generate_tcp_proxy_script(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3332,7 +3773,7 @@ def test_generate_tcp_proxy_script_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -3351,7 +3792,7 @@ async def test_generate_tcp_proxy_script_async(
     transport: str = "grpc_asyncio", request_type=clouddms.GenerateTcpProxyScriptRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3388,7 +3829,7 @@ async def test_generate_tcp_proxy_script_async_from_dict():
 
 def test_generate_tcp_proxy_script_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3420,7 +3861,7 @@ def test_generate_tcp_proxy_script_field_headers():
 @pytest.mark.asyncio
 async def test_generate_tcp_proxy_script_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3460,7 +3901,7 @@ async def test_generate_tcp_proxy_script_field_headers_async():
 )
 def test_list_connection_profiles(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3494,7 +3935,7 @@ def test_list_connection_profiles_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -3513,7 +3954,7 @@ async def test_list_connection_profiles_async(
     transport: str = "grpc_asyncio", request_type=clouddms.ListConnectionProfilesRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3552,7 +3993,7 @@ async def test_list_connection_profiles_async_from_dict():
 
 def test_list_connection_profiles_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3584,7 +4025,7 @@ def test_list_connection_profiles_field_headers():
 @pytest.mark.asyncio
 async def test_list_connection_profiles_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3617,7 +4058,7 @@ async def test_list_connection_profiles_field_headers_async():
 
 def test_list_connection_profiles_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3643,7 +4084,7 @@ def test_list_connection_profiles_flattened():
 
 def test_list_connection_profiles_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3658,7 +4099,7 @@ def test_list_connection_profiles_flattened_error():
 @pytest.mark.asyncio
 async def test_list_connection_profiles_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3689,7 +4130,7 @@ async def test_list_connection_profiles_flattened_async():
 @pytest.mark.asyncio
 async def test_list_connection_profiles_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3703,7 +4144,7 @@ async def test_list_connection_profiles_flattened_error_async():
 
 def test_list_connection_profiles_pager(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -3755,7 +4196,7 @@ def test_list_connection_profiles_pager(transport_name: str = "grpc"):
 
 def test_list_connection_profiles_pages(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -3799,7 +4240,7 @@ def test_list_connection_profiles_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_connection_profiles_async_pager():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3853,7 +4294,7 @@ async def test_list_connection_profiles_async_pager():
 @pytest.mark.asyncio
 async def test_list_connection_profiles_async_pages():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3910,7 +4351,7 @@ async def test_list_connection_profiles_async_pages():
 )
 def test_get_connection_profile(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3948,7 +4389,7 @@ def test_get_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -3967,7 +4408,7 @@ async def test_get_connection_profile_async(
     transport: str = "grpc_asyncio", request_type=clouddms.GetConnectionProfileRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4010,7 +4451,7 @@ async def test_get_connection_profile_async_from_dict():
 
 def test_get_connection_profile_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4042,7 +4483,7 @@ def test_get_connection_profile_field_headers():
 @pytest.mark.asyncio
 async def test_get_connection_profile_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4075,7 +4516,7 @@ async def test_get_connection_profile_field_headers_async():
 
 def test_get_connection_profile_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4101,7 +4542,7 @@ def test_get_connection_profile_flattened():
 
 def test_get_connection_profile_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4116,7 +4557,7 @@ def test_get_connection_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_get_connection_profile_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4147,7 +4588,7 @@ async def test_get_connection_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_get_connection_profile_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4168,7 +4609,7 @@ async def test_get_connection_profile_flattened_error_async():
 )
 def test_create_connection_profile(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4197,7 +4638,7 @@ def test_create_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -4217,7 +4658,7 @@ async def test_create_connection_profile_async(
     request_type=clouddms.CreateConnectionProfileRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4251,7 +4692,7 @@ async def test_create_connection_profile_async_from_dict():
 
 def test_create_connection_profile_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4283,7 +4724,7 @@ def test_create_connection_profile_field_headers():
 @pytest.mark.asyncio
 async def test_create_connection_profile_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4316,7 +4757,7 @@ async def test_create_connection_profile_field_headers_async():
 
 def test_create_connection_profile_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4350,7 +4791,7 @@ def test_create_connection_profile_flattened():
 
 def test_create_connection_profile_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4367,7 +4808,7 @@ def test_create_connection_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_create_connection_profile_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4406,7 +4847,7 @@ async def test_create_connection_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_create_connection_profile_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4429,7 +4870,7 @@ async def test_create_connection_profile_flattened_error_async():
 )
 def test_update_connection_profile(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4458,7 +4899,7 @@ def test_update_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -4478,7 +4919,7 @@ async def test_update_connection_profile_async(
     request_type=clouddms.UpdateConnectionProfileRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4512,7 +4953,7 @@ async def test_update_connection_profile_async_from_dict():
 
 def test_update_connection_profile_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4544,7 +4985,7 @@ def test_update_connection_profile_field_headers():
 @pytest.mark.asyncio
 async def test_update_connection_profile_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4577,7 +5018,7 @@ async def test_update_connection_profile_field_headers_async():
 
 def test_update_connection_profile_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4607,7 +5048,7 @@ def test_update_connection_profile_flattened():
 
 def test_update_connection_profile_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4623,7 +5064,7 @@ def test_update_connection_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_update_connection_profile_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4658,7 +5099,7 @@ async def test_update_connection_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_update_connection_profile_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4680,7 +5121,7 @@ async def test_update_connection_profile_flattened_error_async():
 )
 def test_delete_connection_profile(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4709,7 +5150,7 @@ def test_delete_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -4729,7 +5170,7 @@ async def test_delete_connection_profile_async(
     request_type=clouddms.DeleteConnectionProfileRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4763,7 +5204,7 @@ async def test_delete_connection_profile_async_from_dict():
 
 def test_delete_connection_profile_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4795,7 +5236,7 @@ def test_delete_connection_profile_field_headers():
 @pytest.mark.asyncio
 async def test_delete_connection_profile_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4828,7 +5269,7 @@ async def test_delete_connection_profile_field_headers_async():
 
 def test_delete_connection_profile_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4854,7 +5295,7 @@ def test_delete_connection_profile_flattened():
 
 def test_delete_connection_profile_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4869,7 +5310,7 @@ def test_delete_connection_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_connection_profile_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4900,7 +5341,7 @@ async def test_delete_connection_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_connection_profile_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4921,7 +5362,7 @@ async def test_delete_connection_profile_flattened_error_async():
 )
 def test_create_private_connection(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4950,7 +5391,7 @@ def test_create_private_connection_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -4970,7 +5411,7 @@ async def test_create_private_connection_async(
     request_type=clouddms.CreatePrivateConnectionRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5004,7 +5445,7 @@ async def test_create_private_connection_async_from_dict():
 
 def test_create_private_connection_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5036,7 +5477,7 @@ def test_create_private_connection_field_headers():
 @pytest.mark.asyncio
 async def test_create_private_connection_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5069,7 +5510,7 @@ async def test_create_private_connection_field_headers_async():
 
 def test_create_private_connection_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5103,7 +5544,7 @@ def test_create_private_connection_flattened():
 
 def test_create_private_connection_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5120,7 +5561,7 @@ def test_create_private_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_create_private_connection_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5159,7 +5600,7 @@ async def test_create_private_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_create_private_connection_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5182,7 +5623,7 @@ async def test_create_private_connection_flattened_error_async():
 )
 def test_get_private_connection(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5218,7 +5659,7 @@ def test_get_private_connection_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -5237,7 +5678,7 @@ async def test_get_private_connection_async(
     transport: str = "grpc_asyncio", request_type=clouddms.GetPrivateConnectionRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5278,7 +5719,7 @@ async def test_get_private_connection_async_from_dict():
 
 def test_get_private_connection_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5310,7 +5751,7 @@ def test_get_private_connection_field_headers():
 @pytest.mark.asyncio
 async def test_get_private_connection_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5343,7 +5784,7 @@ async def test_get_private_connection_field_headers_async():
 
 def test_get_private_connection_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5369,7 +5810,7 @@ def test_get_private_connection_flattened():
 
 def test_get_private_connection_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5384,7 +5825,7 @@ def test_get_private_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_get_private_connection_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5415,7 +5856,7 @@ async def test_get_private_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_get_private_connection_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5436,7 +5877,7 @@ async def test_get_private_connection_flattened_error_async():
 )
 def test_list_private_connections(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5470,7 +5911,7 @@ def test_list_private_connections_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -5489,7 +5930,7 @@ async def test_list_private_connections_async(
     transport: str = "grpc_asyncio", request_type=clouddms.ListPrivateConnectionsRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5528,7 +5969,7 @@ async def test_list_private_connections_async_from_dict():
 
 def test_list_private_connections_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5560,7 +6001,7 @@ def test_list_private_connections_field_headers():
 @pytest.mark.asyncio
 async def test_list_private_connections_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5593,7 +6034,7 @@ async def test_list_private_connections_field_headers_async():
 
 def test_list_private_connections_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5619,7 +6060,7 @@ def test_list_private_connections_flattened():
 
 def test_list_private_connections_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5634,7 +6075,7 @@ def test_list_private_connections_flattened_error():
 @pytest.mark.asyncio
 async def test_list_private_connections_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5665,7 +6106,7 @@ async def test_list_private_connections_flattened_async():
 @pytest.mark.asyncio
 async def test_list_private_connections_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5679,7 +6120,7 @@ async def test_list_private_connections_flattened_error_async():
 
 def test_list_private_connections_pager(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -5731,7 +6172,7 @@ def test_list_private_connections_pager(transport_name: str = "grpc"):
 
 def test_list_private_connections_pages(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -5775,7 +6216,7 @@ def test_list_private_connections_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_private_connections_async_pager():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5829,7 +6270,7 @@ async def test_list_private_connections_async_pager():
 @pytest.mark.asyncio
 async def test_list_private_connections_async_pages():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5886,7 +6327,7 @@ async def test_list_private_connections_async_pages():
 )
 def test_delete_private_connection(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5915,7 +6356,7 @@ def test_delete_private_connection_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -5935,7 +6376,7 @@ async def test_delete_private_connection_async(
     request_type=clouddms.DeletePrivateConnectionRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5969,7 +6410,7 @@ async def test_delete_private_connection_async_from_dict():
 
 def test_delete_private_connection_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6001,7 +6442,7 @@ def test_delete_private_connection_field_headers():
 @pytest.mark.asyncio
 async def test_delete_private_connection_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6034,7 +6475,7 @@ async def test_delete_private_connection_field_headers_async():
 
 def test_delete_private_connection_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6060,7 +6501,7 @@ def test_delete_private_connection_flattened():
 
 def test_delete_private_connection_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6075,7 +6516,7 @@ def test_delete_private_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_private_connection_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6106,7 +6547,7 @@ async def test_delete_private_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_private_connection_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6127,7 +6568,7 @@ async def test_delete_private_connection_flattened_error_async():
 )
 def test_get_conversion_workspace(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6165,7 +6606,7 @@ def test_get_conversion_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -6184,7 +6625,7 @@ async def test_get_conversion_workspace_async(
     transport: str = "grpc_asyncio", request_type=clouddms.GetConversionWorkspaceRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6227,7 +6668,7 @@ async def test_get_conversion_workspace_async_from_dict():
 
 def test_get_conversion_workspace_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6259,7 +6700,7 @@ def test_get_conversion_workspace_field_headers():
 @pytest.mark.asyncio
 async def test_get_conversion_workspace_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6292,7 +6733,7 @@ async def test_get_conversion_workspace_field_headers_async():
 
 def test_get_conversion_workspace_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6318,7 +6759,7 @@ def test_get_conversion_workspace_flattened():
 
 def test_get_conversion_workspace_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6333,7 +6774,7 @@ def test_get_conversion_workspace_flattened_error():
 @pytest.mark.asyncio
 async def test_get_conversion_workspace_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6364,7 +6805,7 @@ async def test_get_conversion_workspace_flattened_async():
 @pytest.mark.asyncio
 async def test_get_conversion_workspace_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6385,7 +6826,7 @@ async def test_get_conversion_workspace_flattened_error_async():
 )
 def test_list_conversion_workspaces(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6419,7 +6860,7 @@ def test_list_conversion_workspaces_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -6439,7 +6880,7 @@ async def test_list_conversion_workspaces_async(
     request_type=clouddms.ListConversionWorkspacesRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6478,7 +6919,7 @@ async def test_list_conversion_workspaces_async_from_dict():
 
 def test_list_conversion_workspaces_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6510,7 +6951,7 @@ def test_list_conversion_workspaces_field_headers():
 @pytest.mark.asyncio
 async def test_list_conversion_workspaces_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6543,7 +6984,7 @@ async def test_list_conversion_workspaces_field_headers_async():
 
 def test_list_conversion_workspaces_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6569,7 +7010,7 @@ def test_list_conversion_workspaces_flattened():
 
 def test_list_conversion_workspaces_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6584,7 +7025,7 @@ def test_list_conversion_workspaces_flattened_error():
 @pytest.mark.asyncio
 async def test_list_conversion_workspaces_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6615,7 +7056,7 @@ async def test_list_conversion_workspaces_flattened_async():
 @pytest.mark.asyncio
 async def test_list_conversion_workspaces_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6629,7 +7070,7 @@ async def test_list_conversion_workspaces_flattened_error_async():
 
 def test_list_conversion_workspaces_pager(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -6684,7 +7125,7 @@ def test_list_conversion_workspaces_pager(transport_name: str = "grpc"):
 
 def test_list_conversion_workspaces_pages(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -6728,7 +7169,7 @@ def test_list_conversion_workspaces_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_conversion_workspaces_async_pager():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6783,7 +7224,7 @@ async def test_list_conversion_workspaces_async_pager():
 @pytest.mark.asyncio
 async def test_list_conversion_workspaces_async_pages():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6840,7 +7281,7 @@ async def test_list_conversion_workspaces_async_pages():
 )
 def test_create_conversion_workspace(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6869,7 +7310,7 @@ def test_create_conversion_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -6889,7 +7330,7 @@ async def test_create_conversion_workspace_async(
     request_type=clouddms.CreateConversionWorkspaceRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6923,7 +7364,7 @@ async def test_create_conversion_workspace_async_from_dict():
 
 def test_create_conversion_workspace_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6955,7 +7396,7 @@ def test_create_conversion_workspace_field_headers():
 @pytest.mark.asyncio
 async def test_create_conversion_workspace_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6988,7 +7429,7 @@ async def test_create_conversion_workspace_field_headers_async():
 
 def test_create_conversion_workspace_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7024,7 +7465,7 @@ def test_create_conversion_workspace_flattened():
 
 def test_create_conversion_workspace_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7043,7 +7484,7 @@ def test_create_conversion_workspace_flattened_error():
 @pytest.mark.asyncio
 async def test_create_conversion_workspace_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7084,7 +7525,7 @@ async def test_create_conversion_workspace_flattened_async():
 @pytest.mark.asyncio
 async def test_create_conversion_workspace_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7109,7 +7550,7 @@ async def test_create_conversion_workspace_flattened_error_async():
 )
 def test_update_conversion_workspace(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7138,7 +7579,7 @@ def test_update_conversion_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -7158,7 +7599,7 @@ async def test_update_conversion_workspace_async(
     request_type=clouddms.UpdateConversionWorkspaceRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7192,7 +7633,7 @@ async def test_update_conversion_workspace_async_from_dict():
 
 def test_update_conversion_workspace_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7224,7 +7665,7 @@ def test_update_conversion_workspace_field_headers():
 @pytest.mark.asyncio
 async def test_update_conversion_workspace_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7257,7 +7698,7 @@ async def test_update_conversion_workspace_field_headers_async():
 
 def test_update_conversion_workspace_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7289,7 +7730,7 @@ def test_update_conversion_workspace_flattened():
 
 def test_update_conversion_workspace_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7307,7 +7748,7 @@ def test_update_conversion_workspace_flattened_error():
 @pytest.mark.asyncio
 async def test_update_conversion_workspace_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7344,7 +7785,7 @@ async def test_update_conversion_workspace_flattened_async():
 @pytest.mark.asyncio
 async def test_update_conversion_workspace_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7368,7 +7809,7 @@ async def test_update_conversion_workspace_flattened_error_async():
 )
 def test_delete_conversion_workspace(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7397,7 +7838,7 @@ def test_delete_conversion_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -7417,7 +7858,7 @@ async def test_delete_conversion_workspace_async(
     request_type=clouddms.DeleteConversionWorkspaceRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7451,7 +7892,7 @@ async def test_delete_conversion_workspace_async_from_dict():
 
 def test_delete_conversion_workspace_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7483,7 +7924,7 @@ def test_delete_conversion_workspace_field_headers():
 @pytest.mark.asyncio
 async def test_delete_conversion_workspace_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7516,7 +7957,7 @@ async def test_delete_conversion_workspace_field_headers_async():
 
 def test_delete_conversion_workspace_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7542,7 +7983,7 @@ def test_delete_conversion_workspace_flattened():
 
 def test_delete_conversion_workspace_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7557,7 +7998,7 @@ def test_delete_conversion_workspace_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_conversion_workspace_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7588,7 +8029,7 @@ async def test_delete_conversion_workspace_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_conversion_workspace_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7609,7 +8050,7 @@ async def test_delete_conversion_workspace_flattened_error_async():
 )
 def test_create_mapping_rule(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7654,7 +8095,7 @@ def test_create_mapping_rule_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -7673,7 +8114,7 @@ async def test_create_mapping_rule_async(
     transport: str = "grpc_asyncio", request_type=clouddms.CreateMappingRuleRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7723,7 +8164,7 @@ async def test_create_mapping_rule_async_from_dict():
 
 def test_create_mapping_rule_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7755,7 +8196,7 @@ def test_create_mapping_rule_field_headers():
 @pytest.mark.asyncio
 async def test_create_mapping_rule_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7788,7 +8229,7 @@ async def test_create_mapping_rule_field_headers_async():
 
 def test_create_mapping_rule_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7822,7 +8263,7 @@ def test_create_mapping_rule_flattened():
 
 def test_create_mapping_rule_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7839,7 +8280,7 @@ def test_create_mapping_rule_flattened_error():
 @pytest.mark.asyncio
 async def test_create_mapping_rule_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7878,7 +8319,7 @@ async def test_create_mapping_rule_flattened_async():
 @pytest.mark.asyncio
 async def test_create_mapping_rule_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7901,7 +8342,7 @@ async def test_create_mapping_rule_flattened_error_async():
 )
 def test_delete_mapping_rule(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7930,7 +8371,7 @@ def test_delete_mapping_rule_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -7949,7 +8390,7 @@ async def test_delete_mapping_rule_async(
     transport: str = "grpc_asyncio", request_type=clouddms.DeleteMappingRuleRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7981,7 +8422,7 @@ async def test_delete_mapping_rule_async_from_dict():
 
 def test_delete_mapping_rule_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8013,7 +8454,7 @@ def test_delete_mapping_rule_field_headers():
 @pytest.mark.asyncio
 async def test_delete_mapping_rule_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8044,7 +8485,7 @@ async def test_delete_mapping_rule_field_headers_async():
 
 def test_delete_mapping_rule_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8070,7 +8511,7 @@ def test_delete_mapping_rule_flattened():
 
 def test_delete_mapping_rule_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8085,7 +8526,7 @@ def test_delete_mapping_rule_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_mapping_rule_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8114,7 +8555,7 @@ async def test_delete_mapping_rule_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_mapping_rule_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8135,7 +8576,7 @@ async def test_delete_mapping_rule_flattened_error_async():
 )
 def test_list_mapping_rules(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8167,7 +8608,7 @@ def test_list_mapping_rules_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -8186,7 +8627,7 @@ async def test_list_mapping_rules_async(
     transport: str = "grpc_asyncio", request_type=clouddms.ListMappingRulesRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8223,7 +8664,7 @@ async def test_list_mapping_rules_async_from_dict():
 
 def test_list_mapping_rules_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8255,7 +8696,7 @@ def test_list_mapping_rules_field_headers():
 @pytest.mark.asyncio
 async def test_list_mapping_rules_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8288,7 +8729,7 @@ async def test_list_mapping_rules_field_headers_async():
 
 def test_list_mapping_rules_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8314,7 +8755,7 @@ def test_list_mapping_rules_flattened():
 
 def test_list_mapping_rules_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8329,7 +8770,7 @@ def test_list_mapping_rules_flattened_error():
 @pytest.mark.asyncio
 async def test_list_mapping_rules_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8360,7 +8801,7 @@ async def test_list_mapping_rules_flattened_async():
 @pytest.mark.asyncio
 async def test_list_mapping_rules_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8374,7 +8815,7 @@ async def test_list_mapping_rules_flattened_error_async():
 
 def test_list_mapping_rules_pager(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -8428,7 +8869,7 @@ def test_list_mapping_rules_pager(transport_name: str = "grpc"):
 
 def test_list_mapping_rules_pages(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -8472,7 +8913,7 @@ def test_list_mapping_rules_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_mapping_rules_async_pager():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8526,7 +8967,7 @@ async def test_list_mapping_rules_async_pager():
 @pytest.mark.asyncio
 async def test_list_mapping_rules_async_pages():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8583,7 +9024,7 @@ async def test_list_mapping_rules_async_pages():
 )
 def test_get_mapping_rule(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8626,7 +9067,7 @@ def test_get_mapping_rule_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -8643,7 +9084,7 @@ async def test_get_mapping_rule_async(
     transport: str = "grpc_asyncio", request_type=clouddms.GetMappingRuleRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8691,7 +9132,7 @@ async def test_get_mapping_rule_async_from_dict():
 
 def test_get_mapping_rule_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8721,7 +9162,7 @@ def test_get_mapping_rule_field_headers():
 @pytest.mark.asyncio
 async def test_get_mapping_rule_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8752,7 +9193,7 @@ async def test_get_mapping_rule_field_headers_async():
 
 def test_get_mapping_rule_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8776,7 +9217,7 @@ def test_get_mapping_rule_flattened():
 
 def test_get_mapping_rule_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8791,7 +9232,7 @@ def test_get_mapping_rule_flattened_error():
 @pytest.mark.asyncio
 async def test_get_mapping_rule_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8820,7 +9261,7 @@ async def test_get_mapping_rule_flattened_async():
 @pytest.mark.asyncio
 async def test_get_mapping_rule_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8841,7 +9282,7 @@ async def test_get_mapping_rule_flattened_error_async():
 )
 def test_seed_conversion_workspace(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8870,7 +9311,7 @@ def test_seed_conversion_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -8890,7 +9331,7 @@ async def test_seed_conversion_workspace_async(
     request_type=clouddms.SeedConversionWorkspaceRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8924,7 +9365,7 @@ async def test_seed_conversion_workspace_async_from_dict():
 
 def test_seed_conversion_workspace_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8956,7 +9397,7 @@ def test_seed_conversion_workspace_field_headers():
 @pytest.mark.asyncio
 async def test_seed_conversion_workspace_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8996,7 +9437,7 @@ async def test_seed_conversion_workspace_field_headers_async():
 )
 def test_import_mapping_rules(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9025,7 +9466,7 @@ def test_import_mapping_rules_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -9044,7 +9485,7 @@ async def test_import_mapping_rules_async(
     transport: str = "grpc_asyncio", request_type=clouddms.ImportMappingRulesRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9078,7 +9519,7 @@ async def test_import_mapping_rules_async_from_dict():
 
 def test_import_mapping_rules_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9110,7 +9551,7 @@ def test_import_mapping_rules_field_headers():
 @pytest.mark.asyncio
 async def test_import_mapping_rules_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9150,7 +9591,7 @@ async def test_import_mapping_rules_field_headers_async():
 )
 def test_convert_conversion_workspace(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9179,7 +9620,7 @@ def test_convert_conversion_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -9199,7 +9640,7 @@ async def test_convert_conversion_workspace_async(
     request_type=clouddms.ConvertConversionWorkspaceRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9233,7 +9674,7 @@ async def test_convert_conversion_workspace_async_from_dict():
 
 def test_convert_conversion_workspace_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9265,7 +9706,7 @@ def test_convert_conversion_workspace_field_headers():
 @pytest.mark.asyncio
 async def test_convert_conversion_workspace_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9305,7 +9746,7 @@ async def test_convert_conversion_workspace_field_headers_async():
 )
 def test_commit_conversion_workspace(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9334,7 +9775,7 @@ def test_commit_conversion_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -9354,7 +9795,7 @@ async def test_commit_conversion_workspace_async(
     request_type=clouddms.CommitConversionWorkspaceRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9388,7 +9829,7 @@ async def test_commit_conversion_workspace_async_from_dict():
 
 def test_commit_conversion_workspace_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9420,7 +9861,7 @@ def test_commit_conversion_workspace_field_headers():
 @pytest.mark.asyncio
 async def test_commit_conversion_workspace_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9460,7 +9901,7 @@ async def test_commit_conversion_workspace_field_headers_async():
 )
 def test_rollback_conversion_workspace(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9489,7 +9930,7 @@ def test_rollback_conversion_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -9509,7 +9950,7 @@ async def test_rollback_conversion_workspace_async(
     request_type=clouddms.RollbackConversionWorkspaceRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9543,7 +9984,7 @@ async def test_rollback_conversion_workspace_async_from_dict():
 
 def test_rollback_conversion_workspace_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9575,7 +10016,7 @@ def test_rollback_conversion_workspace_field_headers():
 @pytest.mark.asyncio
 async def test_rollback_conversion_workspace_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9615,7 +10056,7 @@ async def test_rollback_conversion_workspace_field_headers_async():
 )
 def test_apply_conversion_workspace(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9644,7 +10085,7 @@ def test_apply_conversion_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -9664,7 +10105,7 @@ async def test_apply_conversion_workspace_async(
     request_type=clouddms.ApplyConversionWorkspaceRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9698,7 +10139,7 @@ async def test_apply_conversion_workspace_async_from_dict():
 
 def test_apply_conversion_workspace_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9730,7 +10171,7 @@ def test_apply_conversion_workspace_field_headers():
 @pytest.mark.asyncio
 async def test_apply_conversion_workspace_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9770,7 +10211,7 @@ async def test_apply_conversion_workspace_field_headers_async():
 )
 def test_describe_database_entities(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9802,7 +10243,7 @@ def test_describe_database_entities_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -9822,7 +10263,7 @@ async def test_describe_database_entities_async(
     request_type=clouddms.DescribeDatabaseEntitiesRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9859,7 +10300,7 @@ async def test_describe_database_entities_async_from_dict():
 
 def test_describe_database_entities_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9891,7 +10332,7 @@ def test_describe_database_entities_field_headers():
 @pytest.mark.asyncio
 async def test_describe_database_entities_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9924,7 +10365,7 @@ async def test_describe_database_entities_field_headers_async():
 
 def test_describe_database_entities_pager(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -9978,7 +10419,7 @@ def test_describe_database_entities_pager(transport_name: str = "grpc"):
 
 def test_describe_database_entities_pages(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -10022,7 +10463,7 @@ def test_describe_database_entities_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_describe_database_entities_async_pager():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10077,7 +10518,7 @@ async def test_describe_database_entities_async_pager():
 @pytest.mark.asyncio
 async def test_describe_database_entities_async_pages():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10134,7 +10575,7 @@ async def test_describe_database_entities_async_pages():
 )
 def test_search_background_jobs(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10163,7 +10604,7 @@ def test_search_background_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -10182,7 +10623,7 @@ async def test_search_background_jobs_async(
     transport: str = "grpc_asyncio", request_type=clouddms.SearchBackgroundJobsRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10216,7 +10657,7 @@ async def test_search_background_jobs_async_from_dict():
 
 def test_search_background_jobs_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10248,7 +10689,7 @@ def test_search_background_jobs_field_headers():
 @pytest.mark.asyncio
 async def test_search_background_jobs_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10288,7 +10729,7 @@ async def test_search_background_jobs_field_headers_async():
 )
 def test_describe_conversion_workspace_revisions(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10317,7 +10758,7 @@ def test_describe_conversion_workspace_revisions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -10337,7 +10778,7 @@ async def test_describe_conversion_workspace_revisions_async(
     request_type=clouddms.DescribeConversionWorkspaceRevisionsRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10371,7 +10812,7 @@ async def test_describe_conversion_workspace_revisions_async_from_dict():
 
 def test_describe_conversion_workspace_revisions_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10403,7 +10844,7 @@ def test_describe_conversion_workspace_revisions_field_headers():
 @pytest.mark.asyncio
 async def test_describe_conversion_workspace_revisions_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10443,7 +10884,7 @@ async def test_describe_conversion_workspace_revisions_field_headers_async():
 )
 def test_fetch_static_ips(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10475,7 +10916,7 @@ def test_fetch_static_ips_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -10492,7 +10933,7 @@ async def test_fetch_static_ips_async(
     transport: str = "grpc_asyncio", request_type=clouddms.FetchStaticIpsRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -10529,7 +10970,7 @@ async def test_fetch_static_ips_async_from_dict():
 
 def test_fetch_static_ips_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10559,7 +11000,7 @@ def test_fetch_static_ips_field_headers():
 @pytest.mark.asyncio
 async def test_fetch_static_ips_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10590,7 +11031,7 @@ async def test_fetch_static_ips_field_headers_async():
 
 def test_fetch_static_ips_flattened():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10614,7 +11055,7 @@ def test_fetch_static_ips_flattened():
 
 def test_fetch_static_ips_flattened_error():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10629,7 +11070,7 @@ def test_fetch_static_ips_flattened_error():
 @pytest.mark.asyncio
 async def test_fetch_static_ips_flattened_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10658,7 +11099,7 @@ async def test_fetch_static_ips_flattened_async():
 @pytest.mark.asyncio
 async def test_fetch_static_ips_flattened_error_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10672,7 +11113,7 @@ async def test_fetch_static_ips_flattened_error_async():
 
 def test_fetch_static_ips_pager(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -10722,7 +11163,7 @@ def test_fetch_static_ips_pager(transport_name: str = "grpc"):
 
 def test_fetch_static_ips_pages(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -10764,7 +11205,7 @@ def test_fetch_static_ips_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_fetch_static_ips_async_pager():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10814,7 +11255,7 @@ async def test_fetch_static_ips_async_pager():
 @pytest.mark.asyncio
 async def test_fetch_static_ips_async_pages():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10863,17 +11304,17 @@ async def test_fetch_static_ips_async_pages():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DataMigrationServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = DataMigrationServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.DataMigrationServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = DataMigrationServiceClient(
@@ -10883,7 +11324,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.DataMigrationServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -10894,16 +11335,17 @@ def test_credentials_transport_error():
         )
 
     # It is an error to provide an api_key and a credential.
-    options = mock.Mock()
+    options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = DataMigrationServiceClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.DataMigrationServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = DataMigrationServiceClient(
@@ -10915,7 +11357,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.DataMigrationServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     client = DataMigrationServiceClient(transport=transport)
     assert client.transport is transport
@@ -10924,13 +11366,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.DataMigrationServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.DataMigrationServiceGrpcAsyncIOTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -10946,7 +11388,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -10959,7 +11401,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = DataMigrationServiceClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     assert transport.kind == transport_name
 
@@ -10967,7 +11409,7 @@ def test_transport_kind(transport_name):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     assert isinstance(
         client.transport,
@@ -10979,7 +11421,7 @@ def test_data_migration_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.DataMigrationServiceTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             credentials_file="credentials.json",
         )
 
@@ -10991,7 +11433,7 @@ def test_data_migration_service_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.DataMigrationServiceTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
         )
 
     # Every method on the transport should just blindly
@@ -11077,7 +11519,7 @@ def test_data_migration_service_base_transport_with_credentials_file():
         "google.cloud.clouddms_v1.services.data_migration_service.transports.DataMigrationServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
+        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport = transports.DataMigrationServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -11096,7 +11538,7 @@ def test_data_migration_service_base_transport_with_adc():
         "google.cloud.clouddms_v1.services.data_migration_service.transports.DataMigrationServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport = transports.DataMigrationServiceTransport()
         adc.assert_called_once()
 
@@ -11104,7 +11546,7 @@ def test_data_migration_service_base_transport_with_adc():
 def test_data_migration_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         DataMigrationServiceClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -11124,7 +11566,7 @@ def test_data_migration_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -11170,7 +11612,7 @@ def test_data_migration_service_transport_create_channel(transport_class, grpc_h
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = ga_credentials.AnonymousCredentials()
+        creds = _AnonymousCredentialsWithUniverseDomain()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
@@ -11200,7 +11642,7 @@ def test_data_migration_service_transport_create_channel(transport_class, grpc_h
 def test_data_migration_service_grpc_transport_client_cert_source_for_mtls(
     transport_class,
 ):
-    cred = ga_credentials.AnonymousCredentials()
+    cred = _AnonymousCredentialsWithUniverseDomain()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -11246,7 +11688,7 @@ def test_data_migration_service_grpc_transport_client_cert_source_for_mtls(
 )
 def test_data_migration_service_host_no_port(transport_name):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         client_options=client_options.ClientOptions(
             api_endpoint="datamigration.googleapis.com"
         ),
@@ -11264,7 +11706,7 @@ def test_data_migration_service_host_no_port(transport_name):
 )
 def test_data_migration_service_host_with_port(transport_name):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         client_options=client_options.ClientOptions(
             api_endpoint="datamigration.googleapis.com:8000"
         ),
@@ -11323,7 +11765,7 @@ def test_data_migration_service_transport_channel_mtls_with_client_cert_source(
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = ga_credentials.AnonymousCredentials()
+            cred = _AnonymousCredentialsWithUniverseDomain()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
@@ -11401,7 +11843,7 @@ def test_data_migration_service_transport_channel_mtls_with_adc(transport_class)
 
 def test_data_migration_service_grpc_lro_client():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
     transport = client.transport
@@ -11418,7 +11860,7 @@ def test_data_migration_service_grpc_lro_client():
 
 def test_data_migration_service_grpc_lro_async_client():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc_asyncio",
     )
     transport = client.transport
@@ -11711,7 +12153,7 @@ def test_client_with_default_client_info():
         transports.DataMigrationServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = DataMigrationServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -11721,7 +12163,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = DataMigrationServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -11730,7 +12172,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(
@@ -11743,7 +12185,7 @@ async def test_transport_close_async():
 
 def test_delete_operation(transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -11768,7 +12210,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -11792,7 +12234,7 @@ async def test_delete_operation_async(transport: str = "grpc_asyncio"):
 
 def test_delete_operation_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11821,7 +12263,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11848,7 +12290,7 @@ async def test_delete_operation_field_headers_async():
 
 def test_delete_operation_from_dict():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -11866,7 +12308,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -11882,7 +12324,7 @@ async def test_delete_operation_from_dict_async():
 
 def test_cancel_operation(transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -11907,7 +12349,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -11931,7 +12373,7 @@ async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
 
 def test_cancel_operation_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11960,7 +12402,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11987,7 +12429,7 @@ async def test_cancel_operation_field_headers_async():
 
 def test_cancel_operation_from_dict():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -12005,7 +12447,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -12021,7 +12463,7 @@ async def test_cancel_operation_from_dict_async():
 
 def test_get_operation(transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12046,7 +12488,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12072,7 +12514,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 def test_get_operation_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12101,7 +12543,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12130,7 +12572,7 @@ async def test_get_operation_field_headers_async():
 
 def test_get_operation_from_dict():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -12148,7 +12590,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -12166,7 +12608,7 @@ async def test_get_operation_from_dict_async():
 
 def test_list_operations(transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12191,7 +12633,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12217,7 +12659,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
 
 def test_list_operations_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12246,7 +12688,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12275,7 +12717,7 @@ async def test_list_operations_field_headers_async():
 
 def test_list_operations_from_dict():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -12293,7 +12735,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -12311,7 +12753,7 @@ async def test_list_operations_from_dict_async():
 
 def test_list_locations(transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12336,7 +12778,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12362,7 +12804,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
 
 def test_list_locations_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12391,7 +12833,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12420,7 +12862,7 @@ async def test_list_locations_field_headers_async():
 
 def test_list_locations_from_dict():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -12438,7 +12880,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -12456,7 +12898,7 @@ async def test_list_locations_from_dict_async():
 
 def test_get_location(transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12481,7 +12923,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12507,7 +12949,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
 
 def test_get_location_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12536,7 +12978,7 @@ def test_get_location_field_headers():
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12565,7 +13007,7 @@ async def test_get_location_field_headers_async():
 
 def test_get_location_from_dict():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -12583,7 +13025,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -12601,7 +13043,7 @@ async def test_get_location_from_dict_async():
 
 def test_set_iam_policy(transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12634,7 +13076,7 @@ def test_set_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12669,7 +13111,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
 
 def test_set_iam_policy_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12699,7 +13141,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12728,7 +13170,7 @@ async def test_set_iam_policy_field_headers_async():
 
 def test_set_iam_policy_from_dict():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -12747,7 +13189,7 @@ def test_set_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -12765,7 +13207,7 @@ async def test_set_iam_policy_from_dict_async():
 
 def test_get_iam_policy(transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12800,7 +13242,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12836,7 +13278,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
 
 def test_get_iam_policy_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12866,7 +13308,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12895,7 +13337,7 @@ async def test_get_iam_policy_field_headers_async():
 
 def test_get_iam_policy_from_dict():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -12914,7 +13356,7 @@ def test_get_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -12932,7 +13374,7 @@ async def test_get_iam_policy_from_dict_async():
 
 def test_test_iam_permissions(transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -12966,7 +13408,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -13001,7 +13443,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
 
 def test_test_iam_permissions_field_headers():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13033,7 +13475,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13066,7 +13508,7 @@ async def test_test_iam_permissions_field_headers_async():
 
 def test_test_iam_permissions_from_dict():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13087,7 +13529,7 @@ def test_test_iam_permissions_from_dict():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -13114,7 +13556,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = DataMigrationServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -13130,7 +13572,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = DataMigrationServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
@@ -13164,7 +13606,9 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                ),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
