@@ -76,7 +76,13 @@
             "component": "google-apps-meet",
             "extra-files": [
                 "google/apps/meet/gapic_version.py",
+                "google/apps/meet_v2/gapic_version.py",
                 "google/apps/meet_v2beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.apps.meet.v2.json",
+                    "type": "json"
+                },
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.apps.meet.v2beta.json",
