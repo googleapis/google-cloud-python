@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.3...google-cloud-advisorynotifications-v0.3.4) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.2...google-cloud-advisorynotifications-v0.3.3) (2023-12-07)
 
 
