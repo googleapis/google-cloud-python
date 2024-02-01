@@ -17,11 +17,11 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.automl_v1beta1.types import geometry, io
 from google.cloud.automl_v1beta1.types import text_segment as gca_text_segment
-from google.protobuf import struct_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1beta1",
