@@ -18,17 +18,17 @@ from google.apps.meet import gapic_version as package_version
 __version__ = package_version.__version__
 
 
-from google.apps.meet_v2beta.services.conference_records_service.async_client import (
+from google.apps.meet_v2.services.conference_records_service.async_client import (
     ConferenceRecordsServiceAsyncClient,
 )
-from google.apps.meet_v2beta.services.conference_records_service.client import (
+from google.apps.meet_v2.services.conference_records_service.client import (
     ConferenceRecordsServiceClient,
 )
-from google.apps.meet_v2beta.services.spaces_service.async_client import (
+from google.apps.meet_v2.services.spaces_service.async_client import (
     SpacesServiceAsyncClient,
 )
-from google.apps.meet_v2beta.services.spaces_service.client import SpacesServiceClient
-from google.apps.meet_v2beta.types.resource import (
+from google.apps.meet_v2.services.spaces_service.client import SpacesServiceClient
+from google.apps.meet_v2.types.resource import (
     ActiveConference,
     AnonymousUser,
     ConferenceRecord,
@@ -44,7 +44,7 @@ from google.apps.meet_v2beta.types.resource import (
     Transcript,
     TranscriptEntry,
 )
-from google.apps.meet_v2beta.types.service import (
+from google.apps.meet_v2.types.service import (
     CreateSpaceRequest,
     EndActiveConferenceRequest,
     GetConferenceRecordRequest,
