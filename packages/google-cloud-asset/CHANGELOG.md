@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.23.0...google-cloud-asset-v3.24.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [3.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.22.0...google-cloud-asset-v3.23.0) (2024-01-04)
 
 

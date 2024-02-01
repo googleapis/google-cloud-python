@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.6.0...google-cloud-bare-metal-solution-v1.7.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.5.1...google-cloud-bare-metal-solution-v1.6.0) (2023-12-07)
 
 

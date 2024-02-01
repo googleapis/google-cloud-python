@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.2...google-apps-meet-v0.1.3) (2024-02-01)
+
+
+### Features
+
+* Added v2 libraries for the Meet API GA release ([b7cf5a9](https://github.com/googleapis/google-cloud-python/commit/b7cf5a9a22b0798be485d5b58288f24a50aff6b6))
+* Set google.apps.meet_v2 as the default import ([b7cf5a9](https://github.com/googleapis/google-cloud-python/commit/b7cf5a9a22b0798be485d5b58288f24a50aff6b6))
+
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.1...google-apps-meet-v0.1.2) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.0...google-apps-meet-v0.1.1) (2024-01-04)
 
 

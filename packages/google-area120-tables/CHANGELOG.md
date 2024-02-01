@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.6](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.5...google-area120-tables-v0.11.6) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [0.11.5](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.4...google-area120-tables-v0.11.5) (2023-12-07)
 
 

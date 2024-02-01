@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.14.0...google-cloud-recommender-v2.15.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([4368029](https://github.com/googleapis/google-cloud-python/commit/436802904bfdafa7e90f94b128813506525e1605))
+
 ## [2.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.13.0...google-cloud-recommender-v2.14.0) (2023-12-12)
 
 

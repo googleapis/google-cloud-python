@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.4](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.3...google-analytics-admin-v0.22.4) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [0.22.3](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.2...google-analytics-admin-v0.22.3) (2024-01-26)
 
 

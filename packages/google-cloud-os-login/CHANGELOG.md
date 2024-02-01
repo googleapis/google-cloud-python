@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.13.0...google-cloud-os-login-v2.14.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([4368029](https://github.com/googleapis/google-cloud-python/commit/436802904bfdafa7e90f94b128813506525e1605))
+
 ## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.12.0...google-cloud-os-login-v2.13.0) (2024-01-12)
 
 

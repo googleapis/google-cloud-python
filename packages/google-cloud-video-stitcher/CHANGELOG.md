@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.5...google-cloud-video-stitcher-v0.7.6) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12244](https://github.com/googleapis/google-cloud-python/issues/12244)) ([8d6b772](https://github.com/googleapis/google-cloud-python/commit/8d6b7729d93c1347529a3d34ed6266af55225578))
+
 ## [0.7.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.4...google-cloud-video-stitcher-v0.7.5) (2023-12-07)
 
 

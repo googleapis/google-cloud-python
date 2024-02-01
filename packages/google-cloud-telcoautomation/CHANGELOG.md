@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.1.2...google-cloud-telcoautomation-v0.2.0) (2024-02-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* Removed RPCs `DeleteBlueprintRevision`, `DeleteDeployment`, `DeleteDeploymentRevision`
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12243](https://github.com/googleapis/google-cloud-python/issues/12243)) ([e14d4b1](https://github.com/googleapis/google-cloud-python/commit/e14d4b13a883876a420c498a044dc34ea5122629))
+* New fields in message `Blueprint` ([d11edb1](https://github.com/googleapis/google-cloud-python/commit/d11edb12c30251d8662bd846b97dd7ccf10d944a))
+* New values in enum `State` ([d11edb1](https://github.com/googleapis/google-cloud-python/commit/d11edb12c30251d8662bd846b97dd7ccf10d944a))
+* Support for the STATUS_NOT_APPLICABLE entity status ([9d4649b](https://github.com/googleapis/google-cloud-python/commit/9d4649b6aa0c7a410be1751ab1932be767d8ae46))
+* Support for the WORKLOAD_CLUSTER_DEPLOYMENT blueprint deployment level ([9d4649b](https://github.com/googleapis/google-cloud-python/commit/9d4649b6aa0c7a410be1751ab1932be767d8ae46))
+
+
+### Bug Fixes
+
+* Removed RPCs `DeleteBlueprintRevision`, `DeleteDeployment`, `DeleteDeploymentRevision` ([d11edb1](https://github.com/googleapis/google-cloud-python/commit/d11edb12c30251d8662bd846b97dd7ccf10d944a))
+
+
+### Documentation
+
+* Clarified Deployment.workload_cluster field description ([9d4649b](https://github.com/googleapis/google-cloud-python/commit/9d4649b6aa0c7a410be1751ab1932be767d8ae46))
+* Updated comments ([d11edb1](https://github.com/googleapis/google-cloud-python/commit/d11edb12c30251d8662bd846b97dd7ccf10d944a))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-telcoautomation-v0.1.1...google-cloud-telcoautomation-v0.1.2) (2023-12-07)
 
 

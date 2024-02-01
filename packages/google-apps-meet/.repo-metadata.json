@@ -11,7 +11,7 @@
     "repo": "googleapis/google-cloud-python",
     "distribution_name": "google-apps-meet",
     "api_id": "meet.googleapis.com",
-    "default_version": "v2beta",
+    "default_version": "v2",
     "codeowner_team": "",
     "api_shortname": "meet"
 }

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.1...google-shopping-merchant-inventories-v0.1.2) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12245](https://github.com/googleapis/google-cloud-python/issues/12245)) ([4fce462](https://github.com/googleapis/google-cloud-python/commit/4fce46283482bc303fd9bf8b25c3e74b2e619d6c))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-inventories-v0.1.0...google-shopping-merchant-inventories-v0.1.1) (2023-12-07)
 
 

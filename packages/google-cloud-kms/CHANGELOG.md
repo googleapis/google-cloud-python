@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.20.0...google-cloud-kms-v2.21.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12241](https://github.com/googleapis/google-cloud-python/issues/12241)) ([aae72f5](https://github.com/googleapis/google-cloud-python/commit/aae72f5e6c7d48e777fdf68d1012b2b51b912bad))
+
+
+### Documentation
+
+* [google-cloud-kms] update comments ([#12232](https://github.com/googleapis/google-cloud-python/issues/12232)) ([7caca2e](https://github.com/googleapis/google-cloud-python/commit/7caca2e52c8568d020e0bd56eefe32ff824be722))
+
 ## [2.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.19.2...google-cloud-kms-v2.20.0) (2023-12-07)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-appconnections-v0.4.5...google-cloud-beyondcorp-appconnections-v0.4.6) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [0.4.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-beyondcorp-appconnections-v0.4.4...google-cloud-beyondcorp-appconnections-v0.4.5) (2023-12-07)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-v1.12.1...google-cloud-billing-v1.13.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12238](https://github.com/googleapis/google-cloud-python/issues/12238)) ([8701267](https://github.com/googleapis/google-cloud-python/commit/8701267fc9694844b9365024cd59354785247aa0))
+
 ## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-v1.12.0...google-cloud-billing-v1.12.1) (2024-01-19)
 
 
