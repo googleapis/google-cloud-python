@@ -27,7 +27,7 @@ import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
@@ -80,6 +80,29 @@ def modify_default_endpoint(client):
     )
 
 
+# If default endpoint template is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint template so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint_template(client):
+    return (
+        "test.{UNIVERSE_DOMAIN}"
+        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
+        else client._DEFAULT_ENDPOINT_TEMPLATE
+    )
+
+
+# Anonymous Credentials with universe domain property. If no universe domain is provided, then
+# the default universe domain is "googleapis.com".
+class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
+    def __init__(self, universe_domain="googleapis.com"):
+        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
+        self._universe_domain = universe_domain
+
+    @property
+    def universe_domain(self):
+        return self._universe_domain
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -106,6 +129,251 @@ def test__get_default_mtls_endpoint():
     assert RecommenderClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
+def test__read_environment_variables():
+    assert RecommenderClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        assert RecommenderClient._read_environment_variables() == (True, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        assert RecommenderClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError) as excinfo:
+            RecommenderClient._read_environment_variables()
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+    )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        assert RecommenderClient._read_environment_variables() == (False, "never", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        assert RecommenderClient._read_environment_variables() == (
+            False,
+            "always",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
+        assert RecommenderClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            RecommenderClient._read_environment_variables()
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+    )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
+        assert RecommenderClient._read_environment_variables() == (
+            False,
+            "auto",
+            "foo.com",
+        )
+
+
+def test__get_client_cert_source():
+    mock_provided_cert_source = mock.Mock()
+    mock_default_cert_source = mock.Mock()
+
+    assert RecommenderClient._get_client_cert_source(None, False) is None
+    assert (
+        RecommenderClient._get_client_cert_source(mock_provided_cert_source, False)
+        is None
+    )
+    assert (
+        RecommenderClient._get_client_cert_source(mock_provided_cert_source, True)
+        == mock_provided_cert_source
+    )
+
+    with mock.patch(
+        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
+    ):
+        with mock.patch(
+            "google.auth.transport.mtls.default_client_cert_source",
+            return_value=mock_default_cert_source,
+        ):
+            assert (
+                RecommenderClient._get_client_cert_source(None, True)
+                is mock_default_cert_source
+            )
+            assert (
+                RecommenderClient._get_client_cert_source(
+                    mock_provided_cert_source, "true"
+                )
+                is mock_provided_cert_source
+            )
+
+
+@mock.patch.object(
+    RecommenderClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(RecommenderClient),
+)
+@mock.patch.object(
+    RecommenderAsyncClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(RecommenderAsyncClient),
+)
+def test__get_api_endpoint():
+    api_override = "foo.com"
+    mock_client_cert_source = mock.Mock()
+    default_universe = RecommenderClient._DEFAULT_UNIVERSE
+    default_endpoint = RecommenderClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=default_universe
+    )
+    mock_universe = "bar.com"
+    mock_endpoint = RecommenderClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=mock_universe
+    )
+
+    assert (
+        RecommenderClient._get_api_endpoint(
+            api_override, mock_client_cert_source, default_universe, "always"
+        )
+        == api_override
+    )
+    assert (
+        RecommenderClient._get_api_endpoint(
+            None, mock_client_cert_source, default_universe, "auto"
+        )
+        == RecommenderClient.DEFAULT_MTLS_ENDPOINT
+    )
+    assert (
+        RecommenderClient._get_api_endpoint(None, None, default_universe, "auto")
+        == default_endpoint
+    )
+    assert (
+        RecommenderClient._get_api_endpoint(None, None, default_universe, "always")
+        == RecommenderClient.DEFAULT_MTLS_ENDPOINT
+    )
+    assert (
+        RecommenderClient._get_api_endpoint(
+            None, mock_client_cert_source, default_universe, "always"
+        )
+        == RecommenderClient.DEFAULT_MTLS_ENDPOINT
+    )
+    assert (
+        RecommenderClient._get_api_endpoint(None, None, mock_universe, "never")
+        == mock_endpoint
+    )
+    assert (
+        RecommenderClient._get_api_endpoint(None, None, default_universe, "never")
+        == default_endpoint
+    )
+
+    with pytest.raises(MutualTLSChannelError) as excinfo:
+        RecommenderClient._get_api_endpoint(
+            None, mock_client_cert_source, mock_universe, "auto"
+        )
+    assert (
+        str(excinfo.value)
+        == "mTLS is not supported in any universe other than googleapis.com."
+    )
+
+
+def test__get_universe_domain():
+    client_universe_domain = "foo.com"
+    universe_domain_env = "bar.com"
+
+    assert (
+        RecommenderClient._get_universe_domain(
+            client_universe_domain, universe_domain_env
+        )
+        == client_universe_domain
+    )
+    assert (
+        RecommenderClient._get_universe_domain(None, universe_domain_env)
+        == universe_domain_env
+    )
+    assert (
+        RecommenderClient._get_universe_domain(None, None)
+        == RecommenderClient._DEFAULT_UNIVERSE
+    )
+
+    with pytest.raises(ValueError) as excinfo:
+        RecommenderClient._get_universe_domain("", None)
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name",
+    [
+        (RecommenderClient, transports.RecommenderGrpcTransport, "grpc"),
+        (RecommenderClient, transports.RecommenderRestTransport, "rest"),
+    ],
+)
+def test__validate_universe_domain(client_class, transport_class, transport_name):
+    client = client_class(
+        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+    )
+    assert client._validate_universe_domain() == True
+
+    # Test the case when universe is already validated.
+    assert client._validate_universe_domain() == True
+
+    if transport_name == "grpc":
+        # Test the case where credentials are provided by the
+        # `local_channel_credentials`. The default universes in both match.
+        channel = grpc.secure_channel(
+            "http://localhost/", grpc.local_channel_credentials()
+        )
+        client = client_class(transport=transport_class(channel=channel))
+        assert client._validate_universe_domain() == True
+
+        # Test the case where credentials do not exist: e.g. a transport is provided
+        # with no credentials. Validation should still succeed because there is no
+        # mismatch with non-existent credentials.
+        channel = grpc.secure_channel(
+            "http://localhost/", grpc.local_channel_credentials()
+        )
+        transport = transport_class(channel=channel)
+        transport._credentials = None
+        client = client_class(transport=transport)
+        assert client._validate_universe_domain() == True
+
+    # Test the case when there is a universe mismatch from the credentials.
+    client = client_class(
+        transport=transport_class(
+            credentials=_AnonymousCredentialsWithUniverseDomain(
+                universe_domain="foo.com"
+            )
+        )
+    )
+    with pytest.raises(ValueError) as excinfo:
+        client._validate_universe_domain()
+    assert (
+        str(excinfo.value)
+        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+    )
+
+    # Test the case when there is a universe mismatch from the client.
+    #
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.15.0 or higher.
+    api_core_major, api_core_minor, _ = [
+        int(part) for part in api_core_version.__version__.split(".")
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+        client = client_class(
+            client_options={"universe_domain": "bar.com"},
+            transport=transport_class(
+                credentials=_AnonymousCredentialsWithUniverseDomain(),
+            ),
+        )
+        with pytest.raises(ValueError) as excinfo:
+            client._validate_universe_domain()
+        assert (
+            str(excinfo.value)
+            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+        )
+
+
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
@@ -115,7 +383,7 @@ def test__get_default_mtls_endpoint():
     ],
 )
 def test_recommender_client_from_service_account_info(client_class, transport_name):
-    creds = ga_credentials.AnonymousCredentials()
+    creds = _AnonymousCredentialsWithUniverseDomain()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -167,7 +435,7 @@ def test_recommender_client_service_account_always_use_jwt(
     ],
 )
 def test_recommender_client_from_service_account_file(client_class, transport_name):
-    creds = ga_credentials.AnonymousCredentials()
+    creds = _AnonymousCredentialsWithUniverseDomain()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -216,19 +484,23 @@ def test_recommender_client_get_transport_class():
     ],
 )
 @mock.patch.object(
-    RecommenderClient, "DEFAULT_ENDPOINT", modify_default_endpoint(RecommenderClient)
+    RecommenderClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(RecommenderClient),
 )
 @mock.patch.object(
     RecommenderAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(RecommenderAsyncClient),
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(RecommenderAsyncClient),
 )
 def test_recommender_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(RecommenderClient, "get_transport_class") as gtc:
-        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
+        transport = transport_class(
+            credentials=_AnonymousCredentialsWithUniverseDomain()
+        )
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -263,7 +535,9 @@ def test_recommender_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                ),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -293,15 +567,23 @@ def test_recommender_client_client_options(
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+    )
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as excinfo:
             client = client_class(transport=transport_name)
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+    )
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -311,7 +593,9 @@ def test_recommender_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -329,7 +613,9 @@ def test_recommender_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -361,12 +647,14 @@ def test_recommender_client_client_options(
     ],
 )
 @mock.patch.object(
-    RecommenderClient, "DEFAULT_ENDPOINT", modify_default_endpoint(RecommenderClient)
+    RecommenderClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(RecommenderClient),
 )
 @mock.patch.object(
     RecommenderAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(RecommenderAsyncClient),
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(RecommenderAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
 def test_recommender_client_mtls_env_auto(
@@ -389,7 +677,9 @@ def test_recommender_client_mtls_env_auto(
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client.DEFAULT_ENDPOINT
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                )
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -421,7 +711,9 @@ def test_recommender_client_mtls_env_auto(
                     return_value=client_cert_source_callback,
                 ):
                     if use_client_cert_env == "false":
-                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                        )
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -455,7 +747,9 @@ def test_recommender_client_mtls_env_auto(
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                    ),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -541,6 +835,116 @@ def test_recommender_client_get_mtls_endpoint_and_cert_source(client_class):
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert (
+            str(excinfo.value)
+            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+        )
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert (
+            str(excinfo.value)
+            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        )
+
+
+@pytest.mark.parametrize("client_class", [RecommenderClient, RecommenderAsyncClient])
+@mock.patch.object(
+    RecommenderClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(RecommenderClient),
+)
+@mock.patch.object(
+    RecommenderAsyncClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(RecommenderAsyncClient),
+)
+def test_recommender_client_client_api_endpoint(client_class):
+    mock_client_cert_source = client_cert_source_callback
+    api_override = "foo.com"
+    default_universe = RecommenderClient._DEFAULT_UNIVERSE
+    default_endpoint = RecommenderClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=default_universe
+    )
+    mock_universe = "bar.com"
+    mock_endpoint = RecommenderClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=mock_universe
+    )
+
+    # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
+    # use ClientOptions.api_endpoint as the api endpoint regardless.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+        ):
+            options = client_options.ClientOptions(
+                client_cert_source=mock_client_cert_source, api_endpoint=api_override
+            )
+            client = client_class(
+                client_options=options,
+                credentials=_AnonymousCredentialsWithUniverseDomain(),
+            )
+            assert client.api_endpoint == api_override
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        assert client.api_endpoint == default_endpoint
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
+    # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+
+    # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE="false" (default), default cert source doesn't exist,
+    # and ClientOptions.universe_domain="bar.com",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
+    options = client_options.ClientOptions()
+    universe_exists = hasattr(options, "universe_domain")
+    if universe_exists:
+        options = client_options.ClientOptions(universe_domain=mock_universe)
+        client = client_class(
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
+        )
+    else:
+        client = client_class(
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
+        )
+    assert client.api_endpoint == (
+        mock_endpoint if universe_exists else default_endpoint
+    )
+    assert client.universe_domain == (
+        mock_universe if universe_exists else default_universe
+    )
+
+    # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    options = client_options.ClientOptions()
+    if hasattr(options, "universe_domain"):
+        delattr(options, "universe_domain")
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
+        )
+        assert client.api_endpoint == default_endpoint
+
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
@@ -567,7 +971,9 @@ def test_recommender_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -602,7 +1008,9 @@ def test_recommender_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -655,7 +1063,9 @@ def test_recommender_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -672,8 +1082,8 @@ def test_recommender_client_create_channel_credentials_file(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = ga_credentials.AnonymousCredentials()
-        file_creds = ga_credentials.AnonymousCredentials()
+        creds = _AnonymousCredentialsWithUniverseDomain()
+        file_creds = _AnonymousCredentialsWithUniverseDomain()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -702,7 +1112,7 @@ def test_recommender_client_create_channel_credentials_file(
 )
 def test_list_insights(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -732,7 +1142,7 @@ def test_list_insights_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -750,7 +1160,7 @@ async def test_list_insights_async(
     request_type=recommender_service.ListInsightsRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -785,7 +1195,7 @@ async def test_list_insights_async_from_dict():
 
 def test_list_insights_field_headers():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -815,7 +1225,7 @@ def test_list_insights_field_headers():
 @pytest.mark.asyncio
 async def test_list_insights_field_headers_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -846,7 +1256,7 @@ async def test_list_insights_field_headers_async():
 
 def test_list_insights_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -870,7 +1280,7 @@ def test_list_insights_flattened():
 
 def test_list_insights_flattened_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -885,7 +1295,7 @@ def test_list_insights_flattened_error():
 @pytest.mark.asyncio
 async def test_list_insights_flattened_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -914,7 +1324,7 @@ async def test_list_insights_flattened_async():
 @pytest.mark.asyncio
 async def test_list_insights_flattened_error_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -928,7 +1338,7 @@ async def test_list_insights_flattened_error_async():
 
 def test_list_insights_pager(transport_name: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -978,7 +1388,7 @@ def test_list_insights_pager(transport_name: str = "grpc"):
 
 def test_list_insights_pages(transport_name: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1020,7 +1430,7 @@ def test_list_insights_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_insights_async_pager():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1070,7 +1480,7 @@ async def test_list_insights_async_pager():
 @pytest.mark.asyncio
 async def test_list_insights_async_pages():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1125,7 +1535,7 @@ async def test_list_insights_async_pages():
 )
 def test_get_insight(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1167,7 +1577,7 @@ def test_get_insight_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -1184,7 +1594,7 @@ async def test_get_insight_async(
     transport: str = "grpc_asyncio", request_type=recommender_service.GetInsightRequest
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1231,7 +1641,7 @@ async def test_get_insight_async_from_dict():
 
 def test_get_insight_field_headers():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1261,7 +1671,7 @@ def test_get_insight_field_headers():
 @pytest.mark.asyncio
 async def test_get_insight_field_headers_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1290,7 +1700,7 @@ async def test_get_insight_field_headers_async():
 
 def test_get_insight_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1314,7 +1724,7 @@ def test_get_insight_flattened():
 
 def test_get_insight_flattened_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1329,7 +1739,7 @@ def test_get_insight_flattened_error():
 @pytest.mark.asyncio
 async def test_get_insight_flattened_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1356,7 +1766,7 @@ async def test_get_insight_flattened_async():
 @pytest.mark.asyncio
 async def test_get_insight_flattened_error_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1377,7 +1787,7 @@ async def test_get_insight_flattened_error_async():
 )
 def test_mark_insight_accepted(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1421,7 +1831,7 @@ def test_mark_insight_accepted_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -1441,7 +1851,7 @@ async def test_mark_insight_accepted_async(
     request_type=recommender_service.MarkInsightAcceptedRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1490,7 +1900,7 @@ async def test_mark_insight_accepted_async_from_dict():
 
 def test_mark_insight_accepted_field_headers():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1522,7 +1932,7 @@ def test_mark_insight_accepted_field_headers():
 @pytest.mark.asyncio
 async def test_mark_insight_accepted_field_headers_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1553,7 +1963,7 @@ async def test_mark_insight_accepted_field_headers_async():
 
 def test_mark_insight_accepted_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1587,7 +1997,7 @@ def test_mark_insight_accepted_flattened():
 
 def test_mark_insight_accepted_flattened_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1604,7 +2014,7 @@ def test_mark_insight_accepted_flattened_error():
 @pytest.mark.asyncio
 async def test_mark_insight_accepted_flattened_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1641,7 +2051,7 @@ async def test_mark_insight_accepted_flattened_async():
 @pytest.mark.asyncio
 async def test_mark_insight_accepted_flattened_error_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1664,7 +2074,7 @@ async def test_mark_insight_accepted_flattened_error_async():
 )
 def test_list_recommendations(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1696,7 +2106,7 @@ def test_list_recommendations_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -1716,7 +2126,7 @@ async def test_list_recommendations_async(
     request_type=recommender_service.ListRecommendationsRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1753,7 +2163,7 @@ async def test_list_recommendations_async_from_dict():
 
 def test_list_recommendations_field_headers():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1785,7 +2195,7 @@ def test_list_recommendations_field_headers():
 @pytest.mark.asyncio
 async def test_list_recommendations_field_headers_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1818,7 +2228,7 @@ async def test_list_recommendations_field_headers_async():
 
 def test_list_recommendations_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1848,7 +2258,7 @@ def test_list_recommendations_flattened():
 
 def test_list_recommendations_flattened_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1864,7 +2274,7 @@ def test_list_recommendations_flattened_error():
 @pytest.mark.asyncio
 async def test_list_recommendations_flattened_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1899,7 +2309,7 @@ async def test_list_recommendations_flattened_async():
 @pytest.mark.asyncio
 async def test_list_recommendations_flattened_error_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1914,7 +2324,7 @@ async def test_list_recommendations_flattened_error_async():
 
 def test_list_recommendations_pager(transport_name: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1966,7 +2376,7 @@ def test_list_recommendations_pager(transport_name: str = "grpc"):
 
 def test_list_recommendations_pages(transport_name: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -2010,7 +2420,7 @@ def test_list_recommendations_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_recommendations_async_pager():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2062,7 +2472,7 @@ async def test_list_recommendations_async_pager():
 @pytest.mark.asyncio
 async def test_list_recommendations_async_pages():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2119,7 +2529,7 @@ async def test_list_recommendations_async_pages():
 )
 def test_get_recommendation(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2161,7 +2571,7 @@ def test_get_recommendation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -2181,7 +2591,7 @@ async def test_get_recommendation_async(
     request_type=recommender_service.GetRecommendationRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2228,7 +2638,7 @@ async def test_get_recommendation_async_from_dict():
 
 def test_get_recommendation_field_headers():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2260,7 +2670,7 @@ def test_get_recommendation_field_headers():
 @pytest.mark.asyncio
 async def test_get_recommendation_field_headers_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2293,7 +2703,7 @@ async def test_get_recommendation_field_headers_async():
 
 def test_get_recommendation_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2319,7 +2729,7 @@ def test_get_recommendation_flattened():
 
 def test_get_recommendation_flattened_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2334,7 +2744,7 @@ def test_get_recommendation_flattened_error():
 @pytest.mark.asyncio
 async def test_get_recommendation_flattened_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2365,7 +2775,7 @@ async def test_get_recommendation_flattened_async():
 @pytest.mark.asyncio
 async def test_get_recommendation_flattened_error_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2386,7 +2796,7 @@ async def test_get_recommendation_flattened_error_async():
 )
 def test_mark_recommendation_claimed(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2428,7 +2838,7 @@ def test_mark_recommendation_claimed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -2448,7 +2858,7 @@ async def test_mark_recommendation_claimed_async(
     request_type=recommender_service.MarkRecommendationClaimedRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2495,7 +2905,7 @@ async def test_mark_recommendation_claimed_async_from_dict():
 
 def test_mark_recommendation_claimed_field_headers():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2527,7 +2937,7 @@ def test_mark_recommendation_claimed_field_headers():
 @pytest.mark.asyncio
 async def test_mark_recommendation_claimed_field_headers_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2560,7 +2970,7 @@ async def test_mark_recommendation_claimed_field_headers_async():
 
 def test_mark_recommendation_claimed_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2594,7 +3004,7 @@ def test_mark_recommendation_claimed_flattened():
 
 def test_mark_recommendation_claimed_flattened_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2611,7 +3021,7 @@ def test_mark_recommendation_claimed_flattened_error():
 @pytest.mark.asyncio
 async def test_mark_recommendation_claimed_flattened_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2650,7 +3060,7 @@ async def test_mark_recommendation_claimed_flattened_async():
 @pytest.mark.asyncio
 async def test_mark_recommendation_claimed_flattened_error_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2673,7 +3083,7 @@ async def test_mark_recommendation_claimed_flattened_error_async():
 )
 def test_mark_recommendation_succeeded(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2715,7 +3125,7 @@ def test_mark_recommendation_succeeded_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -2735,7 +3145,7 @@ async def test_mark_recommendation_succeeded_async(
     request_type=recommender_service.MarkRecommendationSucceededRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -2782,7 +3192,7 @@ async def test_mark_recommendation_succeeded_async_from_dict():
 
 def test_mark_recommendation_succeeded_field_headers():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2814,7 +3224,7 @@ def test_mark_recommendation_succeeded_field_headers():
 @pytest.mark.asyncio
 async def test_mark_recommendation_succeeded_field_headers_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2847,7 +3257,7 @@ async def test_mark_recommendation_succeeded_field_headers_async():
 
 def test_mark_recommendation_succeeded_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2881,7 +3291,7 @@ def test_mark_recommendation_succeeded_flattened():
 
 def test_mark_recommendation_succeeded_flattened_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2898,7 +3308,7 @@ def test_mark_recommendation_succeeded_flattened_error():
 @pytest.mark.asyncio
 async def test_mark_recommendation_succeeded_flattened_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2937,7 +3347,7 @@ async def test_mark_recommendation_succeeded_flattened_async():
 @pytest.mark.asyncio
 async def test_mark_recommendation_succeeded_flattened_error_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2960,7 +3370,7 @@ async def test_mark_recommendation_succeeded_flattened_error_async():
 )
 def test_mark_recommendation_failed(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3002,7 +3412,7 @@ def test_mark_recommendation_failed_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -3022,7 +3432,7 @@ async def test_mark_recommendation_failed_async(
     request_type=recommender_service.MarkRecommendationFailedRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3069,7 +3479,7 @@ async def test_mark_recommendation_failed_async_from_dict():
 
 def test_mark_recommendation_failed_field_headers():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3101,7 +3511,7 @@ def test_mark_recommendation_failed_field_headers():
 @pytest.mark.asyncio
 async def test_mark_recommendation_failed_field_headers_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3134,7 +3544,7 @@ async def test_mark_recommendation_failed_field_headers_async():
 
 def test_mark_recommendation_failed_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3168,7 +3578,7 @@ def test_mark_recommendation_failed_flattened():
 
 def test_mark_recommendation_failed_flattened_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3185,7 +3595,7 @@ def test_mark_recommendation_failed_flattened_error():
 @pytest.mark.asyncio
 async def test_mark_recommendation_failed_flattened_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3224,7 +3634,7 @@ async def test_mark_recommendation_failed_flattened_async():
 @pytest.mark.asyncio
 async def test_mark_recommendation_failed_flattened_error_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3247,7 +3657,7 @@ async def test_mark_recommendation_failed_flattened_error_async():
 )
 def test_get_recommender_config(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3285,7 +3695,7 @@ def test_get_recommender_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -3305,7 +3715,7 @@ async def test_get_recommender_config_async(
     request_type=recommender_service.GetRecommenderConfigRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3348,7 +3758,7 @@ async def test_get_recommender_config_async_from_dict():
 
 def test_get_recommender_config_field_headers():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3380,7 +3790,7 @@ def test_get_recommender_config_field_headers():
 @pytest.mark.asyncio
 async def test_get_recommender_config_field_headers_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3413,7 +3823,7 @@ async def test_get_recommender_config_field_headers_async():
 
 def test_get_recommender_config_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3439,7 +3849,7 @@ def test_get_recommender_config_flattened():
 
 def test_get_recommender_config_flattened_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3454,7 +3864,7 @@ def test_get_recommender_config_flattened_error():
 @pytest.mark.asyncio
 async def test_get_recommender_config_flattened_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3485,7 +3895,7 @@ async def test_get_recommender_config_flattened_async():
 @pytest.mark.asyncio
 async def test_get_recommender_config_flattened_error_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3506,7 +3916,7 @@ async def test_get_recommender_config_flattened_error_async():
 )
 def test_update_recommender_config(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3544,7 +3954,7 @@ def test_update_recommender_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -3564,7 +3974,7 @@ async def test_update_recommender_config_async(
     request_type=recommender_service.UpdateRecommenderConfigRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3607,7 +4017,7 @@ async def test_update_recommender_config_async_from_dict():
 
 def test_update_recommender_config_field_headers():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3639,7 +4049,7 @@ def test_update_recommender_config_field_headers():
 @pytest.mark.asyncio
 async def test_update_recommender_config_field_headers_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3672,7 +4082,7 @@ async def test_update_recommender_config_field_headers_async():
 
 def test_update_recommender_config_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3704,7 +4114,7 @@ def test_update_recommender_config_flattened():
 
 def test_update_recommender_config_flattened_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3722,7 +4132,7 @@ def test_update_recommender_config_flattened_error():
 @pytest.mark.asyncio
 async def test_update_recommender_config_flattened_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3759,7 +4169,7 @@ async def test_update_recommender_config_flattened_async():
 @pytest.mark.asyncio
 async def test_update_recommender_config_flattened_error_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3783,7 +4193,7 @@ async def test_update_recommender_config_flattened_error_async():
 )
 def test_get_insight_type_config(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3821,7 +4231,7 @@ def test_get_insight_type_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -3841,7 +4251,7 @@ async def test_get_insight_type_config_async(
     request_type=recommender_service.GetInsightTypeConfigRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -3884,7 +4294,7 @@ async def test_get_insight_type_config_async_from_dict():
 
 def test_get_insight_type_config_field_headers():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3916,7 +4326,7 @@ def test_get_insight_type_config_field_headers():
 @pytest.mark.asyncio
 async def test_get_insight_type_config_field_headers_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3949,7 +4359,7 @@ async def test_get_insight_type_config_field_headers_async():
 
 def test_get_insight_type_config_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3975,7 +4385,7 @@ def test_get_insight_type_config_flattened():
 
 def test_get_insight_type_config_flattened_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3990,7 +4400,7 @@ def test_get_insight_type_config_flattened_error():
 @pytest.mark.asyncio
 async def test_get_insight_type_config_flattened_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4021,7 +4431,7 @@ async def test_get_insight_type_config_flattened_async():
 @pytest.mark.asyncio
 async def test_get_insight_type_config_flattened_error_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4042,7 +4452,7 @@ async def test_get_insight_type_config_flattened_error_async():
 )
 def test_update_insight_type_config(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4080,7 +4490,7 @@ def test_update_insight_type_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -4100,7 +4510,7 @@ async def test_update_insight_type_config_async(
     request_type=recommender_service.UpdateInsightTypeConfigRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4143,7 +4553,7 @@ async def test_update_insight_type_config_async_from_dict():
 
 def test_update_insight_type_config_field_headers():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4175,7 +4585,7 @@ def test_update_insight_type_config_field_headers():
 @pytest.mark.asyncio
 async def test_update_insight_type_config_field_headers_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4208,7 +4618,7 @@ async def test_update_insight_type_config_field_headers_async():
 
 def test_update_insight_type_config_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4240,7 +4650,7 @@ def test_update_insight_type_config_flattened():
 
 def test_update_insight_type_config_flattened_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4258,7 +4668,7 @@ def test_update_insight_type_config_flattened_error():
 @pytest.mark.asyncio
 async def test_update_insight_type_config_flattened_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4295,7 +4705,7 @@ async def test_update_insight_type_config_flattened_async():
 @pytest.mark.asyncio
 async def test_update_insight_type_config_flattened_error_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4319,7 +4729,7 @@ async def test_update_insight_type_config_flattened_error_async():
 )
 def test_list_recommenders(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4351,7 +4761,7 @@ def test_list_recommenders_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -4371,7 +4781,7 @@ async def test_list_recommenders_async(
     request_type=recommender_service.ListRecommendersRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4408,7 +4818,7 @@ async def test_list_recommenders_async_from_dict():
 
 def test_list_recommenders_pager(transport_name: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -4457,7 +4867,7 @@ def test_list_recommenders_pager(transport_name: str = "grpc"):
 
 def test_list_recommenders_pages(transport_name: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -4501,7 +4911,7 @@ def test_list_recommenders_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_recommenders_async_pager():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4553,7 +4963,7 @@ async def test_list_recommenders_async_pager():
 @pytest.mark.asyncio
 async def test_list_recommenders_async_pages():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4610,7 +5020,7 @@ async def test_list_recommenders_async_pages():
 )
 def test_list_insight_types(request_type, transport: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4642,7 +5052,7 @@ def test_list_insight_types_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc",
     )
 
@@ -4662,7 +5072,7 @@ async def test_list_insight_types_async(
     request_type=recommender_service.ListInsightTypesRequest,
 ):
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -4699,7 +5109,7 @@ async def test_list_insight_types_async_from_dict():
 
 def test_list_insight_types_pager(transport_name: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -4748,7 +5158,7 @@ def test_list_insight_types_pager(transport_name: str = "grpc"):
 
 def test_list_insight_types_pages(transport_name: str = "grpc"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -4792,7 +5202,7 @@ def test_list_insight_types_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_insight_types_async_pager():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4844,7 +5254,7 @@ async def test_list_insight_types_async_pager():
 @pytest.mark.asyncio
 async def test_list_insight_types_async_pages():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4901,7 +5311,7 @@ async def test_list_insight_types_async_pages():
 )
 def test_list_insights_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -4952,7 +5362,7 @@ def test_list_insights_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).list_insights._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -4961,7 +5371,7 @@ def test_list_insights_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).list_insights._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -4978,7 +5388,7 @@ def test_list_insights_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -5020,7 +5430,7 @@ def test_list_insights_rest_required_fields(
 
 def test_list_insights_rest_unset_required_fields():
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.list_insights._get_unset_required_fields({})
@@ -5039,7 +5449,7 @@ def test_list_insights_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_insights_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -5097,7 +5507,7 @@ def test_list_insights_rest_bad_request(
     transport: str = "rest", request_type=recommender_service.ListInsightsRequest
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5119,7 +5529,7 @@ def test_list_insights_rest_bad_request(
 
 def test_list_insights_rest_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5163,7 +5573,7 @@ def test_list_insights_rest_flattened():
 
 def test_list_insights_rest_flattened_error(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5178,7 +5588,7 @@ def test_list_insights_rest_flattened_error(transport: str = "rest"):
 
 def test_list_insights_rest_pager(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5250,7 +5660,7 @@ def test_list_insights_rest_pager(transport: str = "rest"):
 )
 def test_get_insight_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5315,7 +5725,7 @@ def test_get_insight_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).get_insight._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -5324,7 +5734,7 @@ def test_get_insight_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).get_insight._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -5333,7 +5743,7 @@ def test_get_insight_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -5375,7 +5785,7 @@ def test_get_insight_rest_required_fields(
 
 def test_get_insight_rest_unset_required_fields():
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.get_insight._get_unset_required_fields({})
@@ -5385,7 +5795,7 @@ def test_get_insight_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_insight_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -5441,7 +5851,7 @@ def test_get_insight_rest_bad_request(
     transport: str = "rest", request_type=recommender_service.GetInsightRequest
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5465,7 +5875,7 @@ def test_get_insight_rest_bad_request(
 
 def test_get_insight_rest_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5509,7 +5919,7 @@ def test_get_insight_rest_flattened():
 
 def test_get_insight_rest_flattened_error(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5524,7 +5934,7 @@ def test_get_insight_rest_flattened_error(transport: str = "rest"):
 
 def test_get_insight_rest_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
@@ -5537,7 +5947,7 @@ def test_get_insight_rest_error():
 )
 def test_mark_insight_accepted_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5603,7 +6013,7 @@ def test_mark_insight_accepted_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).mark_insight_accepted._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -5613,7 +6023,7 @@ def test_mark_insight_accepted_rest_required_fields(
     jsonified_request["etag"] = "etag_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).mark_insight_accepted._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -5624,7 +6034,7 @@ def test_mark_insight_accepted_rest_required_fields(
     assert jsonified_request["etag"] == "etag_value"
 
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -5667,7 +6077,7 @@ def test_mark_insight_accepted_rest_required_fields(
 
 def test_mark_insight_accepted_rest_unset_required_fields():
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.mark_insight_accepted._get_unset_required_fields({})
@@ -5685,7 +6095,7 @@ def test_mark_insight_accepted_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_mark_insight_accepted_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -5741,7 +6151,7 @@ def test_mark_insight_accepted_rest_bad_request(
     transport: str = "rest", request_type=recommender_service.MarkInsightAcceptedRequest
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5765,7 +6175,7 @@ def test_mark_insight_accepted_rest_bad_request(
 
 def test_mark_insight_accepted_rest_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5811,7 +6221,7 @@ def test_mark_insight_accepted_rest_flattened():
 
 def test_mark_insight_accepted_rest_flattened_error(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -5828,7 +6238,7 @@ def test_mark_insight_accepted_rest_flattened_error(transport: str = "rest"):
 
 def test_mark_insight_accepted_rest_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
@@ -5841,7 +6251,7 @@ def test_mark_insight_accepted_rest_error():
 )
 def test_list_recommendations_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -5892,7 +6302,7 @@ def test_list_recommendations_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).list_recommendations._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -5901,7 +6311,7 @@ def test_list_recommendations_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).list_recommendations._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -5918,7 +6328,7 @@ def test_list_recommendations_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -5962,7 +6372,7 @@ def test_list_recommendations_rest_required_fields(
 
 def test_list_recommendations_rest_unset_required_fields():
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.list_recommendations._get_unset_required_fields({})
@@ -5981,7 +6391,7 @@ def test_list_recommendations_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_recommendations_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -6041,7 +6451,7 @@ def test_list_recommendations_rest_bad_request(
     transport: str = "rest", request_type=recommender_service.ListRecommendationsRequest
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6063,7 +6473,7 @@ def test_list_recommendations_rest_bad_request(
 
 def test_list_recommendations_rest_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -6108,7 +6518,7 @@ def test_list_recommendations_rest_flattened():
 
 def test_list_recommendations_rest_flattened_error(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6124,7 +6534,7 @@ def test_list_recommendations_rest_flattened_error(transport: str = "rest"):
 
 def test_list_recommendations_rest_pager(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6196,7 +6606,7 @@ def test_list_recommendations_rest_pager(transport: str = "rest"):
 )
 def test_get_recommendation_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -6259,7 +6669,7 @@ def test_get_recommendation_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).get_recommendation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -6268,7 +6678,7 @@ def test_get_recommendation_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).get_recommendation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -6277,7 +6687,7 @@ def test_get_recommendation_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -6319,7 +6729,7 @@ def test_get_recommendation_rest_required_fields(
 
 def test_get_recommendation_rest_unset_required_fields():
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.get_recommendation._get_unset_required_fields({})
@@ -6329,7 +6739,7 @@ def test_get_recommendation_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_recommendation_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -6387,7 +6797,7 @@ def test_get_recommendation_rest_bad_request(
     transport: str = "rest", request_type=recommender_service.GetRecommendationRequest
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6411,7 +6821,7 @@ def test_get_recommendation_rest_bad_request(
 
 def test_get_recommendation_rest_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -6455,7 +6865,7 @@ def test_get_recommendation_rest_flattened():
 
 def test_get_recommendation_rest_flattened_error(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6470,7 +6880,7 @@ def test_get_recommendation_rest_flattened_error(transport: str = "rest"):
 
 def test_get_recommendation_rest_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
@@ -6483,7 +6893,7 @@ def test_get_recommendation_rest_error():
 )
 def test_mark_recommendation_claimed_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -6547,7 +6957,7 @@ def test_mark_recommendation_claimed_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).mark_recommendation_claimed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -6557,7 +6967,7 @@ def test_mark_recommendation_claimed_rest_required_fields(
     jsonified_request["etag"] = "etag_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).mark_recommendation_claimed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -6568,7 +6978,7 @@ def test_mark_recommendation_claimed_rest_required_fields(
     assert jsonified_request["etag"] == "etag_value"
 
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -6611,7 +7021,7 @@ def test_mark_recommendation_claimed_rest_required_fields(
 
 def test_mark_recommendation_claimed_rest_unset_required_fields():
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.mark_recommendation_claimed._get_unset_required_fields({})
@@ -6629,7 +7039,7 @@ def test_mark_recommendation_claimed_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_mark_recommendation_claimed_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -6688,7 +7098,7 @@ def test_mark_recommendation_claimed_rest_bad_request(
     request_type=recommender_service.MarkRecommendationClaimedRequest,
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6712,7 +7122,7 @@ def test_mark_recommendation_claimed_rest_bad_request(
 
 def test_mark_recommendation_claimed_rest_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -6758,7 +7168,7 @@ def test_mark_recommendation_claimed_rest_flattened():
 
 def test_mark_recommendation_claimed_rest_flattened_error(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -6775,7 +7185,7 @@ def test_mark_recommendation_claimed_rest_flattened_error(transport: str = "rest
 
 def test_mark_recommendation_claimed_rest_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
@@ -6788,7 +7198,7 @@ def test_mark_recommendation_claimed_rest_error():
 )
 def test_mark_recommendation_succeeded_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -6852,7 +7262,7 @@ def test_mark_recommendation_succeeded_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).mark_recommendation_succeeded._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -6862,7 +7272,7 @@ def test_mark_recommendation_succeeded_rest_required_fields(
     jsonified_request["etag"] = "etag_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).mark_recommendation_succeeded._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -6873,7 +7283,7 @@ def test_mark_recommendation_succeeded_rest_required_fields(
     assert jsonified_request["etag"] == "etag_value"
 
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -6916,7 +7326,7 @@ def test_mark_recommendation_succeeded_rest_required_fields(
 
 def test_mark_recommendation_succeeded_rest_unset_required_fields():
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.mark_recommendation_succeeded._get_unset_required_fields(
@@ -6936,7 +7346,7 @@ def test_mark_recommendation_succeeded_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_mark_recommendation_succeeded_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -6995,7 +7405,7 @@ def test_mark_recommendation_succeeded_rest_bad_request(
     request_type=recommender_service.MarkRecommendationSucceededRequest,
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7019,7 +7429,7 @@ def test_mark_recommendation_succeeded_rest_bad_request(
 
 def test_mark_recommendation_succeeded_rest_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7065,7 +7475,7 @@ def test_mark_recommendation_succeeded_rest_flattened():
 
 def test_mark_recommendation_succeeded_rest_flattened_error(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7082,7 +7492,7 @@ def test_mark_recommendation_succeeded_rest_flattened_error(transport: str = "re
 
 def test_mark_recommendation_succeeded_rest_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
@@ -7095,7 +7505,7 @@ def test_mark_recommendation_succeeded_rest_error():
 )
 def test_mark_recommendation_failed_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7159,7 +7569,7 @@ def test_mark_recommendation_failed_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).mark_recommendation_failed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -7169,7 +7579,7 @@ def test_mark_recommendation_failed_rest_required_fields(
     jsonified_request["etag"] = "etag_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).mark_recommendation_failed._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -7180,7 +7590,7 @@ def test_mark_recommendation_failed_rest_required_fields(
     assert jsonified_request["etag"] == "etag_value"
 
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -7223,7 +7633,7 @@ def test_mark_recommendation_failed_rest_required_fields(
 
 def test_mark_recommendation_failed_rest_unset_required_fields():
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.mark_recommendation_failed._get_unset_required_fields({})
@@ -7241,7 +7651,7 @@ def test_mark_recommendation_failed_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_mark_recommendation_failed_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -7300,7 +7710,7 @@ def test_mark_recommendation_failed_rest_bad_request(
     request_type=recommender_service.MarkRecommendationFailedRequest,
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7324,7 +7734,7 @@ def test_mark_recommendation_failed_rest_bad_request(
 
 def test_mark_recommendation_failed_rest_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7370,7 +7780,7 @@ def test_mark_recommendation_failed_rest_flattened():
 
 def test_mark_recommendation_failed_rest_flattened_error(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7387,7 +7797,7 @@ def test_mark_recommendation_failed_rest_flattened_error(transport: str = "rest"
 
 def test_mark_recommendation_failed_rest_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
@@ -7400,7 +7810,7 @@ def test_mark_recommendation_failed_rest_error():
 )
 def test_get_recommender_config_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7459,7 +7869,7 @@ def test_get_recommender_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).get_recommender_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -7468,7 +7878,7 @@ def test_get_recommender_config_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).get_recommender_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -7477,7 +7887,7 @@ def test_get_recommender_config_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -7519,7 +7929,7 @@ def test_get_recommender_config_rest_required_fields(
 
 def test_get_recommender_config_rest_unset_required_fields():
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.get_recommender_config._get_unset_required_fields({})
@@ -7529,7 +7939,7 @@ def test_get_recommender_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_recommender_config_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -7588,7 +7998,7 @@ def test_get_recommender_config_rest_bad_request(
     request_type=recommender_service.GetRecommenderConfigRequest,
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7612,7 +8022,7 @@ def test_get_recommender_config_rest_bad_request(
 
 def test_get_recommender_config_rest_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7656,7 +8066,7 @@ def test_get_recommender_config_rest_flattened():
 
 def test_get_recommender_config_rest_flattened_error(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7671,7 +8081,7 @@ def test_get_recommender_config_rest_flattened_error(transport: str = "rest"):
 
 def test_get_recommender_config_rest_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
@@ -7684,7 +8094,7 @@ def test_get_recommender_config_rest_error():
 )
 def test_update_recommender_config_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -7822,14 +8232,14 @@ def test_update_recommender_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).update_recommender_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).update_recommender_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -7843,7 +8253,7 @@ def test_update_recommender_config_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -7886,7 +8296,7 @@ def test_update_recommender_config_rest_required_fields(
 
 def test_update_recommender_config_rest_unset_required_fields():
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.update_recommender_config._get_unset_required_fields({})
@@ -7904,7 +8314,7 @@ def test_update_recommender_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_recommender_config_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -7963,7 +8373,7 @@ def test_update_recommender_config_rest_bad_request(
     request_type=recommender_service.UpdateRecommenderConfigRequest,
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -7989,7 +8399,7 @@ def test_update_recommender_config_rest_bad_request(
 
 def test_update_recommender_config_rest_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8038,7 +8448,7 @@ def test_update_recommender_config_rest_flattened():
 
 def test_update_recommender_config_rest_flattened_error(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8056,7 +8466,7 @@ def test_update_recommender_config_rest_flattened_error(transport: str = "rest")
 
 def test_update_recommender_config_rest_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
@@ -8069,7 +8479,7 @@ def test_update_recommender_config_rest_error():
 )
 def test_get_insight_type_config_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8128,7 +8538,7 @@ def test_get_insight_type_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).get_insight_type_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -8137,7 +8547,7 @@ def test_get_insight_type_config_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).get_insight_type_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -8146,7 +8556,7 @@ def test_get_insight_type_config_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -8188,7 +8598,7 @@ def test_get_insight_type_config_rest_required_fields(
 
 def test_get_insight_type_config_rest_unset_required_fields():
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.get_insight_type_config._get_unset_required_fields({})
@@ -8198,7 +8608,7 @@ def test_get_insight_type_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_insight_type_config_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -8257,7 +8667,7 @@ def test_get_insight_type_config_rest_bad_request(
     request_type=recommender_service.GetInsightTypeConfigRequest,
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8281,7 +8691,7 @@ def test_get_insight_type_config_rest_bad_request(
 
 def test_get_insight_type_config_rest_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8325,7 +8735,7 @@ def test_get_insight_type_config_rest_flattened():
 
 def test_get_insight_type_config_rest_flattened_error(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8340,7 +8750,7 @@ def test_get_insight_type_config_rest_flattened_error(transport: str = "rest"):
 
 def test_get_insight_type_config_rest_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
@@ -8353,7 +8763,7 @@ def test_get_insight_type_config_rest_error():
 )
 def test_update_insight_type_config_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8491,14 +8901,14 @@ def test_update_insight_type_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).update_insight_type_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).update_insight_type_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -8512,7 +8922,7 @@ def test_update_insight_type_config_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -8555,7 +8965,7 @@ def test_update_insight_type_config_rest_required_fields(
 
 def test_update_insight_type_config_rest_unset_required_fields():
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.update_insight_type_config._get_unset_required_fields({})
@@ -8573,7 +8983,7 @@ def test_update_insight_type_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_insight_type_config_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -8632,7 +9042,7 @@ def test_update_insight_type_config_rest_bad_request(
     request_type=recommender_service.UpdateInsightTypeConfigRequest,
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8658,7 +9068,7 @@ def test_update_insight_type_config_rest_bad_request(
 
 def test_update_insight_type_config_rest_flattened():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8707,7 +9117,7 @@ def test_update_insight_type_config_rest_flattened():
 
 def test_update_insight_type_config_rest_flattened_error(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8725,7 +9135,7 @@ def test_update_insight_type_config_rest_flattened_error(transport: str = "rest"
 
 def test_update_insight_type_config_rest_error():
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
@@ -8738,7 +9148,7 @@ def test_update_insight_type_config_rest_error():
 )
 def test_list_recommenders_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8772,7 +9182,7 @@ def test_list_recommenders_rest(request_type):
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_recommenders_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -8832,7 +9242,7 @@ def test_list_recommenders_rest_bad_request(
     transport: str = "rest", request_type=recommender_service.ListRecommendersRequest
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8854,7 +9264,7 @@ def test_list_recommenders_rest_bad_request(
 
 def test_list_recommenders_rest_pager(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -8924,7 +9334,7 @@ def test_list_recommenders_rest_pager(transport: str = "rest"):
 )
 def test_list_insight_types_rest(request_type):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -8958,7 +9368,7 @@ def test_list_insight_types_rest(request_type):
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_insight_types_rest_interceptors(null_interceptor):
     transport = transports.RecommenderRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.RecommenderRestInterceptor(),
@@ -9018,7 +9428,7 @@ def test_list_insight_types_rest_bad_request(
     transport: str = "rest", request_type=recommender_service.ListInsightTypesRequest
 ):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9040,7 +9450,7 @@ def test_list_insight_types_rest_bad_request(
 
 def test_list_insight_types_rest_pager(transport: str = "rest"):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -9104,17 +9514,17 @@ def test_list_insight_types_rest_pager(transport: str = "rest"):
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.RecommenderGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = RecommenderClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.RecommenderGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = RecommenderClient(
@@ -9124,7 +9534,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.RecommenderGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -9135,16 +9545,17 @@ def test_credentials_transport_error():
         )
 
     # It is an error to provide an api_key and a credential.
-    options = mock.Mock()
+    options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = RecommenderClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.RecommenderGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = RecommenderClient(
@@ -9156,7 +9567,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.RecommenderGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     client = RecommenderClient(transport=transport)
     assert client.transport is transport
@@ -9165,13 +9576,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.RecommenderGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.RecommenderGrpcAsyncIOTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -9188,7 +9599,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -9202,7 +9613,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = RecommenderClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     assert transport.kind == transport_name
 
@@ -9210,7 +9621,7 @@ def test_transport_kind(transport_name):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     assert isinstance(
         client.transport,
@@ -9222,7 +9633,7 @@ def test_recommender_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.RecommenderTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             credentials_file="credentials.json",
         )
 
@@ -9234,7 +9645,7 @@ def test_recommender_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.RecommenderTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
         )
 
     # Every method on the transport should just blindly
@@ -9279,7 +9690,7 @@ def test_recommender_base_transport_with_credentials_file():
         "google.cloud.recommender_v1beta1.services.recommender.transports.RecommenderTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
+        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport = transports.RecommenderTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -9298,7 +9709,7 @@ def test_recommender_base_transport_with_adc():
         "google.cloud.recommender_v1beta1.services.recommender.transports.RecommenderTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport = transports.RecommenderTransport()
         adc.assert_called_once()
 
@@ -9306,7 +9717,7 @@ def test_recommender_base_transport_with_adc():
 def test_recommender_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         RecommenderClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -9326,7 +9737,7 @@ def test_recommender_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -9373,7 +9784,7 @@ def test_recommender_transport_create_channel(transport_class, grpc_helpers):
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = ga_credentials.AnonymousCredentials()
+        creds = _AnonymousCredentialsWithUniverseDomain()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
@@ -9398,7 +9809,7 @@ def test_recommender_transport_create_channel(transport_class, grpc_helpers):
     [transports.RecommenderGrpcTransport, transports.RecommenderGrpcAsyncIOTransport],
 )
 def test_recommender_grpc_transport_client_cert_source_for_mtls(transport_class):
-    cred = ga_credentials.AnonymousCredentials()
+    cred = _AnonymousCredentialsWithUniverseDomain()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -9436,7 +9847,7 @@ def test_recommender_grpc_transport_client_cert_source_for_mtls(transport_class)
 
 
 def test_recommender_http_transport_client_cert_source_for_mtls():
-    cred = ga_credentials.AnonymousCredentials()
+    cred = _AnonymousCredentialsWithUniverseDomain()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -9456,7 +9867,7 @@ def test_recommender_http_transport_client_cert_source_for_mtls():
 )
 def test_recommender_host_no_port(transport_name):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         client_options=client_options.ClientOptions(
             api_endpoint="recommender.googleapis.com"
         ),
@@ -9479,7 +9890,7 @@ def test_recommender_host_no_port(transport_name):
 )
 def test_recommender_host_with_port(transport_name):
     client = RecommenderClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         client_options=client_options.ClientOptions(
             api_endpoint="recommender.googleapis.com:8000"
         ),
@@ -9499,8 +9910,8 @@ def test_recommender_host_with_port(transport_name):
     ],
 )
 def test_recommender_client_transport_session_collision(transport_name):
-    creds1 = ga_credentials.AnonymousCredentials()
-    creds2 = ga_credentials.AnonymousCredentials()
+    creds1 = _AnonymousCredentialsWithUniverseDomain()
+    creds2 = _AnonymousCredentialsWithUniverseDomain()
     client1 = RecommenderClient(
         credentials=creds1,
         transport=transport_name,
@@ -9598,7 +10009,7 @@ def test_recommender_transport_channel_mtls_with_client_cert_source(transport_cl
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = ga_credentials.AnonymousCredentials()
+            cred = _AnonymousCredentialsWithUniverseDomain()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
@@ -9949,7 +10360,7 @@ def test_client_with_default_client_info():
         transports.RecommenderTransport, "_prep_wrapped_messages"
     ) as prep:
         client = RecommenderClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -9959,7 +10370,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = RecommenderClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -9968,7 +10379,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = RecommenderAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(
@@ -9987,7 +10398,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = RecommenderClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -10004,7 +10415,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = RecommenderClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
@@ -10035,7 +10446,9 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                ),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
