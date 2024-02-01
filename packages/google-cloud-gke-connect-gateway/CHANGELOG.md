@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-connect-gateway-v0.8.5...google-cloud-gke-connect-gateway-v0.8.6) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12240](https://github.com/googleapis/google-cloud-python/issues/12240)) ([d51f832](https://github.com/googleapis/google-cloud-python/commit/d51f83298f89dbae23af1a146411b296eba6bba2))
+
 ## [0.8.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-connect-gateway-v0.8.4...google-cloud-gke-connect-gateway-v0.8.5) (2023-12-07)
 
 
