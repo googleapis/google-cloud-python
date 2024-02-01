@@ -55,21 +55,6 @@
                 "delete_blueprint"
               ]
             },
-            "DeleteBlueprintRevision": {
-              "methods": [
-                "delete_blueprint_revision"
-              ]
-            },
-            "DeleteDeployment": {
-              "methods": [
-                "delete_deployment"
-              ]
-            },
-            "DeleteDeploymentRevision": {
-              "methods": [
-                "delete_deployment_revision"
-              ]
-            },
             "DeleteEdgeSlm": {
               "methods": [
                 "delete_edge_slm"
@@ -255,21 +240,6 @@
                 "delete_blueprint"
               ]
             },
-            "DeleteBlueprintRevision": {
-              "methods": [
-                "delete_blueprint_revision"
-              ]
-            },
-            "DeleteDeployment": {
-              "methods": [
-                "delete_deployment"
-              ]
-            },
-            "DeleteDeploymentRevision": {
-              "methods": [
-                "delete_deployment_revision"
-              ]
-            },
             "DeleteEdgeSlm": {
               "methods": [
                 "delete_edge_slm"
@@ -453,21 +423,6 @@
             "DeleteBlueprint": {
               "methods": [
                 "delete_blueprint"
-              ]
-            },
-            "DeleteBlueprintRevision": {
-              "methods": [
-                "delete_blueprint_revision"
-              ]
-            },
-            "DeleteDeployment": {
-              "methods": [
-                "delete_deployment"
-              ]
-            },
-            "DeleteDeploymentRevision": {
-              "methods": [
-                "delete_deployment_revision"
               ]
             },
             "DeleteEdgeSlm": {

@@ -198,11 +198,6 @@ class TelcoAutomationTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_blueprint_revision: gapic_v1.method.wrap_method(
-                self.delete_blueprint_revision,
-                default_timeout=None,
-                client_info=client_info,
-            ),
             self.list_blueprints: gapic_v1.method.wrap_method(
                 self.list_blueprints,
                 default_retry=retries.Retry(
@@ -277,18 +272,8 @@ class TelcoAutomationTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
-            self.delete_deployment: gapic_v1.method.wrap_method(
-                self.delete_deployment,
-                default_timeout=60.0,
-                client_info=client_info,
-            ),
             self.remove_deployment: gapic_v1.method.wrap_method(
                 self.remove_deployment,
-                default_timeout=None,
-                client_info=client_info,
-            ),
-            self.delete_deployment_revision: gapic_v1.method.wrap_method(
-                self.delete_deployment_revision,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -485,15 +470,6 @@ class TelcoAutomationTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def delete_blueprint_revision(
-        self,
-    ) -> Callable[
-        [telcoautomation.DeleteBlueprintRevisionRequest],
-        Union[telcoautomation.Blueprint, Awaitable[telcoautomation.Blueprint]],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def list_blueprints(
         self,
     ) -> Callable[
@@ -631,29 +607,11 @@ class TelcoAutomationTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
-    def delete_deployment(
-        self,
-    ) -> Callable[
-        [telcoautomation.DeleteDeploymentRequest],
-        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
     def remove_deployment(
         self,
     ) -> Callable[
         [telcoautomation.RemoveDeploymentRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
-    ]:
-        raise NotImplementedError()
-
-    @property
-    def delete_deployment_revision(
-        self,
-    ) -> Callable[
-        [telcoautomation.DeleteDeploymentRevisionRequest],
-        Union[telcoautomation.Deployment, Awaitable[telcoautomation.Deployment]],
     ]:
         raise NotImplementedError()
 
