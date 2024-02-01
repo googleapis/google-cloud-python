@@ -64,6 +64,19 @@ from google.cloud.monitoring_dashboard_v1.types import (
 )
 
 
+# Anonymous Credentials with universe domain property. If no universe domain is provided, then
+# the default universe domain is "googleapis.com".
+class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
+    def __init__(self, universe_domain="googleapis.com"):
+        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
+        self._universe_domain = universe_domain
+
+    @property
+    def universe_domain(self):
+        return self._universe_domain
+
+
+
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
 
@@ -1029,7 +1042,7 @@ async def test_list_dashboards_field_headers_async():
 
 def test_list_dashboards_pager(transport_name: str = "grpc"):
     client = DashboardsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1079,7 +1092,7 @@ def test_list_dashboards_pager(transport_name: str = "grpc"):
 
 def test_list_dashboards_pages(transport_name: str = "grpc"):
     client = DashboardsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport_name,
     )
 
@@ -1121,7 +1134,7 @@ def test_list_dashboards_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_dashboards_async_pager():
     client = DashboardsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1171,7 +1184,7 @@ async def test_list_dashboards_async_pager():
 @pytest.mark.asyncio
 async def test_list_dashboards_async_pages():
     client = DashboardsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1674,17 +1687,17 @@ async def test_update_dashboard_field_headers_async():
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DashboardsServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = DashboardsServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.DashboardsServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = DashboardsServiceClient(
@@ -1694,7 +1707,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.DashboardsServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -1705,16 +1718,17 @@ def test_credentials_transport_error():
         )
 
     # It is an error to provide an api_key and a credential.
-    options = mock.Mock()
+    options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = DashboardsServiceClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.DashboardsServiceGrpcTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = DashboardsServiceClient(
