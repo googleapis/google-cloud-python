@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.2...google-cloud-bigquery-datapolicies-v0.6.3) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12238](https://github.com/googleapis/google-cloud-python/issues/12238)) ([8701267](https://github.com/googleapis/google-cloud-python/commit/8701267fc9694844b9365024cd59354785247aa0))
+
 ## [0.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datapolicies-v0.6.1...google-cloud-bigquery-datapolicies-v0.6.2) (2023-12-07)
 
 

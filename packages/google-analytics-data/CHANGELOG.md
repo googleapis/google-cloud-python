@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.4](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.3...google-analytics-data-v0.18.4) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [0.18.3](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.2...google-analytics-data-v0.18.3) (2024-01-24)
 
 

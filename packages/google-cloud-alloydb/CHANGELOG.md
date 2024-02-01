@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.6...google-cloud-alloydb-v0.3.7) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [0.3.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.5...google-cloud-alloydb-v0.3.6) (2024-01-04)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.4...google-cloud-edgecontainer-v0.5.5) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12240](https://github.com/googleapis/google-cloud-python/issues/12240)) ([d51f832](https://github.com/googleapis/google-cloud-python/commit/d51f83298f89dbae23af1a146411b296eba6bba2))
+
 ## [0.5.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgecontainer-v0.5.3...google-cloud-edgecontainer-v0.5.4) (2023-12-07)
 
 

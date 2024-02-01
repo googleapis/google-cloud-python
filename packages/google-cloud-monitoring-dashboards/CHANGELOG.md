@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.13.0...google-cloud-monitoring-dashboards-v2.14.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12241](https://github.com/googleapis/google-cloud-python/issues/12241)) ([aae72f5](https://github.com/googleapis/google-cloud-python/commit/aae72f5e6c7d48e777fdf68d1012b2b51b912bad))
+
 ## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.12.3...google-cloud-monitoring-dashboards-v2.13.0) (2023-12-07)
 
 

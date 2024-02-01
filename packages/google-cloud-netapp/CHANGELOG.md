@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.3...google-cloud-netapp-v0.3.4) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12241](https://github.com/googleapis/google-cloud-python/issues/12241)) ([aae72f5](https://github.com/googleapis/google-cloud-python/commit/aae72f5e6c7d48e777fdf68d1012b2b51b912bad))
+
 ## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.2...google-cloud-netapp-v0.3.3) (2024-01-04)
 
 

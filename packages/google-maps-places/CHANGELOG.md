@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.6...google-maps-places-v0.1.7) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12244](https://github.com/googleapis/google-cloud-python/issues/12244)) ([8d6b772](https://github.com/googleapis/google-cloud-python/commit/8d6b7729d93c1347529a3d34ed6266af55225578))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-maps-places-v0.1.5...google-maps-places-v0.1.6) (2023-12-07)
 
 

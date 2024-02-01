@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.8.0...google-cloud-dms-v1.9.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12240](https://github.com/googleapis/google-cloud-python/issues/12240)) ([d51f832](https://github.com/googleapis/google-cloud-python/commit/d51f83298f89dbae23af1a146411b296eba6bba2))
+
 ## [1.8.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.7.2...google-cloud-dms-v1.8.0) (2023-12-07)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-live-stream-v1.6.0...google-cloud-video-live-stream-v1.7.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12244](https://github.com/googleapis/google-cloud-python/issues/12244)) ([8d6b772](https://github.com/googleapis/google-cloud-python/commit/8d6b7729d93c1347529a3d34ed6266af55225578))
+
 ## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-live-stream-v1.5.2...google-cloud-video-live-stream-v1.6.0) (2023-12-07)
 
 

@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-manager-v1.11.0...google-cloud-resource-manager-v1.12.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([4368029](https://github.com/googleapis/google-cloud-python/commit/436802904bfdafa7e90f94b128813506525e1605))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-manager-v1.10.4...google-cloud-resource-manager-v1.11.0) (2023-12-07)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.10.0...google-cloud-appengine-admin-v1.11.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [1.10.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.9.4...google-cloud-appengine-admin-v1.10.0) (2023-12-07)
 
 

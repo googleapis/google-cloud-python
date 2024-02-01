@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policysimulator-v0.1.2...google-cloud-policysimulator-v0.1.3) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([4368029](https://github.com/googleapis/google-cloud-python/commit/436802904bfdafa7e90f94b128813506525e1605))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policysimulator-v0.1.1...google-cloud-policysimulator-v0.1.2) (2023-12-07)
 
 

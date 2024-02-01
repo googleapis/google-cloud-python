@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.5...google-cloud-media-translation-v0.11.6) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12241](https://github.com/googleapis/google-cloud-python/issues/12241)) ([aae72f5](https://github.com/googleapis/google-cloud-python/commit/aae72f5e6c7d48e777fdf68d1012b2b51b912bad))
+
 ## [0.11.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-media-translation-v0.11.4...google-cloud-media-translation-v0.11.5) (2023-12-07)
 
 

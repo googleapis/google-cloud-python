@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.2...google-cloud-edgenetwork-v0.1.3) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12240](https://github.com/googleapis/google-cloud-python/issues/12240)) ([d51f832](https://github.com/googleapis/google-cloud-python/commit/d51f83298f89dbae23af1a146411b296eba6bba2))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.1...google-cloud-edgenetwork-v0.1.2) (2024-01-24)
 
 

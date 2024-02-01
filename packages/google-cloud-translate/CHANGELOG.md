@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.14.0...google-cloud-translate-v3.15.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12244](https://github.com/googleapis/google-cloud-python/issues/12244)) ([8d6b772](https://github.com/googleapis/google-cloud-python/commit/8d6b7729d93c1347529a3d34ed6266af55225578))
+
 ## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.13.0...google-cloud-translate-v3.14.0) (2024-01-04)
 
 

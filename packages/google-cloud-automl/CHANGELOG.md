@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.12.0...google-cloud-automl-v2.13.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [2.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.11.4...google-cloud-automl-v2.12.0) (2023-12-07)
 
 

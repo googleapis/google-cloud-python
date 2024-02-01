@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.9...google-cloud-batch-v0.17.10) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [0.17.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.8...google-cloud-batch-v0.17.9) (2024-01-24)
 
 
