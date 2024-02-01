@@ -28,16 +28,16 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    executions_v1/services
-    executions_v1/types
+    executions_v1/services_
+    executions_v1/types_
 
 API Reference
 -------------
 .. toctree::
     :maxdepth: 2
 
-    executions_v1beta/services
-    executions_v1beta/types
+    executions_v1beta/services_
+    executions_v1beta/types_
 
 
 Changelog
