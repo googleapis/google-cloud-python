@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.3...google-cloud-config-v0.1.4) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12239](https://github.com/googleapis/google-cloud-python/issues/12239)) ([8004d15](https://github.com/googleapis/google-cloud-python/commit/8004d15d9e6baa4dc5bc3f09d528e176d54d9ec5))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.2...google-cloud-config-v0.1.3) (2024-01-19)
 
 
