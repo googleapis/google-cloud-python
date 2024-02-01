@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.1.3...google-maps-fleetengine-delivery-v0.1.4) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12244](https://github.com/googleapis/google-cloud-python/issues/12244)) ([8d6b772](https://github.com/googleapis/google-cloud-python/commit/8d6b7729d93c1347529a3d34ed6266af55225578))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.1.2...google-maps-fleetengine-delivery-v0.1.3) (2023-12-13)
 
 

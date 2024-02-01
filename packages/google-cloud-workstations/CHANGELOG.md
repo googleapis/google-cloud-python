@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.5.2...google-cloud-workstations-v0.5.3) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12244](https://github.com/googleapis/google-cloud-python/issues/12244)) ([8d6b772](https://github.com/googleapis/google-cloud-python/commit/8d6b7729d93c1347529a3d34ed6266af55225578))
+
 ## [0.5.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-workstations-v0.5.1...google-cloud-workstations-v0.5.2) (2023-12-07)
 
 
