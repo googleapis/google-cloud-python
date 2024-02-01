@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "DeploymentView",
         "ResourceType",
         "Status",
+        "DeploymentLevel",
         "OrchestrationCluster",
         "EdgeSlm",
         "Blueprint",
@@ -48,7 +49,6 @@ __protobuf__ = proto.module(
         "UpdateBlueprintRequest",
         "GetBlueprintRequest",
         "DeleteBlueprintRequest",
-        "DeleteBlueprintRevisionRequest",
         "ListBlueprintsRequest",
         "ListBlueprintsResponse",
         "ApproveBlueprintRequest",
@@ -66,9 +66,7 @@ __protobuf__ = proto.module(
         "CreateDeploymentRequest",
         "UpdateDeploymentRequest",
         "GetDeploymentRequest",
-        "DeleteDeploymentRequest",
         "RemoveDeploymentRequest",
-        "DeleteDeploymentRevisionRequest",
         "ListDeploymentsRequest",
         "ListDeploymentsResponse",
         "ListDeploymentRevisionsRequest",
@@ -93,6 +91,11 @@ __protobuf__ = proto.module(
         "MasterAuthorizedNetworksConfig",
         "File",
         "ResourceStatus",
+        "NFDeployStatus",
+        "NFDeploySiteStatus",
+        "HydrationStatus",
+        "SiteVersion",
+        "WorkloadStatus",
     },
 )
 
@@ -137,14 +140,14 @@ class ResourceType(proto.Enum):
     Values:
         RESOURCE_TYPE_UNSPECIFIED (0):
             Unspecified resource type.
-        NF_DEPLOY_CUSTOM_RESOURCE (1):
+        NF_DEPLOY_RESOURCE (1):
             User specified NF Deploy CR.
-        BLUEPRINT_CUSTOM_RESOURCE (2):
+        DEPLOYMENT_RESOURCE (2):
             CRs that are part of a blueprint.
     """
     RESOURCE_TYPE_UNSPECIFIED = 0
-    NF_DEPLOY_CUSTOM_RESOURCE = 1
-    BLUEPRINT_CUSTOM_RESOURCE = 2
+    NF_DEPLOY_RESOURCE = 1
+    DEPLOYMENT_RESOURCE = 2
 
 
 class Status(proto.Enum):
@@ -159,14 +162,62 @@ class Status(proto.Enum):
             Running and ready to serve traffic.
         STATUS_FAILED (3):
             Failed or stalled.
+        STATUS_DELETING (4):
+            Delete in progress.
+        STATUS_DELETED (5):
+            Deleted deployment.
         STATUS_PEERING (10):
-            NFDeploy specific status.
+            NFDeploy specific status. Peering in
+            progress.
+        STATUS_NOT_APPLICABLE (11):
+            K8s objects such as
+            NetworkAttachmentDefinition don't have a defined
+            status.
     """
     STATUS_UNSPECIFIED = 0
     STATUS_IN_PROGRESS = 1
     STATUS_ACTIVE = 2
     STATUS_FAILED = 3
+    STATUS_DELETING = 4
+    STATUS_DELETED = 5
     STATUS_PEERING = 10
+    STATUS_NOT_APPLICABLE = 11
+
+
+class DeploymentLevel(proto.Enum):
+    r"""DeploymentLevel of a blueprint signifies where the blueprint
+    will be applied.
+
+    Values:
+        DEPLOYMENT_LEVEL_UNSPECIFIED (0):
+            Default unspecified deployment level.
+        HYDRATION (1):
+            Blueprints at HYDRATION level cannot be used
+            to create a Deployment (A user cannot manually
+            initate deployment of these blueprints on
+            orchestration or workload cluster).
+            These blueprints stay in a user's private
+            catalog and are configured and deployed by TNA
+            automation.
+        SINGLE_DEPLOYMENT (2):
+            Blueprints at SINGLE_DEPLOYMENT level can be a) Modified in
+            private catalog. b) Used to create a deployment on
+            orchestration cluster by the user, once approved.
+        MULTI_DEPLOYMENT (3):
+            Blueprints at MULTI_DEPLOYMENT level can be a) Modified in
+            private catalog. b) Used to create a deployment on
+            orchestration cluster which will create further hydrated
+            deployments.
+        WORKLOAD_CLUSTER_DEPLOYMENT (4):
+            Blueprints at WORKLOAD_CLUSTER_DEPLOYMENT level can be a)
+            Modified in private catalog. b) Used to create a deployment
+            on workload cluster by the user, once approved.
+    """
+    DEPLOYMENT_LEVEL_UNSPECIFIED = 0
+    HYDRATION = 1
+    SINGLE_DEPLOYMENT = 2
+    MULTI_DEPLOYMENT = 3
+    WORKLOAD_CLUSTER_DEPLOYMENT = 4
 
 
 class OrchestrationCluster(proto.Message):
@@ -175,7 +226,9 @@ class OrchestrationCluster(proto.Message):
 
     Attributes:
         name (str):
-            Name of the orchestration cluster.
+            Name of the orchestration cluster. The name
+            of orchestration cluster cannot be more than 24
+            characters.
         management_config (google.cloud.telcoautomation_v1alpha1.types.ManagementConfig):
             Management configuration of the underlying
             GKE cluster.
@@ -371,7 +424,8 @@ class Blueprint(proto.Message):
     b) modified as per a user's need
     c) proposed and approved.
     On approval, a revision of blueprint is created which can be
-    used to create a deployment on Orchestration Cluster.
+    used to create a deployment on Orchestration or Workload
+    Cluster.
 
     Attributes:
         name (str):
@@ -415,6 +469,13 @@ class Blueprint(proto.Message):
             Output only. Source provider is the author of
             a public blueprint, from which this blueprint is
             created.
+        deployment_level (google.cloud.telcoautomation_v1alpha1.types.DeploymentLevel):
+            Output only. DeploymentLevel of a blueprint signifies where
+            the blueprint will be applied. e.g. [HYDRATION,
+            SINGLE_DEPLOYMENT, MULTI_DEPLOYMENT]
+        rollback_support (bool):
+            Output only. Indicates if the deployment
+            created from this blueprint can be rolled back.
     """
 
     class ApprovalState(proto.Enum):
@@ -437,11 +498,11 @@ class Blueprint(proto.Message):
                 When a proposed blueprint is approved, it
                 moves to APPROVED state. A new revision is
                 committed. The latest committed revision can be
-                used to create a deployment on Orchestration
-                Cluster. Edits to an APPROVED blueprint changes
-                its state back to DRAFT. The last committed
-                revision of a blueprint represents its latest
-                APPROVED state.
+                used to create a deployment on Orchestration or
+                Workload Cluster. Edits to an APPROVED blueprint
+                changes its state back to DRAFT. The last
+                committed revision of a blueprint represents its
+                latest APPROVED state.
         """
         APPROVAL_STATE_UNSPECIFIED = 0
         DRAFT = 1
@@ -502,6 +563,15 @@ class Blueprint(proto.Message):
         proto.STRING,
         number=13,
     )
+    deployment_level: "DeploymentLevel" = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum="DeploymentLevel",
+    )
+    rollback_support: bool = proto.Field(
+        proto.BOOL,
+        number=15,
+    )
 
 
 class PublicBlueprint(proto.Message):
@@ -519,38 +589,17 @@ class PublicBlueprint(proto.Message):
             The display name of the public blueprint.
         description (str):
             The description of the public blueprint.
-        deployment_level (google.cloud.telcoautomation_v1alpha1.types.PublicBlueprint.DeploymentLevel):
+        deployment_level (google.cloud.telcoautomation_v1alpha1.types.DeploymentLevel):
             DeploymentLevel of a blueprint signifies where the blueprint
-            will be applied. e.g. [HYDRATION, DEPLOYMENT]
+            will be applied. e.g. [HYDRATION, SINGLE_DEPLOYMENT,
+            MULTI_DEPLOYMENT]
         source_provider (str):
             Source provider is the author of a public
             blueprint. e.g. Google, vendors
+        rollback_support (bool):
+            Output only. Indicates if the deployment
+            created from this blueprint can be rolled back.
     """
-
-    class DeploymentLevel(proto.Enum):
-        r"""DeploymentLevel of a blueprint signifies where the blueprint
-        will be applied.
-
-        Values:
-            DEPLOYMENT_LEVEL_UNSPECIFIED (0):
-                Default unspecified deployment level.
-            HYDRATION (1):
-                Blueprints at HYDRATION level cannot be used
-                to create a Deployment (A user cannot manually
-                initate deployment of these blueprints on
-                orchestration or workload cluster).
-                These blueprints stay in a user's private
-                catalog and are configured and deployed by TNA
-                automation.
-            DEPLOYMENT (2):
-                Blueprints at DEPLOYMENT level can be
-                a) Modified in private catalog.
-                b) Used to create a deployment on orchestration
-                cluster by the user, once approved.
-        """
-        DEPLOYMENT_LEVEL_UNSPECIFIED = 0
-        HYDRATION = 1
-        DEPLOYMENT = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -564,21 +613,26 @@ class PublicBlueprint(proto.Message):
         proto.STRING,
         number=3,
     )
-    deployment_level: DeploymentLevel = proto.Field(
+    deployment_level: "DeploymentLevel" = proto.Field(
         proto.ENUM,
         number=4,
-        enum=DeploymentLevel,
+        enum="DeploymentLevel",
     )
     source_provider: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    rollback_support: bool = proto.Field(
+        proto.BOOL,
+        number=15,
     )
 
 
 class Deployment(proto.Message):
     r"""Deployment contains a collection of YAML files (This
     collection is also known as package) that can to applied on an
-    orchestration cluster (GKE cluster with TNA addons).
+    orchestration cluster (GKE cluster with TNA addons) or a
+    workload cluster.
 
     Attributes:
         name (str):
@@ -588,14 +642,14 @@ class Deployment(proto.Message):
             the deployment. A new revision is committed
             whenever a change in deployment is applied.
         source_blueprint_revision (str):
-            Required. Immutable. The blueprint revision
-            from which this deployment was created.
+            Required. The blueprint revision from which
+            this deployment was created.
         revision_create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp that the revision
             was created.
         state (google.cloud.telcoautomation_v1alpha1.types.Deployment.State):
             Output only. State of the deployment (DRAFT,
-            APPLIED).
+            APPLIED, DELETING).
         display_name (str):
             Optional. Human readable name of a
             Deployment.
@@ -621,6 +675,19 @@ class Deployment(proto.Message):
             Output only. Source provider is the author of
             a public blueprint, from which this deployment
             is created.
+        workload_cluster (str):
+            Optional. Immutable. The WorkloadCluster on which to create
+            the Deployment. This field should only be passed when the
+            deployment_level of the source blueprint specifies
+            deployments on workload clusters e.g.
+            WORKLOAD_CLUSTER_DEPLOYMENT.
+        deployment_level (google.cloud.telcoautomation_v1alpha1.types.DeploymentLevel):
+            Output only. Attributes to where the deployment can inflict
+            changes. The value can only be [SINGLE_DEPLOYMENT,
+            MULTI_DEPLOYMENT].
+        rollback_support (bool):
+            Output only. Indicates if the deployment can
+            be rolled back, exported from public blueprint.
     """
 
     class State(proto.Enum):
@@ -639,15 +706,21 @@ class Deployment(proto.Message):
                 This state means that the contents (YAML
                 files containing kubernetes resources) of the
                 deployment have been applied to an Orchestration
-                Cluster. A revision is created when a deployment
-                is applied. This revision will represent the
-                latest view of what is applied on the cluster
-                until the deployment is modified and applied
-                again, which will create a new revision.
+                or Workload Cluster. A revision is created when
+                a deployment is applied. This revision will
+                represent the latest view of what is applied on
+                the cluster until the deployment is modified and
+                applied again, which will create a new revision.
+            DELETING (3):
+                A deployment in DELETING state has been marked for deletion.
+                Its deletion status can be queried using
+                ``ComputeDeploymentStatus`` API. No updates are allowed to a
+                deployment in DELETING state.
         """
         STATE_UNSPECIFIED = 0
         DRAFT = 1
         APPLIED = 2
+        DELETING = 3
 
     name: str = proto.Field(
         proto.STRING,
@@ -702,6 +775,19 @@ class Deployment(proto.Message):
     source_provider: str = proto.Field(
         proto.STRING,
         number=12,
+    )
+    workload_cluster: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    deployment_level: "DeploymentLevel" = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum="DeploymentLevel",
+    )
+    rollback_support: bool = proto.Field(
+        proto.BOOL,
+        number=15,
     )
 
 
@@ -1225,21 +1311,6 @@ class DeleteBlueprintRequest(proto.Message):
     )
 
 
-class DeleteBlueprintRevisionRequest(proto.Message):
-    r"""Request object for ``DeleteBlueprintRevision``.
-
-    Attributes:
-        name (str):
-            Required. The name of the blueprint revision in the form
-            {blueprint_id}@{revision_id}.
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
 class ListBlueprintsRequest(proto.Message):
     r"""Request object for ``ListBlueprints``.
 
@@ -1425,10 +1496,10 @@ class SearchBlueprintRevisionsRequest(proto.Message):
                 revisions across all blueprints.
             2. "latest=true"            : Lists latest
                 revisions across all blueprints.
-            3. "name=<name>"            : Lists all
-                revisions of blueprint with name <name>.
-            4. "name=<name> latest=true": Lists latest
-                revision of blueprint with name <name>
+            3. "name={name}"            : Lists all
+                revisions of blueprint with name {name}.
+            4. "name={name} latest=true": Lists latest
+                revision of blueprint with name {name}
         page_size (int):
             Optional. The maximum number of blueprints
             revisions to return per page. max page size =
@@ -1651,20 +1722,6 @@ class GetDeploymentRequest(proto.Message):
     )
 
 
-class DeleteDeploymentRequest(proto.Message):
-    r"""Request object for ``DeleteDeployment``.
-
-    Attributes:
-        name (str):
-            Required. The name of deployment to delete.
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
 class RemoveDeploymentRequest(proto.Message):
     r"""Request object for ``RemoveDeployment``.
 
@@ -1672,21 +1729,6 @@ class RemoveDeploymentRequest(proto.Message):
         name (str):
             Required. The name of deployment to initiate
             delete.
-    """
-
-    name: str = proto.Field(
-        proto.STRING,
-        number=1,
-    )
-
-
-class DeleteDeploymentRevisionRequest(proto.Message):
-    r"""Request object for ``DeleteDeploymentRevision``.
-
-    Attributes:
-        name (str):
-            Required. The name of the deployment revision in the form
-            {deployment_id}@{revision_id}.
     """
 
     name: str = proto.Field(
@@ -1834,10 +1876,10 @@ class SearchDeploymentRevisionsRequest(proto.Message):
                 revisions across all deployments.
             2. "latest=true"            : Lists latest
                 revisions across all deployments.
-            3. "name=<name>"            : Lists all
-                revisions of deployment with name <name>.
-            4. "name=<name> latest=true": Lists latest
-                revision of deployment with name <name>
+            3. "name={name}"            : Lists all
+                revisions of deployment with name {name}.
+            4. "name={name} latest=true": Lists latest
+                revision of deployment with name {name}
         page_size (int):
             Optional. The maximum number of deployment
             revisions to return per page. max page size =
@@ -1934,7 +1976,8 @@ class ComputeDeploymentStatusRequest(proto.Message):
 
     Attributes:
         name (str):
-            Required. The name of the deployment.
+            Required. The name of the deployment without
+            revisionID.
     """
 
     name: str = proto.Field(
@@ -1949,7 +1992,7 @@ class ComputeDeploymentStatusResponse(proto.Message):
     Attributes:
         name (str):
             The name of the deployment.
-        status (google.cloud.telcoautomation_v1alpha1.types.Status):
+        aggregated_status (google.cloud.telcoautomation_v1alpha1.types.Status):
             Output only. Aggregated status of a
             deployment.
         resource_statuses (MutableSequence[google.cloud.telcoautomation_v1alpha1.types.ResourceStatus]):
@@ -1961,7 +2004,7 @@ class ComputeDeploymentStatusResponse(proto.Message):
         proto.STRING,
         number=1,
     )
-    status: "Status" = proto.Field(
+    aggregated_status: "Status" = proto.Field(
         proto.ENUM,
         number=2,
         enum="Status",
@@ -2223,7 +2266,7 @@ class StandardManagementConfig(proto.Message):
             the specified network.
         master_ipv4_cidr_block (str):
             Optional. The /28 network that the masters
-            will use.
+            will use. It should be free within the network.
         cluster_cidr_block (str):
             Optional. The IP address range for the
             cluster pod IPs. Set to blank to have a range
@@ -2476,6 +2519,8 @@ class ResourceStatus(proto.Message):
             Output only. Resource type.
         status (google.cloud.telcoautomation_v1alpha1.types.Status):
             Output only. Status of the resource.
+        nf_deploy_status (google.cloud.telcoautomation_v1alpha1.types.NFDeployStatus):
+            Output only. Detailed status of NFDeploy.
     """
 
     name: str = proto.Field(
@@ -2507,6 +2552,145 @@ class ResourceStatus(proto.Message):
         proto.ENUM,
         number=7,
         enum="Status",
+    )
+    nf_deploy_status: "NFDeployStatus" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="NFDeployStatus",
+    )
+
+
+class NFDeployStatus(proto.Message):
+    r"""Deployment status of NFDeploy.
+
+    Attributes:
+        targeted_nfs (int):
+            Output only. Total number of NFs targeted by
+            this deployment
+        ready_nfs (int):
+            Output only. Total number of NFs targeted by
+            this deployment with a Ready Condition set.
+        sites (MutableSequence[google.cloud.telcoautomation_v1alpha1.types.NFDeploySiteStatus]):
+            Output only. Per-Site Status.
+    """
+
+    targeted_nfs: int = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    ready_nfs: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    sites: MutableSequence["NFDeploySiteStatus"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="NFDeploySiteStatus",
+    )
+
+
+class NFDeploySiteStatus(proto.Message):
+    r"""Per-Site Status.
+
+    Attributes:
+        site (str):
+            Output only. Site id.
+        pending_deletion (bool):
+            Output only. If true, the Site Deletion is in
+            progress.
+        hydration (google.cloud.telcoautomation_v1alpha1.types.HydrationStatus):
+            Output only. Hydration status.
+        workload (google.cloud.telcoautomation_v1alpha1.types.WorkloadStatus):
+            Output only. Workload status.
+    """
+
+    site: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    pending_deletion: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    hydration: "HydrationStatus" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="HydrationStatus",
+    )
+    workload: "WorkloadStatus" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="WorkloadStatus",
+    )
+
+
+class HydrationStatus(proto.Message):
+    r"""Hydration status.
+
+    Attributes:
+        site_version (google.cloud.telcoautomation_v1alpha1.types.SiteVersion):
+            Output only. SiteVersion Hydration is
+            targeting.
+        status (str):
+            Output only. Status.
+    """
+
+    site_version: "SiteVersion" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SiteVersion",
+    )
+    status: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class SiteVersion(proto.Message):
+    r"""SiteVersion Hydration is targeting.
+
+    Attributes:
+        nf_vendor (str):
+            Output only. NF vendor.
+        nf_type (str):
+            Output only. NF vendor type.
+        nf_version (str):
+            Output only. NF version.
+    """
+
+    nf_vendor: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    nf_type: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    nf_version: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class WorkloadStatus(proto.Message):
+    r"""Workload status.
+
+    Attributes:
+        site_version (google.cloud.telcoautomation_v1alpha1.types.SiteVersion):
+            Output only. SiteVersion running in the
+            workload cluster.
+        status (str):
+            Output only. Status.
+    """
+
+    site_version: "SiteVersion" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SiteVersion",
+    )
+    status: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

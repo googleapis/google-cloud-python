@@ -578,34 +578,6 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         return self._stubs["delete_blueprint"]
 
     @property
-    def delete_blueprint_revision(
-        self,
-    ) -> Callable[
-        [telcoautomation.DeleteBlueprintRevisionRequest], telcoautomation.Blueprint
-    ]:
-        r"""Return a callable for the delete blueprint revision method over gRPC.
-
-        Deletes the specified revision of the blueprint.
-
-        Returns:
-            Callable[[~.DeleteBlueprintRevisionRequest],
-                    ~.Blueprint]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_blueprint_revision" not in self._stubs:
-            self._stubs["delete_blueprint_revision"] = self.grpc_channel.unary_unary(
-                "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DeleteBlueprintRevision",
-                request_serializer=telcoautomation.DeleteBlueprintRevisionRequest.serialize,
-                response_deserializer=telcoautomation.Blueprint.deserialize,
-            )
-        return self._stubs["delete_blueprint_revision"]
-
-    @property
     def list_blueprints(
         self,
     ) -> Callable[
@@ -972,32 +944,6 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
         return self._stubs["get_deployment"]
 
     @property
-    def delete_deployment(
-        self,
-    ) -> Callable[[telcoautomation.DeleteDeploymentRequest], empty_pb2.Empty]:
-        r"""Return a callable for the delete deployment method over gRPC.
-
-        Deletes a deployment and all its revisions.
-
-        Returns:
-            Callable[[~.DeleteDeploymentRequest],
-                    ~.Empty]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_deployment" not in self._stubs:
-            self._stubs["delete_deployment"] = self.grpc_channel.unary_unary(
-                "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DeleteDeployment",
-                request_serializer=telcoautomation.DeleteDeploymentRequest.serialize,
-                response_deserializer=empty_pb2.Empty.FromString,
-            )
-        return self._stubs["delete_deployment"]
-
-    @property
     def remove_deployment(
         self,
     ) -> Callable[[telcoautomation.RemoveDeploymentRequest], empty_pb2.Empty]:
@@ -1023,34 +969,6 @@ class TelcoAutomationGrpcTransport(TelcoAutomationTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["remove_deployment"]
-
-    @property
-    def delete_deployment_revision(
-        self,
-    ) -> Callable[
-        [telcoautomation.DeleteDeploymentRevisionRequest], telcoautomation.Deployment
-    ]:
-        r"""Return a callable for the delete deployment revision method over gRPC.
-
-        Deletes the specified revision of the deployment.
-
-        Returns:
-            Callable[[~.DeleteDeploymentRevisionRequest],
-                    ~.Deployment]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "delete_deployment_revision" not in self._stubs:
-            self._stubs["delete_deployment_revision"] = self.grpc_channel.unary_unary(
-                "/google.cloud.telcoautomation.v1alpha1.TelcoAutomation/DeleteDeploymentRevision",
-                request_serializer=telcoautomation.DeleteDeploymentRevisionRequest.serialize,
-                response_deserializer=telcoautomation.Deployment.deserialize,
-            )
-        return self._stubs["delete_deployment_revision"]
 
     @property
     def list_deployments(
