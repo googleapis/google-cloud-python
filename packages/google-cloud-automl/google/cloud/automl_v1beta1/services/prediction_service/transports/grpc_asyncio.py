@@ -16,14 +16,14 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
-
 from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.cloud.automl_v1beta1.types import prediction_service
 from google.longrunning import operations_pb2  # type: ignore
+import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
+
+from google.cloud.automl_v1beta1.types import prediction_service
 
 from .base import DEFAULT_CLIENT_INFO, PredictionServiceTransport
 from .grpc import PredictionServiceGrpcTransport
@@ -112,7 +112,7 @@ class PredictionServiceGrpcAsyncIOTransport(PredictionServiceTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'automl.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none

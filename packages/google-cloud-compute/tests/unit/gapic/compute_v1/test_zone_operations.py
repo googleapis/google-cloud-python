@@ -27,7 +27,7 @@ import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
@@ -65,6 +65,29 @@ def modify_default_endpoint(client):
     )
 
 
+# If default endpoint template is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint template so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint_template(client):
+    return (
+        "test.{UNIVERSE_DOMAIN}"
+        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
+        else client._DEFAULT_ENDPOINT_TEMPLATE
+    )
+
+
+# Anonymous Credentials with universe domain property. If no universe domain is provided, then
+# the default universe domain is "googleapis.com".
+class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
+    def __init__(self, universe_domain="googleapis.com"):
+        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
+        self._universe_domain = universe_domain
+
+    @property
+    def universe_domain(self):
+        return self._universe_domain
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -94,6 +117,261 @@ def test__get_default_mtls_endpoint():
     )
 
 
+def test__read_environment_variables():
+    assert ZoneOperationsClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        assert ZoneOperationsClient._read_environment_variables() == (
+            True,
+            "auto",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        assert ZoneOperationsClient._read_environment_variables() == (
+            False,
+            "auto",
+            None,
+        )
+
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError) as excinfo:
+            ZoneOperationsClient._read_environment_variables()
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+    )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        assert ZoneOperationsClient._read_environment_variables() == (
+            False,
+            "never",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        assert ZoneOperationsClient._read_environment_variables() == (
+            False,
+            "always",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
+        assert ZoneOperationsClient._read_environment_variables() == (
+            False,
+            "auto",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            ZoneOperationsClient._read_environment_variables()
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+    )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
+        assert ZoneOperationsClient._read_environment_variables() == (
+            False,
+            "auto",
+            "foo.com",
+        )
+
+
+def test__get_client_cert_source():
+    mock_provided_cert_source = mock.Mock()
+    mock_default_cert_source = mock.Mock()
+
+    assert ZoneOperationsClient._get_client_cert_source(None, False) is None
+    assert (
+        ZoneOperationsClient._get_client_cert_source(mock_provided_cert_source, False)
+        is None
+    )
+    assert (
+        ZoneOperationsClient._get_client_cert_source(mock_provided_cert_source, True)
+        == mock_provided_cert_source
+    )
+
+    with mock.patch(
+        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
+    ):
+        with mock.patch(
+            "google.auth.transport.mtls.default_client_cert_source",
+            return_value=mock_default_cert_source,
+        ):
+            assert (
+                ZoneOperationsClient._get_client_cert_source(None, True)
+                is mock_default_cert_source
+            )
+            assert (
+                ZoneOperationsClient._get_client_cert_source(
+                    mock_provided_cert_source, "true"
+                )
+                is mock_provided_cert_source
+            )
+
+
+@mock.patch.object(
+    ZoneOperationsClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(ZoneOperationsClient),
+)
+def test__get_api_endpoint():
+    api_override = "foo.com"
+    mock_client_cert_source = mock.Mock()
+    default_universe = ZoneOperationsClient._DEFAULT_UNIVERSE
+    default_endpoint = ZoneOperationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=default_universe
+    )
+    mock_universe = "bar.com"
+    mock_endpoint = ZoneOperationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=mock_universe
+    )
+
+    assert (
+        ZoneOperationsClient._get_api_endpoint(
+            api_override, mock_client_cert_source, default_universe, "always"
+        )
+        == api_override
+    )
+    assert (
+        ZoneOperationsClient._get_api_endpoint(
+            None, mock_client_cert_source, default_universe, "auto"
+        )
+        == ZoneOperationsClient.DEFAULT_MTLS_ENDPOINT
+    )
+    assert (
+        ZoneOperationsClient._get_api_endpoint(None, None, default_universe, "auto")
+        == default_endpoint
+    )
+    assert (
+        ZoneOperationsClient._get_api_endpoint(None, None, default_universe, "always")
+        == ZoneOperationsClient.DEFAULT_MTLS_ENDPOINT
+    )
+    assert (
+        ZoneOperationsClient._get_api_endpoint(
+            None, mock_client_cert_source, default_universe, "always"
+        )
+        == ZoneOperationsClient.DEFAULT_MTLS_ENDPOINT
+    )
+    assert (
+        ZoneOperationsClient._get_api_endpoint(None, None, mock_universe, "never")
+        == mock_endpoint
+    )
+    assert (
+        ZoneOperationsClient._get_api_endpoint(None, None, default_universe, "never")
+        == default_endpoint
+    )
+
+    with pytest.raises(MutualTLSChannelError) as excinfo:
+        ZoneOperationsClient._get_api_endpoint(
+            None, mock_client_cert_source, mock_universe, "auto"
+        )
+    assert (
+        str(excinfo.value)
+        == "mTLS is not supported in any universe other than googleapis.com."
+    )
+
+
+def test__get_universe_domain():
+    client_universe_domain = "foo.com"
+    universe_domain_env = "bar.com"
+
+    assert (
+        ZoneOperationsClient._get_universe_domain(
+            client_universe_domain, universe_domain_env
+        )
+        == client_universe_domain
+    )
+    assert (
+        ZoneOperationsClient._get_universe_domain(None, universe_domain_env)
+        == universe_domain_env
+    )
+    assert (
+        ZoneOperationsClient._get_universe_domain(None, None)
+        == ZoneOperationsClient._DEFAULT_UNIVERSE
+    )
+
+    with pytest.raises(ValueError) as excinfo:
+        ZoneOperationsClient._get_universe_domain("", None)
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name",
+    [
+        (ZoneOperationsClient, transports.ZoneOperationsRestTransport, "rest"),
+    ],
+)
+def test__validate_universe_domain(client_class, transport_class, transport_name):
+    client = client_class(
+        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+    )
+    assert client._validate_universe_domain() == True
+
+    # Test the case when universe is already validated.
+    assert client._validate_universe_domain() == True
+
+    if transport_name == "grpc":
+        # Test the case where credentials are provided by the
+        # `local_channel_credentials`. The default universes in both match.
+        channel = grpc.secure_channel(
+            "http://localhost/", grpc.local_channel_credentials()
+        )
+        client = client_class(transport=transport_class(channel=channel))
+        assert client._validate_universe_domain() == True
+
+        # Test the case where credentials do not exist: e.g. a transport is provided
+        # with no credentials. Validation should still succeed because there is no
+        # mismatch with non-existent credentials.
+        channel = grpc.secure_channel(
+            "http://localhost/", grpc.local_channel_credentials()
+        )
+        transport = transport_class(channel=channel)
+        transport._credentials = None
+        client = client_class(transport=transport)
+        assert client._validate_universe_domain() == True
+
+    # Test the case when there is a universe mismatch from the credentials.
+    client = client_class(
+        transport=transport_class(
+            credentials=_AnonymousCredentialsWithUniverseDomain(
+                universe_domain="foo.com"
+            )
+        )
+    )
+    with pytest.raises(ValueError) as excinfo:
+        client._validate_universe_domain()
+    assert (
+        str(excinfo.value)
+        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+    )
+
+    # Test the case when there is a universe mismatch from the client.
+    #
+    # TODO: Make this test unconditional once the minimum supported version of
+    # google-api-core becomes 2.15.0 or higher.
+    api_core_major, api_core_minor, _ = [
+        int(part) for part in api_core_version.__version__.split(".")
+    ]
+    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+        client = client_class(
+            client_options={"universe_domain": "bar.com"},
+            transport=transport_class(
+                credentials=_AnonymousCredentialsWithUniverseDomain(),
+            ),
+        )
+        with pytest.raises(ValueError) as excinfo:
+            client._validate_universe_domain()
+        assert (
+            str(excinfo.value)
+            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+        )
+
+
 @pytest.mark.parametrize(
     "client_class,transport_name",
     [
@@ -101,7 +379,7 @@ def test__get_default_mtls_endpoint():
     ],
 )
 def test_zone_operations_client_from_service_account_info(client_class, transport_name):
-    creds = ga_credentials.AnonymousCredentials()
+    creds = _AnonymousCredentialsWithUniverseDomain()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -149,7 +427,7 @@ def test_zone_operations_client_service_account_always_use_jwt(
     ],
 )
 def test_zone_operations_client_from_service_account_file(client_class, transport_name):
-    creds = ga_credentials.AnonymousCredentials()
+    creds = _AnonymousCredentialsWithUniverseDomain()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -192,15 +470,17 @@ def test_zone_operations_client_get_transport_class():
 )
 @mock.patch.object(
     ZoneOperationsClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(ZoneOperationsClient),
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(ZoneOperationsClient),
 )
 def test_zone_operations_client_client_options(
     client_class, transport_class, transport_name
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(ZoneOperationsClient, "get_transport_class") as gtc:
-        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
+        transport = transport_class(
+            credentials=_AnonymousCredentialsWithUniverseDomain()
+        )
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -235,7 +515,9 @@ def test_zone_operations_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                ),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -265,15 +547,23 @@ def test_zone_operations_client_client_options(
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+    )
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as excinfo:
             client = client_class(transport=transport_name)
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+    )
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -283,7 +573,9 @@ def test_zone_operations_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -301,7 +593,9 @@ def test_zone_operations_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -320,8 +614,8 @@ def test_zone_operations_client_client_options(
 )
 @mock.patch.object(
     ZoneOperationsClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(ZoneOperationsClient),
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(ZoneOperationsClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
 def test_zone_operations_client_mtls_env_auto(
@@ -344,7 +638,9 @@ def test_zone_operations_client_mtls_env_auto(
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client.DEFAULT_ENDPOINT
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                )
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -376,7 +672,9 @@ def test_zone_operations_client_mtls_env_auto(
                     return_value=client_cert_source_callback,
                 ):
                     if use_client_cert_env == "false":
-                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                        )
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -410,7 +708,9 @@ def test_zone_operations_client_mtls_env_auto(
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                    ),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -493,6 +793,111 @@ def test_zone_operations_client_get_mtls_endpoint_and_cert_source(client_class):
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert (
+            str(excinfo.value)
+            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+        )
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert (
+            str(excinfo.value)
+            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        )
+
+
+@pytest.mark.parametrize("client_class", [ZoneOperationsClient])
+@mock.patch.object(
+    ZoneOperationsClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(ZoneOperationsClient),
+)
+def test_zone_operations_client_client_api_endpoint(client_class):
+    mock_client_cert_source = client_cert_source_callback
+    api_override = "foo.com"
+    default_universe = ZoneOperationsClient._DEFAULT_UNIVERSE
+    default_endpoint = ZoneOperationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=default_universe
+    )
+    mock_universe = "bar.com"
+    mock_endpoint = ZoneOperationsClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=mock_universe
+    )
+
+    # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
+    # use ClientOptions.api_endpoint as the api endpoint regardless.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+        ):
+            options = client_options.ClientOptions(
+                client_cert_source=mock_client_cert_source, api_endpoint=api_override
+            )
+            client = client_class(
+                client_options=options,
+                credentials=_AnonymousCredentialsWithUniverseDomain(),
+            )
+            assert client.api_endpoint == api_override
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        assert client.api_endpoint == default_endpoint
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
+    # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+
+    # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE="false" (default), default cert source doesn't exist,
+    # and ClientOptions.universe_domain="bar.com",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
+    options = client_options.ClientOptions()
+    universe_exists = hasattr(options, "universe_domain")
+    if universe_exists:
+        options = client_options.ClientOptions(universe_domain=mock_universe)
+        client = client_class(
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
+        )
+    else:
+        client = client_class(
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
+        )
+    assert client.api_endpoint == (
+        mock_endpoint if universe_exists else default_endpoint
+    )
+    assert client.universe_domain == (
+        mock_universe if universe_exists else default_universe
+    )
+
+    # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    options = client_options.ClientOptions()
+    if hasattr(options, "universe_domain"):
+        delattr(options, "universe_domain")
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
+        )
+        assert client.api_endpoint == default_endpoint
+
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
@@ -513,7 +918,9 @@ def test_zone_operations_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -541,7 +948,9 @@ def test_zone_operations_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -560,7 +969,7 @@ def test_zone_operations_client_client_options_credentials_file(
 )
 def test_delete_rest(request_type):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -608,7 +1017,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteZoneOperationReq
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).delete._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -619,7 +1028,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteZoneOperationReq
     jsonified_request["zone"] = "zone_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).delete._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -632,7 +1041,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteZoneOperationReq
     assert jsonified_request["zone"] == "zone_value"
 
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -674,7 +1083,7 @@ def test_delete_rest_required_fields(request_type=compute.DeleteZoneOperationReq
 
 def test_delete_rest_unset_required_fields():
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.delete._get_unset_required_fields({})
@@ -693,7 +1102,7 @@ def test_delete_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_rest_interceptors(null_interceptor):
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.ZoneOperationsRestInterceptor(),
@@ -751,7 +1160,7 @@ def test_delete_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteZoneOperationRequest
 ):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -773,7 +1182,7 @@ def test_delete_rest_bad_request(
 
 def test_delete_rest_flattened():
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -821,7 +1230,7 @@ def test_delete_rest_flattened():
 
 def test_delete_rest_flattened_error(transport: str = "rest"):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -838,7 +1247,7 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_rest_error():
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
@@ -851,7 +1260,7 @@ def test_delete_rest_error():
 )
 def test_get_rest(request_type):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -944,7 +1353,7 @@ def test_get_rest_required_fields(request_type=compute.GetZoneOperationRequest):
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).get._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -955,7 +1364,7 @@ def test_get_rest_required_fields(request_type=compute.GetZoneOperationRequest):
     jsonified_request["zone"] = "zone_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).get._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -968,7 +1377,7 @@ def test_get_rest_required_fields(request_type=compute.GetZoneOperationRequest):
     assert jsonified_request["zone"] == "zone_value"
 
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -1010,7 +1419,7 @@ def test_get_rest_required_fields(request_type=compute.GetZoneOperationRequest):
 
 def test_get_rest_unset_required_fields():
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.get._get_unset_required_fields({})
@@ -1029,7 +1438,7 @@ def test_get_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_rest_interceptors(null_interceptor):
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.ZoneOperationsRestInterceptor(),
@@ -1085,7 +1494,7 @@ def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetZoneOperationRequest
 ):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1107,7 +1516,7 @@ def test_get_rest_bad_request(
 
 def test_get_rest_flattened():
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -1155,7 +1564,7 @@ def test_get_rest_flattened():
 
 def test_get_rest_flattened_error(transport: str = "rest"):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1172,7 +1581,7 @@ def test_get_rest_flattened_error(transport: str = "rest"):
 
 def test_get_rest_error():
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
@@ -1185,7 +1594,7 @@ def test_get_rest_error():
 )
 def test_list_rest(request_type):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -1241,7 +1650,7 @@ def test_list_rest_required_fields(request_type=compute.ListZoneOperationsReques
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).list._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -1251,7 +1660,7 @@ def test_list_rest_required_fields(request_type=compute.ListZoneOperationsReques
     jsonified_request["zone"] = "zone_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -1272,7 +1681,7 @@ def test_list_rest_required_fields(request_type=compute.ListZoneOperationsReques
     assert jsonified_request["zone"] == "zone_value"
 
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -1314,7 +1723,7 @@ def test_list_rest_required_fields(request_type=compute.ListZoneOperationsReques
 
 def test_list_rest_unset_required_fields():
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.list._get_unset_required_fields({})
@@ -1340,7 +1749,7 @@ def test_list_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_rest_interceptors(null_interceptor):
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.ZoneOperationsRestInterceptor(),
@@ -1398,7 +1807,7 @@ def test_list_rest_bad_request(
     transport: str = "rest", request_type=compute.ListZoneOperationsRequest
 ):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1420,7 +1829,7 @@ def test_list_rest_bad_request(
 
 def test_list_rest_flattened():
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -1463,7 +1872,7 @@ def test_list_rest_flattened():
 
 def test_list_rest_flattened_error(transport: str = "rest"):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1479,7 +1888,7 @@ def test_list_rest_flattened_error(transport: str = "rest"):
 
 def test_list_rest_pager(transport: str = "rest"):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1547,7 +1956,7 @@ def test_list_rest_pager(transport: str = "rest"):
 )
 def test_wait_rest(request_type):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -1640,7 +2049,7 @@ def test_wait_rest_required_fields(request_type=compute.WaitZoneOperationRequest
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).wait._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -1651,7 +2060,7 @@ def test_wait_rest_required_fields(request_type=compute.WaitZoneOperationRequest
     jsonified_request["zone"] = "zone_value"
 
     unset_fields = transport_class(
-        credentials=ga_credentials.AnonymousCredentials()
+        credentials=_AnonymousCredentialsWithUniverseDomain()
     ).wait._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -1664,7 +2073,7 @@ def test_wait_rest_required_fields(request_type=compute.WaitZoneOperationRequest
     assert jsonified_request["zone"] == "zone_value"
 
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -1706,7 +2115,7 @@ def test_wait_rest_required_fields(request_type=compute.WaitZoneOperationRequest
 
 def test_wait_rest_unset_required_fields():
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials
+        credentials=_AnonymousCredentialsWithUniverseDomain
     )
 
     unset_fields = transport.wait._get_unset_required_fields({})
@@ -1725,7 +2134,7 @@ def test_wait_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_wait_rest_interceptors(null_interceptor):
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         interceptor=None
         if null_interceptor
         else transports.ZoneOperationsRestInterceptor(),
@@ -1781,7 +2190,7 @@ def test_wait_rest_bad_request(
     transport: str = "rest", request_type=compute.WaitZoneOperationRequest
 ):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1803,7 +2212,7 @@ def test_wait_rest_bad_request(
 
 def test_wait_rest_flattened():
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport="rest",
     )
 
@@ -1851,7 +2260,7 @@ def test_wait_rest_flattened():
 
 def test_wait_rest_flattened_error(transport: str = "rest"):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         transport=transport,
     )
 
@@ -1868,24 +2277,24 @@ def test_wait_rest_flattened_error(transport: str = "rest"):
 
 def test_wait_rest_error():
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = ZoneOperationsClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = ZoneOperationsClient(
@@ -1895,7 +2304,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -1906,16 +2315,17 @@ def test_credentials_transport_error():
         )
 
     # It is an error to provide an api_key and a credential.
-    options = mock.Mock()
+    options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = ZoneOperationsClient(
-            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+            client_options=options,
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     with pytest.raises(ValueError):
         client = ZoneOperationsClient(
@@ -1927,7 +2337,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.ZoneOperationsRestTransport(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     client = ZoneOperationsClient(transport=transport)
     assert client.transport is transport
@@ -1942,7 +2352,7 @@ def test_transport_instance():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -1955,7 +2365,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = ZoneOperationsClient.get_transport_class(transport_name)(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
     )
     assert transport.kind == transport_name
 
@@ -1964,7 +2374,7 @@ def test_zone_operations_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.ZoneOperationsTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             credentials_file="credentials.json",
         )
 
@@ -1976,7 +2386,7 @@ def test_zone_operations_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.ZoneOperationsTransport(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
         )
 
     # Every method on the transport should just blindly
@@ -2011,7 +2421,7 @@ def test_zone_operations_base_transport_with_credentials_file():
         "google.cloud.compute_v1.services.zone_operations.transports.ZoneOperationsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
+        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport = transports.ZoneOperationsTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -2033,7 +2443,7 @@ def test_zone_operations_base_transport_with_adc():
         "google.cloud.compute_v1.services.zone_operations.transports.ZoneOperationsTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         transport = transports.ZoneOperationsTransport()
         adc.assert_called_once()
 
@@ -2041,7 +2451,7 @@ def test_zone_operations_base_transport_with_adc():
 def test_zone_operations_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
+        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
         ZoneOperationsClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -2054,7 +2464,7 @@ def test_zone_operations_auth_adc():
 
 
 def test_zone_operations_http_transport_client_cert_source_for_mtls():
-    cred = ga_credentials.AnonymousCredentials()
+    cred = _AnonymousCredentialsWithUniverseDomain()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -2072,7 +2482,7 @@ def test_zone_operations_http_transport_client_cert_source_for_mtls():
 )
 def test_zone_operations_host_no_port(transport_name):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
         ),
@@ -2093,7 +2503,7 @@ def test_zone_operations_host_no_port(transport_name):
 )
 def test_zone_operations_host_with_port(transport_name):
     client = ZoneOperationsClient(
-        credentials=ga_credentials.AnonymousCredentials(),
+        credentials=_AnonymousCredentialsWithUniverseDomain(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
         ),
@@ -2113,8 +2523,8 @@ def test_zone_operations_host_with_port(transport_name):
     ],
 )
 def test_zone_operations_client_transport_session_collision(transport_name):
-    creds1 = ga_credentials.AnonymousCredentials()
-    creds2 = ga_credentials.AnonymousCredentials()
+    creds1 = _AnonymousCredentialsWithUniverseDomain()
+    creds2 = _AnonymousCredentialsWithUniverseDomain()
     client1 = ZoneOperationsClient(
         credentials=creds1,
         transport=transport_name,
@@ -2247,7 +2657,7 @@ def test_client_with_default_client_info():
         transports.ZoneOperationsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ZoneOperationsClient(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -2257,7 +2667,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = ZoneOperationsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(),
+            credentials=_AnonymousCredentialsWithUniverseDomain(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -2270,7 +2680,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = ZoneOperationsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -2286,7 +2696,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = ZoneOperationsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport
+            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
@@ -2316,7 +2726,9 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                ),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

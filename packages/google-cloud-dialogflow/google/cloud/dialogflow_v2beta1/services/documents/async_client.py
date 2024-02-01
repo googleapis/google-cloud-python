@@ -38,9 +38,9 @@ from google.oauth2 import service_account  # type: ignore
 from google.cloud.dialogflow_v2beta1 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.AsyncRetry, object]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
@@ -66,8 +66,12 @@ class DocumentsAsyncClient:
 
     _client: DocumentsClient
 
+    # Copy defaults from the synchronous client for use here.
+    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
     DEFAULT_ENDPOINT = DocumentsClient.DEFAULT_ENDPOINT
     DEFAULT_MTLS_ENDPOINT = DocumentsClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = DocumentsClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = DocumentsClient._DEFAULT_UNIVERSE
 
     document_path = staticmethod(DocumentsClient.document_path)
     parse_document_path = staticmethod(DocumentsClient.parse_document_path)
@@ -168,6 +172,25 @@ class DocumentsAsyncClient:
         """
         return self._client.transport
 
+    @property
+    def api_endpoint(self):
+        """Return the API endpoint used by the client instance.
+
+        Returns:
+            str: The API endpoint used by the client instance.
+        """
+        return self._client._api_endpoint
+
+    @property
+    def universe_domain(self) -> str:
+        """Return the universe domain used by the client instance.
+
+        Returns:
+            str: The universe domain used
+                by the client instance.
+        """
+        return self._client._universe_domain
+
     get_transport_class = functools.partial(
         type(DocumentsClient).get_transport_class, type(DocumentsClient)
     )
@@ -180,7 +203,7 @@ class DocumentsAsyncClient:
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the documents client.
+        """Instantiates the documents async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -191,22 +214,37 @@ class DocumentsAsyncClient:
             transport (Union[str, ~.DocumentsTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (ClientOptions): Custom options for the client. It
-                won't take effect if a ``transport`` instance is provided.
-                (1) The ``api_endpoint`` property can be used to override the
-                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
-                environment variable can also be used to override the endpoint:
+            client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
+                Custom options for the client.
+
+                1. The ``api_endpoint`` property can be used to override the
+                default endpoint provided by the client when ``transport`` is
+                not explicitly provided. Only if this property is not set and
+                ``transport`` was not explicitly provided, the endpoint is
+                determined by the GOOGLE_API_USE_MTLS_ENDPOINT environment
+                variable, which have one of the following values:
                 "always" (always use the default mTLS endpoint), "never" (always
-                use the default regular endpoint) and "auto" (auto switch to the
-                default mTLS endpoint if client certificate is present, this is
-                the default value). However, the ``api_endpoint`` property takes
-                precedence if provided.
-                (2) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+                use the default regular endpoint) and "auto" (auto-switch to the
+                default mTLS endpoint if client certificate is present; this is
+                the default value).
+
+                2. If the GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
                 is "true", then the ``client_cert_source`` property can be used
-                to provide client certificate for mutual TLS transport. If
+                to provide a client certificate for mTLS transport. If
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
+
+                3. The ``universe_domain`` property can be used to override the
+                default "googleapis.com" universe. Note that ``api_endpoint``
+                property still takes precedence; and ``universe_domain`` is
+                currently not supported for mTLS.
+
+            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
+                The client info used to send a user-agent string along with
+                API requests. If ``None``, then default info will be used.
+                Generally, you only need to set this if you're developing
+                your own client library.
 
         Raises:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -317,6 +355,9 @@ class DocumentsAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -438,6 +479,9 @@ class DocumentsAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -583,6 +627,9 @@ class DocumentsAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request,
@@ -697,6 +744,9 @@ class DocumentsAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -834,6 +884,9 @@ class DocumentsAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -987,6 +1040,9 @@ class DocumentsAsyncClient:
                 (("document.name", request.document.name),)
             ),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1144,6 +1200,9 @@ class DocumentsAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request,
@@ -1206,6 +1265,9 @@ class DocumentsAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         response = await rpc(
             request,
@@ -1259,6 +1321,9 @@ class DocumentsAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1317,6 +1382,9 @@ class DocumentsAsyncClient:
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
 
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
         # Send the request.
         await rpc(
             request,
@@ -1367,6 +1435,9 @@ class DocumentsAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(
@@ -1421,6 +1492,9 @@ class DocumentsAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
 
         # Send the request.
         response = await rpc(

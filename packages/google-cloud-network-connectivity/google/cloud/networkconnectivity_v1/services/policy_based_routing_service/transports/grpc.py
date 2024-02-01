@@ -69,7 +69,7 @@ class PolicyBasedRoutingServiceGrpcTransport(PolicyBasedRoutingServiceTransport)
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'networkconnectivity.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
