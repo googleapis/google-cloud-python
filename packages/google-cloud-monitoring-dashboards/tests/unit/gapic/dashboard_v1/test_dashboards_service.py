@@ -76,7 +76,6 @@ class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredential
         return self._universe_domain
 
 
-
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
 
