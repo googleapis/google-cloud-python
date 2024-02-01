@@ -13,22 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.apps.meet import gapic_version as package_version
+from google.apps.meet_v2 import gapic_version as package_version
 
 __version__ = package_version.__version__
 
 
-from google.apps.meet_v2.services.conference_records_service.async_client import (
+from .services.conference_records_service import (
     ConferenceRecordsServiceAsyncClient,
-)
-from google.apps.meet_v2.services.conference_records_service.client import (
     ConferenceRecordsServiceClient,
 )
-from google.apps.meet_v2.services.spaces_service.async_client import (
-    SpacesServiceAsyncClient,
-)
-from google.apps.meet_v2.services.spaces_service.client import SpacesServiceClient
-from google.apps.meet_v2.types.resource import (
+from .services.spaces_service import SpacesServiceAsyncClient, SpacesServiceClient
+from .types.resource import (
     ActiveConference,
     AnonymousUser,
     ConferenceRecord,
@@ -44,7 +39,7 @@ from google.apps.meet_v2.types.resource import (
     Transcript,
     TranscriptEntry,
 )
-from google.apps.meet_v2.types.service import (
+from .types.service import (
     CreateSpaceRequest,
     EndActiveConferenceRequest,
     GetConferenceRecordRequest,
@@ -70,25 +65,15 @@ from google.apps.meet_v2.types.service import (
 )
 
 __all__ = (
-    "ConferenceRecordsServiceClient",
     "ConferenceRecordsServiceAsyncClient",
-    "SpacesServiceClient",
     "SpacesServiceAsyncClient",
     "ActiveConference",
     "AnonymousUser",
     "ConferenceRecord",
+    "ConferenceRecordsServiceClient",
+    "CreateSpaceRequest",
     "DocsDestination",
     "DriveDestination",
-    "Participant",
-    "ParticipantSession",
-    "PhoneUser",
-    "Recording",
-    "SignedinUser",
-    "Space",
-    "SpaceConfig",
-    "Transcript",
-    "TranscriptEntry",
-    "CreateSpaceRequest",
     "EndActiveConferenceRequest",
     "GetConferenceRecordRequest",
     "GetParticipantRequest",
@@ -109,5 +94,15 @@ __all__ = (
     "ListTranscriptEntriesResponse",
     "ListTranscriptsRequest",
     "ListTranscriptsResponse",
+    "Participant",
+    "ParticipantSession",
+    "PhoneUser",
+    "Recording",
+    "SignedinUser",
+    "Space",
+    "SpaceConfig",
+    "SpacesServiceClient",
+    "Transcript",
+    "TranscriptEntry",
     "UpdateSpaceRequest",
 )

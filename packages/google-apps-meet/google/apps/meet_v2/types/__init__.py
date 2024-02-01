@@ -13,22 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from google.apps.meet import gapic_version as package_version
-
-__version__ = package_version.__version__
-
-
-from google.apps.meet_v2.services.conference_records_service.async_client import (
-    ConferenceRecordsServiceAsyncClient,
-)
-from google.apps.meet_v2.services.conference_records_service.client import (
-    ConferenceRecordsServiceClient,
-)
-from google.apps.meet_v2.services.spaces_service.async_client import (
-    SpacesServiceAsyncClient,
-)
-from google.apps.meet_v2.services.spaces_service.client import SpacesServiceClient
-from google.apps.meet_v2.types.resource import (
+from .resource import (
     ActiveConference,
     AnonymousUser,
     ConferenceRecord,
@@ -44,7 +29,7 @@ from google.apps.meet_v2.types.resource import (
     Transcript,
     TranscriptEntry,
 )
-from google.apps.meet_v2.types.service import (
+from .service import (
     CreateSpaceRequest,
     EndActiveConferenceRequest,
     GetConferenceRecordRequest,
@@ -70,10 +55,6 @@ from google.apps.meet_v2.types.service import (
 )
 
 __all__ = (
-    "ConferenceRecordsServiceClient",
-    "ConferenceRecordsServiceAsyncClient",
-    "SpacesServiceClient",
-    "SpacesServiceAsyncClient",
     "ActiveConference",
     "AnonymousUser",
     "ConferenceRecord",

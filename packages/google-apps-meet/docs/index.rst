@@ -2,6 +2,17 @@
 
 .. include:: multiprocessing.rst
 
+This package includes clients for multiple versions of Google Meet API.
+By default, you will get version ``meet_v2``.
+
+
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    meet_v2/services_
+    meet_v2/types_
 
 API Reference
 -------------
