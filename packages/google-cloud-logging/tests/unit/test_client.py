@@ -894,6 +894,42 @@ class TestClient(unittest.TestCase):
         }
         self.assertEqual(kwargs, expected_kwargs)
 
+    def test_setup_logging_w_extra_kwargs_structured_log(self):
+        import io
+        from google.cloud.logging.handlers import StructuredLogHandler
+        from google.cloud.logging import Resource
+        from google.cloud.logging_v2.client import _GKE_RESOURCE_TYPE
+
+        name = "test-logger"
+        resource = Resource(_GKE_RESOURCE_TYPE, {"resource_label": "value"})
+        labels = {"handler_label": "value"}
+        stream = io.BytesIO()
+
+        credentials = _make_credentials()
+        client = self._make_one(
+            project=self.PROJECT, credentials=credentials, _use_grpc=False
+        )
+
+        with mock.patch("google.cloud.logging_v2.client.setup_logging") as mocked:
+            client.setup_logging(
+                name=name, resource=resource, labels=labels, stream=stream
+            )
+
+        self.assertEqual(len(mocked.mock_calls), 1)
+        _, args, kwargs = mocked.mock_calls[0]
+
+        (handler,) = args
+        self.assertIsInstance(handler, StructuredLogHandler)
+
+        expected_kwargs = {
+            "excluded_loggers": (
+                "google.api_core.bidi",
+                "werkzeug",
+            ),
+            "log_level": 20,
+        }
+        self.assertEqual(kwargs, expected_kwargs)
+
 
 class _Connection(object):
     _called_with = None
