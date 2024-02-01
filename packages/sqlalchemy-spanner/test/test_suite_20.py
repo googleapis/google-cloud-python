@@ -149,7 +149,10 @@ from sqlalchemy.testing.suite.test_types import (  # noqa: F401, F403
     UnicodeTextTest as _UnicodeTextTest,
     _UnicodeFixture as __UnicodeFixture,
 )  # noqa: F401, F403
-from test._helpers import get_db_url, get_project
+from test._helpers import (
+    get_db_url,
+    get_project,
+)
 
 config.test_schema = ""
 
@@ -162,7 +165,7 @@ class BooleanTest(_BooleanTest):
     def test_render_literal_bool(self):
         pass
 
-    def test_render_literal_bool_true(self, literal_round_trip):
+    def test_render_literal_bool_true(self, literal_round_trip_spanner):
         """
         SPANNER OVERRIDE:
 
@@ -171,9 +174,9 @@ class BooleanTest(_BooleanTest):
         following insertions will fail with `Row [] already exists".
         Overriding the test to avoid the same failure.
         """
-        literal_round_trip(Boolean(), [True], [True])
+        literal_round_trip_spanner(Boolean(), [True], [True])
 
-    def test_render_literal_bool_false(self, literal_round_trip):
+    def test_render_literal_bool_false(self, literal_round_trip_spanner):
         """
         SPANNER OVERRIDE:
 
@@ -182,7 +185,7 @@ class BooleanTest(_BooleanTest):
         following insertions will fail with `Row [] already exists".
         Overriding the test to avoid the same failure.
         """
-        literal_round_trip(Boolean(), [False], [False])
+        literal_round_trip_spanner(Boolean(), [False], [False])
 
     @pytest.mark.skip("Not supported by Cloud Spanner")
     def test_whereclause(self):
@@ -2003,6 +2006,9 @@ class IntegerTest(_IntegerTest):
             intvalue,
         )
 
+    def test_literal(self, literal_round_trip_spanner):
+        literal_round_trip_spanner(Integer, [5], [5])
+
 
 class _UnicodeFixture(__UnicodeFixture):
     @classmethod
@@ -2189,6 +2195,19 @@ class StringTest(_StringTest):
                 args[1],
             )
 
+    def test_literal(self, literal_round_trip_spanner):
+        # note that in Python 3, this invokes the Unicode
+        # datatype for the literal part because all strings are unicode
+        literal_round_trip_spanner(String(40), ["some text"], ["some text"])
+
+    def test_literal_quoting(self, literal_round_trip_spanner):
+        data = """some 'text' hey "hi there" that's text"""
+        literal_round_trip_spanner(String(40), [data], [data])
+
+    def test_literal_backslashes(self, literal_round_trip_spanner):
+        data = r"backslash one \ backslash two \\ end"
+        literal_round_trip_spanner(String(40), [data], [data])
+
 
 class TextTest(_TextTest):
     @classmethod
@@ -2224,6 +2243,21 @@ class TextTest(_TextTest):
     def test_text_null_strings(self, connection):
         pass
 
+    def test_literal(self, literal_round_trip_spanner):
+        literal_round_trip_spanner(Text, ["some text"], ["some text"])
+
+    def test_literal_quoting(self, literal_round_trip_spanner):
+        data = """some 'text' hey "hi there" that's text"""
+        literal_round_trip_spanner(Text, [data], [data])
+
+    def test_literal_backslashes(self, literal_round_trip_spanner):
+        data = r"backslash one \ backslash two \\ end"
+        literal_round_trip_spanner(Text, [data], [data])
+
+    def test_literal_percentsigns(self, literal_round_trip_spanner):
+        data = r"percent % signs %% percent"
+        literal_round_trip_spanner(Text, [data], [data])
+
 
 class NumericTest(_NumericTest):
     @testing.fixture
@@ -2254,7 +2288,7 @@ class NumericTest(_NumericTest):
         return run
 
     @emits_warning(r".*does \*not\* support Decimal objects natively")
-    def test_render_literal_numeric(self, literal_round_trip):
+    def test_render_literal_numeric(self, literal_round_trip_spanner):
         """
         SPANNER OVERRIDE:
 
@@ -2263,14 +2297,14 @@ class NumericTest(_NumericTest):
         following insertions will fail with `Row [] already exists".
         Overriding the test to avoid the same failure.
         """
-        literal_round_trip(
+        literal_round_trip_spanner(
             Numeric(precision=8, scale=4),
             [decimal.Decimal("15.7563")],
             [decimal.Decimal("15.7563")],
         )
 
     @emits_warning(r".*does \*not\* support Decimal objects natively")
-    def test_render_literal_numeric_asfloat(self, literal_round_trip):
+    def test_render_literal_numeric_asfloat(self, literal_round_trip_spanner):
         """
         SPANNER OVERRIDE:
 
@@ -2279,13 +2313,13 @@ class NumericTest(_NumericTest):
         following insertions will fail with `Row [] already exists".
         Overriding the test to avoid the same failure.
         """
-        literal_round_trip(
+        literal_round_trip_spanner(
             Numeric(precision=8, scale=4, asdecimal=False),
             [decimal.Decimal("15.7563")],
             [15.7563],
         )
 
-    def test_render_literal_float(self, literal_round_trip):
+    def test_render_literal_float(self, literal_round_trip_spanner):
         """
         SPANNER OVERRIDE:
 
@@ -2294,7 +2328,7 @@ class NumericTest(_NumericTest):
         following insertions will fail with `Row [] already exists".
         Overriding the test to avoid the same failure.
         """
-        literal_round_trip(
+        literal_round_trip_spanner(
             Float(4),
             [decimal.Decimal("15.7563")],
             [15.7563],

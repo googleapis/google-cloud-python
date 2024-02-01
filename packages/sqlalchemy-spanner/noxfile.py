@@ -145,7 +145,7 @@ def compliance_test_13(session):
     )
 
     session.install("mock")
-    session.install("-e", ".[tracing]")
+    session.install(".[tracing]")
     session.run("pip", "install", "sqlalchemy>=1.1.13,<=1.3.24", "--force-reinstall")
     session.run("pip", "install", "opentelemetry-api<=1.10", "--force-reinstall")
     session.run("pip", "install", "opentelemetry-sdk<=1.10", "--force-reinstall")
@@ -191,7 +191,7 @@ def compliance_test_14(session):
     )
 
     session.install("mock")
-    session.install("-e", ".[tracing]")
+    session.install(".[tracing]")
     session.run("pip", "install", "sqlalchemy>=1.4,<2.0", "--force-reinstall")
     session.run("python", "create_test_database.py")
     session.run(
@@ -231,7 +231,7 @@ def compliance_test_20(session):
     )
 
     session.install("mock")
-    session.install("-e", ".[tracing]")
+    session.install(".[tracing]")
     session.run("pip", "install", "opentelemetry-api<=1.10", "--force-reinstall")
     session.run("python", "create_test_database.py")
 
@@ -257,7 +257,7 @@ def unit(session):
     # Run SQLAlchemy dialect compliance test suite with OpenTelemetry.
     session.install("pytest")
     session.install("mock")
-    session.install("-e", ".")
+    session.install(".")
     session.install("opentelemetry-api==1.1.0")
     session.install("opentelemetry-sdk==1.1.0")
     session.install("opentelemetry-instrumentation==0.20b0")
@@ -292,7 +292,7 @@ def _migration_test(session):
         session.run("pip", "install", "sqlalchemy>=1.3.11,<2.0", "--force-reinstall")
 
     session.install("pytest")
-    session.install("-e", ".")
+    session.install(".")
     session.install("alembic")
 
     session.run("python", "create_test_database.py")
@@ -360,7 +360,7 @@ def snippets(session):
     session.install(
         "git+https://github.com/googleapis/python-spanner.git#egg=google-cloud-spanner"
     )
-    session.install("-e", ".")
+    session.install(".")
     session.run("python", "create_test_database.py")
     session.run(
         "py.test",

@@ -23,6 +23,7 @@ from alembic.ddl.base import (
     format_type,
 )
 from sqlalchemy.exc import NoSuchTableError
+from sqlalchemy.sql import elements
 from sqlalchemy import ForeignKeyConstraint, types
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.engine.default import DefaultDialect, DefaultExecutionContext
@@ -314,6 +315,12 @@ class SpannerSQLCompiler(SQLCompiler):
         in string. Override the method to add  additional escape before using it to
         generate a SQL statement.
         """
+        if value is None and not type_.should_evaluate_none:
+            # issue #10535 - handle NULL in the compiler without placing
+            # this onto each type, except for "evaluate None" types
+            # (e.g. JSON)
+            return self.process(elements.Null._instance())
+
         raw = ["\\", "'", '"', "\n", "\t", "\r"]
         if isinstance(value, str) and any(single in value for single in raw):
             value = 'r"""{}"""'.format(value)

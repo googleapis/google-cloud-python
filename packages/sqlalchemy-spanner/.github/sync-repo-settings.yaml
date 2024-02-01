@@ -11,6 +11,7 @@ branchProtectionRules:
     - 'unit'
     - 'compliance_tests_13'
     - 'compliance_tests_14'
+    - 'compliance_tests_20'
     - 'migration_tests'
     - 'cla/google'
     - 'Kokoro'
