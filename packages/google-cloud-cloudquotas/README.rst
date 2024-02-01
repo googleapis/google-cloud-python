@@ -3,9 +3,7 @@ Python Client for Cloud Quotas API
 
 |preview| |pypi| |versions|
 
-`Cloud Quotas API`_: Cloud Quotas API provides Google Cloud service consumers with management
-and observability for resource usage, quotas, and restrictions of the
-services they consume.
+`Cloud Quotas API`_: Cloud Quotas API provides Google Cloud service consumers with management and observability for resource usage, quotas, and restrictions of the services they consume.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
