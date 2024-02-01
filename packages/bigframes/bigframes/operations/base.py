@@ -65,8 +65,8 @@ class SeriesMethods:
                 bf_index = indexes.Index(index)
                 idx_block = bf_index._block
                 idx_cols = idx_block.value_columns
-                block_idx, _ = idx_block.index.join(block.index, how="left")
-                block = block_idx._block.with_index_labels(bf_index.names)
+                block_idx, _ = idx_block.join(block, how="left")
+                block = block_idx.with_index_labels(bf_index.names)
 
         elif isinstance(data, indexes.Index):
             if data.nlevels != 1:
@@ -78,10 +78,8 @@ class SeriesMethods:
                 bf_index = indexes.Index(index)
                 idx_block = bf_index._block.reset_index(drop=False)
                 idx_cols = idx_block.value_columns
-                block_idx, (l_mapping, _) = idx_block.index.join(
-                    block.index, how="left"
-                )
-                block = block_idx._block.set_index([l_mapping[col] for col in idx_cols])
+                block, (l_mapping, _) = idx_block.join(block, how="left")
+                block = block.set_index([l_mapping[col] for col in idx_cols])
                 block = block.with_index_labels(bf_index.names)
 
         if block:
@@ -114,7 +112,7 @@ class SeriesMethods:
                     if isinstance(dt, pd.ArrowDtype)
                 )
             ):
-                block = blocks.block_from_local(pd_dataframe)
+                block = blocks.Block.from_local(pd_dataframe)
             elif session:
                 block = session.read_pandas(pd_dataframe)._get_block()
             else:
@@ -214,15 +212,14 @@ class SeriesMethods:
         block = self._block
         for other in others:
             if isinstance(other, series.Series):
-                combined_index, (
+                block, (
                     get_column_left,
                     get_column_right,
-                ) = block.index.join(other._block.index, how=how)
+                ) = block.join(other._block, how=how)
                 value_ids = [
                     *[get_column_left[value] for value in value_ids],
                     get_column_right[other._value_column],
                 ]
-                block = combined_index._block
             else:
                 # Will throw if can't interpret as scalar.
                 dtype = typing.cast(bigframes.dtypes.Dtype, self._dtype)

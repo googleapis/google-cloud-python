@@ -38,8 +38,7 @@ def equals(block1: blocks.Block, block2: blocks.Block) -> bool:
     block1 = block1.reset_index(drop=False)
     block2 = block2.reset_index(drop=False)
 
-    joined, (lmap, rmap) = block1.index.join(block2.index, how="outer")
-    joined_block = joined._block
+    joined_block, (lmap, rmap) = block1.join(block2, how="outer")
 
     equality_ids = []
     for lcol, rcol in zip(block1.value_columns, block2.value_columns):
@@ -130,7 +129,7 @@ def interpolate(block: blocks.Block, method: str = "linear") -> blocks.Block:
         if len(index_columns) != 1:
             raise ValueError("only method 'linear' supports multi-index")
         xvalues = block.index_columns[0]
-        if block.index_dtypes[0] not in dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE:
+        if block.index.dtypes[0] not in dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE:
             raise ValueError("Can only interpolate on numeric index.")
 
     for column in original_columns:
@@ -743,14 +742,14 @@ def align_rows(
     right_block: blocks.Block,
     join: str = "outer",
 ):
-    joined_index, (get_column_left, get_column_right) = left_block.index.join(
-        right_block.index, how=join
+    joined_block, (get_column_left, get_column_right) = left_block.join(
+        right_block, how=join
     )
     left_columns = [get_column_left[col] for col in left_block.value_columns]
     right_columns = [get_column_right[col] for col in right_block.value_columns]
 
-    left_block = joined_index._block.select_columns(left_columns)
-    right_block = joined_index._block.select_columns(right_columns)
+    left_block = joined_block.select_columns(left_columns)
+    right_block = joined_block.select_columns(right_columns)
     return left_block, right_block
 
 

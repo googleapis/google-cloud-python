@@ -183,7 +183,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             block = self._block
             for k, v in index.items():
                 new_idx_ids = []
-                for idx_id, idx_dtype in zip(block.index_columns, block.index_dtypes):
+                for idx_id, idx_dtype in zip(block.index_columns, block.index.dtypes):
                     # Will throw if key type isn't compatible with index type, which leads to invalid SQL.
                     block.create_constant(k, dtype=idx_dtype)
 
@@ -199,7 +199,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                     new_idx_ids.append(new_idx_id)
                     block = block.drop_columns([const_id, cond_id])
 
-                block = block.set_index(new_idx_ids, index_labels=block.index_labels)
+                block = block.set_index(new_idx_ids, index_labels=block.index.names)
 
             return Series(block)
 
@@ -369,7 +369,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return Series(self._block.reorder_levels(resolved_level_ids))
 
     def _resolve_levels(self, level: LevelsType) -> typing.Sequence[str]:
-        return self._block.resolve_index_level(level)
+        return self._block.index.resolve_level(level)
 
     def between(self, left, right, inclusive="both"):
         if inclusive not in ["both", "neither", "left", "right"]:
@@ -1180,19 +1180,16 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         value_col = self._value_column
         for key in by:
             if isinstance(key, Series):
-                combined_index, (
+                block, (
                     get_column_left,
                     get_column_right,
-                ) = block.index.join(
-                    key._block.index, how="inner" if dropna else "left"
-                )
+                ) = block.join(key._block, how="inner" if dropna else "left")
 
                 value_col = get_column_left[self._value_column]
                 grouping_cols = [
                     *[get_column_left[value] for value in grouping_cols],
                     get_column_right[key._value_column],
                 ]
-                block = combined_index._block
             else:
                 # Interpret as index level
                 matches = block.index_name_to_col_id.get(key, [])

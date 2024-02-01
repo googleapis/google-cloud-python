@@ -75,8 +75,8 @@ import bigframes.core.blocks as blocks
 def test_block_from_local(data):
     expected = pandas.DataFrame(data)
 
-    block = blocks.block_from_local(data)
+    block = blocks.Block.from_local(data)
 
     pandas.testing.assert_index_equal(block.column_labels, expected.columns)
-    assert tuple(block.index_labels) == tuple(expected.index.names)
+    assert tuple(block.index.names) == tuple(expected.index.names)
     assert block.shape == expected.shape

@@ -104,8 +104,7 @@ def concat(
         block_list = [obj._block for obj in objs]
         block = block_list[0]
         for rblock in block_list[1:]:
-            combined_index, _ = block.index.join(rblock.index, how=join)
-            block = combined_index._block
+            block, _ = block.join(rblock, how=join)
         return bigframes.dataframe.DataFrame(block)
 
 

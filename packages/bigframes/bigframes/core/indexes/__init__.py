@@ -12,9 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from bigframes.core.indexes.index import Index, IndexValue
+from bigframes.core.indexes.index import Index
 
 __all__ = [
     "Index",
-    "IndexValue",
 ]
