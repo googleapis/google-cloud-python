@@ -22,10 +22,11 @@ from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.cloud.automl_v1 import gapic_version as package_version
-from google.cloud.automl_v1.types import prediction_service
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.automl_v1 import gapic_version as package_version
+from google.cloud.automl_v1.types import prediction_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -56,7 +57,7 @@ class PredictionServiceTransport(abc.ABC):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'automl.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -118,6 +119,10 @@ class PredictionServiceTransport(abc.ABC):
         if ":" not in host:
             host += ":443"
         self._host = host
+
+    @property
+    def host(self):
+        return self._host
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.

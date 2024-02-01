@@ -31,9 +31,9 @@ import grpc  # type: ignore
 from requests import __version__ as requests_version
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
 from google.longrunning import operations_pb2  # type: ignore
@@ -286,7 +286,7 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'generativelanguage.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -395,11 +395,11 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
                 role is a superset of the previous
                 role's permitted operations:
 
-                - reader can use the resource (e.g.
+                 - reader can use the resource (e.g.
                   tuned model) for inference
-                - writer has reader's permissions and
+                 - writer has reader's permissions and
                   additionally can edit and share
-                - owner has writer's permissions and
+                 - owner has writer's permissions and
                   additionally can delete
 
             """
@@ -592,11 +592,11 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
                 role is a superset of the previous
                 role's permitted operations:
 
-                - reader can use the resource (e.g.
+                 - reader can use the resource (e.g.
                   tuned model) for inference
-                - writer has reader's permissions and
+                 - writer has reader's permissions and
                   additionally can edit and share
-                - owner has writer's permissions and
+                 - owner has writer's permissions and
                   additionally can delete
 
             """
@@ -891,11 +891,11 @@ class PermissionServiceRestTransport(PermissionServiceTransport):
                 role is a superset of the previous
                 role's permitted operations:
 
-                - reader can use the resource (e.g.
+                 - reader can use the resource (e.g.
                   tuned model) for inference
-                - writer has reader's permissions and
+                 - writer has reader's permissions and
                   additionally can edit and share
-                - owner has writer's permissions and
+                 - owner has writer's permissions and
                   additionally can delete
 
             """
