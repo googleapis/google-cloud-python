@@ -63,7 +63,13 @@ class StructuredLogHandler(logging.StreamHandler):
     """
 
     def __init__(
-        self, *, labels=None, stream=None, project_id=None, json_encoder_cls=None
+        self,
+        *,
+        labels=None,
+        stream=None,
+        project_id=None,
+        json_encoder_cls=None,
+        **kwargs
     ):
         """
         Args:

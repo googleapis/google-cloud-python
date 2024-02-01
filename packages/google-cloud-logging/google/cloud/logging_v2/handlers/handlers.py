@@ -157,6 +157,7 @@ class CloudLoggingHandler(logging.StreamHandler):
         resource=None,
         labels=None,
         stream=None,
+        **kwargs,
     ):
         """
         Args:
