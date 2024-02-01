@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-assured-workloads-v1.11.0...google-cloud-assured-workloads-v1.12.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([a0392ee](https://github.com/googleapis/google-cloud-python/commit/a0392eeb59fcc6ea7c55283110b92aa24a4d40a0))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-assured-workloads-v1.10.3...google-cloud-assured-workloads-v1.11.0) (2023-12-07)
 
 
