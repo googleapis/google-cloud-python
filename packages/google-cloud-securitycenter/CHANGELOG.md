@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.26.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.25.0...google-cloud-securitycenter-v1.26.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12243](https://github.com/googleapis/google-cloud-python/issues/12243)) ([e14d4b1](https://github.com/googleapis/google-cloud-python/commit/e14d4b13a883876a420c498a044dc34ea5122629))
+
 ## [1.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.24.1...google-cloud-securitycenter-v1.25.0) (2023-12-07)
 
 

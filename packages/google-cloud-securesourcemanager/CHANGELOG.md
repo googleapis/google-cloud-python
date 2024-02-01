@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.1...google-cloud-securesourcemanager-v0.1.2) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12243](https://github.com/googleapis/google-cloud-python/issues/12243)) ([e14d4b1](https://github.com/googleapis/google-cloud-python/commit/e14d4b13a883876a420c498a044dc34ea5122629))
+
 ## [0.1.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.0...google-cloud-securesourcemanager-v0.1.1) (2023-12-07)
 
 
