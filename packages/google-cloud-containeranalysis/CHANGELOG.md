@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.13.0...google-cloud-containeranalysis-v2.14.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12239](https://github.com/googleapis/google-cloud-python/issues/12239)) ([8004d15](https://github.com/googleapis/google-cloud-python/commit/8004d15d9e6baa4dc5bc3f09d528e176d54d9ec5))
+
 ## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.12.4...google-cloud-containeranalysis-v2.13.0) (2023-12-07)
 
 

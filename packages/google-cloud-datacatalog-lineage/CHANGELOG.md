@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.3.2...google-cloud-datacatalog-lineage-v0.3.3) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12239](https://github.com/googleapis/google-cloud-python/issues/12239)) ([8004d15](https://github.com/googleapis/google-cloud-python/commit/8004d15d9e6baa4dc5bc3f09d528e176d54d9ec5))
+
 ## [0.3.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-lineage-v0.3.1...google-cloud-datacatalog-lineage-v0.3.2) (2023-12-07)
 
 

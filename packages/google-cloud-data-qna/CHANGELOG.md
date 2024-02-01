@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.5...google-cloud-data-qna-v0.10.6) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12239](https://github.com/googleapis/google-cloud-python/issues/12239)) ([8004d15](https://github.com/googleapis/google-cloud-python/commit/8004d15d9e6baa4dc5bc3f09d528e176d54d9ec5))
+
 ## [0.10.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.4...google-cloud-data-qna-v0.10.5) (2023-12-07)
 
 

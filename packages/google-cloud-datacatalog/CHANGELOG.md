@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-datacatalog/#history
 
+## [3.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.17.2...google-cloud-datacatalog-v3.18.0) (2024-02-01)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#12239](https://github.com/googleapis/google-cloud-python/issues/12239)) ([8004d15](https://github.com/googleapis/google-cloud-python/commit/8004d15d9e6baa4dc5bc3f09d528e176d54d9ec5))
+
 ## [3.17.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-datacatalog-v3.17.1...google-cloud-datacatalog-v3.17.2) (2024-01-12)
 
 
