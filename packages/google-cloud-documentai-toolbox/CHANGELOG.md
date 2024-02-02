@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.12.0-alpha...v0.12.1-alpha) (2024-02-02)
+
+
+### Bug Fixes
+
+* Add `Python37DeprecationWarning` ([#241](https://github.com/googleapis/python-documentai-toolbox/issues/241)) ([8f4e3ce](https://github.com/googleapis/python-documentai-toolbox/commit/8f4e3ce780c11e75cb7f23e1fc41aca7c7a9d8bc))
+
 ## [0.12.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.11.2-alpha...v0.12.0-alpha) (2023-11-30)
 
 
