@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.16.2](https://github.com/googleapis/python-api-core/compare/v2.16.1...v2.16.2) (2024-02-02)
+
+
+### Bug Fixes
+
+* Spelling error `a,out` -&gt; `amount` ([#596](https://github.com/googleapis/python-api-core/issues/596)) ([88688b1](https://github.com/googleapis/python-api-core/commit/88688b1625c4dab0df6124a0560f550eb322500f))
+
 ## [2.16.1](https://github.com/googleapis/python-api-core/compare/v2.16.0...v2.16.1) (2024-01-30)
 
 
