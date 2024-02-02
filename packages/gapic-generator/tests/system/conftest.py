@@ -19,6 +19,7 @@ import os
 import pytest
 
 from google.api_core.client_options import ClientOptions  # type: ignore
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.showcase import EchoClient
 from google.showcase import IdentityClient
@@ -86,19 +87,13 @@ def pytest_addoption(parser):
     )
 
 
-class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain="googleapis.com"):
-        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
-        self._universe_domain = universe_domain
-
-
 # TODO: Need to test  without passing in a transport class
 def construct_client(
     client_class,
     use_mtls,
     transport_name="grpc",
     channel_creator=grpc.insecure_channel,  # for grpc,grpc_asyncio only
-    credentials=_AnonymousCredentialsWithUniverseDomain(),
+    credentials=ga_credentials.AnonymousCredentials(),
     transport_endpoint="localhost:7469"
 ):
     if use_mtls:
@@ -145,8 +140,15 @@ def use_mtls(request):
 def parametrized_echo(use_mtls, channel_creator, transport_name, transport_endpoint, credential_universe, client_universe):
     print(
         f"test_params: {channel_creator, transport_name, transport_endpoint, credential_universe, client_universe}")
-    credentials = _AnonymousCredentialsWithUniverseDomain(
-        universe_domain=credential_universe)
+    credentials = ga_credentials.AnonymousCredentials()
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [
+        int(part) for part in google.auth.__version__.split(".")
+    ]
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials._universe_domain = credential_universe
     client = construct_client(EchoClient, use_mtls,
                               transport_endpoint=transport_endpoint,
                               transport_name=transport_name,
@@ -169,7 +171,7 @@ def echo(use_mtls, request):
 
 @pytest.fixture(params=["grpc", "rest"])
 def echo_with_universe_credentials_localhost(use_mtls, request):
-    return construct_client(EchoClient, use_mtls, transport_name=request.param, credentials=_AnonymousCredentialsWithUniverseDomain(universe_domain="localhost:7469"))
+    return construct_client(EchoClient, use_mtls, transport_name=request.param, credentials=ga_credentials.AnonymousCredentials(universe_domain="localhost:7469"))
 
 
 @pytest.fixture(params=["grpc", "rest"])
@@ -235,7 +237,7 @@ def intercepted_echo(use_mtls):
     )
     intercept_channel = grpc.intercept_channel(channel, interceptor)
     transport = EchoClient.get_transport_class("grpc")(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         channel=intercept_channel,
     )
     return EchoClient(transport=transport)

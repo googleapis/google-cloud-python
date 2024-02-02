@@ -3,7 +3,7 @@
 
 def test_{{ name|snake_case }}_rest_bad_request(transport: str = 'rest', request_type={{ sig.request_type }}):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25,7 +25,7 @@ def test_{{ name|snake_case }}_rest_bad_request(transport: str = 'rest', request
 ])
 def test_{{ name|snake_case }}_rest(request_type):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {{ api.mixin_http_options["{}".format(name)][0].sample_request }}
@@ -74,11 +74,11 @@ def test_delete_operation(transport: str = "grpc"):
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% endif %}
 
@@ -116,11 +116,11 @@ def test_delete_operation_field_headers():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
 
@@ -160,11 +160,11 @@ def test_delete_operation_from_dict():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -203,11 +203,11 @@ def test_cancel_operation(transport: str = "grpc"):
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% endif %}
 
@@ -245,11 +245,11 @@ def test_cancel_operation_field_headers():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
 
@@ -289,11 +289,11 @@ def test_cancel_operation_from_dict():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -331,11 +331,11 @@ def test_wait_operation(transport: str = "grpc"):
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% endif %}
 
@@ -373,11 +373,11 @@ def test_wait_operation_field_headers():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
 
@@ -417,11 +417,11 @@ def test_wait_operation_from_dict():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -460,11 +460,11 @@ def test_get_operation(transport: str = "grpc"):
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% endif %}
 
@@ -502,11 +502,11 @@ def test_get_operation_field_headers():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
 
@@ -546,11 +546,11 @@ def test_get_operation_from_dict():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -589,11 +589,11 @@ def test_list_operations(transport: str = "grpc"):
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% endif %}
 
@@ -631,11 +631,11 @@ def test_list_operations_field_headers():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
 
@@ -675,11 +675,11 @@ def test_list_operations_from_dict():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -724,11 +724,11 @@ def test_list_locations(transport: str = "grpc"):
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% endif %}
 
@@ -766,11 +766,11 @@ def test_list_locations_field_headers():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
 
@@ -810,11 +810,11 @@ def test_list_locations_from_dict():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -855,11 +855,11 @@ def test_get_location(transport: str = "grpc"):
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% endif %}
 
@@ -897,10 +897,10 @@ def test_get_location_field_headers():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain())
+        credentials=ga_credentials.AnonymousCredentials())
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     )
     {% endif %}
 
@@ -940,11 +940,11 @@ def test_get_location_from_dict():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -986,11 +986,11 @@ def test_set_iam_policy(transport: str = "grpc"):
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% endif %}
 
@@ -1034,11 +1034,11 @@ def test_set_iam_policy_field_headers():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
 
@@ -1071,7 +1071,7 @@ def test_set_iam_policy_field_headers():
 
 def test_set_iam_policy_from_dict():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -1090,7 +1090,7 @@ def test_set_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -1110,7 +1110,7 @@ async def test_set_iam_policy_from_dict_async():
 
 def test_get_iam_policy(transport: str = "grpc"):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1141,7 +1141,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1175,7 +1175,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
 
 def test_get_iam_policy_field_headers():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1202,7 +1202,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1230,7 +1230,7 @@ async def test_get_iam_policy_field_headers_async():
 
 def test_get_iam_policy_from_dict():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -1248,7 +1248,7 @@ def test_get_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -1268,7 +1268,7 @@ async def test_get_iam_policy_from_dict_async():
 
 def test_test_iam_permissions(transport: str = "grpc"):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1301,7 +1301,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1333,7 +1333,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
 
 def test_test_iam_permissions_field_headers():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1362,7 +1362,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1392,7 +1392,7 @@ async def test_test_iam_permissions_field_headers_async():
 
 def test_test_iam_permissions_from_dict():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1412,7 +1412,7 @@ def test_test_iam_permissions_from_dict():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1445,11 +1445,11 @@ def test_set_iam_policy(transport: str = "grpc"):
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
     {% endif %}
 
@@ -1493,11 +1493,11 @@ def test_set_iam_policy_field_headers():
 {% endif %}
     {% if mode == "" %}
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% else %}
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     {% endif %}
 
@@ -1530,7 +1530,7 @@ def test_set_iam_policy_field_headers():
 
 def test_set_iam_policy_from_dict():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -1549,7 +1549,7 @@ def test_set_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -1570,7 +1570,7 @@ async def test_set_iam_policy_from_dict_async():
 {% if "GetIamPolicy" in api.mixin_api_methods %}
 def test_get_iam_policy(transport: str = "grpc"):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1601,7 +1601,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1635,7 +1635,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
 
 def test_get_iam_policy_field_headers():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1662,7 +1662,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1690,7 +1690,7 @@ async def test_get_iam_policy_field_headers_async():
 
 def test_get_iam_policy_from_dict():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -1708,7 +1708,7 @@ def test_get_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -1729,7 +1729,7 @@ async def test_get_iam_policy_from_dict_async():
 {% if "TestIamPermissions" in api.mixin_api_methods %}
 def test_test_iam_permissions(transport: str = "grpc"):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1762,7 +1762,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1794,7 +1794,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
 
 def test_test_iam_permissions_field_headers():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1823,7 +1823,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1853,7 +1853,7 @@ async def test_test_iam_permissions_field_headers_async():
 
 def test_test_iam_permissions_from_dict():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1873,7 +1873,7 @@ def test_test_iam_permissions_from_dict():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(

@@ -6,7 +6,7 @@
 ])
 def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -105,7 +105,7 @@ def test_{{ method_name }}_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport='grpc',
     )
 
@@ -127,7 +127,7 @@ def test_{{ method_name }}_empty_call():
 @pytest.mark.asyncio
 async def test_{{ method_name }}_async(transport: str = 'grpc_asyncio', request_type={{ method.input.ident }}):
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -228,7 +228,7 @@ async def test_{{ method_name }}_async_from_dict():
 {% if method.explicit_routing %}
 def test_{{ method.name|snake_case }}_routing_parameters():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     {% for routing_param in method.routing_rule.routing_parameters %}
@@ -266,7 +266,7 @@ def test_{{ method.name|snake_case }}_routing_parameters():
 {% if method.field_headers and not method.client_streaming and not method.explicit_routing %}
 def test_{{ method_name }}_field_headers():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -312,7 +312,7 @@ def test_{{ method_name }}_field_headers():
 @pytest.mark.asyncio
 async def test_{{ method_name }}_field_headers_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -359,7 +359,7 @@ async def test_{{ method_name }}_field_headers_async():
 {% if method.ident.package != method.input.ident.package %}
 def test_{{ method_name }}_from_dict_foreign():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -388,7 +388,7 @@ def test_{{ method_name }}_from_dict_foreign():
 {% if method.flattened_fields and not method.client_streaming %}
 def test_{{ method_name }}_flattened():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -448,7 +448,7 @@ def test_{{ method_name }}_flattened():
 
 def test_{{ method_name }}_flattened_error():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -465,7 +465,7 @@ def test_{{ method_name }}_flattened_error():
 @pytest.mark.asyncio
 async def test_{{ method_name }}_flattened_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -544,7 +544,7 @@ async def test_{{ method_name }}_flattened_async():
 @pytest.mark.asyncio
 async def test_{{ method_name }}_flattened_error_async():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -564,7 +564,7 @@ async def test_{{ method_name }}_flattened_error_async():
 {% if not method.paged_result_field.map %}
 def test_{{ method_name }}_pager(transport_name: str = "grpc"):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -624,7 +624,7 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
 {% endif %}
 def test_{{ method_name }}_pages(transport_name: str = "grpc"):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -698,7 +698,7 @@ def test_{{ method_name }}_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_{{ method_name }}_async_pager():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -788,7 +788,7 @@ async def test_{{ method_name }}_async_pager():
 @pytest.mark.asyncio
 async def test_{{ method_name }}_async_pages():
     client = {{ service.async_client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -877,7 +877,7 @@ def test_{{ method_name }}_raw_page_lro():
 ])
 def test_{{ method_name }}_rest(request_type):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -1100,7 +1100,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     assert "{{ field_name }}" not in jsonified_request
     {% endfor %}
 
-    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
@@ -1116,7 +1116,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     jsonified_request["{{ field_name }}"] = {{ mock_value }}
     {% endfor %}
 
-    unset_fields = transport_class(credentials=_AnonymousCredentialsWithUniverseDomain()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
+    unset_fields = transport_class(credentials=ga_credentials.AnonymousCredentials()).{{ method.transport_safe_name | snake_case }}._get_unset_required_fields(jsonified_request)
     {% if method.query_params %}
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(({% for param in method.query_params|sort %}"{{param}}", {% endfor %}))
@@ -1133,7 +1133,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
 
 
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport='rest',
     )
     request = request_type(**request_init)
@@ -1222,7 +1222,7 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
 
 
 def test_{{ method_name }}_rest_unset_required_fields():
-    transport = transports.{{ service.rest_transport_name }}(credentials=_AnonymousCredentialsWithUniverseDomain)
+    transport = transports.{{ service.rest_transport_name }}(credentials=ga_credentials.AnonymousCredentials)
 
     unset_fields = transport.{{ method.transport_safe_name|snake_case }}._get_unset_required_fields({})
     assert set(unset_fields) == (set(({% for param in method.query_params|sort %}"{{ param|camel_case }}", {% endfor %})) & set(({% for param in method.input.required_fields %}"{{ param.name|camel_case }}", {% endfor %})))
@@ -1234,7 +1234,7 @@ def test_{{ method_name }}_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_{{ method_name }}_rest_interceptors(null_interceptor):
     transport = transports.{{ service.name }}RestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.{{ service.name}}RestInterceptor(),
         )
     client = {{ service.client_name }}(transport=transport)
@@ -1297,7 +1297,7 @@ def test_{{ method_name }}_rest_interceptors(null_interceptor):
 
 def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_type={{ method.input.ident }}):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1325,7 +1325,7 @@ def test_{{ method_name }}_rest_bad_request(transport: str = 'rest', request_typ
 {% if method.flattened_fields and not method.client_streaming %}
 def test_{{ method_name }}_rest_flattened():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -1394,7 +1394,7 @@ def test_{{ method_name }}_rest_flattened():
 
 def test_{{ method_name }}_rest_flattened_error(transport: str = 'rest'):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1413,7 +1413,7 @@ def test_{{ method_name }}_rest_flattened_error(transport: str = 'rest'):
 {% if method.paged_result_field %}
 def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1533,7 +1533,7 @@ def test_{{ method_name }}_rest_pager(transport: str = 'rest'):
 
 def test_{{ method_name }}_rest_error():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport='rest'
     )
     {%- if not method.http_options %}
@@ -1552,7 +1552,7 @@ def test_{{ method_name }}_rest_error():
 {% else %}{# this is an lro or streaming method #}
 def test_{{ method_name }}_rest_unimplemented():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = {{ method.input.ident }}()
@@ -1565,7 +1565,7 @@ def test_{{ method_name }}_rest_unimplemented():
 {% endif %}{# not lro and not streaming #}{% else %}{# not method.http_options #}
 def test_{{ method_name }}_rest_no_http_options():
     client = {{ service.client_name }}(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = {{ method.input.ident }}()
