@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [1.14.1](https://github.com/googleapis/gapic-generator-python/compare/v1.14.0...v1.14.1) (2024-02-02)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([2154924](https://github.com/googleapis/gapic-generator-python/commit/2154924c6ef9df6e2727b433ec7d2fee762ccde8))
+* Add staticmethod decorator to methods added in [#1873](https://github.com/googleapis/gapic-generator-python/issues/1873) ([2154924](https://github.com/googleapis/gapic-generator-python/commit/2154924c6ef9df6e2727b433ec7d2fee762ccde8))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([2154924](https://github.com/googleapis/gapic-generator-python/commit/2154924c6ef9df6e2727b433ec7d2fee762ccde8))
+
 ## [1.14.0](https://github.com/googleapis/gapic-generator-python/compare/v1.13.1...v1.14.0) (2024-01-31)
 
 
