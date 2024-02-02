@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.19.1](https://github.com/googleapis/python-pubsub/compare/v2.19.0...v2.19.1) (2024-02-02)
+
+
+### Documentation
+
+* **samples:** Swap writer and reader schema to correct places ([265f410](https://github.com/googleapis/python-pubsub/commit/265f4106f499ec5d2d01a127ba192404c1836a28))
+
 ## [2.19.0](https://github.com/googleapis/python-pubsub/compare/v2.18.4...v2.19.0) (2023-12-10)
 
 
