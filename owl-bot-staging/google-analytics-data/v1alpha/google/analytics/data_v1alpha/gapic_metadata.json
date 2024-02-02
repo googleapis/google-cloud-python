@@ -1,0 +1,163 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.analytics.data_v1alpha",
+  "protoPackage": "google.analytics.data.v1alpha",
+  "schema": "1.0",
+  "services": {
+    "AlphaAnalyticsData": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AlphaAnalyticsDataClient",
+          "rpcs": {
+            "CreateAudienceList": {
+              "methods": [
+                "create_audience_list"
+              ]
+            },
+            "CreateRecurringAudienceList": {
+              "methods": [
+                "create_recurring_audience_list"
+              ]
+            },
+            "GetAudienceList": {
+              "methods": [
+                "get_audience_list"
+              ]
+            },
+            "GetRecurringAudienceList": {
+              "methods": [
+                "get_recurring_audience_list"
+              ]
+            },
+            "ListAudienceLists": {
+              "methods": [
+                "list_audience_lists"
+              ]
+            },
+            "ListRecurringAudienceLists": {
+              "methods": [
+                "list_recurring_audience_lists"
+              ]
+            },
+            "QueryAudienceList": {
+              "methods": [
+                "query_audience_list"
+              ]
+            },
+            "RunFunnelReport": {
+              "methods": [
+                "run_funnel_report"
+              ]
+            },
+            "SheetExportAudienceList": {
+              "methods": [
+                "sheet_export_audience_list"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AlphaAnalyticsDataAsyncClient",
+          "rpcs": {
+            "CreateAudienceList": {
+              "methods": [
+                "create_audience_list"
+              ]
+            },
+            "CreateRecurringAudienceList": {
+              "methods": [
+                "create_recurring_audience_list"
+              ]
+            },
+            "GetAudienceList": {
+              "methods": [
+                "get_audience_list"
+              ]
+            },
+            "GetRecurringAudienceList": {
+              "methods": [
+                "get_recurring_audience_list"
+              ]
+            },
+            "ListAudienceLists": {
+              "methods": [
+                "list_audience_lists"
+              ]
+            },
+            "ListRecurringAudienceLists": {
+              "methods": [
+                "list_recurring_audience_lists"
+              ]
+            },
+            "QueryAudienceList": {
+              "methods": [
+                "query_audience_list"
+              ]
+            },
+            "RunFunnelReport": {
+              "methods": [
+                "run_funnel_report"
+              ]
+            },
+            "SheetExportAudienceList": {
+              "methods": [
+                "sheet_export_audience_list"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AlphaAnalyticsDataClient",
+          "rpcs": {
+            "CreateAudienceList": {
+              "methods": [
+                "create_audience_list"
+              ]
+            },
+            "CreateRecurringAudienceList": {
+              "methods": [
+                "create_recurring_audience_list"
+              ]
+            },
+            "GetAudienceList": {
+              "methods": [
+                "get_audience_list"
+              ]
+            },
+            "GetRecurringAudienceList": {
+              "methods": [
+                "get_recurring_audience_list"
+              ]
+            },
+            "ListAudienceLists": {
+              "methods": [
+                "list_audience_lists"
+              ]
+            },
+            "ListRecurringAudienceLists": {
+              "methods": [
+                "list_recurring_audience_lists"
+              ]
+            },
+            "QueryAudienceList": {
+              "methods": [
+                "query_audience_list"
+              ]
+            },
+            "RunFunnelReport": {
+              "methods": [
+                "run_funnel_report"
+              ]
+            },
+            "SheetExportAudienceList": {
+              "methods": [
+                "sheet_export_audience_list"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
