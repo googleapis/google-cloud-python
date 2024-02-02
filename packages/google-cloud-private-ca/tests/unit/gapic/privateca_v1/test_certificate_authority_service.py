@@ -96,18 +96,6 @@ def modify_default_endpoint_template(client):
     )
 
 
-# Anonymous Credentials with universe domain property. If no universe domain is provided, then
-# the default universe domain is "googleapis.com".
-class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain="googleapis.com"):
-        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
-        self._universe_domain = universe_domain
-
-    @property
-    def universe_domain(self):
-        return self._universe_domain
-
-
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -367,7 +355,7 @@ def test__get_universe_domain():
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
     client = client_class(
-        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
     )
     assert client._validate_universe_domain() == True
 
@@ -394,41 +382,48 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         client = client_class(transport=transport)
         assert client._validate_universe_domain() == True
 
-    # Test the case when there is a universe mismatch from the credentials.
-    client = client_class(
-        transport=transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(
-                universe_domain="foo.com"
-            )
-        )
-    )
-    with pytest.raises(ValueError) as excinfo:
-        client._validate_universe_domain()
-    assert (
-        str(excinfo.value)
-        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-    )
-
-    # Test the case when there is a universe mismatch from the client.
-    #
-    # TODO: Make this test unconditional once the minimum supported version of
-    # google-api-core becomes 2.15.0 or higher.
-    api_core_major, api_core_minor, _ = [
-        int(part) for part in api_core_version.__version__.split(".")
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [
+        int(part) for part in google.auth.__version__.split(".")
     ]
-    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-        client = client_class(
-            client_options={"universe_domain": "bar.com"},
-            transport=transport_class(
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
-            ),
-        )
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(transport=transport_class(credentials=credentials))
         with pytest.raises(ValueError) as excinfo:
             client._validate_universe_domain()
         assert (
             str(excinfo.value)
-            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         )
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor, _ = [
+            int(part) for part in api_core_version.__version__.split(".")
+        ]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(
+                client_options={"universe_domain": "bar.com"},
+                transport=transport_class(
+                    credentials=ga_credentials.AnonymousCredentials(),
+                ),
+            )
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert (
+                str(excinfo.value)
+                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            )
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -442,7 +437,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 def test_certificate_authority_service_client_from_service_account_info(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -496,7 +491,7 @@ def test_certificate_authority_service_client_service_account_always_use_jwt(
 def test_certificate_authority_service_client_from_service_account_file(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -569,9 +564,7 @@ def test_certificate_authority_service_client_client_options(
     with mock.patch.object(
         CertificateAuthorityServiceClient, "get_transport_class"
     ) as gtc:
-        transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain()
-        )
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -998,20 +991,20 @@ def test_certificate_authority_service_client_client_api_endpoint(client_class):
             )
             client = client_class(
                 client_options=options,
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
+                credentials=ga_credentials.AnonymousCredentials(),
             )
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
@@ -1023,13 +1016,11 @@ def test_certificate_authority_service_client_client_api_endpoint(client_class):
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     else:
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     assert client.api_endpoint == (
         mock_endpoint if universe_exists else default_endpoint
@@ -1045,8 +1036,7 @@ def test_certificate_authority_service_client_client_api_endpoint(client_class):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
         assert client.api_endpoint == default_endpoint
 
@@ -1212,8 +1202,8 @@ def test_certificate_authority_service_client_create_channel_credentials_file(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
-        file_creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -1242,7 +1232,7 @@ def test_certificate_authority_service_client_create_channel_credentials_file(
 )
 def test_create_certificate(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1285,7 +1275,7 @@ def test_create_certificate_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1304,7 +1294,7 @@ async def test_create_certificate_async(
     transport: str = "grpc_asyncio", request_type=service.CreateCertificateRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1351,7 +1341,7 @@ async def test_create_certificate_async_from_dict():
 
 def test_create_certificate_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1383,7 +1373,7 @@ def test_create_certificate_field_headers():
 @pytest.mark.asyncio
 async def test_create_certificate_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1416,7 +1406,7 @@ async def test_create_certificate_field_headers_async():
 
 def test_create_certificate_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1450,7 +1440,7 @@ def test_create_certificate_flattened():
 
 def test_create_certificate_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1467,7 +1457,7 @@ def test_create_certificate_flattened_error():
 @pytest.mark.asyncio
 async def test_create_certificate_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1506,7 +1496,7 @@ async def test_create_certificate_flattened_async():
 @pytest.mark.asyncio
 async def test_create_certificate_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1529,7 +1519,7 @@ async def test_create_certificate_flattened_error_async():
 )
 def test_get_certificate(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1570,7 +1560,7 @@ def test_get_certificate_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1587,7 +1577,7 @@ async def test_get_certificate_async(
     transport: str = "grpc_asyncio", request_type=service.GetCertificateRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1632,7 +1622,7 @@ async def test_get_certificate_async_from_dict():
 
 def test_get_certificate_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1662,7 +1652,7 @@ def test_get_certificate_field_headers():
 @pytest.mark.asyncio
 async def test_get_certificate_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1693,7 +1683,7 @@ async def test_get_certificate_field_headers_async():
 
 def test_get_certificate_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1717,7 +1707,7 @@ def test_get_certificate_flattened():
 
 def test_get_certificate_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1732,7 +1722,7 @@ def test_get_certificate_flattened_error():
 @pytest.mark.asyncio
 async def test_get_certificate_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1761,7 +1751,7 @@ async def test_get_certificate_flattened_async():
 @pytest.mark.asyncio
 async def test_get_certificate_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1782,7 +1772,7 @@ async def test_get_certificate_flattened_error_async():
 )
 def test_list_certificates(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1816,7 +1806,7 @@ def test_list_certificates_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1835,7 +1825,7 @@ async def test_list_certificates_async(
     transport: str = "grpc_asyncio", request_type=service.ListCertificatesRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1874,7 +1864,7 @@ async def test_list_certificates_async_from_dict():
 
 def test_list_certificates_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1906,7 +1896,7 @@ def test_list_certificates_field_headers():
 @pytest.mark.asyncio
 async def test_list_certificates_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1939,7 +1929,7 @@ async def test_list_certificates_field_headers_async():
 
 def test_list_certificates_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1965,7 +1955,7 @@ def test_list_certificates_flattened():
 
 def test_list_certificates_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1980,7 +1970,7 @@ def test_list_certificates_flattened_error():
 @pytest.mark.asyncio
 async def test_list_certificates_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2011,7 +2001,7 @@ async def test_list_certificates_flattened_async():
 @pytest.mark.asyncio
 async def test_list_certificates_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2025,7 +2015,7 @@ async def test_list_certificates_flattened_error_async():
 
 def test_list_certificates_pager(transport_name: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2077,7 +2067,7 @@ def test_list_certificates_pager(transport_name: str = "grpc"):
 
 def test_list_certificates_pages(transport_name: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2121,7 +2111,7 @@ def test_list_certificates_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_certificates_async_pager():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2173,7 +2163,7 @@ async def test_list_certificates_async_pager():
 @pytest.mark.asyncio
 async def test_list_certificates_async_pages():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2230,7 +2220,7 @@ async def test_list_certificates_async_pages():
 )
 def test_revoke_certificate(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2273,7 +2263,7 @@ def test_revoke_certificate_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2292,7 +2282,7 @@ async def test_revoke_certificate_async(
     transport: str = "grpc_asyncio", request_type=service.RevokeCertificateRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2339,7 +2329,7 @@ async def test_revoke_certificate_async_from_dict():
 
 def test_revoke_certificate_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2371,7 +2361,7 @@ def test_revoke_certificate_field_headers():
 @pytest.mark.asyncio
 async def test_revoke_certificate_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2404,7 +2394,7 @@ async def test_revoke_certificate_field_headers_async():
 
 def test_revoke_certificate_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2430,7 +2420,7 @@ def test_revoke_certificate_flattened():
 
 def test_revoke_certificate_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2445,7 +2435,7 @@ def test_revoke_certificate_flattened_error():
 @pytest.mark.asyncio
 async def test_revoke_certificate_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2476,7 +2466,7 @@ async def test_revoke_certificate_flattened_async():
 @pytest.mark.asyncio
 async def test_revoke_certificate_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2497,7 +2487,7 @@ async def test_revoke_certificate_flattened_error_async():
 )
 def test_update_certificate(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2540,7 +2530,7 @@ def test_update_certificate_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2559,7 +2549,7 @@ async def test_update_certificate_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateCertificateRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2606,7 +2596,7 @@ async def test_update_certificate_async_from_dict():
 
 def test_update_certificate_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2638,7 +2628,7 @@ def test_update_certificate_field_headers():
 @pytest.mark.asyncio
 async def test_update_certificate_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2671,7 +2661,7 @@ async def test_update_certificate_field_headers_async():
 
 def test_update_certificate_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2701,7 +2691,7 @@ def test_update_certificate_flattened():
 
 def test_update_certificate_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2717,7 +2707,7 @@ def test_update_certificate_flattened_error():
 @pytest.mark.asyncio
 async def test_update_certificate_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2752,7 +2742,7 @@ async def test_update_certificate_flattened_async():
 @pytest.mark.asyncio
 async def test_update_certificate_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2774,7 +2764,7 @@ async def test_update_certificate_flattened_error_async():
 )
 def test_activate_certificate_authority(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2803,7 +2793,7 @@ def test_activate_certificate_authority_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2823,7 +2813,7 @@ async def test_activate_certificate_authority_async(
     request_type=service.ActivateCertificateAuthorityRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2857,7 +2847,7 @@ async def test_activate_certificate_authority_async_from_dict():
 
 def test_activate_certificate_authority_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2889,7 +2879,7 @@ def test_activate_certificate_authority_field_headers():
 @pytest.mark.asyncio
 async def test_activate_certificate_authority_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2922,7 +2912,7 @@ async def test_activate_certificate_authority_field_headers_async():
 
 def test_activate_certificate_authority_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2948,7 +2938,7 @@ def test_activate_certificate_authority_flattened():
 
 def test_activate_certificate_authority_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2963,7 +2953,7 @@ def test_activate_certificate_authority_flattened_error():
 @pytest.mark.asyncio
 async def test_activate_certificate_authority_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2994,7 +2984,7 @@ async def test_activate_certificate_authority_flattened_async():
 @pytest.mark.asyncio
 async def test_activate_certificate_authority_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3015,7 +3005,7 @@ async def test_activate_certificate_authority_flattened_error_async():
 )
 def test_create_certificate_authority(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3044,7 +3034,7 @@ def test_create_certificate_authority_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3064,7 +3054,7 @@ async def test_create_certificate_authority_async(
     request_type=service.CreateCertificateAuthorityRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3098,7 +3088,7 @@ async def test_create_certificate_authority_async_from_dict():
 
 def test_create_certificate_authority_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3130,7 +3120,7 @@ def test_create_certificate_authority_field_headers():
 @pytest.mark.asyncio
 async def test_create_certificate_authority_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3163,7 +3153,7 @@ async def test_create_certificate_authority_field_headers_async():
 
 def test_create_certificate_authority_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3197,7 +3187,7 @@ def test_create_certificate_authority_flattened():
 
 def test_create_certificate_authority_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3214,7 +3204,7 @@ def test_create_certificate_authority_flattened_error():
 @pytest.mark.asyncio
 async def test_create_certificate_authority_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3253,7 +3243,7 @@ async def test_create_certificate_authority_flattened_async():
 @pytest.mark.asyncio
 async def test_create_certificate_authority_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3276,7 +3266,7 @@ async def test_create_certificate_authority_flattened_error_async():
 )
 def test_disable_certificate_authority(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3305,7 +3295,7 @@ def test_disable_certificate_authority_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3325,7 +3315,7 @@ async def test_disable_certificate_authority_async(
     request_type=service.DisableCertificateAuthorityRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3359,7 +3349,7 @@ async def test_disable_certificate_authority_async_from_dict():
 
 def test_disable_certificate_authority_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3391,7 +3381,7 @@ def test_disable_certificate_authority_field_headers():
 @pytest.mark.asyncio
 async def test_disable_certificate_authority_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3424,7 +3414,7 @@ async def test_disable_certificate_authority_field_headers_async():
 
 def test_disable_certificate_authority_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3450,7 +3440,7 @@ def test_disable_certificate_authority_flattened():
 
 def test_disable_certificate_authority_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3465,7 +3455,7 @@ def test_disable_certificate_authority_flattened_error():
 @pytest.mark.asyncio
 async def test_disable_certificate_authority_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3496,7 +3486,7 @@ async def test_disable_certificate_authority_flattened_async():
 @pytest.mark.asyncio
 async def test_disable_certificate_authority_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3517,7 +3507,7 @@ async def test_disable_certificate_authority_flattened_error_async():
 )
 def test_enable_certificate_authority(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3546,7 +3536,7 @@ def test_enable_certificate_authority_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3566,7 +3556,7 @@ async def test_enable_certificate_authority_async(
     request_type=service.EnableCertificateAuthorityRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3600,7 +3590,7 @@ async def test_enable_certificate_authority_async_from_dict():
 
 def test_enable_certificate_authority_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3632,7 +3622,7 @@ def test_enable_certificate_authority_field_headers():
 @pytest.mark.asyncio
 async def test_enable_certificate_authority_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3665,7 +3655,7 @@ async def test_enable_certificate_authority_field_headers_async():
 
 def test_enable_certificate_authority_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3691,7 +3681,7 @@ def test_enable_certificate_authority_flattened():
 
 def test_enable_certificate_authority_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3706,7 +3696,7 @@ def test_enable_certificate_authority_flattened_error():
 @pytest.mark.asyncio
 async def test_enable_certificate_authority_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3737,7 +3727,7 @@ async def test_enable_certificate_authority_flattened_async():
 @pytest.mark.asyncio
 async def test_enable_certificate_authority_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3758,7 +3748,7 @@ async def test_enable_certificate_authority_flattened_error_async():
 )
 def test_fetch_certificate_authority_csr(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3790,7 +3780,7 @@ def test_fetch_certificate_authority_csr_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3810,7 +3800,7 @@ async def test_fetch_certificate_authority_csr_async(
     request_type=service.FetchCertificateAuthorityCsrRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3847,7 +3837,7 @@ async def test_fetch_certificate_authority_csr_async_from_dict():
 
 def test_fetch_certificate_authority_csr_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3879,7 +3869,7 @@ def test_fetch_certificate_authority_csr_field_headers():
 @pytest.mark.asyncio
 async def test_fetch_certificate_authority_csr_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3912,7 +3902,7 @@ async def test_fetch_certificate_authority_csr_field_headers_async():
 
 def test_fetch_certificate_authority_csr_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3938,7 +3928,7 @@ def test_fetch_certificate_authority_csr_flattened():
 
 def test_fetch_certificate_authority_csr_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3953,7 +3943,7 @@ def test_fetch_certificate_authority_csr_flattened_error():
 @pytest.mark.asyncio
 async def test_fetch_certificate_authority_csr_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3984,7 +3974,7 @@ async def test_fetch_certificate_authority_csr_flattened_async():
 @pytest.mark.asyncio
 async def test_fetch_certificate_authority_csr_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4005,7 +3995,7 @@ async def test_fetch_certificate_authority_csr_flattened_error_async():
 )
 def test_get_certificate_authority(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4047,7 +4037,7 @@ def test_get_certificate_authority_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4066,7 +4056,7 @@ async def test_get_certificate_authority_async(
     transport: str = "grpc_asyncio", request_type=service.GetCertificateAuthorityRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4113,7 +4103,7 @@ async def test_get_certificate_authority_async_from_dict():
 
 def test_get_certificate_authority_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4145,7 +4135,7 @@ def test_get_certificate_authority_field_headers():
 @pytest.mark.asyncio
 async def test_get_certificate_authority_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4178,7 +4168,7 @@ async def test_get_certificate_authority_field_headers_async():
 
 def test_get_certificate_authority_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4204,7 +4194,7 @@ def test_get_certificate_authority_flattened():
 
 def test_get_certificate_authority_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4219,7 +4209,7 @@ def test_get_certificate_authority_flattened_error():
 @pytest.mark.asyncio
 async def test_get_certificate_authority_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4250,7 +4240,7 @@ async def test_get_certificate_authority_flattened_async():
 @pytest.mark.asyncio
 async def test_get_certificate_authority_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4271,7 +4261,7 @@ async def test_get_certificate_authority_flattened_error_async():
 )
 def test_list_certificate_authorities(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4305,7 +4295,7 @@ def test_list_certificate_authorities_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4325,7 +4315,7 @@ async def test_list_certificate_authorities_async(
     request_type=service.ListCertificateAuthoritiesRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4364,7 +4354,7 @@ async def test_list_certificate_authorities_async_from_dict():
 
 def test_list_certificate_authorities_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4396,7 +4386,7 @@ def test_list_certificate_authorities_field_headers():
 @pytest.mark.asyncio
 async def test_list_certificate_authorities_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4429,7 +4419,7 @@ async def test_list_certificate_authorities_field_headers_async():
 
 def test_list_certificate_authorities_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4455,7 +4445,7 @@ def test_list_certificate_authorities_flattened():
 
 def test_list_certificate_authorities_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4470,7 +4460,7 @@ def test_list_certificate_authorities_flattened_error():
 @pytest.mark.asyncio
 async def test_list_certificate_authorities_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4501,7 +4491,7 @@ async def test_list_certificate_authorities_flattened_async():
 @pytest.mark.asyncio
 async def test_list_certificate_authorities_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4515,7 +4505,7 @@ async def test_list_certificate_authorities_flattened_error_async():
 
 def test_list_certificate_authorities_pager(transport_name: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4567,7 +4557,7 @@ def test_list_certificate_authorities_pager(transport_name: str = "grpc"):
 
 def test_list_certificate_authorities_pages(transport_name: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4611,7 +4601,7 @@ def test_list_certificate_authorities_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_certificate_authorities_async_pager():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4663,7 +4653,7 @@ async def test_list_certificate_authorities_async_pager():
 @pytest.mark.asyncio
 async def test_list_certificate_authorities_async_pages():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4720,7 +4710,7 @@ async def test_list_certificate_authorities_async_pages():
 )
 def test_undelete_certificate_authority(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4749,7 +4739,7 @@ def test_undelete_certificate_authority_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4769,7 +4759,7 @@ async def test_undelete_certificate_authority_async(
     request_type=service.UndeleteCertificateAuthorityRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4803,7 +4793,7 @@ async def test_undelete_certificate_authority_async_from_dict():
 
 def test_undelete_certificate_authority_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4835,7 +4825,7 @@ def test_undelete_certificate_authority_field_headers():
 @pytest.mark.asyncio
 async def test_undelete_certificate_authority_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4868,7 +4858,7 @@ async def test_undelete_certificate_authority_field_headers_async():
 
 def test_undelete_certificate_authority_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4894,7 +4884,7 @@ def test_undelete_certificate_authority_flattened():
 
 def test_undelete_certificate_authority_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4909,7 +4899,7 @@ def test_undelete_certificate_authority_flattened_error():
 @pytest.mark.asyncio
 async def test_undelete_certificate_authority_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4940,7 +4930,7 @@ async def test_undelete_certificate_authority_flattened_async():
 @pytest.mark.asyncio
 async def test_undelete_certificate_authority_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4961,7 +4951,7 @@ async def test_undelete_certificate_authority_flattened_error_async():
 )
 def test_delete_certificate_authority(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4990,7 +4980,7 @@ def test_delete_certificate_authority_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5010,7 +5000,7 @@ async def test_delete_certificate_authority_async(
     request_type=service.DeleteCertificateAuthorityRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5044,7 +5034,7 @@ async def test_delete_certificate_authority_async_from_dict():
 
 def test_delete_certificate_authority_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5076,7 +5066,7 @@ def test_delete_certificate_authority_field_headers():
 @pytest.mark.asyncio
 async def test_delete_certificate_authority_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5109,7 +5099,7 @@ async def test_delete_certificate_authority_field_headers_async():
 
 def test_delete_certificate_authority_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5135,7 +5125,7 @@ def test_delete_certificate_authority_flattened():
 
 def test_delete_certificate_authority_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5150,7 +5140,7 @@ def test_delete_certificate_authority_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_certificate_authority_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5181,7 +5171,7 @@ async def test_delete_certificate_authority_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_certificate_authority_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5202,7 +5192,7 @@ async def test_delete_certificate_authority_flattened_error_async():
 )
 def test_update_certificate_authority(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5231,7 +5221,7 @@ def test_update_certificate_authority_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5251,7 +5241,7 @@ async def test_update_certificate_authority_async(
     request_type=service.UpdateCertificateAuthorityRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5285,7 +5275,7 @@ async def test_update_certificate_authority_async_from_dict():
 
 def test_update_certificate_authority_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5317,7 +5307,7 @@ def test_update_certificate_authority_field_headers():
 @pytest.mark.asyncio
 async def test_update_certificate_authority_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5350,7 +5340,7 @@ async def test_update_certificate_authority_field_headers_async():
 
 def test_update_certificate_authority_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5380,7 +5370,7 @@ def test_update_certificate_authority_flattened():
 
 def test_update_certificate_authority_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5396,7 +5386,7 @@ def test_update_certificate_authority_flattened_error():
 @pytest.mark.asyncio
 async def test_update_certificate_authority_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5431,7 +5421,7 @@ async def test_update_certificate_authority_flattened_async():
 @pytest.mark.asyncio
 async def test_update_certificate_authority_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5453,7 +5443,7 @@ async def test_update_certificate_authority_flattened_error_async():
 )
 def test_create_ca_pool(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5480,7 +5470,7 @@ def test_create_ca_pool_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5497,7 +5487,7 @@ async def test_create_ca_pool_async(
     transport: str = "grpc_asyncio", request_type=service.CreateCaPoolRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5529,7 +5519,7 @@ async def test_create_ca_pool_async_from_dict():
 
 def test_create_ca_pool_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5559,7 +5549,7 @@ def test_create_ca_pool_field_headers():
 @pytest.mark.asyncio
 async def test_create_ca_pool_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5590,7 +5580,7 @@ async def test_create_ca_pool_field_headers_async():
 
 def test_create_ca_pool_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5622,7 +5612,7 @@ def test_create_ca_pool_flattened():
 
 def test_create_ca_pool_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5639,7 +5629,7 @@ def test_create_ca_pool_flattened_error():
 @pytest.mark.asyncio
 async def test_create_ca_pool_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5676,7 +5666,7 @@ async def test_create_ca_pool_flattened_async():
 @pytest.mark.asyncio
 async def test_create_ca_pool_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5699,7 +5689,7 @@ async def test_create_ca_pool_flattened_error_async():
 )
 def test_update_ca_pool(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5726,7 +5716,7 @@ def test_update_ca_pool_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5743,7 +5733,7 @@ async def test_update_ca_pool_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateCaPoolRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5775,7 +5765,7 @@ async def test_update_ca_pool_async_from_dict():
 
 def test_update_ca_pool_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5805,7 +5795,7 @@ def test_update_ca_pool_field_headers():
 @pytest.mark.asyncio
 async def test_update_ca_pool_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5836,7 +5826,7 @@ async def test_update_ca_pool_field_headers_async():
 
 def test_update_ca_pool_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5864,7 +5854,7 @@ def test_update_ca_pool_flattened():
 
 def test_update_ca_pool_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5880,7 +5870,7 @@ def test_update_ca_pool_flattened_error():
 @pytest.mark.asyncio
 async def test_update_ca_pool_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5913,7 +5903,7 @@ async def test_update_ca_pool_flattened_async():
 @pytest.mark.asyncio
 async def test_update_ca_pool_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5935,7 +5925,7 @@ async def test_update_ca_pool_flattened_error_async():
 )
 def test_get_ca_pool(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5967,7 +5957,7 @@ def test_get_ca_pool_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5984,7 +5974,7 @@ async def test_get_ca_pool_async(
     transport: str = "grpc_asyncio", request_type=service.GetCaPoolRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6021,7 +6011,7 @@ async def test_get_ca_pool_async_from_dict():
 
 def test_get_ca_pool_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6051,7 +6041,7 @@ def test_get_ca_pool_field_headers():
 @pytest.mark.asyncio
 async def test_get_ca_pool_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6080,7 +6070,7 @@ async def test_get_ca_pool_field_headers_async():
 
 def test_get_ca_pool_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6104,7 +6094,7 @@ def test_get_ca_pool_flattened():
 
 def test_get_ca_pool_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6119,7 +6109,7 @@ def test_get_ca_pool_flattened_error():
 @pytest.mark.asyncio
 async def test_get_ca_pool_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6146,7 +6136,7 @@ async def test_get_ca_pool_flattened_async():
 @pytest.mark.asyncio
 async def test_get_ca_pool_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6167,7 +6157,7 @@ async def test_get_ca_pool_flattened_error_async():
 )
 def test_list_ca_pools(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6199,7 +6189,7 @@ def test_list_ca_pools_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6216,7 +6206,7 @@ async def test_list_ca_pools_async(
     transport: str = "grpc_asyncio", request_type=service.ListCaPoolsRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6253,7 +6243,7 @@ async def test_list_ca_pools_async_from_dict():
 
 def test_list_ca_pools_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6283,7 +6273,7 @@ def test_list_ca_pools_field_headers():
 @pytest.mark.asyncio
 async def test_list_ca_pools_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6314,7 +6304,7 @@ async def test_list_ca_pools_field_headers_async():
 
 def test_list_ca_pools_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6338,7 +6328,7 @@ def test_list_ca_pools_flattened():
 
 def test_list_ca_pools_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6353,7 +6343,7 @@ def test_list_ca_pools_flattened_error():
 @pytest.mark.asyncio
 async def test_list_ca_pools_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6382,7 +6372,7 @@ async def test_list_ca_pools_flattened_async():
 @pytest.mark.asyncio
 async def test_list_ca_pools_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6396,7 +6386,7 @@ async def test_list_ca_pools_flattened_error_async():
 
 def test_list_ca_pools_pager(transport_name: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6446,7 +6436,7 @@ def test_list_ca_pools_pager(transport_name: str = "grpc"):
 
 def test_list_ca_pools_pages(transport_name: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6488,7 +6478,7 @@ def test_list_ca_pools_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_ca_pools_async_pager():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6538,7 +6528,7 @@ async def test_list_ca_pools_async_pager():
 @pytest.mark.asyncio
 async def test_list_ca_pools_async_pages():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6593,7 +6583,7 @@ async def test_list_ca_pools_async_pages():
 )
 def test_delete_ca_pool(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6620,7 +6610,7 @@ def test_delete_ca_pool_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6637,7 +6627,7 @@ async def test_delete_ca_pool_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteCaPoolRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6669,7 +6659,7 @@ async def test_delete_ca_pool_async_from_dict():
 
 def test_delete_ca_pool_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6699,7 +6689,7 @@ def test_delete_ca_pool_field_headers():
 @pytest.mark.asyncio
 async def test_delete_ca_pool_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6730,7 +6720,7 @@ async def test_delete_ca_pool_field_headers_async():
 
 def test_delete_ca_pool_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6754,7 +6744,7 @@ def test_delete_ca_pool_flattened():
 
 def test_delete_ca_pool_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6769,7 +6759,7 @@ def test_delete_ca_pool_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_ca_pool_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6798,7 +6788,7 @@ async def test_delete_ca_pool_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_ca_pool_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6819,7 +6809,7 @@ async def test_delete_ca_pool_flattened_error_async():
 )
 def test_fetch_ca_certs(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6846,7 +6836,7 @@ def test_fetch_ca_certs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6863,7 +6853,7 @@ async def test_fetch_ca_certs_async(
     transport: str = "grpc_asyncio", request_type=service.FetchCaCertsRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6895,7 +6885,7 @@ async def test_fetch_ca_certs_async_from_dict():
 
 def test_fetch_ca_certs_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6925,7 +6915,7 @@ def test_fetch_ca_certs_field_headers():
 @pytest.mark.asyncio
 async def test_fetch_ca_certs_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6956,7 +6946,7 @@ async def test_fetch_ca_certs_field_headers_async():
 
 def test_fetch_ca_certs_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6980,7 +6970,7 @@ def test_fetch_ca_certs_flattened():
 
 def test_fetch_ca_certs_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6995,7 +6985,7 @@ def test_fetch_ca_certs_flattened_error():
 @pytest.mark.asyncio
 async def test_fetch_ca_certs_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7024,7 +7014,7 @@ async def test_fetch_ca_certs_flattened_async():
 @pytest.mark.asyncio
 async def test_fetch_ca_certs_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7045,7 +7035,7 @@ async def test_fetch_ca_certs_flattened_error_async():
 )
 def test_get_certificate_revocation_list(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7087,7 +7077,7 @@ def test_get_certificate_revocation_list_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7107,7 +7097,7 @@ async def test_get_certificate_revocation_list_async(
     request_type=service.GetCertificateRevocationListRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7154,7 +7144,7 @@ async def test_get_certificate_revocation_list_async_from_dict():
 
 def test_get_certificate_revocation_list_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7186,7 +7176,7 @@ def test_get_certificate_revocation_list_field_headers():
 @pytest.mark.asyncio
 async def test_get_certificate_revocation_list_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7219,7 +7209,7 @@ async def test_get_certificate_revocation_list_field_headers_async():
 
 def test_get_certificate_revocation_list_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7245,7 +7235,7 @@ def test_get_certificate_revocation_list_flattened():
 
 def test_get_certificate_revocation_list_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7260,7 +7250,7 @@ def test_get_certificate_revocation_list_flattened_error():
 @pytest.mark.asyncio
 async def test_get_certificate_revocation_list_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7291,7 +7281,7 @@ async def test_get_certificate_revocation_list_flattened_async():
 @pytest.mark.asyncio
 async def test_get_certificate_revocation_list_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7312,7 +7302,7 @@ async def test_get_certificate_revocation_list_flattened_error_async():
 )
 def test_list_certificate_revocation_lists(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7346,7 +7336,7 @@ def test_list_certificate_revocation_lists_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7366,7 +7356,7 @@ async def test_list_certificate_revocation_lists_async(
     request_type=service.ListCertificateRevocationListsRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7405,7 +7395,7 @@ async def test_list_certificate_revocation_lists_async_from_dict():
 
 def test_list_certificate_revocation_lists_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7437,7 +7427,7 @@ def test_list_certificate_revocation_lists_field_headers():
 @pytest.mark.asyncio
 async def test_list_certificate_revocation_lists_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7470,7 +7460,7 @@ async def test_list_certificate_revocation_lists_field_headers_async():
 
 def test_list_certificate_revocation_lists_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7496,7 +7486,7 @@ def test_list_certificate_revocation_lists_flattened():
 
 def test_list_certificate_revocation_lists_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7511,7 +7501,7 @@ def test_list_certificate_revocation_lists_flattened_error():
 @pytest.mark.asyncio
 async def test_list_certificate_revocation_lists_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7542,7 +7532,7 @@ async def test_list_certificate_revocation_lists_flattened_async():
 @pytest.mark.asyncio
 async def test_list_certificate_revocation_lists_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7556,7 +7546,7 @@ async def test_list_certificate_revocation_lists_flattened_error_async():
 
 def test_list_certificate_revocation_lists_pager(transport_name: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -7608,7 +7598,7 @@ def test_list_certificate_revocation_lists_pager(transport_name: str = "grpc"):
 
 def test_list_certificate_revocation_lists_pages(transport_name: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -7652,7 +7642,7 @@ def test_list_certificate_revocation_lists_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_certificate_revocation_lists_async_pager():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7706,7 +7696,7 @@ async def test_list_certificate_revocation_lists_async_pager():
 @pytest.mark.asyncio
 async def test_list_certificate_revocation_lists_async_pages():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7763,7 +7753,7 @@ async def test_list_certificate_revocation_lists_async_pages():
 )
 def test_update_certificate_revocation_list(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7792,7 +7782,7 @@ def test_update_certificate_revocation_list_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7812,7 +7802,7 @@ async def test_update_certificate_revocation_list_async(
     request_type=service.UpdateCertificateRevocationListRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7846,7 +7836,7 @@ async def test_update_certificate_revocation_list_async_from_dict():
 
 def test_update_certificate_revocation_list_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7878,7 +7868,7 @@ def test_update_certificate_revocation_list_field_headers():
 @pytest.mark.asyncio
 async def test_update_certificate_revocation_list_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7911,7 +7901,7 @@ async def test_update_certificate_revocation_list_field_headers_async():
 
 def test_update_certificate_revocation_list_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7943,7 +7933,7 @@ def test_update_certificate_revocation_list_flattened():
 
 def test_update_certificate_revocation_list_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7961,7 +7951,7 @@ def test_update_certificate_revocation_list_flattened_error():
 @pytest.mark.asyncio
 async def test_update_certificate_revocation_list_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7998,7 +7988,7 @@ async def test_update_certificate_revocation_list_flattened_async():
 @pytest.mark.asyncio
 async def test_update_certificate_revocation_list_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8022,7 +8012,7 @@ async def test_update_certificate_revocation_list_flattened_error_async():
 )
 def test_create_certificate_template(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8051,7 +8041,7 @@ def test_create_certificate_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8071,7 +8061,7 @@ async def test_create_certificate_template_async(
     request_type=service.CreateCertificateTemplateRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8105,7 +8095,7 @@ async def test_create_certificate_template_async_from_dict():
 
 def test_create_certificate_template_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8137,7 +8127,7 @@ def test_create_certificate_template_field_headers():
 @pytest.mark.asyncio
 async def test_create_certificate_template_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8170,7 +8160,7 @@ async def test_create_certificate_template_field_headers_async():
 
 def test_create_certificate_template_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8204,7 +8194,7 @@ def test_create_certificate_template_flattened():
 
 def test_create_certificate_template_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8221,7 +8211,7 @@ def test_create_certificate_template_flattened_error():
 @pytest.mark.asyncio
 async def test_create_certificate_template_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8260,7 +8250,7 @@ async def test_create_certificate_template_flattened_async():
 @pytest.mark.asyncio
 async def test_create_certificate_template_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8283,7 +8273,7 @@ async def test_create_certificate_template_flattened_error_async():
 )
 def test_delete_certificate_template(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8312,7 +8302,7 @@ def test_delete_certificate_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8332,7 +8322,7 @@ async def test_delete_certificate_template_async(
     request_type=service.DeleteCertificateTemplateRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8366,7 +8356,7 @@ async def test_delete_certificate_template_async_from_dict():
 
 def test_delete_certificate_template_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8398,7 +8388,7 @@ def test_delete_certificate_template_field_headers():
 @pytest.mark.asyncio
 async def test_delete_certificate_template_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8431,7 +8421,7 @@ async def test_delete_certificate_template_field_headers_async():
 
 def test_delete_certificate_template_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8457,7 +8447,7 @@ def test_delete_certificate_template_flattened():
 
 def test_delete_certificate_template_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8472,7 +8462,7 @@ def test_delete_certificate_template_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_certificate_template_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8503,7 +8493,7 @@ async def test_delete_certificate_template_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_certificate_template_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8524,7 +8514,7 @@ async def test_delete_certificate_template_flattened_error_async():
 )
 def test_get_certificate_template(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8558,7 +8548,7 @@ def test_get_certificate_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8577,7 +8567,7 @@ async def test_get_certificate_template_async(
     transport: str = "grpc_asyncio", request_type=service.GetCertificateTemplateRequest
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8616,7 +8606,7 @@ async def test_get_certificate_template_async_from_dict():
 
 def test_get_certificate_template_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8648,7 +8638,7 @@ def test_get_certificate_template_field_headers():
 @pytest.mark.asyncio
 async def test_get_certificate_template_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8681,7 +8671,7 @@ async def test_get_certificate_template_field_headers_async():
 
 def test_get_certificate_template_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8707,7 +8697,7 @@ def test_get_certificate_template_flattened():
 
 def test_get_certificate_template_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8722,7 +8712,7 @@ def test_get_certificate_template_flattened_error():
 @pytest.mark.asyncio
 async def test_get_certificate_template_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8753,7 +8743,7 @@ async def test_get_certificate_template_flattened_async():
 @pytest.mark.asyncio
 async def test_get_certificate_template_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8774,7 +8764,7 @@ async def test_get_certificate_template_flattened_error_async():
 )
 def test_list_certificate_templates(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8808,7 +8798,7 @@ def test_list_certificate_templates_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8828,7 +8818,7 @@ async def test_list_certificate_templates_async(
     request_type=service.ListCertificateTemplatesRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8867,7 +8857,7 @@ async def test_list_certificate_templates_async_from_dict():
 
 def test_list_certificate_templates_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8899,7 +8889,7 @@ def test_list_certificate_templates_field_headers():
 @pytest.mark.asyncio
 async def test_list_certificate_templates_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8932,7 +8922,7 @@ async def test_list_certificate_templates_field_headers_async():
 
 def test_list_certificate_templates_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8958,7 +8948,7 @@ def test_list_certificate_templates_flattened():
 
 def test_list_certificate_templates_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8973,7 +8963,7 @@ def test_list_certificate_templates_flattened_error():
 @pytest.mark.asyncio
 async def test_list_certificate_templates_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9004,7 +8994,7 @@ async def test_list_certificate_templates_flattened_async():
 @pytest.mark.asyncio
 async def test_list_certificate_templates_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9018,7 +9008,7 @@ async def test_list_certificate_templates_flattened_error_async():
 
 def test_list_certificate_templates_pager(transport_name: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -9070,7 +9060,7 @@ def test_list_certificate_templates_pager(transport_name: str = "grpc"):
 
 def test_list_certificate_templates_pages(transport_name: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -9114,7 +9104,7 @@ def test_list_certificate_templates_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_certificate_templates_async_pager():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9166,7 +9156,7 @@ async def test_list_certificate_templates_async_pager():
 @pytest.mark.asyncio
 async def test_list_certificate_templates_async_pages():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9223,7 +9213,7 @@ async def test_list_certificate_templates_async_pages():
 )
 def test_update_certificate_template(request_type, transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9252,7 +9242,7 @@ def test_update_certificate_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9272,7 +9262,7 @@ async def test_update_certificate_template_async(
     request_type=service.UpdateCertificateTemplateRequest,
 ):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9306,7 +9296,7 @@ async def test_update_certificate_template_async_from_dict():
 
 def test_update_certificate_template_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9338,7 +9328,7 @@ def test_update_certificate_template_field_headers():
 @pytest.mark.asyncio
 async def test_update_certificate_template_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9371,7 +9361,7 @@ async def test_update_certificate_template_field_headers_async():
 
 def test_update_certificate_template_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9401,7 +9391,7 @@ def test_update_certificate_template_flattened():
 
 def test_update_certificate_template_flattened_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9417,7 +9407,7 @@ def test_update_certificate_template_flattened_error():
 @pytest.mark.asyncio
 async def test_update_certificate_template_flattened_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9452,7 +9442,7 @@ async def test_update_certificate_template_flattened_async():
 @pytest.mark.asyncio
 async def test_update_certificate_template_flattened_error_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9474,7 +9464,7 @@ async def test_update_certificate_template_flattened_error_async():
 )
 def test_create_certificate_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9740,7 +9730,7 @@ def test_create_certificate_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_certificate._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -9749,7 +9739,7 @@ def test_create_certificate_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_certificate._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -9767,7 +9757,7 @@ def test_create_certificate_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9810,7 +9800,7 @@ def test_create_certificate_rest_required_fields(
 
 def test_create_certificate_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_certificate._get_unset_required_fields({})
@@ -9835,7 +9825,7 @@ def test_create_certificate_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_certificate_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -9893,7 +9883,7 @@ def test_create_certificate_rest_bad_request(
     transport: str = "rest", request_type=service.CreateCertificateRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9915,7 +9905,7 @@ def test_create_certificate_rest_bad_request(
 
 def test_create_certificate_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9961,7 +9951,7 @@ def test_create_certificate_rest_flattened():
 
 def test_create_certificate_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9978,7 +9968,7 @@ def test_create_certificate_rest_flattened_error(transport: str = "rest"):
 
 def test_create_certificate_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -9991,7 +9981,7 @@ def test_create_certificate_rest_error():
 )
 def test_get_certificate_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10055,7 +10045,7 @@ def test_get_certificate_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_certificate._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10064,7 +10054,7 @@ def test_get_certificate_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_certificate._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10073,7 +10063,7 @@ def test_get_certificate_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10115,7 +10105,7 @@ def test_get_certificate_rest_required_fields(
 
 def test_get_certificate_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_certificate._get_unset_required_fields({})
@@ -10125,7 +10115,7 @@ def test_get_certificate_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_certificate_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -10181,7 +10171,7 @@ def test_get_certificate_rest_bad_request(
     transport: str = "rest", request_type=service.GetCertificateRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10205,7 +10195,7 @@ def test_get_certificate_rest_bad_request(
 
 def test_get_certificate_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10249,7 +10239,7 @@ def test_get_certificate_rest_flattened():
 
 def test_get_certificate_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10264,7 +10254,7 @@ def test_get_certificate_rest_flattened_error(transport: str = "rest"):
 
 def test_get_certificate_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -10277,7 +10267,7 @@ def test_get_certificate_rest_error():
 )
 def test_list_certificates_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10330,7 +10320,7 @@ def test_list_certificates_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_certificates._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10339,7 +10329,7 @@ def test_list_certificates_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_certificates._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -10357,7 +10347,7 @@ def test_list_certificates_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10399,7 +10389,7 @@ def test_list_certificates_rest_required_fields(
 
 def test_list_certificates_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_certificates._get_unset_required_fields({})
@@ -10419,7 +10409,7 @@ def test_list_certificates_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_certificates_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -10477,7 +10467,7 @@ def test_list_certificates_rest_bad_request(
     transport: str = "rest", request_type=service.ListCertificatesRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10499,7 +10489,7 @@ def test_list_certificates_rest_bad_request(
 
 def test_list_certificates_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10543,7 +10533,7 @@ def test_list_certificates_rest_flattened():
 
 def test_list_certificates_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10558,7 +10548,7 @@ def test_list_certificates_rest_flattened_error(transport: str = "rest"):
 
 def test_list_certificates_rest_pager(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10628,7 +10618,7 @@ def test_list_certificates_rest_pager(transport: str = "rest"):
 )
 def test_revoke_certificate_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10692,7 +10682,7 @@ def test_revoke_certificate_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).revoke_certificate._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10701,7 +10691,7 @@ def test_revoke_certificate_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).revoke_certificate._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10710,7 +10700,7 @@ def test_revoke_certificate_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10753,7 +10743,7 @@ def test_revoke_certificate_rest_required_fields(
 
 def test_revoke_certificate_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.revoke_certificate._get_unset_required_fields({})
@@ -10771,7 +10761,7 @@ def test_revoke_certificate_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_revoke_certificate_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -10829,7 +10819,7 @@ def test_revoke_certificate_rest_bad_request(
     transport: str = "rest", request_type=service.RevokeCertificateRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10853,7 +10843,7 @@ def test_revoke_certificate_rest_bad_request(
 
 def test_revoke_certificate_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10897,7 +10887,7 @@ def test_revoke_certificate_rest_flattened():
 
 def test_revoke_certificate_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10912,7 +10902,7 @@ def test_revoke_certificate_rest_flattened_error(transport: str = "rest"):
 
 def test_revoke_certificate_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -10925,7 +10915,7 @@ def test_revoke_certificate_rest_error():
 )
 def test_update_certificate_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11194,14 +11184,14 @@ def test_update_certificate_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_certificate._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_certificate._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -11215,7 +11205,7 @@ def test_update_certificate_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11258,7 +11248,7 @@ def test_update_certificate_rest_required_fields(
 
 def test_update_certificate_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_certificate._get_unset_required_fields({})
@@ -11281,7 +11271,7 @@ def test_update_certificate_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_certificate_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -11339,7 +11329,7 @@ def test_update_certificate_rest_bad_request(
     transport: str = "rest", request_type=service.UpdateCertificateRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11365,7 +11355,7 @@ def test_update_certificate_rest_bad_request(
 
 def test_update_certificate_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11412,7 +11402,7 @@ def test_update_certificate_rest_flattened():
 
 def test_update_certificate_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11428,7 +11418,7 @@ def test_update_certificate_rest_flattened_error(transport: str = "rest"):
 
 def test_update_certificate_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11441,7 +11431,7 @@ def test_update_certificate_rest_error():
 )
 def test_activate_certificate_authority_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11490,7 +11480,7 @@ def test_activate_certificate_authority_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).activate_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11500,7 +11490,7 @@ def test_activate_certificate_authority_rest_required_fields(
     jsonified_request["pemCaCertificate"] = "pem_ca_certificate_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).activate_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11511,7 +11501,7 @@ def test_activate_certificate_authority_rest_required_fields(
     assert jsonified_request["pemCaCertificate"] == "pem_ca_certificate_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11551,7 +11541,7 @@ def test_activate_certificate_authority_rest_required_fields(
 
 def test_activate_certificate_authority_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.activate_certificate_authority._get_unset_required_fields(
@@ -11572,7 +11562,7 @@ def test_activate_certificate_authority_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_activate_certificate_authority_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -11634,7 +11624,7 @@ def test_activate_certificate_authority_rest_bad_request(
     transport: str = "rest", request_type=service.ActivateCertificateAuthorityRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11658,7 +11648,7 @@ def test_activate_certificate_authority_rest_bad_request(
 
 def test_activate_certificate_authority_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11700,7 +11690,7 @@ def test_activate_certificate_authority_rest_flattened():
 
 def test_activate_certificate_authority_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11715,7 +11705,7 @@ def test_activate_certificate_authority_rest_flattened_error(transport: str = "r
 
 def test_activate_certificate_authority_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11728,7 +11718,7 @@ def test_activate_certificate_authority_rest_error():
 )
 def test_create_certificate_authority_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12000,7 +11990,7 @@ def test_create_certificate_authority_rest_required_fields(
     assert "certificateAuthorityId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12015,7 +12005,7 @@ def test_create_certificate_authority_rest_required_fields(
     jsonified_request["certificateAuthorityId"] = "certificate_authority_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_certificate_authority._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -12035,7 +12025,7 @@ def test_create_certificate_authority_rest_required_fields(
     )
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12081,7 +12071,7 @@ def test_create_certificate_authority_rest_required_fields(
 
 def test_create_certificate_authority_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_certificate_authority._get_unset_required_fields({})
@@ -12105,7 +12095,7 @@ def test_create_certificate_authority_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_certificate_authority_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -12167,7 +12157,7 @@ def test_create_certificate_authority_rest_bad_request(
     transport: str = "rest", request_type=service.CreateCertificateAuthorityRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12189,7 +12179,7 @@ def test_create_certificate_authority_rest_bad_request(
 
 def test_create_certificate_authority_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12233,7 +12223,7 @@ def test_create_certificate_authority_rest_flattened():
 
 def test_create_certificate_authority_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12250,7 +12240,7 @@ def test_create_certificate_authority_rest_flattened_error(transport: str = "res
 
 def test_create_certificate_authority_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12263,7 +12253,7 @@ def test_create_certificate_authority_rest_error():
 )
 def test_disable_certificate_authority_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12311,7 +12301,7 @@ def test_disable_certificate_authority_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).disable_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12320,7 +12310,7 @@ def test_disable_certificate_authority_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).disable_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12329,7 +12319,7 @@ def test_disable_certificate_authority_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12369,7 +12359,7 @@ def test_disable_certificate_authority_rest_required_fields(
 
 def test_disable_certificate_authority_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.disable_certificate_authority._get_unset_required_fields(
@@ -12381,7 +12371,7 @@ def test_disable_certificate_authority_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_disable_certificate_authority_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -12443,7 +12433,7 @@ def test_disable_certificate_authority_rest_bad_request(
     transport: str = "rest", request_type=service.DisableCertificateAuthorityRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12467,7 +12457,7 @@ def test_disable_certificate_authority_rest_bad_request(
 
 def test_disable_certificate_authority_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12509,7 +12499,7 @@ def test_disable_certificate_authority_rest_flattened():
 
 def test_disable_certificate_authority_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12524,7 +12514,7 @@ def test_disable_certificate_authority_rest_flattened_error(transport: str = "re
 
 def test_disable_certificate_authority_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12537,7 +12527,7 @@ def test_disable_certificate_authority_rest_error():
 )
 def test_enable_certificate_authority_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12585,7 +12575,7 @@ def test_enable_certificate_authority_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).enable_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12594,7 +12584,7 @@ def test_enable_certificate_authority_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).enable_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12603,7 +12593,7 @@ def test_enable_certificate_authority_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12643,7 +12633,7 @@ def test_enable_certificate_authority_rest_required_fields(
 
 def test_enable_certificate_authority_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.enable_certificate_authority._get_unset_required_fields({})
@@ -12653,7 +12643,7 @@ def test_enable_certificate_authority_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_enable_certificate_authority_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -12715,7 +12705,7 @@ def test_enable_certificate_authority_rest_bad_request(
     transport: str = "rest", request_type=service.EnableCertificateAuthorityRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12739,7 +12729,7 @@ def test_enable_certificate_authority_rest_bad_request(
 
 def test_enable_certificate_authority_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12781,7 +12771,7 @@ def test_enable_certificate_authority_rest_flattened():
 
 def test_enable_certificate_authority_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12796,7 +12786,7 @@ def test_enable_certificate_authority_rest_flattened_error(transport: str = "res
 
 def test_enable_certificate_authority_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12809,7 +12799,7 @@ def test_enable_certificate_authority_rest_error():
 )
 def test_fetch_certificate_authority_csr_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12862,7 +12852,7 @@ def test_fetch_certificate_authority_csr_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_certificate_authority_csr._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12871,7 +12861,7 @@ def test_fetch_certificate_authority_csr_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_certificate_authority_csr._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12880,7 +12870,7 @@ def test_fetch_certificate_authority_csr_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12922,7 +12912,7 @@ def test_fetch_certificate_authority_csr_rest_required_fields(
 
 def test_fetch_certificate_authority_csr_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.fetch_certificate_authority_csr._get_unset_required_fields(
@@ -12934,7 +12924,7 @@ def test_fetch_certificate_authority_csr_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_fetch_certificate_authority_csr_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -12996,7 +12986,7 @@ def test_fetch_certificate_authority_csr_rest_bad_request(
     transport: str = "rest", request_type=service.FetchCertificateAuthorityCsrRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13020,7 +13010,7 @@ def test_fetch_certificate_authority_csr_rest_bad_request(
 
 def test_fetch_certificate_authority_csr_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13064,7 +13054,7 @@ def test_fetch_certificate_authority_csr_rest_flattened():
 
 def test_fetch_certificate_authority_csr_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13079,7 +13069,7 @@ def test_fetch_certificate_authority_csr_rest_flattened_error(transport: str = "
 
 def test_fetch_certificate_authority_csr_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13092,7 +13082,7 @@ def test_fetch_certificate_authority_csr_rest_error():
 )
 def test_get_certificate_authority_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13155,7 +13145,7 @@ def test_get_certificate_authority_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13164,7 +13154,7 @@ def test_get_certificate_authority_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13173,7 +13163,7 @@ def test_get_certificate_authority_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13215,7 +13205,7 @@ def test_get_certificate_authority_rest_required_fields(
 
 def test_get_certificate_authority_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_certificate_authority._get_unset_required_fields({})
@@ -13225,7 +13215,7 @@ def test_get_certificate_authority_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_certificate_authority_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -13285,7 +13275,7 @@ def test_get_certificate_authority_rest_bad_request(
     transport: str = "rest", request_type=service.GetCertificateAuthorityRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13309,7 +13299,7 @@ def test_get_certificate_authority_rest_bad_request(
 
 def test_get_certificate_authority_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13353,7 +13343,7 @@ def test_get_certificate_authority_rest_flattened():
 
 def test_get_certificate_authority_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13368,7 +13358,7 @@ def test_get_certificate_authority_rest_flattened_error(transport: str = "rest")
 
 def test_get_certificate_authority_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13381,7 +13371,7 @@ def test_get_certificate_authority_rest_error():
 )
 def test_list_certificate_authorities_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13434,7 +13424,7 @@ def test_list_certificate_authorities_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_certificate_authorities._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13443,7 +13433,7 @@ def test_list_certificate_authorities_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_certificate_authorities._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -13461,7 +13451,7 @@ def test_list_certificate_authorities_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13503,7 +13493,7 @@ def test_list_certificate_authorities_rest_required_fields(
 
 def test_list_certificate_authorities_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_certificate_authorities._get_unset_required_fields({})
@@ -13523,7 +13513,7 @@ def test_list_certificate_authorities_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_certificate_authorities_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -13583,7 +13573,7 @@ def test_list_certificate_authorities_rest_bad_request(
     transport: str = "rest", request_type=service.ListCertificateAuthoritiesRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13605,7 +13595,7 @@ def test_list_certificate_authorities_rest_bad_request(
 
 def test_list_certificate_authorities_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13649,7 +13639,7 @@ def test_list_certificate_authorities_rest_flattened():
 
 def test_list_certificate_authorities_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13664,7 +13654,7 @@ def test_list_certificate_authorities_rest_flattened_error(transport: str = "res
 
 def test_list_certificate_authorities_rest_pager(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13736,7 +13726,7 @@ def test_list_certificate_authorities_rest_pager(transport: str = "rest"):
 )
 def test_undelete_certificate_authority_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13784,7 +13774,7 @@ def test_undelete_certificate_authority_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).undelete_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13793,7 +13783,7 @@ def test_undelete_certificate_authority_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).undelete_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13802,7 +13792,7 @@ def test_undelete_certificate_authority_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13842,7 +13832,7 @@ def test_undelete_certificate_authority_rest_required_fields(
 
 def test_undelete_certificate_authority_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.undelete_certificate_authority._get_unset_required_fields(
@@ -13854,7 +13844,7 @@ def test_undelete_certificate_authority_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_undelete_certificate_authority_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -13916,7 +13906,7 @@ def test_undelete_certificate_authority_rest_bad_request(
     transport: str = "rest", request_type=service.UndeleteCertificateAuthorityRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13940,7 +13930,7 @@ def test_undelete_certificate_authority_rest_bad_request(
 
 def test_undelete_certificate_authority_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13982,7 +13972,7 @@ def test_undelete_certificate_authority_rest_flattened():
 
 def test_undelete_certificate_authority_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13997,7 +13987,7 @@ def test_undelete_certificate_authority_rest_flattened_error(transport: str = "r
 
 def test_undelete_certificate_authority_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14010,7 +14000,7 @@ def test_undelete_certificate_authority_rest_error():
 )
 def test_delete_certificate_authority_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14058,7 +14048,7 @@ def test_delete_certificate_authority_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14067,7 +14057,7 @@ def test_delete_certificate_authority_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_certificate_authority._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -14085,7 +14075,7 @@ def test_delete_certificate_authority_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14124,7 +14114,7 @@ def test_delete_certificate_authority_rest_required_fields(
 
 def test_delete_certificate_authority_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_certificate_authority._get_unset_required_fields({})
@@ -14144,7 +14134,7 @@ def test_delete_certificate_authority_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_certificate_authority_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -14206,7 +14196,7 @@ def test_delete_certificate_authority_rest_bad_request(
     transport: str = "rest", request_type=service.DeleteCertificateAuthorityRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14230,7 +14220,7 @@ def test_delete_certificate_authority_rest_bad_request(
 
 def test_delete_certificate_authority_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14272,7 +14262,7 @@ def test_delete_certificate_authority_rest_flattened():
 
 def test_delete_certificate_authority_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14287,7 +14277,7 @@ def test_delete_certificate_authority_rest_flattened_error(transport: str = "res
 
 def test_delete_certificate_authority_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14300,7 +14290,7 @@ def test_delete_certificate_authority_rest_error():
 )
 def test_update_certificate_authority_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14573,14 +14563,14 @@ def test_update_certificate_authority_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_certificate_authority._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_certificate_authority._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -14594,7 +14584,7 @@ def test_update_certificate_authority_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14634,7 +14624,7 @@ def test_update_certificate_authority_rest_required_fields(
 
 def test_update_certificate_authority_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_certificate_authority._get_unset_required_fields({})
@@ -14657,7 +14647,7 @@ def test_update_certificate_authority_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_certificate_authority_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -14719,7 +14709,7 @@ def test_update_certificate_authority_rest_bad_request(
     transport: str = "rest", request_type=service.UpdateCertificateAuthorityRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14745,7 +14735,7 @@ def test_update_certificate_authority_rest_bad_request(
 
 def test_update_certificate_authority_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14790,7 +14780,7 @@ def test_update_certificate_authority_rest_flattened():
 
 def test_update_certificate_authority_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14806,7 +14796,7 @@ def test_update_certificate_authority_rest_flattened_error(transport: str = "res
 
 def test_update_certificate_authority_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14819,7 +14809,7 @@ def test_update_certificate_authority_rest_error():
 )
 def test_create_ca_pool_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15030,7 +15020,7 @@ def test_create_ca_pool_rest_required_fields(request_type=service.CreateCaPoolRe
     assert "caPoolId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_ca_pool._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15042,7 +15032,7 @@ def test_create_ca_pool_rest_required_fields(request_type=service.CreateCaPoolRe
     jsonified_request["caPoolId"] = "ca_pool_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_ca_pool._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -15060,7 +15050,7 @@ def test_create_ca_pool_rest_required_fields(request_type=service.CreateCaPoolRe
     assert jsonified_request["caPoolId"] == "ca_pool_id_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15106,7 +15096,7 @@ def test_create_ca_pool_rest_required_fields(request_type=service.CreateCaPoolRe
 
 def test_create_ca_pool_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_ca_pool._get_unset_required_fields({})
@@ -15130,7 +15120,7 @@ def test_create_ca_pool_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_ca_pool_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -15188,7 +15178,7 @@ def test_create_ca_pool_rest_bad_request(
     transport: str = "rest", request_type=service.CreateCaPoolRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15210,7 +15200,7 @@ def test_create_ca_pool_rest_bad_request(
 
 def test_create_ca_pool_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15251,7 +15241,7 @@ def test_create_ca_pool_rest_flattened():
 
 def test_create_ca_pool_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15268,7 +15258,7 @@ def test_create_ca_pool_rest_flattened_error(transport: str = "rest"):
 
 def test_create_ca_pool_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15281,7 +15271,7 @@ def test_create_ca_pool_rest_error():
 )
 def test_update_ca_pool_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15491,14 +15481,14 @@ def test_update_ca_pool_rest_required_fields(request_type=service.UpdateCaPoolRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_ca_pool._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_ca_pool._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -15512,7 +15502,7 @@ def test_update_ca_pool_rest_required_fields(request_type=service.UpdateCaPoolRe
     # verify required fields with non-default values are left alone
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15552,7 +15542,7 @@ def test_update_ca_pool_rest_required_fields(request_type=service.UpdateCaPoolRe
 
 def test_update_ca_pool_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_ca_pool._get_unset_required_fields({})
@@ -15575,7 +15565,7 @@ def test_update_ca_pool_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_ca_pool_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -15633,7 +15623,7 @@ def test_update_ca_pool_rest_bad_request(
     transport: str = "rest", request_type=service.UpdateCaPoolRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15657,7 +15647,7 @@ def test_update_ca_pool_rest_bad_request(
 
 def test_update_ca_pool_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15700,7 +15690,7 @@ def test_update_ca_pool_rest_flattened():
 
 def test_update_ca_pool_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15716,7 +15706,7 @@ def test_update_ca_pool_rest_flattened_error(transport: str = "rest"):
 
 def test_update_ca_pool_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15729,7 +15719,7 @@ def test_update_ca_pool_rest_error():
 )
 def test_get_ca_pool_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15780,7 +15770,7 @@ def test_get_ca_pool_rest_required_fields(request_type=service.GetCaPoolRequest)
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_ca_pool._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15789,7 +15779,7 @@ def test_get_ca_pool_rest_required_fields(request_type=service.GetCaPoolRequest)
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_ca_pool._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15798,7 +15788,7 @@ def test_get_ca_pool_rest_required_fields(request_type=service.GetCaPoolRequest)
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15840,7 +15830,7 @@ def test_get_ca_pool_rest_required_fields(request_type=service.GetCaPoolRequest)
 
 def test_get_ca_pool_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_ca_pool._get_unset_required_fields({})
@@ -15850,7 +15840,7 @@ def test_get_ca_pool_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_ca_pool_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -15904,7 +15894,7 @@ def test_get_ca_pool_rest_bad_request(
     transport: str = "rest", request_type=service.GetCaPoolRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15926,7 +15916,7 @@ def test_get_ca_pool_rest_bad_request(
 
 def test_get_ca_pool_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15967,7 +15957,7 @@ def test_get_ca_pool_rest_flattened():
 
 def test_get_ca_pool_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15982,7 +15972,7 @@ def test_get_ca_pool_rest_flattened_error(transport: str = "rest"):
 
 def test_get_ca_pool_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15995,7 +15985,7 @@ def test_get_ca_pool_rest_error():
 )
 def test_list_ca_pools_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16046,7 +16036,7 @@ def test_list_ca_pools_rest_required_fields(request_type=service.ListCaPoolsRequ
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_ca_pools._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16055,7 +16045,7 @@ def test_list_ca_pools_rest_required_fields(request_type=service.ListCaPoolsRequ
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_ca_pools._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -16073,7 +16063,7 @@ def test_list_ca_pools_rest_required_fields(request_type=service.ListCaPoolsRequ
     assert jsonified_request["parent"] == "parent_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16115,7 +16105,7 @@ def test_list_ca_pools_rest_required_fields(request_type=service.ListCaPoolsRequ
 
 def test_list_ca_pools_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_ca_pools._get_unset_required_fields({})
@@ -16135,7 +16125,7 @@ def test_list_ca_pools_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_ca_pools_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -16191,7 +16181,7 @@ def test_list_ca_pools_rest_bad_request(
     transport: str = "rest", request_type=service.ListCaPoolsRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16213,7 +16203,7 @@ def test_list_ca_pools_rest_bad_request(
 
 def test_list_ca_pools_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16254,7 +16244,7 @@ def test_list_ca_pools_rest_flattened():
 
 def test_list_ca_pools_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16269,7 +16259,7 @@ def test_list_ca_pools_rest_flattened_error(transport: str = "rest"):
 
 def test_list_ca_pools_rest_pager(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16337,7 +16327,7 @@ def test_list_ca_pools_rest_pager(transport: str = "rest"):
 )
 def test_delete_ca_pool_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16381,7 +16371,7 @@ def test_delete_ca_pool_rest_required_fields(request_type=service.DeleteCaPoolRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_ca_pool._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16390,7 +16380,7 @@ def test_delete_ca_pool_rest_required_fields(request_type=service.DeleteCaPoolRe
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_ca_pool._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -16406,7 +16396,7 @@ def test_delete_ca_pool_rest_required_fields(request_type=service.DeleteCaPoolRe
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16445,7 +16435,7 @@ def test_delete_ca_pool_rest_required_fields(request_type=service.DeleteCaPoolRe
 
 def test_delete_ca_pool_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_ca_pool._get_unset_required_fields({})
@@ -16463,7 +16453,7 @@ def test_delete_ca_pool_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_ca_pool_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -16521,7 +16511,7 @@ def test_delete_ca_pool_rest_bad_request(
     transport: str = "rest", request_type=service.DeleteCaPoolRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16543,7 +16533,7 @@ def test_delete_ca_pool_rest_bad_request(
 
 def test_delete_ca_pool_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16582,7 +16572,7 @@ def test_delete_ca_pool_rest_flattened():
 
 def test_delete_ca_pool_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16597,7 +16587,7 @@ def test_delete_ca_pool_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_ca_pool_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16610,7 +16600,7 @@ def test_delete_ca_pool_rest_error():
 )
 def test_fetch_ca_certs_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16656,7 +16646,7 @@ def test_fetch_ca_certs_rest_required_fields(request_type=service.FetchCaCertsRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_ca_certs._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16665,7 +16655,7 @@ def test_fetch_ca_certs_rest_required_fields(request_type=service.FetchCaCertsRe
     jsonified_request["caPool"] = "ca_pool_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_ca_certs._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16674,7 +16664,7 @@ def test_fetch_ca_certs_rest_required_fields(request_type=service.FetchCaCertsRe
     assert jsonified_request["caPool"] == "ca_pool_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16717,7 +16707,7 @@ def test_fetch_ca_certs_rest_required_fields(request_type=service.FetchCaCertsRe
 
 def test_fetch_ca_certs_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.fetch_ca_certs._get_unset_required_fields({})
@@ -16727,7 +16717,7 @@ def test_fetch_ca_certs_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_fetch_ca_certs_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -16783,7 +16773,7 @@ def test_fetch_ca_certs_rest_bad_request(
     transport: str = "rest", request_type=service.FetchCaCertsRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16805,7 +16795,7 @@ def test_fetch_ca_certs_rest_bad_request(
 
 def test_fetch_ca_certs_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16849,7 +16839,7 @@ def test_fetch_ca_certs_rest_flattened():
 
 def test_fetch_ca_certs_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16864,7 +16854,7 @@ def test_fetch_ca_certs_rest_flattened_error(transport: str = "rest"):
 
 def test_fetch_ca_certs_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16877,7 +16867,7 @@ def test_fetch_ca_certs_rest_error():
 )
 def test_get_certificate_revocation_list_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16940,7 +16930,7 @@ def test_get_certificate_revocation_list_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_certificate_revocation_list._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16949,7 +16939,7 @@ def test_get_certificate_revocation_list_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_certificate_revocation_list._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16958,7 +16948,7 @@ def test_get_certificate_revocation_list_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17000,7 +16990,7 @@ def test_get_certificate_revocation_list_rest_required_fields(
 
 def test_get_certificate_revocation_list_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_certificate_revocation_list._get_unset_required_fields(
@@ -17012,7 +17002,7 @@ def test_get_certificate_revocation_list_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_certificate_revocation_list_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -17072,7 +17062,7 @@ def test_get_certificate_revocation_list_rest_bad_request(
     transport: str = "rest", request_type=service.GetCertificateRevocationListRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17096,7 +17086,7 @@ def test_get_certificate_revocation_list_rest_bad_request(
 
 def test_get_certificate_revocation_list_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17140,7 +17130,7 @@ def test_get_certificate_revocation_list_rest_flattened():
 
 def test_get_certificate_revocation_list_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17155,7 +17145,7 @@ def test_get_certificate_revocation_list_rest_flattened_error(transport: str = "
 
 def test_get_certificate_revocation_list_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17168,7 +17158,7 @@ def test_get_certificate_revocation_list_rest_error():
 )
 def test_list_certificate_revocation_lists_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17223,7 +17213,7 @@ def test_list_certificate_revocation_lists_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_certificate_revocation_lists._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17232,7 +17222,7 @@ def test_list_certificate_revocation_lists_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_certificate_revocation_lists._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -17250,7 +17240,7 @@ def test_list_certificate_revocation_lists_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17294,7 +17284,7 @@ def test_list_certificate_revocation_lists_rest_required_fields(
 
 def test_list_certificate_revocation_lists_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = (
@@ -17316,7 +17306,7 @@ def test_list_certificate_revocation_lists_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_certificate_revocation_lists_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -17378,7 +17368,7 @@ def test_list_certificate_revocation_lists_rest_bad_request(
     transport: str = "rest", request_type=service.ListCertificateRevocationListsRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17402,7 +17392,7 @@ def test_list_certificate_revocation_lists_rest_bad_request(
 
 def test_list_certificate_revocation_lists_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17448,7 +17438,7 @@ def test_list_certificate_revocation_lists_rest_flattened_error(
     transport: str = "rest",
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17463,7 +17453,7 @@ def test_list_certificate_revocation_lists_rest_flattened_error(
 
 def test_list_certificate_revocation_lists_rest_pager(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17537,7 +17527,7 @@ def test_list_certificate_revocation_lists_rest_pager(transport: str = "rest"):
 )
 def test_update_certificate_revocation_list_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17677,14 +17667,14 @@ def test_update_certificate_revocation_list_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_certificate_revocation_list._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_certificate_revocation_list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -17698,7 +17688,7 @@ def test_update_certificate_revocation_list_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17738,7 +17728,7 @@ def test_update_certificate_revocation_list_rest_required_fields(
 
 def test_update_certificate_revocation_list_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = (
@@ -17763,7 +17753,7 @@ def test_update_certificate_revocation_list_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_certificate_revocation_list_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -17825,7 +17815,7 @@ def test_update_certificate_revocation_list_rest_bad_request(
     transport: str = "rest", request_type=service.UpdateCertificateRevocationListRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17851,7 +17841,7 @@ def test_update_certificate_revocation_list_rest_bad_request(
 
 def test_update_certificate_revocation_list_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17900,7 +17890,7 @@ def test_update_certificate_revocation_list_rest_flattened_error(
     transport: str = "rest",
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17918,7 +17908,7 @@ def test_update_certificate_revocation_list_rest_flattened_error(
 
 def test_update_certificate_revocation_list_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17931,7 +17921,7 @@ def test_update_certificate_revocation_list_rest_error():
 )
 def test_create_certificate_template_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18130,7 +18120,7 @@ def test_create_certificate_template_rest_required_fields(
     assert "certificateTemplateId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_certificate_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18145,7 +18135,7 @@ def test_create_certificate_template_rest_required_fields(
     jsonified_request["certificateTemplateId"] = "certificate_template_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_certificate_template._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -18163,7 +18153,7 @@ def test_create_certificate_template_rest_required_fields(
     assert jsonified_request["certificateTemplateId"] == "certificate_template_id_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18209,7 +18199,7 @@ def test_create_certificate_template_rest_required_fields(
 
 def test_create_certificate_template_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_certificate_template._get_unset_required_fields({})
@@ -18233,7 +18223,7 @@ def test_create_certificate_template_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_certificate_template_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -18295,7 +18285,7 @@ def test_create_certificate_template_rest_bad_request(
     transport: str = "rest", request_type=service.CreateCertificateTemplateRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18317,7 +18307,7 @@ def test_create_certificate_template_rest_bad_request(
 
 def test_create_certificate_template_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18359,7 +18349,7 @@ def test_create_certificate_template_rest_flattened():
 
 def test_create_certificate_template_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18376,7 +18366,7 @@ def test_create_certificate_template_rest_flattened_error(transport: str = "rest
 
 def test_create_certificate_template_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18389,7 +18379,7 @@ def test_create_certificate_template_rest_error():
 )
 def test_delete_certificate_template_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18437,7 +18427,7 @@ def test_delete_certificate_template_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_certificate_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18446,7 +18436,7 @@ def test_delete_certificate_template_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_certificate_template._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
@@ -18457,7 +18447,7 @@ def test_delete_certificate_template_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18496,7 +18486,7 @@ def test_delete_certificate_template_rest_required_fields(
 
 def test_delete_certificate_template_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_certificate_template._get_unset_required_fields({})
@@ -18506,7 +18496,7 @@ def test_delete_certificate_template_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_certificate_template_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -18568,7 +18558,7 @@ def test_delete_certificate_template_rest_bad_request(
     transport: str = "rest", request_type=service.DeleteCertificateTemplateRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18592,7 +18582,7 @@ def test_delete_certificate_template_rest_bad_request(
 
 def test_delete_certificate_template_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18634,7 +18624,7 @@ def test_delete_certificate_template_rest_flattened():
 
 def test_delete_certificate_template_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18649,7 +18639,7 @@ def test_delete_certificate_template_rest_flattened_error(transport: str = "rest
 
 def test_delete_certificate_template_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18662,7 +18652,7 @@ def test_delete_certificate_template_rest_error():
 )
 def test_get_certificate_template_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18717,7 +18707,7 @@ def test_get_certificate_template_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_certificate_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18726,7 +18716,7 @@ def test_get_certificate_template_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_certificate_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18735,7 +18725,7 @@ def test_get_certificate_template_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18777,7 +18767,7 @@ def test_get_certificate_template_rest_required_fields(
 
 def test_get_certificate_template_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_certificate_template._get_unset_required_fields({})
@@ -18787,7 +18777,7 @@ def test_get_certificate_template_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_certificate_template_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -18847,7 +18837,7 @@ def test_get_certificate_template_rest_bad_request(
     transport: str = "rest", request_type=service.GetCertificateTemplateRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18871,7 +18861,7 @@ def test_get_certificate_template_rest_bad_request(
 
 def test_get_certificate_template_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18915,7 +18905,7 @@ def test_get_certificate_template_rest_flattened():
 
 def test_get_certificate_template_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18930,7 +18920,7 @@ def test_get_certificate_template_rest_flattened_error(transport: str = "rest"):
 
 def test_get_certificate_template_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18943,7 +18933,7 @@ def test_get_certificate_template_rest_error():
 )
 def test_list_certificate_templates_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18996,7 +18986,7 @@ def test_list_certificate_templates_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_certificate_templates._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19005,7 +18995,7 @@ def test_list_certificate_templates_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_certificate_templates._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -19023,7 +19013,7 @@ def test_list_certificate_templates_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19065,7 +19055,7 @@ def test_list_certificate_templates_rest_required_fields(
 
 def test_list_certificate_templates_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_certificate_templates._get_unset_required_fields({})
@@ -19085,7 +19075,7 @@ def test_list_certificate_templates_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_certificate_templates_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -19145,7 +19135,7 @@ def test_list_certificate_templates_rest_bad_request(
     transport: str = "rest", request_type=service.ListCertificateTemplatesRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19167,7 +19157,7 @@ def test_list_certificate_templates_rest_bad_request(
 
 def test_list_certificate_templates_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19209,7 +19199,7 @@ def test_list_certificate_templates_rest_flattened():
 
 def test_list_certificate_templates_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19224,7 +19214,7 @@ def test_list_certificate_templates_rest_flattened_error(transport: str = "rest"
 
 def test_list_certificate_templates_rest_pager(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19294,7 +19284,7 @@ def test_list_certificate_templates_rest_pager(transport: str = "rest"):
 )
 def test_update_certificate_template_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19494,14 +19484,14 @@ def test_update_certificate_template_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_certificate_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_certificate_template._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -19515,7 +19505,7 @@ def test_update_certificate_template_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19555,7 +19545,7 @@ def test_update_certificate_template_rest_required_fields(
 
 def test_update_certificate_template_rest_unset_required_fields():
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_certificate_template._get_unset_required_fields({})
@@ -19578,7 +19568,7 @@ def test_update_certificate_template_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_certificate_template_rest_interceptors(null_interceptor):
     transport = transports.CertificateAuthorityServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.CertificateAuthorityServiceRestInterceptor(),
@@ -19640,7 +19630,7 @@ def test_update_certificate_template_rest_bad_request(
     transport: str = "rest", request_type=service.UpdateCertificateTemplateRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19666,7 +19656,7 @@ def test_update_certificate_template_rest_bad_request(
 
 def test_update_certificate_template_rest_flattened():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19711,7 +19701,7 @@ def test_update_certificate_template_rest_flattened():
 
 def test_update_certificate_template_rest_flattened_error(transport: str = "rest"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19727,24 +19717,24 @@ def test_update_certificate_template_rest_flattened_error(transport: str = "rest
 
 def test_update_certificate_template_rest_error():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.CertificateAuthorityServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = CertificateAuthorityServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.CertificateAuthorityServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = CertificateAuthorityServiceClient(
@@ -19754,7 +19744,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.CertificateAuthorityServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -19769,13 +19759,12 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = CertificateAuthorityServiceClient(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.CertificateAuthorityServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = CertificateAuthorityServiceClient(
@@ -19787,7 +19776,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.CertificateAuthorityServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = CertificateAuthorityServiceClient(transport=transport)
     assert client.transport is transport
@@ -19796,13 +19785,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.CertificateAuthorityServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.CertificateAuthorityServiceGrpcAsyncIOTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -19819,7 +19808,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -19833,7 +19822,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = CertificateAuthorityServiceClient.get_transport_class(transport_name)(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
 
@@ -19841,7 +19830,7 @@ def test_transport_kind(transport_name):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
@@ -19853,7 +19842,7 @@ def test_certificate_authority_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.CertificateAuthorityServiceTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -19865,7 +19854,7 @@ def test_certificate_authority_service_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.CertificateAuthorityServiceTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -19939,7 +19928,7 @@ def test_certificate_authority_service_base_transport_with_credentials_file():
         "google.cloud.security.privateca_v1.services.certificate_authority_service.transports.CertificateAuthorityServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CertificateAuthorityServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -19958,7 +19947,7 @@ def test_certificate_authority_service_base_transport_with_adc():
         "google.cloud.security.privateca_v1.services.certificate_authority_service.transports.CertificateAuthorityServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CertificateAuthorityServiceTransport()
         adc.assert_called_once()
 
@@ -19966,7 +19955,7 @@ def test_certificate_authority_service_base_transport_with_adc():
 def test_certificate_authority_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         CertificateAuthorityServiceClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -19986,7 +19975,7 @@ def test_certificate_authority_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -20038,7 +20027,7 @@ def test_certificate_authority_service_transport_create_channel(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
@@ -20068,7 +20057,7 @@ def test_certificate_authority_service_transport_create_channel(
 def test_certificate_authority_service_grpc_transport_client_cert_source_for_mtls(
     transport_class,
 ):
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -20106,7 +20095,7 @@ def test_certificate_authority_service_grpc_transport_client_cert_source_for_mtl
 
 
 def test_certificate_authority_service_http_transport_client_cert_source_for_mtls():
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -20118,7 +20107,7 @@ def test_certificate_authority_service_http_transport_client_cert_source_for_mtl
 
 def test_certificate_authority_service_rest_lro_client():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     transport = client.transport
@@ -20143,7 +20132,7 @@ def test_certificate_authority_service_rest_lro_client():
 )
 def test_certificate_authority_service_host_no_port(transport_name):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="privateca.googleapis.com"
         ),
@@ -20166,7 +20155,7 @@ def test_certificate_authority_service_host_no_port(transport_name):
 )
 def test_certificate_authority_service_host_with_port(transport_name):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="privateca.googleapis.com:8000"
         ),
@@ -20188,8 +20177,8 @@ def test_certificate_authority_service_host_with_port(transport_name):
 def test_certificate_authority_service_client_transport_session_collision(
     transport_name,
 ):
-    creds1 = _AnonymousCredentialsWithUniverseDomain()
-    creds2 = _AnonymousCredentialsWithUniverseDomain()
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
     client1 = CertificateAuthorityServiceClient(
         credentials=creds1,
         transport=transport_name,
@@ -20337,7 +20326,7 @@ def test_certificate_authority_service_transport_channel_mtls_with_client_cert_s
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = _AnonymousCredentialsWithUniverseDomain()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
@@ -20415,7 +20404,7 @@ def test_certificate_authority_service_transport_channel_mtls_with_adc(transport
 
 def test_certificate_authority_service_grpc_lro_client():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
     transport = client.transport
@@ -20432,7 +20421,7 @@ def test_certificate_authority_service_grpc_lro_client():
 
 def test_certificate_authority_service_grpc_lro_async_client():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     transport = client.transport
@@ -20713,7 +20702,7 @@ def test_client_with_default_client_info():
         transports.CertificateAuthorityServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = CertificateAuthorityServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -20723,7 +20712,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = CertificateAuthorityServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -20732,7 +20721,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(
@@ -20747,7 +20736,7 @@ def test_get_location_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.GetLocationRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20777,7 +20766,7 @@ def test_get_location_rest_bad_request(
 )
 def test_get_location_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2"}
@@ -20805,7 +20794,7 @@ def test_list_locations_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20833,7 +20822,7 @@ def test_list_locations_rest_bad_request(
 )
 def test_list_locations_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1"}
@@ -20861,7 +20850,7 @@ def test_get_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20891,7 +20880,7 @@ def test_get_iam_policy_rest_bad_request(
 )
 def test_get_iam_policy_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"resource": "projects/sample1/locations/sample2/caPools/sample3"}
@@ -20919,7 +20908,7 @@ def test_set_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20949,7 +20938,7 @@ def test_set_iam_policy_rest_bad_request(
 )
 def test_set_iam_policy_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"resource": "projects/sample1/locations/sample2/caPools/sample3"}
@@ -20977,7 +20966,7 @@ def test_test_iam_permissions_rest_bad_request(
     transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21007,7 +20996,7 @@ def test_test_iam_permissions_rest_bad_request(
 )
 def test_test_iam_permissions_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"resource": "projects/sample1/locations/sample2/caPools/sample3"}
@@ -21035,7 +21024,7 @@ def test_cancel_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21065,7 +21054,7 @@ def test_cancel_operation_rest_bad_request(
 )
 def test_cancel_operation_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
@@ -21093,7 +21082,7 @@ def test_delete_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21123,7 +21112,7 @@ def test_delete_operation_rest_bad_request(
 )
 def test_delete_operation_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
@@ -21151,7 +21140,7 @@ def test_get_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.GetOperationRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21181,7 +21170,7 @@ def test_get_operation_rest_bad_request(
 )
 def test_get_operation_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
@@ -21209,7 +21198,7 @@ def test_list_operations_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
 ):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21239,7 +21228,7 @@ def test_list_operations_rest_bad_request(
 )
 def test_list_operations_rest(request_type):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2"}
@@ -21265,7 +21254,7 @@ def test_list_operations_rest(request_type):
 
 def test_delete_operation(transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21290,7 +21279,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21314,7 +21303,7 @@ async def test_delete_operation_async(transport: str = "grpc_asyncio"):
 
 def test_delete_operation_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21343,7 +21332,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21370,7 +21359,7 @@ async def test_delete_operation_field_headers_async():
 
 def test_delete_operation_from_dict():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -21388,7 +21377,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -21404,7 +21393,7 @@ async def test_delete_operation_from_dict_async():
 
 def test_cancel_operation(transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21429,7 +21418,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21453,7 +21442,7 @@ async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
 
 def test_cancel_operation_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21482,7 +21471,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21509,7 +21498,7 @@ async def test_cancel_operation_field_headers_async():
 
 def test_cancel_operation_from_dict():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -21527,7 +21516,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -21543,7 +21532,7 @@ async def test_cancel_operation_from_dict_async():
 
 def test_get_operation(transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21568,7 +21557,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21594,7 +21583,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 def test_get_operation_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21623,7 +21612,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21652,7 +21641,7 @@ async def test_get_operation_field_headers_async():
 
 def test_get_operation_from_dict():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -21670,7 +21659,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -21688,7 +21677,7 @@ async def test_get_operation_from_dict_async():
 
 def test_list_operations(transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21713,7 +21702,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21739,7 +21728,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
 
 def test_list_operations_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21768,7 +21757,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21797,7 +21786,7 @@ async def test_list_operations_field_headers_async():
 
 def test_list_operations_from_dict():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -21815,7 +21804,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -21833,7 +21822,7 @@ async def test_list_operations_from_dict_async():
 
 def test_list_locations(transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21858,7 +21847,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21884,7 +21873,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
 
 def test_list_locations_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21913,7 +21902,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -21942,7 +21931,7 @@ async def test_list_locations_field_headers_async():
 
 def test_list_locations_from_dict():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -21960,7 +21949,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -21978,7 +21967,7 @@ async def test_list_locations_from_dict_async():
 
 def test_get_location(transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22003,7 +21992,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22029,7 +22018,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
 
 def test_get_location_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22058,7 +22047,7 @@ def test_get_location_field_headers():
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22087,7 +22076,7 @@ async def test_get_location_field_headers_async():
 
 def test_get_location_from_dict():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -22105,7 +22094,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -22123,7 +22112,7 @@ async def test_get_location_from_dict_async():
 
 def test_set_iam_policy(transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22156,7 +22145,7 @@ def test_set_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22191,7 +22180,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
 
 def test_set_iam_policy_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22221,7 +22210,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22250,7 +22239,7 @@ async def test_set_iam_policy_field_headers_async():
 
 def test_set_iam_policy_from_dict():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -22269,7 +22258,7 @@ def test_set_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -22287,7 +22276,7 @@ async def test_set_iam_policy_from_dict_async():
 
 def test_get_iam_policy(transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22322,7 +22311,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22358,7 +22347,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
 
 def test_get_iam_policy_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22388,7 +22377,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22417,7 +22406,7 @@ async def test_get_iam_policy_field_headers_async():
 
 def test_get_iam_policy_from_dict():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -22436,7 +22425,7 @@ def test_get_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -22454,7 +22443,7 @@ async def test_get_iam_policy_from_dict_async():
 
 def test_test_iam_permissions(transport: str = "grpc"):
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22488,7 +22477,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22523,7 +22512,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
 
 def test_test_iam_permissions_field_headers():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22555,7 +22544,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -22588,7 +22577,7 @@ async def test_test_iam_permissions_field_headers_async():
 
 def test_test_iam_permissions_from_dict():
     client = CertificateAuthorityServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22609,7 +22598,7 @@ def test_test_iam_permissions_from_dict():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
     client = CertificateAuthorityServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -22637,7 +22626,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = CertificateAuthorityServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -22654,7 +22643,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = CertificateAuthorityServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
