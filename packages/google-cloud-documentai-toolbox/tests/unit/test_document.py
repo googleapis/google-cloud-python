@@ -226,9 +226,9 @@ def test_get_batch_process_metadata_with_valid_operation(
 
     mock_client.get_operation.return_value = mock_operation
 
-    location = "us"
     operation_name = "projects/123456/locations/us/operations/7890123"
-    document._get_batch_process_metadata(location, operation_name)
+    timeout = 1
+    document._get_batch_process_metadata(operation_name, timeout=timeout)
 
     mock_client.get_operation.assert_called()
     mock_docai.BatchProcessMetadata.deserialize.assert_called()
@@ -264,9 +264,8 @@ def test_get_batch_process_metadata_with_running_operation(
         mock_operation_finished,
     ]
 
-    location = "us"
     operation_name = "projects/123456/locations/us/operations/7890123"
-    document._get_batch_process_metadata(location, operation_name)
+    document._get_batch_process_metadata(operation_name)
 
     mock_client.get_operation.assert_called()
     mock_docai.BatchProcessMetadata.deserialize.assert_called()
@@ -280,12 +279,11 @@ def test_get_batch_process_metadata_with_no_metadata(mock_docai):
     ):
         mock_client = mock_docai.DocumentProcessorServiceClient.return_value
 
-        location = "us"
         operation_name = "projects/123456/locations/us/operations/7890123"
         mock_operation = mock.Mock(done=True, metadata=None)
         mock_client.get_operation.return_value = mock_operation
 
-        document._get_batch_process_metadata(location, operation_name)
+        document._get_batch_process_metadata(operation_name)
 
 
 @mock.patch("google.cloud.documentai_toolbox.wrappers.document.documentai")
@@ -296,7 +294,6 @@ def test_get_batch_process_metadata_with_invalid_metadata_type(mock_docai):
     ):
         mock_client = mock_docai.DocumentProcessorServiceClient.return_value
 
-        location = "us"
         operation_name = "projects/123456/locations/us/operations/7890123"
         mock_operation = mock.Mock(
             done=True,
@@ -306,7 +303,7 @@ def test_get_batch_process_metadata_with_invalid_metadata_type(mock_docai):
         )
         mock_client.get_operation.return_value = mock_operation
 
-        document._get_batch_process_metadata(location, operation_name)
+        document._get_batch_process_metadata(operation_name)
 
 
 def test_bigquery_column_name():

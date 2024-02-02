@@ -22,9 +22,9 @@ import os
 import re
 from typing import Dict, List, Optional, Type, Union
 
-from google.api_core.client_options import ClientOptions
+from google.api_core.operation import from_gapic as operation_from_gapic
 from google.cloud.vision import AnnotateFileResponse
-from google.longrunning.operations_pb2 import GetOperationRequest, Operation
+from google.longrunning.operations_pb2 import GetOperationRequest
 
 from jinja2 import Environment, PackageLoader
 from pikepdf import Pdf
@@ -137,48 +137,57 @@ def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Docume
 
 
 def _get_batch_process_metadata(
-    location: str, operation_name: str
+    operation_name: str,
+    timeout: Optional[float] = None,
 ) -> documentai.BatchProcessMetadata:
     r"""Get `BatchProcessMetadata` from a `batch_process_documents()` long-running operation.
 
     Args:
-        location (str):
-            Required. The location of the processor used for `batch_process_documents()`.
-
         operation_name (str):
             Required. The fully qualified operation name for a `batch_process_documents()` operation.
+
+        timeout (float):
+            Optional. Default None. Time in seconds to wait for operation to complete.
+            If None, will wait indefinitely.
     Returns:
         documentai.BatchProcessMetadata:
             Metadata from batch process.
     """
     client = documentai.DocumentProcessorServiceClient(
-        client_options=ClientOptions(
-            api_endpoint=f"{location}-documentai.googleapis.com"
-        )
+        client_info=gcs_utilities._get_client_info(module="get_batch_process_metadata"),
     )
 
-    while True:
-        operation: Operation = client.get_operation(
-            request=GetOperationRequest(name=operation_name)
-        )
+    # Poll Operation until complete.
+    operation = operation_from_gapic(
+        operation=client.get_operation(
+            request=GetOperationRequest(name=operation_name),
+            metadata=documentai.BatchProcessMetadata(),
+        ),
+        operations_client=client,
+        result_type=documentai.BatchProcessResponse,
+    )
+    operation.result(timeout=timeout)
 
-        if operation.done:
-            break
+    operation_pb = operation.operation
 
-    if not operation.metadata:
+    # Get Operation metadata.
+    if not operation_pb.metadata:
         raise ValueError(f"Operation does not contain metadata: {operation}")
 
     metadata_type = (
         "type.googleapis.com/google.cloud.documentai.v1.BatchProcessMetadata"
     )
 
-    if not operation.metadata.type_url or operation.metadata.type_url != metadata_type:
+    if (
+        not operation_pb.metadata.type_url
+        or operation_pb.metadata.type_url != metadata_type
+    ):
         raise ValueError(
-            f"Operation metadata type is not `{metadata_type}`. Type is `{operation.metadata.type_url}`."
+            f"Operation metadata type is not `{metadata_type}`. Type is `{operation_pb.metadata.type_url}`."
         )
 
     metadata: documentai.BatchProcessMetadata = (
-        documentai.BatchProcessMetadata.deserialize(operation.metadata.value)
+        documentai.BatchProcessMetadata.deserialize(operation_pb.metadata.value)
     )
 
     return metadata
@@ -518,7 +527,10 @@ class Document:
 
     @classmethod
     def from_batch_process_operation(
-        cls: Type["Document"], location: str, operation_name: str
+        cls: Type["Document"],
+        location: str,  # pylint: disable=unused-argument
+        operation_name: str,
+        timeout: Optional[float] = None,
     ) -> List["Document"]:
         r"""Loads Documents from Cloud Storage, using the operation name returned from `batch_process_documents()`.
 
@@ -533,19 +545,26 @@ class Document:
 
         Args:
             location (str):
-                Required. The location of the processor used for `batch_process_documents()`.
+                Optional. The location of the processor used for `batch_process_documents()`.
+                Deprecated. Maintained for backwards compatibility.
 
             operation_name (str):
                 Required. The fully qualified operation name for a `batch_process_documents()` operation.
 
                 Format: `projects/{project}/locations/{location}/operations/{operation}`
+
+            timeout (float):
+                Optional. Default None. Time in seconds to wait for operation to complete.
+                If None, will wait indefinitely.
+
         Returns:
             List[Document]:
                 A list of wrapped documents from gcs. Each document corresponds to an input file.
         """
         return cls.from_batch_process_metadata(
             metadata=_get_batch_process_metadata(
-                location=location, operation_name=operation_name
+                operation_name=operation_name,
+                timeout=timeout,
             )
         )
 

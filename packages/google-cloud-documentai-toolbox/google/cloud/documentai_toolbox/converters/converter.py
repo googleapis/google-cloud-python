@@ -64,7 +64,8 @@ def _get_base_ocr(
     client = documentai.DocumentProcessorServiceClient(
         client_options=ClientOptions(
             api_endpoint=f"{location}-documentai.googleapis.com"
-        )
+        ),
+        client_info=gcs_utilities._get_client_info(),
     )
 
     name = (
