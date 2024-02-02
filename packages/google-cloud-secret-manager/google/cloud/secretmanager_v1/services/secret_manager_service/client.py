@@ -429,6 +429,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
             )
         return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
 
+    @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
         """Return the client cert source to be used by the client.
 
@@ -447,6 +448,7 @@ class SecretManagerServiceClient(metaclass=SecretManagerServiceClientMeta):
                 client_cert_source = mtls.default_client_cert_source()
         return client_cert_source
 
+    @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
     ):
