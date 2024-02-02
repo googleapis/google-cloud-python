@@ -231,6 +231,7 @@ def load_test_data_tables(
     for table_name, schema_filename, data_filename in [
         ("scalars", "scalars_schema.json", "scalars.jsonl"),
         ("scalars_too", "scalars_schema.json", "scalars.jsonl"),
+        ("nested", "nested_schema.json", "nested.jsonl"),
         ("penguins", "penguins_schema.json", "penguins.jsonl"),
         ("time_series", "time_series_schema.json", "time_series.jsonl"),
         ("hockey_players", "hockey_players.json", "hockey_players.jsonl"),
@@ -296,6 +297,11 @@ def scalars_table_tokyo(test_data_tables_tokyo) -> str:
 
 
 @pytest.fixture(scope="session")
+def nested_table_id(test_data_tables) -> str:
+    return test_data_tables["nested"]
+
+
+@pytest.fixture(scope="session")
 def penguins_table_id(test_data_tables) -> str:
     return test_data_tables["penguins"]
 
@@ -313,6 +319,28 @@ def matrix_2by3_table_id(test_data_tables) -> str:
 @pytest.fixture(scope="session")
 def matrix_3by4_table_id(test_data_tables) -> str:
     return test_data_tables["matrix_3by4"]
+
+
+@pytest.fixture(scope="session")
+def nested_df(
+    nested_table_id: str, session: bigframes.Session
+) -> bigframes.dataframe.DataFrame:
+    """DataFrame pointing at test data."""
+    return session.read_gbq(nested_table_id, index_col="rowindex")
+
+
+@pytest.fixture(scope="session")
+def nested_pandas_df() -> pd.DataFrame:
+    """pd.DataFrame pointing at test data."""
+
+    df = pd.read_json(
+        DATA_DIR / "nested.jsonl",
+        lines=True,
+    )
+    convert_pandas_dtypes(df, bytes_col=True)
+
+    df = df.set_index("rowindex")
+    return df
 
 
 @pytest.fixture(scope="session")

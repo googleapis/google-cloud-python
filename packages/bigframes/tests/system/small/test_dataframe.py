@@ -1251,9 +1251,7 @@ def test_get_dtypes(scalars_df_default_index):
     )
 
 
-def test_get_dtypes_array_struct(session):
-    """We may upgrade struct and array to proper arrow dtype support in future. For now,
-    we return python objects"""
+def test_get_dtypes_array_struct_query(session):
     df = session.read_gbq(
         """SELECT
         [1, 3, 2] AS array_column,
@@ -1275,6 +1273,41 @@ def test_get_dtypes_array_struct(session):
                             ("float_field", pa.float64()),
                         ]
                     )
+                ),
+            }
+        ),
+    )
+
+
+def test_get_dtypes_array_struct_table(nested_df):
+    dtypes = nested_df.dtypes
+    pd.testing.assert_series_equal(
+        dtypes,
+        pd.Series(
+            {
+                "customer_id": pd.StringDtype(storage="pyarrow"),
+                "day": pd.ArrowDtype(pa.date32()),
+                "flag": pd.Int64Dtype(),
+                "event_sequence": pd.ArrowDtype(
+                    pa.list_(
+                        pa.struct(
+                            [
+                                (
+                                    "data",
+                                    pa.list_(
+                                        pa.struct(
+                                            [
+                                                ("value", pa.float64()),
+                                                ("key", pa.string()),
+                                            ],
+                                        ),
+                                    ),
+                                ),
+                                ("timestamp", pa.timestamp("us", "UTC")),
+                                ("category", pa.string()),
+                            ]
+                        ),
+                    ),
                 ),
             }
         ),
