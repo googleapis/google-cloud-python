@@ -185,7 +185,7 @@ class AsyncRetry(_BaseRetry):
     Args:
         predicate (Callable[Exception]): A callable that should return ``True``
             if the given exception is retryable.
-        initial (float): The minimum a,out of time to delay in seconds. This
+        initial (float): The minimum amount of time to delay in seconds. This
             must be greater than 0.
         maximum (float): The maximum amount of time to delay in seconds.
         multiplier (float): The multiplier applied to the delay.
