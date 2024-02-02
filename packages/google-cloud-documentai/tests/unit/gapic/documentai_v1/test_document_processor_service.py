@@ -3616,6 +3616,7 @@ def test_get_processor_version(request_type, transport: str = "grpc"):
             kms_key_name="kms_key_name_value",
             kms_key_version_name="kms_key_version_name_value",
             google_managed=True,
+            model_type=processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE,
         )
         response = client.get_processor_version(request)
 
@@ -3632,6 +3633,10 @@ def test_get_processor_version(request_type, transport: str = "grpc"):
     assert response.kms_key_name == "kms_key_name_value"
     assert response.kms_key_version_name == "kms_key_version_name_value"
     assert response.google_managed is True
+    assert (
+        response.model_type
+        == processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE
+    )
 
 
 def test_get_processor_version_empty_call():
@@ -3679,6 +3684,7 @@ async def test_get_processor_version_async(
                 kms_key_name="kms_key_name_value",
                 kms_key_version_name="kms_key_version_name_value",
                 google_managed=True,
+                model_type=processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE,
             )
         )
         response = await client.get_processor_version(request)
@@ -3696,6 +3702,10 @@ async def test_get_processor_version_async(
     assert response.kms_key_name == "kms_key_name_value"
     assert response.kms_key_version_name == "kms_key_version_name_value"
     assert response.google_managed is True
+    assert (
+        response.model_type
+        == processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE
+    )
 
 
 @pytest.mark.asyncio
@@ -9498,6 +9508,7 @@ def test_get_processor_version_rest(request_type):
             kms_key_name="kms_key_name_value",
             kms_key_version_name="kms_key_version_name_value",
             google_managed=True,
+            model_type=processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE,
         )
 
         # Wrap the value into a proper Response obj
@@ -9519,6 +9530,10 @@ def test_get_processor_version_rest(request_type):
     assert response.kms_key_name == "kms_key_name_value"
     assert response.kms_key_version_name == "kms_key_version_name_value"
     assert response.google_managed is True
+    assert (
+        response.model_type
+        == processor.ProcessorVersion.ModelType.MODEL_TYPE_GENERATIVE
+    )
 
 
 def test_get_processor_version_rest_required_fields(
