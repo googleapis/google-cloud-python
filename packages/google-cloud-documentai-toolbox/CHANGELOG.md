@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.12.2-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.12.1-alpha...v0.12.2-alpha) (2024-02-02)
+
+
+### Bug Fixes
+
+* Reduce API polling for `Document.from_batch_process_operation()` ([#249](https://github.com/googleapis/python-documentai-toolbox/issues/249)) ([0677299](https://github.com/googleapis/python-documentai-toolbox/commit/0677299e6cb07e812b462c36775117956ad6256c))
+
 ## [0.12.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.12.0-alpha...v0.12.1-alpha) (2024-02-02)
 
 
