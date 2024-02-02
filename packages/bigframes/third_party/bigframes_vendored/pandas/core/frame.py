@@ -3296,19 +3296,19 @@ class DataFrame(NDFrame):
 
             >>> df = bpd.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
             >>> df
-            col1	col2
-            0	1	3
-            1	2	4
-            <BLANKLINE>
-            [2 rows x 2 columns]
-
-            >>> def sqaure(x):
-            ...     return x * x
-            >>> df1 = df.apply(sqaure)
-            >>> df
                col1  col2
             0     1     3
             1     2     4
+            <BLANKLINE>
+            [2 rows x 2 columns]
+
+            >>> def square(x):
+            ...     return x * x
+
+            >>> df.apply(square)
+               col1  col2
+            0     1     9
+            1     4    16
             <BLANKLINE>
             [2 rows x 2 columns]
 
