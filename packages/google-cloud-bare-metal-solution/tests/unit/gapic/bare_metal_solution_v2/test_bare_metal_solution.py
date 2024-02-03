@@ -110,18 +110,6 @@ def modify_default_endpoint_template(client):
     )
 
 
-# Anonymous Credentials with universe domain property. If no universe domain is provided, then
-# the default universe domain is "googleapis.com".
-class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain="googleapis.com"):
-        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
-        self._universe_domain = universe_domain
-
-    @property
-    def universe_domain(self):
-        return self._universe_domain
-
-
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -357,7 +345,7 @@ def test__get_universe_domain():
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
     client = client_class(
-        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
     )
     assert client._validate_universe_domain() == True
 
@@ -384,41 +372,48 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         client = client_class(transport=transport)
         assert client._validate_universe_domain() == True
 
-    # Test the case when there is a universe mismatch from the credentials.
-    client = client_class(
-        transport=transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(
-                universe_domain="foo.com"
-            )
-        )
-    )
-    with pytest.raises(ValueError) as excinfo:
-        client._validate_universe_domain()
-    assert (
-        str(excinfo.value)
-        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-    )
-
-    # Test the case when there is a universe mismatch from the client.
-    #
-    # TODO: Make this test unconditional once the minimum supported version of
-    # google-api-core becomes 2.15.0 or higher.
-    api_core_major, api_core_minor, _ = [
-        int(part) for part in api_core_version.__version__.split(".")
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [
+        int(part) for part in google.auth.__version__.split(".")
     ]
-    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-        client = client_class(
-            client_options={"universe_domain": "bar.com"},
-            transport=transport_class(
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
-            ),
-        )
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(transport=transport_class(credentials=credentials))
         with pytest.raises(ValueError) as excinfo:
             client._validate_universe_domain()
         assert (
             str(excinfo.value)
-            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         )
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor, _ = [
+            int(part) for part in api_core_version.__version__.split(".")
+        ]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(
+                client_options={"universe_domain": "bar.com"},
+                transport=transport_class(
+                    credentials=ga_credentials.AnonymousCredentials(),
+                ),
+            )
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert (
+                str(excinfo.value)
+                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            )
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -432,7 +427,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 def test_bare_metal_solution_client_from_service_account_info(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -486,7 +481,7 @@ def test_bare_metal_solution_client_service_account_always_use_jwt(
 def test_bare_metal_solution_client_from_service_account_file(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -549,9 +544,7 @@ def test_bare_metal_solution_client_client_options(
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(BareMetalSolutionClient, "get_transport_class") as gtc:
-        transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain()
-        )
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -970,20 +963,20 @@ def test_bare_metal_solution_client_client_api_endpoint(client_class):
             )
             client = client_class(
                 client_options=options,
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
+                credentials=ga_credentials.AnonymousCredentials(),
             )
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
@@ -995,13 +988,11 @@ def test_bare_metal_solution_client_client_api_endpoint(client_class):
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     else:
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     assert client.api_endpoint == (
         mock_endpoint if universe_exists else default_endpoint
@@ -1017,8 +1008,7 @@ def test_bare_metal_solution_client_client_api_endpoint(client_class):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
         assert client.api_endpoint == default_endpoint
 
@@ -1176,8 +1166,8 @@ def test_bare_metal_solution_client_create_channel_credentials_file(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
-        file_creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -1206,7 +1196,7 @@ def test_bare_metal_solution_client_create_channel_credentials_file(
 )
 def test_list_instances(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1238,7 +1228,7 @@ def test_list_instances_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1255,7 +1245,7 @@ async def test_list_instances_async(
     transport: str = "grpc_asyncio", request_type=instance.ListInstancesRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1292,7 +1282,7 @@ async def test_list_instances_async_from_dict():
 
 def test_list_instances_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1322,7 +1312,7 @@ def test_list_instances_field_headers():
 @pytest.mark.asyncio
 async def test_list_instances_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1353,7 +1343,7 @@ async def test_list_instances_field_headers_async():
 
 def test_list_instances_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1377,7 +1367,7 @@ def test_list_instances_flattened():
 
 def test_list_instances_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1392,7 +1382,7 @@ def test_list_instances_flattened_error():
 @pytest.mark.asyncio
 async def test_list_instances_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1421,7 +1411,7 @@ async def test_list_instances_flattened_async():
 @pytest.mark.asyncio
 async def test_list_instances_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1435,7 +1425,7 @@ async def test_list_instances_flattened_error_async():
 
 def test_list_instances_pager(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1485,7 +1475,7 @@ def test_list_instances_pager(transport_name: str = "grpc"):
 
 def test_list_instances_pages(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1527,7 +1517,7 @@ def test_list_instances_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_instances_async_pager():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1577,7 +1567,7 @@ async def test_list_instances_async_pager():
 @pytest.mark.asyncio
 async def test_list_instances_async_pages():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1632,7 +1622,7 @@ async def test_list_instances_async_pages():
 )
 def test_get_instance(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1684,7 +1674,7 @@ def test_get_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1701,7 +1691,7 @@ async def test_get_instance_async(
     transport: str = "grpc_asyncio", request_type=instance.GetInstanceRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1758,7 +1748,7 @@ async def test_get_instance_async_from_dict():
 
 def test_get_instance_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1788,7 +1778,7 @@ def test_get_instance_field_headers():
 @pytest.mark.asyncio
 async def test_get_instance_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1817,7 +1807,7 @@ async def test_get_instance_field_headers_async():
 
 def test_get_instance_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1841,7 +1831,7 @@ def test_get_instance_flattened():
 
 def test_get_instance_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1856,7 +1846,7 @@ def test_get_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_get_instance_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1883,7 +1873,7 @@ async def test_get_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_get_instance_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1904,7 +1894,7 @@ async def test_get_instance_flattened_error_async():
 )
 def test_update_instance(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1931,7 +1921,7 @@ def test_update_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1948,7 +1938,7 @@ async def test_update_instance_async(
     transport: str = "grpc_asyncio", request_type=gcb_instance.UpdateInstanceRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1980,7 +1970,7 @@ async def test_update_instance_async_from_dict():
 
 def test_update_instance_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2010,7 +2000,7 @@ def test_update_instance_field_headers():
 @pytest.mark.asyncio
 async def test_update_instance_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2041,7 +2031,7 @@ async def test_update_instance_field_headers_async():
 
 def test_update_instance_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2069,7 +2059,7 @@ def test_update_instance_flattened():
 
 def test_update_instance_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2085,7 +2075,7 @@ def test_update_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_update_instance_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2118,7 +2108,7 @@ async def test_update_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_update_instance_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2140,7 +2130,7 @@ async def test_update_instance_flattened_error_async():
 )
 def test_rename_instance(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2192,7 +2182,7 @@ def test_rename_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2209,7 +2199,7 @@ async def test_rename_instance_async(
     transport: str = "grpc_asyncio", request_type=instance.RenameInstanceRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2266,7 +2256,7 @@ async def test_rename_instance_async_from_dict():
 
 def test_rename_instance_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2296,7 +2286,7 @@ def test_rename_instance_field_headers():
 @pytest.mark.asyncio
 async def test_rename_instance_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2325,7 +2315,7 @@ async def test_rename_instance_field_headers_async():
 
 def test_rename_instance_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2353,7 +2343,7 @@ def test_rename_instance_flattened():
 
 def test_rename_instance_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2369,7 +2359,7 @@ def test_rename_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_rename_instance_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2400,7 +2390,7 @@ async def test_rename_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_rename_instance_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2422,7 +2412,7 @@ async def test_rename_instance_flattened_error_async():
 )
 def test_reset_instance(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2449,7 +2439,7 @@ def test_reset_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2466,7 +2456,7 @@ async def test_reset_instance_async(
     transport: str = "grpc_asyncio", request_type=instance.ResetInstanceRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2498,7 +2488,7 @@ async def test_reset_instance_async_from_dict():
 
 def test_reset_instance_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2528,7 +2518,7 @@ def test_reset_instance_field_headers():
 @pytest.mark.asyncio
 async def test_reset_instance_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2559,7 +2549,7 @@ async def test_reset_instance_field_headers_async():
 
 def test_reset_instance_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2583,7 +2573,7 @@ def test_reset_instance_flattened():
 
 def test_reset_instance_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2598,7 +2588,7 @@ def test_reset_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_reset_instance_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2627,7 +2617,7 @@ async def test_reset_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_reset_instance_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2648,7 +2638,7 @@ async def test_reset_instance_flattened_error_async():
 )
 def test_start_instance(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2675,7 +2665,7 @@ def test_start_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2692,7 +2682,7 @@ async def test_start_instance_async(
     transport: str = "grpc_asyncio", request_type=instance.StartInstanceRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2724,7 +2714,7 @@ async def test_start_instance_async_from_dict():
 
 def test_start_instance_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2754,7 +2744,7 @@ def test_start_instance_field_headers():
 @pytest.mark.asyncio
 async def test_start_instance_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2785,7 +2775,7 @@ async def test_start_instance_field_headers_async():
 
 def test_start_instance_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2809,7 +2799,7 @@ def test_start_instance_flattened():
 
 def test_start_instance_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2824,7 +2814,7 @@ def test_start_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_start_instance_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2853,7 +2843,7 @@ async def test_start_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_start_instance_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2874,7 +2864,7 @@ async def test_start_instance_flattened_error_async():
 )
 def test_stop_instance(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2901,7 +2891,7 @@ def test_stop_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2918,7 +2908,7 @@ async def test_stop_instance_async(
     transport: str = "grpc_asyncio", request_type=instance.StopInstanceRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2950,7 +2940,7 @@ async def test_stop_instance_async_from_dict():
 
 def test_stop_instance_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2980,7 +2970,7 @@ def test_stop_instance_field_headers():
 @pytest.mark.asyncio
 async def test_stop_instance_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3011,7 +3001,7 @@ async def test_stop_instance_field_headers_async():
 
 def test_stop_instance_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3035,7 +3025,7 @@ def test_stop_instance_flattened():
 
 def test_stop_instance_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3050,7 +3040,7 @@ def test_stop_instance_flattened_error():
 @pytest.mark.asyncio
 async def test_stop_instance_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3079,7 +3069,7 @@ async def test_stop_instance_flattened_async():
 @pytest.mark.asyncio
 async def test_stop_instance_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3100,7 +3090,7 @@ async def test_stop_instance_flattened_error_async():
 )
 def test_enable_interactive_serial_console(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3129,7 +3119,7 @@ def test_enable_interactive_serial_console_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3149,7 +3139,7 @@ async def test_enable_interactive_serial_console_async(
     request_type=instance.EnableInteractiveSerialConsoleRequest,
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3183,7 +3173,7 @@ async def test_enable_interactive_serial_console_async_from_dict():
 
 def test_enable_interactive_serial_console_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3215,7 +3205,7 @@ def test_enable_interactive_serial_console_field_headers():
 @pytest.mark.asyncio
 async def test_enable_interactive_serial_console_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3248,7 +3238,7 @@ async def test_enable_interactive_serial_console_field_headers_async():
 
 def test_enable_interactive_serial_console_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3274,7 +3264,7 @@ def test_enable_interactive_serial_console_flattened():
 
 def test_enable_interactive_serial_console_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3289,7 +3279,7 @@ def test_enable_interactive_serial_console_flattened_error():
 @pytest.mark.asyncio
 async def test_enable_interactive_serial_console_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3320,7 +3310,7 @@ async def test_enable_interactive_serial_console_flattened_async():
 @pytest.mark.asyncio
 async def test_enable_interactive_serial_console_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3341,7 +3331,7 @@ async def test_enable_interactive_serial_console_flattened_error_async():
 )
 def test_disable_interactive_serial_console(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3370,7 +3360,7 @@ def test_disable_interactive_serial_console_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3390,7 +3380,7 @@ async def test_disable_interactive_serial_console_async(
     request_type=instance.DisableInteractiveSerialConsoleRequest,
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3424,7 +3414,7 @@ async def test_disable_interactive_serial_console_async_from_dict():
 
 def test_disable_interactive_serial_console_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3456,7 +3446,7 @@ def test_disable_interactive_serial_console_field_headers():
 @pytest.mark.asyncio
 async def test_disable_interactive_serial_console_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3489,7 +3479,7 @@ async def test_disable_interactive_serial_console_field_headers_async():
 
 def test_disable_interactive_serial_console_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3515,7 +3505,7 @@ def test_disable_interactive_serial_console_flattened():
 
 def test_disable_interactive_serial_console_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3530,7 +3520,7 @@ def test_disable_interactive_serial_console_flattened_error():
 @pytest.mark.asyncio
 async def test_disable_interactive_serial_console_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3561,7 +3551,7 @@ async def test_disable_interactive_serial_console_flattened_async():
 @pytest.mark.asyncio
 async def test_disable_interactive_serial_console_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3582,7 +3572,7 @@ async def test_disable_interactive_serial_console_flattened_error_async():
 )
 def test_detach_lun(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3609,7 +3599,7 @@ def test_detach_lun_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3626,7 +3616,7 @@ async def test_detach_lun_async(
     transport: str = "grpc_asyncio", request_type=gcb_instance.DetachLunRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3658,7 +3648,7 @@ async def test_detach_lun_async_from_dict():
 
 def test_detach_lun_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3688,7 +3678,7 @@ def test_detach_lun_field_headers():
 @pytest.mark.asyncio
 async def test_detach_lun_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3719,7 +3709,7 @@ async def test_detach_lun_field_headers_async():
 
 def test_detach_lun_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3747,7 +3737,7 @@ def test_detach_lun_flattened():
 
 def test_detach_lun_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3763,7 +3753,7 @@ def test_detach_lun_flattened_error():
 @pytest.mark.asyncio
 async def test_detach_lun_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3796,7 +3786,7 @@ async def test_detach_lun_flattened_async():
 @pytest.mark.asyncio
 async def test_detach_lun_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3818,7 +3808,7 @@ async def test_detach_lun_flattened_error_async():
 )
 def test_list_ssh_keys(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3848,7 +3838,7 @@ def test_list_ssh_keys_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3865,7 +3855,7 @@ async def test_list_ssh_keys_async(
     transport: str = "grpc_asyncio", request_type=ssh_key.ListSSHKeysRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3900,7 +3890,7 @@ async def test_list_ssh_keys_async_from_dict():
 
 def test_list_ssh_keys_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3930,7 +3920,7 @@ def test_list_ssh_keys_field_headers():
 @pytest.mark.asyncio
 async def test_list_ssh_keys_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3961,7 +3951,7 @@ async def test_list_ssh_keys_field_headers_async():
 
 def test_list_ssh_keys_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3985,7 +3975,7 @@ def test_list_ssh_keys_flattened():
 
 def test_list_ssh_keys_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4000,7 +3990,7 @@ def test_list_ssh_keys_flattened_error():
 @pytest.mark.asyncio
 async def test_list_ssh_keys_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4029,7 +4019,7 @@ async def test_list_ssh_keys_flattened_async():
 @pytest.mark.asyncio
 async def test_list_ssh_keys_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4043,7 +4033,7 @@ async def test_list_ssh_keys_flattened_error_async():
 
 def test_list_ssh_keys_pager(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4093,7 +4083,7 @@ def test_list_ssh_keys_pager(transport_name: str = "grpc"):
 
 def test_list_ssh_keys_pages(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4135,7 +4125,7 @@ def test_list_ssh_keys_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_ssh_keys_async_pager():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4185,7 +4175,7 @@ async def test_list_ssh_keys_async_pager():
 @pytest.mark.asyncio
 async def test_list_ssh_keys_async_pages():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4240,7 +4230,7 @@ async def test_list_ssh_keys_async_pages():
 )
 def test_create_ssh_key(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4272,7 +4262,7 @@ def test_create_ssh_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4289,7 +4279,7 @@ async def test_create_ssh_key_async(
     transport: str = "grpc_asyncio", request_type=gcb_ssh_key.CreateSSHKeyRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4326,7 +4316,7 @@ async def test_create_ssh_key_async_from_dict():
 
 def test_create_ssh_key_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4356,7 +4346,7 @@ def test_create_ssh_key_field_headers():
 @pytest.mark.asyncio
 async def test_create_ssh_key_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4385,7 +4375,7 @@ async def test_create_ssh_key_field_headers_async():
 
 def test_create_ssh_key_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4417,7 +4407,7 @@ def test_create_ssh_key_flattened():
 
 def test_create_ssh_key_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4434,7 +4424,7 @@ def test_create_ssh_key_flattened_error():
 @pytest.mark.asyncio
 async def test_create_ssh_key_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4469,7 +4459,7 @@ async def test_create_ssh_key_flattened_async():
 @pytest.mark.asyncio
 async def test_create_ssh_key_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4492,7 +4482,7 @@ async def test_create_ssh_key_flattened_error_async():
 )
 def test_delete_ssh_key(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4519,7 +4509,7 @@ def test_delete_ssh_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4536,7 +4526,7 @@ async def test_delete_ssh_key_async(
     transport: str = "grpc_asyncio", request_type=ssh_key.DeleteSSHKeyRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4566,7 +4556,7 @@ async def test_delete_ssh_key_async_from_dict():
 
 def test_delete_ssh_key_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4596,7 +4586,7 @@ def test_delete_ssh_key_field_headers():
 @pytest.mark.asyncio
 async def test_delete_ssh_key_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4625,7 +4615,7 @@ async def test_delete_ssh_key_field_headers_async():
 
 def test_delete_ssh_key_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4649,7 +4639,7 @@ def test_delete_ssh_key_flattened():
 
 def test_delete_ssh_key_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4664,7 +4654,7 @@ def test_delete_ssh_key_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_ssh_key_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4691,7 +4681,7 @@ async def test_delete_ssh_key_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_ssh_key_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4712,7 +4702,7 @@ async def test_delete_ssh_key_flattened_error_async():
 )
 def test_list_volumes(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4744,7 +4734,7 @@ def test_list_volumes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4761,7 +4751,7 @@ async def test_list_volumes_async(
     transport: str = "grpc_asyncio", request_type=volume.ListVolumesRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4798,7 +4788,7 @@ async def test_list_volumes_async_from_dict():
 
 def test_list_volumes_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4828,7 +4818,7 @@ def test_list_volumes_field_headers():
 @pytest.mark.asyncio
 async def test_list_volumes_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4859,7 +4849,7 @@ async def test_list_volumes_field_headers_async():
 
 def test_list_volumes_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4883,7 +4873,7 @@ def test_list_volumes_flattened():
 
 def test_list_volumes_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4898,7 +4888,7 @@ def test_list_volumes_flattened_error():
 @pytest.mark.asyncio
 async def test_list_volumes_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4927,7 +4917,7 @@ async def test_list_volumes_flattened_async():
 @pytest.mark.asyncio
 async def test_list_volumes_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4941,7 +4931,7 @@ async def test_list_volumes_flattened_error_async():
 
 def test_list_volumes_pager(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4991,7 +4981,7 @@ def test_list_volumes_pager(transport_name: str = "grpc"):
 
 def test_list_volumes_pages(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -5033,7 +5023,7 @@ def test_list_volumes_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_volumes_async_pager():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5083,7 +5073,7 @@ async def test_list_volumes_async_pager():
 @pytest.mark.asyncio
 async def test_list_volumes_async_pages():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5138,7 +5128,7 @@ async def test_list_volumes_async_pages():
 )
 def test_get_volume(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5214,7 +5204,7 @@ def test_get_volume_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5231,7 +5221,7 @@ async def test_get_volume_async(
     transport: str = "grpc_asyncio", request_type=volume.GetVolumeRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5312,7 +5302,7 @@ async def test_get_volume_async_from_dict():
 
 def test_get_volume_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5342,7 +5332,7 @@ def test_get_volume_field_headers():
 @pytest.mark.asyncio
 async def test_get_volume_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5371,7 +5361,7 @@ async def test_get_volume_field_headers_async():
 
 def test_get_volume_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5395,7 +5385,7 @@ def test_get_volume_flattened():
 
 def test_get_volume_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5410,7 +5400,7 @@ def test_get_volume_flattened_error():
 @pytest.mark.asyncio
 async def test_get_volume_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5437,7 +5427,7 @@ async def test_get_volume_flattened_async():
 @pytest.mark.asyncio
 async def test_get_volume_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5458,7 +5448,7 @@ async def test_get_volume_flattened_error_async():
 )
 def test_update_volume(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5485,7 +5475,7 @@ def test_update_volume_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5502,7 +5492,7 @@ async def test_update_volume_async(
     transport: str = "grpc_asyncio", request_type=gcb_volume.UpdateVolumeRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5534,7 +5524,7 @@ async def test_update_volume_async_from_dict():
 
 def test_update_volume_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5564,7 +5554,7 @@ def test_update_volume_field_headers():
 @pytest.mark.asyncio
 async def test_update_volume_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5595,7 +5585,7 @@ async def test_update_volume_field_headers_async():
 
 def test_update_volume_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5623,7 +5613,7 @@ def test_update_volume_flattened():
 
 def test_update_volume_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5639,7 +5629,7 @@ def test_update_volume_flattened_error():
 @pytest.mark.asyncio
 async def test_update_volume_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5672,7 +5662,7 @@ async def test_update_volume_flattened_async():
 @pytest.mark.asyncio
 async def test_update_volume_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5694,7 +5684,7 @@ async def test_update_volume_flattened_error_async():
 )
 def test_rename_volume(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5770,7 +5760,7 @@ def test_rename_volume_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5787,7 +5777,7 @@ async def test_rename_volume_async(
     transport: str = "grpc_asyncio", request_type=volume.RenameVolumeRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5868,7 +5858,7 @@ async def test_rename_volume_async_from_dict():
 
 def test_rename_volume_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5898,7 +5888,7 @@ def test_rename_volume_field_headers():
 @pytest.mark.asyncio
 async def test_rename_volume_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5927,7 +5917,7 @@ async def test_rename_volume_field_headers_async():
 
 def test_rename_volume_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5955,7 +5945,7 @@ def test_rename_volume_flattened():
 
 def test_rename_volume_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5971,7 +5961,7 @@ def test_rename_volume_flattened_error():
 @pytest.mark.asyncio
 async def test_rename_volume_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6002,7 +5992,7 @@ async def test_rename_volume_flattened_async():
 @pytest.mark.asyncio
 async def test_rename_volume_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6024,7 +6014,7 @@ async def test_rename_volume_flattened_error_async():
 )
 def test_evict_volume(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6051,7 +6041,7 @@ def test_evict_volume_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6068,7 +6058,7 @@ async def test_evict_volume_async(
     transport: str = "grpc_asyncio", request_type=volume.EvictVolumeRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6100,7 +6090,7 @@ async def test_evict_volume_async_from_dict():
 
 def test_evict_volume_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6130,7 +6120,7 @@ def test_evict_volume_field_headers():
 @pytest.mark.asyncio
 async def test_evict_volume_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6161,7 +6151,7 @@ async def test_evict_volume_field_headers_async():
 
 def test_evict_volume_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6185,7 +6175,7 @@ def test_evict_volume_flattened():
 
 def test_evict_volume_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6200,7 +6190,7 @@ def test_evict_volume_flattened_error():
 @pytest.mark.asyncio
 async def test_evict_volume_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6229,7 +6219,7 @@ async def test_evict_volume_flattened_async():
 @pytest.mark.asyncio
 async def test_evict_volume_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6250,7 +6240,7 @@ async def test_evict_volume_flattened_error_async():
 )
 def test_resize_volume(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6277,7 +6267,7 @@ def test_resize_volume_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6294,7 +6284,7 @@ async def test_resize_volume_async(
     transport: str = "grpc_asyncio", request_type=gcb_volume.ResizeVolumeRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6326,7 +6316,7 @@ async def test_resize_volume_async_from_dict():
 
 def test_resize_volume_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6356,7 +6346,7 @@ def test_resize_volume_field_headers():
 @pytest.mark.asyncio
 async def test_resize_volume_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6387,7 +6377,7 @@ async def test_resize_volume_field_headers_async():
 
 def test_resize_volume_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6415,7 +6405,7 @@ def test_resize_volume_flattened():
 
 def test_resize_volume_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6431,7 +6421,7 @@ def test_resize_volume_flattened_error():
 @pytest.mark.asyncio
 async def test_resize_volume_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6464,7 +6454,7 @@ async def test_resize_volume_flattened_async():
 @pytest.mark.asyncio
 async def test_resize_volume_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6486,7 +6476,7 @@ async def test_resize_volume_flattened_error_async():
 )
 def test_list_networks(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6518,7 +6508,7 @@ def test_list_networks_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6535,7 +6525,7 @@ async def test_list_networks_async(
     transport: str = "grpc_asyncio", request_type=network.ListNetworksRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6572,7 +6562,7 @@ async def test_list_networks_async_from_dict():
 
 def test_list_networks_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6602,7 +6592,7 @@ def test_list_networks_field_headers():
 @pytest.mark.asyncio
 async def test_list_networks_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6633,7 +6623,7 @@ async def test_list_networks_field_headers_async():
 
 def test_list_networks_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6657,7 +6647,7 @@ def test_list_networks_flattened():
 
 def test_list_networks_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6672,7 +6662,7 @@ def test_list_networks_flattened_error():
 @pytest.mark.asyncio
 async def test_list_networks_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6701,7 +6691,7 @@ async def test_list_networks_flattened_async():
 @pytest.mark.asyncio
 async def test_list_networks_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6715,7 +6705,7 @@ async def test_list_networks_flattened_error_async():
 
 def test_list_networks_pager(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6765,7 +6755,7 @@ def test_list_networks_pager(transport_name: str = "grpc"):
 
 def test_list_networks_pages(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6807,7 +6797,7 @@ def test_list_networks_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_networks_async_pager():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6857,7 +6847,7 @@ async def test_list_networks_async_pager():
 @pytest.mark.asyncio
 async def test_list_networks_async_pages():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6912,7 +6902,7 @@ async def test_list_networks_async_pages():
 )
 def test_list_network_usage(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6941,7 +6931,7 @@ def test_list_network_usage_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6960,7 +6950,7 @@ async def test_list_network_usage_async(
     transport: str = "grpc_asyncio", request_type=network.ListNetworkUsageRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6994,7 +6984,7 @@ async def test_list_network_usage_async_from_dict():
 
 def test_list_network_usage_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7026,7 +7016,7 @@ def test_list_network_usage_field_headers():
 @pytest.mark.asyncio
 async def test_list_network_usage_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7059,7 +7049,7 @@ async def test_list_network_usage_field_headers_async():
 
 def test_list_network_usage_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7085,7 +7075,7 @@ def test_list_network_usage_flattened():
 
 def test_list_network_usage_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7100,7 +7090,7 @@ def test_list_network_usage_flattened_error():
 @pytest.mark.asyncio
 async def test_list_network_usage_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7131,7 +7121,7 @@ async def test_list_network_usage_flattened_async():
 @pytest.mark.asyncio
 async def test_list_network_usage_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7152,7 +7142,7 @@ async def test_list_network_usage_flattened_error_async():
 )
 def test_get_network(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7204,7 +7194,7 @@ def test_get_network_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7221,7 +7211,7 @@ async def test_get_network_async(
     transport: str = "grpc_asyncio", request_type=network.GetNetworkRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7278,7 +7268,7 @@ async def test_get_network_async_from_dict():
 
 def test_get_network_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7308,7 +7298,7 @@ def test_get_network_field_headers():
 @pytest.mark.asyncio
 async def test_get_network_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7337,7 +7327,7 @@ async def test_get_network_field_headers_async():
 
 def test_get_network_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7361,7 +7351,7 @@ def test_get_network_flattened():
 
 def test_get_network_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7376,7 +7366,7 @@ def test_get_network_flattened_error():
 @pytest.mark.asyncio
 async def test_get_network_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7403,7 +7393,7 @@ async def test_get_network_flattened_async():
 @pytest.mark.asyncio
 async def test_get_network_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7424,7 +7414,7 @@ async def test_get_network_flattened_error_async():
 )
 def test_update_network(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7451,7 +7441,7 @@ def test_update_network_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7468,7 +7458,7 @@ async def test_update_network_async(
     transport: str = "grpc_asyncio", request_type=gcb_network.UpdateNetworkRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7500,7 +7490,7 @@ async def test_update_network_async_from_dict():
 
 def test_update_network_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7530,7 +7520,7 @@ def test_update_network_field_headers():
 @pytest.mark.asyncio
 async def test_update_network_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7561,7 +7551,7 @@ async def test_update_network_field_headers_async():
 
 def test_update_network_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7589,7 +7579,7 @@ def test_update_network_flattened():
 
 def test_update_network_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7605,7 +7595,7 @@ def test_update_network_flattened_error():
 @pytest.mark.asyncio
 async def test_update_network_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7638,7 +7628,7 @@ async def test_update_network_flattened_async():
 @pytest.mark.asyncio
 async def test_update_network_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7660,7 +7650,7 @@ async def test_update_network_flattened_error_async():
 )
 def test_create_volume_snapshot(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7700,7 +7690,7 @@ def test_create_volume_snapshot_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7720,7 +7710,7 @@ async def test_create_volume_snapshot_async(
     request_type=gcb_volume_snapshot.CreateVolumeSnapshotRequest,
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7765,7 +7755,7 @@ async def test_create_volume_snapshot_async_from_dict():
 
 def test_create_volume_snapshot_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7797,7 +7787,7 @@ def test_create_volume_snapshot_field_headers():
 @pytest.mark.asyncio
 async def test_create_volume_snapshot_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7830,7 +7820,7 @@ async def test_create_volume_snapshot_field_headers_async():
 
 def test_create_volume_snapshot_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7860,7 +7850,7 @@ def test_create_volume_snapshot_flattened():
 
 def test_create_volume_snapshot_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7876,7 +7866,7 @@ def test_create_volume_snapshot_flattened_error():
 @pytest.mark.asyncio
 async def test_create_volume_snapshot_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7911,7 +7901,7 @@ async def test_create_volume_snapshot_flattened_async():
 @pytest.mark.asyncio
 async def test_create_volume_snapshot_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7933,7 +7923,7 @@ async def test_create_volume_snapshot_flattened_error_async():
 )
 def test_restore_volume_snapshot(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7962,7 +7952,7 @@ def test_restore_volume_snapshot_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7982,7 +7972,7 @@ async def test_restore_volume_snapshot_async(
     request_type=gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8016,7 +8006,7 @@ async def test_restore_volume_snapshot_async_from_dict():
 
 def test_restore_volume_snapshot_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8048,7 +8038,7 @@ def test_restore_volume_snapshot_field_headers():
 @pytest.mark.asyncio
 async def test_restore_volume_snapshot_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8081,7 +8071,7 @@ async def test_restore_volume_snapshot_field_headers_async():
 
 def test_restore_volume_snapshot_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8107,7 +8097,7 @@ def test_restore_volume_snapshot_flattened():
 
 def test_restore_volume_snapshot_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8122,7 +8112,7 @@ def test_restore_volume_snapshot_flattened_error():
 @pytest.mark.asyncio
 async def test_restore_volume_snapshot_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8153,7 +8143,7 @@ async def test_restore_volume_snapshot_flattened_async():
 @pytest.mark.asyncio
 async def test_restore_volume_snapshot_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8174,7 +8164,7 @@ async def test_restore_volume_snapshot_flattened_error_async():
 )
 def test_delete_volume_snapshot(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8203,7 +8193,7 @@ def test_delete_volume_snapshot_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8223,7 +8213,7 @@ async def test_delete_volume_snapshot_async(
     request_type=volume_snapshot.DeleteVolumeSnapshotRequest,
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8255,7 +8245,7 @@ async def test_delete_volume_snapshot_async_from_dict():
 
 def test_delete_volume_snapshot_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8287,7 +8277,7 @@ def test_delete_volume_snapshot_field_headers():
 @pytest.mark.asyncio
 async def test_delete_volume_snapshot_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8318,7 +8308,7 @@ async def test_delete_volume_snapshot_field_headers_async():
 
 def test_delete_volume_snapshot_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8344,7 +8334,7 @@ def test_delete_volume_snapshot_flattened():
 
 def test_delete_volume_snapshot_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8359,7 +8349,7 @@ def test_delete_volume_snapshot_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_volume_snapshot_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8388,7 +8378,7 @@ async def test_delete_volume_snapshot_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_volume_snapshot_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8409,7 +8399,7 @@ async def test_delete_volume_snapshot_flattened_error_async():
 )
 def test_get_volume_snapshot(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8449,7 +8439,7 @@ def test_get_volume_snapshot_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8469,7 +8459,7 @@ async def test_get_volume_snapshot_async(
     request_type=volume_snapshot.GetVolumeSnapshotRequest,
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8514,7 +8504,7 @@ async def test_get_volume_snapshot_async_from_dict():
 
 def test_get_volume_snapshot_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8546,7 +8536,7 @@ def test_get_volume_snapshot_field_headers():
 @pytest.mark.asyncio
 async def test_get_volume_snapshot_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8579,7 +8569,7 @@ async def test_get_volume_snapshot_field_headers_async():
 
 def test_get_volume_snapshot_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8605,7 +8595,7 @@ def test_get_volume_snapshot_flattened():
 
 def test_get_volume_snapshot_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8620,7 +8610,7 @@ def test_get_volume_snapshot_flattened_error():
 @pytest.mark.asyncio
 async def test_get_volume_snapshot_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8651,7 +8641,7 @@ async def test_get_volume_snapshot_flattened_async():
 @pytest.mark.asyncio
 async def test_get_volume_snapshot_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8672,7 +8662,7 @@ async def test_get_volume_snapshot_flattened_error_async():
 )
 def test_list_volume_snapshots(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8706,7 +8696,7 @@ def test_list_volume_snapshots_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8726,7 +8716,7 @@ async def test_list_volume_snapshots_async(
     request_type=volume_snapshot.ListVolumeSnapshotsRequest,
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8765,7 +8755,7 @@ async def test_list_volume_snapshots_async_from_dict():
 
 def test_list_volume_snapshots_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8797,7 +8787,7 @@ def test_list_volume_snapshots_field_headers():
 @pytest.mark.asyncio
 async def test_list_volume_snapshots_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8830,7 +8820,7 @@ async def test_list_volume_snapshots_field_headers_async():
 
 def test_list_volume_snapshots_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8856,7 +8846,7 @@ def test_list_volume_snapshots_flattened():
 
 def test_list_volume_snapshots_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8871,7 +8861,7 @@ def test_list_volume_snapshots_flattened_error():
 @pytest.mark.asyncio
 async def test_list_volume_snapshots_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8902,7 +8892,7 @@ async def test_list_volume_snapshots_flattened_async():
 @pytest.mark.asyncio
 async def test_list_volume_snapshots_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8916,7 +8906,7 @@ async def test_list_volume_snapshots_flattened_error_async():
 
 def test_list_volume_snapshots_pager(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -8968,7 +8958,7 @@ def test_list_volume_snapshots_pager(transport_name: str = "grpc"):
 
 def test_list_volume_snapshots_pages(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -9012,7 +9002,7 @@ def test_list_volume_snapshots_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_volume_snapshots_async_pager():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9064,7 +9054,7 @@ async def test_list_volume_snapshots_async_pager():
 @pytest.mark.asyncio
 async def test_list_volume_snapshots_async_pages():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9121,7 +9111,7 @@ async def test_list_volume_snapshots_async_pages():
 )
 def test_get_lun(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9171,7 +9161,7 @@ def test_get_lun_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9188,7 +9178,7 @@ async def test_get_lun_async(
     transport: str = "grpc_asyncio", request_type=lun.GetLunRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9243,7 +9233,7 @@ async def test_get_lun_async_from_dict():
 
 def test_get_lun_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9273,7 +9263,7 @@ def test_get_lun_field_headers():
 @pytest.mark.asyncio
 async def test_get_lun_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9302,7 +9292,7 @@ async def test_get_lun_field_headers_async():
 
 def test_get_lun_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9326,7 +9316,7 @@ def test_get_lun_flattened():
 
 def test_get_lun_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9341,7 +9331,7 @@ def test_get_lun_flattened_error():
 @pytest.mark.asyncio
 async def test_get_lun_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9368,7 +9358,7 @@ async def test_get_lun_flattened_async():
 @pytest.mark.asyncio
 async def test_get_lun_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9389,7 +9379,7 @@ async def test_get_lun_flattened_error_async():
 )
 def test_list_luns(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9421,7 +9411,7 @@ def test_list_luns_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9438,7 +9428,7 @@ async def test_list_luns_async(
     transport: str = "grpc_asyncio", request_type=lun.ListLunsRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9475,7 +9465,7 @@ async def test_list_luns_async_from_dict():
 
 def test_list_luns_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9505,7 +9495,7 @@ def test_list_luns_field_headers():
 @pytest.mark.asyncio
 async def test_list_luns_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9536,7 +9526,7 @@ async def test_list_luns_field_headers_async():
 
 def test_list_luns_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9560,7 +9550,7 @@ def test_list_luns_flattened():
 
 def test_list_luns_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9575,7 +9565,7 @@ def test_list_luns_flattened_error():
 @pytest.mark.asyncio
 async def test_list_luns_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9604,7 +9594,7 @@ async def test_list_luns_flattened_async():
 @pytest.mark.asyncio
 async def test_list_luns_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9618,7 +9608,7 @@ async def test_list_luns_flattened_error_async():
 
 def test_list_luns_pager(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -9668,7 +9658,7 @@ def test_list_luns_pager(transport_name: str = "grpc"):
 
 def test_list_luns_pages(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -9710,7 +9700,7 @@ def test_list_luns_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_luns_async_pager():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9760,7 +9750,7 @@ async def test_list_luns_async_pager():
 @pytest.mark.asyncio
 async def test_list_luns_async_pages():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9815,7 +9805,7 @@ async def test_list_luns_async_pages():
 )
 def test_evict_lun(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9842,7 +9832,7 @@ def test_evict_lun_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9859,7 +9849,7 @@ async def test_evict_lun_async(
     transport: str = "grpc_asyncio", request_type=lun.EvictLunRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9891,7 +9881,7 @@ async def test_evict_lun_async_from_dict():
 
 def test_evict_lun_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9921,7 +9911,7 @@ def test_evict_lun_field_headers():
 @pytest.mark.asyncio
 async def test_evict_lun_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9952,7 +9942,7 @@ async def test_evict_lun_field_headers_async():
 
 def test_evict_lun_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9976,7 +9966,7 @@ def test_evict_lun_flattened():
 
 def test_evict_lun_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9991,7 +9981,7 @@ def test_evict_lun_flattened_error():
 @pytest.mark.asyncio
 async def test_evict_lun_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10020,7 +10010,7 @@ async def test_evict_lun_flattened_async():
 @pytest.mark.asyncio
 async def test_evict_lun_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10041,7 +10031,7 @@ async def test_evict_lun_flattened_error_async():
 )
 def test_get_nfs_share(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10083,7 +10073,7 @@ def test_get_nfs_share_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10100,7 +10090,7 @@ async def test_get_nfs_share_async(
     transport: str = "grpc_asyncio", request_type=nfs_share.GetNfsShareRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10147,7 +10137,7 @@ async def test_get_nfs_share_async_from_dict():
 
 def test_get_nfs_share_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10177,7 +10167,7 @@ def test_get_nfs_share_field_headers():
 @pytest.mark.asyncio
 async def test_get_nfs_share_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10206,7 +10196,7 @@ async def test_get_nfs_share_field_headers_async():
 
 def test_get_nfs_share_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10230,7 +10220,7 @@ def test_get_nfs_share_flattened():
 
 def test_get_nfs_share_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10245,7 +10235,7 @@ def test_get_nfs_share_flattened_error():
 @pytest.mark.asyncio
 async def test_get_nfs_share_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10272,7 +10262,7 @@ async def test_get_nfs_share_flattened_async():
 @pytest.mark.asyncio
 async def test_get_nfs_share_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10293,7 +10283,7 @@ async def test_get_nfs_share_flattened_error_async():
 )
 def test_list_nfs_shares(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10325,7 +10315,7 @@ def test_list_nfs_shares_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10342,7 +10332,7 @@ async def test_list_nfs_shares_async(
     transport: str = "grpc_asyncio", request_type=nfs_share.ListNfsSharesRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10379,7 +10369,7 @@ async def test_list_nfs_shares_async_from_dict():
 
 def test_list_nfs_shares_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10409,7 +10399,7 @@ def test_list_nfs_shares_field_headers():
 @pytest.mark.asyncio
 async def test_list_nfs_shares_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10440,7 +10430,7 @@ async def test_list_nfs_shares_field_headers_async():
 
 def test_list_nfs_shares_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10464,7 +10454,7 @@ def test_list_nfs_shares_flattened():
 
 def test_list_nfs_shares_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10479,7 +10469,7 @@ def test_list_nfs_shares_flattened_error():
 @pytest.mark.asyncio
 async def test_list_nfs_shares_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10508,7 +10498,7 @@ async def test_list_nfs_shares_flattened_async():
 @pytest.mark.asyncio
 async def test_list_nfs_shares_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10522,7 +10512,7 @@ async def test_list_nfs_shares_flattened_error_async():
 
 def test_list_nfs_shares_pager(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -10572,7 +10562,7 @@ def test_list_nfs_shares_pager(transport_name: str = "grpc"):
 
 def test_list_nfs_shares_pages(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -10614,7 +10604,7 @@ def test_list_nfs_shares_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_nfs_shares_async_pager():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10664,7 +10654,7 @@ async def test_list_nfs_shares_async_pager():
 @pytest.mark.asyncio
 async def test_list_nfs_shares_async_pages():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10719,7 +10709,7 @@ async def test_list_nfs_shares_async_pages():
 )
 def test_update_nfs_share(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10746,7 +10736,7 @@ def test_update_nfs_share_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10763,7 +10753,7 @@ async def test_update_nfs_share_async(
     transport: str = "grpc_asyncio", request_type=gcb_nfs_share.UpdateNfsShareRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10795,7 +10785,7 @@ async def test_update_nfs_share_async_from_dict():
 
 def test_update_nfs_share_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10825,7 +10815,7 @@ def test_update_nfs_share_field_headers():
 @pytest.mark.asyncio
 async def test_update_nfs_share_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10856,7 +10846,7 @@ async def test_update_nfs_share_field_headers_async():
 
 def test_update_nfs_share_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10884,7 +10874,7 @@ def test_update_nfs_share_flattened():
 
 def test_update_nfs_share_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10900,7 +10890,7 @@ def test_update_nfs_share_flattened_error():
 @pytest.mark.asyncio
 async def test_update_nfs_share_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10933,7 +10923,7 @@ async def test_update_nfs_share_flattened_async():
 @pytest.mark.asyncio
 async def test_update_nfs_share_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10955,7 +10945,7 @@ async def test_update_nfs_share_flattened_error_async():
 )
 def test_create_nfs_share(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10982,7 +10972,7 @@ def test_create_nfs_share_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10999,7 +10989,7 @@ async def test_create_nfs_share_async(
     transport: str = "grpc_asyncio", request_type=gcb_nfs_share.CreateNfsShareRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11031,7 +11021,7 @@ async def test_create_nfs_share_async_from_dict():
 
 def test_create_nfs_share_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11061,7 +11051,7 @@ def test_create_nfs_share_field_headers():
 @pytest.mark.asyncio
 async def test_create_nfs_share_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11092,7 +11082,7 @@ async def test_create_nfs_share_field_headers_async():
 
 def test_create_nfs_share_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11120,7 +11110,7 @@ def test_create_nfs_share_flattened():
 
 def test_create_nfs_share_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11136,7 +11126,7 @@ def test_create_nfs_share_flattened_error():
 @pytest.mark.asyncio
 async def test_create_nfs_share_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11169,7 +11159,7 @@ async def test_create_nfs_share_flattened_async():
 @pytest.mark.asyncio
 async def test_create_nfs_share_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11191,7 +11181,7 @@ async def test_create_nfs_share_flattened_error_async():
 )
 def test_rename_nfs_share(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11233,7 +11223,7 @@ def test_rename_nfs_share_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -11250,7 +11240,7 @@ async def test_rename_nfs_share_async(
     transport: str = "grpc_asyncio", request_type=nfs_share.RenameNfsShareRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11297,7 +11287,7 @@ async def test_rename_nfs_share_async_from_dict():
 
 def test_rename_nfs_share_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11327,7 +11317,7 @@ def test_rename_nfs_share_field_headers():
 @pytest.mark.asyncio
 async def test_rename_nfs_share_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11356,7 +11346,7 @@ async def test_rename_nfs_share_field_headers_async():
 
 def test_rename_nfs_share_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11384,7 +11374,7 @@ def test_rename_nfs_share_flattened():
 
 def test_rename_nfs_share_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11400,7 +11390,7 @@ def test_rename_nfs_share_flattened_error():
 @pytest.mark.asyncio
 async def test_rename_nfs_share_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11431,7 +11421,7 @@ async def test_rename_nfs_share_flattened_async():
 @pytest.mark.asyncio
 async def test_rename_nfs_share_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11453,7 +11443,7 @@ async def test_rename_nfs_share_flattened_error_async():
 )
 def test_delete_nfs_share(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11480,7 +11470,7 @@ def test_delete_nfs_share_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -11497,7 +11487,7 @@ async def test_delete_nfs_share_async(
     transport: str = "grpc_asyncio", request_type=nfs_share.DeleteNfsShareRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11529,7 +11519,7 @@ async def test_delete_nfs_share_async_from_dict():
 
 def test_delete_nfs_share_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11559,7 +11549,7 @@ def test_delete_nfs_share_field_headers():
 @pytest.mark.asyncio
 async def test_delete_nfs_share_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11590,7 +11580,7 @@ async def test_delete_nfs_share_field_headers_async():
 
 def test_delete_nfs_share_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11614,7 +11604,7 @@ def test_delete_nfs_share_flattened():
 
 def test_delete_nfs_share_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11629,7 +11619,7 @@ def test_delete_nfs_share_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_nfs_share_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11658,7 +11648,7 @@ async def test_delete_nfs_share_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_nfs_share_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11679,7 +11669,7 @@ async def test_delete_nfs_share_flattened_error_async():
 )
 def test_list_provisioning_quotas(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11711,7 +11701,7 @@ def test_list_provisioning_quotas_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -11731,7 +11721,7 @@ async def test_list_provisioning_quotas_async(
     request_type=provisioning.ListProvisioningQuotasRequest,
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11768,7 +11758,7 @@ async def test_list_provisioning_quotas_async_from_dict():
 
 def test_list_provisioning_quotas_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11800,7 +11790,7 @@ def test_list_provisioning_quotas_field_headers():
 @pytest.mark.asyncio
 async def test_list_provisioning_quotas_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11833,7 +11823,7 @@ async def test_list_provisioning_quotas_field_headers_async():
 
 def test_list_provisioning_quotas_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11859,7 +11849,7 @@ def test_list_provisioning_quotas_flattened():
 
 def test_list_provisioning_quotas_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11874,7 +11864,7 @@ def test_list_provisioning_quotas_flattened_error():
 @pytest.mark.asyncio
 async def test_list_provisioning_quotas_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11905,7 +11895,7 @@ async def test_list_provisioning_quotas_flattened_async():
 @pytest.mark.asyncio
 async def test_list_provisioning_quotas_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11919,7 +11909,7 @@ async def test_list_provisioning_quotas_flattened_error_async():
 
 def test_list_provisioning_quotas_pager(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -11971,7 +11961,7 @@ def test_list_provisioning_quotas_pager(transport_name: str = "grpc"):
 
 def test_list_provisioning_quotas_pages(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -12015,7 +12005,7 @@ def test_list_provisioning_quotas_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_provisioning_quotas_async_pager():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12067,7 +12057,7 @@ async def test_list_provisioning_quotas_async_pager():
 @pytest.mark.asyncio
 async def test_list_provisioning_quotas_async_pages():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12124,7 +12114,7 @@ async def test_list_provisioning_quotas_async_pages():
 )
 def test_submit_provisioning_config(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12153,7 +12143,7 @@ def test_submit_provisioning_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -12173,7 +12163,7 @@ async def test_submit_provisioning_config_async(
     request_type=provisioning.SubmitProvisioningConfigRequest,
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12207,7 +12197,7 @@ async def test_submit_provisioning_config_async_from_dict():
 
 def test_submit_provisioning_config_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12239,7 +12229,7 @@ def test_submit_provisioning_config_field_headers():
 @pytest.mark.asyncio
 async def test_submit_provisioning_config_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12272,7 +12262,7 @@ async def test_submit_provisioning_config_field_headers_async():
 
 def test_submit_provisioning_config_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12302,7 +12292,7 @@ def test_submit_provisioning_config_flattened():
 
 def test_submit_provisioning_config_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12318,7 +12308,7 @@ def test_submit_provisioning_config_flattened_error():
 @pytest.mark.asyncio
 async def test_submit_provisioning_config_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12353,7 +12343,7 @@ async def test_submit_provisioning_config_flattened_async():
 @pytest.mark.asyncio
 async def test_submit_provisioning_config_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12375,7 +12365,7 @@ async def test_submit_provisioning_config_flattened_error_async():
 )
 def test_get_provisioning_config(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12425,7 +12415,7 @@ def test_get_provisioning_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -12445,7 +12435,7 @@ async def test_get_provisioning_config_async(
     request_type=provisioning.GetProvisioningConfigRequest,
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12500,7 +12490,7 @@ async def test_get_provisioning_config_async_from_dict():
 
 def test_get_provisioning_config_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12532,7 +12522,7 @@ def test_get_provisioning_config_field_headers():
 @pytest.mark.asyncio
 async def test_get_provisioning_config_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12565,7 +12555,7 @@ async def test_get_provisioning_config_field_headers_async():
 
 def test_get_provisioning_config_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12591,7 +12581,7 @@ def test_get_provisioning_config_flattened():
 
 def test_get_provisioning_config_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12606,7 +12596,7 @@ def test_get_provisioning_config_flattened_error():
 @pytest.mark.asyncio
 async def test_get_provisioning_config_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12637,7 +12627,7 @@ async def test_get_provisioning_config_flattened_async():
 @pytest.mark.asyncio
 async def test_get_provisioning_config_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12658,7 +12648,7 @@ async def test_get_provisioning_config_flattened_error_async():
 )
 def test_create_provisioning_config(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12708,7 +12698,7 @@ def test_create_provisioning_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -12728,7 +12718,7 @@ async def test_create_provisioning_config_async(
     request_type=provisioning.CreateProvisioningConfigRequest,
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12783,7 +12773,7 @@ async def test_create_provisioning_config_async_from_dict():
 
 def test_create_provisioning_config_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12815,7 +12805,7 @@ def test_create_provisioning_config_field_headers():
 @pytest.mark.asyncio
 async def test_create_provisioning_config_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12848,7 +12838,7 @@ async def test_create_provisioning_config_field_headers_async():
 
 def test_create_provisioning_config_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12878,7 +12868,7 @@ def test_create_provisioning_config_flattened():
 
 def test_create_provisioning_config_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12894,7 +12884,7 @@ def test_create_provisioning_config_flattened_error():
 @pytest.mark.asyncio
 async def test_create_provisioning_config_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12929,7 +12919,7 @@ async def test_create_provisioning_config_flattened_async():
 @pytest.mark.asyncio
 async def test_create_provisioning_config_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12951,7 +12941,7 @@ async def test_create_provisioning_config_flattened_error_async():
 )
 def test_update_provisioning_config(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13001,7 +12991,7 @@ def test_update_provisioning_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -13021,7 +13011,7 @@ async def test_update_provisioning_config_async(
     request_type=provisioning.UpdateProvisioningConfigRequest,
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13076,7 +13066,7 @@ async def test_update_provisioning_config_async_from_dict():
 
 def test_update_provisioning_config_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13108,7 +13098,7 @@ def test_update_provisioning_config_field_headers():
 @pytest.mark.asyncio
 async def test_update_provisioning_config_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13141,7 +13131,7 @@ async def test_update_provisioning_config_field_headers_async():
 
 def test_update_provisioning_config_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13171,7 +13161,7 @@ def test_update_provisioning_config_flattened():
 
 def test_update_provisioning_config_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13187,7 +13177,7 @@ def test_update_provisioning_config_flattened_error():
 @pytest.mark.asyncio
 async def test_update_provisioning_config_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13222,7 +13212,7 @@ async def test_update_provisioning_config_flattened_async():
 @pytest.mark.asyncio
 async def test_update_provisioning_config_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13244,7 +13234,7 @@ async def test_update_provisioning_config_flattened_error_async():
 )
 def test_rename_network(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13296,7 +13286,7 @@ def test_rename_network_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -13313,7 +13303,7 @@ async def test_rename_network_async(
     transport: str = "grpc_asyncio", request_type=network.RenameNetworkRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13370,7 +13360,7 @@ async def test_rename_network_async_from_dict():
 
 def test_rename_network_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13400,7 +13390,7 @@ def test_rename_network_field_headers():
 @pytest.mark.asyncio
 async def test_rename_network_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13429,7 +13419,7 @@ async def test_rename_network_field_headers_async():
 
 def test_rename_network_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13457,7 +13447,7 @@ def test_rename_network_flattened():
 
 def test_rename_network_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13473,7 +13463,7 @@ def test_rename_network_flattened_error():
 @pytest.mark.asyncio
 async def test_rename_network_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13504,7 +13494,7 @@ async def test_rename_network_flattened_async():
 @pytest.mark.asyncio
 async def test_rename_network_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13526,7 +13516,7 @@ async def test_rename_network_flattened_error_async():
 )
 def test_list_os_images(request_type, transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13556,7 +13546,7 @@ def test_list_os_images_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -13573,7 +13563,7 @@ async def test_list_os_images_async(
     transport: str = "grpc_asyncio", request_type=osimage.ListOSImagesRequest
 ):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13608,7 +13598,7 @@ async def test_list_os_images_async_from_dict():
 
 def test_list_os_images_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13638,7 +13628,7 @@ def test_list_os_images_field_headers():
 @pytest.mark.asyncio
 async def test_list_os_images_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13669,7 +13659,7 @@ async def test_list_os_images_field_headers_async():
 
 def test_list_os_images_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13693,7 +13683,7 @@ def test_list_os_images_flattened():
 
 def test_list_os_images_flattened_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13708,7 +13698,7 @@ def test_list_os_images_flattened_error():
 @pytest.mark.asyncio
 async def test_list_os_images_flattened_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13737,7 +13727,7 @@ async def test_list_os_images_flattened_async():
 @pytest.mark.asyncio
 async def test_list_os_images_flattened_error_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13751,7 +13741,7 @@ async def test_list_os_images_flattened_error_async():
 
 def test_list_os_images_pager(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -13801,7 +13791,7 @@ def test_list_os_images_pager(transport_name: str = "grpc"):
 
 def test_list_os_images_pages(transport_name: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -13843,7 +13833,7 @@ def test_list_os_images_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_os_images_async_pager():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13893,7 +13883,7 @@ async def test_list_os_images_async_pager():
 @pytest.mark.asyncio
 async def test_list_os_images_async_pages():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13948,7 +13938,7 @@ async def test_list_os_images_async_pages():
 )
 def test_list_instances_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14001,7 +13991,7 @@ def test_list_instances_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_instances._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14010,7 +14000,7 @@ def test_list_instances_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -14027,7 +14017,7 @@ def test_list_instances_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14069,7 +14059,7 @@ def test_list_instances_rest_required_fields(
 
 def test_list_instances_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_instances._get_unset_required_fields({})
@@ -14088,7 +14078,7 @@ def test_list_instances_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_instances_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -14144,7 +14134,7 @@ def test_list_instances_rest_bad_request(
     transport: str = "rest", request_type=instance.ListInstancesRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14166,7 +14156,7 @@ def test_list_instances_rest_bad_request(
 
 def test_list_instances_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14207,7 +14197,7 @@ def test_list_instances_rest_flattened():
 
 def test_list_instances_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14222,7 +14212,7 @@ def test_list_instances_rest_flattened_error(transport: str = "rest"):
 
 def test_list_instances_rest_pager(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14290,7 +14280,7 @@ def test_list_instances_rest_pager(transport: str = "rest"):
 )
 def test_get_instance_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14361,7 +14351,7 @@ def test_get_instance_rest_required_fields(request_type=instance.GetInstanceRequ
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14370,7 +14360,7 @@ def test_get_instance_rest_required_fields(request_type=instance.GetInstanceRequ
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14379,7 +14369,7 @@ def test_get_instance_rest_required_fields(request_type=instance.GetInstanceRequ
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14421,7 +14411,7 @@ def test_get_instance_rest_required_fields(request_type=instance.GetInstanceRequ
 
 def test_get_instance_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_instance._get_unset_required_fields({})
@@ -14431,7 +14421,7 @@ def test_get_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_instance_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -14485,7 +14475,7 @@ def test_get_instance_rest_bad_request(
     transport: str = "rest", request_type=instance.GetInstanceRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14507,7 +14497,7 @@ def test_get_instance_rest_bad_request(
 
 def test_get_instance_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14550,7 +14540,7 @@ def test_get_instance_rest_flattened():
 
 def test_get_instance_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14565,7 +14555,7 @@ def test_get_instance_rest_flattened_error(transport: str = "rest"):
 
 def test_get_instance_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14578,7 +14568,7 @@ def test_get_instance_rest_error():
 )
 def test_update_instance_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14821,14 +14811,14 @@ def test_update_instance_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_instance._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -14837,7 +14827,7 @@ def test_update_instance_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14877,7 +14867,7 @@ def test_update_instance_rest_required_fields(
 
 def test_update_instance_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_instance._get_unset_required_fields({})
@@ -14887,7 +14877,7 @@ def test_update_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_instance_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -14947,7 +14937,7 @@ def test_update_instance_rest_bad_request(
     transport: str = "rest", request_type=gcb_instance.UpdateInstanceRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14971,7 +14961,7 @@ def test_update_instance_rest_bad_request(
 
 def test_update_instance_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15014,7 +15004,7 @@ def test_update_instance_rest_flattened():
 
 def test_update_instance_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15030,7 +15020,7 @@ def test_update_instance_rest_flattened_error(transport: str = "rest"):
 
 def test_update_instance_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15043,7 +15033,7 @@ def test_update_instance_rest_error():
 )
 def test_rename_instance_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15117,7 +15107,7 @@ def test_rename_instance_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).rename_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15127,7 +15117,7 @@ def test_rename_instance_rest_required_fields(
     jsonified_request["newInstanceId"] = "new_instance_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).rename_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15138,7 +15128,7 @@ def test_rename_instance_rest_required_fields(
     assert jsonified_request["newInstanceId"] == "new_instance_id_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15181,7 +15171,7 @@ def test_rename_instance_rest_required_fields(
 
 def test_rename_instance_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.rename_instance._get_unset_required_fields({})
@@ -15199,7 +15189,7 @@ def test_rename_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_rename_instance_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -15253,7 +15243,7 @@ def test_rename_instance_rest_bad_request(
     transport: str = "rest", request_type=instance.RenameInstanceRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15275,7 +15265,7 @@ def test_rename_instance_rest_bad_request(
 
 def test_rename_instance_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15320,7 +15310,7 @@ def test_rename_instance_rest_flattened():
 
 def test_rename_instance_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15336,7 +15326,7 @@ def test_rename_instance_rest_flattened_error(transport: str = "rest"):
 
 def test_rename_instance_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15349,7 +15339,7 @@ def test_rename_instance_rest_error():
 )
 def test_reset_instance_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15395,7 +15385,7 @@ def test_reset_instance_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).reset_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15404,7 +15394,7 @@ def test_reset_instance_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).reset_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15413,7 +15403,7 @@ def test_reset_instance_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15453,7 +15443,7 @@ def test_reset_instance_rest_required_fields(
 
 def test_reset_instance_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.reset_instance._get_unset_required_fields({})
@@ -15463,7 +15453,7 @@ def test_reset_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_reset_instance_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -15521,7 +15511,7 @@ def test_reset_instance_rest_bad_request(
     transport: str = "rest", request_type=instance.ResetInstanceRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15543,7 +15533,7 @@ def test_reset_instance_rest_bad_request(
 
 def test_reset_instance_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15585,7 +15575,7 @@ def test_reset_instance_rest_flattened():
 
 def test_reset_instance_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15600,7 +15590,7 @@ def test_reset_instance_rest_flattened_error(transport: str = "rest"):
 
 def test_reset_instance_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15613,7 +15603,7 @@ def test_reset_instance_rest_error():
 )
 def test_start_instance_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15659,7 +15649,7 @@ def test_start_instance_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).start_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15668,7 +15658,7 @@ def test_start_instance_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).start_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15677,7 +15667,7 @@ def test_start_instance_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15717,7 +15707,7 @@ def test_start_instance_rest_required_fields(
 
 def test_start_instance_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.start_instance._get_unset_required_fields({})
@@ -15727,7 +15717,7 @@ def test_start_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_start_instance_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -15785,7 +15775,7 @@ def test_start_instance_rest_bad_request(
     transport: str = "rest", request_type=instance.StartInstanceRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15807,7 +15797,7 @@ def test_start_instance_rest_bad_request(
 
 def test_start_instance_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15849,7 +15839,7 @@ def test_start_instance_rest_flattened():
 
 def test_start_instance_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15864,7 +15854,7 @@ def test_start_instance_rest_flattened_error(transport: str = "rest"):
 
 def test_start_instance_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15877,7 +15867,7 @@ def test_start_instance_rest_error():
 )
 def test_stop_instance_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15921,7 +15911,7 @@ def test_stop_instance_rest_required_fields(request_type=instance.StopInstanceRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).stop_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15930,7 +15920,7 @@ def test_stop_instance_rest_required_fields(request_type=instance.StopInstanceRe
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).stop_instance._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15939,7 +15929,7 @@ def test_stop_instance_rest_required_fields(request_type=instance.StopInstanceRe
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15979,7 +15969,7 @@ def test_stop_instance_rest_required_fields(request_type=instance.StopInstanceRe
 
 def test_stop_instance_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.stop_instance._get_unset_required_fields({})
@@ -15989,7 +15979,7 @@ def test_stop_instance_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_stop_instance_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -16047,7 +16037,7 @@ def test_stop_instance_rest_bad_request(
     transport: str = "rest", request_type=instance.StopInstanceRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16069,7 +16059,7 @@ def test_stop_instance_rest_bad_request(
 
 def test_stop_instance_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16111,7 +16101,7 @@ def test_stop_instance_rest_flattened():
 
 def test_stop_instance_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16126,7 +16116,7 @@ def test_stop_instance_rest_flattened_error(transport: str = "rest"):
 
 def test_stop_instance_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16139,7 +16129,7 @@ def test_stop_instance_rest_error():
 )
 def test_enable_interactive_serial_console_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16185,7 +16175,7 @@ def test_enable_interactive_serial_console_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).enable_interactive_serial_console._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16194,7 +16184,7 @@ def test_enable_interactive_serial_console_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).enable_interactive_serial_console._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16203,7 +16193,7 @@ def test_enable_interactive_serial_console_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16243,7 +16233,7 @@ def test_enable_interactive_serial_console_rest_required_fields(
 
 def test_enable_interactive_serial_console_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = (
@@ -16255,7 +16245,7 @@ def test_enable_interactive_serial_console_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_enable_interactive_serial_console_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -16317,7 +16307,7 @@ def test_enable_interactive_serial_console_rest_bad_request(
     transport: str = "rest", request_type=instance.EnableInteractiveSerialConsoleRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16339,7 +16329,7 @@ def test_enable_interactive_serial_console_rest_bad_request(
 
 def test_enable_interactive_serial_console_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16383,7 +16373,7 @@ def test_enable_interactive_serial_console_rest_flattened_error(
     transport: str = "rest",
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16398,7 +16388,7 @@ def test_enable_interactive_serial_console_rest_flattened_error(
 
 def test_enable_interactive_serial_console_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16411,7 +16401,7 @@ def test_enable_interactive_serial_console_rest_error():
 )
 def test_disable_interactive_serial_console_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16457,7 +16447,7 @@ def test_disable_interactive_serial_console_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).disable_interactive_serial_console._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16466,7 +16456,7 @@ def test_disable_interactive_serial_console_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).disable_interactive_serial_console._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16475,7 +16465,7 @@ def test_disable_interactive_serial_console_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16515,7 +16505,7 @@ def test_disable_interactive_serial_console_rest_required_fields(
 
 def test_disable_interactive_serial_console_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = (
@@ -16527,7 +16517,7 @@ def test_disable_interactive_serial_console_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_disable_interactive_serial_console_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -16590,7 +16580,7 @@ def test_disable_interactive_serial_console_rest_bad_request(
     request_type=instance.DisableInteractiveSerialConsoleRequest,
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16612,7 +16602,7 @@ def test_disable_interactive_serial_console_rest_bad_request(
 
 def test_disable_interactive_serial_console_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16656,7 +16646,7 @@ def test_disable_interactive_serial_console_rest_flattened_error(
     transport: str = "rest",
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16671,7 +16661,7 @@ def test_disable_interactive_serial_console_rest_flattened_error(
 
 def test_disable_interactive_serial_console_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16684,7 +16674,7 @@ def test_disable_interactive_serial_console_rest_error():
 )
 def test_detach_lun_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16729,7 +16719,7 @@ def test_detach_lun_rest_required_fields(request_type=gcb_instance.DetachLunRequ
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).detach_lun._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16739,7 +16729,7 @@ def test_detach_lun_rest_required_fields(request_type=gcb_instance.DetachLunRequ
     jsonified_request["lun"] = "lun_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).detach_lun._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16750,7 +16740,7 @@ def test_detach_lun_rest_required_fields(request_type=gcb_instance.DetachLunRequ
     assert jsonified_request["lun"] == "lun_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16790,7 +16780,7 @@ def test_detach_lun_rest_required_fields(request_type=gcb_instance.DetachLunRequ
 
 def test_detach_lun_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.detach_lun._get_unset_required_fields({})
@@ -16808,7 +16798,7 @@ def test_detach_lun_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_detach_lun_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -16866,7 +16856,7 @@ def test_detach_lun_rest_bad_request(
     transport: str = "rest", request_type=gcb_instance.DetachLunRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16888,7 +16878,7 @@ def test_detach_lun_rest_bad_request(
 
 def test_detach_lun_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16931,7 +16921,7 @@ def test_detach_lun_rest_flattened():
 
 def test_detach_lun_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16947,7 +16937,7 @@ def test_detach_lun_rest_flattened_error(transport: str = "rest"):
 
 def test_detach_lun_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16960,7 +16950,7 @@ def test_detach_lun_rest_error():
 )
 def test_list_ssh_keys_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17009,7 +16999,7 @@ def test_list_ssh_keys_rest_required_fields(request_type=ssh_key.ListSSHKeysRequ
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_ssh_keys._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17018,7 +17008,7 @@ def test_list_ssh_keys_rest_required_fields(request_type=ssh_key.ListSSHKeysRequ
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_ssh_keys._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -17034,7 +17024,7 @@ def test_list_ssh_keys_rest_required_fields(request_type=ssh_key.ListSSHKeysRequ
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17076,7 +17066,7 @@ def test_list_ssh_keys_rest_required_fields(request_type=ssh_key.ListSSHKeysRequ
 
 def test_list_ssh_keys_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_ssh_keys._get_unset_required_fields({})
@@ -17094,7 +17084,7 @@ def test_list_ssh_keys_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_ssh_keys_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -17150,7 +17140,7 @@ def test_list_ssh_keys_rest_bad_request(
     transport: str = "rest", request_type=ssh_key.ListSSHKeysRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17172,7 +17162,7 @@ def test_list_ssh_keys_rest_bad_request(
 
 def test_list_ssh_keys_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17213,7 +17203,7 @@ def test_list_ssh_keys_rest_flattened():
 
 def test_list_ssh_keys_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17228,7 +17218,7 @@ def test_list_ssh_keys_rest_flattened_error(transport: str = "rest"):
 
 def test_list_ssh_keys_rest_pager(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17296,7 +17286,7 @@ def test_list_ssh_keys_rest_pager(transport: str = "rest"):
 )
 def test_create_ssh_key_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17419,7 +17409,7 @@ def test_create_ssh_key_rest_required_fields(
     assert "sshKeyId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_ssh_key._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17431,7 +17421,7 @@ def test_create_ssh_key_rest_required_fields(
     jsonified_request["sshKeyId"] = "ssh_key_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_ssh_key._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("ssh_key_id",))
@@ -17444,7 +17434,7 @@ def test_create_ssh_key_rest_required_fields(
     assert jsonified_request["sshKeyId"] == "ssh_key_id_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17493,7 +17483,7 @@ def test_create_ssh_key_rest_required_fields(
 
 def test_create_ssh_key_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_ssh_key._get_unset_required_fields({})
@@ -17512,7 +17502,7 @@ def test_create_ssh_key_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_ssh_key_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -17568,7 +17558,7 @@ def test_create_ssh_key_rest_bad_request(
     transport: str = "rest", request_type=gcb_ssh_key.CreateSSHKeyRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17590,7 +17580,7 @@ def test_create_ssh_key_rest_bad_request(
 
 def test_create_ssh_key_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17633,7 +17623,7 @@ def test_create_ssh_key_rest_flattened():
 
 def test_create_ssh_key_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17650,7 +17640,7 @@ def test_create_ssh_key_rest_flattened_error(transport: str = "rest"):
 
 def test_create_ssh_key_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17663,7 +17653,7 @@ def test_create_ssh_key_rest_error():
 )
 def test_delete_ssh_key_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17707,7 +17697,7 @@ def test_delete_ssh_key_rest_required_fields(request_type=ssh_key.DeleteSSHKeyRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_ssh_key._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17716,7 +17706,7 @@ def test_delete_ssh_key_rest_required_fields(request_type=ssh_key.DeleteSSHKeyRe
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_ssh_key._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17725,7 +17715,7 @@ def test_delete_ssh_key_rest_required_fields(request_type=ssh_key.DeleteSSHKeyRe
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17764,7 +17754,7 @@ def test_delete_ssh_key_rest_required_fields(request_type=ssh_key.DeleteSSHKeyRe
 
 def test_delete_ssh_key_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_ssh_key._get_unset_required_fields({})
@@ -17774,7 +17764,7 @@ def test_delete_ssh_key_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_ssh_key_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -17822,7 +17812,7 @@ def test_delete_ssh_key_rest_bad_request(
     transport: str = "rest", request_type=ssh_key.DeleteSSHKeyRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17844,7 +17834,7 @@ def test_delete_ssh_key_rest_bad_request(
 
 def test_delete_ssh_key_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17883,7 +17873,7 @@ def test_delete_ssh_key_rest_flattened():
 
 def test_delete_ssh_key_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17898,7 +17888,7 @@ def test_delete_ssh_key_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_ssh_key_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17911,7 +17901,7 @@ def test_delete_ssh_key_rest_error():
 )
 def test_list_volumes_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17962,7 +17952,7 @@ def test_list_volumes_rest_required_fields(request_type=volume.ListVolumesReques
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_volumes._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17971,7 +17961,7 @@ def test_list_volumes_rest_required_fields(request_type=volume.ListVolumesReques
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_volumes._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -17988,7 +17978,7 @@ def test_list_volumes_rest_required_fields(request_type=volume.ListVolumesReques
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18030,7 +18020,7 @@ def test_list_volumes_rest_required_fields(request_type=volume.ListVolumesReques
 
 def test_list_volumes_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_volumes._get_unset_required_fields({})
@@ -18049,7 +18039,7 @@ def test_list_volumes_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_volumes_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -18105,7 +18095,7 @@ def test_list_volumes_rest_bad_request(
     transport: str = "rest", request_type=volume.ListVolumesRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18127,7 +18117,7 @@ def test_list_volumes_rest_bad_request(
 
 def test_list_volumes_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18168,7 +18158,7 @@ def test_list_volumes_rest_flattened():
 
 def test_list_volumes_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18183,7 +18173,7 @@ def test_list_volumes_rest_flattened_error(transport: str = "rest"):
 
 def test_list_volumes_rest_pager(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18251,7 +18241,7 @@ def test_list_volumes_rest_pager(transport: str = "rest"):
 )
 def test_get_volume_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18346,7 +18336,7 @@ def test_get_volume_rest_required_fields(request_type=volume.GetVolumeRequest):
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_volume._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18355,7 +18345,7 @@ def test_get_volume_rest_required_fields(request_type=volume.GetVolumeRequest):
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_volume._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18364,7 +18354,7 @@ def test_get_volume_rest_required_fields(request_type=volume.GetVolumeRequest):
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18406,7 +18396,7 @@ def test_get_volume_rest_required_fields(request_type=volume.GetVolumeRequest):
 
 def test_get_volume_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_volume._get_unset_required_fields({})
@@ -18416,7 +18406,7 @@ def test_get_volume_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_volume_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -18470,7 +18460,7 @@ def test_get_volume_rest_bad_request(
     transport: str = "rest", request_type=volume.GetVolumeRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18492,7 +18482,7 @@ def test_get_volume_rest_bad_request(
 
 def test_get_volume_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18533,7 +18523,7 @@ def test_get_volume_rest_flattened():
 
 def test_get_volume_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18548,7 +18538,7 @@ def test_get_volume_rest_flattened_error(transport: str = "rest"):
 
 def test_get_volume_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18561,7 +18551,7 @@ def test_get_volume_rest_error():
 )
 def test_update_volume_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18706,14 +18696,14 @@ def test_update_volume_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_volume._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_volume._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -18722,7 +18712,7 @@ def test_update_volume_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18762,7 +18752,7 @@ def test_update_volume_rest_required_fields(
 
 def test_update_volume_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_volume._get_unset_required_fields({})
@@ -18772,7 +18762,7 @@ def test_update_volume_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_volume_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -18830,7 +18820,7 @@ def test_update_volume_rest_bad_request(
     transport: str = "rest", request_type=gcb_volume.UpdateVolumeRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18854,7 +18844,7 @@ def test_update_volume_rest_bad_request(
 
 def test_update_volume_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18897,7 +18887,7 @@ def test_update_volume_rest_flattened():
 
 def test_update_volume_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18913,7 +18903,7 @@ def test_update_volume_rest_flattened_error(transport: str = "rest"):
 
 def test_update_volume_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18926,7 +18916,7 @@ def test_update_volume_rest_error():
 )
 def test_rename_volume_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19022,7 +19012,7 @@ def test_rename_volume_rest_required_fields(request_type=volume.RenameVolumeRequ
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).rename_volume._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19032,7 +19022,7 @@ def test_rename_volume_rest_required_fields(request_type=volume.RenameVolumeRequ
     jsonified_request["newVolumeId"] = "new_volume_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).rename_volume._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19043,7 +19033,7 @@ def test_rename_volume_rest_required_fields(request_type=volume.RenameVolumeRequ
     assert jsonified_request["newVolumeId"] == "new_volume_id_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19086,7 +19076,7 @@ def test_rename_volume_rest_required_fields(request_type=volume.RenameVolumeRequ
 
 def test_rename_volume_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.rename_volume._get_unset_required_fields({})
@@ -19104,7 +19094,7 @@ def test_rename_volume_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_rename_volume_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -19158,7 +19148,7 @@ def test_rename_volume_rest_bad_request(
     transport: str = "rest", request_type=volume.RenameVolumeRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19180,7 +19170,7 @@ def test_rename_volume_rest_bad_request(
 
 def test_rename_volume_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19223,7 +19213,7 @@ def test_rename_volume_rest_flattened():
 
 def test_rename_volume_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19239,7 +19229,7 @@ def test_rename_volume_rest_flattened_error(transport: str = "rest"):
 
 def test_rename_volume_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19252,7 +19242,7 @@ def test_rename_volume_rest_error():
 )
 def test_evict_volume_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19296,7 +19286,7 @@ def test_evict_volume_rest_required_fields(request_type=volume.EvictVolumeReques
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).evict_volume._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19305,7 +19295,7 @@ def test_evict_volume_rest_required_fields(request_type=volume.EvictVolumeReques
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).evict_volume._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19314,7 +19304,7 @@ def test_evict_volume_rest_required_fields(request_type=volume.EvictVolumeReques
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19354,7 +19344,7 @@ def test_evict_volume_rest_required_fields(request_type=volume.EvictVolumeReques
 
 def test_evict_volume_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.evict_volume._get_unset_required_fields({})
@@ -19364,7 +19354,7 @@ def test_evict_volume_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_evict_volume_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -19422,7 +19412,7 @@ def test_evict_volume_rest_bad_request(
     transport: str = "rest", request_type=volume.EvictVolumeRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19444,7 +19434,7 @@ def test_evict_volume_rest_bad_request(
 
 def test_evict_volume_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19484,7 +19474,7 @@ def test_evict_volume_rest_flattened():
 
 def test_evict_volume_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19499,7 +19489,7 @@ def test_evict_volume_rest_flattened_error(transport: str = "rest"):
 
 def test_evict_volume_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19512,7 +19502,7 @@ def test_evict_volume_rest_error():
 )
 def test_resize_volume_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19558,7 +19548,7 @@ def test_resize_volume_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).resize_volume._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19567,7 +19557,7 @@ def test_resize_volume_rest_required_fields(
     jsonified_request["volume"] = "volume_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).resize_volume._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19576,7 +19566,7 @@ def test_resize_volume_rest_required_fields(
     assert jsonified_request["volume"] == "volume_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19616,7 +19606,7 @@ def test_resize_volume_rest_required_fields(
 
 def test_resize_volume_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.resize_volume._get_unset_required_fields({})
@@ -19626,7 +19616,7 @@ def test_resize_volume_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_resize_volume_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -19684,7 +19674,7 @@ def test_resize_volume_rest_bad_request(
     transport: str = "rest", request_type=gcb_volume.ResizeVolumeRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19706,7 +19696,7 @@ def test_resize_volume_rest_bad_request(
 
 def test_resize_volume_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19749,7 +19739,7 @@ def test_resize_volume_rest_flattened():
 
 def test_resize_volume_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19765,7 +19755,7 @@ def test_resize_volume_rest_flattened_error(transport: str = "rest"):
 
 def test_resize_volume_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19778,7 +19768,7 @@ def test_resize_volume_rest_error():
 )
 def test_list_networks_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19829,7 +19819,7 @@ def test_list_networks_rest_required_fields(request_type=network.ListNetworksReq
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_networks._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19838,7 +19828,7 @@ def test_list_networks_rest_required_fields(request_type=network.ListNetworksReq
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_networks._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -19855,7 +19845,7 @@ def test_list_networks_rest_required_fields(request_type=network.ListNetworksReq
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19897,7 +19887,7 @@ def test_list_networks_rest_required_fields(request_type=network.ListNetworksReq
 
 def test_list_networks_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_networks._get_unset_required_fields({})
@@ -19916,7 +19906,7 @@ def test_list_networks_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_networks_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -19972,7 +19962,7 @@ def test_list_networks_rest_bad_request(
     transport: str = "rest", request_type=network.ListNetworksRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19994,7 +19984,7 @@ def test_list_networks_rest_bad_request(
 
 def test_list_networks_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20035,7 +20025,7 @@ def test_list_networks_rest_flattened():
 
 def test_list_networks_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20050,7 +20040,7 @@ def test_list_networks_rest_flattened_error(transport: str = "rest"):
 
 def test_list_networks_rest_pager(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20118,7 +20108,7 @@ def test_list_networks_rest_pager(transport: str = "rest"):
 )
 def test_list_network_usage_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20166,7 +20156,7 @@ def test_list_network_usage_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_network_usage._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20175,7 +20165,7 @@ def test_list_network_usage_rest_required_fields(
     jsonified_request["location"] = "location_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_network_usage._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20184,7 +20174,7 @@ def test_list_network_usage_rest_required_fields(
     assert jsonified_request["location"] == "location_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20226,7 +20216,7 @@ def test_list_network_usage_rest_required_fields(
 
 def test_list_network_usage_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_network_usage._get_unset_required_fields({})
@@ -20236,7 +20226,7 @@ def test_list_network_usage_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_network_usage_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -20294,7 +20284,7 @@ def test_list_network_usage_rest_bad_request(
     transport: str = "rest", request_type=network.ListNetworkUsageRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20316,7 +20306,7 @@ def test_list_network_usage_rest_bad_request(
 
 def test_list_network_usage_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20358,7 +20348,7 @@ def test_list_network_usage_rest_flattened():
 
 def test_list_network_usage_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20373,7 +20363,7 @@ def test_list_network_usage_rest_flattened_error(transport: str = "rest"):
 
 def test_list_network_usage_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -20386,7 +20376,7 @@ def test_list_network_usage_rest_error():
 )
 def test_get_network_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20457,7 +20447,7 @@ def test_get_network_rest_required_fields(request_type=network.GetNetworkRequest
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_network._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20466,7 +20456,7 @@ def test_get_network_rest_required_fields(request_type=network.GetNetworkRequest
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_network._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20475,7 +20465,7 @@ def test_get_network_rest_required_fields(request_type=network.GetNetworkRequest
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20517,7 +20507,7 @@ def test_get_network_rest_required_fields(request_type=network.GetNetworkRequest
 
 def test_get_network_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_network._get_unset_required_fields({})
@@ -20527,7 +20517,7 @@ def test_get_network_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_network_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -20581,7 +20571,7 @@ def test_get_network_rest_bad_request(
     transport: str = "rest", request_type=network.GetNetworkRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20603,7 +20593,7 @@ def test_get_network_rest_bad_request(
 
 def test_get_network_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20644,7 +20634,7 @@ def test_get_network_rest_flattened():
 
 def test_get_network_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20659,7 +20649,7 @@ def test_get_network_rest_flattened_error(transport: str = "rest"):
 
 def test_get_network_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -20672,7 +20662,7 @@ def test_get_network_rest_error():
 )
 def test_update_network_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20832,14 +20822,14 @@ def test_update_network_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_network._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_network._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -20848,7 +20838,7 @@ def test_update_network_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20888,7 +20878,7 @@ def test_update_network_rest_required_fields(
 
 def test_update_network_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_network._get_unset_required_fields({})
@@ -20898,7 +20888,7 @@ def test_update_network_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_network_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -20958,7 +20948,7 @@ def test_update_network_rest_bad_request(
     transport: str = "rest", request_type=gcb_network.UpdateNetworkRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20982,7 +20972,7 @@ def test_update_network_rest_bad_request(
 
 def test_update_network_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21025,7 +21015,7 @@ def test_update_network_rest_flattened():
 
 def test_update_network_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21041,7 +21031,7 @@ def test_update_network_rest_flattened_error(transport: str = "rest"):
 
 def test_update_network_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -21054,7 +21044,7 @@ def test_update_network_rest_error():
 )
 def test_create_volume_snapshot_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21190,7 +21180,7 @@ def test_create_volume_snapshot_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_volume_snapshot._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21199,7 +21189,7 @@ def test_create_volume_snapshot_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_volume_snapshot._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21208,7 +21198,7 @@ def test_create_volume_snapshot_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -21251,7 +21241,7 @@ def test_create_volume_snapshot_rest_required_fields(
 
 def test_create_volume_snapshot_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_volume_snapshot._get_unset_required_fields({})
@@ -21269,7 +21259,7 @@ def test_create_volume_snapshot_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_volume_snapshot_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -21328,7 +21318,7 @@ def test_create_volume_snapshot_rest_bad_request(
     request_type=gcb_volume_snapshot.CreateVolumeSnapshotRequest,
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21350,7 +21340,7 @@ def test_create_volume_snapshot_rest_bad_request(
 
 def test_create_volume_snapshot_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21395,7 +21385,7 @@ def test_create_volume_snapshot_rest_flattened():
 
 def test_create_volume_snapshot_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21411,7 +21401,7 @@ def test_create_volume_snapshot_rest_flattened_error(transport: str = "rest"):
 
 def test_create_volume_snapshot_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -21424,7 +21414,7 @@ def test_create_volume_snapshot_rest_error():
 )
 def test_restore_volume_snapshot_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21472,7 +21462,7 @@ def test_restore_volume_snapshot_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).restore_volume_snapshot._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21481,7 +21471,7 @@ def test_restore_volume_snapshot_rest_required_fields(
     jsonified_request["volumeSnapshot"] = "volume_snapshot_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).restore_volume_snapshot._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21490,7 +21480,7 @@ def test_restore_volume_snapshot_rest_required_fields(
     assert jsonified_request["volumeSnapshot"] == "volume_snapshot_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -21530,7 +21520,7 @@ def test_restore_volume_snapshot_rest_required_fields(
 
 def test_restore_volume_snapshot_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.restore_volume_snapshot._get_unset_required_fields({})
@@ -21540,7 +21530,7 @@ def test_restore_volume_snapshot_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_restore_volume_snapshot_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -21601,7 +21591,7 @@ def test_restore_volume_snapshot_rest_bad_request(
     request_type=gcb_volume_snapshot.RestoreVolumeSnapshotRequest,
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21625,7 +21615,7 @@ def test_restore_volume_snapshot_rest_bad_request(
 
 def test_restore_volume_snapshot_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21667,7 +21657,7 @@ def test_restore_volume_snapshot_rest_flattened():
 
 def test_restore_volume_snapshot_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21682,7 +21672,7 @@ def test_restore_volume_snapshot_rest_flattened_error(transport: str = "rest"):
 
 def test_restore_volume_snapshot_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -21695,7 +21685,7 @@ def test_restore_volume_snapshot_rest_error():
 )
 def test_delete_volume_snapshot_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21743,7 +21733,7 @@ def test_delete_volume_snapshot_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_volume_snapshot._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21752,7 +21742,7 @@ def test_delete_volume_snapshot_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_volume_snapshot._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21761,7 +21751,7 @@ def test_delete_volume_snapshot_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -21800,7 +21790,7 @@ def test_delete_volume_snapshot_rest_required_fields(
 
 def test_delete_volume_snapshot_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_volume_snapshot._get_unset_required_fields({})
@@ -21810,7 +21800,7 @@ def test_delete_volume_snapshot_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_volume_snapshot_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -21860,7 +21850,7 @@ def test_delete_volume_snapshot_rest_bad_request(
     transport: str = "rest", request_type=volume_snapshot.DeleteVolumeSnapshotRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21884,7 +21874,7 @@ def test_delete_volume_snapshot_rest_bad_request(
 
 def test_delete_volume_snapshot_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21926,7 +21916,7 @@ def test_delete_volume_snapshot_rest_flattened():
 
 def test_delete_volume_snapshot_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21941,7 +21931,7 @@ def test_delete_volume_snapshot_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_volume_snapshot_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -21954,7 +21944,7 @@ def test_delete_volume_snapshot_rest_error():
 )
 def test_get_volume_snapshot_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22015,7 +22005,7 @@ def test_get_volume_snapshot_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_volume_snapshot._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22024,7 +22014,7 @@ def test_get_volume_snapshot_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_volume_snapshot._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22033,7 +22023,7 @@ def test_get_volume_snapshot_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -22075,7 +22065,7 @@ def test_get_volume_snapshot_rest_required_fields(
 
 def test_get_volume_snapshot_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_volume_snapshot._get_unset_required_fields({})
@@ -22085,7 +22075,7 @@ def test_get_volume_snapshot_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_volume_snapshot_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -22143,7 +22133,7 @@ def test_get_volume_snapshot_rest_bad_request(
     transport: str = "rest", request_type=volume_snapshot.GetVolumeSnapshotRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22167,7 +22157,7 @@ def test_get_volume_snapshot_rest_bad_request(
 
 def test_get_volume_snapshot_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22211,7 +22201,7 @@ def test_get_volume_snapshot_rest_flattened():
 
 def test_get_volume_snapshot_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22226,7 +22216,7 @@ def test_get_volume_snapshot_rest_flattened_error(transport: str = "rest"):
 
 def test_get_volume_snapshot_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -22239,7 +22229,7 @@ def test_get_volume_snapshot_rest_error():
 )
 def test_list_volume_snapshots_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22292,7 +22282,7 @@ def test_list_volume_snapshots_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_volume_snapshots._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22301,7 +22291,7 @@ def test_list_volume_snapshots_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_volume_snapshots._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -22317,7 +22307,7 @@ def test_list_volume_snapshots_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -22359,7 +22349,7 @@ def test_list_volume_snapshots_rest_required_fields(
 
 def test_list_volume_snapshots_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_volume_snapshots._get_unset_required_fields({})
@@ -22377,7 +22367,7 @@ def test_list_volume_snapshots_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_volume_snapshots_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -22435,7 +22425,7 @@ def test_list_volume_snapshots_rest_bad_request(
     transport: str = "rest", request_type=volume_snapshot.ListVolumeSnapshotsRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22457,7 +22447,7 @@ def test_list_volume_snapshots_rest_bad_request(
 
 def test_list_volume_snapshots_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22501,7 +22491,7 @@ def test_list_volume_snapshots_rest_flattened():
 
 def test_list_volume_snapshots_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22516,7 +22506,7 @@ def test_list_volume_snapshots_rest_flattened_error(transport: str = "rest"):
 
 def test_list_volume_snapshots_rest_pager(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22588,7 +22578,7 @@ def test_list_volume_snapshots_rest_pager(transport: str = "rest"):
 )
 def test_get_lun_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22659,7 +22649,7 @@ def test_get_lun_rest_required_fields(request_type=lun.GetLunRequest):
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_lun._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22668,7 +22658,7 @@ def test_get_lun_rest_required_fields(request_type=lun.GetLunRequest):
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_lun._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22677,7 +22667,7 @@ def test_get_lun_rest_required_fields(request_type=lun.GetLunRequest):
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -22719,7 +22709,7 @@ def test_get_lun_rest_required_fields(request_type=lun.GetLunRequest):
 
 def test_get_lun_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_lun._get_unset_required_fields({})
@@ -22729,7 +22719,7 @@ def test_get_lun_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_lun_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -22783,7 +22773,7 @@ def test_get_lun_rest_bad_request(
     transport: str = "rest", request_type=lun.GetLunRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22807,7 +22797,7 @@ def test_get_lun_rest_bad_request(
 
 def test_get_lun_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22851,7 +22841,7 @@ def test_get_lun_rest_flattened():
 
 def test_get_lun_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22866,7 +22856,7 @@ def test_get_lun_rest_flattened_error(transport: str = "rest"):
 
 def test_get_lun_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -22879,7 +22869,7 @@ def test_get_lun_rest_error():
 )
 def test_list_luns_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22930,7 +22920,7 @@ def test_list_luns_rest_required_fields(request_type=lun.ListLunsRequest):
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_luns._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22939,7 +22929,7 @@ def test_list_luns_rest_required_fields(request_type=lun.ListLunsRequest):
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_luns._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -22955,7 +22945,7 @@ def test_list_luns_rest_required_fields(request_type=lun.ListLunsRequest):
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -22997,7 +22987,7 @@ def test_list_luns_rest_required_fields(request_type=lun.ListLunsRequest):
 
 def test_list_luns_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_luns._get_unset_required_fields({})
@@ -23015,7 +23005,7 @@ def test_list_luns_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_luns_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -23069,7 +23059,7 @@ def test_list_luns_rest_bad_request(
     transport: str = "rest", request_type=lun.ListLunsRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23091,7 +23081,7 @@ def test_list_luns_rest_bad_request(
 
 def test_list_luns_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23135,7 +23125,7 @@ def test_list_luns_rest_flattened():
 
 def test_list_luns_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23150,7 +23140,7 @@ def test_list_luns_rest_flattened_error(transport: str = "rest"):
 
 def test_list_luns_rest_pager(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23220,7 +23210,7 @@ def test_list_luns_rest_pager(transport: str = "rest"):
 )
 def test_evict_lun_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23266,7 +23256,7 @@ def test_evict_lun_rest_required_fields(request_type=lun.EvictLunRequest):
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).evict_lun._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23275,7 +23265,7 @@ def test_evict_lun_rest_required_fields(request_type=lun.EvictLunRequest):
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).evict_lun._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23284,7 +23274,7 @@ def test_evict_lun_rest_required_fields(request_type=lun.EvictLunRequest):
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -23324,7 +23314,7 @@ def test_evict_lun_rest_required_fields(request_type=lun.EvictLunRequest):
 
 def test_evict_lun_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.evict_lun._get_unset_required_fields({})
@@ -23334,7 +23324,7 @@ def test_evict_lun_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_evict_lun_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -23392,7 +23382,7 @@ def test_evict_lun_rest_bad_request(
     transport: str = "rest", request_type=lun.EvictLunRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23416,7 +23406,7 @@ def test_evict_lun_rest_bad_request(
 
 def test_evict_lun_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23458,7 +23448,7 @@ def test_evict_lun_rest_flattened():
 
 def test_evict_lun_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23473,7 +23463,7 @@ def test_evict_lun_rest_flattened_error(transport: str = "rest"):
 
 def test_evict_lun_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -23486,7 +23476,7 @@ def test_evict_lun_rest_error():
 )
 def test_get_nfs_share_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23547,7 +23537,7 @@ def test_get_nfs_share_rest_required_fields(request_type=nfs_share.GetNfsShareRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_nfs_share._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23556,7 +23546,7 @@ def test_get_nfs_share_rest_required_fields(request_type=nfs_share.GetNfsShareRe
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_nfs_share._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23565,7 +23555,7 @@ def test_get_nfs_share_rest_required_fields(request_type=nfs_share.GetNfsShareRe
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -23607,7 +23597,7 @@ def test_get_nfs_share_rest_required_fields(request_type=nfs_share.GetNfsShareRe
 
 def test_get_nfs_share_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_nfs_share._get_unset_required_fields({})
@@ -23617,7 +23607,7 @@ def test_get_nfs_share_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_nfs_share_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -23671,7 +23661,7 @@ def test_get_nfs_share_rest_bad_request(
     transport: str = "rest", request_type=nfs_share.GetNfsShareRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23693,7 +23683,7 @@ def test_get_nfs_share_rest_bad_request(
 
 def test_get_nfs_share_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23736,7 +23726,7 @@ def test_get_nfs_share_rest_flattened():
 
 def test_get_nfs_share_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23751,7 +23741,7 @@ def test_get_nfs_share_rest_flattened_error(transport: str = "rest"):
 
 def test_get_nfs_share_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -23764,7 +23754,7 @@ def test_get_nfs_share_rest_error():
 )
 def test_list_nfs_shares_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23817,7 +23807,7 @@ def test_list_nfs_shares_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_nfs_shares._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23826,7 +23816,7 @@ def test_list_nfs_shares_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_nfs_shares._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -23843,7 +23833,7 @@ def test_list_nfs_shares_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -23885,7 +23875,7 @@ def test_list_nfs_shares_rest_required_fields(
 
 def test_list_nfs_shares_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_nfs_shares._get_unset_required_fields({})
@@ -23904,7 +23894,7 @@ def test_list_nfs_shares_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_nfs_shares_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -23960,7 +23950,7 @@ def test_list_nfs_shares_rest_bad_request(
     transport: str = "rest", request_type=nfs_share.ListNfsSharesRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23982,7 +23972,7 @@ def test_list_nfs_shares_rest_bad_request(
 
 def test_list_nfs_shares_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24023,7 +24013,7 @@ def test_list_nfs_shares_rest_flattened():
 
 def test_list_nfs_shares_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24038,7 +24028,7 @@ def test_list_nfs_shares_rest_flattened_error(transport: str = "rest"):
 
 def test_list_nfs_shares_rest_pager(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24106,7 +24096,7 @@ def test_list_nfs_shares_rest_pager(transport: str = "rest"):
 )
 def test_update_nfs_share_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24242,14 +24232,14 @@ def test_update_nfs_share_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_nfs_share._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_nfs_share._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -24258,7 +24248,7 @@ def test_update_nfs_share_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -24298,7 +24288,7 @@ def test_update_nfs_share_rest_required_fields(
 
 def test_update_nfs_share_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_nfs_share._get_unset_required_fields({})
@@ -24308,7 +24298,7 @@ def test_update_nfs_share_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_nfs_share_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -24368,7 +24358,7 @@ def test_update_nfs_share_rest_bad_request(
     transport: str = "rest", request_type=gcb_nfs_share.UpdateNfsShareRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24392,7 +24382,7 @@ def test_update_nfs_share_rest_bad_request(
 
 def test_update_nfs_share_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24437,7 +24427,7 @@ def test_update_nfs_share_rest_flattened():
 
 def test_update_nfs_share_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24453,7 +24443,7 @@ def test_update_nfs_share_rest_flattened_error(transport: str = "rest"):
 
 def test_update_nfs_share_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -24466,7 +24456,7 @@ def test_update_nfs_share_rest_error():
 )
 def test_create_nfs_share_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24601,7 +24591,7 @@ def test_create_nfs_share_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_nfs_share._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -24610,7 +24600,7 @@ def test_create_nfs_share_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_nfs_share._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -24619,7 +24609,7 @@ def test_create_nfs_share_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -24659,7 +24649,7 @@ def test_create_nfs_share_rest_required_fields(
 
 def test_create_nfs_share_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_nfs_share._get_unset_required_fields({})
@@ -24677,7 +24667,7 @@ def test_create_nfs_share_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_nfs_share_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -24737,7 +24727,7 @@ def test_create_nfs_share_rest_bad_request(
     transport: str = "rest", request_type=gcb_nfs_share.CreateNfsShareRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24759,7 +24749,7 @@ def test_create_nfs_share_rest_bad_request(
 
 def test_create_nfs_share_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24799,7 +24789,7 @@ def test_create_nfs_share_rest_flattened():
 
 def test_create_nfs_share_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24815,7 +24805,7 @@ def test_create_nfs_share_rest_flattened_error(transport: str = "rest"):
 
 def test_create_nfs_share_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -24828,7 +24818,7 @@ def test_create_nfs_share_rest_error():
 )
 def test_rename_nfs_share_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24892,7 +24882,7 @@ def test_rename_nfs_share_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).rename_nfs_share._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -24902,7 +24892,7 @@ def test_rename_nfs_share_rest_required_fields(
     jsonified_request["newNfsshareId"] = "new_nfsshare_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).rename_nfs_share._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -24913,7 +24903,7 @@ def test_rename_nfs_share_rest_required_fields(
     assert jsonified_request["newNfsshareId"] == "new_nfsshare_id_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -24956,7 +24946,7 @@ def test_rename_nfs_share_rest_required_fields(
 
 def test_rename_nfs_share_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.rename_nfs_share._get_unset_required_fields({})
@@ -24974,7 +24964,7 @@ def test_rename_nfs_share_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_rename_nfs_share_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -25030,7 +25020,7 @@ def test_rename_nfs_share_rest_bad_request(
     transport: str = "rest", request_type=nfs_share.RenameNfsShareRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25052,7 +25042,7 @@ def test_rename_nfs_share_rest_bad_request(
 
 def test_rename_nfs_share_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -25097,7 +25087,7 @@ def test_rename_nfs_share_rest_flattened():
 
 def test_rename_nfs_share_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25113,7 +25103,7 @@ def test_rename_nfs_share_rest_flattened_error(transport: str = "rest"):
 
 def test_rename_nfs_share_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -25126,7 +25116,7 @@ def test_rename_nfs_share_rest_error():
 )
 def test_delete_nfs_share_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -25172,7 +25162,7 @@ def test_delete_nfs_share_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_nfs_share._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -25181,7 +25171,7 @@ def test_delete_nfs_share_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_nfs_share._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -25190,7 +25180,7 @@ def test_delete_nfs_share_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -25229,7 +25219,7 @@ def test_delete_nfs_share_rest_required_fields(
 
 def test_delete_nfs_share_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_nfs_share._get_unset_required_fields({})
@@ -25239,7 +25229,7 @@ def test_delete_nfs_share_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_nfs_share_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -25299,7 +25289,7 @@ def test_delete_nfs_share_rest_bad_request(
     transport: str = "rest", request_type=nfs_share.DeleteNfsShareRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25321,7 +25311,7 @@ def test_delete_nfs_share_rest_bad_request(
 
 def test_delete_nfs_share_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -25362,7 +25352,7 @@ def test_delete_nfs_share_rest_flattened():
 
 def test_delete_nfs_share_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25377,7 +25367,7 @@ def test_delete_nfs_share_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_nfs_share_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -25390,7 +25380,7 @@ def test_delete_nfs_share_rest_error():
 )
 def test_list_provisioning_quotas_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -25441,7 +25431,7 @@ def test_list_provisioning_quotas_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_provisioning_quotas._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -25450,7 +25440,7 @@ def test_list_provisioning_quotas_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_provisioning_quotas._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -25466,7 +25456,7 @@ def test_list_provisioning_quotas_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -25508,7 +25498,7 @@ def test_list_provisioning_quotas_rest_required_fields(
 
 def test_list_provisioning_quotas_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_provisioning_quotas._get_unset_required_fields({})
@@ -25526,7 +25516,7 @@ def test_list_provisioning_quotas_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_provisioning_quotas_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -25584,7 +25574,7 @@ def test_list_provisioning_quotas_rest_bad_request(
     transport: str = "rest", request_type=provisioning.ListProvisioningQuotasRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25606,7 +25596,7 @@ def test_list_provisioning_quotas_rest_bad_request(
 
 def test_list_provisioning_quotas_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -25648,7 +25638,7 @@ def test_list_provisioning_quotas_rest_flattened():
 
 def test_list_provisioning_quotas_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25663,7 +25653,7 @@ def test_list_provisioning_quotas_rest_flattened_error(transport: str = "rest"):
 
 def test_list_provisioning_quotas_rest_pager(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25733,7 +25723,7 @@ def test_list_provisioning_quotas_rest_pager(transport: str = "rest"):
 )
 def test_submit_provisioning_config_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -25781,7 +25771,7 @@ def test_submit_provisioning_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).submit_provisioning_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -25790,7 +25780,7 @@ def test_submit_provisioning_config_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).submit_provisioning_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -25799,7 +25789,7 @@ def test_submit_provisioning_config_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -25844,7 +25834,7 @@ def test_submit_provisioning_config_rest_required_fields(
 
 def test_submit_provisioning_config_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.submit_provisioning_config._get_unset_required_fields({})
@@ -25862,7 +25852,7 @@ def test_submit_provisioning_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_submit_provisioning_config_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -25922,7 +25912,7 @@ def test_submit_provisioning_config_rest_bad_request(
     transport: str = "rest", request_type=provisioning.SubmitProvisioningConfigRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25944,7 +25934,7 @@ def test_submit_provisioning_config_rest_bad_request(
 
 def test_submit_provisioning_config_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -25987,7 +25977,7 @@ def test_submit_provisioning_config_rest_flattened():
 
 def test_submit_provisioning_config_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26003,7 +25993,7 @@ def test_submit_provisioning_config_rest_flattened_error(transport: str = "rest"
 
 def test_submit_provisioning_config_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -26016,7 +26006,7 @@ def test_submit_provisioning_config_rest_error():
 )
 def test_get_provisioning_config_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -26087,7 +26077,7 @@ def test_get_provisioning_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_provisioning_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -26096,7 +26086,7 @@ def test_get_provisioning_config_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_provisioning_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -26105,7 +26095,7 @@ def test_get_provisioning_config_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -26147,7 +26137,7 @@ def test_get_provisioning_config_rest_required_fields(
 
 def test_get_provisioning_config_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_provisioning_config._get_unset_required_fields({})
@@ -26157,7 +26147,7 @@ def test_get_provisioning_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_provisioning_config_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -26215,7 +26205,7 @@ def test_get_provisioning_config_rest_bad_request(
     transport: str = "rest", request_type=provisioning.GetProvisioningConfigRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26239,7 +26229,7 @@ def test_get_provisioning_config_rest_bad_request(
 
 def test_get_provisioning_config_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -26283,7 +26273,7 @@ def test_get_provisioning_config_rest_flattened():
 
 def test_get_provisioning_config_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26298,7 +26288,7 @@ def test_get_provisioning_config_rest_flattened_error(transport: str = "rest"):
 
 def test_get_provisioning_config_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -26311,7 +26301,7 @@ def test_get_provisioning_config_rest_error():
 )
 def test_create_provisioning_config_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -26540,7 +26530,7 @@ def test_create_provisioning_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_provisioning_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -26549,7 +26539,7 @@ def test_create_provisioning_config_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_provisioning_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("email",))
@@ -26560,7 +26550,7 @@ def test_create_provisioning_config_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -26603,7 +26593,7 @@ def test_create_provisioning_config_rest_required_fields(
 
 def test_create_provisioning_config_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_provisioning_config._get_unset_required_fields({})
@@ -26621,7 +26611,7 @@ def test_create_provisioning_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_provisioning_config_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -26679,7 +26669,7 @@ def test_create_provisioning_config_rest_bad_request(
     transport: str = "rest", request_type=provisioning.CreateProvisioningConfigRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26701,7 +26691,7 @@ def test_create_provisioning_config_rest_bad_request(
 
 def test_create_provisioning_config_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -26744,7 +26734,7 @@ def test_create_provisioning_config_rest_flattened():
 
 def test_create_provisioning_config_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26760,7 +26750,7 @@ def test_create_provisioning_config_rest_flattened_error(transport: str = "rest"
 
 def test_create_provisioning_config_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -26773,7 +26763,7 @@ def test_create_provisioning_config_rest_error():
 )
 def test_update_provisioning_config_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -27005,14 +26995,14 @@ def test_update_provisioning_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_provisioning_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_provisioning_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -27026,7 +27016,7 @@ def test_update_provisioning_config_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -27069,7 +27059,7 @@ def test_update_provisioning_config_rest_required_fields(
 
 def test_update_provisioning_config_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_provisioning_config._get_unset_required_fields({})
@@ -27092,7 +27082,7 @@ def test_update_provisioning_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_provisioning_config_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -27150,7 +27140,7 @@ def test_update_provisioning_config_rest_bad_request(
     transport: str = "rest", request_type=provisioning.UpdateProvisioningConfigRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27176,7 +27166,7 @@ def test_update_provisioning_config_rest_bad_request(
 
 def test_update_provisioning_config_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -27223,7 +27213,7 @@ def test_update_provisioning_config_rest_flattened():
 
 def test_update_provisioning_config_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27239,7 +27229,7 @@ def test_update_provisioning_config_rest_flattened_error(transport: str = "rest"
 
 def test_update_provisioning_config_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -27252,7 +27242,7 @@ def test_update_provisioning_config_rest_error():
 )
 def test_rename_network_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -27324,7 +27314,7 @@ def test_rename_network_rest_required_fields(request_type=network.RenameNetworkR
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).rename_network._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -27334,7 +27324,7 @@ def test_rename_network_rest_required_fields(request_type=network.RenameNetworkR
     jsonified_request["newNetworkId"] = "new_network_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).rename_network._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -27345,7 +27335,7 @@ def test_rename_network_rest_required_fields(request_type=network.RenameNetworkR
     assert jsonified_request["newNetworkId"] == "new_network_id_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -27388,7 +27378,7 @@ def test_rename_network_rest_required_fields(request_type=network.RenameNetworkR
 
 def test_rename_network_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.rename_network._get_unset_required_fields({})
@@ -27406,7 +27396,7 @@ def test_rename_network_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_rename_network_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -27460,7 +27450,7 @@ def test_rename_network_rest_bad_request(
     transport: str = "rest", request_type=network.RenameNetworkRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27482,7 +27472,7 @@ def test_rename_network_rest_bad_request(
 
 def test_rename_network_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -27525,7 +27515,7 @@ def test_rename_network_rest_flattened():
 
 def test_rename_network_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27541,7 +27531,7 @@ def test_rename_network_rest_flattened_error(transport: str = "rest"):
 
 def test_rename_network_rest_error():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -27554,7 +27544,7 @@ def test_rename_network_rest_error():
 )
 def test_list_os_images_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -27603,7 +27593,7 @@ def test_list_os_images_rest_required_fields(request_type=osimage.ListOSImagesRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_os_images._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -27612,7 +27602,7 @@ def test_list_os_images_rest_required_fields(request_type=osimage.ListOSImagesRe
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_os_images._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -27628,7 +27618,7 @@ def test_list_os_images_rest_required_fields(request_type=osimage.ListOSImagesRe
     assert jsonified_request["parent"] == "parent_value"
 
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -27670,7 +27660,7 @@ def test_list_os_images_rest_required_fields(request_type=osimage.ListOSImagesRe
 
 def test_list_os_images_rest_unset_required_fields():
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_os_images._get_unset_required_fields({})
@@ -27688,7 +27678,7 @@ def test_list_os_images_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_os_images_rest_interceptors(null_interceptor):
     transport = transports.BareMetalSolutionRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.BareMetalSolutionRestInterceptor(),
@@ -27744,7 +27734,7 @@ def test_list_os_images_rest_bad_request(
     transport: str = "rest", request_type=osimage.ListOSImagesRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27766,7 +27756,7 @@ def test_list_os_images_rest_bad_request(
 
 def test_list_os_images_rest_flattened():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -27807,7 +27797,7 @@ def test_list_os_images_rest_flattened():
 
 def test_list_os_images_rest_flattened_error(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27822,7 +27812,7 @@ def test_list_os_images_rest_flattened_error(transport: str = "rest"):
 
 def test_list_os_images_rest_pager(transport: str = "rest"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27884,17 +27874,17 @@ def test_list_os_images_rest_pager(transport: str = "rest"):
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.BareMetalSolutionGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = BareMetalSolutionClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.BareMetalSolutionGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = BareMetalSolutionClient(
@@ -27904,7 +27894,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.BareMetalSolutionGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -27919,13 +27909,12 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = BareMetalSolutionClient(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.BareMetalSolutionGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = BareMetalSolutionClient(
@@ -27937,7 +27926,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.BareMetalSolutionGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = BareMetalSolutionClient(transport=transport)
     assert client.transport is transport
@@ -27946,13 +27935,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.BareMetalSolutionGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.BareMetalSolutionGrpcAsyncIOTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -27969,7 +27958,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -27983,7 +27972,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = BareMetalSolutionClient.get_transport_class(transport_name)(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
 
@@ -27991,7 +27980,7 @@ def test_transport_kind(transport_name):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
@@ -28003,7 +27992,7 @@ def test_bare_metal_solution_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.BareMetalSolutionTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -28015,7 +28004,7 @@ def test_bare_metal_solution_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.BareMetalSolutionTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -28097,7 +28086,7 @@ def test_bare_metal_solution_base_transport_with_credentials_file():
         "google.cloud.bare_metal_solution_v2.services.bare_metal_solution.transports.BareMetalSolutionTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BareMetalSolutionTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -28116,7 +28105,7 @@ def test_bare_metal_solution_base_transport_with_adc():
         "google.cloud.bare_metal_solution_v2.services.bare_metal_solution.transports.BareMetalSolutionTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BareMetalSolutionTransport()
         adc.assert_called_once()
 
@@ -28124,7 +28113,7 @@ def test_bare_metal_solution_base_transport_with_adc():
 def test_bare_metal_solution_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         BareMetalSolutionClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -28144,7 +28133,7 @@ def test_bare_metal_solution_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -28191,7 +28180,7 @@ def test_bare_metal_solution_transport_create_channel(transport_class, grpc_help
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
@@ -28221,7 +28210,7 @@ def test_bare_metal_solution_transport_create_channel(transport_class, grpc_help
 def test_bare_metal_solution_grpc_transport_client_cert_source_for_mtls(
     transport_class,
 ):
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -28259,7 +28248,7 @@ def test_bare_metal_solution_grpc_transport_client_cert_source_for_mtls(
 
 
 def test_bare_metal_solution_http_transport_client_cert_source_for_mtls():
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -28271,7 +28260,7 @@ def test_bare_metal_solution_http_transport_client_cert_source_for_mtls():
 
 def test_bare_metal_solution_rest_lro_client():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     transport = client.transport
@@ -28296,7 +28285,7 @@ def test_bare_metal_solution_rest_lro_client():
 )
 def test_bare_metal_solution_host_no_port(transport_name):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="baremetalsolution.googleapis.com"
         ),
@@ -28319,7 +28308,7 @@ def test_bare_metal_solution_host_no_port(transport_name):
 )
 def test_bare_metal_solution_host_with_port(transport_name):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="baremetalsolution.googleapis.com:8000"
         ),
@@ -28339,8 +28328,8 @@ def test_bare_metal_solution_host_with_port(transport_name):
     ],
 )
 def test_bare_metal_solution_client_transport_session_collision(transport_name):
-    creds1 = _AnonymousCredentialsWithUniverseDomain()
-    creds2 = _AnonymousCredentialsWithUniverseDomain()
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
     client1 = BareMetalSolutionClient(
         credentials=creds1,
         transport=transport_name,
@@ -28533,7 +28522,7 @@ def test_bare_metal_solution_transport_channel_mtls_with_client_cert_source(
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = _AnonymousCredentialsWithUniverseDomain()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
@@ -28611,7 +28600,7 @@ def test_bare_metal_solution_transport_channel_mtls_with_adc(transport_class):
 
 def test_bare_metal_solution_grpc_lro_client():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
     transport = client.transport
@@ -28628,7 +28617,7 @@ def test_bare_metal_solution_grpc_lro_client():
 
 def test_bare_metal_solution_grpc_lro_async_client():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     transport = client.transport
@@ -29197,7 +29186,7 @@ def test_client_with_default_client_info():
         transports.BareMetalSolutionTransport, "_prep_wrapped_messages"
     ) as prep:
         client = BareMetalSolutionClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -29207,7 +29196,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = BareMetalSolutionClient.get_transport_class()
         transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -29216,7 +29205,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(
@@ -29231,7 +29220,7 @@ def test_get_location_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.GetLocationRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29261,7 +29250,7 @@ def test_get_location_rest_bad_request(
 )
 def test_get_location_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2"}
@@ -29289,7 +29278,7 @@ def test_list_locations_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
 ):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29317,7 +29306,7 @@ def test_list_locations_rest_bad_request(
 )
 def test_list_locations_rest(request_type):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1"}
@@ -29343,7 +29332,7 @@ def test_list_locations_rest(request_type):
 
 def test_list_locations(transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29368,7 +29357,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29394,7 +29383,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
 
 def test_list_locations_field_headers():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -29423,7 +29412,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -29452,7 +29441,7 @@ async def test_list_locations_field_headers_async():
 
 def test_list_locations_from_dict():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -29470,7 +29459,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -29488,7 +29477,7 @@ async def test_list_locations_from_dict_async():
 
 def test_get_location(transport: str = "grpc"):
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29513,7 +29502,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29538,9 +29527,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_location_field_headers():
-    client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
-    )
+    client = BareMetalSolutionClient(credentials=ga_credentials.AnonymousCredentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -29568,7 +29555,7 @@ def test_get_location_field_headers():
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -29597,7 +29584,7 @@ async def test_get_location_field_headers_async():
 
 def test_get_location_from_dict():
     client = BareMetalSolutionClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -29615,7 +29602,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = BareMetalSolutionAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -29639,7 +29626,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = BareMetalSolutionClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -29656,7 +29643,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = BareMetalSolutionClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
