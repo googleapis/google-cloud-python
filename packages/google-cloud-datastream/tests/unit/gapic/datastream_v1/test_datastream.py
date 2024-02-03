@@ -95,18 +95,6 @@ def modify_default_endpoint_template(client):
     )
 
 
-# Anonymous Credentials with universe domain property. If no universe domain is provided, then
-# the default universe domain is "googleapis.com".
-class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain="googleapis.com"):
-        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
-        self._universe_domain = universe_domain
-
-    @property
-    def universe_domain(self):
-        return self._universe_domain
-
-
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -310,7 +298,7 @@ def test__get_universe_domain():
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
     client = client_class(
-        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
     )
     assert client._validate_universe_domain() == True
 
@@ -337,41 +325,48 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         client = client_class(transport=transport)
         assert client._validate_universe_domain() == True
 
-    # Test the case when there is a universe mismatch from the credentials.
-    client = client_class(
-        transport=transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(
-                universe_domain="foo.com"
-            )
-        )
-    )
-    with pytest.raises(ValueError) as excinfo:
-        client._validate_universe_domain()
-    assert (
-        str(excinfo.value)
-        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-    )
-
-    # Test the case when there is a universe mismatch from the client.
-    #
-    # TODO: Make this test unconditional once the minimum supported version of
-    # google-api-core becomes 2.15.0 or higher.
-    api_core_major, api_core_minor, _ = [
-        int(part) for part in api_core_version.__version__.split(".")
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [
+        int(part) for part in google.auth.__version__.split(".")
     ]
-    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-        client = client_class(
-            client_options={"universe_domain": "bar.com"},
-            transport=transport_class(
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
-            ),
-        )
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(transport=transport_class(credentials=credentials))
         with pytest.raises(ValueError) as excinfo:
             client._validate_universe_domain()
         assert (
             str(excinfo.value)
-            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         )
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor, _ = [
+            int(part) for part in api_core_version.__version__.split(".")
+        ]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(
+                client_options={"universe_domain": "bar.com"},
+                transport=transport_class(
+                    credentials=ga_credentials.AnonymousCredentials(),
+                ),
+            )
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert (
+                str(excinfo.value)
+                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            )
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -383,7 +378,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     ],
 )
 def test_datastream_client_from_service_account_info(client_class, transport_name):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -435,7 +430,7 @@ def test_datastream_client_service_account_always_use_jwt(
     ],
 )
 def test_datastream_client_from_service_account_file(client_class, transport_name):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -498,9 +493,7 @@ def test_datastream_client_client_options(
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(DatastreamClient, "get_transport_class") as gtc:
-        transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain()
-        )
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -893,20 +886,20 @@ def test_datastream_client_client_api_endpoint(client_class):
             )
             client = client_class(
                 client_options=options,
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
+                credentials=ga_credentials.AnonymousCredentials(),
             )
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
@@ -918,13 +911,11 @@ def test_datastream_client_client_api_endpoint(client_class):
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     else:
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     assert client.api_endpoint == (
         mock_endpoint if universe_exists else default_endpoint
@@ -940,8 +931,7 @@ def test_datastream_client_client_api_endpoint(client_class):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
         assert client.api_endpoint == default_endpoint
 
@@ -1082,8 +1072,8 @@ def test_datastream_client_create_channel_credentials_file(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
-        file_creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -1112,7 +1102,7 @@ def test_datastream_client_create_channel_credentials_file(
 )
 def test_list_connection_profiles(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1146,7 +1136,7 @@ def test_list_connection_profiles_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1166,7 +1156,7 @@ async def test_list_connection_profiles_async(
     request_type=datastream.ListConnectionProfilesRequest,
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1205,7 +1195,7 @@ async def test_list_connection_profiles_async_from_dict():
 
 def test_list_connection_profiles_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1237,7 +1227,7 @@ def test_list_connection_profiles_field_headers():
 @pytest.mark.asyncio
 async def test_list_connection_profiles_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1270,7 +1260,7 @@ async def test_list_connection_profiles_field_headers_async():
 
 def test_list_connection_profiles_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1296,7 +1286,7 @@ def test_list_connection_profiles_flattened():
 
 def test_list_connection_profiles_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1311,7 +1301,7 @@ def test_list_connection_profiles_flattened_error():
 @pytest.mark.asyncio
 async def test_list_connection_profiles_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1342,7 +1332,7 @@ async def test_list_connection_profiles_flattened_async():
 @pytest.mark.asyncio
 async def test_list_connection_profiles_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1356,7 +1346,7 @@ async def test_list_connection_profiles_flattened_error_async():
 
 def test_list_connection_profiles_pager(transport_name: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1410,7 +1400,7 @@ def test_list_connection_profiles_pager(transport_name: str = "grpc"):
 
 def test_list_connection_profiles_pages(transport_name: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1454,7 +1444,7 @@ def test_list_connection_profiles_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_connection_profiles_async_pager():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1508,7 +1498,7 @@ async def test_list_connection_profiles_async_pager():
 @pytest.mark.asyncio
 async def test_list_connection_profiles_async_pages():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1565,7 +1555,7 @@ async def test_list_connection_profiles_async_pages():
 )
 def test_get_connection_profile(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1599,7 +1589,7 @@ def test_get_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1618,7 +1608,7 @@ async def test_get_connection_profile_async(
     transport: str = "grpc_asyncio", request_type=datastream.GetConnectionProfileRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1657,7 +1647,7 @@ async def test_get_connection_profile_async_from_dict():
 
 def test_get_connection_profile_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1689,7 +1679,7 @@ def test_get_connection_profile_field_headers():
 @pytest.mark.asyncio
 async def test_get_connection_profile_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1722,7 +1712,7 @@ async def test_get_connection_profile_field_headers_async():
 
 def test_get_connection_profile_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1748,7 +1738,7 @@ def test_get_connection_profile_flattened():
 
 def test_get_connection_profile_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1763,7 +1753,7 @@ def test_get_connection_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_get_connection_profile_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1794,7 +1784,7 @@ async def test_get_connection_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_get_connection_profile_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1815,7 +1805,7 @@ async def test_get_connection_profile_flattened_error_async():
 )
 def test_create_connection_profile(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1844,7 +1834,7 @@ def test_create_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1864,7 +1854,7 @@ async def test_create_connection_profile_async(
     request_type=datastream.CreateConnectionProfileRequest,
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1898,7 +1888,7 @@ async def test_create_connection_profile_async_from_dict():
 
 def test_create_connection_profile_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1930,7 +1920,7 @@ def test_create_connection_profile_field_headers():
 @pytest.mark.asyncio
 async def test_create_connection_profile_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1963,7 +1953,7 @@ async def test_create_connection_profile_field_headers_async():
 
 def test_create_connection_profile_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1999,7 +1989,7 @@ def test_create_connection_profile_flattened():
 
 def test_create_connection_profile_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2018,7 +2008,7 @@ def test_create_connection_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_create_connection_profile_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2059,7 +2049,7 @@ async def test_create_connection_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_create_connection_profile_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2084,7 +2074,7 @@ async def test_create_connection_profile_flattened_error_async():
 )
 def test_update_connection_profile(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2113,7 +2103,7 @@ def test_update_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2133,7 +2123,7 @@ async def test_update_connection_profile_async(
     request_type=datastream.UpdateConnectionProfileRequest,
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2167,7 +2157,7 @@ async def test_update_connection_profile_async_from_dict():
 
 def test_update_connection_profile_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2199,7 +2189,7 @@ def test_update_connection_profile_field_headers():
 @pytest.mark.asyncio
 async def test_update_connection_profile_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2232,7 +2222,7 @@ async def test_update_connection_profile_field_headers_async():
 
 def test_update_connection_profile_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2264,7 +2254,7 @@ def test_update_connection_profile_flattened():
 
 def test_update_connection_profile_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2282,7 +2272,7 @@ def test_update_connection_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_update_connection_profile_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2319,7 +2309,7 @@ async def test_update_connection_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_update_connection_profile_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2343,7 +2333,7 @@ async def test_update_connection_profile_flattened_error_async():
 )
 def test_delete_connection_profile(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2372,7 +2362,7 @@ def test_delete_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2392,7 +2382,7 @@ async def test_delete_connection_profile_async(
     request_type=datastream.DeleteConnectionProfileRequest,
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2426,7 +2416,7 @@ async def test_delete_connection_profile_async_from_dict():
 
 def test_delete_connection_profile_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2458,7 +2448,7 @@ def test_delete_connection_profile_field_headers():
 @pytest.mark.asyncio
 async def test_delete_connection_profile_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2491,7 +2481,7 @@ async def test_delete_connection_profile_field_headers_async():
 
 def test_delete_connection_profile_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2517,7 +2507,7 @@ def test_delete_connection_profile_flattened():
 
 def test_delete_connection_profile_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2532,7 +2522,7 @@ def test_delete_connection_profile_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_connection_profile_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2563,7 +2553,7 @@ async def test_delete_connection_profile_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_connection_profile_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2584,7 +2574,7 @@ async def test_delete_connection_profile_flattened_error_async():
 )
 def test_discover_connection_profile(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2613,7 +2603,7 @@ def test_discover_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2633,7 +2623,7 @@ async def test_discover_connection_profile_async(
     request_type=datastream.DiscoverConnectionProfileRequest,
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2667,7 +2657,7 @@ async def test_discover_connection_profile_async_from_dict():
 
 def test_discover_connection_profile_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2699,7 +2689,7 @@ def test_discover_connection_profile_field_headers():
 @pytest.mark.asyncio
 async def test_discover_connection_profile_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2739,7 +2729,7 @@ async def test_discover_connection_profile_field_headers_async():
 )
 def test_list_streams(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2771,7 +2761,7 @@ def test_list_streams_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2788,7 +2778,7 @@ async def test_list_streams_async(
     transport: str = "grpc_asyncio", request_type=datastream.ListStreamsRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2825,7 +2815,7 @@ async def test_list_streams_async_from_dict():
 
 def test_list_streams_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2855,7 +2845,7 @@ def test_list_streams_field_headers():
 @pytest.mark.asyncio
 async def test_list_streams_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2886,7 +2876,7 @@ async def test_list_streams_field_headers_async():
 
 def test_list_streams_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2910,7 +2900,7 @@ def test_list_streams_flattened():
 
 def test_list_streams_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2925,7 +2915,7 @@ def test_list_streams_flattened_error():
 @pytest.mark.asyncio
 async def test_list_streams_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2954,7 +2944,7 @@ async def test_list_streams_flattened_async():
 @pytest.mark.asyncio
 async def test_list_streams_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2968,7 +2958,7 @@ async def test_list_streams_flattened_error_async():
 
 def test_list_streams_pager(transport_name: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -3018,7 +3008,7 @@ def test_list_streams_pager(transport_name: str = "grpc"):
 
 def test_list_streams_pages(transport_name: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -3060,7 +3050,7 @@ def test_list_streams_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_streams_async_pager():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3110,7 +3100,7 @@ async def test_list_streams_async_pager():
 @pytest.mark.asyncio
 async def test_list_streams_async_pages():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3165,7 +3155,7 @@ async def test_list_streams_async_pages():
 )
 def test_get_stream(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3204,7 +3194,7 @@ def test_get_stream_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3221,7 +3211,7 @@ async def test_get_stream_async(
     transport: str = "grpc_asyncio", request_type=datastream.GetStreamRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3265,7 +3255,7 @@ async def test_get_stream_async_from_dict():
 
 def test_get_stream_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3295,7 +3285,7 @@ def test_get_stream_field_headers():
 @pytest.mark.asyncio
 async def test_get_stream_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3326,7 +3316,7 @@ async def test_get_stream_field_headers_async():
 
 def test_get_stream_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3350,7 +3340,7 @@ def test_get_stream_flattened():
 
 def test_get_stream_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3365,7 +3355,7 @@ def test_get_stream_flattened_error():
 @pytest.mark.asyncio
 async def test_get_stream_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3394,7 +3384,7 @@ async def test_get_stream_flattened_async():
 @pytest.mark.asyncio
 async def test_get_stream_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3415,7 +3405,7 @@ async def test_get_stream_flattened_error_async():
 )
 def test_create_stream(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3442,7 +3432,7 @@ def test_create_stream_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3459,7 +3449,7 @@ async def test_create_stream_async(
     transport: str = "grpc_asyncio", request_type=datastream.CreateStreamRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3491,7 +3481,7 @@ async def test_create_stream_async_from_dict():
 
 def test_create_stream_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3521,7 +3511,7 @@ def test_create_stream_field_headers():
 @pytest.mark.asyncio
 async def test_create_stream_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3552,7 +3542,7 @@ async def test_create_stream_field_headers_async():
 
 def test_create_stream_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3584,7 +3574,7 @@ def test_create_stream_flattened():
 
 def test_create_stream_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3601,7 +3591,7 @@ def test_create_stream_flattened_error():
 @pytest.mark.asyncio
 async def test_create_stream_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3638,7 +3628,7 @@ async def test_create_stream_flattened_async():
 @pytest.mark.asyncio
 async def test_create_stream_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3661,7 +3651,7 @@ async def test_create_stream_flattened_error_async():
 )
 def test_update_stream(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3688,7 +3678,7 @@ def test_update_stream_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3705,7 +3695,7 @@ async def test_update_stream_async(
     transport: str = "grpc_asyncio", request_type=datastream.UpdateStreamRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3737,7 +3727,7 @@ async def test_update_stream_async_from_dict():
 
 def test_update_stream_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3767,7 +3757,7 @@ def test_update_stream_field_headers():
 @pytest.mark.asyncio
 async def test_update_stream_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3798,7 +3788,7 @@ async def test_update_stream_field_headers_async():
 
 def test_update_stream_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3826,7 +3816,7 @@ def test_update_stream_flattened():
 
 def test_update_stream_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3842,7 +3832,7 @@ def test_update_stream_flattened_error():
 @pytest.mark.asyncio
 async def test_update_stream_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3875,7 +3865,7 @@ async def test_update_stream_flattened_async():
 @pytest.mark.asyncio
 async def test_update_stream_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3897,7 +3887,7 @@ async def test_update_stream_flattened_error_async():
 )
 def test_delete_stream(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3924,7 +3914,7 @@ def test_delete_stream_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3941,7 +3931,7 @@ async def test_delete_stream_async(
     transport: str = "grpc_asyncio", request_type=datastream.DeleteStreamRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3973,7 +3963,7 @@ async def test_delete_stream_async_from_dict():
 
 def test_delete_stream_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4003,7 +3993,7 @@ def test_delete_stream_field_headers():
 @pytest.mark.asyncio
 async def test_delete_stream_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4034,7 +4024,7 @@ async def test_delete_stream_field_headers_async():
 
 def test_delete_stream_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4058,7 +4048,7 @@ def test_delete_stream_flattened():
 
 def test_delete_stream_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4073,7 +4063,7 @@ def test_delete_stream_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_stream_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4102,7 +4092,7 @@ async def test_delete_stream_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_stream_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4123,7 +4113,7 @@ async def test_delete_stream_flattened_error_async():
 )
 def test_get_stream_object(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4157,7 +4147,7 @@ def test_get_stream_object_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4176,7 +4166,7 @@ async def test_get_stream_object_async(
     transport: str = "grpc_asyncio", request_type=datastream.GetStreamObjectRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4215,7 +4205,7 @@ async def test_get_stream_object_async_from_dict():
 
 def test_get_stream_object_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4247,7 +4237,7 @@ def test_get_stream_object_field_headers():
 @pytest.mark.asyncio
 async def test_get_stream_object_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4280,7 +4270,7 @@ async def test_get_stream_object_field_headers_async():
 
 def test_get_stream_object_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4306,7 +4296,7 @@ def test_get_stream_object_flattened():
 
 def test_get_stream_object_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4321,7 +4311,7 @@ def test_get_stream_object_flattened_error():
 @pytest.mark.asyncio
 async def test_get_stream_object_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4352,7 +4342,7 @@ async def test_get_stream_object_flattened_async():
 @pytest.mark.asyncio
 async def test_get_stream_object_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4373,7 +4363,7 @@ async def test_get_stream_object_flattened_error_async():
 )
 def test_lookup_stream_object(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4407,7 +4397,7 @@ def test_lookup_stream_object_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4426,7 +4416,7 @@ async def test_lookup_stream_object_async(
     transport: str = "grpc_asyncio", request_type=datastream.LookupStreamObjectRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4465,7 +4455,7 @@ async def test_lookup_stream_object_async_from_dict():
 
 def test_lookup_stream_object_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4497,7 +4487,7 @@ def test_lookup_stream_object_field_headers():
 @pytest.mark.asyncio
 async def test_lookup_stream_object_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4537,7 +4527,7 @@ async def test_lookup_stream_object_field_headers_async():
 )
 def test_list_stream_objects(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4569,7 +4559,7 @@ def test_list_stream_objects_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4588,7 +4578,7 @@ async def test_list_stream_objects_async(
     transport: str = "grpc_asyncio", request_type=datastream.ListStreamObjectsRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4625,7 +4615,7 @@ async def test_list_stream_objects_async_from_dict():
 
 def test_list_stream_objects_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4657,7 +4647,7 @@ def test_list_stream_objects_field_headers():
 @pytest.mark.asyncio
 async def test_list_stream_objects_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4690,7 +4680,7 @@ async def test_list_stream_objects_field_headers_async():
 
 def test_list_stream_objects_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4716,7 +4706,7 @@ def test_list_stream_objects_flattened():
 
 def test_list_stream_objects_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4731,7 +4721,7 @@ def test_list_stream_objects_flattened_error():
 @pytest.mark.asyncio
 async def test_list_stream_objects_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4762,7 +4752,7 @@ async def test_list_stream_objects_flattened_async():
 @pytest.mark.asyncio
 async def test_list_stream_objects_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4776,7 +4766,7 @@ async def test_list_stream_objects_flattened_error_async():
 
 def test_list_stream_objects_pager(transport_name: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4828,7 +4818,7 @@ def test_list_stream_objects_pager(transport_name: str = "grpc"):
 
 def test_list_stream_objects_pages(transport_name: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4872,7 +4862,7 @@ def test_list_stream_objects_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_stream_objects_async_pager():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4924,7 +4914,7 @@ async def test_list_stream_objects_async_pager():
 @pytest.mark.asyncio
 async def test_list_stream_objects_async_pages():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4981,7 +4971,7 @@ async def test_list_stream_objects_async_pages():
 )
 def test_start_backfill_job(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5010,7 +5000,7 @@ def test_start_backfill_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5029,7 +5019,7 @@ async def test_start_backfill_job_async(
     transport: str = "grpc_asyncio", request_type=datastream.StartBackfillJobRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5063,7 +5053,7 @@ async def test_start_backfill_job_async_from_dict():
 
 def test_start_backfill_job_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5095,7 +5085,7 @@ def test_start_backfill_job_field_headers():
 @pytest.mark.asyncio
 async def test_start_backfill_job_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5128,7 +5118,7 @@ async def test_start_backfill_job_field_headers_async():
 
 def test_start_backfill_job_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5154,7 +5144,7 @@ def test_start_backfill_job_flattened():
 
 def test_start_backfill_job_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5169,7 +5159,7 @@ def test_start_backfill_job_flattened_error():
 @pytest.mark.asyncio
 async def test_start_backfill_job_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5200,7 +5190,7 @@ async def test_start_backfill_job_flattened_async():
 @pytest.mark.asyncio
 async def test_start_backfill_job_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5221,7 +5211,7 @@ async def test_start_backfill_job_flattened_error_async():
 )
 def test_stop_backfill_job(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5250,7 +5240,7 @@ def test_stop_backfill_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5269,7 +5259,7 @@ async def test_stop_backfill_job_async(
     transport: str = "grpc_asyncio", request_type=datastream.StopBackfillJobRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5303,7 +5293,7 @@ async def test_stop_backfill_job_async_from_dict():
 
 def test_stop_backfill_job_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5335,7 +5325,7 @@ def test_stop_backfill_job_field_headers():
 @pytest.mark.asyncio
 async def test_stop_backfill_job_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5368,7 +5358,7 @@ async def test_stop_backfill_job_field_headers_async():
 
 def test_stop_backfill_job_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5394,7 +5384,7 @@ def test_stop_backfill_job_flattened():
 
 def test_stop_backfill_job_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5409,7 +5399,7 @@ def test_stop_backfill_job_flattened_error():
 @pytest.mark.asyncio
 async def test_stop_backfill_job_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5440,7 +5430,7 @@ async def test_stop_backfill_job_flattened_async():
 @pytest.mark.asyncio
 async def test_stop_backfill_job_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5461,7 +5451,7 @@ async def test_stop_backfill_job_flattened_error_async():
 )
 def test_fetch_static_ips(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5493,7 +5483,7 @@ def test_fetch_static_ips_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5510,7 +5500,7 @@ async def test_fetch_static_ips_async(
     transport: str = "grpc_asyncio", request_type=datastream.FetchStaticIpsRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5547,7 +5537,7 @@ async def test_fetch_static_ips_async_from_dict():
 
 def test_fetch_static_ips_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5577,7 +5567,7 @@ def test_fetch_static_ips_field_headers():
 @pytest.mark.asyncio
 async def test_fetch_static_ips_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5608,7 +5598,7 @@ async def test_fetch_static_ips_field_headers_async():
 
 def test_fetch_static_ips_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5632,7 +5622,7 @@ def test_fetch_static_ips_flattened():
 
 def test_fetch_static_ips_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5647,7 +5637,7 @@ def test_fetch_static_ips_flattened_error():
 @pytest.mark.asyncio
 async def test_fetch_static_ips_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5676,7 +5666,7 @@ async def test_fetch_static_ips_flattened_async():
 @pytest.mark.asyncio
 async def test_fetch_static_ips_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5690,7 +5680,7 @@ async def test_fetch_static_ips_flattened_error_async():
 
 def test_fetch_static_ips_pager(transport_name: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -5740,7 +5730,7 @@ def test_fetch_static_ips_pager(transport_name: str = "grpc"):
 
 def test_fetch_static_ips_pages(transport_name: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -5782,7 +5772,7 @@ def test_fetch_static_ips_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_fetch_static_ips_async_pager():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5832,7 +5822,7 @@ async def test_fetch_static_ips_async_pager():
 @pytest.mark.asyncio
 async def test_fetch_static_ips_async_pages():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5887,7 +5877,7 @@ async def test_fetch_static_ips_async_pages():
 )
 def test_create_private_connection(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5916,7 +5906,7 @@ def test_create_private_connection_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5936,7 +5926,7 @@ async def test_create_private_connection_async(
     request_type=datastream.CreatePrivateConnectionRequest,
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5970,7 +5960,7 @@ async def test_create_private_connection_async_from_dict():
 
 def test_create_private_connection_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6002,7 +5992,7 @@ def test_create_private_connection_field_headers():
 @pytest.mark.asyncio
 async def test_create_private_connection_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6035,7 +6025,7 @@ async def test_create_private_connection_field_headers_async():
 
 def test_create_private_connection_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6071,7 +6061,7 @@ def test_create_private_connection_flattened():
 
 def test_create_private_connection_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6090,7 +6080,7 @@ def test_create_private_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_create_private_connection_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6131,7 +6121,7 @@ async def test_create_private_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_create_private_connection_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6156,7 +6146,7 @@ async def test_create_private_connection_flattened_error_async():
 )
 def test_get_private_connection(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6192,7 +6182,7 @@ def test_get_private_connection_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6211,7 +6201,7 @@ async def test_get_private_connection_async(
     transport: str = "grpc_asyncio", request_type=datastream.GetPrivateConnectionRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6252,7 +6242,7 @@ async def test_get_private_connection_async_from_dict():
 
 def test_get_private_connection_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6284,7 +6274,7 @@ def test_get_private_connection_field_headers():
 @pytest.mark.asyncio
 async def test_get_private_connection_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6317,7 +6307,7 @@ async def test_get_private_connection_field_headers_async():
 
 def test_get_private_connection_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6343,7 +6333,7 @@ def test_get_private_connection_flattened():
 
 def test_get_private_connection_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6358,7 +6348,7 @@ def test_get_private_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_get_private_connection_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6389,7 +6379,7 @@ async def test_get_private_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_get_private_connection_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6410,7 +6400,7 @@ async def test_get_private_connection_flattened_error_async():
 )
 def test_list_private_connections(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6444,7 +6434,7 @@ def test_list_private_connections_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6464,7 +6454,7 @@ async def test_list_private_connections_async(
     request_type=datastream.ListPrivateConnectionsRequest,
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6503,7 +6493,7 @@ async def test_list_private_connections_async_from_dict():
 
 def test_list_private_connections_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6535,7 +6525,7 @@ def test_list_private_connections_field_headers():
 @pytest.mark.asyncio
 async def test_list_private_connections_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6568,7 +6558,7 @@ async def test_list_private_connections_field_headers_async():
 
 def test_list_private_connections_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6594,7 +6584,7 @@ def test_list_private_connections_flattened():
 
 def test_list_private_connections_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6609,7 +6599,7 @@ def test_list_private_connections_flattened_error():
 @pytest.mark.asyncio
 async def test_list_private_connections_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6640,7 +6630,7 @@ async def test_list_private_connections_flattened_async():
 @pytest.mark.asyncio
 async def test_list_private_connections_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6654,7 +6644,7 @@ async def test_list_private_connections_flattened_error_async():
 
 def test_list_private_connections_pager(transport_name: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6708,7 +6698,7 @@ def test_list_private_connections_pager(transport_name: str = "grpc"):
 
 def test_list_private_connections_pages(transport_name: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6752,7 +6742,7 @@ def test_list_private_connections_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_private_connections_async_pager():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6806,7 +6796,7 @@ async def test_list_private_connections_async_pager():
 @pytest.mark.asyncio
 async def test_list_private_connections_async_pages():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6863,7 +6853,7 @@ async def test_list_private_connections_async_pages():
 )
 def test_delete_private_connection(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6892,7 +6882,7 @@ def test_delete_private_connection_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6912,7 +6902,7 @@ async def test_delete_private_connection_async(
     request_type=datastream.DeletePrivateConnectionRequest,
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6946,7 +6936,7 @@ async def test_delete_private_connection_async_from_dict():
 
 def test_delete_private_connection_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6978,7 +6968,7 @@ def test_delete_private_connection_field_headers():
 @pytest.mark.asyncio
 async def test_delete_private_connection_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7011,7 +7001,7 @@ async def test_delete_private_connection_field_headers_async():
 
 def test_delete_private_connection_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7037,7 +7027,7 @@ def test_delete_private_connection_flattened():
 
 def test_delete_private_connection_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7052,7 +7042,7 @@ def test_delete_private_connection_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_private_connection_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7083,7 +7073,7 @@ async def test_delete_private_connection_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_private_connection_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7104,7 +7094,7 @@ async def test_delete_private_connection_flattened_error_async():
 )
 def test_create_route(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7131,7 +7121,7 @@ def test_create_route_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7148,7 +7138,7 @@ async def test_create_route_async(
     transport: str = "grpc_asyncio", request_type=datastream.CreateRouteRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7180,7 +7170,7 @@ async def test_create_route_async_from_dict():
 
 def test_create_route_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7210,7 +7200,7 @@ def test_create_route_field_headers():
 @pytest.mark.asyncio
 async def test_create_route_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7241,7 +7231,7 @@ async def test_create_route_field_headers_async():
 
 def test_create_route_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7273,7 +7263,7 @@ def test_create_route_flattened():
 
 def test_create_route_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7290,7 +7280,7 @@ def test_create_route_flattened_error():
 @pytest.mark.asyncio
 async def test_create_route_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7327,7 +7317,7 @@ async def test_create_route_flattened_async():
 @pytest.mark.asyncio
 async def test_create_route_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7350,7 +7340,7 @@ async def test_create_route_flattened_error_async():
 )
 def test_get_route(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7386,7 +7376,7 @@ def test_get_route_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7403,7 +7393,7 @@ async def test_get_route_async(
     transport: str = "grpc_asyncio", request_type=datastream.GetRouteRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7444,7 +7434,7 @@ async def test_get_route_async_from_dict():
 
 def test_get_route_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7474,7 +7464,7 @@ def test_get_route_field_headers():
 @pytest.mark.asyncio
 async def test_get_route_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7505,7 +7495,7 @@ async def test_get_route_field_headers_async():
 
 def test_get_route_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7529,7 +7519,7 @@ def test_get_route_flattened():
 
 def test_get_route_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7544,7 +7534,7 @@ def test_get_route_flattened_error():
 @pytest.mark.asyncio
 async def test_get_route_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7573,7 +7563,7 @@ async def test_get_route_flattened_async():
 @pytest.mark.asyncio
 async def test_get_route_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7594,7 +7584,7 @@ async def test_get_route_flattened_error_async():
 )
 def test_list_routes(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7626,7 +7616,7 @@ def test_list_routes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7643,7 +7633,7 @@ async def test_list_routes_async(
     transport: str = "grpc_asyncio", request_type=datastream.ListRoutesRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7680,7 +7670,7 @@ async def test_list_routes_async_from_dict():
 
 def test_list_routes_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7710,7 +7700,7 @@ def test_list_routes_field_headers():
 @pytest.mark.asyncio
 async def test_list_routes_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7741,7 +7731,7 @@ async def test_list_routes_field_headers_async():
 
 def test_list_routes_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7765,7 +7755,7 @@ def test_list_routes_flattened():
 
 def test_list_routes_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7780,7 +7770,7 @@ def test_list_routes_flattened_error():
 @pytest.mark.asyncio
 async def test_list_routes_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7809,7 +7799,7 @@ async def test_list_routes_flattened_async():
 @pytest.mark.asyncio
 async def test_list_routes_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7823,7 +7813,7 @@ async def test_list_routes_flattened_error_async():
 
 def test_list_routes_pager(transport_name: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -7873,7 +7863,7 @@ def test_list_routes_pager(transport_name: str = "grpc"):
 
 def test_list_routes_pages(transport_name: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -7915,7 +7905,7 @@ def test_list_routes_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_routes_async_pager():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7965,7 +7955,7 @@ async def test_list_routes_async_pager():
 @pytest.mark.asyncio
 async def test_list_routes_async_pages():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8020,7 +8010,7 @@ async def test_list_routes_async_pages():
 )
 def test_delete_route(request_type, transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8047,7 +8037,7 @@ def test_delete_route_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8064,7 +8054,7 @@ async def test_delete_route_async(
     transport: str = "grpc_asyncio", request_type=datastream.DeleteRouteRequest
 ):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8096,7 +8086,7 @@ async def test_delete_route_async_from_dict():
 
 def test_delete_route_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8126,7 +8116,7 @@ def test_delete_route_field_headers():
 @pytest.mark.asyncio
 async def test_delete_route_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8157,7 +8147,7 @@ async def test_delete_route_field_headers_async():
 
 def test_delete_route_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8181,7 +8171,7 @@ def test_delete_route_flattened():
 
 def test_delete_route_flattened_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8196,7 +8186,7 @@ def test_delete_route_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_route_flattened_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8225,7 +8215,7 @@ async def test_delete_route_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_route_flattened_error_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8246,7 +8236,7 @@ async def test_delete_route_flattened_error_async():
 )
 def test_list_connection_profiles_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8299,7 +8289,7 @@ def test_list_connection_profiles_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_connection_profiles._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -8308,7 +8298,7 @@ def test_list_connection_profiles_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_connection_profiles._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -8326,7 +8316,7 @@ def test_list_connection_profiles_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -8368,7 +8358,7 @@ def test_list_connection_profiles_rest_required_fields(
 
 def test_list_connection_profiles_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_connection_profiles._get_unset_required_fields({})
@@ -8388,7 +8378,7 @@ def test_list_connection_profiles_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_connection_profiles_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -8446,7 +8436,7 @@ def test_list_connection_profiles_rest_bad_request(
     transport: str = "rest", request_type=datastream.ListConnectionProfilesRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8468,7 +8458,7 @@ def test_list_connection_profiles_rest_bad_request(
 
 def test_list_connection_profiles_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8510,7 +8500,7 @@ def test_list_connection_profiles_rest_flattened():
 
 def test_list_connection_profiles_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8525,7 +8515,7 @@ def test_list_connection_profiles_rest_flattened_error(transport: str = "rest"):
 
 def test_list_connection_profiles_rest_pager(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8597,7 +8587,7 @@ def test_list_connection_profiles_rest_pager(transport: str = "rest"):
 )
 def test_get_connection_profile_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8652,7 +8642,7 @@ def test_get_connection_profile_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_connection_profile._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -8661,7 +8651,7 @@ def test_get_connection_profile_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_connection_profile._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -8670,7 +8660,7 @@ def test_get_connection_profile_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -8712,7 +8702,7 @@ def test_get_connection_profile_rest_required_fields(
 
 def test_get_connection_profile_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_connection_profile._get_unset_required_fields({})
@@ -8722,7 +8712,7 @@ def test_get_connection_profile_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_connection_profile_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -8780,7 +8770,7 @@ def test_get_connection_profile_rest_bad_request(
     transport: str = "rest", request_type=datastream.GetConnectionProfileRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8804,7 +8794,7 @@ def test_get_connection_profile_rest_bad_request(
 
 def test_get_connection_profile_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8848,7 +8838,7 @@ def test_get_connection_profile_rest_flattened():
 
 def test_get_connection_profile_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8863,7 +8853,7 @@ def test_get_connection_profile_rest_flattened_error(transport: str = "rest"):
 
 def test_get_connection_profile_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -8876,7 +8866,7 @@ def test_get_connection_profile_rest_error():
 )
 def test_create_connection_profile_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9040,7 +9030,7 @@ def test_create_connection_profile_rest_required_fields(
     assert "connectionProfileId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_connection_profile._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -9055,7 +9045,7 @@ def test_create_connection_profile_rest_required_fields(
     jsonified_request["connectionProfileId"] = "connection_profile_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_connection_profile._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -9075,7 +9065,7 @@ def test_create_connection_profile_rest_required_fields(
     assert jsonified_request["connectionProfileId"] == "connection_profile_id_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9121,7 +9111,7 @@ def test_create_connection_profile_rest_required_fields(
 
 def test_create_connection_profile_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_connection_profile._get_unset_required_fields({})
@@ -9147,7 +9137,7 @@ def test_create_connection_profile_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_connection_profile_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -9207,7 +9197,7 @@ def test_create_connection_profile_rest_bad_request(
     transport: str = "rest", request_type=datastream.CreateConnectionProfileRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9229,7 +9219,7 @@ def test_create_connection_profile_rest_bad_request(
 
 def test_create_connection_profile_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9273,7 +9263,7 @@ def test_create_connection_profile_rest_flattened():
 
 def test_create_connection_profile_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9292,7 +9282,7 @@ def test_create_connection_profile_rest_flattened_error(transport: str = "rest")
 
 def test_create_connection_profile_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -9305,7 +9295,7 @@ def test_create_connection_profile_rest_error():
 )
 def test_update_connection_profile_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9470,14 +9460,14 @@ def test_update_connection_profile_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_connection_profile._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_connection_profile._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -9493,7 +9483,7 @@ def test_update_connection_profile_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9533,7 +9523,7 @@ def test_update_connection_profile_rest_required_fields(
 
 def test_update_connection_profile_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_connection_profile._get_unset_required_fields({})
@@ -9553,7 +9543,7 @@ def test_update_connection_profile_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_connection_profile_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -9613,7 +9603,7 @@ def test_update_connection_profile_rest_bad_request(
     transport: str = "rest", request_type=datastream.UpdateConnectionProfileRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9639,7 +9629,7 @@ def test_update_connection_profile_rest_bad_request(
 
 def test_update_connection_profile_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9686,7 +9676,7 @@ def test_update_connection_profile_rest_flattened():
 
 def test_update_connection_profile_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9704,7 +9694,7 @@ def test_update_connection_profile_rest_flattened_error(transport: str = "rest")
 
 def test_update_connection_profile_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -9717,7 +9707,7 @@ def test_update_connection_profile_rest_error():
 )
 def test_delete_connection_profile_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9765,7 +9755,7 @@ def test_delete_connection_profile_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_connection_profile._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -9774,7 +9764,7 @@ def test_delete_connection_profile_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_connection_profile._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
@@ -9785,7 +9775,7 @@ def test_delete_connection_profile_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9824,7 +9814,7 @@ def test_delete_connection_profile_rest_required_fields(
 
 def test_delete_connection_profile_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_connection_profile._get_unset_required_fields({})
@@ -9834,7 +9824,7 @@ def test_delete_connection_profile_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_connection_profile_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -9894,7 +9884,7 @@ def test_delete_connection_profile_rest_bad_request(
     transport: str = "rest", request_type=datastream.DeleteConnectionProfileRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9918,7 +9908,7 @@ def test_delete_connection_profile_rest_bad_request(
 
 def test_delete_connection_profile_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9960,7 +9950,7 @@ def test_delete_connection_profile_rest_flattened():
 
 def test_delete_connection_profile_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9975,7 +9965,7 @@ def test_delete_connection_profile_rest_flattened_error(transport: str = "rest")
 
 def test_delete_connection_profile_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -9988,7 +9978,7 @@ def test_delete_connection_profile_rest_error():
 )
 def test_discover_connection_profile_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10036,7 +10026,7 @@ def test_discover_connection_profile_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).discover_connection_profile._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10045,7 +10035,7 @@ def test_discover_connection_profile_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).discover_connection_profile._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10054,7 +10044,7 @@ def test_discover_connection_profile_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10097,7 +10087,7 @@ def test_discover_connection_profile_rest_required_fields(
 
 def test_discover_connection_profile_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.discover_connection_profile._get_unset_required_fields({})
@@ -10107,7 +10097,7 @@ def test_discover_connection_profile_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_discover_connection_profile_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -10167,7 +10157,7 @@ def test_discover_connection_profile_rest_bad_request(
     transport: str = "rest", request_type=datastream.DiscoverConnectionProfileRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10189,7 +10179,7 @@ def test_discover_connection_profile_rest_bad_request(
 
 def test_discover_connection_profile_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -10202,7 +10192,7 @@ def test_discover_connection_profile_rest_error():
 )
 def test_list_streams_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10253,7 +10243,7 @@ def test_list_streams_rest_required_fields(request_type=datastream.ListStreamsRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_streams._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10262,7 +10252,7 @@ def test_list_streams_rest_required_fields(request_type=datastream.ListStreamsRe
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_streams._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -10280,7 +10270,7 @@ def test_list_streams_rest_required_fields(request_type=datastream.ListStreamsRe
     assert jsonified_request["parent"] == "parent_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10322,7 +10312,7 @@ def test_list_streams_rest_required_fields(request_type=datastream.ListStreamsRe
 
 def test_list_streams_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_streams._get_unset_required_fields({})
@@ -10342,7 +10332,7 @@ def test_list_streams_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_streams_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -10398,7 +10388,7 @@ def test_list_streams_rest_bad_request(
     transport: str = "rest", request_type=datastream.ListStreamsRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10420,7 +10410,7 @@ def test_list_streams_rest_bad_request(
 
 def test_list_streams_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10461,7 +10451,7 @@ def test_list_streams_rest_flattened():
 
 def test_list_streams_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10476,7 +10466,7 @@ def test_list_streams_rest_flattened_error(transport: str = "rest"):
 
 def test_list_streams_rest_pager(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10544,7 +10534,7 @@ def test_list_streams_rest_pager(transport: str = "rest"):
 )
 def test_get_stream_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10602,7 +10592,7 @@ def test_get_stream_rest_required_fields(request_type=datastream.GetStreamReques
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_stream._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10611,7 +10601,7 @@ def test_get_stream_rest_required_fields(request_type=datastream.GetStreamReques
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_stream._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10620,7 +10610,7 @@ def test_get_stream_rest_required_fields(request_type=datastream.GetStreamReques
     assert jsonified_request["name"] == "name_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10662,7 +10652,7 @@ def test_get_stream_rest_required_fields(request_type=datastream.GetStreamReques
 
 def test_get_stream_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_stream._get_unset_required_fields({})
@@ -10672,7 +10662,7 @@ def test_get_stream_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_stream_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -10728,7 +10718,7 @@ def test_get_stream_rest_bad_request(
     transport: str = "rest", request_type=datastream.GetStreamRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10750,7 +10740,7 @@ def test_get_stream_rest_bad_request(
 
 def test_get_stream_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10791,7 +10781,7 @@ def test_get_stream_rest_flattened():
 
 def test_get_stream_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10806,7 +10796,7 @@ def test_get_stream_rest_flattened_error(transport: str = "rest"):
 
 def test_get_stream_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -10819,7 +10809,7 @@ def test_get_stream_rest_error():
 )
 def test_create_stream_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11074,7 +11064,7 @@ def test_create_stream_rest_required_fields(
     assert "streamId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_stream._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11086,7 +11076,7 @@ def test_create_stream_rest_required_fields(
     jsonified_request["streamId"] = "stream_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_stream._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -11106,7 +11096,7 @@ def test_create_stream_rest_required_fields(
     assert jsonified_request["streamId"] == "stream_id_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11152,7 +11142,7 @@ def test_create_stream_rest_required_fields(
 
 def test_create_stream_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_stream._get_unset_required_fields({})
@@ -11178,7 +11168,7 @@ def test_create_stream_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_stream_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -11236,7 +11226,7 @@ def test_create_stream_rest_bad_request(
     transport: str = "rest", request_type=datastream.CreateStreamRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11258,7 +11248,7 @@ def test_create_stream_rest_bad_request(
 
 def test_create_stream_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11299,7 +11289,7 @@ def test_create_stream_rest_flattened():
 
 def test_create_stream_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11316,7 +11306,7 @@ def test_create_stream_rest_flattened_error(transport: str = "rest"):
 
 def test_create_stream_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11329,7 +11319,7 @@ def test_create_stream_rest_error():
 )
 def test_update_stream_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11583,14 +11573,14 @@ def test_update_stream_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_stream._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_stream._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -11606,7 +11596,7 @@ def test_update_stream_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11646,7 +11636,7 @@ def test_update_stream_rest_required_fields(
 
 def test_update_stream_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_stream._get_unset_required_fields({})
@@ -11666,7 +11656,7 @@ def test_update_stream_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_stream_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -11724,7 +11714,7 @@ def test_update_stream_rest_bad_request(
     transport: str = "rest", request_type=datastream.UpdateStreamRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11748,7 +11738,7 @@ def test_update_stream_rest_bad_request(
 
 def test_update_stream_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11791,7 +11781,7 @@ def test_update_stream_rest_flattened():
 
 def test_update_stream_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11807,7 +11797,7 @@ def test_update_stream_rest_flattened_error(transport: str = "rest"):
 
 def test_update_stream_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11820,7 +11810,7 @@ def test_update_stream_rest_error():
 )
 def test_delete_stream_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11866,7 +11856,7 @@ def test_delete_stream_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_stream._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11875,7 +11865,7 @@ def test_delete_stream_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_stream._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
@@ -11886,7 +11876,7 @@ def test_delete_stream_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11925,7 +11915,7 @@ def test_delete_stream_rest_required_fields(
 
 def test_delete_stream_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_stream._get_unset_required_fields({})
@@ -11935,7 +11925,7 @@ def test_delete_stream_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_stream_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -11993,7 +11983,7 @@ def test_delete_stream_rest_bad_request(
     transport: str = "rest", request_type=datastream.DeleteStreamRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12015,7 +12005,7 @@ def test_delete_stream_rest_bad_request(
 
 def test_delete_stream_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12054,7 +12044,7 @@ def test_delete_stream_rest_flattened():
 
 def test_delete_stream_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12069,7 +12059,7 @@ def test_delete_stream_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_stream_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12082,7 +12072,7 @@ def test_delete_stream_rest_error():
 )
 def test_get_stream_object_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12137,7 +12127,7 @@ def test_get_stream_object_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_stream_object._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12146,7 +12136,7 @@ def test_get_stream_object_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_stream_object._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12155,7 +12145,7 @@ def test_get_stream_object_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12197,7 +12187,7 @@ def test_get_stream_object_rest_required_fields(
 
 def test_get_stream_object_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_stream_object._get_unset_required_fields({})
@@ -12207,7 +12197,7 @@ def test_get_stream_object_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_stream_object_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -12265,7 +12255,7 @@ def test_get_stream_object_rest_bad_request(
     transport: str = "rest", request_type=datastream.GetStreamObjectRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12289,7 +12279,7 @@ def test_get_stream_object_rest_bad_request(
 
 def test_get_stream_object_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12333,7 +12323,7 @@ def test_get_stream_object_rest_flattened():
 
 def test_get_stream_object_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12348,7 +12338,7 @@ def test_get_stream_object_rest_flattened_error(transport: str = "rest"):
 
 def test_get_stream_object_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12361,7 +12351,7 @@ def test_get_stream_object_rest_error():
 )
 def test_lookup_stream_object_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12414,7 +12404,7 @@ def test_lookup_stream_object_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).lookup_stream_object._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12423,7 +12413,7 @@ def test_lookup_stream_object_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).lookup_stream_object._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12432,7 +12422,7 @@ def test_lookup_stream_object_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12475,7 +12465,7 @@ def test_lookup_stream_object_rest_required_fields(
 
 def test_lookup_stream_object_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.lookup_stream_object._get_unset_required_fields({})
@@ -12493,7 +12483,7 @@ def test_lookup_stream_object_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_lookup_stream_object_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -12551,7 +12541,7 @@ def test_lookup_stream_object_rest_bad_request(
     transport: str = "rest", request_type=datastream.LookupStreamObjectRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12573,7 +12563,7 @@ def test_lookup_stream_object_rest_bad_request(
 
 def test_lookup_stream_object_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12586,7 +12576,7 @@ def test_lookup_stream_object_rest_error():
 )
 def test_list_stream_objects_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12637,7 +12627,7 @@ def test_list_stream_objects_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_stream_objects._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12646,7 +12636,7 @@ def test_list_stream_objects_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_stream_objects._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -12662,7 +12652,7 @@ def test_list_stream_objects_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12704,7 +12694,7 @@ def test_list_stream_objects_rest_required_fields(
 
 def test_list_stream_objects_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_stream_objects._get_unset_required_fields({})
@@ -12722,7 +12712,7 @@ def test_list_stream_objects_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_stream_objects_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -12780,7 +12770,7 @@ def test_list_stream_objects_rest_bad_request(
     transport: str = "rest", request_type=datastream.ListStreamObjectsRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12802,7 +12792,7 @@ def test_list_stream_objects_rest_bad_request(
 
 def test_list_stream_objects_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12846,7 +12836,7 @@ def test_list_stream_objects_rest_flattened():
 
 def test_list_stream_objects_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12861,7 +12851,7 @@ def test_list_stream_objects_rest_flattened_error(transport: str = "rest"):
 
 def test_list_stream_objects_rest_pager(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12933,7 +12923,7 @@ def test_list_stream_objects_rest_pager(transport: str = "rest"):
 )
 def test_start_backfill_job_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12983,7 +12973,7 @@ def test_start_backfill_job_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).start_backfill_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12992,7 +12982,7 @@ def test_start_backfill_job_rest_required_fields(
     jsonified_request["object"] = "object__value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).start_backfill_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13001,7 +12991,7 @@ def test_start_backfill_job_rest_required_fields(
     assert jsonified_request["object"] == "object__value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13044,7 +13034,7 @@ def test_start_backfill_job_rest_required_fields(
 
 def test_start_backfill_job_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.start_backfill_job._get_unset_required_fields({})
@@ -13054,7 +13044,7 @@ def test_start_backfill_job_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_start_backfill_job_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -13112,7 +13102,7 @@ def test_start_backfill_job_rest_bad_request(
     transport: str = "rest", request_type=datastream.StartBackfillJobRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13136,7 +13126,7 @@ def test_start_backfill_job_rest_bad_request(
 
 def test_start_backfill_job_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13180,7 +13170,7 @@ def test_start_backfill_job_rest_flattened():
 
 def test_start_backfill_job_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13195,7 +13185,7 @@ def test_start_backfill_job_rest_flattened_error(transport: str = "rest"):
 
 def test_start_backfill_job_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13208,7 +13198,7 @@ def test_start_backfill_job_rest_error():
 )
 def test_stop_backfill_job_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13258,7 +13248,7 @@ def test_stop_backfill_job_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).stop_backfill_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13267,7 +13257,7 @@ def test_stop_backfill_job_rest_required_fields(
     jsonified_request["object"] = "object__value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).stop_backfill_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13276,7 +13266,7 @@ def test_stop_backfill_job_rest_required_fields(
     assert jsonified_request["object"] == "object__value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13319,7 +13309,7 @@ def test_stop_backfill_job_rest_required_fields(
 
 def test_stop_backfill_job_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.stop_backfill_job._get_unset_required_fields({})
@@ -13329,7 +13319,7 @@ def test_stop_backfill_job_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_stop_backfill_job_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -13387,7 +13377,7 @@ def test_stop_backfill_job_rest_bad_request(
     transport: str = "rest", request_type=datastream.StopBackfillJobRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13411,7 +13401,7 @@ def test_stop_backfill_job_rest_bad_request(
 
 def test_stop_backfill_job_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13455,7 +13445,7 @@ def test_stop_backfill_job_rest_flattened():
 
 def test_stop_backfill_job_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13470,7 +13460,7 @@ def test_stop_backfill_job_rest_flattened_error(transport: str = "rest"):
 
 def test_stop_backfill_job_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13483,7 +13473,7 @@ def test_stop_backfill_job_rest_error():
 )
 def test_fetch_static_ips_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13536,7 +13526,7 @@ def test_fetch_static_ips_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_static_ips._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13545,7 +13535,7 @@ def test_fetch_static_ips_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_static_ips._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -13561,7 +13551,7 @@ def test_fetch_static_ips_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13603,7 +13593,7 @@ def test_fetch_static_ips_rest_required_fields(
 
 def test_fetch_static_ips_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.fetch_static_ips._get_unset_required_fields({})
@@ -13621,7 +13611,7 @@ def test_fetch_static_ips_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_fetch_static_ips_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -13679,7 +13669,7 @@ def test_fetch_static_ips_rest_bad_request(
     transport: str = "rest", request_type=datastream.FetchStaticIpsRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13701,7 +13691,7 @@ def test_fetch_static_ips_rest_bad_request(
 
 def test_fetch_static_ips_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13743,7 +13733,7 @@ def test_fetch_static_ips_rest_flattened():
 
 def test_fetch_static_ips_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13758,7 +13748,7 @@ def test_fetch_static_ips_rest_flattened_error(transport: str = "rest"):
 
 def test_fetch_static_ips_rest_pager(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13826,7 +13816,7 @@ def test_fetch_static_ips_rest_pager(transport: str = "rest"):
 )
 def test_create_private_connection_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13959,7 +13949,7 @@ def test_create_private_connection_rest_required_fields(
     assert "privateConnectionId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_private_connection._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13974,7 +13964,7 @@ def test_create_private_connection_rest_required_fields(
     jsonified_request["privateConnectionId"] = "private_connection_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_private_connection._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -13993,7 +13983,7 @@ def test_create_private_connection_rest_required_fields(
     assert jsonified_request["privateConnectionId"] == "private_connection_id_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14039,7 +14029,7 @@ def test_create_private_connection_rest_required_fields(
 
 def test_create_private_connection_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_private_connection._get_unset_required_fields({})
@@ -14064,7 +14054,7 @@ def test_create_private_connection_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_private_connection_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -14124,7 +14114,7 @@ def test_create_private_connection_rest_bad_request(
     transport: str = "rest", request_type=datastream.CreatePrivateConnectionRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14146,7 +14136,7 @@ def test_create_private_connection_rest_bad_request(
 
 def test_create_private_connection_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14190,7 +14180,7 @@ def test_create_private_connection_rest_flattened():
 
 def test_create_private_connection_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14209,7 +14199,7 @@ def test_create_private_connection_rest_flattened_error(transport: str = "rest")
 
 def test_create_private_connection_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14222,7 +14212,7 @@ def test_create_private_connection_rest_error():
 )
 def test_get_private_connection_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14279,7 +14269,7 @@ def test_get_private_connection_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_private_connection._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14288,7 +14278,7 @@ def test_get_private_connection_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_private_connection._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14297,7 +14287,7 @@ def test_get_private_connection_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14339,7 +14329,7 @@ def test_get_private_connection_rest_required_fields(
 
 def test_get_private_connection_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_private_connection._get_unset_required_fields({})
@@ -14349,7 +14339,7 @@ def test_get_private_connection_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_private_connection_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -14407,7 +14397,7 @@ def test_get_private_connection_rest_bad_request(
     transport: str = "rest", request_type=datastream.GetPrivateConnectionRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14431,7 +14421,7 @@ def test_get_private_connection_rest_bad_request(
 
 def test_get_private_connection_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14475,7 +14465,7 @@ def test_get_private_connection_rest_flattened():
 
 def test_get_private_connection_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14490,7 +14480,7 @@ def test_get_private_connection_rest_flattened_error(transport: str = "rest"):
 
 def test_get_private_connection_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14503,7 +14493,7 @@ def test_get_private_connection_rest_error():
 )
 def test_list_private_connections_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14556,7 +14546,7 @@ def test_list_private_connections_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_private_connections._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14565,7 +14555,7 @@ def test_list_private_connections_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_private_connections._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -14583,7 +14573,7 @@ def test_list_private_connections_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14625,7 +14615,7 @@ def test_list_private_connections_rest_required_fields(
 
 def test_list_private_connections_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_private_connections._get_unset_required_fields({})
@@ -14645,7 +14635,7 @@ def test_list_private_connections_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_private_connections_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -14703,7 +14693,7 @@ def test_list_private_connections_rest_bad_request(
     transport: str = "rest", request_type=datastream.ListPrivateConnectionsRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14725,7 +14715,7 @@ def test_list_private_connections_rest_bad_request(
 
 def test_list_private_connections_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14767,7 +14757,7 @@ def test_list_private_connections_rest_flattened():
 
 def test_list_private_connections_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14782,7 +14772,7 @@ def test_list_private_connections_rest_flattened_error(transport: str = "rest"):
 
 def test_list_private_connections_rest_pager(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14854,7 +14844,7 @@ def test_list_private_connections_rest_pager(transport: str = "rest"):
 )
 def test_delete_private_connection_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14902,7 +14892,7 @@ def test_delete_private_connection_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_private_connection._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14911,7 +14901,7 @@ def test_delete_private_connection_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_private_connection._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -14927,7 +14917,7 @@ def test_delete_private_connection_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14966,7 +14956,7 @@ def test_delete_private_connection_rest_required_fields(
 
 def test_delete_private_connection_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_private_connection._get_unset_required_fields({})
@@ -14984,7 +14974,7 @@ def test_delete_private_connection_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_private_connection_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -15044,7 +15034,7 @@ def test_delete_private_connection_rest_bad_request(
     transport: str = "rest", request_type=datastream.DeletePrivateConnectionRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15068,7 +15058,7 @@ def test_delete_private_connection_rest_bad_request(
 
 def test_delete_private_connection_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15110,7 +15100,7 @@ def test_delete_private_connection_rest_flattened():
 
 def test_delete_private_connection_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15125,7 +15115,7 @@ def test_delete_private_connection_rest_flattened_error(transport: str = "rest")
 
 def test_delete_private_connection_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15138,7 +15128,7 @@ def test_delete_private_connection_rest_error():
 )
 def test_create_route_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15262,7 +15252,7 @@ def test_create_route_rest_required_fields(request_type=datastream.CreateRouteRe
     assert "routeId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_route._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15274,7 +15264,7 @@ def test_create_route_rest_required_fields(request_type=datastream.CreateRouteRe
     jsonified_request["routeId"] = "route_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_route._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -15292,7 +15282,7 @@ def test_create_route_rest_required_fields(request_type=datastream.CreateRouteRe
     assert jsonified_request["routeId"] == "route_id_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15338,7 +15328,7 @@ def test_create_route_rest_required_fields(request_type=datastream.CreateRouteRe
 
 def test_create_route_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_route._get_unset_required_fields({})
@@ -15362,7 +15352,7 @@ def test_create_route_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_route_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -15420,7 +15410,7 @@ def test_create_route_rest_bad_request(
     transport: str = "rest", request_type=datastream.CreateRouteRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15444,7 +15434,7 @@ def test_create_route_rest_bad_request(
 
 def test_create_route_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15488,7 +15478,7 @@ def test_create_route_rest_flattened():
 
 def test_create_route_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15505,7 +15495,7 @@ def test_create_route_rest_flattened_error(transport: str = "rest"):
 
 def test_create_route_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15518,7 +15508,7 @@ def test_create_route_rest_error():
 )
 def test_get_route_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15575,7 +15565,7 @@ def test_get_route_rest_required_fields(request_type=datastream.GetRouteRequest)
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_route._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15584,7 +15574,7 @@ def test_get_route_rest_required_fields(request_type=datastream.GetRouteRequest)
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_route._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15593,7 +15583,7 @@ def test_get_route_rest_required_fields(request_type=datastream.GetRouteRequest)
     assert jsonified_request["name"] == "name_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15635,7 +15625,7 @@ def test_get_route_rest_required_fields(request_type=datastream.GetRouteRequest)
 
 def test_get_route_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_route._get_unset_required_fields({})
@@ -15645,7 +15635,7 @@ def test_get_route_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_route_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -15701,7 +15691,7 @@ def test_get_route_rest_bad_request(
     transport: str = "rest", request_type=datastream.GetRouteRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15725,7 +15715,7 @@ def test_get_route_rest_bad_request(
 
 def test_get_route_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15769,7 +15759,7 @@ def test_get_route_rest_flattened():
 
 def test_get_route_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15784,7 +15774,7 @@ def test_get_route_rest_flattened_error(transport: str = "rest"):
 
 def test_get_route_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15797,7 +15787,7 @@ def test_get_route_rest_error():
 )
 def test_list_routes_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15850,7 +15840,7 @@ def test_list_routes_rest_required_fields(request_type=datastream.ListRoutesRequ
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_routes._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15859,7 +15849,7 @@ def test_list_routes_rest_required_fields(request_type=datastream.ListRoutesRequ
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_routes._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -15877,7 +15867,7 @@ def test_list_routes_rest_required_fields(request_type=datastream.ListRoutesRequ
     assert jsonified_request["parent"] == "parent_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15919,7 +15909,7 @@ def test_list_routes_rest_required_fields(request_type=datastream.ListRoutesRequ
 
 def test_list_routes_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_routes._get_unset_required_fields({})
@@ -15939,7 +15929,7 @@ def test_list_routes_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_routes_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -15995,7 +15985,7 @@ def test_list_routes_rest_bad_request(
     transport: str = "rest", request_type=datastream.ListRoutesRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16019,7 +16009,7 @@ def test_list_routes_rest_bad_request(
 
 def test_list_routes_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16063,7 +16053,7 @@ def test_list_routes_rest_flattened():
 
 def test_list_routes_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16078,7 +16068,7 @@ def test_list_routes_rest_flattened_error(transport: str = "rest"):
 
 def test_list_routes_rest_pager(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16148,7 +16138,7 @@ def test_list_routes_rest_pager(transport: str = "rest"):
 )
 def test_delete_route_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16194,7 +16184,7 @@ def test_delete_route_rest_required_fields(request_type=datastream.DeleteRouteRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_route._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16203,7 +16193,7 @@ def test_delete_route_rest_required_fields(request_type=datastream.DeleteRouteRe
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_route._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
@@ -16214,7 +16204,7 @@ def test_delete_route_rest_required_fields(request_type=datastream.DeleteRouteRe
     assert jsonified_request["name"] == "name_value"
 
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16253,7 +16243,7 @@ def test_delete_route_rest_required_fields(request_type=datastream.DeleteRouteRe
 
 def test_delete_route_rest_unset_required_fields():
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_route._get_unset_required_fields({})
@@ -16263,7 +16253,7 @@ def test_delete_route_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_route_rest_interceptors(null_interceptor):
     transport = transports.DatastreamRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DatastreamRestInterceptor(),
@@ -16321,7 +16311,7 @@ def test_delete_route_rest_bad_request(
     transport: str = "rest", request_type=datastream.DeleteRouteRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16345,7 +16335,7 @@ def test_delete_route_rest_bad_request(
 
 def test_delete_route_rest_flattened():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16387,7 +16377,7 @@ def test_delete_route_rest_flattened():
 
 def test_delete_route_rest_flattened_error(transport: str = "rest"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16402,24 +16392,24 @@ def test_delete_route_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_route_rest_error():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DatastreamGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = DatastreamClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.DatastreamGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = DatastreamClient(
@@ -16429,7 +16419,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.DatastreamGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -16444,13 +16434,12 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = DatastreamClient(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.DatastreamGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = DatastreamClient(
@@ -16462,7 +16451,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.DatastreamGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = DatastreamClient(transport=transport)
     assert client.transport is transport
@@ -16471,13 +16460,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.DatastreamGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.DatastreamGrpcAsyncIOTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -16494,7 +16483,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -16508,7 +16497,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = DatastreamClient.get_transport_class(transport_name)(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
 
@@ -16516,7 +16505,7 @@ def test_transport_kind(transport_name):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
@@ -16528,7 +16517,7 @@ def test_datastream_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.DatastreamTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -16540,7 +16529,7 @@ def test_datastream_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.DatastreamTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -16607,7 +16596,7 @@ def test_datastream_base_transport_with_credentials_file():
         "google.cloud.datastream_v1.services.datastream.transports.DatastreamTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DatastreamTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -16626,7 +16615,7 @@ def test_datastream_base_transport_with_adc():
         "google.cloud.datastream_v1.services.datastream.transports.DatastreamTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DatastreamTransport()
         adc.assert_called_once()
 
@@ -16634,7 +16623,7 @@ def test_datastream_base_transport_with_adc():
 def test_datastream_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         DatastreamClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -16654,7 +16643,7 @@ def test_datastream_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -16701,7 +16690,7 @@ def test_datastream_transport_create_channel(transport_class, grpc_helpers):
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
@@ -16726,7 +16715,7 @@ def test_datastream_transport_create_channel(transport_class, grpc_helpers):
     [transports.DatastreamGrpcTransport, transports.DatastreamGrpcAsyncIOTransport],
 )
 def test_datastream_grpc_transport_client_cert_source_for_mtls(transport_class):
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -16764,7 +16753,7 @@ def test_datastream_grpc_transport_client_cert_source_for_mtls(transport_class):
 
 
 def test_datastream_http_transport_client_cert_source_for_mtls():
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -16776,7 +16765,7 @@ def test_datastream_http_transport_client_cert_source_for_mtls():
 
 def test_datastream_rest_lro_client():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     transport = client.transport
@@ -16801,7 +16790,7 @@ def test_datastream_rest_lro_client():
 )
 def test_datastream_host_no_port(transport_name):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="datastream.googleapis.com"
         ),
@@ -16824,7 +16813,7 @@ def test_datastream_host_no_port(transport_name):
 )
 def test_datastream_host_with_port(transport_name):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="datastream.googleapis.com:8000"
         ),
@@ -16844,8 +16833,8 @@ def test_datastream_host_with_port(transport_name):
     ],
 )
 def test_datastream_client_transport_session_collision(transport_name):
-    creds1 = _AnonymousCredentialsWithUniverseDomain()
-    creds2 = _AnonymousCredentialsWithUniverseDomain()
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
     client1 = DatastreamClient(
         credentials=creds1,
         transport=transport_name,
@@ -16976,7 +16965,7 @@ def test_datastream_transport_channel_mtls_with_client_cert_source(transport_cla
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = _AnonymousCredentialsWithUniverseDomain()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
@@ -17051,7 +17040,7 @@ def test_datastream_transport_channel_mtls_with_adc(transport_class):
 
 def test_datastream_grpc_lro_client():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
     transport = client.transport
@@ -17068,7 +17057,7 @@ def test_datastream_grpc_lro_client():
 
 def test_datastream_grpc_lro_async_client():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     transport = client.transport
@@ -17356,7 +17345,7 @@ def test_client_with_default_client_info():
         transports.DatastreamTransport, "_prep_wrapped_messages"
     ) as prep:
         client = DatastreamClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -17366,7 +17355,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = DatastreamClient.get_transport_class()
         transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -17375,7 +17364,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(
@@ -17390,7 +17379,7 @@ def test_get_location_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.GetLocationRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17420,7 +17409,7 @@ def test_get_location_rest_bad_request(
 )
 def test_get_location_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2"}
@@ -17448,7 +17437,7 @@ def test_list_locations_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17476,7 +17465,7 @@ def test_list_locations_rest_bad_request(
 )
 def test_list_locations_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1"}
@@ -17504,7 +17493,7 @@ def test_cancel_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17534,7 +17523,7 @@ def test_cancel_operation_rest_bad_request(
 )
 def test_cancel_operation_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
@@ -17562,7 +17551,7 @@ def test_delete_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17592,7 +17581,7 @@ def test_delete_operation_rest_bad_request(
 )
 def test_delete_operation_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
@@ -17620,7 +17609,7 @@ def test_get_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.GetOperationRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17650,7 +17639,7 @@ def test_get_operation_rest_bad_request(
 )
 def test_get_operation_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
@@ -17678,7 +17667,7 @@ def test_list_operations_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
 ):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17708,7 +17697,7 @@ def test_list_operations_rest_bad_request(
 )
 def test_list_operations_rest(request_type):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2"}
@@ -17734,7 +17723,7 @@ def test_list_operations_rest(request_type):
 
 def test_delete_operation(transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17759,7 +17748,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17783,7 +17772,7 @@ async def test_delete_operation_async(transport: str = "grpc_asyncio"):
 
 def test_delete_operation_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17812,7 +17801,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17839,7 +17828,7 @@ async def test_delete_operation_field_headers_async():
 
 def test_delete_operation_from_dict():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -17857,7 +17846,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -17873,7 +17862,7 @@ async def test_delete_operation_from_dict_async():
 
 def test_cancel_operation(transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17898,7 +17887,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17922,7 +17911,7 @@ async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
 
 def test_cancel_operation_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17951,7 +17940,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -17978,7 +17967,7 @@ async def test_cancel_operation_field_headers_async():
 
 def test_cancel_operation_from_dict():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -17996,7 +17985,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -18012,7 +18001,7 @@ async def test_cancel_operation_from_dict_async():
 
 def test_get_operation(transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18037,7 +18026,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18063,7 +18052,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 def test_get_operation_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -18092,7 +18081,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -18121,7 +18110,7 @@ async def test_get_operation_field_headers_async():
 
 def test_get_operation_from_dict():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -18139,7 +18128,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -18157,7 +18146,7 @@ async def test_get_operation_from_dict_async():
 
 def test_list_operations(transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18182,7 +18171,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18208,7 +18197,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
 
 def test_list_operations_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -18237,7 +18226,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -18266,7 +18255,7 @@ async def test_list_operations_field_headers_async():
 
 def test_list_operations_from_dict():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -18284,7 +18273,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -18302,7 +18291,7 @@ async def test_list_operations_from_dict_async():
 
 def test_list_locations(transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18327,7 +18316,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18353,7 +18342,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
 
 def test_list_locations_field_headers():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -18382,7 +18371,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -18411,7 +18400,7 @@ async def test_list_locations_field_headers_async():
 
 def test_list_locations_from_dict():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -18429,7 +18418,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -18447,7 +18436,7 @@ async def test_list_locations_from_dict_async():
 
 def test_get_location(transport: str = "grpc"):
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18472,7 +18461,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18497,7 +18486,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_location_field_headers():
-    client = DatastreamClient(credentials=_AnonymousCredentialsWithUniverseDomain())
+    client = DatastreamClient(credentials=ga_credentials.AnonymousCredentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -18524,9 +18513,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
-    )
+    client = DatastreamAsyncClient(credentials=ga_credentials.AnonymousCredentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -18554,7 +18541,7 @@ async def test_get_location_field_headers_async():
 
 def test_get_location_from_dict():
     client = DatastreamClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -18572,7 +18559,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = DatastreamAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -18596,7 +18583,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = DatastreamClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -18613,7 +18600,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = DatastreamClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
