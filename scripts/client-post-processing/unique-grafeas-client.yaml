@@ -19,8 +19,12 @@ replacements:
     ]
     # Use backslashes to preserve leading spaces
     before: |
+      \    # Copy defaults from the synchronous client for use here.
+      \    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
       \    DEFAULT_ENDPOINT = GrafeasClient.DEFAULT_ENDPOINT
-      \    DEFAULT_MTLS_ENDPOINT = GrafeasClient.DEFAULT_MTLS_ENDPOINT\n
+      \    DEFAULT_MTLS_ENDPOINT = GrafeasClient.DEFAULT_MTLS_ENDPOINT
+      \    _DEFAULT_ENDPOINT_TEMPLATE = GrafeasClient._DEFAULT_ENDPOINT_TEMPLATE
+      \    _DEFAULT_UNIVERSE = GrafeasClient._DEFAULT_UNIVERSE\n
     after: ""
     count: 1
   - paths: [
@@ -28,10 +32,14 @@ replacements:
     ]
     # Use backslashes to preserve leading spaces
     before: |
+      \    # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
       \    DEFAULT_ENDPOINT = "containeranalysis.googleapis.com"
       \    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__\(  # type: ignore
       \        DEFAULT_ENDPOINT
-      \    \)\n
+      \    \)
+      \
+      \    _DEFAULT_ENDPOINT_TEMPLATE = "containeranalysis.{UNIVERSE_DOMAIN}"
+      \    _DEFAULT_UNIVERSE = "googleapis.com"\n
     after: ""
     count: 1
   - paths: [
@@ -145,7 +153,9 @@ replacements:
                   patched.assert_called_once_with\(
                       credentials=mock_cred,
                       credentials_file=None,
-                      host=client.DEFAULT_ENDPOINT,
+                      host=client._DEFAULT_ENDPOINT_TEMPLATE.format\(
+                          UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                      \),
                       scopes=None,
                       client_cert_source_for_mtls=None,
                       quota_project_id=None,
@@ -345,7 +355,7 @@ replacements:
               \)
 
           # It is an error to provide an api_key and a credential.
-          options = mock.Mock\(\)
+          options = client_options.ClientOptions\(\)
           options.api_key = "api_key"
           with pytest.raises\(ValueError\):
               client = GrafeasClient\(
@@ -378,6 +388,17 @@ replacements:
           \)
 
 
+      # If default endpoint template is localhost, then default mtls endpoint will be the same.
+      # This method modifies the default endpoint template so the client can produce a different
+      # mtls endpoint for endpoint testing purposes.
+      def modify_default_endpoint_template\(client\):
+          return \(
+              "test.{UNIVERSE_DOMAIN}"
+              if \("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE\)
+              else client._DEFAULT_ENDPOINT_TEMPLATE
+          \)
+
+
       def test__get_default_mtls_endpoint\(\):
           api_endpoint = "example.googleapis.com"
           api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -399,6 +420,245 @@ replacements:
               == sandbox_mtls_endpoint
           \)
           assert GrafeasClient._get_default_mtls_endpoint\(non_googleapi\) == non_googleapi
+
+
+      def test__read_environment_variables\(\):
+          assert GrafeasClient._read_environment_variables\(\) == \(False, "auto", None\)
+
+          with mock.patch.dict\(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}\):
+              assert GrafeasClient._read_environment_variables\(\) == \(True, "auto", None\)
+
+          with mock.patch.dict\(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}\):
+              assert GrafeasClient._read_environment_variables\(\) == \(False, "auto", None\)
+
+          with mock.patch.dict\(
+              os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+          \):
+              with pytest.raises\(ValueError\) as excinfo:
+                  GrafeasClient._read_environment_variables\(\)
+          assert \(
+              str\(excinfo.value\)
+              == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+          \)
+
+          with mock.patch.dict\(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}\):
+              assert GrafeasClient._read_environment_variables\(\) == \(False, "never", None\)
+
+          with mock.patch.dict\(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}\):
+              assert GrafeasClient._read_environment_variables\(\) == \(False, "always", None\)
+
+          with mock.patch.dict\(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}\):
+              assert GrafeasClient._read_environment_variables\(\) == \(False, "auto", None\)
+
+          with mock.patch.dict\(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}\):
+              with pytest.raises\(MutualTLSChannelError\) as excinfo:
+                  GrafeasClient._read_environment_variables\(\)
+          assert \(
+              str\(excinfo.value\)
+              == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+          \)
+
+          with mock.patch.dict\(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}\):
+              assert GrafeasClient._read_environment_variables\(\) == \(False, "auto", "foo.com"\)
+
+
+      def test__get_client_cert_source\(\):
+          mock_provided_cert_source = mock.Mock\(\)
+          mock_default_cert_source = mock.Mock\(\)
+
+          assert GrafeasClient._get_client_cert_source\(None, False\) is None
+          assert \(
+              GrafeasClient._get_client_cert_source\(mock_provided_cert_source, False\) is None
+          \)
+          assert \(
+              GrafeasClient._get_client_cert_source\(mock_provided_cert_source, True\)
+              == mock_provided_cert_source
+          \)
+
+          with mock.patch\(
+              "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
+          \):
+              with mock.patch\(
+                  "google.auth.transport.mtls.default_client_cert_source",
+                  return_value=mock_default_cert_source,
+              \):
+                  assert \(
+                      GrafeasClient._get_client_cert_source\(None, True\)
+                      is mock_default_cert_source
+                  \)
+                  assert \(
+                      GrafeasClient._get_client_cert_source\(mock_provided_cert_source, "true"\)
+                      is mock_provided_cert_source
+                  \)
+
+
+      @mock.patch.object\(
+          GrafeasClient,
+          "_DEFAULT_ENDPOINT_TEMPLATE",
+          modify_default_endpoint_template\(GrafeasClient\),
+      \)
+      @mock.patch.object\(
+          GrafeasAsyncClient,
+          "_DEFAULT_ENDPOINT_TEMPLATE",
+          modify_default_endpoint_template\(GrafeasAsyncClient\),
+      \)
+      def test__get_api_endpoint\(\):
+          api_override = "foo.com"
+          mock_client_cert_source = mock.Mock\(\)
+          default_universe = GrafeasClient._DEFAULT_UNIVERSE
+          default_endpoint = GrafeasClient._DEFAULT_ENDPOINT_TEMPLATE.format\(
+              UNIVERSE_DOMAIN=default_universe
+          \)
+          mock_universe = "bar.com"
+          mock_endpoint = GrafeasClient._DEFAULT_ENDPOINT_TEMPLATE.format\(
+              UNIVERSE_DOMAIN=mock_universe
+          \)
+
+          assert \(
+              GrafeasClient._get_api_endpoint\(
+                  api_override, mock_client_cert_source, default_universe, "always"
+              \)
+              == api_override
+          \)
+          assert \(
+              GrafeasClient._get_api_endpoint\(
+                  None, mock_client_cert_source, default_universe, "auto"
+              \)
+              == GrafeasClient.DEFAULT_MTLS_ENDPOINT
+          \)
+          assert \(
+              GrafeasClient._get_api_endpoint\(None, None, default_universe, "auto"\)
+              == default_endpoint
+          \)
+          assert \(
+              GrafeasClient._get_api_endpoint\(None, None, default_universe, "always"\)
+              == GrafeasClient.DEFAULT_MTLS_ENDPOINT
+          \)
+          assert \(
+              GrafeasClient._get_api_endpoint\(
+                  None, mock_client_cert_source, default_universe, "always"
+              \)
+              == GrafeasClient.DEFAULT_MTLS_ENDPOINT
+          \)
+          assert \(
+              GrafeasClient._get_api_endpoint\(None, None, mock_universe, "never"\)
+              == mock_endpoint
+          \)
+          assert \(
+              GrafeasClient._get_api_endpoint\(None, None, default_universe, "never"\)
+              == default_endpoint
+          \)
+
+          with pytest.raises\(MutualTLSChannelError\) as excinfo:
+              GrafeasClient._get_api_endpoint\(
+                  None, mock_client_cert_source, mock_universe, "auto"
+              \)
+          assert \(
+              str\(excinfo.value\)
+              == "mTLS is not supported in any universe other than googleapis.com."
+          \)
+
+
+      def test__get_universe_domain\(\):
+          client_universe_domain = "foo.com"
+          universe_domain_env = "bar.com"
+
+          assert \(
+              GrafeasClient._get_universe_domain\(client_universe_domain, universe_domain_env\)
+              == client_universe_domain
+          \)
+          assert \(
+              GrafeasClient._get_universe_domain\(None, universe_domain_env\)
+              == universe_domain_env
+          \)
+          assert \(
+              GrafeasClient._get_universe_domain\(None, None\)
+              == GrafeasClient._DEFAULT_UNIVERSE
+          \)
+
+          with pytest.raises\(ValueError\) as excinfo:
+              GrafeasClient._get_universe_domain\("", None\)
+          assert str\(excinfo.value\) == "Universe Domain cannot be an empty string."
+
+
+      @pytest.mark.parametrize\(
+          "client_class,transport_class,transport_name",
+          \[
+              \(GrafeasClient, transports.GrafeasGrpcTransport, "grpc"\),
+              \(GrafeasClient, transports.GrafeasRestTransport, "rest"\),
+          \],
+      \)
+      def test__validate_universe_domain\(client_class, transport_class, transport_name\):
+          client = client_class\(
+              transport=transport_class\(credentials=ga_credentials.AnonymousCredentials\(\)\)
+          \)
+          assert client._validate_universe_domain\(\) == True
+
+          # Test the case when universe is already validated.
+          assert client._validate_universe_domain\(\) == True
+
+          if transport_name == "grpc":
+              # Test the case where credentials are provided by the
+              # `local_channel_credentials`. The default universes in both match.
+              channel = grpc.secure_channel\(
+                  "http://localhost/", grpc.local_channel_credentials\(\)
+              \)
+              client = client_class\(transport=transport_class\(channel=channel\)\)
+              assert client._validate_universe_domain\(\) == True
+
+              # Test the case where credentials do not exist: e.g. a transport is provided
+              # with no credentials. Validation should still succeed because there is no
+              # mismatch with non-existent credentials.
+              channel = grpc.secure_channel\(
+                  "http://localhost/", grpc.local_channel_credentials\(\)
+              \)
+              transport = transport_class\(channel=channel\)
+              transport._credentials = None
+              client = client_class\(transport=transport\)
+              assert client._validate_universe_domain\(\) == True
+
+          # TODO: This is needed to cater for older versions of google-auth
+          # Make this test unconditional once the minimum supported version of
+          # google-auth becomes 2.23.0 or higher.
+          google_auth_major, google_auth_minor, _ = \[
+              int\(part\) for part in google.auth.__version__.split\("."\)
+          \]
+          if google_auth_major > 2 or \(google_auth_major == 2 and google_auth_minor >= 23\):
+              credentials = ga_credentials.AnonymousCredentials\(\)
+              credentials._universe_domain = "foo.com"
+              # Test the case when there is a universe mismatch from the credentials.
+              client = client_class\(transport=transport_class\(credentials=credentials\)\)
+              with pytest.raises\(ValueError\) as excinfo:
+                  client._validate_universe_domain\(\)
+              assert \(
+                  str\(excinfo.value\)
+                  == "The configured universe domain \(googleapis.com\) does not match the universe domain found in the credentials \(foo.com\). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+              \)
+
+              # Test the case when there is a universe mismatch from the client.
+              #
+              # TODO: Make this test unconditional once the minimum supported version of
+              # google-api-core becomes 2.15.0 or higher.
+              api_core_major, api_core_minor, _ = \[
+                  int\(part\) for part in api_core_version.__version__.split\("."\)
+              \]
+              if api_core_major > 2 or \(api_core_major == 2 and api_core_minor >= 15\):
+                  client = client_class\(
+                      client_options={"universe_domain": "bar.com"},
+                      transport=transport_class\(
+                          credentials=ga_credentials.AnonymousCredentials\(\),
+                      \),
+                  \)
+                  with pytest.raises\(ValueError\) as excinfo:
+                      client._validate_universe_domain\(\)
+                  assert \(
+                      str\(excinfo.value\)
+                      == "The configured universe domain \(bar.com\) does not match the universe domain found in the credentials \(googleapis.com\). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+                  \)
+
+          # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+          with pytest.raises\(ValueError\):
+              client._compare_universes\("foo.bar", None\)
 
 
       @pytest.mark.parametrize\(
@@ -505,10 +765,14 @@ replacements:
           \],
       \)
       @mock.patch.object\(
-          GrafeasClient, "DEFAULT_ENDPOINT", modify_default_endpoint\(GrafeasClient\)
+          GrafeasClient,
+          "_DEFAULT_ENDPOINT_TEMPLATE",
+          modify_default_endpoint_template\(GrafeasClient\),
       \)
       @mock.patch.object\(
-          GrafeasAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint\(GrafeasAsyncClient\)
+          GrafeasAsyncClient,
+          "_DEFAULT_ENDPOINT_TEMPLATE",
+          modify_default_endpoint_template\(GrafeasAsyncClient\),
       \)
       def test_grafeas_client_client_options\(client_class, transport_class, transport_name\):
           # Check that if channel is provided we won't create a new one.
@@ -548,7 +812,9 @@ replacements:
                   patched.assert_called_once_with\(
                       credentials=None,
                       credentials_file=None,
-                      host=client.DEFAULT_ENDPOINT,
+                      host=client._DEFAULT_ENDPOINT_TEMPLATE.format\(
+                          UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                      \),
                       scopes=None,
                       client_cert_source_for_mtls=None,
                       quota_project_id=None,
@@ -578,15 +844,23 @@ replacements:
           # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
           # unsupported value.
           with mock.patch.dict\(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}\):
-              with pytest.raises\(MutualTLSChannelError\):
+              with pytest.raises\(MutualTLSChannelError\) as excinfo:
                   client = client_class\(transport=transport_name\)
+          assert \(
+              str\(excinfo.value\)
+              == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+          \)
 
           # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
           with mock.patch.dict\(
               os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
           \):
-              with pytest.raises\(ValueError\):
+              with pytest.raises\(ValueError\) as excinfo:
                   client = client_class\(transport=transport_name\)
+          assert \(
+              str\(excinfo.value\)
+              == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+          \)
 
           # Check the case quota_project_id is provided
           options = client_options.ClientOptions\(quota_project_id="octopus"\)
@@ -596,7 +870,9 @@ replacements:
               patched.assert_called_once_with\(
                   credentials=None,
                   credentials_file=None,
-                  host=client.DEFAULT_ENDPOINT,
+                  host=client._DEFAULT_ENDPOINT_TEMPLATE.format\(
+                      UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                  \),
                   scopes=None,
                   client_cert_source_for_mtls=None,
                   quota_project_id="octopus",
@@ -614,7 +890,9 @@ replacements:
               patched.assert_called_once_with\(
                   credentials=None,
                   credentials_file=None,
-                  host=client.DEFAULT_ENDPOINT,
+                  host=client._DEFAULT_ENDPOINT_TEMPLATE.format\(
+                      UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                  \),
                   scopes=None,
                   client_cert_source_for_mtls=None,
                   quota_project_id=None,
@@ -646,10 +924,14 @@ replacements:
           \],
       \)
       @mock.patch.object\(
-          GrafeasClient, "DEFAULT_ENDPOINT", modify_default_endpoint\(GrafeasClient\)
+          GrafeasClient,
+          "_DEFAULT_ENDPOINT_TEMPLATE",
+          modify_default_endpoint_template\(GrafeasClient\),
       \)
       @mock.patch.object\(
-          GrafeasAsyncClient, "DEFAULT_ENDPOINT", modify_default_endpoint\(GrafeasAsyncClient\)
+          GrafeasAsyncClient,
+          "_DEFAULT_ENDPOINT_TEMPLATE",
+          modify_default_endpoint_template\(GrafeasAsyncClient\),
       \)
       @mock.patch.dict\(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}\)
       def test_grafeas_client_mtls_env_auto\(
@@ -672,7 +954,9 @@ replacements:
 
                   if use_client_cert_env == "false":
                       expected_client_cert_source = None
-                      expected_host = client.DEFAULT_ENDPOINT
+                      expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format\(
+                          UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                      \)
                   else:
                       expected_client_cert_source = client_cert_source_callback
                       expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -704,7 +988,9 @@ replacements:
                           return_value=client_cert_source_callback,
                       \):
                           if use_client_cert_env == "false":
-                              expected_host = client.DEFAULT_ENDPOINT
+                              expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format\(
+                                  UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                              \)
                               expected_client_cert_source = None
                           else:
                               expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -738,7 +1024,9 @@ replacements:
                       patched.assert_called_once_with\(
                           credentials=None,
                           credentials_file=None,
-                          host=client.DEFAULT_ENDPOINT,
+                          host=client._DEFAULT_ENDPOINT_TEMPLATE.format\(
+                              UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                          \),
                           scopes=None,
                           client_cert_source_for_mtls=None,
                           quota_project_id=None,
@@ -822,6 +1110,113 @@ replacements:
                       assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                       assert cert_source == mock_client_cert_source
 
+          # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+          # unsupported value.
+          with mock.patch.dict\(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}\):
+              with pytest.raises\(MutualTLSChannelError\) as excinfo:
+                  client_class.get_mtls_endpoint_and_cert_source\(\)
+
+              assert \(
+                  str\(excinfo.value\)
+                  == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+              \)
+
+          # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+          with mock.patch.dict\(
+              os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+          \):
+              with pytest.raises\(ValueError\) as excinfo:
+                  client_class.get_mtls_endpoint_and_cert_source\(\)
+      
+              assert \(
+                  str\(excinfo.value\)
+                  == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+              \)
+
+
+      @pytest.mark.parametrize\("client_class", \[GrafeasClient, GrafeasAsyncClient\]\)
+      @mock.patch.object\(
+          GrafeasClient,
+          "_DEFAULT_ENDPOINT_TEMPLATE",
+          modify_default_endpoint_template\(GrafeasClient\),
+      \)
+      @mock.patch.object\(
+          GrafeasAsyncClient,
+          "_DEFAULT_ENDPOINT_TEMPLATE",
+          modify_default_endpoint_template\(GrafeasAsyncClient\),
+      \)
+      def test_grafeas_client_client_api_endpoint\(client_class\):
+          mock_client_cert_source = client_cert_source_callback
+          api_override = "foo.com"
+          default_universe = GrafeasClient._DEFAULT_UNIVERSE
+          default_endpoint = GrafeasClient._DEFAULT_ENDPOINT_TEMPLATE.format\(
+              UNIVERSE_DOMAIN=default_universe
+          \)
+          mock_universe = "bar.com"
+          mock_endpoint = GrafeasClient._DEFAULT_ENDPOINT_TEMPLATE.format\(
+              UNIVERSE_DOMAIN=mock_universe
+          \)
+
+          # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
+          # use ClientOptions.api_endpoint as the api endpoint regardless.
+          with mock.patch.dict\(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}\):
+              with mock.patch\(
+                  "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+              \):
+                  options = client_options.ClientOptions\(
+                      client_cert_source=mock_client_cert_source, api_endpoint=api_override
+                  \)
+                  client = client_class\(
+                      client_options=options,
+                      credentials=ga_credentials.AnonymousCredentials\(\),
+                  \)
+                  assert client.api_endpoint == api_override
+
+          # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+          # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+          with mock.patch.dict\(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}\):
+              client = client_class\(credentials=ga_credentials.AnonymousCredentials\(\)\)
+              assert client.api_endpoint == default_endpoint
+
+          # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
+          # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
+          with mock.patch.dict\(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}\):
+              client = client_class\(credentials=ga_credentials.AnonymousCredentials\(\)\)
+              assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+
+          # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" \(default\),
+          # GOOGLE_API_USE_CLIENT_CERTIFICATE="false" \(default\), default cert source doesn't exist,
+          # and ClientOptions.universe_domain="bar.com",
+          # use the _DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
+          options = client_options.ClientOptions\(\)
+          universe_exists = hasattr\(options, "universe_domain"\)
+          if universe_exists:
+              options = client_options.ClientOptions\(universe_domain=mock_universe\)
+              client = client_class\(
+                  client_options=options, credentials=ga_credentials.AnonymousCredentials\(\)
+              \)
+          else:
+              client = client_class\(
+                  client_options=options, credentials=ga_credentials.AnonymousCredentials\(\)
+              \)
+          assert client.api_endpoint == \(
+              mock_endpoint if universe_exists else default_endpoint
+          \)
+          assert client.universe_domain == \(
+              mock_universe if universe_exists else default_universe
+          \)
+
+          # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+          # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+          options = client_options.ClientOptions\(\)
+          if hasattr\(options, "universe_domain"\):
+              delattr\(options, "universe_domain"\)
+          with mock.patch.dict\(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}\):
+              client = client_class\(
+                  client_options=options, credentials=ga_credentials.AnonymousCredentials\(\)
+              \)
+              assert client.api_endpoint == default_endpoint
+
 
       @pytest.mark.parametrize\(
           "client_class,transport_class,transport_name",
@@ -844,7 +1239,9 @@ replacements:
               patched.assert_called_once_with\(
                   credentials=None,
                   credentials_file=None,
-                  host=client.DEFAULT_ENDPOINT,
+                  host=client._DEFAULT_ENDPOINT_TEMPLATE.format\(
+                      UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                  \),
                   scopes=\["1", "2"\],
                   client_cert_source_for_mtls=None,
                   quota_project_id=None,
@@ -879,7 +1276,9 @@ replacements:
               patched.assert_called_once_with\(
                   credentials=None,
                   credentials_file="credentials.json",
-                  host=client.DEFAULT_ENDPOINT,
+                  host=client._DEFAULT_ENDPOINT_TEMPLATE.format\(
+                      UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                  \),
                   scopes=None,
                   client_cert_source_for_mtls=None,
                   quota_project_id=None,
@@ -932,7 +1331,9 @@ replacements:
               patched.assert_called_once_with\(
                   credentials=None,
                   credentials_file="credentials.json",
-                  host=client.DEFAULT_ENDPOINT,
+                  host=client._DEFAULT_ENDPOINT_TEMPLATE.format\(
+                      UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                  \),
                   scopes=None,
                   client_cert_source_for_mtls=None,
                   quota_project_id=None,
@@ -979,7 +1380,7 @@ replacements:
     ]
     before: "containeranalysis.googleapis.com"
     after: ""
-    count: 8
+    count: 12
   - paths: [
       packages/grafeas/grafeas/grafeas_v1/services/grafeas/client.py,
     ]
@@ -989,7 +1390,7 @@ replacements:
       \    def get_mtls_endpoint_and_cert_source\(
       \        cls, client_options: Optional\[client_options_lib.ClientOptions\] = None
       \    \):
-      \        """Return the API endpoint and client cert source for mutual TLS.
+      \        """Deprecated. Return the API endpoint and client cert source for mutual TLS.
       \
       \        The client cert source is determined in the following order:
       \        \(1\) if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is not "true", the
@@ -1019,6 +1420,11 @@ replacements:
       \        Raises:
       \            google.auth.exceptions.MutualTLSChannelError: If any errors happen.
       \        """
+      \
+      \        warnings.warn\(
+      \            "get_mtls_endpoint_and_cert_source is deprecated. Use the api_endpoint property instead.",
+      \            DeprecationWarning,
+      \        \)
       \        if client_options is None:
       \            client_options = client_options_lib.ClientOptions\(\)
       \        use_client_cert = os.getenv\("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"\)
@@ -1050,7 +1456,179 @@ replacements:
       \        else:
       \            api_endpoint = cls.DEFAULT_ENDPOINT
       \
-      \        return api_endpoint, client_cert_source\n
+      \        return api_endpoint, client_cert_source
+      \
+      \    @staticmethod
+      \    def _read_environment_variables\(\):
+      \        """Returns the environment variables used by the client.
+      \
+      \        Returns:
+      \            Tuple\[bool, str, str\]: returns the GOOGLE_API_USE_CLIENT_CERTIFICATE,
+      \            GOOGLE_API_USE_MTLS_ENDPOINT, and GOOGLE_CLOUD_UNIVERSE_DOMAIN environment variables.
+      \
+      \        Raises:
+      \            ValueError: If GOOGLE_API_USE_CLIENT_CERTIFICATE is not
+      \                any of \["true", "false"\].
+      \            google.auth.exceptions.MutualTLSChannelError: If GOOGLE_API_USE_MTLS_ENDPOINT
+      \                is not any of \["auto", "never", "always"\].
+      \        """
+      \        use_client_cert = os.getenv\(
+      \            "GOOGLE_API_USE_CLIENT_CERTIFICATE", "false"
+      \        \).lower\(\)
+      \        use_mtls_endpoint = os.getenv\("GOOGLE_API_USE_MTLS_ENDPOINT", "auto"\).lower\(\)
+      \        universe_domain_env = os.getenv\("GOOGLE_CLOUD_UNIVERSE_DOMAIN"\)
+      \        if use_client_cert not in \("true", "false"\):
+      \            raise ValueError\(
+      \                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+      \            \)
+      \        if use_mtls_endpoint not in \("auto", "never", "always"\):
+      \            raise MutualTLSChannelError\(
+      \                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+      \            \)
+      \        return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
+      \
+      \    @staticmethod
+      \    def _get_client_cert_source\(provided_cert_source, use_cert_flag\):
+      \        """Return the client cert source to be used by the client.
+      \
+      \        Args:
+      \            provided_cert_source \(bytes\): The client certificate source provided.
+      \            use_cert_flag \(bool\): A flag indicating whether to use the client certificate.
+      \
+      \        Returns:
+      \            bytes or None: The client cert source to be used by the client.
+      \        """
+      \        client_cert_source = None
+      \        if use_cert_flag:
+      \            if provided_cert_source:
+      \                client_cert_source = provided_cert_source
+      \            elif mtls.has_default_client_cert_source\(\):
+      \                client_cert_source = mtls.default_client_cert_source\(\)
+      \        return client_cert_source
+      \
+      \    @staticmethod
+      \    def _get_api_endpoint\(
+      \        api_override, client_cert_source, universe_domain, use_mtls_endpoint
+      \    \):
+      \        """Return the API endpoint used by the client.
+      \
+      \        Args:
+      \            api_override \(str\): The API endpoint override. If specified, this is always
+      \                the return value of this function and the other arguments are not used.
+      \            client_cert_source \(bytes\): The client certificate source used by the client.
+      \            universe_domain \(str\): The universe domain used by the client.
+      \            use_mtls_endpoint \(str\): How to use the mTLS endpoint, which depends also on the other parameters.
+      \                Possible values are "always", "auto", or "never".
+      \
+      \        Returns:
+      \            str: The API endpoint to be used by the client.
+      \        """
+      \        if api_override is not None:
+      \            api_endpoint = api_override
+      \        elif use_mtls_endpoint == "always" or \(
+      \            use_mtls_endpoint == "auto" and client_cert_source
+      \        \):
+      \            _default_universe = GrafeasClient._DEFAULT_UNIVERSE
+      \            if universe_domain != _default_universe:
+      \                raise MutualTLSChannelError\(
+      \                    f"mTLS is not supported in any universe other than {_default_universe}."
+      \                \)
+      \            api_endpoint = GrafeasClient.DEFAULT_MTLS_ENDPOINT
+      \        else:
+      \            api_endpoint = GrafeasClient._DEFAULT_ENDPOINT_TEMPLATE.format\(
+      \                UNIVERSE_DOMAIN=universe_domain
+      \            \)
+      \        return api_endpoint
+      \
+      \    @staticmethod
+      \    def _get_universe_domain\(
+      \        client_universe_domain: Optional\[str\], universe_domain_env: Optional\[str\]
+      \    \) -> str:
+      \        """Return the universe domain used by the client.
+      \
+      \        Args:
+      \            client_universe_domain \(Optional\[str\]\): The universe domain configured via the client options.
+      \            universe_domain_env \(Optional\[str\]\): The universe domain configured via the "GOOGLE_CLOUD_UNIVERSE_DOMAIN" environment variable.
+      \
+      \        Returns:
+      \            str: The universe domain to be used by the client.
+      \
+      \        Raises:
+      \            ValueError: If the universe domain is an empty string.
+      \        """
+      \        universe_domain = GrafeasClient._DEFAULT_UNIVERSE
+      \        if client_universe_domain is not None:
+      \            universe_domain = client_universe_domain
+      \        elif universe_domain_env is not None:
+      \            universe_domain = universe_domain_env
+      \        if len\(universe_domain.strip\(\)\) == 0:
+      \            raise ValueError\("Universe Domain cannot be an empty string."\)
+      \        return universe_domain
+      \
+      \    @staticmethod
+      \    def _compare_universes\(
+      \        client_universe: str, credentials: ga_credentials.Credentials
+      \    \) -> bool:
+      \        """Returns True iff the universe domains used by the client and credentials match.
+      \
+      \        Args:
+      \            client_universe \(str\): The universe domain configured via the client options.
+      \            credentials \(ga_credentials.Credentials\): The credentials being used in the client.
+      \
+      \        Returns:
+      \            bool: True iff client_universe matches the universe in credentials.
+      \
+      \        Raises:
+      \            ValueError: when client_universe does not match the universe in credentials.
+      \        """
+      \
+      \        default_universe = GrafeasClient._DEFAULT_UNIVERSE
+      \        credentials_universe = getattr\(credentials, "universe_domain", default_universe\)
+      \
+      \        if client_universe != credentials_universe:
+      \            raise ValueError\(
+      \                "The configured universe domain "
+      \                f"\({client_universe}\) does not match the universe domain "
+      \                f"found in the credentials \({credentials_universe}\). "
+      \                "If you haven't configured the universe domain explicitly, "
+      \                f"`{default_universe}` is the default."
+      \            \)
+      \        return True
+      \
+      \    def _validate_universe_domain\(self\):
+      \        """Validates client's and credentials' universe domains are consistent.
+      \
+      \        Returns:
+      \            bool: True iff the configured universe domain is valid.
+      \
+      \        Raises:
+      \            ValueError: If the configured universe domain is not valid.
+      \        """
+      \        self._is_universe_domain_valid = \(
+      \            self._is_universe_domain_valid
+      \            or GrafeasClient._compare_universes\(
+      \                self.universe_domain, self.transport._credentials
+      \            \)
+      \        \)
+      \        return self._is_universe_domain_valid
+      \
+      \    @property
+      \    def api_endpoint\(self\):
+      \        """Return the API endpoint used by the client instance.
+      \
+      \        Returns:
+      \            str: The API endpoint used by the client instance.
+      \        """
+      \        return self._api_endpoint
+      \
+      \    @property
+      \    def universe_domain\(self\) -> str:
+      \        """Return the universe domain used by the client instance.
+      \
+      \        Returns:
+      \            str: The universe domain used by the client instance.
+      \        """
+      \        return self._universe_domain\n
     after: "}"
     count: 1
   - paths: [
@@ -1077,22 +1655,32 @@ replacements:
       \            transport \(Union\[str, GrafeasTransport\]\): The
       \                transport to use. If set to None, a transport is chosen
       \                automatically.
-      \            client_options \(Optional\[Union\[google.api_core.client_options.ClientOptions, dict\]\]\): Custom options for the
-      \                client. It won't take effect if a ``transport`` instance is provided.
-      \                \(1\) The ``api_endpoint`` property can be used to override the
-      \                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
-      \                environment variable can also be used to override the endpoint:
+      \            client_options \(Optional\[Union\[google.api_core.client_options.ClientOptions, dict\]\]\):
+      \                Custom options for the client.
+      \
+      \                1. The ``api_endpoint`` property can be used to override the
+      \                default endpoint provided by the client when ``transport`` is
+      \                not explicitly provided. Only if this property is not set and
+      \                ``transport`` was not explicitly provided, the endpoint is
+      \                determined by the GOOGLE_API_USE_MTLS_ENDPOINT environment
+      \                variable, which have one of the following values:
       \                "always" \(always use the default mTLS endpoint\), "never" \(always
-      \                use the default regular endpoint\) and "auto" \(auto switch to the
-      \                default mTLS endpoint if client certificate is present, this is
-      \                the default value\). However, the ``api_endpoint`` property takes
-      \                precedence if provided.
-      \                \(2\) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+      \                use the default regular endpoint\) and "auto" \(auto-switch to the
+      \                default mTLS endpoint if client certificate is present; this is
+      \                the default value\).
+      \
+      \                2. If the GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
       \                is "true", then the ``client_cert_source`` property can be used
-      \                to provide client certificate for mutual TLS transport. If
+      \                to provide a client certificate for mTLS transport. If
       \                not provided, the default SSL client certificate will be used if
       \                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
       \                set, no client certificate will be used.
+      \
+      \                3. The ``universe_domain`` property can be used to override the
+      \                default "googleapis.com" universe. Note that the ``api_endpoint``
+      \                property still takes precedence; and ``universe_domain`` is
+      \                currently not supported for mTLS.
+      \
       \            client_info \(google.api_core.gapic_v1.client_info.ClientInfo\):
       \                The client info used to send a user-agent string along with
       \                API requests. If ``None``, then default info will be used.
@@ -1103,17 +1691,34 @@ replacements:
       \            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
       \                creation failed for any reason.
       \        """
-      \        if isinstance\(client_options, dict\):
-      \            client_options = client_options_lib.from_dict\(client_options\)
-      \        if client_options is None:
-      \            client_options = client_options_lib.ClientOptions\(\)
-      \        client_options = cast\(client_options_lib.ClientOptions, client_options\)
-      \
-      \        api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source\(
-      \            client_options
+      \        self._client_options = client_options
+      \        if isinstance\(self._client_options, dict\):
+      \            self._client_options = client_options_lib.from_dict\(self._client_options\)
+      \        if self._client_options is None:
+      \            self._client_options = client_options_lib.ClientOptions\(\)
+      \        self._client_options = cast\(
+      \            client_options_lib.ClientOptions, self._client_options
       \        \)
       \
-      \        api_key_value = getattr\(client_options, "api_key", None\)
+      \        universe_domain_opt = getattr\(self._client_options, "universe_domain", None\)
+      \
+      \        \(
+      \            self._use_client_cert,
+      \            self._use_mtls_endpoint,
+      \            self._universe_domain_env,
+      \        \) = GrafeasClient._read_environment_variables\(\)
+      \        self._client_cert_source = GrafeasClient._get_client_cert_source\(
+      \            self._client_options.client_cert_source, self._use_client_cert
+      \        \)
+      \        self._universe_domain = GrafeasClient._get_universe_domain\(
+      \            universe_domain_opt, self._universe_domain_env
+      \        \)
+      \        self._api_endpoint = None  # updated below, depending on `transport`
+      \
+      \        # Initialize the universe domain validation.
+      \        self._is_universe_domain_valid = False
+      \
+      \        api_key_value = getattr\(self._client_options, "api_key", None\)
       \        if api_key_value and credentials:
       \            raise ValueError\(
       \                "client_options.api_key and credentials are mutually exclusive"
@@ -1122,20 +1727,30 @@ replacements:
       \        # Save or instantiate the transport.
       \        # Ordinarily, we provide the transport, but allowing a custom transport
       \        # instance provides an extensibility point for unusual situations.
-      \        if isinstance\(transport, GrafeasTransport\):
+      \        transport_provided = isinstance\(transport, GrafeasTransport\)
+      \        if transport_provided:
       \            # transport is a GrafeasTransport instance.
-      \            if credentials or client_options.credentials_file or api_key_value:
+      \            if credentials or self._client_options.credentials_file or api_key_value:
       \                raise ValueError\(
       \                    "When providing a transport instance, "
       \                    "provide its credentials directly."
       \                \)
-      \            if client_options.scopes:
+      \            if self._client_options.scopes:
       \                raise ValueError\(
       \                    "When providing a transport instance, provide its scopes "
       \                    "directly."
       \                \)
-      \            self._transport = transport
-      \        else:
+      \            self._transport = cast\(GrafeasTransport, transport\)
+      \            self._api_endpoint = self._transport.host
+      \
+      \        self._api_endpoint = self._api_endpoint or GrafeasClient._get_api_endpoint\(
+      \            self._client_options.api_endpoint,
+      \            self._client_cert_source,
+      \            self._universe_domain,
+      \            self._use_mtls_endpoint,
+      \        \)
+      \
+      \        if not transport_provided:
       \            import google.auth._default  # type: ignore
       \
       \            if api_key_value and hasattr\(
@@ -1145,17 +1760,17 @@ replacements:
       \                    api_key_value
       \                \)
       \
-      \            Transport = type\(self\).get_transport_class\(transport\)
+      \            Transport = type\(self\).get_transport_class\(cast\(str, transport\)\)
       \            self._transport = Transport\(
       \                credentials=credentials,
-      \                credentials_file=client_options.credentials_file,
-      \                host=api_endpoint,
-      \                scopes=client_options.scopes,
-      \                client_cert_source_for_mtls=client_cert_source_func,
-      \                quota_project_id=client_options.quota_project_id,
+      \                credentials_file=self._client_options.credentials_file,
+      \                host=self._api_endpoint,
+      \                scopes=self._client_options.scopes,
+      \                client_cert_source_for_mtls=self._client_cert_source,
+      \                quota_project_id=self._client_options.quota_project_id,
       \                client_info=client_info,
       \                always_use_jwt_access=True,
-      \                api_audience=client_options.api_audience,
+      \                api_audience=self._client_options.api_audience,
       \            \)
     after: |
       \n
@@ -1200,7 +1815,7 @@ replacements:
       \        client_options: Optional\[ClientOptions\] = None,
       \        client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
       \    \) -> None:
-      \        """Instantiates the grafeas client.
+      \        """Instantiates the grafeas async client.
       \
       \        Args:
       \            credentials \(Optional\[google.auth.credentials.Credentials\]\): The
@@ -1211,22 +1826,37 @@ replacements:
       \            transport \(Union\[str, ~.GrafeasTransport\]\): The
       \                transport to use. If set to None, a transport is chosen
       \                automatically.
-      \            client_options \(ClientOptions\): Custom options for the client. It
-      \                won't take effect if a ``transport`` instance is provided.
-      \                \(1\) The ``api_endpoint`` property can be used to override the
-      \                default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
-      \                environment variable can also be used to override the endpoint:
+      \            client_options \(Optional\[Union\[google.api_core.client_options.ClientOptions, dict\]\]\):
+      \                Custom options for the client.
+      \
+      \                1. The ``api_endpoint`` property can be used to override the
+      \                default endpoint provided by the client when ``transport`` is
+      \                not explicitly provided. Only if this property is not set and
+      \                ``transport`` was not explicitly provided, the endpoint is
+      \                determined by the GOOGLE_API_USE_MTLS_ENDPOINT environment
+      \                variable, which have one of the following values:
       \                "always" \(always use the default mTLS endpoint\), "never" \(always
-      \                use the default regular endpoint\) and "auto" \(auto switch to the
-      \                default mTLS endpoint if client certificate is present, this is
-      \                the default value\). However, the ``api_endpoint`` property takes
-      \                precedence if provided.
-      \                \(2\) If GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
+      \                use the default regular endpoint\) and "auto" \(auto-switch to the
+      \                default mTLS endpoint if client certificate is present; this is
+      \                the default value\).
+      \
+      \                2. If the GOOGLE_API_USE_CLIENT_CERTIFICATE environment variable
       \                is "true", then the ``client_cert_source`` property can be used
-      \                to provide client certificate for mutual TLS transport. If
+      \                to provide a client certificate for mTLS transport. If
       \                not provided, the default SSL client certificate will be used if
       \                present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
       \                set, no client certificate will be used.
+      \
+      \                3. The ``universe_domain`` property can be used to override the
+      \                default "googleapis.com" universe. Note that ``api_endpoint``
+      \                property still takes precedence; and ``universe_domain`` is
+      \                currently not supported for mTLS.
+      \
+      \            client_info \(google.api_core.gapic_v1.client_info.ClientInfo\):
+      \                The client info used to send a user-agent string along with
+      \                API requests. If ``None``, then default info will be used.
+      \                Generally, you only need to set this if you're developing
+      \                your own client library.
       \
       \        Raises:
       \            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
@@ -1266,4 +1896,47 @@ replacements:
                   transport=transport,
                   credentials=credentials,
               )
+    count: 1
+  - paths: [
+        packages/grafeas/grafeas/grafeas_v1/services/grafeas/client.py
+    ]
+    # Use backslashes to preserve leading spaces
+    before: |
+      \        # Validate the universe domain.
+      \        self._validate_universe_domain\(\)\n
+    after: ""
+    count: 14
+  - paths: [
+        packages/grafeas/grafeas/grafeas_v1/services/grafeas/async_client.py
+    ]
+    # Use backslashes to preserve leading spaces
+    before: |
+      \        # Validate the universe domain.
+      \        self._client._validate_universe_domain\(\)\n
+    after: ""
+    count: 14
+  - paths: [
+        packages/grafeas/grafeas/grafeas_v1/services/grafeas/async_client.py
+    ]
+    # Use backslashes to preserve leading spaces
+    before: |
+      \    @property
+      \    def api_endpoint\(self\):
+      \        """Return the API endpoint used by the client instance.
+      \
+      \        Returns:
+      \            str: The API endpoint used by the client instance.
+      \        """
+      \        return self._client._api_endpoint
+      \
+      \    @property
+      \    def universe_domain\(self\) -> str:
+      \        """Return the universe domain used by the client instance.
+      \
+      \        Returns:
+      \            str: The universe domain used
+      \                by the client instance.
+      \        """
+      \        return self._client._universe_domain\n
+    after: ""
     count: 1
