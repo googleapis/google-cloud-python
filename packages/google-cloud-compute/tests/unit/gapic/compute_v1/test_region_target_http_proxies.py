@@ -83,18 +83,6 @@ def modify_default_endpoint_template(client):
     )
 
 
-# Anonymous Credentials with universe domain property. If no universe domain is provided, then
-# the default universe domain is "googleapis.com".
-class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain="googleapis.com"):
-        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
-        self._universe_domain = universe_domain
-
-    @property
-    def universe_domain(self):
-        return self._universe_domain
-
-
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -336,7 +324,7 @@ def test__get_universe_domain():
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
     client = client_class(
-        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
     )
     assert client._validate_universe_domain() == True
 
@@ -363,41 +351,48 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         client = client_class(transport=transport)
         assert client._validate_universe_domain() == True
 
-    # Test the case when there is a universe mismatch from the credentials.
-    client = client_class(
-        transport=transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(
-                universe_domain="foo.com"
-            )
-        )
-    )
-    with pytest.raises(ValueError) as excinfo:
-        client._validate_universe_domain()
-    assert (
-        str(excinfo.value)
-        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-    )
-
-    # Test the case when there is a universe mismatch from the client.
-    #
-    # TODO: Make this test unconditional once the minimum supported version of
-    # google-api-core becomes 2.15.0 or higher.
-    api_core_major, api_core_minor, _ = [
-        int(part) for part in api_core_version.__version__.split(".")
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [
+        int(part) for part in google.auth.__version__.split(".")
     ]
-    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-        client = client_class(
-            client_options={"universe_domain": "bar.com"},
-            transport=transport_class(
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
-            ),
-        )
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(transport=transport_class(credentials=credentials))
         with pytest.raises(ValueError) as excinfo:
             client._validate_universe_domain()
         assert (
             str(excinfo.value)
-            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         )
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor, _ = [
+            int(part) for part in api_core_version.__version__.split(".")
+        ]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(
+                client_options={"universe_domain": "bar.com"},
+                transport=transport_class(
+                    credentials=ga_credentials.AnonymousCredentials(),
+                ),
+            )
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert (
+                str(excinfo.value)
+                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            )
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -409,7 +404,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 def test_region_target_http_proxies_client_from_service_account_info(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -459,7 +454,7 @@ def test_region_target_http_proxies_client_service_account_always_use_jwt(
 def test_region_target_http_proxies_client_from_service_account_file(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -514,9 +509,7 @@ def test_region_target_http_proxies_client_client_options(
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(RegionTargetHttpProxiesClient, "get_transport_class") as gtc:
-        transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain()
-        )
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -894,20 +887,20 @@ def test_region_target_http_proxies_client_client_api_endpoint(client_class):
             )
             client = client_class(
                 client_options=options,
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
+                credentials=ga_credentials.AnonymousCredentials(),
             )
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
@@ -919,13 +912,11 @@ def test_region_target_http_proxies_client_client_api_endpoint(client_class):
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     else:
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     assert client.api_endpoint == (
         mock_endpoint if universe_exists else default_endpoint
@@ -941,8 +932,7 @@ def test_region_target_http_proxies_client_client_api_endpoint(client_class):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
         assert client.api_endpoint == default_endpoint
 
@@ -1026,7 +1016,7 @@ def test_region_target_http_proxies_client_client_options_credentials_file(
 )
 def test_delete_rest(request_type):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -1125,7 +1115,7 @@ def test_delete_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -1136,7 +1126,7 @@ def test_delete_rest_required_fields(
     jsonified_request["targetHttpProxy"] = "target_http_proxy_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
@@ -1151,7 +1141,7 @@ def test_delete_rest_required_fields(
     assert jsonified_request["targetHttpProxy"] == "target_http_proxy_value"
 
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -1193,7 +1183,7 @@ def test_delete_rest_required_fields(
 
 def test_delete_rest_unset_required_fields():
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete._get_unset_required_fields({})
@@ -1212,7 +1202,7 @@ def test_delete_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_rest_interceptors(null_interceptor):
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RegionTargetHttpProxiesRestInterceptor(),
@@ -1268,7 +1258,7 @@ def test_delete_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteRegionTargetHttpProxyRequest
 ):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1294,7 +1284,7 @@ def test_delete_rest_bad_request(
 
 def test_delete_rest_flattened():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -1342,7 +1332,7 @@ def test_delete_rest_flattened():
 
 def test_delete_rest_flattened_error(transport: str = "rest"):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1359,7 +1349,7 @@ def test_delete_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_rest_error():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -1372,7 +1362,7 @@ def test_delete_rest_error():
 )
 def test_delete_unary_rest(request_type):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -1449,7 +1439,7 @@ def test_delete_unary_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -1460,7 +1450,7 @@ def test_delete_unary_rest_required_fields(
     jsonified_request["targetHttpProxy"] = "target_http_proxy_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
@@ -1475,7 +1465,7 @@ def test_delete_unary_rest_required_fields(
     assert jsonified_request["targetHttpProxy"] == "target_http_proxy_value"
 
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -1517,7 +1507,7 @@ def test_delete_unary_rest_required_fields(
 
 def test_delete_unary_rest_unset_required_fields():
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete._get_unset_required_fields({})
@@ -1536,7 +1526,7 @@ def test_delete_unary_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_unary_rest_interceptors(null_interceptor):
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RegionTargetHttpProxiesRestInterceptor(),
@@ -1592,7 +1582,7 @@ def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteRegionTargetHttpProxyRequest
 ):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1618,7 +1608,7 @@ def test_delete_unary_rest_bad_request(
 
 def test_delete_unary_rest_flattened():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -1666,7 +1656,7 @@ def test_delete_unary_rest_flattened():
 
 def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1683,7 +1673,7 @@ def test_delete_unary_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_unary_rest_error():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -1696,7 +1686,7 @@ def test_delete_unary_rest_error():
 )
 def test_get_rest(request_type):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -1771,7 +1761,7 @@ def test_get_rest_required_fields(request_type=compute.GetRegionTargetHttpProxyR
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -1782,7 +1772,7 @@ def test_get_rest_required_fields(request_type=compute.GetRegionTargetHttpProxyR
     jsonified_request["targetHttpProxy"] = "target_http_proxy_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -1795,7 +1785,7 @@ def test_get_rest_required_fields(request_type=compute.GetRegionTargetHttpProxyR
     assert jsonified_request["targetHttpProxy"] == "target_http_proxy_value"
 
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -1837,7 +1827,7 @@ def test_get_rest_required_fields(request_type=compute.GetRegionTargetHttpProxyR
 
 def test_get_rest_unset_required_fields():
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get._get_unset_required_fields({})
@@ -1856,7 +1846,7 @@ def test_get_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_rest_interceptors(null_interceptor):
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RegionTargetHttpProxiesRestInterceptor(),
@@ -1914,7 +1904,7 @@ def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetRegionTargetHttpProxyRequest
 ):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1940,7 +1930,7 @@ def test_get_rest_bad_request(
 
 def test_get_rest_flattened():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -1988,7 +1978,7 @@ def test_get_rest_flattened():
 
 def test_get_rest_flattened_error(transport: str = "rest"):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2005,7 +1995,7 @@ def test_get_rest_flattened_error(transport: str = "rest"):
 
 def test_get_rest_error():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -2018,7 +2008,7 @@ def test_get_rest_error():
 )
 def test_insert_rest(request_type):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -2198,7 +2188,7 @@ def test_insert_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).insert._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -2208,7 +2198,7 @@ def test_insert_rest_required_fields(
     jsonified_request["region"] = "region_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
@@ -2221,7 +2211,7 @@ def test_insert_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -2264,7 +2254,7 @@ def test_insert_rest_required_fields(
 
 def test_insert_rest_unset_required_fields():
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.insert._get_unset_required_fields({})
@@ -2283,7 +2273,7 @@ def test_insert_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_insert_rest_interceptors(null_interceptor):
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RegionTargetHttpProxiesRestInterceptor(),
@@ -2339,7 +2329,7 @@ def test_insert_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertRegionTargetHttpProxyRequest
 ):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2361,7 +2351,7 @@ def test_insert_rest_bad_request(
 
 def test_insert_rest_flattened():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -2407,7 +2397,7 @@ def test_insert_rest_flattened():
 
 def test_insert_rest_flattened_error(transport: str = "rest"):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2426,7 +2416,7 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
 
 def test_insert_rest_error():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -2439,7 +2429,7 @@ def test_insert_rest_error():
 )
 def test_insert_unary_rest(request_type):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -2597,7 +2587,7 @@ def test_insert_unary_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).insert._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -2607,7 +2597,7 @@ def test_insert_unary_rest_required_fields(
     jsonified_request["region"] = "region_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
@@ -2620,7 +2610,7 @@ def test_insert_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -2663,7 +2653,7 @@ def test_insert_unary_rest_required_fields(
 
 def test_insert_unary_rest_unset_required_fields():
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.insert._get_unset_required_fields({})
@@ -2682,7 +2672,7 @@ def test_insert_unary_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_insert_unary_rest_interceptors(null_interceptor):
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RegionTargetHttpProxiesRestInterceptor(),
@@ -2738,7 +2728,7 @@ def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertRegionTargetHttpProxyRequest
 ):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2760,7 +2750,7 @@ def test_insert_unary_rest_bad_request(
 
 def test_insert_unary_rest_flattened():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -2806,7 +2796,7 @@ def test_insert_unary_rest_flattened():
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2825,7 +2815,7 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
 
 def test_insert_unary_rest_error():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -2838,7 +2828,7 @@ def test_insert_unary_rest_error():
 )
 def test_list_rest(request_type):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -2896,7 +2886,7 @@ def test_list_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -2906,7 +2896,7 @@ def test_list_rest_required_fields(
     jsonified_request["region"] = "region_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -2927,7 +2917,7 @@ def test_list_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -2969,7 +2959,7 @@ def test_list_rest_required_fields(
 
 def test_list_rest_unset_required_fields():
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list._get_unset_required_fields({})
@@ -2995,7 +2985,7 @@ def test_list_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_rest_interceptors(null_interceptor):
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RegionTargetHttpProxiesRestInterceptor(),
@@ -3053,7 +3043,7 @@ def test_list_rest_bad_request(
     transport: str = "rest", request_type=compute.ListRegionTargetHttpProxiesRequest
 ):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3075,7 +3065,7 @@ def test_list_rest_bad_request(
 
 def test_list_rest_flattened():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -3118,7 +3108,7 @@ def test_list_rest_flattened():
 
 def test_list_rest_flattened_error(transport: str = "rest"):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3134,7 +3124,7 @@ def test_list_rest_flattened_error(transport: str = "rest"):
 
 def test_list_rest_pager(transport: str = "rest"):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3202,7 +3192,7 @@ def test_list_rest_pager(transport: str = "rest"):
 )
 def test_set_url_map_rest(request_type):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -3375,7 +3365,7 @@ def test_set_url_map_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).set_url_map._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -3386,7 +3376,7 @@ def test_set_url_map_rest_required_fields(
     jsonified_request["targetHttpProxy"] = "target_http_proxy_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).set_url_map._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
@@ -3401,7 +3391,7 @@ def test_set_url_map_rest_required_fields(
     assert jsonified_request["targetHttpProxy"] == "target_http_proxy_value"
 
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -3444,7 +3434,7 @@ def test_set_url_map_rest_required_fields(
 
 def test_set_url_map_rest_unset_required_fields():
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.set_url_map._get_unset_required_fields({})
@@ -3464,7 +3454,7 @@ def test_set_url_map_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_set_url_map_rest_interceptors(null_interceptor):
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RegionTargetHttpProxiesRestInterceptor(),
@@ -3520,7 +3510,7 @@ def test_set_url_map_rest_bad_request(
     transport: str = "rest", request_type=compute.SetUrlMapRegionTargetHttpProxyRequest
 ):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3546,7 +3536,7 @@ def test_set_url_map_rest_bad_request(
 
 def test_set_url_map_rest_flattened():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -3595,7 +3585,7 @@ def test_set_url_map_rest_flattened():
 
 def test_set_url_map_rest_flattened_error(transport: str = "rest"):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3613,7 +3603,7 @@ def test_set_url_map_rest_flattened_error(transport: str = "rest"):
 
 def test_set_url_map_rest_error():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -3626,7 +3616,7 @@ def test_set_url_map_rest_error():
 )
 def test_set_url_map_unary_rest(request_type):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -3777,7 +3767,7 @@ def test_set_url_map_unary_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).set_url_map._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -3788,7 +3778,7 @@ def test_set_url_map_unary_rest_required_fields(
     jsonified_request["targetHttpProxy"] = "target_http_proxy_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).set_url_map._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
@@ -3803,7 +3793,7 @@ def test_set_url_map_unary_rest_required_fields(
     assert jsonified_request["targetHttpProxy"] == "target_http_proxy_value"
 
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -3846,7 +3836,7 @@ def test_set_url_map_unary_rest_required_fields(
 
 def test_set_url_map_unary_rest_unset_required_fields():
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.set_url_map._get_unset_required_fields({})
@@ -3866,7 +3856,7 @@ def test_set_url_map_unary_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_set_url_map_unary_rest_interceptors(null_interceptor):
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RegionTargetHttpProxiesRestInterceptor(),
@@ -3922,7 +3912,7 @@ def test_set_url_map_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetUrlMapRegionTargetHttpProxyRequest
 ):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3948,7 +3938,7 @@ def test_set_url_map_unary_rest_bad_request(
 
 def test_set_url_map_unary_rest_flattened():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -3997,7 +3987,7 @@ def test_set_url_map_unary_rest_flattened():
 
 def test_set_url_map_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4015,24 +4005,24 @@ def test_set_url_map_unary_rest_flattened_error(transport: str = "rest"):
 
 def test_set_url_map_unary_rest_error():
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = RegionTargetHttpProxiesClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = RegionTargetHttpProxiesClient(
@@ -4042,7 +4032,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -4057,13 +4047,12 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = RegionTargetHttpProxiesClient(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = RegionTargetHttpProxiesClient(
@@ -4075,7 +4064,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.RegionTargetHttpProxiesRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = RegionTargetHttpProxiesClient(transport=transport)
     assert client.transport is transport
@@ -4090,7 +4079,7 @@ def test_transport_instance():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -4103,7 +4092,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = RegionTargetHttpProxiesClient.get_transport_class(transport_name)(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
 
@@ -4112,7 +4101,7 @@ def test_region_target_http_proxies_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.RegionTargetHttpProxiesTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -4124,7 +4113,7 @@ def test_region_target_http_proxies_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.RegionTargetHttpProxiesTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -4160,7 +4149,7 @@ def test_region_target_http_proxies_base_transport_with_credentials_file():
         "google.cloud.compute_v1.services.region_target_http_proxies.transports.RegionTargetHttpProxiesTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegionTargetHttpProxiesTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -4182,7 +4171,7 @@ def test_region_target_http_proxies_base_transport_with_adc():
         "google.cloud.compute_v1.services.region_target_http_proxies.transports.RegionTargetHttpProxiesTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegionTargetHttpProxiesTransport()
         adc.assert_called_once()
 
@@ -4190,7 +4179,7 @@ def test_region_target_http_proxies_base_transport_with_adc():
 def test_region_target_http_proxies_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         RegionTargetHttpProxiesClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -4203,7 +4192,7 @@ def test_region_target_http_proxies_auth_adc():
 
 
 def test_region_target_http_proxies_http_transport_client_cert_source_for_mtls():
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -4221,7 +4210,7 @@ def test_region_target_http_proxies_http_transport_client_cert_source_for_mtls()
 )
 def test_region_target_http_proxies_host_no_port(transport_name):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com"
         ),
@@ -4242,7 +4231,7 @@ def test_region_target_http_proxies_host_no_port(transport_name):
 )
 def test_region_target_http_proxies_host_with_port(transport_name):
     client = RegionTargetHttpProxiesClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="compute.googleapis.com:8000"
         ),
@@ -4262,8 +4251,8 @@ def test_region_target_http_proxies_host_with_port(transport_name):
     ],
 )
 def test_region_target_http_proxies_client_transport_session_collision(transport_name):
-    creds1 = _AnonymousCredentialsWithUniverseDomain()
-    creds2 = _AnonymousCredentialsWithUniverseDomain()
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
     client1 = RegionTargetHttpProxiesClient(
         credentials=creds1,
         transport=transport_name,
@@ -4399,7 +4388,7 @@ def test_client_with_default_client_info():
         transports.RegionTargetHttpProxiesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = RegionTargetHttpProxiesClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -4409,7 +4398,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = RegionTargetHttpProxiesClient.get_transport_class()
         transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -4422,7 +4411,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = RegionTargetHttpProxiesClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -4438,7 +4427,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = RegionTargetHttpProxiesClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
