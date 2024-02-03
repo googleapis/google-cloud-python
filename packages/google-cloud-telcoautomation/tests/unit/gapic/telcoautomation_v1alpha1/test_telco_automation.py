@@ -91,18 +91,6 @@ def modify_default_endpoint_template(client):
     )
 
 
-# Anonymous Credentials with universe domain property. If no universe domain is provided, then
-# the default universe domain is "googleapis.com".
-class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain="googleapis.com"):
-        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
-        self._universe_domain = universe_domain
-
-    @property
-    def universe_domain(self):
-        return self._universe_domain
-
-
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -329,7 +317,7 @@ def test__get_universe_domain():
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
     client = client_class(
-        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
     )
     assert client._validate_universe_domain() == True
 
@@ -356,41 +344,48 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         client = client_class(transport=transport)
         assert client._validate_universe_domain() == True
 
-    # Test the case when there is a universe mismatch from the credentials.
-    client = client_class(
-        transport=transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(
-                universe_domain="foo.com"
-            )
-        )
-    )
-    with pytest.raises(ValueError) as excinfo:
-        client._validate_universe_domain()
-    assert (
-        str(excinfo.value)
-        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-    )
-
-    # Test the case when there is a universe mismatch from the client.
-    #
-    # TODO: Make this test unconditional once the minimum supported version of
-    # google-api-core becomes 2.15.0 or higher.
-    api_core_major, api_core_minor, _ = [
-        int(part) for part in api_core_version.__version__.split(".")
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [
+        int(part) for part in google.auth.__version__.split(".")
     ]
-    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-        client = client_class(
-            client_options={"universe_domain": "bar.com"},
-            transport=transport_class(
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
-            ),
-        )
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(transport=transport_class(credentials=credentials))
         with pytest.raises(ValueError) as excinfo:
             client._validate_universe_domain()
         assert (
             str(excinfo.value)
-            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         )
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor, _ = [
+            int(part) for part in api_core_version.__version__.split(".")
+        ]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(
+                client_options={"universe_domain": "bar.com"},
+                transport=transport_class(
+                    credentials=ga_credentials.AnonymousCredentials(),
+                ),
+            )
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert (
+                str(excinfo.value)
+                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            )
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -404,7 +399,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 def test_telco_automation_client_from_service_account_info(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -458,7 +453,7 @@ def test_telco_automation_client_service_account_always_use_jwt(
 def test_telco_automation_client_from_service_account_file(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -521,9 +516,7 @@ def test_telco_automation_client_client_options(
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(TelcoAutomationClient, "get_transport_class") as gtc:
-        transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain()
-        )
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -942,20 +935,20 @@ def test_telco_automation_client_client_api_endpoint(client_class):
             )
             client = client_class(
                 client_options=options,
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
+                credentials=ga_credentials.AnonymousCredentials(),
             )
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
@@ -967,13 +960,11 @@ def test_telco_automation_client_client_api_endpoint(client_class):
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     else:
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     assert client.api_endpoint == (
         mock_endpoint if universe_exists else default_endpoint
@@ -989,8 +980,7 @@ def test_telco_automation_client_client_api_endpoint(client_class):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
         assert client.api_endpoint == default_endpoint
 
@@ -1143,8 +1133,8 @@ def test_telco_automation_client_create_channel_credentials_file(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
-        file_creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -1173,7 +1163,7 @@ def test_telco_automation_client_create_channel_credentials_file(
 )
 def test_list_orchestration_clusters(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1207,7 +1197,7 @@ def test_list_orchestration_clusters_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1227,7 +1217,7 @@ async def test_list_orchestration_clusters_async(
     request_type=telcoautomation.ListOrchestrationClustersRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1266,7 +1256,7 @@ async def test_list_orchestration_clusters_async_from_dict():
 
 def test_list_orchestration_clusters_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1298,7 +1288,7 @@ def test_list_orchestration_clusters_field_headers():
 @pytest.mark.asyncio
 async def test_list_orchestration_clusters_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1331,7 +1321,7 @@ async def test_list_orchestration_clusters_field_headers_async():
 
 def test_list_orchestration_clusters_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1357,7 +1347,7 @@ def test_list_orchestration_clusters_flattened():
 
 def test_list_orchestration_clusters_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1372,7 +1362,7 @@ def test_list_orchestration_clusters_flattened_error():
 @pytest.mark.asyncio
 async def test_list_orchestration_clusters_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1403,7 +1393,7 @@ async def test_list_orchestration_clusters_flattened_async():
 @pytest.mark.asyncio
 async def test_list_orchestration_clusters_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1417,7 +1407,7 @@ async def test_list_orchestration_clusters_flattened_error_async():
 
 def test_list_orchestration_clusters_pager(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1469,7 +1459,7 @@ def test_list_orchestration_clusters_pager(transport_name: str = "grpc"):
 
 def test_list_orchestration_clusters_pages(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1513,7 +1503,7 @@ def test_list_orchestration_clusters_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_orchestration_clusters_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1567,7 +1557,7 @@ async def test_list_orchestration_clusters_async_pager():
 @pytest.mark.asyncio
 async def test_list_orchestration_clusters_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1624,7 +1614,7 @@ async def test_list_orchestration_clusters_async_pages():
 )
 def test_get_orchestration_cluster(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1660,7 +1650,7 @@ def test_get_orchestration_cluster_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1680,7 +1670,7 @@ async def test_get_orchestration_cluster_async(
     request_type=telcoautomation.GetOrchestrationClusterRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1721,7 +1711,7 @@ async def test_get_orchestration_cluster_async_from_dict():
 
 def test_get_orchestration_cluster_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1753,7 +1743,7 @@ def test_get_orchestration_cluster_field_headers():
 @pytest.mark.asyncio
 async def test_get_orchestration_cluster_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1786,7 +1776,7 @@ async def test_get_orchestration_cluster_field_headers_async():
 
 def test_get_orchestration_cluster_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1812,7 +1802,7 @@ def test_get_orchestration_cluster_flattened():
 
 def test_get_orchestration_cluster_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1827,7 +1817,7 @@ def test_get_orchestration_cluster_flattened_error():
 @pytest.mark.asyncio
 async def test_get_orchestration_cluster_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1858,7 +1848,7 @@ async def test_get_orchestration_cluster_flattened_async():
 @pytest.mark.asyncio
 async def test_get_orchestration_cluster_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1879,7 +1869,7 @@ async def test_get_orchestration_cluster_flattened_error_async():
 )
 def test_create_orchestration_cluster(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1908,7 +1898,7 @@ def test_create_orchestration_cluster_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1928,7 +1918,7 @@ async def test_create_orchestration_cluster_async(
     request_type=telcoautomation.CreateOrchestrationClusterRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1962,7 +1952,7 @@ async def test_create_orchestration_cluster_async_from_dict():
 
 def test_create_orchestration_cluster_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1994,7 +1984,7 @@ def test_create_orchestration_cluster_field_headers():
 @pytest.mark.asyncio
 async def test_create_orchestration_cluster_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2027,7 +2017,7 @@ async def test_create_orchestration_cluster_field_headers_async():
 
 def test_create_orchestration_cluster_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2063,7 +2053,7 @@ def test_create_orchestration_cluster_flattened():
 
 def test_create_orchestration_cluster_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2082,7 +2072,7 @@ def test_create_orchestration_cluster_flattened_error():
 @pytest.mark.asyncio
 async def test_create_orchestration_cluster_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2123,7 +2113,7 @@ async def test_create_orchestration_cluster_flattened_async():
 @pytest.mark.asyncio
 async def test_create_orchestration_cluster_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2148,7 +2138,7 @@ async def test_create_orchestration_cluster_flattened_error_async():
 )
 def test_delete_orchestration_cluster(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2177,7 +2167,7 @@ def test_delete_orchestration_cluster_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2197,7 +2187,7 @@ async def test_delete_orchestration_cluster_async(
     request_type=telcoautomation.DeleteOrchestrationClusterRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2231,7 +2221,7 @@ async def test_delete_orchestration_cluster_async_from_dict():
 
 def test_delete_orchestration_cluster_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2263,7 +2253,7 @@ def test_delete_orchestration_cluster_field_headers():
 @pytest.mark.asyncio
 async def test_delete_orchestration_cluster_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2296,7 +2286,7 @@ async def test_delete_orchestration_cluster_field_headers_async():
 
 def test_delete_orchestration_cluster_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2322,7 +2312,7 @@ def test_delete_orchestration_cluster_flattened():
 
 def test_delete_orchestration_cluster_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2337,7 +2327,7 @@ def test_delete_orchestration_cluster_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_orchestration_cluster_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2368,7 +2358,7 @@ async def test_delete_orchestration_cluster_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_orchestration_cluster_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2389,7 +2379,7 @@ async def test_delete_orchestration_cluster_flattened_error_async():
 )
 def test_list_edge_slms(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2421,7 +2411,7 @@ def test_list_edge_slms_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2438,7 +2428,7 @@ async def test_list_edge_slms_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.ListEdgeSlmsRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2475,7 +2465,7 @@ async def test_list_edge_slms_async_from_dict():
 
 def test_list_edge_slms_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2505,7 +2495,7 @@ def test_list_edge_slms_field_headers():
 @pytest.mark.asyncio
 async def test_list_edge_slms_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2536,7 +2526,7 @@ async def test_list_edge_slms_field_headers_async():
 
 def test_list_edge_slms_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2560,7 +2550,7 @@ def test_list_edge_slms_flattened():
 
 def test_list_edge_slms_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2575,7 +2565,7 @@ def test_list_edge_slms_flattened_error():
 @pytest.mark.asyncio
 async def test_list_edge_slms_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2604,7 +2594,7 @@ async def test_list_edge_slms_flattened_async():
 @pytest.mark.asyncio
 async def test_list_edge_slms_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2618,7 +2608,7 @@ async def test_list_edge_slms_flattened_error_async():
 
 def test_list_edge_slms_pager(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2668,7 +2658,7 @@ def test_list_edge_slms_pager(transport_name: str = "grpc"):
 
 def test_list_edge_slms_pages(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2710,7 +2700,7 @@ def test_list_edge_slms_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_edge_slms_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2760,7 +2750,7 @@ async def test_list_edge_slms_async_pager():
 @pytest.mark.asyncio
 async def test_list_edge_slms_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2815,7 +2805,7 @@ async def test_list_edge_slms_async_pages():
 )
 def test_get_edge_slm(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2856,7 +2846,7 @@ def test_get_edge_slm_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2873,7 +2863,7 @@ async def test_get_edge_slm_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.GetEdgeSlmRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2919,7 +2909,7 @@ async def test_get_edge_slm_async_from_dict():
 
 def test_get_edge_slm_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2949,7 +2939,7 @@ def test_get_edge_slm_field_headers():
 @pytest.mark.asyncio
 async def test_get_edge_slm_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2980,7 +2970,7 @@ async def test_get_edge_slm_field_headers_async():
 
 def test_get_edge_slm_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3004,7 +2994,7 @@ def test_get_edge_slm_flattened():
 
 def test_get_edge_slm_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3019,7 +3009,7 @@ def test_get_edge_slm_flattened_error():
 @pytest.mark.asyncio
 async def test_get_edge_slm_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3048,7 +3038,7 @@ async def test_get_edge_slm_flattened_async():
 @pytest.mark.asyncio
 async def test_get_edge_slm_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3069,7 +3059,7 @@ async def test_get_edge_slm_flattened_error_async():
 )
 def test_create_edge_slm(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3096,7 +3086,7 @@ def test_create_edge_slm_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3113,7 +3103,7 @@ async def test_create_edge_slm_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.CreateEdgeSlmRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3145,7 +3135,7 @@ async def test_create_edge_slm_async_from_dict():
 
 def test_create_edge_slm_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3175,7 +3165,7 @@ def test_create_edge_slm_field_headers():
 @pytest.mark.asyncio
 async def test_create_edge_slm_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3206,7 +3196,7 @@ async def test_create_edge_slm_field_headers_async():
 
 def test_create_edge_slm_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3238,7 +3228,7 @@ def test_create_edge_slm_flattened():
 
 def test_create_edge_slm_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3255,7 +3245,7 @@ def test_create_edge_slm_flattened_error():
 @pytest.mark.asyncio
 async def test_create_edge_slm_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3292,7 +3282,7 @@ async def test_create_edge_slm_flattened_async():
 @pytest.mark.asyncio
 async def test_create_edge_slm_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3315,7 +3305,7 @@ async def test_create_edge_slm_flattened_error_async():
 )
 def test_delete_edge_slm(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3342,7 +3332,7 @@ def test_delete_edge_slm_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3359,7 +3349,7 @@ async def test_delete_edge_slm_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.DeleteEdgeSlmRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3391,7 +3381,7 @@ async def test_delete_edge_slm_async_from_dict():
 
 def test_delete_edge_slm_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3421,7 +3411,7 @@ def test_delete_edge_slm_field_headers():
 @pytest.mark.asyncio
 async def test_delete_edge_slm_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3452,7 +3442,7 @@ async def test_delete_edge_slm_field_headers_async():
 
 def test_delete_edge_slm_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3476,7 +3466,7 @@ def test_delete_edge_slm_flattened():
 
 def test_delete_edge_slm_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3491,7 +3481,7 @@ def test_delete_edge_slm_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_edge_slm_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3520,7 +3510,7 @@ async def test_delete_edge_slm_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_edge_slm_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3541,7 +3531,7 @@ async def test_delete_edge_slm_flattened_error_async():
 )
 def test_create_blueprint(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3587,7 +3577,7 @@ def test_create_blueprint_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3604,7 +3594,7 @@ async def test_create_blueprint_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.CreateBlueprintRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3655,7 +3645,7 @@ async def test_create_blueprint_async_from_dict():
 
 def test_create_blueprint_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3685,7 +3675,7 @@ def test_create_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_create_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3716,7 +3706,7 @@ async def test_create_blueprint_field_headers_async():
 
 def test_create_blueprint_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3748,7 +3738,7 @@ def test_create_blueprint_flattened():
 
 def test_create_blueprint_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3765,7 +3755,7 @@ def test_create_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_create_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3802,7 +3792,7 @@ async def test_create_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_create_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3825,7 +3815,7 @@ async def test_create_blueprint_flattened_error_async():
 )
 def test_update_blueprint(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3871,7 +3861,7 @@ def test_update_blueprint_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3888,7 +3878,7 @@ async def test_update_blueprint_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.UpdateBlueprintRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3939,7 +3929,7 @@ async def test_update_blueprint_async_from_dict():
 
 def test_update_blueprint_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3969,7 +3959,7 @@ def test_update_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_update_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4000,7 +3990,7 @@ async def test_update_blueprint_field_headers_async():
 
 def test_update_blueprint_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4028,7 +4018,7 @@ def test_update_blueprint_flattened():
 
 def test_update_blueprint_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4044,7 +4034,7 @@ def test_update_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_update_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4077,7 +4067,7 @@ async def test_update_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_update_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4099,7 +4089,7 @@ async def test_update_blueprint_flattened_error_async():
 )
 def test_get_blueprint(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4145,7 +4135,7 @@ def test_get_blueprint_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4162,7 +4152,7 @@ async def test_get_blueprint_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.GetBlueprintRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4213,7 +4203,7 @@ async def test_get_blueprint_async_from_dict():
 
 def test_get_blueprint_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4243,7 +4233,7 @@ def test_get_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_get_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4274,7 +4264,7 @@ async def test_get_blueprint_field_headers_async():
 
 def test_get_blueprint_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4298,7 +4288,7 @@ def test_get_blueprint_flattened():
 
 def test_get_blueprint_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4313,7 +4303,7 @@ def test_get_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_get_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4342,7 +4332,7 @@ async def test_get_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_get_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4363,7 +4353,7 @@ async def test_get_blueprint_flattened_error_async():
 )
 def test_delete_blueprint(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4390,7 +4380,7 @@ def test_delete_blueprint_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4407,7 +4397,7 @@ async def test_delete_blueprint_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.DeleteBlueprintRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4437,7 +4427,7 @@ async def test_delete_blueprint_async_from_dict():
 
 def test_delete_blueprint_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4467,7 +4457,7 @@ def test_delete_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_delete_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4496,7 +4486,7 @@ async def test_delete_blueprint_field_headers_async():
 
 def test_delete_blueprint_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4520,7 +4510,7 @@ def test_delete_blueprint_flattened():
 
 def test_delete_blueprint_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4535,7 +4525,7 @@ def test_delete_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4562,7 +4552,7 @@ async def test_delete_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4583,7 +4573,7 @@ async def test_delete_blueprint_flattened_error_async():
 )
 def test_list_blueprints(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4613,7 +4603,7 @@ def test_list_blueprints_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4630,7 +4620,7 @@ async def test_list_blueprints_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.ListBlueprintsRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4665,7 +4655,7 @@ async def test_list_blueprints_async_from_dict():
 
 def test_list_blueprints_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4695,7 +4685,7 @@ def test_list_blueprints_field_headers():
 @pytest.mark.asyncio
 async def test_list_blueprints_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4726,7 +4716,7 @@ async def test_list_blueprints_field_headers_async():
 
 def test_list_blueprints_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4750,7 +4740,7 @@ def test_list_blueprints_flattened():
 
 def test_list_blueprints_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4765,7 +4755,7 @@ def test_list_blueprints_flattened_error():
 @pytest.mark.asyncio
 async def test_list_blueprints_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4794,7 +4784,7 @@ async def test_list_blueprints_flattened_async():
 @pytest.mark.asyncio
 async def test_list_blueprints_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4808,7 +4798,7 @@ async def test_list_blueprints_flattened_error_async():
 
 def test_list_blueprints_pager(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4858,7 +4848,7 @@ def test_list_blueprints_pager(transport_name: str = "grpc"):
 
 def test_list_blueprints_pages(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4900,7 +4890,7 @@ def test_list_blueprints_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_blueprints_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4950,7 +4940,7 @@ async def test_list_blueprints_async_pager():
 @pytest.mark.asyncio
 async def test_list_blueprints_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5005,7 +4995,7 @@ async def test_list_blueprints_async_pages():
 )
 def test_approve_blueprint(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5053,7 +5043,7 @@ def test_approve_blueprint_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5073,7 +5063,7 @@ async def test_approve_blueprint_async(
     request_type=telcoautomation.ApproveBlueprintRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5126,7 +5116,7 @@ async def test_approve_blueprint_async_from_dict():
 
 def test_approve_blueprint_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5158,7 +5148,7 @@ def test_approve_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_approve_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5191,7 +5181,7 @@ async def test_approve_blueprint_field_headers_async():
 
 def test_approve_blueprint_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5217,7 +5207,7 @@ def test_approve_blueprint_flattened():
 
 def test_approve_blueprint_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5232,7 +5222,7 @@ def test_approve_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_approve_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5263,7 +5253,7 @@ async def test_approve_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_approve_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5284,7 +5274,7 @@ async def test_approve_blueprint_flattened_error_async():
 )
 def test_propose_blueprint(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5332,7 +5322,7 @@ def test_propose_blueprint_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5352,7 +5342,7 @@ async def test_propose_blueprint_async(
     request_type=telcoautomation.ProposeBlueprintRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5405,7 +5395,7 @@ async def test_propose_blueprint_async_from_dict():
 
 def test_propose_blueprint_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5437,7 +5427,7 @@ def test_propose_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_propose_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5470,7 +5460,7 @@ async def test_propose_blueprint_field_headers_async():
 
 def test_propose_blueprint_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5496,7 +5486,7 @@ def test_propose_blueprint_flattened():
 
 def test_propose_blueprint_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5511,7 +5501,7 @@ def test_propose_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_propose_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5542,7 +5532,7 @@ async def test_propose_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_propose_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5563,7 +5553,7 @@ async def test_propose_blueprint_flattened_error_async():
 )
 def test_reject_blueprint(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5609,7 +5599,7 @@ def test_reject_blueprint_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5626,7 +5616,7 @@ async def test_reject_blueprint_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.RejectBlueprintRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5677,7 +5667,7 @@ async def test_reject_blueprint_async_from_dict():
 
 def test_reject_blueprint_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5707,7 +5697,7 @@ def test_reject_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_reject_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5738,7 +5728,7 @@ async def test_reject_blueprint_field_headers_async():
 
 def test_reject_blueprint_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5762,7 +5752,7 @@ def test_reject_blueprint_flattened():
 
 def test_reject_blueprint_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5777,7 +5767,7 @@ def test_reject_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_reject_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5806,7 +5796,7 @@ async def test_reject_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_reject_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5827,7 +5817,7 @@ async def test_reject_blueprint_flattened_error_async():
 )
 def test_list_blueprint_revisions(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5859,7 +5849,7 @@ def test_list_blueprint_revisions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5879,7 +5869,7 @@ async def test_list_blueprint_revisions_async(
     request_type=telcoautomation.ListBlueprintRevisionsRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5916,7 +5906,7 @@ async def test_list_blueprint_revisions_async_from_dict():
 
 def test_list_blueprint_revisions_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5948,7 +5938,7 @@ def test_list_blueprint_revisions_field_headers():
 @pytest.mark.asyncio
 async def test_list_blueprint_revisions_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5981,7 +5971,7 @@ async def test_list_blueprint_revisions_field_headers_async():
 
 def test_list_blueprint_revisions_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6007,7 +5997,7 @@ def test_list_blueprint_revisions_flattened():
 
 def test_list_blueprint_revisions_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6022,7 +6012,7 @@ def test_list_blueprint_revisions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_blueprint_revisions_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6053,7 +6043,7 @@ async def test_list_blueprint_revisions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_blueprint_revisions_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6067,7 +6057,7 @@ async def test_list_blueprint_revisions_flattened_error_async():
 
 def test_list_blueprint_revisions_pager(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6119,7 +6109,7 @@ def test_list_blueprint_revisions_pager(transport_name: str = "grpc"):
 
 def test_list_blueprint_revisions_pages(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6163,7 +6153,7 @@ def test_list_blueprint_revisions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_blueprint_revisions_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6215,7 +6205,7 @@ async def test_list_blueprint_revisions_async_pager():
 @pytest.mark.asyncio
 async def test_list_blueprint_revisions_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6272,7 +6262,7 @@ async def test_list_blueprint_revisions_async_pages():
 )
 def test_search_blueprint_revisions(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6304,7 +6294,7 @@ def test_search_blueprint_revisions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6324,7 +6314,7 @@ async def test_search_blueprint_revisions_async(
     request_type=telcoautomation.SearchBlueprintRevisionsRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6361,7 +6351,7 @@ async def test_search_blueprint_revisions_async_from_dict():
 
 def test_search_blueprint_revisions_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6393,7 +6383,7 @@ def test_search_blueprint_revisions_field_headers():
 @pytest.mark.asyncio
 async def test_search_blueprint_revisions_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6426,7 +6416,7 @@ async def test_search_blueprint_revisions_field_headers_async():
 
 def test_search_blueprint_revisions_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6456,7 +6446,7 @@ def test_search_blueprint_revisions_flattened():
 
 def test_search_blueprint_revisions_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6472,7 +6462,7 @@ def test_search_blueprint_revisions_flattened_error():
 @pytest.mark.asyncio
 async def test_search_blueprint_revisions_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6507,7 +6497,7 @@ async def test_search_blueprint_revisions_flattened_async():
 @pytest.mark.asyncio
 async def test_search_blueprint_revisions_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6522,7 +6512,7 @@ async def test_search_blueprint_revisions_flattened_error_async():
 
 def test_search_blueprint_revisions_pager(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6574,7 +6564,7 @@ def test_search_blueprint_revisions_pager(transport_name: str = "grpc"):
 
 def test_search_blueprint_revisions_pages(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6618,7 +6608,7 @@ def test_search_blueprint_revisions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_blueprint_revisions_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6670,7 +6660,7 @@ async def test_search_blueprint_revisions_async_pager():
 @pytest.mark.asyncio
 async def test_search_blueprint_revisions_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6727,7 +6717,7 @@ async def test_search_blueprint_revisions_async_pages():
 )
 def test_search_deployment_revisions(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6759,7 +6749,7 @@ def test_search_deployment_revisions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6779,7 +6769,7 @@ async def test_search_deployment_revisions_async(
     request_type=telcoautomation.SearchDeploymentRevisionsRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6816,7 +6806,7 @@ async def test_search_deployment_revisions_async_from_dict():
 
 def test_search_deployment_revisions_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6848,7 +6838,7 @@ def test_search_deployment_revisions_field_headers():
 @pytest.mark.asyncio
 async def test_search_deployment_revisions_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6881,7 +6871,7 @@ async def test_search_deployment_revisions_field_headers_async():
 
 def test_search_deployment_revisions_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6911,7 +6901,7 @@ def test_search_deployment_revisions_flattened():
 
 def test_search_deployment_revisions_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6927,7 +6917,7 @@ def test_search_deployment_revisions_flattened_error():
 @pytest.mark.asyncio
 async def test_search_deployment_revisions_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6962,7 +6952,7 @@ async def test_search_deployment_revisions_flattened_async():
 @pytest.mark.asyncio
 async def test_search_deployment_revisions_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6977,7 +6967,7 @@ async def test_search_deployment_revisions_flattened_error_async():
 
 def test_search_deployment_revisions_pager(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -7029,7 +7019,7 @@ def test_search_deployment_revisions_pager(transport_name: str = "grpc"):
 
 def test_search_deployment_revisions_pages(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -7073,7 +7063,7 @@ def test_search_deployment_revisions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_search_deployment_revisions_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7125,7 +7115,7 @@ async def test_search_deployment_revisions_async_pager():
 @pytest.mark.asyncio
 async def test_search_deployment_revisions_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7182,7 +7172,7 @@ async def test_search_deployment_revisions_async_pages():
 )
 def test_discard_blueprint_changes(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7211,7 +7201,7 @@ def test_discard_blueprint_changes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7231,7 +7221,7 @@ async def test_discard_blueprint_changes_async(
     request_type=telcoautomation.DiscardBlueprintChangesRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7265,7 +7255,7 @@ async def test_discard_blueprint_changes_async_from_dict():
 
 def test_discard_blueprint_changes_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7297,7 +7287,7 @@ def test_discard_blueprint_changes_field_headers():
 @pytest.mark.asyncio
 async def test_discard_blueprint_changes_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7330,7 +7320,7 @@ async def test_discard_blueprint_changes_field_headers_async():
 
 def test_discard_blueprint_changes_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7356,7 +7346,7 @@ def test_discard_blueprint_changes_flattened():
 
 def test_discard_blueprint_changes_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7371,7 +7361,7 @@ def test_discard_blueprint_changes_flattened_error():
 @pytest.mark.asyncio
 async def test_discard_blueprint_changes_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7402,7 +7392,7 @@ async def test_discard_blueprint_changes_flattened_async():
 @pytest.mark.asyncio
 async def test_discard_blueprint_changes_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7423,7 +7413,7 @@ async def test_discard_blueprint_changes_flattened_error_async():
 )
 def test_list_public_blueprints(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7455,7 +7445,7 @@ def test_list_public_blueprints_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7475,7 +7465,7 @@ async def test_list_public_blueprints_async(
     request_type=telcoautomation.ListPublicBlueprintsRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7512,7 +7502,7 @@ async def test_list_public_blueprints_async_from_dict():
 
 def test_list_public_blueprints_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7544,7 +7534,7 @@ def test_list_public_blueprints_field_headers():
 @pytest.mark.asyncio
 async def test_list_public_blueprints_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7577,7 +7567,7 @@ async def test_list_public_blueprints_field_headers_async():
 
 def test_list_public_blueprints_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7603,7 +7593,7 @@ def test_list_public_blueprints_flattened():
 
 def test_list_public_blueprints_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7618,7 +7608,7 @@ def test_list_public_blueprints_flattened_error():
 @pytest.mark.asyncio
 async def test_list_public_blueprints_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7649,7 +7639,7 @@ async def test_list_public_blueprints_flattened_async():
 @pytest.mark.asyncio
 async def test_list_public_blueprints_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7663,7 +7653,7 @@ async def test_list_public_blueprints_flattened_error_async():
 
 def test_list_public_blueprints_pager(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -7715,7 +7705,7 @@ def test_list_public_blueprints_pager(transport_name: str = "grpc"):
 
 def test_list_public_blueprints_pages(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -7759,7 +7749,7 @@ def test_list_public_blueprints_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_public_blueprints_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7811,7 +7801,7 @@ async def test_list_public_blueprints_async_pager():
 @pytest.mark.asyncio
 async def test_list_public_blueprints_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7868,7 +7858,7 @@ async def test_list_public_blueprints_async_pages():
 )
 def test_get_public_blueprint(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7910,7 +7900,7 @@ def test_get_public_blueprint_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7930,7 +7920,7 @@ async def test_get_public_blueprint_async(
     request_type=telcoautomation.GetPublicBlueprintRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7977,7 +7967,7 @@ async def test_get_public_blueprint_async_from_dict():
 
 def test_get_public_blueprint_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8009,7 +7999,7 @@ def test_get_public_blueprint_field_headers():
 @pytest.mark.asyncio
 async def test_get_public_blueprint_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8042,7 +8032,7 @@ async def test_get_public_blueprint_field_headers_async():
 
 def test_get_public_blueprint_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8068,7 +8058,7 @@ def test_get_public_blueprint_flattened():
 
 def test_get_public_blueprint_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8083,7 +8073,7 @@ def test_get_public_blueprint_flattened_error():
 @pytest.mark.asyncio
 async def test_get_public_blueprint_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8114,7 +8104,7 @@ async def test_get_public_blueprint_flattened_async():
 @pytest.mark.asyncio
 async def test_get_public_blueprint_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8135,7 +8125,7 @@ async def test_get_public_blueprint_flattened_error_async():
 )
 def test_create_deployment(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8185,7 +8175,7 @@ def test_create_deployment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8205,7 +8195,7 @@ async def test_create_deployment_async(
     request_type=telcoautomation.CreateDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8260,7 +8250,7 @@ async def test_create_deployment_async_from_dict():
 
 def test_create_deployment_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8292,7 +8282,7 @@ def test_create_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_create_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8325,7 +8315,7 @@ async def test_create_deployment_field_headers_async():
 
 def test_create_deployment_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8359,7 +8349,7 @@ def test_create_deployment_flattened():
 
 def test_create_deployment_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8376,7 +8366,7 @@ def test_create_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_create_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8415,7 +8405,7 @@ async def test_create_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_create_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8438,7 +8428,7 @@ async def test_create_deployment_flattened_error_async():
 )
 def test_update_deployment(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8488,7 +8478,7 @@ def test_update_deployment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8508,7 +8498,7 @@ async def test_update_deployment_async(
     request_type=telcoautomation.UpdateDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8563,7 +8553,7 @@ async def test_update_deployment_async_from_dict():
 
 def test_update_deployment_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8595,7 +8585,7 @@ def test_update_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_update_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8628,7 +8618,7 @@ async def test_update_deployment_field_headers_async():
 
 def test_update_deployment_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8658,7 +8648,7 @@ def test_update_deployment_flattened():
 
 def test_update_deployment_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8674,7 +8664,7 @@ def test_update_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_update_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8709,7 +8699,7 @@ async def test_update_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_update_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8731,7 +8721,7 @@ async def test_update_deployment_flattened_error_async():
 )
 def test_get_deployment(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8779,7 +8769,7 @@ def test_get_deployment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8796,7 +8786,7 @@ async def test_get_deployment_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.GetDeploymentRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8849,7 +8839,7 @@ async def test_get_deployment_async_from_dict():
 
 def test_get_deployment_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8879,7 +8869,7 @@ def test_get_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_get_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8910,7 +8900,7 @@ async def test_get_deployment_field_headers_async():
 
 def test_get_deployment_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8934,7 +8924,7 @@ def test_get_deployment_flattened():
 
 def test_get_deployment_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8949,7 +8939,7 @@ def test_get_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_get_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8978,7 +8968,7 @@ async def test_get_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_get_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8999,7 +8989,7 @@ async def test_get_deployment_flattened_error_async():
 )
 def test_remove_deployment(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9028,7 +9018,7 @@ def test_remove_deployment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9048,7 +9038,7 @@ async def test_remove_deployment_async(
     request_type=telcoautomation.RemoveDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9080,7 +9070,7 @@ async def test_remove_deployment_async_from_dict():
 
 def test_remove_deployment_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9112,7 +9102,7 @@ def test_remove_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_remove_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9143,7 +9133,7 @@ async def test_remove_deployment_field_headers_async():
 
 def test_remove_deployment_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9169,7 +9159,7 @@ def test_remove_deployment_flattened():
 
 def test_remove_deployment_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9184,7 +9174,7 @@ def test_remove_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_remove_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9213,7 +9203,7 @@ async def test_remove_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_remove_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9234,7 +9224,7 @@ async def test_remove_deployment_flattened_error_async():
 )
 def test_list_deployments(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9264,7 +9254,7 @@ def test_list_deployments_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9281,7 +9271,7 @@ async def test_list_deployments_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.ListDeploymentsRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9316,7 +9306,7 @@ async def test_list_deployments_async_from_dict():
 
 def test_list_deployments_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9346,7 +9336,7 @@ def test_list_deployments_field_headers():
 @pytest.mark.asyncio
 async def test_list_deployments_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9377,7 +9367,7 @@ async def test_list_deployments_field_headers_async():
 
 def test_list_deployments_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9401,7 +9391,7 @@ def test_list_deployments_flattened():
 
 def test_list_deployments_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9416,7 +9406,7 @@ def test_list_deployments_flattened_error():
 @pytest.mark.asyncio
 async def test_list_deployments_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9445,7 +9435,7 @@ async def test_list_deployments_flattened_async():
 @pytest.mark.asyncio
 async def test_list_deployments_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9459,7 +9449,7 @@ async def test_list_deployments_flattened_error_async():
 
 def test_list_deployments_pager(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -9509,7 +9499,7 @@ def test_list_deployments_pager(transport_name: str = "grpc"):
 
 def test_list_deployments_pages(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -9551,7 +9541,7 @@ def test_list_deployments_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_deployments_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9601,7 +9591,7 @@ async def test_list_deployments_async_pager():
 @pytest.mark.asyncio
 async def test_list_deployments_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9656,7 +9646,7 @@ async def test_list_deployments_async_pages():
 )
 def test_list_deployment_revisions(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9688,7 +9678,7 @@ def test_list_deployment_revisions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9708,7 +9698,7 @@ async def test_list_deployment_revisions_async(
     request_type=telcoautomation.ListDeploymentRevisionsRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9745,7 +9735,7 @@ async def test_list_deployment_revisions_async_from_dict():
 
 def test_list_deployment_revisions_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9777,7 +9767,7 @@ def test_list_deployment_revisions_field_headers():
 @pytest.mark.asyncio
 async def test_list_deployment_revisions_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9810,7 +9800,7 @@ async def test_list_deployment_revisions_field_headers_async():
 
 def test_list_deployment_revisions_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9836,7 +9826,7 @@ def test_list_deployment_revisions_flattened():
 
 def test_list_deployment_revisions_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9851,7 +9841,7 @@ def test_list_deployment_revisions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_deployment_revisions_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9882,7 +9872,7 @@ async def test_list_deployment_revisions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_deployment_revisions_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9896,7 +9886,7 @@ async def test_list_deployment_revisions_flattened_error_async():
 
 def test_list_deployment_revisions_pager(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -9948,7 +9938,7 @@ def test_list_deployment_revisions_pager(transport_name: str = "grpc"):
 
 def test_list_deployment_revisions_pages(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -9992,7 +9982,7 @@ def test_list_deployment_revisions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_deployment_revisions_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10044,7 +10034,7 @@ async def test_list_deployment_revisions_async_pager():
 @pytest.mark.asyncio
 async def test_list_deployment_revisions_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10101,7 +10091,7 @@ async def test_list_deployment_revisions_async_pages():
 )
 def test_discard_deployment_changes(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10130,7 +10120,7 @@ def test_discard_deployment_changes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10150,7 +10140,7 @@ async def test_discard_deployment_changes_async(
     request_type=telcoautomation.DiscardDeploymentChangesRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10184,7 +10174,7 @@ async def test_discard_deployment_changes_async_from_dict():
 
 def test_discard_deployment_changes_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10216,7 +10206,7 @@ def test_discard_deployment_changes_field_headers():
 @pytest.mark.asyncio
 async def test_discard_deployment_changes_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10249,7 +10239,7 @@ async def test_discard_deployment_changes_field_headers_async():
 
 def test_discard_deployment_changes_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10275,7 +10265,7 @@ def test_discard_deployment_changes_flattened():
 
 def test_discard_deployment_changes_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10290,7 +10280,7 @@ def test_discard_deployment_changes_flattened_error():
 @pytest.mark.asyncio
 async def test_discard_deployment_changes_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10321,7 +10311,7 @@ async def test_discard_deployment_changes_flattened_async():
 @pytest.mark.asyncio
 async def test_discard_deployment_changes_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10342,7 +10332,7 @@ async def test_discard_deployment_changes_flattened_error_async():
 )
 def test_apply_deployment(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10390,7 +10380,7 @@ def test_apply_deployment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10407,7 +10397,7 @@ async def test_apply_deployment_async(
     transport: str = "grpc_asyncio", request_type=telcoautomation.ApplyDeploymentRequest
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10460,7 +10450,7 @@ async def test_apply_deployment_async_from_dict():
 
 def test_apply_deployment_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10490,7 +10480,7 @@ def test_apply_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_apply_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10521,7 +10511,7 @@ async def test_apply_deployment_field_headers_async():
 
 def test_apply_deployment_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10545,7 +10535,7 @@ def test_apply_deployment_flattened():
 
 def test_apply_deployment_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10560,7 +10550,7 @@ def test_apply_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_apply_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10589,7 +10579,7 @@ async def test_apply_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_apply_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10610,7 +10600,7 @@ async def test_apply_deployment_flattened_error_async():
 )
 def test_compute_deployment_status(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10644,7 +10634,7 @@ def test_compute_deployment_status_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10664,7 +10654,7 @@ async def test_compute_deployment_status_async(
     request_type=telcoautomation.ComputeDeploymentStatusRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10703,7 +10693,7 @@ async def test_compute_deployment_status_async_from_dict():
 
 def test_compute_deployment_status_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10735,7 +10725,7 @@ def test_compute_deployment_status_field_headers():
 @pytest.mark.asyncio
 async def test_compute_deployment_status_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10768,7 +10758,7 @@ async def test_compute_deployment_status_field_headers_async():
 
 def test_compute_deployment_status_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10794,7 +10784,7 @@ def test_compute_deployment_status_flattened():
 
 def test_compute_deployment_status_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10809,7 +10799,7 @@ def test_compute_deployment_status_flattened_error():
 @pytest.mark.asyncio
 async def test_compute_deployment_status_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10840,7 +10830,7 @@ async def test_compute_deployment_status_flattened_async():
 @pytest.mark.asyncio
 async def test_compute_deployment_status_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10861,7 +10851,7 @@ async def test_compute_deployment_status_flattened_error_async():
 )
 def test_rollback_deployment(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10911,7 +10901,7 @@ def test_rollback_deployment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10931,7 +10921,7 @@ async def test_rollback_deployment_async(
     request_type=telcoautomation.RollbackDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10986,7 +10976,7 @@ async def test_rollback_deployment_async_from_dict():
 
 def test_rollback_deployment_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11018,7 +11008,7 @@ def test_rollback_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_rollback_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11051,7 +11041,7 @@ async def test_rollback_deployment_field_headers_async():
 
 def test_rollback_deployment_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11081,7 +11071,7 @@ def test_rollback_deployment_flattened():
 
 def test_rollback_deployment_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11097,7 +11087,7 @@ def test_rollback_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_rollback_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11132,7 +11122,7 @@ async def test_rollback_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_rollback_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11154,7 +11144,7 @@ async def test_rollback_deployment_flattened_error_async():
 )
 def test_get_hydrated_deployment(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11190,7 +11180,7 @@ def test_get_hydrated_deployment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -11210,7 +11200,7 @@ async def test_get_hydrated_deployment_async(
     request_type=telcoautomation.GetHydratedDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11251,7 +11241,7 @@ async def test_get_hydrated_deployment_async_from_dict():
 
 def test_get_hydrated_deployment_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11283,7 +11273,7 @@ def test_get_hydrated_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_get_hydrated_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11316,7 +11306,7 @@ async def test_get_hydrated_deployment_field_headers_async():
 
 def test_get_hydrated_deployment_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11342,7 +11332,7 @@ def test_get_hydrated_deployment_flattened():
 
 def test_get_hydrated_deployment_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11357,7 +11347,7 @@ def test_get_hydrated_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_get_hydrated_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11388,7 +11378,7 @@ async def test_get_hydrated_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_get_hydrated_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11409,7 +11399,7 @@ async def test_get_hydrated_deployment_flattened_error_async():
 )
 def test_list_hydrated_deployments(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11441,7 +11431,7 @@ def test_list_hydrated_deployments_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -11461,7 +11451,7 @@ async def test_list_hydrated_deployments_async(
     request_type=telcoautomation.ListHydratedDeploymentsRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11498,7 +11488,7 @@ async def test_list_hydrated_deployments_async_from_dict():
 
 def test_list_hydrated_deployments_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11530,7 +11520,7 @@ def test_list_hydrated_deployments_field_headers():
 @pytest.mark.asyncio
 async def test_list_hydrated_deployments_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11563,7 +11553,7 @@ async def test_list_hydrated_deployments_field_headers_async():
 
 def test_list_hydrated_deployments_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11589,7 +11579,7 @@ def test_list_hydrated_deployments_flattened():
 
 def test_list_hydrated_deployments_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11604,7 +11594,7 @@ def test_list_hydrated_deployments_flattened_error():
 @pytest.mark.asyncio
 async def test_list_hydrated_deployments_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11635,7 +11625,7 @@ async def test_list_hydrated_deployments_flattened_async():
 @pytest.mark.asyncio
 async def test_list_hydrated_deployments_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11649,7 +11639,7 @@ async def test_list_hydrated_deployments_flattened_error_async():
 
 def test_list_hydrated_deployments_pager(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -11701,7 +11691,7 @@ def test_list_hydrated_deployments_pager(transport_name: str = "grpc"):
 
 def test_list_hydrated_deployments_pages(transport_name: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -11745,7 +11735,7 @@ def test_list_hydrated_deployments_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_hydrated_deployments_async_pager():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11797,7 +11787,7 @@ async def test_list_hydrated_deployments_async_pager():
 @pytest.mark.asyncio
 async def test_list_hydrated_deployments_async_pages():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11854,7 +11844,7 @@ async def test_list_hydrated_deployments_async_pages():
 )
 def test_update_hydrated_deployment(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11890,7 +11880,7 @@ def test_update_hydrated_deployment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -11910,7 +11900,7 @@ async def test_update_hydrated_deployment_async(
     request_type=telcoautomation.UpdateHydratedDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11951,7 +11941,7 @@ async def test_update_hydrated_deployment_async_from_dict():
 
 def test_update_hydrated_deployment_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11983,7 +11973,7 @@ def test_update_hydrated_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_update_hydrated_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12016,7 +12006,7 @@ async def test_update_hydrated_deployment_field_headers_async():
 
 def test_update_hydrated_deployment_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12046,7 +12036,7 @@ def test_update_hydrated_deployment_flattened():
 
 def test_update_hydrated_deployment_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12062,7 +12052,7 @@ def test_update_hydrated_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_update_hydrated_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12097,7 +12087,7 @@ async def test_update_hydrated_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_update_hydrated_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12119,7 +12109,7 @@ async def test_update_hydrated_deployment_flattened_error_async():
 )
 def test_apply_hydrated_deployment(request_type, transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12155,7 +12145,7 @@ def test_apply_hydrated_deployment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -12175,7 +12165,7 @@ async def test_apply_hydrated_deployment_async(
     request_type=telcoautomation.ApplyHydratedDeploymentRequest,
 ):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12216,7 +12206,7 @@ async def test_apply_hydrated_deployment_async_from_dict():
 
 def test_apply_hydrated_deployment_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12248,7 +12238,7 @@ def test_apply_hydrated_deployment_field_headers():
 @pytest.mark.asyncio
 async def test_apply_hydrated_deployment_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12281,7 +12271,7 @@ async def test_apply_hydrated_deployment_field_headers_async():
 
 def test_apply_hydrated_deployment_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12307,7 +12297,7 @@ def test_apply_hydrated_deployment_flattened():
 
 def test_apply_hydrated_deployment_flattened_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12322,7 +12312,7 @@ def test_apply_hydrated_deployment_flattened_error():
 @pytest.mark.asyncio
 async def test_apply_hydrated_deployment_flattened_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12353,7 +12343,7 @@ async def test_apply_hydrated_deployment_flattened_async():
 @pytest.mark.asyncio
 async def test_apply_hydrated_deployment_flattened_error_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12374,7 +12364,7 @@ async def test_apply_hydrated_deployment_flattened_error_async():
 )
 def test_list_orchestration_clusters_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12429,7 +12419,7 @@ def test_list_orchestration_clusters_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_orchestration_clusters._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12438,7 +12428,7 @@ def test_list_orchestration_clusters_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_orchestration_clusters._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -12456,7 +12446,7 @@ def test_list_orchestration_clusters_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12500,7 +12490,7 @@ def test_list_orchestration_clusters_rest_required_fields(
 
 def test_list_orchestration_clusters_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_orchestration_clusters._get_unset_required_fields({})
@@ -12520,7 +12510,7 @@ def test_list_orchestration_clusters_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_orchestration_clusters_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -12581,7 +12571,7 @@ def test_list_orchestration_clusters_rest_bad_request(
     request_type=telcoautomation.ListOrchestrationClustersRequest,
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12603,7 +12593,7 @@ def test_list_orchestration_clusters_rest_bad_request(
 
 def test_list_orchestration_clusters_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12647,7 +12637,7 @@ def test_list_orchestration_clusters_rest_flattened():
 
 def test_list_orchestration_clusters_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12662,7 +12652,7 @@ def test_list_orchestration_clusters_rest_flattened_error(transport: str = "rest
 
 def test_list_orchestration_clusters_rest_pager(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12733,7 +12723,7 @@ def test_list_orchestration_clusters_rest_pager(transport: str = "rest"):
 )
 def test_get_orchestration_cluster_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12790,7 +12780,7 @@ def test_get_orchestration_cluster_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_orchestration_cluster._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12799,7 +12789,7 @@ def test_get_orchestration_cluster_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_orchestration_cluster._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12808,7 +12798,7 @@ def test_get_orchestration_cluster_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12850,7 +12840,7 @@ def test_get_orchestration_cluster_rest_required_fields(
 
 def test_get_orchestration_cluster_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_orchestration_cluster._get_unset_required_fields({})
@@ -12860,7 +12850,7 @@ def test_get_orchestration_cluster_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_orchestration_cluster_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -12918,7 +12908,7 @@ def test_get_orchestration_cluster_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.GetOrchestrationClusterRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12942,7 +12932,7 @@ def test_get_orchestration_cluster_rest_bad_request(
 
 def test_get_orchestration_cluster_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12986,7 +12976,7 @@ def test_get_orchestration_cluster_rest_flattened():
 
 def test_get_orchestration_cluster_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13001,7 +12991,7 @@ def test_get_orchestration_cluster_rest_flattened_error(transport: str = "rest")
 
 def test_get_orchestration_cluster_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13014,7 +13004,7 @@ def test_get_orchestration_cluster_rest_error():
 )
 def test_create_orchestration_cluster_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13170,7 +13160,7 @@ def test_create_orchestration_cluster_rest_required_fields(
     assert "orchestrationClusterId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_orchestration_cluster._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13185,7 +13175,7 @@ def test_create_orchestration_cluster_rest_required_fields(
     jsonified_request["orchestrationClusterId"] = "orchestration_cluster_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_orchestration_cluster._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -13205,7 +13195,7 @@ def test_create_orchestration_cluster_rest_required_fields(
     )
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13251,7 +13241,7 @@ def test_create_orchestration_cluster_rest_required_fields(
 
 def test_create_orchestration_cluster_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_orchestration_cluster._get_unset_required_fields({})
@@ -13275,7 +13265,7 @@ def test_create_orchestration_cluster_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_orchestration_cluster_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -13336,7 +13326,7 @@ def test_create_orchestration_cluster_rest_bad_request(
     request_type=telcoautomation.CreateOrchestrationClusterRequest,
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13358,7 +13348,7 @@ def test_create_orchestration_cluster_rest_bad_request(
 
 def test_create_orchestration_cluster_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13402,7 +13392,7 @@ def test_create_orchestration_cluster_rest_flattened():
 
 def test_create_orchestration_cluster_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13421,7 +13411,7 @@ def test_create_orchestration_cluster_rest_flattened_error(transport: str = "res
 
 def test_create_orchestration_cluster_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13434,7 +13424,7 @@ def test_create_orchestration_cluster_rest_error():
 )
 def test_delete_orchestration_cluster_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13482,7 +13472,7 @@ def test_delete_orchestration_cluster_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_orchestration_cluster._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13491,7 +13481,7 @@ def test_delete_orchestration_cluster_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_orchestration_cluster._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
@@ -13502,7 +13492,7 @@ def test_delete_orchestration_cluster_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13541,7 +13531,7 @@ def test_delete_orchestration_cluster_rest_required_fields(
 
 def test_delete_orchestration_cluster_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_orchestration_cluster._get_unset_required_fields({})
@@ -13551,7 +13541,7 @@ def test_delete_orchestration_cluster_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_orchestration_cluster_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -13612,7 +13602,7 @@ def test_delete_orchestration_cluster_rest_bad_request(
     request_type=telcoautomation.DeleteOrchestrationClusterRequest,
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13636,7 +13626,7 @@ def test_delete_orchestration_cluster_rest_bad_request(
 
 def test_delete_orchestration_cluster_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13678,7 +13668,7 @@ def test_delete_orchestration_cluster_rest_flattened():
 
 def test_delete_orchestration_cluster_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13693,7 +13683,7 @@ def test_delete_orchestration_cluster_rest_flattened_error(transport: str = "res
 
 def test_delete_orchestration_cluster_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13706,7 +13696,7 @@ def test_delete_orchestration_cluster_rest_error():
 )
 def test_list_edge_slms_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13759,7 +13749,7 @@ def test_list_edge_slms_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_edge_slms._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13768,7 +13758,7 @@ def test_list_edge_slms_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_edge_slms._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -13786,7 +13776,7 @@ def test_list_edge_slms_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13828,7 +13818,7 @@ def test_list_edge_slms_rest_required_fields(
 
 def test_list_edge_slms_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_edge_slms._get_unset_required_fields({})
@@ -13848,7 +13838,7 @@ def test_list_edge_slms_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_edge_slms_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -13906,7 +13896,7 @@ def test_list_edge_slms_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.ListEdgeSlmsRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13928,7 +13918,7 @@ def test_list_edge_slms_rest_bad_request(
 
 def test_list_edge_slms_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13970,7 +13960,7 @@ def test_list_edge_slms_rest_flattened():
 
 def test_list_edge_slms_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13985,7 +13975,7 @@ def test_list_edge_slms_rest_flattened_error(transport: str = "rest"):
 
 def test_list_edge_slms_rest_pager(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14055,7 +14045,7 @@ def test_list_edge_slms_rest_pager(transport: str = "rest"):
 )
 def test_get_edge_slm_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14117,7 +14107,7 @@ def test_get_edge_slm_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_edge_slm._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14126,7 +14116,7 @@ def test_get_edge_slm_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_edge_slm._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14135,7 +14125,7 @@ def test_get_edge_slm_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14177,7 +14167,7 @@ def test_get_edge_slm_rest_required_fields(
 
 def test_get_edge_slm_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_edge_slm._get_unset_required_fields({})
@@ -14187,7 +14177,7 @@ def test_get_edge_slm_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_edge_slm_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -14245,7 +14235,7 @@ def test_get_edge_slm_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.GetEdgeSlmRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14267,7 +14257,7 @@ def test_get_edge_slm_rest_bad_request(
 
 def test_get_edge_slm_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14309,7 +14299,7 @@ def test_get_edge_slm_rest_flattened():
 
 def test_get_edge_slm_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14324,7 +14314,7 @@ def test_get_edge_slm_rest_flattened_error(transport: str = "rest"):
 
 def test_get_edge_slm_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14337,7 +14327,7 @@ def test_get_edge_slm_rest_error():
 )
 def test_create_edge_slm_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14462,7 +14452,7 @@ def test_create_edge_slm_rest_required_fields(
     assert "edgeSlmId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_edge_slm._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14474,7 +14464,7 @@ def test_create_edge_slm_rest_required_fields(
     jsonified_request["edgeSlmId"] = "edge_slm_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_edge_slm._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -14492,7 +14482,7 @@ def test_create_edge_slm_rest_required_fields(
     assert jsonified_request["edgeSlmId"] == "edge_slm_id_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14538,7 +14528,7 @@ def test_create_edge_slm_rest_required_fields(
 
 def test_create_edge_slm_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_edge_slm._get_unset_required_fields({})
@@ -14562,7 +14552,7 @@ def test_create_edge_slm_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_edge_slm_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -14622,7 +14612,7 @@ def test_create_edge_slm_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.CreateEdgeSlmRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14644,7 +14634,7 @@ def test_create_edge_slm_rest_bad_request(
 
 def test_create_edge_slm_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14686,7 +14676,7 @@ def test_create_edge_slm_rest_flattened():
 
 def test_create_edge_slm_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14703,7 +14693,7 @@ def test_create_edge_slm_rest_flattened_error(transport: str = "rest"):
 
 def test_create_edge_slm_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14716,7 +14706,7 @@ def test_create_edge_slm_rest_error():
 )
 def test_delete_edge_slm_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14762,7 +14752,7 @@ def test_delete_edge_slm_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_edge_slm._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14771,7 +14761,7 @@ def test_delete_edge_slm_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_edge_slm._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("request_id",))
@@ -14782,7 +14772,7 @@ def test_delete_edge_slm_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14821,7 +14811,7 @@ def test_delete_edge_slm_rest_required_fields(
 
 def test_delete_edge_slm_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_edge_slm._get_unset_required_fields({})
@@ -14831,7 +14821,7 @@ def test_delete_edge_slm_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_edge_slm_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -14891,7 +14881,7 @@ def test_delete_edge_slm_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.DeleteEdgeSlmRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14913,7 +14903,7 @@ def test_delete_edge_slm_rest_bad_request(
 
 def test_delete_edge_slm_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14953,7 +14943,7 @@ def test_delete_edge_slm_rest_flattened():
 
 def test_delete_edge_slm_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14968,7 +14958,7 @@ def test_delete_edge_slm_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_edge_slm_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14981,7 +14971,7 @@ def test_delete_edge_slm_rest_error():
 )
 def test_create_blueprint_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15140,7 +15130,7 @@ def test_create_blueprint_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15149,7 +15139,7 @@ def test_create_blueprint_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_blueprint._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("blueprint_id",))
@@ -15160,7 +15150,7 @@ def test_create_blueprint_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15203,7 +15193,7 @@ def test_create_blueprint_rest_required_fields(
 
 def test_create_blueprint_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_blueprint._get_unset_required_fields({})
@@ -15221,7 +15211,7 @@ def test_create_blueprint_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_blueprint_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -15279,7 +15269,7 @@ def test_create_blueprint_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.CreateBlueprintRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15303,7 +15293,7 @@ def test_create_blueprint_rest_bad_request(
 
 def test_create_blueprint_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15349,7 +15339,7 @@ def test_create_blueprint_rest_flattened():
 
 def test_create_blueprint_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15366,7 +15356,7 @@ def test_create_blueprint_rest_flattened_error(transport: str = "rest"):
 
 def test_create_blueprint_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15379,7 +15369,7 @@ def test_create_blueprint_rest_error():
 )
 def test_update_blueprint_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15539,14 +15529,14 @@ def test_update_blueprint_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_blueprint._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -15555,7 +15545,7 @@ def test_update_blueprint_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15598,7 +15588,7 @@ def test_update_blueprint_rest_required_fields(
 
 def test_update_blueprint_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_blueprint._get_unset_required_fields({})
@@ -15616,7 +15606,7 @@ def test_update_blueprint_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_blueprint_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -15674,7 +15664,7 @@ def test_update_blueprint_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.UpdateBlueprintRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15700,7 +15690,7 @@ def test_update_blueprint_rest_bad_request(
 
 def test_update_blueprint_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15747,7 +15737,7 @@ def test_update_blueprint_rest_flattened():
 
 def test_update_blueprint_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15763,7 +15753,7 @@ def test_update_blueprint_rest_flattened_error(transport: str = "rest"):
 
 def test_update_blueprint_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15776,7 +15766,7 @@ def test_update_blueprint_rest_error():
 )
 def test_get_blueprint_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15845,7 +15835,7 @@ def test_get_blueprint_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15854,7 +15844,7 @@ def test_get_blueprint_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_blueprint._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("view",))
@@ -15865,7 +15855,7 @@ def test_get_blueprint_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15907,7 +15897,7 @@ def test_get_blueprint_rest_required_fields(
 
 def test_get_blueprint_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_blueprint._get_unset_required_fields({})
@@ -15917,7 +15907,7 @@ def test_get_blueprint_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_blueprint_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -15975,7 +15965,7 @@ def test_get_blueprint_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.GetBlueprintRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15999,7 +15989,7 @@ def test_get_blueprint_rest_bad_request(
 
 def test_get_blueprint_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16043,7 +16033,7 @@ def test_get_blueprint_rest_flattened():
 
 def test_get_blueprint_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16058,7 +16048,7 @@ def test_get_blueprint_rest_flattened_error(transport: str = "rest"):
 
 def test_get_blueprint_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16071,7 +16061,7 @@ def test_get_blueprint_rest_error():
 )
 def test_delete_blueprint_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16119,7 +16109,7 @@ def test_delete_blueprint_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16128,7 +16118,7 @@ def test_delete_blueprint_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16137,7 +16127,7 @@ def test_delete_blueprint_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16176,7 +16166,7 @@ def test_delete_blueprint_rest_required_fields(
 
 def test_delete_blueprint_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_blueprint._get_unset_required_fields({})
@@ -16186,7 +16176,7 @@ def test_delete_blueprint_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_blueprint_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -16236,7 +16226,7 @@ def test_delete_blueprint_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.DeleteBlueprintRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16260,7 +16250,7 @@ def test_delete_blueprint_rest_bad_request(
 
 def test_delete_blueprint_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16302,7 +16292,7 @@ def test_delete_blueprint_rest_flattened():
 
 def test_delete_blueprint_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16317,7 +16307,7 @@ def test_delete_blueprint_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_blueprint_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16330,7 +16320,7 @@ def test_delete_blueprint_rest_error():
 )
 def test_list_blueprints_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16383,7 +16373,7 @@ def test_list_blueprints_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_blueprints._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16392,7 +16382,7 @@ def test_list_blueprints_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_blueprints._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -16409,7 +16399,7 @@ def test_list_blueprints_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16451,7 +16441,7 @@ def test_list_blueprints_rest_required_fields(
 
 def test_list_blueprints_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_blueprints._get_unset_required_fields({})
@@ -16470,7 +16460,7 @@ def test_list_blueprints_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_blueprints_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -16528,7 +16518,7 @@ def test_list_blueprints_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.ListBlueprintsRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16552,7 +16542,7 @@ def test_list_blueprints_rest_bad_request(
 
 def test_list_blueprints_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16596,7 +16586,7 @@ def test_list_blueprints_rest_flattened():
 
 def test_list_blueprints_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16611,7 +16601,7 @@ def test_list_blueprints_rest_flattened_error(transport: str = "rest"):
 
 def test_list_blueprints_rest_pager(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16683,7 +16673,7 @@ def test_list_blueprints_rest_pager(transport: str = "rest"):
 )
 def test_approve_blueprint_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16752,7 +16742,7 @@ def test_approve_blueprint_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).approve_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16761,7 +16751,7 @@ def test_approve_blueprint_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).approve_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16770,7 +16760,7 @@ def test_approve_blueprint_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16813,7 +16803,7 @@ def test_approve_blueprint_rest_required_fields(
 
 def test_approve_blueprint_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.approve_blueprint._get_unset_required_fields({})
@@ -16823,7 +16813,7 @@ def test_approve_blueprint_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_approve_blueprint_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -16881,7 +16871,7 @@ def test_approve_blueprint_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.ApproveBlueprintRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16905,7 +16895,7 @@ def test_approve_blueprint_rest_bad_request(
 
 def test_approve_blueprint_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16949,7 +16939,7 @@ def test_approve_blueprint_rest_flattened():
 
 def test_approve_blueprint_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16964,7 +16954,7 @@ def test_approve_blueprint_rest_flattened_error(transport: str = "rest"):
 
 def test_approve_blueprint_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16977,7 +16967,7 @@ def test_approve_blueprint_rest_error():
 )
 def test_propose_blueprint_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17046,7 +17036,7 @@ def test_propose_blueprint_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).propose_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17055,7 +17045,7 @@ def test_propose_blueprint_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).propose_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17064,7 +17054,7 @@ def test_propose_blueprint_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17107,7 +17097,7 @@ def test_propose_blueprint_rest_required_fields(
 
 def test_propose_blueprint_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.propose_blueprint._get_unset_required_fields({})
@@ -17117,7 +17107,7 @@ def test_propose_blueprint_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_propose_blueprint_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -17175,7 +17165,7 @@ def test_propose_blueprint_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.ProposeBlueprintRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17199,7 +17189,7 @@ def test_propose_blueprint_rest_bad_request(
 
 def test_propose_blueprint_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17243,7 +17233,7 @@ def test_propose_blueprint_rest_flattened():
 
 def test_propose_blueprint_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17258,7 +17248,7 @@ def test_propose_blueprint_rest_flattened_error(transport: str = "rest"):
 
 def test_propose_blueprint_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17271,7 +17261,7 @@ def test_propose_blueprint_rest_error():
 )
 def test_reject_blueprint_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17340,7 +17330,7 @@ def test_reject_blueprint_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).reject_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17349,7 +17339,7 @@ def test_reject_blueprint_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).reject_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17358,7 +17348,7 @@ def test_reject_blueprint_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17401,7 +17391,7 @@ def test_reject_blueprint_rest_required_fields(
 
 def test_reject_blueprint_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.reject_blueprint._get_unset_required_fields({})
@@ -17411,7 +17401,7 @@ def test_reject_blueprint_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_reject_blueprint_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -17469,7 +17459,7 @@ def test_reject_blueprint_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.RejectBlueprintRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17493,7 +17483,7 @@ def test_reject_blueprint_rest_bad_request(
 
 def test_reject_blueprint_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17537,7 +17527,7 @@ def test_reject_blueprint_rest_flattened():
 
 def test_reject_blueprint_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17552,7 +17542,7 @@ def test_reject_blueprint_rest_flattened_error(transport: str = "rest"):
 
 def test_reject_blueprint_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17565,7 +17555,7 @@ def test_reject_blueprint_rest_error():
 )
 def test_list_blueprint_revisions_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17618,7 +17608,7 @@ def test_list_blueprint_revisions_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_blueprint_revisions._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17627,7 +17617,7 @@ def test_list_blueprint_revisions_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_blueprint_revisions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -17643,7 +17633,7 @@ def test_list_blueprint_revisions_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17687,7 +17677,7 @@ def test_list_blueprint_revisions_rest_required_fields(
 
 def test_list_blueprint_revisions_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_blueprint_revisions._get_unset_required_fields({})
@@ -17705,7 +17695,7 @@ def test_list_blueprint_revisions_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_blueprint_revisions_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -17765,7 +17755,7 @@ def test_list_blueprint_revisions_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.ListBlueprintRevisionsRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17789,7 +17779,7 @@ def test_list_blueprint_revisions_rest_bad_request(
 
 def test_list_blueprint_revisions_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17833,7 +17823,7 @@ def test_list_blueprint_revisions_rest_flattened():
 
 def test_list_blueprint_revisions_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17848,7 +17838,7 @@ def test_list_blueprint_revisions_rest_flattened_error(transport: str = "rest"):
 
 def test_list_blueprint_revisions_rest_pager(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17920,7 +17910,7 @@ def test_list_blueprint_revisions_rest_pager(transport: str = "rest"):
 )
 def test_search_blueprint_revisions_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17975,7 +17965,7 @@ def test_search_blueprint_revisions_rest_required_fields(
     assert "query" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).search_blueprint_revisions._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17987,7 +17977,7 @@ def test_search_blueprint_revisions_rest_required_fields(
     jsonified_request["query"] = "query_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).search_blueprint_revisions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -18006,7 +17996,7 @@ def test_search_blueprint_revisions_rest_required_fields(
     assert jsonified_request["query"] == "query_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18056,7 +18046,7 @@ def test_search_blueprint_revisions_rest_required_fields(
 
 def test_search_blueprint_revisions_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.search_blueprint_revisions._get_unset_required_fields({})
@@ -18080,7 +18070,7 @@ def test_search_blueprint_revisions_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_search_blueprint_revisions_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -18141,7 +18131,7 @@ def test_search_blueprint_revisions_rest_bad_request(
     request_type=telcoautomation.SearchBlueprintRevisionsRequest,
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18165,7 +18155,7 @@ def test_search_blueprint_revisions_rest_bad_request(
 
 def test_search_blueprint_revisions_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18210,7 +18200,7 @@ def test_search_blueprint_revisions_rest_flattened():
 
 def test_search_blueprint_revisions_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18226,7 +18216,7 @@ def test_search_blueprint_revisions_rest_flattened_error(transport: str = "rest"
 
 def test_search_blueprint_revisions_rest_pager(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18299,7 +18289,7 @@ def test_search_blueprint_revisions_rest_pager(transport: str = "rest"):
 )
 def test_search_deployment_revisions_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18356,7 +18346,7 @@ def test_search_deployment_revisions_rest_required_fields(
     assert "query" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).search_deployment_revisions._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18368,7 +18358,7 @@ def test_search_deployment_revisions_rest_required_fields(
     jsonified_request["query"] = "query_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).search_deployment_revisions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -18387,7 +18377,7 @@ def test_search_deployment_revisions_rest_required_fields(
     assert jsonified_request["query"] == "query_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18437,7 +18427,7 @@ def test_search_deployment_revisions_rest_required_fields(
 
 def test_search_deployment_revisions_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.search_deployment_revisions._get_unset_required_fields({})
@@ -18461,7 +18451,7 @@ def test_search_deployment_revisions_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_search_deployment_revisions_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -18522,7 +18512,7 @@ def test_search_deployment_revisions_rest_bad_request(
     request_type=telcoautomation.SearchDeploymentRevisionsRequest,
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18546,7 +18536,7 @@ def test_search_deployment_revisions_rest_bad_request(
 
 def test_search_deployment_revisions_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18593,7 +18583,7 @@ def test_search_deployment_revisions_rest_flattened():
 
 def test_search_deployment_revisions_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18609,7 +18599,7 @@ def test_search_deployment_revisions_rest_flattened_error(transport: str = "rest
 
 def test_search_deployment_revisions_rest_pager(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18682,7 +18672,7 @@ def test_search_deployment_revisions_rest_pager(transport: str = "rest"):
 )
 def test_discard_blueprint_changes_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18732,7 +18722,7 @@ def test_discard_blueprint_changes_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).discard_blueprint_changes._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18741,7 +18731,7 @@ def test_discard_blueprint_changes_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).discard_blueprint_changes._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18750,7 +18740,7 @@ def test_discard_blueprint_changes_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18795,7 +18785,7 @@ def test_discard_blueprint_changes_rest_required_fields(
 
 def test_discard_blueprint_changes_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.discard_blueprint_changes._get_unset_required_fields({})
@@ -18805,7 +18795,7 @@ def test_discard_blueprint_changes_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_discard_blueprint_changes_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -18865,7 +18855,7 @@ def test_discard_blueprint_changes_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.DiscardBlueprintChangesRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18889,7 +18879,7 @@ def test_discard_blueprint_changes_rest_bad_request(
 
 def test_discard_blueprint_changes_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18933,7 +18923,7 @@ def test_discard_blueprint_changes_rest_flattened():
 
 def test_discard_blueprint_changes_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18948,7 +18938,7 @@ def test_discard_blueprint_changes_rest_flattened_error(transport: str = "rest")
 
 def test_discard_blueprint_changes_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18961,7 +18951,7 @@ def test_discard_blueprint_changes_rest_error():
 )
 def test_list_public_blueprints_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19012,7 +19002,7 @@ def test_list_public_blueprints_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_public_blueprints._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19021,7 +19011,7 @@ def test_list_public_blueprints_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_public_blueprints._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -19037,7 +19027,7 @@ def test_list_public_blueprints_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19079,7 +19069,7 @@ def test_list_public_blueprints_rest_required_fields(
 
 def test_list_public_blueprints_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_public_blueprints._get_unset_required_fields({})
@@ -19097,7 +19087,7 @@ def test_list_public_blueprints_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_public_blueprints_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -19157,7 +19147,7 @@ def test_list_public_blueprints_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.ListPublicBlueprintsRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19179,7 +19169,7 @@ def test_list_public_blueprints_rest_bad_request(
 
 def test_list_public_blueprints_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19221,7 +19211,7 @@ def test_list_public_blueprints_rest_flattened():
 
 def test_list_public_blueprints_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19236,7 +19226,7 @@ def test_list_public_blueprints_rest_flattened_error(transport: str = "rest"):
 
 def test_list_public_blueprints_rest_pager(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19306,7 +19296,7 @@ def test_list_public_blueprints_rest_pager(transport: str = "rest"):
 )
 def test_get_public_blueprint_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19369,7 +19359,7 @@ def test_get_public_blueprint_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_public_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19378,7 +19368,7 @@ def test_get_public_blueprint_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_public_blueprint._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19387,7 +19377,7 @@ def test_get_public_blueprint_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19429,7 +19419,7 @@ def test_get_public_blueprint_rest_required_fields(
 
 def test_get_public_blueprint_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_public_blueprint._get_unset_required_fields({})
@@ -19439,7 +19429,7 @@ def test_get_public_blueprint_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_public_blueprint_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -19497,7 +19487,7 @@ def test_get_public_blueprint_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.GetPublicBlueprintRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19521,7 +19511,7 @@ def test_get_public_blueprint_rest_bad_request(
 
 def test_get_public_blueprint_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19565,7 +19555,7 @@ def test_get_public_blueprint_rest_flattened():
 
 def test_get_public_blueprint_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19580,7 +19570,7 @@ def test_get_public_blueprint_rest_flattened_error(transport: str = "rest"):
 
 def test_get_public_blueprint_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19593,7 +19583,7 @@ def test_get_public_blueprint_rest_error():
 )
 def test_create_deployment_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19755,7 +19745,7 @@ def test_create_deployment_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19764,7 +19754,7 @@ def test_create_deployment_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_deployment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("deployment_id",))
@@ -19775,7 +19765,7 @@ def test_create_deployment_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19818,7 +19808,7 @@ def test_create_deployment_rest_required_fields(
 
 def test_create_deployment_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_deployment._get_unset_required_fields({})
@@ -19836,7 +19826,7 @@ def test_create_deployment_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_deployment_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -19894,7 +19884,7 @@ def test_create_deployment_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.CreateDeploymentRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19918,7 +19908,7 @@ def test_create_deployment_rest_bad_request(
 
 def test_create_deployment_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19964,7 +19954,7 @@ def test_create_deployment_rest_flattened():
 
 def test_create_deployment_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19981,7 +19971,7 @@ def test_create_deployment_rest_flattened_error(transport: str = "rest"):
 
 def test_create_deployment_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19994,7 +19984,7 @@ def test_create_deployment_rest_error():
 )
 def test_update_deployment_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20157,14 +20147,14 @@ def test_update_deployment_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_deployment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -20173,7 +20163,7 @@ def test_update_deployment_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20216,7 +20206,7 @@ def test_update_deployment_rest_required_fields(
 
 def test_update_deployment_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_deployment._get_unset_required_fields({})
@@ -20234,7 +20224,7 @@ def test_update_deployment_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_deployment_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -20292,7 +20282,7 @@ def test_update_deployment_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.UpdateDeploymentRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20318,7 +20308,7 @@ def test_update_deployment_rest_bad_request(
 
 def test_update_deployment_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20365,7 +20355,7 @@ def test_update_deployment_rest_flattened():
 
 def test_update_deployment_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20381,7 +20371,7 @@ def test_update_deployment_rest_flattened_error(transport: str = "rest"):
 
 def test_update_deployment_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -20394,7 +20384,7 @@ def test_update_deployment_rest_error():
 )
 def test_get_deployment_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20465,7 +20455,7 @@ def test_get_deployment_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20474,7 +20464,7 @@ def test_get_deployment_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_deployment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("view",))
@@ -20485,7 +20475,7 @@ def test_get_deployment_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20527,7 +20517,7 @@ def test_get_deployment_rest_required_fields(
 
 def test_get_deployment_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_deployment._get_unset_required_fields({})
@@ -20537,7 +20527,7 @@ def test_get_deployment_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_deployment_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -20595,7 +20585,7 @@ def test_get_deployment_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.GetDeploymentRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20619,7 +20609,7 @@ def test_get_deployment_rest_bad_request(
 
 def test_get_deployment_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20663,7 +20653,7 @@ def test_get_deployment_rest_flattened():
 
 def test_get_deployment_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20678,7 +20668,7 @@ def test_get_deployment_rest_flattened_error(transport: str = "rest"):
 
 def test_get_deployment_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -20691,7 +20681,7 @@ def test_get_deployment_rest_error():
 )
 def test_remove_deployment_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20739,7 +20729,7 @@ def test_remove_deployment_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).remove_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20748,7 +20738,7 @@ def test_remove_deployment_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).remove_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20757,7 +20747,7 @@ def test_remove_deployment_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20797,7 +20787,7 @@ def test_remove_deployment_rest_required_fields(
 
 def test_remove_deployment_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.remove_deployment._get_unset_required_fields({})
@@ -20807,7 +20797,7 @@ def test_remove_deployment_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_remove_deployment_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -20857,7 +20847,7 @@ def test_remove_deployment_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.RemoveDeploymentRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20881,7 +20871,7 @@ def test_remove_deployment_rest_bad_request(
 
 def test_remove_deployment_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20923,7 +20913,7 @@ def test_remove_deployment_rest_flattened():
 
 def test_remove_deployment_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20938,7 +20928,7 @@ def test_remove_deployment_rest_flattened_error(transport: str = "rest"):
 
 def test_remove_deployment_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -20951,7 +20941,7 @@ def test_remove_deployment_rest_error():
 )
 def test_list_deployments_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21004,7 +20994,7 @@ def test_list_deployments_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_deployments._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21013,7 +21003,7 @@ def test_list_deployments_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_deployments._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -21030,7 +21020,7 @@ def test_list_deployments_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -21072,7 +21062,7 @@ def test_list_deployments_rest_required_fields(
 
 def test_list_deployments_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_deployments._get_unset_required_fields({})
@@ -21091,7 +21081,7 @@ def test_list_deployments_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_deployments_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -21149,7 +21139,7 @@ def test_list_deployments_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.ListDeploymentsRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21173,7 +21163,7 @@ def test_list_deployments_rest_bad_request(
 
 def test_list_deployments_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21217,7 +21207,7 @@ def test_list_deployments_rest_flattened():
 
 def test_list_deployments_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21232,7 +21222,7 @@ def test_list_deployments_rest_flattened_error(transport: str = "rest"):
 
 def test_list_deployments_rest_pager(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21304,7 +21294,7 @@ def test_list_deployments_rest_pager(transport: str = "rest"):
 )
 def test_list_deployment_revisions_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21357,7 +21347,7 @@ def test_list_deployment_revisions_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_deployment_revisions._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21366,7 +21356,7 @@ def test_list_deployment_revisions_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_deployment_revisions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -21382,7 +21372,7 @@ def test_list_deployment_revisions_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -21426,7 +21416,7 @@ def test_list_deployment_revisions_rest_required_fields(
 
 def test_list_deployment_revisions_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_deployment_revisions._get_unset_required_fields({})
@@ -21444,7 +21434,7 @@ def test_list_deployment_revisions_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_deployment_revisions_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -21504,7 +21494,7 @@ def test_list_deployment_revisions_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.ListDeploymentRevisionsRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21528,7 +21518,7 @@ def test_list_deployment_revisions_rest_bad_request(
 
 def test_list_deployment_revisions_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21572,7 +21562,7 @@ def test_list_deployment_revisions_rest_flattened():
 
 def test_list_deployment_revisions_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21587,7 +21577,7 @@ def test_list_deployment_revisions_rest_flattened_error(transport: str = "rest")
 
 def test_list_deployment_revisions_rest_pager(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21659,7 +21649,7 @@ def test_list_deployment_revisions_rest_pager(transport: str = "rest"):
 )
 def test_discard_deployment_changes_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21709,7 +21699,7 @@ def test_discard_deployment_changes_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).discard_deployment_changes._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21718,7 +21708,7 @@ def test_discard_deployment_changes_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).discard_deployment_changes._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21727,7 +21717,7 @@ def test_discard_deployment_changes_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -21772,7 +21762,7 @@ def test_discard_deployment_changes_rest_required_fields(
 
 def test_discard_deployment_changes_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.discard_deployment_changes._get_unset_required_fields({})
@@ -21782,7 +21772,7 @@ def test_discard_deployment_changes_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_discard_deployment_changes_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -21843,7 +21833,7 @@ def test_discard_deployment_changes_rest_bad_request(
     request_type=telcoautomation.DiscardDeploymentChangesRequest,
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21867,7 +21857,7 @@ def test_discard_deployment_changes_rest_bad_request(
 
 def test_discard_deployment_changes_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21911,7 +21901,7 @@ def test_discard_deployment_changes_rest_flattened():
 
 def test_discard_deployment_changes_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21926,7 +21916,7 @@ def test_discard_deployment_changes_rest_flattened_error(transport: str = "rest"
 
 def test_discard_deployment_changes_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -21939,7 +21929,7 @@ def test_discard_deployment_changes_rest_error():
 )
 def test_apply_deployment_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22010,7 +22000,7 @@ def test_apply_deployment_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).apply_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22019,7 +22009,7 @@ def test_apply_deployment_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).apply_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22028,7 +22018,7 @@ def test_apply_deployment_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -22071,7 +22061,7 @@ def test_apply_deployment_rest_required_fields(
 
 def test_apply_deployment_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.apply_deployment._get_unset_required_fields({})
@@ -22081,7 +22071,7 @@ def test_apply_deployment_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_apply_deployment_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -22139,7 +22129,7 @@ def test_apply_deployment_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.ApplyDeploymentRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22163,7 +22153,7 @@ def test_apply_deployment_rest_bad_request(
 
 def test_apply_deployment_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22207,7 +22197,7 @@ def test_apply_deployment_rest_flattened():
 
 def test_apply_deployment_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22222,7 +22212,7 @@ def test_apply_deployment_rest_flattened_error(transport: str = "rest"):
 
 def test_apply_deployment_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -22235,7 +22225,7 @@ def test_apply_deployment_rest_error():
 )
 def test_compute_deployment_status_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22290,7 +22280,7 @@ def test_compute_deployment_status_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).compute_deployment_status._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22299,7 +22289,7 @@ def test_compute_deployment_status_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).compute_deployment_status._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22308,7 +22298,7 @@ def test_compute_deployment_status_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -22352,7 +22342,7 @@ def test_compute_deployment_status_rest_required_fields(
 
 def test_compute_deployment_status_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.compute_deployment_status._get_unset_required_fields({})
@@ -22362,7 +22352,7 @@ def test_compute_deployment_status_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_compute_deployment_status_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -22422,7 +22412,7 @@ def test_compute_deployment_status_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.ComputeDeploymentStatusRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22446,7 +22436,7 @@ def test_compute_deployment_status_rest_bad_request(
 
 def test_compute_deployment_status_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22490,7 +22480,7 @@ def test_compute_deployment_status_rest_flattened():
 
 def test_compute_deployment_status_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22505,7 +22495,7 @@ def test_compute_deployment_status_rest_flattened_error(transport: str = "rest")
 
 def test_compute_deployment_status_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -22518,7 +22508,7 @@ def test_compute_deployment_status_rest_error():
 )
 def test_rollback_deployment_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22590,7 +22580,7 @@ def test_rollback_deployment_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).rollback_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22600,7 +22590,7 @@ def test_rollback_deployment_rest_required_fields(
     jsonified_request["revisionId"] = "revision_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).rollback_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22611,7 +22601,7 @@ def test_rollback_deployment_rest_required_fields(
     assert jsonified_request["revisionId"] == "revision_id_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -22654,7 +22644,7 @@ def test_rollback_deployment_rest_required_fields(
 
 def test_rollback_deployment_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.rollback_deployment._get_unset_required_fields({})
@@ -22672,7 +22662,7 @@ def test_rollback_deployment_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_rollback_deployment_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -22730,7 +22720,7 @@ def test_rollback_deployment_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.RollbackDeploymentRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22754,7 +22744,7 @@ def test_rollback_deployment_rest_bad_request(
 
 def test_rollback_deployment_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22799,7 +22789,7 @@ def test_rollback_deployment_rest_flattened():
 
 def test_rollback_deployment_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22815,7 +22805,7 @@ def test_rollback_deployment_rest_flattened_error(transport: str = "rest"):
 
 def test_rollback_deployment_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -22828,7 +22818,7 @@ def test_rollback_deployment_rest_error():
 )
 def test_get_hydrated_deployment_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22885,7 +22875,7 @@ def test_get_hydrated_deployment_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_hydrated_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22894,7 +22884,7 @@ def test_get_hydrated_deployment_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_hydrated_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22903,7 +22893,7 @@ def test_get_hydrated_deployment_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -22945,7 +22935,7 @@ def test_get_hydrated_deployment_rest_required_fields(
 
 def test_get_hydrated_deployment_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_hydrated_deployment._get_unset_required_fields({})
@@ -22955,7 +22945,7 @@ def test_get_hydrated_deployment_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_hydrated_deployment_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -23013,7 +23003,7 @@ def test_get_hydrated_deployment_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.GetHydratedDeploymentRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23037,7 +23027,7 @@ def test_get_hydrated_deployment_rest_bad_request(
 
 def test_get_hydrated_deployment_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23081,7 +23071,7 @@ def test_get_hydrated_deployment_rest_flattened():
 
 def test_get_hydrated_deployment_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23096,7 +23086,7 @@ def test_get_hydrated_deployment_rest_flattened_error(transport: str = "rest"):
 
 def test_get_hydrated_deployment_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -23109,7 +23099,7 @@ def test_get_hydrated_deployment_rest_error():
 )
 def test_list_hydrated_deployments_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23162,7 +23152,7 @@ def test_list_hydrated_deployments_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_hydrated_deployments._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23171,7 +23161,7 @@ def test_list_hydrated_deployments_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_hydrated_deployments._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -23187,7 +23177,7 @@ def test_list_hydrated_deployments_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -23231,7 +23221,7 @@ def test_list_hydrated_deployments_rest_required_fields(
 
 def test_list_hydrated_deployments_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_hydrated_deployments._get_unset_required_fields({})
@@ -23249,7 +23239,7 @@ def test_list_hydrated_deployments_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_hydrated_deployments_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -23309,7 +23299,7 @@ def test_list_hydrated_deployments_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.ListHydratedDeploymentsRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23333,7 +23323,7 @@ def test_list_hydrated_deployments_rest_bad_request(
 
 def test_list_hydrated_deployments_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23377,7 +23367,7 @@ def test_list_hydrated_deployments_rest_flattened():
 
 def test_list_hydrated_deployments_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23392,7 +23382,7 @@ def test_list_hydrated_deployments_rest_flattened_error(transport: str = "rest")
 
 def test_list_hydrated_deployments_rest_pager(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23464,7 +23454,7 @@ def test_list_hydrated_deployments_rest_pager(transport: str = "rest"):
 )
 def test_update_hydrated_deployment_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23604,14 +23594,14 @@ def test_update_hydrated_deployment_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_hydrated_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_hydrated_deployment._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -23620,7 +23610,7 @@ def test_update_hydrated_deployment_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -23663,7 +23653,7 @@ def test_update_hydrated_deployment_rest_required_fields(
 
 def test_update_hydrated_deployment_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_hydrated_deployment._get_unset_required_fields({})
@@ -23681,7 +23671,7 @@ def test_update_hydrated_deployment_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_hydrated_deployment_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -23740,7 +23730,7 @@ def test_update_hydrated_deployment_rest_bad_request(
     request_type=telcoautomation.UpdateHydratedDeploymentRequest,
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23766,7 +23756,7 @@ def test_update_hydrated_deployment_rest_bad_request(
 
 def test_update_hydrated_deployment_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23813,7 +23803,7 @@ def test_update_hydrated_deployment_rest_flattened():
 
 def test_update_hydrated_deployment_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23829,7 +23819,7 @@ def test_update_hydrated_deployment_rest_flattened_error(transport: str = "rest"
 
 def test_update_hydrated_deployment_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -23842,7 +23832,7 @@ def test_update_hydrated_deployment_rest_error():
 )
 def test_apply_hydrated_deployment_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23899,7 +23889,7 @@ def test_apply_hydrated_deployment_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).apply_hydrated_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23908,7 +23898,7 @@ def test_apply_hydrated_deployment_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).apply_hydrated_deployment._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23917,7 +23907,7 @@ def test_apply_hydrated_deployment_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -23960,7 +23950,7 @@ def test_apply_hydrated_deployment_rest_required_fields(
 
 def test_apply_hydrated_deployment_rest_unset_required_fields():
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.apply_hydrated_deployment._get_unset_required_fields({})
@@ -23970,7 +23960,7 @@ def test_apply_hydrated_deployment_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_apply_hydrated_deployment_rest_interceptors(null_interceptor):
     transport = transports.TelcoAutomationRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.TelcoAutomationRestInterceptor(),
@@ -24028,7 +24018,7 @@ def test_apply_hydrated_deployment_rest_bad_request(
     transport: str = "rest", request_type=telcoautomation.ApplyHydratedDeploymentRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24052,7 +24042,7 @@ def test_apply_hydrated_deployment_rest_bad_request(
 
 def test_apply_hydrated_deployment_rest_flattened():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24096,7 +24086,7 @@ def test_apply_hydrated_deployment_rest_flattened():
 
 def test_apply_hydrated_deployment_rest_flattened_error(transport: str = "rest"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24111,24 +24101,24 @@ def test_apply_hydrated_deployment_rest_flattened_error(transport: str = "rest")
 
 def test_apply_hydrated_deployment_rest_error():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.TelcoAutomationGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = TelcoAutomationClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.TelcoAutomationGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = TelcoAutomationClient(
@@ -24138,7 +24128,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.TelcoAutomationGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -24153,13 +24143,12 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = TelcoAutomationClient(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.TelcoAutomationGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = TelcoAutomationClient(
@@ -24171,7 +24160,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.TelcoAutomationGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = TelcoAutomationClient(transport=transport)
     assert client.transport is transport
@@ -24180,13 +24169,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.TelcoAutomationGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.TelcoAutomationGrpcAsyncIOTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -24203,7 +24192,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -24217,7 +24206,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = TelcoAutomationClient.get_transport_class(transport_name)(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
 
@@ -24225,7 +24214,7 @@ def test_transport_kind(transport_name):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
@@ -24237,7 +24226,7 @@ def test_telco_automation_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.TelcoAutomationTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -24249,7 +24238,7 @@ def test_telco_automation_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.TelcoAutomationTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -24327,7 +24316,7 @@ def test_telco_automation_base_transport_with_credentials_file():
         "google.cloud.telcoautomation_v1alpha1.services.telco_automation.transports.TelcoAutomationTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TelcoAutomationTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -24346,7 +24335,7 @@ def test_telco_automation_base_transport_with_adc():
         "google.cloud.telcoautomation_v1alpha1.services.telco_automation.transports.TelcoAutomationTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TelcoAutomationTransport()
         adc.assert_called_once()
 
@@ -24354,7 +24343,7 @@ def test_telco_automation_base_transport_with_adc():
 def test_telco_automation_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         TelcoAutomationClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -24374,7 +24363,7 @@ def test_telco_automation_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -24421,7 +24410,7 @@ def test_telco_automation_transport_create_channel(transport_class, grpc_helpers
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
@@ -24449,7 +24438,7 @@ def test_telco_automation_transport_create_channel(transport_class, grpc_helpers
     ],
 )
 def test_telco_automation_grpc_transport_client_cert_source_for_mtls(transport_class):
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -24487,7 +24476,7 @@ def test_telco_automation_grpc_transport_client_cert_source_for_mtls(transport_c
 
 
 def test_telco_automation_http_transport_client_cert_source_for_mtls():
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -24499,7 +24488,7 @@ def test_telco_automation_http_transport_client_cert_source_for_mtls():
 
 def test_telco_automation_rest_lro_client():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     transport = client.transport
@@ -24524,7 +24513,7 @@ def test_telco_automation_rest_lro_client():
 )
 def test_telco_automation_host_no_port(transport_name):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="telcoautomation.googleapis.com"
         ),
@@ -24547,7 +24536,7 @@ def test_telco_automation_host_no_port(transport_name):
 )
 def test_telco_automation_host_with_port(transport_name):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="telcoautomation.googleapis.com:8000"
         ),
@@ -24567,8 +24556,8 @@ def test_telco_automation_host_with_port(transport_name):
     ],
 )
 def test_telco_automation_client_transport_session_collision(transport_name):
-    creds1 = _AnonymousCredentialsWithUniverseDomain()
-    creds2 = _AnonymousCredentialsWithUniverseDomain()
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
     client1 = TelcoAutomationClient(
         credentials=creds1,
         transport=transport_name,
@@ -24737,7 +24726,7 @@ def test_telco_automation_transport_channel_mtls_with_client_cert_source(
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = _AnonymousCredentialsWithUniverseDomain()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
@@ -24815,7 +24804,7 @@ def test_telco_automation_transport_channel_mtls_with_adc(transport_class):
 
 def test_telco_automation_grpc_lro_client():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
     transport = client.transport
@@ -24832,7 +24821,7 @@ def test_telco_automation_grpc_lro_client():
 
 def test_telco_automation_grpc_lro_async_client():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     transport = client.transport
@@ -25135,7 +25124,7 @@ def test_client_with_default_client_info():
         transports.TelcoAutomationTransport, "_prep_wrapped_messages"
     ) as prep:
         client = TelcoAutomationClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -25145,7 +25134,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = TelcoAutomationClient.get_transport_class()
         transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -25154,7 +25143,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(
@@ -25169,7 +25158,7 @@ def test_get_location_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.GetLocationRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25199,7 +25188,7 @@ def test_get_location_rest_bad_request(
 )
 def test_get_location_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2"}
@@ -25227,7 +25216,7 @@ def test_list_locations_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25255,7 +25244,7 @@ def test_list_locations_rest_bad_request(
 )
 def test_list_locations_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1"}
@@ -25283,7 +25272,7 @@ def test_cancel_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.CancelOperationRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25313,7 +25302,7 @@ def test_cancel_operation_rest_bad_request(
 )
 def test_cancel_operation_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
@@ -25341,7 +25330,7 @@ def test_delete_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.DeleteOperationRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25371,7 +25360,7 @@ def test_delete_operation_rest_bad_request(
 )
 def test_delete_operation_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
@@ -25399,7 +25388,7 @@ def test_get_operation_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.GetOperationRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25429,7 +25418,7 @@ def test_get_operation_rest_bad_request(
 )
 def test_get_operation_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2/operations/sample3"}
@@ -25457,7 +25446,7 @@ def test_list_operations_rest_bad_request(
     transport: str = "rest", request_type=operations_pb2.ListOperationsRequest
 ):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25487,7 +25476,7 @@ def test_list_operations_rest_bad_request(
 )
 def test_list_operations_rest(request_type):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2"}
@@ -25513,7 +25502,7 @@ def test_list_operations_rest(request_type):
 
 def test_delete_operation(transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25538,7 +25527,7 @@ def test_delete_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_delete_operation_async(transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25562,7 +25551,7 @@ async def test_delete_operation_async(transport: str = "grpc_asyncio"):
 
 def test_delete_operation_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -25591,7 +25580,7 @@ def test_delete_operation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_operation_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -25618,7 +25607,7 @@ async def test_delete_operation_field_headers_async():
 
 def test_delete_operation_from_dict():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -25636,7 +25625,7 @@ def test_delete_operation_from_dict():
 @pytest.mark.asyncio
 async def test_delete_operation_from_dict_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_operation), "__call__") as call:
@@ -25652,7 +25641,7 @@ async def test_delete_operation_from_dict_async():
 
 def test_cancel_operation(transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25677,7 +25666,7 @@ def test_cancel_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25701,7 +25690,7 @@ async def test_cancel_operation_async(transport: str = "grpc_asyncio"):
 
 def test_cancel_operation_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -25730,7 +25719,7 @@ def test_cancel_operation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_operation_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -25757,7 +25746,7 @@ async def test_cancel_operation_field_headers_async():
 
 def test_cancel_operation_from_dict():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -25775,7 +25764,7 @@ def test_cancel_operation_from_dict():
 @pytest.mark.asyncio
 async def test_cancel_operation_from_dict_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_operation), "__call__") as call:
@@ -25791,7 +25780,7 @@ async def test_cancel_operation_from_dict_async():
 
 def test_get_operation(transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25816,7 +25805,7 @@ def test_get_operation(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_operation_async(transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25842,7 +25831,7 @@ async def test_get_operation_async(transport: str = "grpc_asyncio"):
 
 def test_get_operation_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -25871,7 +25860,7 @@ def test_get_operation_field_headers():
 @pytest.mark.asyncio
 async def test_get_operation_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -25900,7 +25889,7 @@ async def test_get_operation_field_headers_async():
 
 def test_get_operation_from_dict():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -25918,7 +25907,7 @@ def test_get_operation_from_dict():
 @pytest.mark.asyncio
 async def test_get_operation_from_dict_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_operation), "__call__") as call:
@@ -25936,7 +25925,7 @@ async def test_get_operation_from_dict_async():
 
 def test_list_operations(transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25961,7 +25950,7 @@ def test_list_operations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_operations_async(transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25987,7 +25976,7 @@ async def test_list_operations_async(transport: str = "grpc_asyncio"):
 
 def test_list_operations_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -26016,7 +26005,7 @@ def test_list_operations_field_headers():
 @pytest.mark.asyncio
 async def test_list_operations_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -26045,7 +26034,7 @@ async def test_list_operations_field_headers_async():
 
 def test_list_operations_from_dict():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -26063,7 +26052,7 @@ def test_list_operations_from_dict():
 @pytest.mark.asyncio
 async def test_list_operations_from_dict_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_operations), "__call__") as call:
@@ -26081,7 +26070,7 @@ async def test_list_operations_from_dict_async():
 
 def test_list_locations(transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26106,7 +26095,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26132,7 +26121,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
 
 def test_list_locations_field_headers():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -26161,7 +26150,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -26190,7 +26179,7 @@ async def test_list_locations_field_headers_async():
 
 def test_list_locations_from_dict():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -26208,7 +26197,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -26226,7 +26215,7 @@ async def test_list_locations_from_dict_async():
 
 def test_get_location(transport: str = "grpc"):
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26251,7 +26240,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26276,9 +26265,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_location_field_headers():
-    client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
-    )
+    client = TelcoAutomationClient(credentials=ga_credentials.AnonymousCredentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -26306,7 +26293,7 @@ def test_get_location_field_headers():
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -26335,7 +26322,7 @@ async def test_get_location_field_headers_async():
 
 def test_get_location_from_dict():
     client = TelcoAutomationClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -26353,7 +26340,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = TelcoAutomationAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -26377,7 +26364,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = TelcoAutomationClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -26394,7 +26381,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = TelcoAutomationClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
