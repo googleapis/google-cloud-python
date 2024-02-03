@@ -1,21 +1,21 @@
-      .. include:: README.rst
+.. include:: README.rst
 
-      .. include:: multiprocessing.rst
+.. include:: multiprocessing.rst
 
-      API Reference
-      -------------
-      .. toctree::
-          :maxdepth: 2
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
 
-          type/services_
-          type/types_
+    type/services_
+    type/types_
 
-      Changelog
-      ---------
+Changelog
+---------
 
-      For a list of all ``google-geo-type`` releases:
+For a list of all ``google-geo-type`` releases:
 
-      .. toctree::
-          :maxdepth: 2
+.. toctree::
+    :maxdepth: 2
 
-          CHANGELOG
+    CHANGELOG
