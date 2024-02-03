@@ -87,18 +87,6 @@ def modify_default_endpoint_template(client):
     )
 
 
-# Anonymous Credentials with universe domain property. If no universe domain is provided, then
-# the default universe domain is "googleapis.com".
-class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain="googleapis.com"):
-        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
-        self._universe_domain = universe_domain
-
-    @property
-    def universe_domain(self):
-        return self._universe_domain
-
-
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -302,7 +290,7 @@ def test__get_universe_domain():
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
     client = client_class(
-        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
     )
     assert client._validate_universe_domain() == True
 
@@ -329,41 +317,48 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         client = client_class(transport=transport)
         assert client._validate_universe_domain() == True
 
-    # Test the case when there is a universe mismatch from the credentials.
-    client = client_class(
-        transport=transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(
-                universe_domain="foo.com"
-            )
-        )
-    )
-    with pytest.raises(ValueError) as excinfo:
-        client._validate_universe_domain()
-    assert (
-        str(excinfo.value)
-        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-    )
-
-    # Test the case when there is a universe mismatch from the client.
-    #
-    # TODO: Make this test unconditional once the minimum supported version of
-    # google-api-core becomes 2.15.0 or higher.
-    api_core_major, api_core_minor, _ = [
-        int(part) for part in api_core_version.__version__.split(".")
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [
+        int(part) for part in google.auth.__version__.split(".")
     ]
-    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-        client = client_class(
-            client_options={"universe_domain": "bar.com"},
-            transport=transport_class(
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
-            ),
-        )
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(transport=transport_class(credentials=credentials))
         with pytest.raises(ValueError) as excinfo:
             client._validate_universe_domain()
         assert (
             str(excinfo.value)
-            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         )
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor, _ = [
+            int(part) for part in api_core_version.__version__.split(".")
+        ]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(
+                client_options={"universe_domain": "bar.com"},
+                transport=transport_class(
+                    credentials=ga_credentials.AnonymousCredentials(),
+                ),
+            )
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert (
+                str(excinfo.value)
+                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            )
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -375,7 +370,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     ],
 )
 def test_dlp_service_client_from_service_account_info(client_class, transport_name):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -427,7 +422,7 @@ def test_dlp_service_client_service_account_always_use_jwt(
     ],
 )
 def test_dlp_service_client_from_service_account_file(client_class, transport_name):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -490,9 +485,7 @@ def test_dlp_service_client_client_options(
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(DlpServiceClient, "get_transport_class") as gtc:
-        transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain()
-        )
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -885,20 +878,20 @@ def test_dlp_service_client_client_api_endpoint(client_class):
             )
             client = client_class(
                 client_options=options,
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
+                credentials=ga_credentials.AnonymousCredentials(),
             )
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
@@ -910,13 +903,11 @@ def test_dlp_service_client_client_api_endpoint(client_class):
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     else:
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     assert client.api_endpoint == (
         mock_endpoint if universe_exists else default_endpoint
@@ -932,8 +923,7 @@ def test_dlp_service_client_client_api_endpoint(client_class):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
         assert client.api_endpoint == default_endpoint
 
@@ -1074,8 +1064,8 @@ def test_dlp_service_client_create_channel_credentials_file(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
-        file_creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -1104,7 +1094,7 @@ def test_dlp_service_client_create_channel_credentials_file(
 )
 def test_inspect_content(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1131,7 +1121,7 @@ def test_inspect_content_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1148,7 +1138,7 @@ async def test_inspect_content_async(
     transport: str = "grpc_asyncio", request_type=dlp.InspectContentRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1180,7 +1170,7 @@ async def test_inspect_content_async_from_dict():
 
 def test_inspect_content_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1210,7 +1200,7 @@ def test_inspect_content_field_headers():
 @pytest.mark.asyncio
 async def test_inspect_content_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1248,7 +1238,7 @@ async def test_inspect_content_field_headers_async():
 )
 def test_redact_image(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1280,7 +1270,7 @@ def test_redact_image_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1297,7 +1287,7 @@ async def test_redact_image_async(
     transport: str = "grpc_asyncio", request_type=dlp.RedactImageRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1334,7 +1324,7 @@ async def test_redact_image_async_from_dict():
 
 def test_redact_image_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1364,7 +1354,7 @@ def test_redact_image_field_headers():
 @pytest.mark.asyncio
 async def test_redact_image_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1402,7 +1392,7 @@ async def test_redact_image_field_headers_async():
 )
 def test_deidentify_content(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1431,7 +1421,7 @@ def test_deidentify_content_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1450,7 +1440,7 @@ async def test_deidentify_content_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeidentifyContentRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1484,7 +1474,7 @@ async def test_deidentify_content_async_from_dict():
 
 def test_deidentify_content_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1516,7 +1506,7 @@ def test_deidentify_content_field_headers():
 @pytest.mark.asyncio
 async def test_deidentify_content_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1556,7 +1546,7 @@ async def test_deidentify_content_field_headers_async():
 )
 def test_reidentify_content(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1585,7 +1575,7 @@ def test_reidentify_content_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1604,7 +1594,7 @@ async def test_reidentify_content_async(
     transport: str = "grpc_asyncio", request_type=dlp.ReidentifyContentRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1638,7 +1628,7 @@ async def test_reidentify_content_async_from_dict():
 
 def test_reidentify_content_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1670,7 +1660,7 @@ def test_reidentify_content_field_headers():
 @pytest.mark.asyncio
 async def test_reidentify_content_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1710,7 +1700,7 @@ async def test_reidentify_content_field_headers_async():
 )
 def test_list_info_types(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1737,7 +1727,7 @@ def test_list_info_types_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1754,7 +1744,7 @@ async def test_list_info_types_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListInfoTypesRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1786,7 +1776,7 @@ async def test_list_info_types_async_from_dict():
 
 def test_list_info_types_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1810,7 +1800,7 @@ def test_list_info_types_flattened():
 
 def test_list_info_types_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1825,7 +1815,7 @@ def test_list_info_types_flattened_error():
 @pytest.mark.asyncio
 async def test_list_info_types_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1854,7 +1844,7 @@ async def test_list_info_types_flattened_async():
 @pytest.mark.asyncio
 async def test_list_info_types_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1875,7 +1865,7 @@ async def test_list_info_types_flattened_error_async():
 )
 def test_create_inspect_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1911,7 +1901,7 @@ def test_create_inspect_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1930,7 +1920,7 @@ async def test_create_inspect_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateInspectTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1971,7 +1961,7 @@ async def test_create_inspect_template_async_from_dict():
 
 def test_create_inspect_template_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2003,7 +1993,7 @@ def test_create_inspect_template_field_headers():
 @pytest.mark.asyncio
 async def test_create_inspect_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2034,7 +2024,7 @@ async def test_create_inspect_template_field_headers_async():
 
 def test_create_inspect_template_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2064,7 +2054,7 @@ def test_create_inspect_template_flattened():
 
 def test_create_inspect_template_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2080,7 +2070,7 @@ def test_create_inspect_template_flattened_error():
 @pytest.mark.asyncio
 async def test_create_inspect_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2113,7 +2103,7 @@ async def test_create_inspect_template_flattened_async():
 @pytest.mark.asyncio
 async def test_create_inspect_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2135,7 +2125,7 @@ async def test_create_inspect_template_flattened_error_async():
 )
 def test_update_inspect_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2171,7 +2161,7 @@ def test_update_inspect_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2190,7 +2180,7 @@ async def test_update_inspect_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.UpdateInspectTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2231,7 +2221,7 @@ async def test_update_inspect_template_async_from_dict():
 
 def test_update_inspect_template_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2263,7 +2253,7 @@ def test_update_inspect_template_field_headers():
 @pytest.mark.asyncio
 async def test_update_inspect_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2294,7 +2284,7 @@ async def test_update_inspect_template_field_headers_async():
 
 def test_update_inspect_template_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2328,7 +2318,7 @@ def test_update_inspect_template_flattened():
 
 def test_update_inspect_template_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2345,7 +2335,7 @@ def test_update_inspect_template_flattened_error():
 @pytest.mark.asyncio
 async def test_update_inspect_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2382,7 +2372,7 @@ async def test_update_inspect_template_flattened_async():
 @pytest.mark.asyncio
 async def test_update_inspect_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2405,7 +2395,7 @@ async def test_update_inspect_template_flattened_error_async():
 )
 def test_get_inspect_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2441,7 +2431,7 @@ def test_get_inspect_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2460,7 +2450,7 @@ async def test_get_inspect_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetInspectTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2501,7 +2491,7 @@ async def test_get_inspect_template_async_from_dict():
 
 def test_get_inspect_template_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2533,7 +2523,7 @@ def test_get_inspect_template_field_headers():
 @pytest.mark.asyncio
 async def test_get_inspect_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2564,7 +2554,7 @@ async def test_get_inspect_template_field_headers_async():
 
 def test_get_inspect_template_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2590,7 +2580,7 @@ def test_get_inspect_template_flattened():
 
 def test_get_inspect_template_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2605,7 +2595,7 @@ def test_get_inspect_template_flattened_error():
 @pytest.mark.asyncio
 async def test_get_inspect_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2634,7 +2624,7 @@ async def test_get_inspect_template_flattened_async():
 @pytest.mark.asyncio
 async def test_get_inspect_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2655,7 +2645,7 @@ async def test_get_inspect_template_flattened_error_async():
 )
 def test_list_inspect_templates(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2687,7 +2677,7 @@ def test_list_inspect_templates_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2706,7 +2696,7 @@ async def test_list_inspect_templates_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListInspectTemplatesRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2743,7 +2733,7 @@ async def test_list_inspect_templates_async_from_dict():
 
 def test_list_inspect_templates_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2775,7 +2765,7 @@ def test_list_inspect_templates_field_headers():
 @pytest.mark.asyncio
 async def test_list_inspect_templates_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2808,7 +2798,7 @@ async def test_list_inspect_templates_field_headers_async():
 
 def test_list_inspect_templates_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2834,7 +2824,7 @@ def test_list_inspect_templates_flattened():
 
 def test_list_inspect_templates_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2849,7 +2839,7 @@ def test_list_inspect_templates_flattened_error():
 @pytest.mark.asyncio
 async def test_list_inspect_templates_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2880,7 +2870,7 @@ async def test_list_inspect_templates_flattened_async():
 @pytest.mark.asyncio
 async def test_list_inspect_templates_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2894,7 +2884,7 @@ async def test_list_inspect_templates_flattened_error_async():
 
 def test_list_inspect_templates_pager(transport_name: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2946,7 +2936,7 @@ def test_list_inspect_templates_pager(transport_name: str = "grpc"):
 
 def test_list_inspect_templates_pages(transport_name: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2990,7 +2980,7 @@ def test_list_inspect_templates_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_inspect_templates_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3042,7 +3032,7 @@ async def test_list_inspect_templates_async_pager():
 @pytest.mark.asyncio
 async def test_list_inspect_templates_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3099,7 +3089,7 @@ async def test_list_inspect_templates_async_pages():
 )
 def test_delete_inspect_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3128,7 +3118,7 @@ def test_delete_inspect_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3147,7 +3137,7 @@ async def test_delete_inspect_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteInspectTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3179,7 +3169,7 @@ async def test_delete_inspect_template_async_from_dict():
 
 def test_delete_inspect_template_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3211,7 +3201,7 @@ def test_delete_inspect_template_field_headers():
 @pytest.mark.asyncio
 async def test_delete_inspect_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3242,7 +3232,7 @@ async def test_delete_inspect_template_field_headers_async():
 
 def test_delete_inspect_template_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3268,7 +3258,7 @@ def test_delete_inspect_template_flattened():
 
 def test_delete_inspect_template_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3283,7 +3273,7 @@ def test_delete_inspect_template_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_inspect_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3312,7 +3302,7 @@ async def test_delete_inspect_template_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_inspect_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3333,7 +3323,7 @@ async def test_delete_inspect_template_flattened_error_async():
 )
 def test_create_deidentify_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3369,7 +3359,7 @@ def test_create_deidentify_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3388,7 +3378,7 @@ async def test_create_deidentify_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateDeidentifyTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3429,7 +3419,7 @@ async def test_create_deidentify_template_async_from_dict():
 
 def test_create_deidentify_template_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3461,7 +3451,7 @@ def test_create_deidentify_template_field_headers():
 @pytest.mark.asyncio
 async def test_create_deidentify_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3494,7 +3484,7 @@ async def test_create_deidentify_template_field_headers_async():
 
 def test_create_deidentify_template_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3524,7 +3514,7 @@ def test_create_deidentify_template_flattened():
 
 def test_create_deidentify_template_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3540,7 +3530,7 @@ def test_create_deidentify_template_flattened_error():
 @pytest.mark.asyncio
 async def test_create_deidentify_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3575,7 +3565,7 @@ async def test_create_deidentify_template_flattened_async():
 @pytest.mark.asyncio
 async def test_create_deidentify_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3597,7 +3587,7 @@ async def test_create_deidentify_template_flattened_error_async():
 )
 def test_update_deidentify_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3633,7 +3623,7 @@ def test_update_deidentify_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3652,7 +3642,7 @@ async def test_update_deidentify_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.UpdateDeidentifyTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3693,7 +3683,7 @@ async def test_update_deidentify_template_async_from_dict():
 
 def test_update_deidentify_template_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3725,7 +3715,7 @@ def test_update_deidentify_template_field_headers():
 @pytest.mark.asyncio
 async def test_update_deidentify_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3758,7 +3748,7 @@ async def test_update_deidentify_template_field_headers_async():
 
 def test_update_deidentify_template_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3792,7 +3782,7 @@ def test_update_deidentify_template_flattened():
 
 def test_update_deidentify_template_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3809,7 +3799,7 @@ def test_update_deidentify_template_flattened_error():
 @pytest.mark.asyncio
 async def test_update_deidentify_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3848,7 +3838,7 @@ async def test_update_deidentify_template_flattened_async():
 @pytest.mark.asyncio
 async def test_update_deidentify_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3871,7 +3861,7 @@ async def test_update_deidentify_template_flattened_error_async():
 )
 def test_get_deidentify_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3907,7 +3897,7 @@ def test_get_deidentify_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3926,7 +3916,7 @@ async def test_get_deidentify_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetDeidentifyTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3967,7 +3957,7 @@ async def test_get_deidentify_template_async_from_dict():
 
 def test_get_deidentify_template_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3999,7 +3989,7 @@ def test_get_deidentify_template_field_headers():
 @pytest.mark.asyncio
 async def test_get_deidentify_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4032,7 +4022,7 @@ async def test_get_deidentify_template_field_headers_async():
 
 def test_get_deidentify_template_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4058,7 +4048,7 @@ def test_get_deidentify_template_flattened():
 
 def test_get_deidentify_template_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4073,7 +4063,7 @@ def test_get_deidentify_template_flattened_error():
 @pytest.mark.asyncio
 async def test_get_deidentify_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4104,7 +4094,7 @@ async def test_get_deidentify_template_flattened_async():
 @pytest.mark.asyncio
 async def test_get_deidentify_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4125,7 +4115,7 @@ async def test_get_deidentify_template_flattened_error_async():
 )
 def test_list_deidentify_templates(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4157,7 +4147,7 @@ def test_list_deidentify_templates_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4176,7 +4166,7 @@ async def test_list_deidentify_templates_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListDeidentifyTemplatesRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4213,7 +4203,7 @@ async def test_list_deidentify_templates_async_from_dict():
 
 def test_list_deidentify_templates_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4245,7 +4235,7 @@ def test_list_deidentify_templates_field_headers():
 @pytest.mark.asyncio
 async def test_list_deidentify_templates_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4278,7 +4268,7 @@ async def test_list_deidentify_templates_field_headers_async():
 
 def test_list_deidentify_templates_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4304,7 +4294,7 @@ def test_list_deidentify_templates_flattened():
 
 def test_list_deidentify_templates_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4319,7 +4309,7 @@ def test_list_deidentify_templates_flattened_error():
 @pytest.mark.asyncio
 async def test_list_deidentify_templates_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4350,7 +4340,7 @@ async def test_list_deidentify_templates_flattened_async():
 @pytest.mark.asyncio
 async def test_list_deidentify_templates_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4364,7 +4354,7 @@ async def test_list_deidentify_templates_flattened_error_async():
 
 def test_list_deidentify_templates_pager(transport_name: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4416,7 +4406,7 @@ def test_list_deidentify_templates_pager(transport_name: str = "grpc"):
 
 def test_list_deidentify_templates_pages(transport_name: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4460,7 +4450,7 @@ def test_list_deidentify_templates_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_deidentify_templates_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4512,7 +4502,7 @@ async def test_list_deidentify_templates_async_pager():
 @pytest.mark.asyncio
 async def test_list_deidentify_templates_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4569,7 +4559,7 @@ async def test_list_deidentify_templates_async_pages():
 )
 def test_delete_deidentify_template(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4598,7 +4588,7 @@ def test_delete_deidentify_template_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4617,7 +4607,7 @@ async def test_delete_deidentify_template_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteDeidentifyTemplateRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4649,7 +4639,7 @@ async def test_delete_deidentify_template_async_from_dict():
 
 def test_delete_deidentify_template_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4681,7 +4671,7 @@ def test_delete_deidentify_template_field_headers():
 @pytest.mark.asyncio
 async def test_delete_deidentify_template_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4712,7 +4702,7 @@ async def test_delete_deidentify_template_field_headers_async():
 
 def test_delete_deidentify_template_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4738,7 +4728,7 @@ def test_delete_deidentify_template_flattened():
 
 def test_delete_deidentify_template_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4753,7 +4743,7 @@ def test_delete_deidentify_template_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_deidentify_template_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4782,7 +4772,7 @@ async def test_delete_deidentify_template_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_deidentify_template_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4803,7 +4793,7 @@ async def test_delete_deidentify_template_flattened_error_async():
 )
 def test_create_job_trigger(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4841,7 +4831,7 @@ def test_create_job_trigger_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4860,7 +4850,7 @@ async def test_create_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateJobTriggerRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4903,7 +4893,7 @@ async def test_create_job_trigger_async_from_dict():
 
 def test_create_job_trigger_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4935,7 +4925,7 @@ def test_create_job_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_create_job_trigger_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4966,7 +4956,7 @@ async def test_create_job_trigger_field_headers_async():
 
 def test_create_job_trigger_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4996,7 +4986,7 @@ def test_create_job_trigger_flattened():
 
 def test_create_job_trigger_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5012,7 +5002,7 @@ def test_create_job_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_create_job_trigger_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5045,7 +5035,7 @@ async def test_create_job_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_create_job_trigger_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5067,7 +5057,7 @@ async def test_create_job_trigger_flattened_error_async():
 )
 def test_update_job_trigger(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5105,7 +5095,7 @@ def test_update_job_trigger_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5124,7 +5114,7 @@ async def test_update_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.UpdateJobTriggerRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5167,7 +5157,7 @@ async def test_update_job_trigger_async_from_dict():
 
 def test_update_job_trigger_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5199,7 +5189,7 @@ def test_update_job_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_update_job_trigger_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5230,7 +5220,7 @@ async def test_update_job_trigger_field_headers_async():
 
 def test_update_job_trigger_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5264,7 +5254,7 @@ def test_update_job_trigger_flattened():
 
 def test_update_job_trigger_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5281,7 +5271,7 @@ def test_update_job_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_update_job_trigger_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5318,7 +5308,7 @@ async def test_update_job_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_update_job_trigger_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5341,7 +5331,7 @@ async def test_update_job_trigger_flattened_error_async():
 )
 def test_hybrid_inspect_job_trigger(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5370,7 +5360,7 @@ def test_hybrid_inspect_job_trigger_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5389,7 +5379,7 @@ async def test_hybrid_inspect_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.HybridInspectJobTriggerRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5423,7 +5413,7 @@ async def test_hybrid_inspect_job_trigger_async_from_dict():
 
 def test_hybrid_inspect_job_trigger_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5455,7 +5445,7 @@ def test_hybrid_inspect_job_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_hybrid_inspect_job_trigger_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5488,7 +5478,7 @@ async def test_hybrid_inspect_job_trigger_field_headers_async():
 
 def test_hybrid_inspect_job_trigger_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5514,7 +5504,7 @@ def test_hybrid_inspect_job_trigger_flattened():
 
 def test_hybrid_inspect_job_trigger_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5529,7 +5519,7 @@ def test_hybrid_inspect_job_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_hybrid_inspect_job_trigger_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5560,7 +5550,7 @@ async def test_hybrid_inspect_job_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_hybrid_inspect_job_trigger_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5581,7 +5571,7 @@ async def test_hybrid_inspect_job_trigger_flattened_error_async():
 )
 def test_get_job_trigger(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5617,7 +5607,7 @@ def test_get_job_trigger_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5634,7 +5624,7 @@ async def test_get_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetJobTriggerRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5675,7 +5665,7 @@ async def test_get_job_trigger_async_from_dict():
 
 def test_get_job_trigger_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5705,7 +5695,7 @@ def test_get_job_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_get_job_trigger_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5734,7 +5724,7 @@ async def test_get_job_trigger_field_headers_async():
 
 def test_get_job_trigger_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5758,7 +5748,7 @@ def test_get_job_trigger_flattened():
 
 def test_get_job_trigger_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5773,7 +5763,7 @@ def test_get_job_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_get_job_trigger_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5800,7 +5790,7 @@ async def test_get_job_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_get_job_trigger_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5821,7 +5811,7 @@ async def test_get_job_trigger_flattened_error_async():
 )
 def test_list_job_triggers(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5853,7 +5843,7 @@ def test_list_job_triggers_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5872,7 +5862,7 @@ async def test_list_job_triggers_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListJobTriggersRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5909,7 +5899,7 @@ async def test_list_job_triggers_async_from_dict():
 
 def test_list_job_triggers_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5941,7 +5931,7 @@ def test_list_job_triggers_field_headers():
 @pytest.mark.asyncio
 async def test_list_job_triggers_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5974,7 +5964,7 @@ async def test_list_job_triggers_field_headers_async():
 
 def test_list_job_triggers_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6000,7 +5990,7 @@ def test_list_job_triggers_flattened():
 
 def test_list_job_triggers_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6015,7 +6005,7 @@ def test_list_job_triggers_flattened_error():
 @pytest.mark.asyncio
 async def test_list_job_triggers_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6046,7 +6036,7 @@ async def test_list_job_triggers_flattened_async():
 @pytest.mark.asyncio
 async def test_list_job_triggers_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6060,7 +6050,7 @@ async def test_list_job_triggers_flattened_error_async():
 
 def test_list_job_triggers_pager(transport_name: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6112,7 +6102,7 @@ def test_list_job_triggers_pager(transport_name: str = "grpc"):
 
 def test_list_job_triggers_pages(transport_name: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6156,7 +6146,7 @@ def test_list_job_triggers_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_job_triggers_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6208,7 +6198,7 @@ async def test_list_job_triggers_async_pager():
 @pytest.mark.asyncio
 async def test_list_job_triggers_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6265,7 +6255,7 @@ async def test_list_job_triggers_async_pages():
 )
 def test_delete_job_trigger(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6294,7 +6284,7 @@ def test_delete_job_trigger_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6313,7 +6303,7 @@ async def test_delete_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteJobTriggerRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6345,7 +6335,7 @@ async def test_delete_job_trigger_async_from_dict():
 
 def test_delete_job_trigger_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6377,7 +6367,7 @@ def test_delete_job_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_delete_job_trigger_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6408,7 +6398,7 @@ async def test_delete_job_trigger_field_headers_async():
 
 def test_delete_job_trigger_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6434,7 +6424,7 @@ def test_delete_job_trigger_flattened():
 
 def test_delete_job_trigger_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6449,7 +6439,7 @@ def test_delete_job_trigger_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_job_trigger_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6478,7 +6468,7 @@ async def test_delete_job_trigger_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_job_trigger_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6499,7 +6489,7 @@ async def test_delete_job_trigger_flattened_error_async():
 )
 def test_activate_job_trigger(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6537,7 +6527,7 @@ def test_activate_job_trigger_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6556,7 +6546,7 @@ async def test_activate_job_trigger_async(
     transport: str = "grpc_asyncio", request_type=dlp.ActivateJobTriggerRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6599,7 +6589,7 @@ async def test_activate_job_trigger_async_from_dict():
 
 def test_activate_job_trigger_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6631,7 +6621,7 @@ def test_activate_job_trigger_field_headers():
 @pytest.mark.asyncio
 async def test_activate_job_trigger_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6669,7 +6659,7 @@ async def test_activate_job_trigger_field_headers_async():
 )
 def test_create_discovery_config(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6707,7 +6697,7 @@ def test_create_discovery_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6726,7 +6716,7 @@ async def test_create_discovery_config_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateDiscoveryConfigRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6769,7 +6759,7 @@ async def test_create_discovery_config_async_from_dict():
 
 def test_create_discovery_config_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6801,7 +6791,7 @@ def test_create_discovery_config_field_headers():
 @pytest.mark.asyncio
 async def test_create_discovery_config_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6832,7 +6822,7 @@ async def test_create_discovery_config_field_headers_async():
 
 def test_create_discovery_config_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6862,7 +6852,7 @@ def test_create_discovery_config_flattened():
 
 def test_create_discovery_config_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6878,7 +6868,7 @@ def test_create_discovery_config_flattened_error():
 @pytest.mark.asyncio
 async def test_create_discovery_config_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6911,7 +6901,7 @@ async def test_create_discovery_config_flattened_async():
 @pytest.mark.asyncio
 async def test_create_discovery_config_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6933,7 +6923,7 @@ async def test_create_discovery_config_flattened_error_async():
 )
 def test_update_discovery_config(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6971,7 +6961,7 @@ def test_update_discovery_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6990,7 +6980,7 @@ async def test_update_discovery_config_async(
     transport: str = "grpc_asyncio", request_type=dlp.UpdateDiscoveryConfigRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7033,7 +7023,7 @@ async def test_update_discovery_config_async_from_dict():
 
 def test_update_discovery_config_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7065,7 +7055,7 @@ def test_update_discovery_config_field_headers():
 @pytest.mark.asyncio
 async def test_update_discovery_config_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7096,7 +7086,7 @@ async def test_update_discovery_config_field_headers_async():
 
 def test_update_discovery_config_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7130,7 +7120,7 @@ def test_update_discovery_config_flattened():
 
 def test_update_discovery_config_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7147,7 +7137,7 @@ def test_update_discovery_config_flattened_error():
 @pytest.mark.asyncio
 async def test_update_discovery_config_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7184,7 +7174,7 @@ async def test_update_discovery_config_flattened_async():
 @pytest.mark.asyncio
 async def test_update_discovery_config_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7207,7 +7197,7 @@ async def test_update_discovery_config_flattened_error_async():
 )
 def test_get_discovery_config(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7245,7 +7235,7 @@ def test_get_discovery_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7264,7 +7254,7 @@ async def test_get_discovery_config_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetDiscoveryConfigRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7307,7 +7297,7 @@ async def test_get_discovery_config_async_from_dict():
 
 def test_get_discovery_config_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7339,7 +7329,7 @@ def test_get_discovery_config_field_headers():
 @pytest.mark.asyncio
 async def test_get_discovery_config_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7370,7 +7360,7 @@ async def test_get_discovery_config_field_headers_async():
 
 def test_get_discovery_config_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7396,7 +7386,7 @@ def test_get_discovery_config_flattened():
 
 def test_get_discovery_config_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7411,7 +7401,7 @@ def test_get_discovery_config_flattened_error():
 @pytest.mark.asyncio
 async def test_get_discovery_config_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7440,7 +7430,7 @@ async def test_get_discovery_config_flattened_async():
 @pytest.mark.asyncio
 async def test_get_discovery_config_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7461,7 +7451,7 @@ async def test_get_discovery_config_flattened_error_async():
 )
 def test_list_discovery_configs(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7493,7 +7483,7 @@ def test_list_discovery_configs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7512,7 +7502,7 @@ async def test_list_discovery_configs_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListDiscoveryConfigsRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7549,7 +7539,7 @@ async def test_list_discovery_configs_async_from_dict():
 
 def test_list_discovery_configs_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7581,7 +7571,7 @@ def test_list_discovery_configs_field_headers():
 @pytest.mark.asyncio
 async def test_list_discovery_configs_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7614,7 +7604,7 @@ async def test_list_discovery_configs_field_headers_async():
 
 def test_list_discovery_configs_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7640,7 +7630,7 @@ def test_list_discovery_configs_flattened():
 
 def test_list_discovery_configs_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7655,7 +7645,7 @@ def test_list_discovery_configs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_discovery_configs_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7686,7 +7676,7 @@ async def test_list_discovery_configs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_discovery_configs_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7700,7 +7690,7 @@ async def test_list_discovery_configs_flattened_error_async():
 
 def test_list_discovery_configs_pager(transport_name: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -7752,7 +7742,7 @@ def test_list_discovery_configs_pager(transport_name: str = "grpc"):
 
 def test_list_discovery_configs_pages(transport_name: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -7796,7 +7786,7 @@ def test_list_discovery_configs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_discovery_configs_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7848,7 +7838,7 @@ async def test_list_discovery_configs_async_pager():
 @pytest.mark.asyncio
 async def test_list_discovery_configs_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7905,7 +7895,7 @@ async def test_list_discovery_configs_async_pages():
 )
 def test_delete_discovery_config(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7934,7 +7924,7 @@ def test_delete_discovery_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7953,7 +7943,7 @@ async def test_delete_discovery_config_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteDiscoveryConfigRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7985,7 +7975,7 @@ async def test_delete_discovery_config_async_from_dict():
 
 def test_delete_discovery_config_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8017,7 +8007,7 @@ def test_delete_discovery_config_field_headers():
 @pytest.mark.asyncio
 async def test_delete_discovery_config_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8048,7 +8038,7 @@ async def test_delete_discovery_config_field_headers_async():
 
 def test_delete_discovery_config_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8074,7 +8064,7 @@ def test_delete_discovery_config_flattened():
 
 def test_delete_discovery_config_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8089,7 +8079,7 @@ def test_delete_discovery_config_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_discovery_config_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8118,7 +8108,7 @@ async def test_delete_discovery_config_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_discovery_config_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8139,7 +8129,7 @@ async def test_delete_discovery_config_flattened_error_async():
 )
 def test_create_dlp_job(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8175,7 +8165,7 @@ def test_create_dlp_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8192,7 +8182,7 @@ async def test_create_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateDlpJobRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8233,7 +8223,7 @@ async def test_create_dlp_job_async_from_dict():
 
 def test_create_dlp_job_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8263,7 +8253,7 @@ def test_create_dlp_job_field_headers():
 @pytest.mark.asyncio
 async def test_create_dlp_job_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8292,7 +8282,7 @@ async def test_create_dlp_job_field_headers_async():
 
 def test_create_dlp_job_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8337,7 +8327,7 @@ def test_create_dlp_job_flattened():
 
 def test_create_dlp_job_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8366,7 +8356,7 @@ def test_create_dlp_job_flattened_error():
 @pytest.mark.asyncio
 async def test_create_dlp_job_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8414,7 +8404,7 @@ async def test_create_dlp_job_flattened_async():
 @pytest.mark.asyncio
 async def test_create_dlp_job_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8449,7 +8439,7 @@ async def test_create_dlp_job_flattened_error_async():
 )
 def test_list_dlp_jobs(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8479,7 +8469,7 @@ def test_list_dlp_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8496,7 +8486,7 @@ async def test_list_dlp_jobs_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListDlpJobsRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8531,7 +8521,7 @@ async def test_list_dlp_jobs_async_from_dict():
 
 def test_list_dlp_jobs_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8561,7 +8551,7 @@ def test_list_dlp_jobs_field_headers():
 @pytest.mark.asyncio
 async def test_list_dlp_jobs_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8592,7 +8582,7 @@ async def test_list_dlp_jobs_field_headers_async():
 
 def test_list_dlp_jobs_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8616,7 +8606,7 @@ def test_list_dlp_jobs_flattened():
 
 def test_list_dlp_jobs_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8631,7 +8621,7 @@ def test_list_dlp_jobs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_dlp_jobs_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8660,7 +8650,7 @@ async def test_list_dlp_jobs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_dlp_jobs_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8674,7 +8664,7 @@ async def test_list_dlp_jobs_flattened_error_async():
 
 def test_list_dlp_jobs_pager(transport_name: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -8724,7 +8714,7 @@ def test_list_dlp_jobs_pager(transport_name: str = "grpc"):
 
 def test_list_dlp_jobs_pages(transport_name: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -8766,7 +8756,7 @@ def test_list_dlp_jobs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_dlp_jobs_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8816,7 +8806,7 @@ async def test_list_dlp_jobs_async_pager():
 @pytest.mark.asyncio
 async def test_list_dlp_jobs_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8871,7 +8861,7 @@ async def test_list_dlp_jobs_async_pages():
 )
 def test_get_dlp_job(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8907,7 +8897,7 @@ def test_get_dlp_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8924,7 +8914,7 @@ async def test_get_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetDlpJobRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8965,7 +8955,7 @@ async def test_get_dlp_job_async_from_dict():
 
 def test_get_dlp_job_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8995,7 +8985,7 @@ def test_get_dlp_job_field_headers():
 @pytest.mark.asyncio
 async def test_get_dlp_job_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9024,7 +9014,7 @@ async def test_get_dlp_job_field_headers_async():
 
 def test_get_dlp_job_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9048,7 +9038,7 @@ def test_get_dlp_job_flattened():
 
 def test_get_dlp_job_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9063,7 +9053,7 @@ def test_get_dlp_job_flattened_error():
 @pytest.mark.asyncio
 async def test_get_dlp_job_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9090,7 +9080,7 @@ async def test_get_dlp_job_flattened_async():
 @pytest.mark.asyncio
 async def test_get_dlp_job_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9111,7 +9101,7 @@ async def test_get_dlp_job_flattened_error_async():
 )
 def test_delete_dlp_job(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9138,7 +9128,7 @@ def test_delete_dlp_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9155,7 +9145,7 @@ async def test_delete_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteDlpJobRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9185,7 +9175,7 @@ async def test_delete_dlp_job_async_from_dict():
 
 def test_delete_dlp_job_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9215,7 +9205,7 @@ def test_delete_dlp_job_field_headers():
 @pytest.mark.asyncio
 async def test_delete_dlp_job_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9244,7 +9234,7 @@ async def test_delete_dlp_job_field_headers_async():
 
 def test_delete_dlp_job_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9268,7 +9258,7 @@ def test_delete_dlp_job_flattened():
 
 def test_delete_dlp_job_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9283,7 +9273,7 @@ def test_delete_dlp_job_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_dlp_job_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9310,7 +9300,7 @@ async def test_delete_dlp_job_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_dlp_job_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9331,7 +9321,7 @@ async def test_delete_dlp_job_flattened_error_async():
 )
 def test_cancel_dlp_job(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9358,7 +9348,7 @@ def test_cancel_dlp_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9375,7 +9365,7 @@ async def test_cancel_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.CancelDlpJobRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9405,7 +9395,7 @@ async def test_cancel_dlp_job_async_from_dict():
 
 def test_cancel_dlp_job_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9435,7 +9425,7 @@ def test_cancel_dlp_job_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_dlp_job_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9471,7 +9461,7 @@ async def test_cancel_dlp_job_field_headers_async():
 )
 def test_create_stored_info_type(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9503,7 +9493,7 @@ def test_create_stored_info_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9522,7 +9512,7 @@ async def test_create_stored_info_type_async(
     transport: str = "grpc_asyncio", request_type=dlp.CreateStoredInfoTypeRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9559,7 +9549,7 @@ async def test_create_stored_info_type_async_from_dict():
 
 def test_create_stored_info_type_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9591,7 +9581,7 @@ def test_create_stored_info_type_field_headers():
 @pytest.mark.asyncio
 async def test_create_stored_info_type_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9622,7 +9612,7 @@ async def test_create_stored_info_type_field_headers_async():
 
 def test_create_stored_info_type_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9652,7 +9642,7 @@ def test_create_stored_info_type_flattened():
 
 def test_create_stored_info_type_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9668,7 +9658,7 @@ def test_create_stored_info_type_flattened_error():
 @pytest.mark.asyncio
 async def test_create_stored_info_type_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9701,7 +9691,7 @@ async def test_create_stored_info_type_flattened_async():
 @pytest.mark.asyncio
 async def test_create_stored_info_type_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9723,7 +9713,7 @@ async def test_create_stored_info_type_flattened_error_async():
 )
 def test_update_stored_info_type(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9755,7 +9745,7 @@ def test_update_stored_info_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9774,7 +9764,7 @@ async def test_update_stored_info_type_async(
     transport: str = "grpc_asyncio", request_type=dlp.UpdateStoredInfoTypeRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9811,7 +9801,7 @@ async def test_update_stored_info_type_async_from_dict():
 
 def test_update_stored_info_type_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9843,7 +9833,7 @@ def test_update_stored_info_type_field_headers():
 @pytest.mark.asyncio
 async def test_update_stored_info_type_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9874,7 +9864,7 @@ async def test_update_stored_info_type_field_headers_async():
 
 def test_update_stored_info_type_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9908,7 +9898,7 @@ def test_update_stored_info_type_flattened():
 
 def test_update_stored_info_type_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9925,7 +9915,7 @@ def test_update_stored_info_type_flattened_error():
 @pytest.mark.asyncio
 async def test_update_stored_info_type_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9962,7 +9952,7 @@ async def test_update_stored_info_type_flattened_async():
 @pytest.mark.asyncio
 async def test_update_stored_info_type_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9985,7 +9975,7 @@ async def test_update_stored_info_type_flattened_error_async():
 )
 def test_get_stored_info_type(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10017,7 +10007,7 @@ def test_get_stored_info_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10036,7 +10026,7 @@ async def test_get_stored_info_type_async(
     transport: str = "grpc_asyncio", request_type=dlp.GetStoredInfoTypeRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10073,7 +10063,7 @@ async def test_get_stored_info_type_async_from_dict():
 
 def test_get_stored_info_type_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10105,7 +10095,7 @@ def test_get_stored_info_type_field_headers():
 @pytest.mark.asyncio
 async def test_get_stored_info_type_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10136,7 +10126,7 @@ async def test_get_stored_info_type_field_headers_async():
 
 def test_get_stored_info_type_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10162,7 +10152,7 @@ def test_get_stored_info_type_flattened():
 
 def test_get_stored_info_type_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10177,7 +10167,7 @@ def test_get_stored_info_type_flattened_error():
 @pytest.mark.asyncio
 async def test_get_stored_info_type_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10206,7 +10196,7 @@ async def test_get_stored_info_type_flattened_async():
 @pytest.mark.asyncio
 async def test_get_stored_info_type_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10227,7 +10217,7 @@ async def test_get_stored_info_type_flattened_error_async():
 )
 def test_list_stored_info_types(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10259,7 +10249,7 @@ def test_list_stored_info_types_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10278,7 +10268,7 @@ async def test_list_stored_info_types_async(
     transport: str = "grpc_asyncio", request_type=dlp.ListStoredInfoTypesRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10315,7 +10305,7 @@ async def test_list_stored_info_types_async_from_dict():
 
 def test_list_stored_info_types_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10347,7 +10337,7 @@ def test_list_stored_info_types_field_headers():
 @pytest.mark.asyncio
 async def test_list_stored_info_types_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10380,7 +10370,7 @@ async def test_list_stored_info_types_field_headers_async():
 
 def test_list_stored_info_types_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10406,7 +10396,7 @@ def test_list_stored_info_types_flattened():
 
 def test_list_stored_info_types_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10421,7 +10411,7 @@ def test_list_stored_info_types_flattened_error():
 @pytest.mark.asyncio
 async def test_list_stored_info_types_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10452,7 +10442,7 @@ async def test_list_stored_info_types_flattened_async():
 @pytest.mark.asyncio
 async def test_list_stored_info_types_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10466,7 +10456,7 @@ async def test_list_stored_info_types_flattened_error_async():
 
 def test_list_stored_info_types_pager(transport_name: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -10518,7 +10508,7 @@ def test_list_stored_info_types_pager(transport_name: str = "grpc"):
 
 def test_list_stored_info_types_pages(transport_name: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -10562,7 +10552,7 @@ def test_list_stored_info_types_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_stored_info_types_async_pager():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10614,7 +10604,7 @@ async def test_list_stored_info_types_async_pager():
 @pytest.mark.asyncio
 async def test_list_stored_info_types_async_pages():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10671,7 +10661,7 @@ async def test_list_stored_info_types_async_pages():
 )
 def test_delete_stored_info_type(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10700,7 +10690,7 @@ def test_delete_stored_info_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10719,7 +10709,7 @@ async def test_delete_stored_info_type_async(
     transport: str = "grpc_asyncio", request_type=dlp.DeleteStoredInfoTypeRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10751,7 +10741,7 @@ async def test_delete_stored_info_type_async_from_dict():
 
 def test_delete_stored_info_type_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10783,7 +10773,7 @@ def test_delete_stored_info_type_field_headers():
 @pytest.mark.asyncio
 async def test_delete_stored_info_type_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10814,7 +10804,7 @@ async def test_delete_stored_info_type_field_headers_async():
 
 def test_delete_stored_info_type_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10840,7 +10830,7 @@ def test_delete_stored_info_type_flattened():
 
 def test_delete_stored_info_type_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10855,7 +10845,7 @@ def test_delete_stored_info_type_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_stored_info_type_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10884,7 +10874,7 @@ async def test_delete_stored_info_type_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_stored_info_type_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10905,7 +10895,7 @@ async def test_delete_stored_info_type_flattened_error_async():
 )
 def test_hybrid_inspect_dlp_job(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10934,7 +10924,7 @@ def test_hybrid_inspect_dlp_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10953,7 +10943,7 @@ async def test_hybrid_inspect_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.HybridInspectDlpJobRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10987,7 +10977,7 @@ async def test_hybrid_inspect_dlp_job_async_from_dict():
 
 def test_hybrid_inspect_dlp_job_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11019,7 +11009,7 @@ def test_hybrid_inspect_dlp_job_field_headers():
 @pytest.mark.asyncio
 async def test_hybrid_inspect_dlp_job_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11052,7 +11042,7 @@ async def test_hybrid_inspect_dlp_job_field_headers_async():
 
 def test_hybrid_inspect_dlp_job_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11078,7 +11068,7 @@ def test_hybrid_inspect_dlp_job_flattened():
 
 def test_hybrid_inspect_dlp_job_flattened_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11093,7 +11083,7 @@ def test_hybrid_inspect_dlp_job_flattened_error():
 @pytest.mark.asyncio
 async def test_hybrid_inspect_dlp_job_flattened_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11124,7 +11114,7 @@ async def test_hybrid_inspect_dlp_job_flattened_async():
 @pytest.mark.asyncio
 async def test_hybrid_inspect_dlp_job_flattened_error_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11145,7 +11135,7 @@ async def test_hybrid_inspect_dlp_job_flattened_error_async():
 )
 def test_finish_dlp_job(request_type, transport: str = "grpc"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11172,7 +11162,7 @@ def test_finish_dlp_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -11189,7 +11179,7 @@ async def test_finish_dlp_job_async(
     transport: str = "grpc_asyncio", request_type=dlp.FinishDlpJobRequest
 ):
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11219,7 +11209,7 @@ async def test_finish_dlp_job_async_from_dict():
 
 def test_finish_dlp_job_field_headers():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11249,7 +11239,7 @@ def test_finish_dlp_job_field_headers():
 @pytest.mark.asyncio
 async def test_finish_dlp_job_field_headers_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11285,7 +11275,7 @@ async def test_finish_dlp_job_field_headers_async():
 )
 def test_inspect_content_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11316,7 +11306,7 @@ def test_inspect_content_rest(request_type):
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_inspect_content_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -11372,7 +11362,7 @@ def test_inspect_content_rest_bad_request(
     transport: str = "rest", request_type=dlp.InspectContentRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11394,7 +11384,7 @@ def test_inspect_content_rest_bad_request(
 
 def test_inspect_content_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11407,7 +11397,7 @@ def test_inspect_content_rest_error():
 )
 def test_redact_image_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11443,7 +11433,7 @@ def test_redact_image_rest(request_type):
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_redact_image_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -11499,7 +11489,7 @@ def test_redact_image_rest_bad_request(
     transport: str = "rest", request_type=dlp.RedactImageRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11521,7 +11511,7 @@ def test_redact_image_rest_bad_request(
 
 def test_redact_image_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11534,7 +11524,7 @@ def test_redact_image_rest_error():
 )
 def test_deidentify_content_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11565,7 +11555,7 @@ def test_deidentify_content_rest(request_type):
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_deidentify_content_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -11621,7 +11611,7 @@ def test_deidentify_content_rest_bad_request(
     transport: str = "rest", request_type=dlp.DeidentifyContentRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11643,7 +11633,7 @@ def test_deidentify_content_rest_bad_request(
 
 def test_deidentify_content_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11656,7 +11646,7 @@ def test_deidentify_content_rest_error():
 )
 def test_reidentify_content_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11704,7 +11694,7 @@ def test_reidentify_content_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).reidentify_content._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11713,7 +11703,7 @@ def test_reidentify_content_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).reidentify_content._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11722,7 +11712,7 @@ def test_reidentify_content_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11765,7 +11755,7 @@ def test_reidentify_content_rest_required_fields(
 
 def test_reidentify_content_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.reidentify_content._get_unset_required_fields({})
@@ -11775,7 +11765,7 @@ def test_reidentify_content_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_reidentify_content_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -11831,7 +11821,7 @@ def test_reidentify_content_rest_bad_request(
     transport: str = "rest", request_type=dlp.ReidentifyContentRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11853,7 +11843,7 @@ def test_reidentify_content_rest_bad_request(
 
 def test_reidentify_content_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11866,7 +11856,7 @@ def test_reidentify_content_rest_error():
 )
 def test_list_info_types_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11897,7 +11887,7 @@ def test_list_info_types_rest(request_type):
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_info_types_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -11953,7 +11943,7 @@ def test_list_info_types_rest_bad_request(
     transport: str = "rest", request_type=dlp.ListInfoTypesRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11975,7 +11965,7 @@ def test_list_info_types_rest_bad_request(
 
 def test_list_info_types_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12015,7 +12005,7 @@ def test_list_info_types_rest_flattened():
 
 def test_list_info_types_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12030,7 +12020,7 @@ def test_list_info_types_rest_flattened_error(transport: str = "rest"):
 
 def test_list_info_types_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12043,7 +12033,7 @@ def test_list_info_types_rest_error():
 )
 def test_create_inspect_template_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12098,7 +12088,7 @@ def test_create_inspect_template_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_inspect_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12107,7 +12097,7 @@ def test_create_inspect_template_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_inspect_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12116,7 +12106,7 @@ def test_create_inspect_template_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12159,7 +12149,7 @@ def test_create_inspect_template_rest_required_fields(
 
 def test_create_inspect_template_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_inspect_template._get_unset_required_fields({})
@@ -12177,7 +12167,7 @@ def test_create_inspect_template_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_inspect_template_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -12233,7 +12223,7 @@ def test_create_inspect_template_rest_bad_request(
     transport: str = "rest", request_type=dlp.CreateInspectTemplateRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12255,7 +12245,7 @@ def test_create_inspect_template_rest_bad_request(
 
 def test_create_inspect_template_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12297,7 +12287,7 @@ def test_create_inspect_template_rest_flattened():
 
 def test_create_inspect_template_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12313,7 +12303,7 @@ def test_create_inspect_template_rest_flattened_error(transport: str = "rest"):
 
 def test_create_inspect_template_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12326,7 +12316,7 @@ def test_create_inspect_template_rest_error():
 )
 def test_update_inspect_template_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12381,7 +12371,7 @@ def test_update_inspect_template_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_inspect_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12390,7 +12380,7 @@ def test_update_inspect_template_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_inspect_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12399,7 +12389,7 @@ def test_update_inspect_template_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12442,7 +12432,7 @@ def test_update_inspect_template_rest_required_fields(
 
 def test_update_inspect_template_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_inspect_template._get_unset_required_fields({})
@@ -12452,7 +12442,7 @@ def test_update_inspect_template_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_inspect_template_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -12508,7 +12498,7 @@ def test_update_inspect_template_rest_bad_request(
     transport: str = "rest", request_type=dlp.UpdateInspectTemplateRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12530,7 +12520,7 @@ def test_update_inspect_template_rest_bad_request(
 
 def test_update_inspect_template_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12573,7 +12563,7 @@ def test_update_inspect_template_rest_flattened():
 
 def test_update_inspect_template_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12590,7 +12580,7 @@ def test_update_inspect_template_rest_flattened_error(transport: str = "rest"):
 
 def test_update_inspect_template_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12603,7 +12593,7 @@ def test_update_inspect_template_rest_error():
 )
 def test_get_inspect_template_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12658,7 +12648,7 @@ def test_get_inspect_template_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_inspect_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12667,7 +12657,7 @@ def test_get_inspect_template_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_inspect_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12676,7 +12666,7 @@ def test_get_inspect_template_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12718,7 +12708,7 @@ def test_get_inspect_template_rest_required_fields(
 
 def test_get_inspect_template_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_inspect_template._get_unset_required_fields({})
@@ -12728,7 +12718,7 @@ def test_get_inspect_template_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_inspect_template_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -12782,7 +12772,7 @@ def test_get_inspect_template_rest_bad_request(
     transport: str = "rest", request_type=dlp.GetInspectTemplateRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12804,7 +12794,7 @@ def test_get_inspect_template_rest_bad_request(
 
 def test_get_inspect_template_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12845,7 +12835,7 @@ def test_get_inspect_template_rest_flattened():
 
 def test_get_inspect_template_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12860,7 +12850,7 @@ def test_get_inspect_template_rest_flattened_error(transport: str = "rest"):
 
 def test_get_inspect_template_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12873,7 +12863,7 @@ def test_get_inspect_template_rest_error():
 )
 def test_list_inspect_templates_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12924,7 +12914,7 @@ def test_list_inspect_templates_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_inspect_templates._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12933,7 +12923,7 @@ def test_list_inspect_templates_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_inspect_templates._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -12951,7 +12941,7 @@ def test_list_inspect_templates_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12993,7 +12983,7 @@ def test_list_inspect_templates_rest_required_fields(
 
 def test_list_inspect_templates_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_inspect_templates._get_unset_required_fields({})
@@ -13013,7 +13003,7 @@ def test_list_inspect_templates_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_inspect_templates_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -13071,7 +13061,7 @@ def test_list_inspect_templates_rest_bad_request(
     transport: str = "rest", request_type=dlp.ListInspectTemplatesRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13093,7 +13083,7 @@ def test_list_inspect_templates_rest_bad_request(
 
 def test_list_inspect_templates_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13134,7 +13124,7 @@ def test_list_inspect_templates_rest_flattened():
 
 def test_list_inspect_templates_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13149,7 +13139,7 @@ def test_list_inspect_templates_rest_flattened_error(transport: str = "rest"):
 
 def test_list_inspect_templates_rest_pager(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13217,7 +13207,7 @@ def test_list_inspect_templates_rest_pager(transport: str = "rest"):
 )
 def test_delete_inspect_template_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13263,7 +13253,7 @@ def test_delete_inspect_template_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_inspect_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13272,7 +13262,7 @@ def test_delete_inspect_template_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_inspect_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13281,7 +13271,7 @@ def test_delete_inspect_template_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13320,7 +13310,7 @@ def test_delete_inspect_template_rest_required_fields(
 
 def test_delete_inspect_template_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_inspect_template._get_unset_required_fields({})
@@ -13330,7 +13320,7 @@ def test_delete_inspect_template_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_inspect_template_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -13380,7 +13370,7 @@ def test_delete_inspect_template_rest_bad_request(
     transport: str = "rest", request_type=dlp.DeleteInspectTemplateRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13402,7 +13392,7 @@ def test_delete_inspect_template_rest_bad_request(
 
 def test_delete_inspect_template_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13441,7 +13431,7 @@ def test_delete_inspect_template_rest_flattened():
 
 def test_delete_inspect_template_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13456,7 +13446,7 @@ def test_delete_inspect_template_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_inspect_template_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13469,7 +13459,7 @@ def test_delete_inspect_template_rest_error():
 )
 def test_create_deidentify_template_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13524,7 +13514,7 @@ def test_create_deidentify_template_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_deidentify_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13533,7 +13523,7 @@ def test_create_deidentify_template_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_deidentify_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13542,7 +13532,7 @@ def test_create_deidentify_template_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13585,7 +13575,7 @@ def test_create_deidentify_template_rest_required_fields(
 
 def test_create_deidentify_template_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_deidentify_template._get_unset_required_fields({})
@@ -13603,7 +13593,7 @@ def test_create_deidentify_template_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_deidentify_template_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -13661,7 +13651,7 @@ def test_create_deidentify_template_rest_bad_request(
     transport: str = "rest", request_type=dlp.CreateDeidentifyTemplateRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13683,7 +13673,7 @@ def test_create_deidentify_template_rest_bad_request(
 
 def test_create_deidentify_template_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13726,7 +13716,7 @@ def test_create_deidentify_template_rest_flattened():
 
 def test_create_deidentify_template_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13742,7 +13732,7 @@ def test_create_deidentify_template_rest_flattened_error(transport: str = "rest"
 
 def test_create_deidentify_template_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13755,7 +13745,7 @@ def test_create_deidentify_template_rest_error():
 )
 def test_update_deidentify_template_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13810,7 +13800,7 @@ def test_update_deidentify_template_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_deidentify_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13819,7 +13809,7 @@ def test_update_deidentify_template_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_deidentify_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13828,7 +13818,7 @@ def test_update_deidentify_template_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13871,7 +13861,7 @@ def test_update_deidentify_template_rest_required_fields(
 
 def test_update_deidentify_template_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_deidentify_template._get_unset_required_fields({})
@@ -13881,7 +13871,7 @@ def test_update_deidentify_template_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_deidentify_template_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -13939,7 +13929,7 @@ def test_update_deidentify_template_rest_bad_request(
     transport: str = "rest", request_type=dlp.UpdateDeidentifyTemplateRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13961,7 +13951,7 @@ def test_update_deidentify_template_rest_bad_request(
 
 def test_update_deidentify_template_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14005,7 +13995,7 @@ def test_update_deidentify_template_rest_flattened():
 
 def test_update_deidentify_template_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14022,7 +14012,7 @@ def test_update_deidentify_template_rest_flattened_error(transport: str = "rest"
 
 def test_update_deidentify_template_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14035,7 +14025,7 @@ def test_update_deidentify_template_rest_error():
 )
 def test_get_deidentify_template_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14090,7 +14080,7 @@ def test_get_deidentify_template_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_deidentify_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14099,7 +14089,7 @@ def test_get_deidentify_template_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_deidentify_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14108,7 +14098,7 @@ def test_get_deidentify_template_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14150,7 +14140,7 @@ def test_get_deidentify_template_rest_required_fields(
 
 def test_get_deidentify_template_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_deidentify_template._get_unset_required_fields({})
@@ -14160,7 +14150,7 @@ def test_get_deidentify_template_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_deidentify_template_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -14218,7 +14208,7 @@ def test_get_deidentify_template_rest_bad_request(
     transport: str = "rest", request_type=dlp.GetDeidentifyTemplateRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14240,7 +14230,7 @@ def test_get_deidentify_template_rest_bad_request(
 
 def test_get_deidentify_template_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14282,7 +14272,7 @@ def test_get_deidentify_template_rest_flattened():
 
 def test_get_deidentify_template_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14297,7 +14287,7 @@ def test_get_deidentify_template_rest_flattened_error(transport: str = "rest"):
 
 def test_get_deidentify_template_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14310,7 +14300,7 @@ def test_get_deidentify_template_rest_error():
 )
 def test_list_deidentify_templates_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14361,7 +14351,7 @@ def test_list_deidentify_templates_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_deidentify_templates._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14370,7 +14360,7 @@ def test_list_deidentify_templates_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_deidentify_templates._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -14388,7 +14378,7 @@ def test_list_deidentify_templates_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14430,7 +14420,7 @@ def test_list_deidentify_templates_rest_required_fields(
 
 def test_list_deidentify_templates_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_deidentify_templates._get_unset_required_fields({})
@@ -14450,7 +14440,7 @@ def test_list_deidentify_templates_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_deidentify_templates_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -14508,7 +14498,7 @@ def test_list_deidentify_templates_rest_bad_request(
     transport: str = "rest", request_type=dlp.ListDeidentifyTemplatesRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14530,7 +14520,7 @@ def test_list_deidentify_templates_rest_bad_request(
 
 def test_list_deidentify_templates_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14572,7 +14562,7 @@ def test_list_deidentify_templates_rest_flattened():
 
 def test_list_deidentify_templates_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14587,7 +14577,7 @@ def test_list_deidentify_templates_rest_flattened_error(transport: str = "rest")
 
 def test_list_deidentify_templates_rest_pager(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14657,7 +14647,7 @@ def test_list_deidentify_templates_rest_pager(transport: str = "rest"):
 )
 def test_delete_deidentify_template_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14703,7 +14693,7 @@ def test_delete_deidentify_template_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_deidentify_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14712,7 +14702,7 @@ def test_delete_deidentify_template_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_deidentify_template._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14721,7 +14711,7 @@ def test_delete_deidentify_template_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14760,7 +14750,7 @@ def test_delete_deidentify_template_rest_required_fields(
 
 def test_delete_deidentify_template_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_deidentify_template._get_unset_required_fields({})
@@ -14770,7 +14760,7 @@ def test_delete_deidentify_template_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_deidentify_template_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -14820,7 +14810,7 @@ def test_delete_deidentify_template_rest_bad_request(
     transport: str = "rest", request_type=dlp.DeleteDeidentifyTemplateRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14842,7 +14832,7 @@ def test_delete_deidentify_template_rest_bad_request(
 
 def test_delete_deidentify_template_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14882,7 +14872,7 @@ def test_delete_deidentify_template_rest_flattened():
 
 def test_delete_deidentify_template_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14897,7 +14887,7 @@ def test_delete_deidentify_template_rest_flattened_error(transport: str = "rest"
 
 def test_delete_deidentify_template_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14910,7 +14900,7 @@ def test_delete_deidentify_template_rest_error():
 )
 def test_create_job_trigger_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14967,7 +14957,7 @@ def test_create_job_trigger_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_job_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14976,7 +14966,7 @@ def test_create_job_trigger_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_job_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14985,7 +14975,7 @@ def test_create_job_trigger_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15028,7 +15018,7 @@ def test_create_job_trigger_rest_required_fields(
 
 def test_create_job_trigger_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_job_trigger._get_unset_required_fields({})
@@ -15046,7 +15036,7 @@ def test_create_job_trigger_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_job_trigger_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -15100,7 +15090,7 @@ def test_create_job_trigger_rest_bad_request(
     transport: str = "rest", request_type=dlp.CreateJobTriggerRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15122,7 +15112,7 @@ def test_create_job_trigger_rest_bad_request(
 
 def test_create_job_trigger_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15163,7 +15153,7 @@ def test_create_job_trigger_rest_flattened():
 
 def test_create_job_trigger_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15179,7 +15169,7 @@ def test_create_job_trigger_rest_flattened_error(transport: str = "rest"):
 
 def test_create_job_trigger_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15192,7 +15182,7 @@ def test_create_job_trigger_rest_error():
 )
 def test_update_job_trigger_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15249,7 +15239,7 @@ def test_update_job_trigger_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_job_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15258,7 +15248,7 @@ def test_update_job_trigger_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_job_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15267,7 +15257,7 @@ def test_update_job_trigger_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15310,7 +15300,7 @@ def test_update_job_trigger_rest_required_fields(
 
 def test_update_job_trigger_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_job_trigger._get_unset_required_fields({})
@@ -15320,7 +15310,7 @@ def test_update_job_trigger_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_job_trigger_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -15374,7 +15364,7 @@ def test_update_job_trigger_rest_bad_request(
     transport: str = "rest", request_type=dlp.UpdateJobTriggerRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15396,7 +15386,7 @@ def test_update_job_trigger_rest_bad_request(
 
 def test_update_job_trigger_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15438,7 +15428,7 @@ def test_update_job_trigger_rest_flattened():
 
 def test_update_job_trigger_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15455,7 +15445,7 @@ def test_update_job_trigger_rest_flattened_error(transport: str = "rest"):
 
 def test_update_job_trigger_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15468,7 +15458,7 @@ def test_update_job_trigger_rest_error():
 )
 def test_hybrid_inspect_job_trigger_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15516,7 +15506,7 @@ def test_hybrid_inspect_job_trigger_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).hybrid_inspect_job_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15525,7 +15515,7 @@ def test_hybrid_inspect_job_trigger_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).hybrid_inspect_job_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15534,7 +15524,7 @@ def test_hybrid_inspect_job_trigger_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15577,7 +15567,7 @@ def test_hybrid_inspect_job_trigger_rest_required_fields(
 
 def test_hybrid_inspect_job_trigger_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.hybrid_inspect_job_trigger._get_unset_required_fields({})
@@ -15587,7 +15577,7 @@ def test_hybrid_inspect_job_trigger_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_hybrid_inspect_job_trigger_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -15645,7 +15635,7 @@ def test_hybrid_inspect_job_trigger_rest_bad_request(
     transport: str = "rest", request_type=dlp.HybridInspectJobTriggerRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15667,7 +15657,7 @@ def test_hybrid_inspect_job_trigger_rest_bad_request(
 
 def test_hybrid_inspect_job_trigger_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15711,7 +15701,7 @@ def test_hybrid_inspect_job_trigger_rest_flattened():
 
 def test_hybrid_inspect_job_trigger_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15726,7 +15716,7 @@ def test_hybrid_inspect_job_trigger_rest_flattened_error(transport: str = "rest"
 
 def test_hybrid_inspect_job_trigger_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15739,7 +15729,7 @@ def test_hybrid_inspect_job_trigger_rest_error():
 )
 def test_get_job_trigger_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15794,7 +15784,7 @@ def test_get_job_trigger_rest_required_fields(request_type=dlp.GetJobTriggerRequ
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_job_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15803,7 +15793,7 @@ def test_get_job_trigger_rest_required_fields(request_type=dlp.GetJobTriggerRequ
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_job_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15812,7 +15802,7 @@ def test_get_job_trigger_rest_required_fields(request_type=dlp.GetJobTriggerRequ
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15854,7 +15844,7 @@ def test_get_job_trigger_rest_required_fields(request_type=dlp.GetJobTriggerRequ
 
 def test_get_job_trigger_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_job_trigger._get_unset_required_fields({})
@@ -15864,7 +15854,7 @@ def test_get_job_trigger_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_job_trigger_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -15918,7 +15908,7 @@ def test_get_job_trigger_rest_bad_request(
     transport: str = "rest", request_type=dlp.GetJobTriggerRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15940,7 +15930,7 @@ def test_get_job_trigger_rest_bad_request(
 
 def test_get_job_trigger_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15980,7 +15970,7 @@ def test_get_job_trigger_rest_flattened():
 
 def test_get_job_trigger_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15995,7 +15985,7 @@ def test_get_job_trigger_rest_flattened_error(transport: str = "rest"):
 
 def test_get_job_trigger_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16008,7 +15998,7 @@ def test_get_job_trigger_rest_error():
 )
 def test_list_job_triggers_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16059,7 +16049,7 @@ def test_list_job_triggers_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_job_triggers._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16068,7 +16058,7 @@ def test_list_job_triggers_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_job_triggers._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -16088,7 +16078,7 @@ def test_list_job_triggers_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16130,7 +16120,7 @@ def test_list_job_triggers_rest_required_fields(
 
 def test_list_job_triggers_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_job_triggers._get_unset_required_fields({})
@@ -16152,7 +16142,7 @@ def test_list_job_triggers_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_job_triggers_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -16208,7 +16198,7 @@ def test_list_job_triggers_rest_bad_request(
     transport: str = "rest", request_type=dlp.ListJobTriggersRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16230,7 +16220,7 @@ def test_list_job_triggers_rest_bad_request(
 
 def test_list_job_triggers_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16270,7 +16260,7 @@ def test_list_job_triggers_rest_flattened():
 
 def test_list_job_triggers_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16285,7 +16275,7 @@ def test_list_job_triggers_rest_flattened_error(transport: str = "rest"):
 
 def test_list_job_triggers_rest_pager(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16353,7 +16343,7 @@ def test_list_job_triggers_rest_pager(transport: str = "rest"):
 )
 def test_delete_job_trigger_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16399,7 +16389,7 @@ def test_delete_job_trigger_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_job_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16408,7 +16398,7 @@ def test_delete_job_trigger_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_job_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16417,7 +16407,7 @@ def test_delete_job_trigger_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16456,7 +16446,7 @@ def test_delete_job_trigger_rest_required_fields(
 
 def test_delete_job_trigger_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_job_trigger._get_unset_required_fields({})
@@ -16466,7 +16456,7 @@ def test_delete_job_trigger_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_job_trigger_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -16514,7 +16504,7 @@ def test_delete_job_trigger_rest_bad_request(
     transport: str = "rest", request_type=dlp.DeleteJobTriggerRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16536,7 +16526,7 @@ def test_delete_job_trigger_rest_bad_request(
 
 def test_delete_job_trigger_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16574,7 +16564,7 @@ def test_delete_job_trigger_rest_flattened():
 
 def test_delete_job_trigger_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16589,7 +16579,7 @@ def test_delete_job_trigger_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_job_trigger_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16602,7 +16592,7 @@ def test_delete_job_trigger_rest_error():
 )
 def test_activate_job_trigger_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16659,7 +16649,7 @@ def test_activate_job_trigger_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).activate_job_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16668,7 +16658,7 @@ def test_activate_job_trigger_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).activate_job_trigger._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16677,7 +16667,7 @@ def test_activate_job_trigger_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16720,7 +16710,7 @@ def test_activate_job_trigger_rest_required_fields(
 
 def test_activate_job_trigger_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.activate_job_trigger._get_unset_required_fields({})
@@ -16730,7 +16720,7 @@ def test_activate_job_trigger_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_activate_job_trigger_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -16784,7 +16774,7 @@ def test_activate_job_trigger_rest_bad_request(
     transport: str = "rest", request_type=dlp.ActivateJobTriggerRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16806,7 +16796,7 @@ def test_activate_job_trigger_rest_bad_request(
 
 def test_activate_job_trigger_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16819,7 +16809,7 @@ def test_activate_job_trigger_rest_error():
 )
 def test_create_discovery_config_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16876,7 +16866,7 @@ def test_create_discovery_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_discovery_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16885,7 +16875,7 @@ def test_create_discovery_config_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_discovery_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16894,7 +16884,7 @@ def test_create_discovery_config_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16937,7 +16927,7 @@ def test_create_discovery_config_rest_required_fields(
 
 def test_create_discovery_config_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_discovery_config._get_unset_required_fields({})
@@ -16955,7 +16945,7 @@ def test_create_discovery_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_discovery_config_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -17011,7 +17001,7 @@ def test_create_discovery_config_rest_bad_request(
     transport: str = "rest", request_type=dlp.CreateDiscoveryConfigRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17033,7 +17023,7 @@ def test_create_discovery_config_rest_bad_request(
 
 def test_create_discovery_config_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17076,7 +17066,7 @@ def test_create_discovery_config_rest_flattened():
 
 def test_create_discovery_config_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17092,7 +17082,7 @@ def test_create_discovery_config_rest_flattened_error(transport: str = "rest"):
 
 def test_create_discovery_config_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17105,7 +17095,7 @@ def test_create_discovery_config_rest_error():
 )
 def test_update_discovery_config_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17164,7 +17154,7 @@ def test_update_discovery_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_discovery_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17173,7 +17163,7 @@ def test_update_discovery_config_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_discovery_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17182,7 +17172,7 @@ def test_update_discovery_config_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17225,7 +17215,7 @@ def test_update_discovery_config_rest_required_fields(
 
 def test_update_discovery_config_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_discovery_config._get_unset_required_fields({})
@@ -17243,7 +17233,7 @@ def test_update_discovery_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_discovery_config_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -17299,7 +17289,7 @@ def test_update_discovery_config_rest_bad_request(
     transport: str = "rest", request_type=dlp.UpdateDiscoveryConfigRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17323,7 +17313,7 @@ def test_update_discovery_config_rest_bad_request(
 
 def test_update_discovery_config_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17369,7 +17359,7 @@ def test_update_discovery_config_rest_flattened():
 
 def test_update_discovery_config_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17386,7 +17376,7 @@ def test_update_discovery_config_rest_flattened_error(transport: str = "rest"):
 
 def test_update_discovery_config_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17399,7 +17389,7 @@ def test_update_discovery_config_rest_error():
 )
 def test_get_discovery_config_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17458,7 +17448,7 @@ def test_get_discovery_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_discovery_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17467,7 +17457,7 @@ def test_get_discovery_config_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_discovery_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17476,7 +17466,7 @@ def test_get_discovery_config_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17518,7 +17508,7 @@ def test_get_discovery_config_rest_required_fields(
 
 def test_get_discovery_config_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_discovery_config._get_unset_required_fields({})
@@ -17528,7 +17518,7 @@ def test_get_discovery_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_discovery_config_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -17582,7 +17572,7 @@ def test_get_discovery_config_rest_bad_request(
     transport: str = "rest", request_type=dlp.GetDiscoveryConfigRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17606,7 +17596,7 @@ def test_get_discovery_config_rest_bad_request(
 
 def test_get_discovery_config_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17650,7 +17640,7 @@ def test_get_discovery_config_rest_flattened():
 
 def test_get_discovery_config_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17665,7 +17655,7 @@ def test_get_discovery_config_rest_flattened_error(transport: str = "rest"):
 
 def test_get_discovery_config_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17678,7 +17668,7 @@ def test_get_discovery_config_rest_error():
 )
 def test_list_discovery_configs_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17729,7 +17719,7 @@ def test_list_discovery_configs_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_discovery_configs._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17738,7 +17728,7 @@ def test_list_discovery_configs_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_discovery_configs._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -17755,7 +17745,7 @@ def test_list_discovery_configs_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17797,7 +17787,7 @@ def test_list_discovery_configs_rest_required_fields(
 
 def test_list_discovery_configs_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_discovery_configs._get_unset_required_fields({})
@@ -17816,7 +17806,7 @@ def test_list_discovery_configs_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_discovery_configs_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -17874,7 +17864,7 @@ def test_list_discovery_configs_rest_bad_request(
     transport: str = "rest", request_type=dlp.ListDiscoveryConfigsRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17896,7 +17886,7 @@ def test_list_discovery_configs_rest_bad_request(
 
 def test_list_discovery_configs_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17938,7 +17928,7 @@ def test_list_discovery_configs_rest_flattened():
 
 def test_list_discovery_configs_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17953,7 +17943,7 @@ def test_list_discovery_configs_rest_flattened_error(transport: str = "rest"):
 
 def test_list_discovery_configs_rest_pager(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18021,7 +18011,7 @@ def test_list_discovery_configs_rest_pager(transport: str = "rest"):
 )
 def test_delete_discovery_config_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18069,7 +18059,7 @@ def test_delete_discovery_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_discovery_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18078,7 +18068,7 @@ def test_delete_discovery_config_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_discovery_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18087,7 +18077,7 @@ def test_delete_discovery_config_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18126,7 +18116,7 @@ def test_delete_discovery_config_rest_required_fields(
 
 def test_delete_discovery_config_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_discovery_config._get_unset_required_fields({})
@@ -18136,7 +18126,7 @@ def test_delete_discovery_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_discovery_config_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -18186,7 +18176,7 @@ def test_delete_discovery_config_rest_bad_request(
     transport: str = "rest", request_type=dlp.DeleteDiscoveryConfigRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18210,7 +18200,7 @@ def test_delete_discovery_config_rest_bad_request(
 
 def test_delete_discovery_config_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18252,7 +18242,7 @@ def test_delete_discovery_config_rest_flattened():
 
 def test_delete_discovery_config_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18267,7 +18257,7 @@ def test_delete_discovery_config_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_discovery_config_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18280,7 +18270,7 @@ def test_delete_discovery_config_rest_error():
 )
 def test_create_dlp_job_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18335,7 +18325,7 @@ def test_create_dlp_job_rest_required_fields(request_type=dlp.CreateDlpJobReques
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_dlp_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18344,7 +18334,7 @@ def test_create_dlp_job_rest_required_fields(request_type=dlp.CreateDlpJobReques
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_dlp_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18353,7 +18343,7 @@ def test_create_dlp_job_rest_required_fields(request_type=dlp.CreateDlpJobReques
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18396,7 +18386,7 @@ def test_create_dlp_job_rest_required_fields(request_type=dlp.CreateDlpJobReques
 
 def test_create_dlp_job_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_dlp_job._get_unset_required_fields({})
@@ -18406,7 +18396,7 @@ def test_create_dlp_job_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_dlp_job_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -18460,7 +18450,7 @@ def test_create_dlp_job_rest_bad_request(
     transport: str = "rest", request_type=dlp.CreateDlpJobRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18482,7 +18472,7 @@ def test_create_dlp_job_rest_bad_request(
 
 def test_create_dlp_job_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18522,7 +18512,7 @@ def test_create_dlp_job_rest_flattened():
 
 def test_create_dlp_job_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18551,7 +18541,7 @@ def test_create_dlp_job_rest_flattened_error(transport: str = "rest"):
 
 def test_create_dlp_job_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18564,7 +18554,7 @@ def test_create_dlp_job_rest_error():
 )
 def test_list_dlp_jobs_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18613,7 +18603,7 @@ def test_list_dlp_jobs_rest_required_fields(request_type=dlp.ListDlpJobsRequest)
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_dlp_jobs._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18622,7 +18612,7 @@ def test_list_dlp_jobs_rest_required_fields(request_type=dlp.ListDlpJobsRequest)
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_dlp_jobs._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -18642,7 +18632,7 @@ def test_list_dlp_jobs_rest_required_fields(request_type=dlp.ListDlpJobsRequest)
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18684,7 +18674,7 @@ def test_list_dlp_jobs_rest_required_fields(request_type=dlp.ListDlpJobsRequest)
 
 def test_list_dlp_jobs_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_dlp_jobs._get_unset_required_fields({})
@@ -18706,7 +18696,7 @@ def test_list_dlp_jobs_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_dlp_jobs_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -18762,7 +18752,7 @@ def test_list_dlp_jobs_rest_bad_request(
     transport: str = "rest", request_type=dlp.ListDlpJobsRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18784,7 +18774,7 @@ def test_list_dlp_jobs_rest_bad_request(
 
 def test_list_dlp_jobs_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18824,7 +18814,7 @@ def test_list_dlp_jobs_rest_flattened():
 
 def test_list_dlp_jobs_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18839,7 +18829,7 @@ def test_list_dlp_jobs_rest_flattened_error(transport: str = "rest"):
 
 def test_list_dlp_jobs_rest_pager(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18907,7 +18897,7 @@ def test_list_dlp_jobs_rest_pager(transport: str = "rest"):
 )
 def test_get_dlp_job_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18962,7 +18952,7 @@ def test_get_dlp_job_rest_required_fields(request_type=dlp.GetDlpJobRequest):
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_dlp_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18971,7 +18961,7 @@ def test_get_dlp_job_rest_required_fields(request_type=dlp.GetDlpJobRequest):
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_dlp_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18980,7 +18970,7 @@ def test_get_dlp_job_rest_required_fields(request_type=dlp.GetDlpJobRequest):
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19022,7 +19012,7 @@ def test_get_dlp_job_rest_required_fields(request_type=dlp.GetDlpJobRequest):
 
 def test_get_dlp_job_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_dlp_job._get_unset_required_fields({})
@@ -19032,7 +19022,7 @@ def test_get_dlp_job_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_dlp_job_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -19086,7 +19076,7 @@ def test_get_dlp_job_rest_bad_request(
     transport: str = "rest", request_type=dlp.GetDlpJobRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19108,7 +19098,7 @@ def test_get_dlp_job_rest_bad_request(
 
 def test_get_dlp_job_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19148,7 +19138,7 @@ def test_get_dlp_job_rest_flattened():
 
 def test_get_dlp_job_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19163,7 +19153,7 @@ def test_get_dlp_job_rest_flattened_error(transport: str = "rest"):
 
 def test_get_dlp_job_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19176,7 +19166,7 @@ def test_get_dlp_job_rest_error():
 )
 def test_delete_dlp_job_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19220,7 +19210,7 @@ def test_delete_dlp_job_rest_required_fields(request_type=dlp.DeleteDlpJobReques
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_dlp_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19229,7 +19219,7 @@ def test_delete_dlp_job_rest_required_fields(request_type=dlp.DeleteDlpJobReques
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_dlp_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19238,7 +19228,7 @@ def test_delete_dlp_job_rest_required_fields(request_type=dlp.DeleteDlpJobReques
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19277,7 +19267,7 @@ def test_delete_dlp_job_rest_required_fields(request_type=dlp.DeleteDlpJobReques
 
 def test_delete_dlp_job_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_dlp_job._get_unset_required_fields({})
@@ -19287,7 +19277,7 @@ def test_delete_dlp_job_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_dlp_job_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -19335,7 +19325,7 @@ def test_delete_dlp_job_rest_bad_request(
     transport: str = "rest", request_type=dlp.DeleteDlpJobRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19357,7 +19347,7 @@ def test_delete_dlp_job_rest_bad_request(
 
 def test_delete_dlp_job_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19395,7 +19385,7 @@ def test_delete_dlp_job_rest_flattened():
 
 def test_delete_dlp_job_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19410,7 +19400,7 @@ def test_delete_dlp_job_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_dlp_job_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19423,7 +19413,7 @@ def test_delete_dlp_job_rest_error():
 )
 def test_cancel_dlp_job_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19467,7 +19457,7 @@ def test_cancel_dlp_job_rest_required_fields(request_type=dlp.CancelDlpJobReques
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).cancel_dlp_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19476,7 +19466,7 @@ def test_cancel_dlp_job_rest_required_fields(request_type=dlp.CancelDlpJobReques
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).cancel_dlp_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19485,7 +19475,7 @@ def test_cancel_dlp_job_rest_required_fields(request_type=dlp.CancelDlpJobReques
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19525,7 +19515,7 @@ def test_cancel_dlp_job_rest_required_fields(request_type=dlp.CancelDlpJobReques
 
 def test_cancel_dlp_job_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.cancel_dlp_job._get_unset_required_fields({})
@@ -19535,7 +19525,7 @@ def test_cancel_dlp_job_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_cancel_dlp_job_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -19583,7 +19573,7 @@ def test_cancel_dlp_job_rest_bad_request(
     transport: str = "rest", request_type=dlp.CancelDlpJobRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19605,7 +19595,7 @@ def test_cancel_dlp_job_rest_bad_request(
 
 def test_cancel_dlp_job_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19618,7 +19608,7 @@ def test_cancel_dlp_job_rest_error():
 )
 def test_create_stored_info_type_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19669,7 +19659,7 @@ def test_create_stored_info_type_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_stored_info_type._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19678,7 +19668,7 @@ def test_create_stored_info_type_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_stored_info_type._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19687,7 +19677,7 @@ def test_create_stored_info_type_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19730,7 +19720,7 @@ def test_create_stored_info_type_rest_required_fields(
 
 def test_create_stored_info_type_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_stored_info_type._get_unset_required_fields({})
@@ -19748,7 +19738,7 @@ def test_create_stored_info_type_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_stored_info_type_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -19804,7 +19794,7 @@ def test_create_stored_info_type_rest_bad_request(
     transport: str = "rest", request_type=dlp.CreateStoredInfoTypeRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19826,7 +19816,7 @@ def test_create_stored_info_type_rest_bad_request(
 
 def test_create_stored_info_type_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19868,7 +19858,7 @@ def test_create_stored_info_type_rest_flattened():
 
 def test_create_stored_info_type_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19884,7 +19874,7 @@ def test_create_stored_info_type_rest_flattened_error(transport: str = "rest"):
 
 def test_create_stored_info_type_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19897,7 +19887,7 @@ def test_create_stored_info_type_rest_error():
 )
 def test_update_stored_info_type_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19948,7 +19938,7 @@ def test_update_stored_info_type_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_stored_info_type._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19957,7 +19947,7 @@ def test_update_stored_info_type_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_stored_info_type._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19966,7 +19956,7 @@ def test_update_stored_info_type_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20009,7 +19999,7 @@ def test_update_stored_info_type_rest_required_fields(
 
 def test_update_stored_info_type_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_stored_info_type._get_unset_required_fields({})
@@ -20019,7 +20009,7 @@ def test_update_stored_info_type_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_stored_info_type_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -20075,7 +20065,7 @@ def test_update_stored_info_type_rest_bad_request(
     transport: str = "rest", request_type=dlp.UpdateStoredInfoTypeRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20097,7 +20087,7 @@ def test_update_stored_info_type_rest_bad_request(
 
 def test_update_stored_info_type_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20140,7 +20130,7 @@ def test_update_stored_info_type_rest_flattened():
 
 def test_update_stored_info_type_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20157,7 +20147,7 @@ def test_update_stored_info_type_rest_flattened_error(transport: str = "rest"):
 
 def test_update_stored_info_type_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -20170,7 +20160,7 @@ def test_update_stored_info_type_rest_error():
 )
 def test_get_stored_info_type_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20221,7 +20211,7 @@ def test_get_stored_info_type_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_stored_info_type._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20230,7 +20220,7 @@ def test_get_stored_info_type_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_stored_info_type._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20239,7 +20229,7 @@ def test_get_stored_info_type_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20281,7 +20271,7 @@ def test_get_stored_info_type_rest_required_fields(
 
 def test_get_stored_info_type_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_stored_info_type._get_unset_required_fields({})
@@ -20291,7 +20281,7 @@ def test_get_stored_info_type_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_stored_info_type_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -20345,7 +20335,7 @@ def test_get_stored_info_type_rest_bad_request(
     transport: str = "rest", request_type=dlp.GetStoredInfoTypeRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20367,7 +20357,7 @@ def test_get_stored_info_type_rest_bad_request(
 
 def test_get_stored_info_type_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20408,7 +20398,7 @@ def test_get_stored_info_type_rest_flattened():
 
 def test_get_stored_info_type_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20423,7 +20413,7 @@ def test_get_stored_info_type_rest_flattened_error(transport: str = "rest"):
 
 def test_get_stored_info_type_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -20436,7 +20426,7 @@ def test_get_stored_info_type_rest_error():
 )
 def test_list_stored_info_types_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20487,7 +20477,7 @@ def test_list_stored_info_types_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_stored_info_types._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20496,7 +20486,7 @@ def test_list_stored_info_types_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_stored_info_types._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -20514,7 +20504,7 @@ def test_list_stored_info_types_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20556,7 +20546,7 @@ def test_list_stored_info_types_rest_required_fields(
 
 def test_list_stored_info_types_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_stored_info_types._get_unset_required_fields({})
@@ -20576,7 +20566,7 @@ def test_list_stored_info_types_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_stored_info_types_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -20632,7 +20622,7 @@ def test_list_stored_info_types_rest_bad_request(
     transport: str = "rest", request_type=dlp.ListStoredInfoTypesRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20654,7 +20644,7 @@ def test_list_stored_info_types_rest_bad_request(
 
 def test_list_stored_info_types_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20695,7 +20685,7 @@ def test_list_stored_info_types_rest_flattened():
 
 def test_list_stored_info_types_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20710,7 +20700,7 @@ def test_list_stored_info_types_rest_flattened_error(transport: str = "rest"):
 
 def test_list_stored_info_types_rest_pager(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20778,7 +20768,7 @@ def test_list_stored_info_types_rest_pager(transport: str = "rest"):
 )
 def test_delete_stored_info_type_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20824,7 +20814,7 @@ def test_delete_stored_info_type_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_stored_info_type._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20833,7 +20823,7 @@ def test_delete_stored_info_type_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_stored_info_type._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20842,7 +20832,7 @@ def test_delete_stored_info_type_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20881,7 +20871,7 @@ def test_delete_stored_info_type_rest_required_fields(
 
 def test_delete_stored_info_type_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_stored_info_type._get_unset_required_fields({})
@@ -20891,7 +20881,7 @@ def test_delete_stored_info_type_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_stored_info_type_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -20941,7 +20931,7 @@ def test_delete_stored_info_type_rest_bad_request(
     transport: str = "rest", request_type=dlp.DeleteStoredInfoTypeRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20963,7 +20953,7 @@ def test_delete_stored_info_type_rest_bad_request(
 
 def test_delete_stored_info_type_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21002,7 +20992,7 @@ def test_delete_stored_info_type_rest_flattened():
 
 def test_delete_stored_info_type_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21017,7 +21007,7 @@ def test_delete_stored_info_type_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_stored_info_type_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -21030,7 +21020,7 @@ def test_delete_stored_info_type_rest_error():
 )
 def test_hybrid_inspect_dlp_job_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21078,7 +21068,7 @@ def test_hybrid_inspect_dlp_job_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).hybrid_inspect_dlp_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21087,7 +21077,7 @@ def test_hybrid_inspect_dlp_job_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).hybrid_inspect_dlp_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21096,7 +21086,7 @@ def test_hybrid_inspect_dlp_job_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -21139,7 +21129,7 @@ def test_hybrid_inspect_dlp_job_rest_required_fields(
 
 def test_hybrid_inspect_dlp_job_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.hybrid_inspect_dlp_job._get_unset_required_fields({})
@@ -21149,7 +21139,7 @@ def test_hybrid_inspect_dlp_job_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_hybrid_inspect_dlp_job_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -21205,7 +21195,7 @@ def test_hybrid_inspect_dlp_job_rest_bad_request(
     transport: str = "rest", request_type=dlp.HybridInspectDlpJobRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21227,7 +21217,7 @@ def test_hybrid_inspect_dlp_job_rest_bad_request(
 
 def test_hybrid_inspect_dlp_job_rest_flattened():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21269,7 +21259,7 @@ def test_hybrid_inspect_dlp_job_rest_flattened():
 
 def test_hybrid_inspect_dlp_job_rest_flattened_error(transport: str = "rest"):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21284,7 +21274,7 @@ def test_hybrid_inspect_dlp_job_rest_flattened_error(transport: str = "rest"):
 
 def test_hybrid_inspect_dlp_job_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -21297,7 +21287,7 @@ def test_hybrid_inspect_dlp_job_rest_error():
 )
 def test_finish_dlp_job_rest(request_type):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21341,7 +21331,7 @@ def test_finish_dlp_job_rest_required_fields(request_type=dlp.FinishDlpJobReques
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).finish_dlp_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21350,7 +21340,7 @@ def test_finish_dlp_job_rest_required_fields(request_type=dlp.FinishDlpJobReques
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).finish_dlp_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21359,7 +21349,7 @@ def test_finish_dlp_job_rest_required_fields(request_type=dlp.FinishDlpJobReques
     assert jsonified_request["name"] == "name_value"
 
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -21399,7 +21389,7 @@ def test_finish_dlp_job_rest_required_fields(request_type=dlp.FinishDlpJobReques
 
 def test_finish_dlp_job_rest_unset_required_fields():
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.finish_dlp_job._get_unset_required_fields({})
@@ -21409,7 +21399,7 @@ def test_finish_dlp_job_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_finish_dlp_job_rest_interceptors(null_interceptor):
     transport = transports.DlpServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.DlpServiceRestInterceptor(),
@@ -21457,7 +21447,7 @@ def test_finish_dlp_job_rest_bad_request(
     transport: str = "rest", request_type=dlp.FinishDlpJobRequest
 ):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21479,24 +21469,24 @@ def test_finish_dlp_job_rest_bad_request(
 
 def test_finish_dlp_job_rest_error():
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DlpServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = DlpServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.DlpServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = DlpServiceClient(
@@ -21506,7 +21496,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.DlpServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -21521,13 +21511,12 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = DlpServiceClient(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.DlpServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = DlpServiceClient(
@@ -21539,7 +21528,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.DlpServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = DlpServiceClient(transport=transport)
     assert client.transport is transport
@@ -21548,13 +21537,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.DlpServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.DlpServiceGrpcAsyncIOTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -21571,7 +21560,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -21585,7 +21574,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = DlpServiceClient.get_transport_class(transport_name)(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
 
@@ -21593,7 +21582,7 @@ def test_transport_kind(transport_name):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
@@ -21605,7 +21594,7 @@ def test_dlp_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.DlpServiceTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -21617,7 +21606,7 @@ def test_dlp_service_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.DlpServiceTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -21687,7 +21676,7 @@ def test_dlp_service_base_transport_with_credentials_file():
         "google.cloud.dlp_v2.services.dlp_service.transports.DlpServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DlpServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -21706,7 +21695,7 @@ def test_dlp_service_base_transport_with_adc():
         "google.cloud.dlp_v2.services.dlp_service.transports.DlpServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DlpServiceTransport()
         adc.assert_called_once()
 
@@ -21714,7 +21703,7 @@ def test_dlp_service_base_transport_with_adc():
 def test_dlp_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         DlpServiceClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -21734,7 +21723,7 @@ def test_dlp_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -21781,7 +21770,7 @@ def test_dlp_service_transport_create_channel(transport_class, grpc_helpers):
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
@@ -21806,7 +21795,7 @@ def test_dlp_service_transport_create_channel(transport_class, grpc_helpers):
     [transports.DlpServiceGrpcTransport, transports.DlpServiceGrpcAsyncIOTransport],
 )
 def test_dlp_service_grpc_transport_client_cert_source_for_mtls(transport_class):
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -21844,7 +21833,7 @@ def test_dlp_service_grpc_transport_client_cert_source_for_mtls(transport_class)
 
 
 def test_dlp_service_http_transport_client_cert_source_for_mtls():
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -21864,7 +21853,7 @@ def test_dlp_service_http_transport_client_cert_source_for_mtls():
 )
 def test_dlp_service_host_no_port(transport_name):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(api_endpoint="dlp.googleapis.com"),
         transport=transport_name,
     )
@@ -21885,7 +21874,7 @@ def test_dlp_service_host_no_port(transport_name):
 )
 def test_dlp_service_host_with_port(transport_name):
     client = DlpServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="dlp.googleapis.com:8000"
         ),
@@ -21905,8 +21894,8 @@ def test_dlp_service_host_with_port(transport_name):
     ],
 )
 def test_dlp_service_client_transport_session_collision(transport_name):
-    creds1 = _AnonymousCredentialsWithUniverseDomain()
-    creds2 = _AnonymousCredentialsWithUniverseDomain()
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
     client1 = DlpServiceClient(
         credentials=creds1,
         transport=transport_name,
@@ -22079,7 +22068,7 @@ def test_dlp_service_transport_channel_mtls_with_client_cert_source(transport_cl
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = _AnonymousCredentialsWithUniverseDomain()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
@@ -22455,7 +22444,7 @@ def test_client_with_default_client_info():
         transports.DlpServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = DlpServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -22465,7 +22454,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = DlpServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -22474,7 +22463,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = DlpServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(
@@ -22493,7 +22482,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = DlpServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -22510,7 +22499,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = DlpServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
