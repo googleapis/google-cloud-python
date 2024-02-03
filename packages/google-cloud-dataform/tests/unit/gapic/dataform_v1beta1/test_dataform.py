@@ -86,18 +86,6 @@ def modify_default_endpoint_template(client):
     )
 
 
-# Anonymous Credentials with universe domain property. If no universe domain is provided, then
-# the default universe domain is "googleapis.com".
-class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain="googleapis.com"):
-        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
-        self._universe_domain = universe_domain
-
-    @property
-    def universe_domain(self):
-        return self._universe_domain
-
-
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -296,7 +284,7 @@ def test__get_universe_domain():
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
     client = client_class(
-        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
     )
     assert client._validate_universe_domain() == True
 
@@ -323,41 +311,48 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         client = client_class(transport=transport)
         assert client._validate_universe_domain() == True
 
-    # Test the case when there is a universe mismatch from the credentials.
-    client = client_class(
-        transport=transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(
-                universe_domain="foo.com"
-            )
-        )
-    )
-    with pytest.raises(ValueError) as excinfo:
-        client._validate_universe_domain()
-    assert (
-        str(excinfo.value)
-        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-    )
-
-    # Test the case when there is a universe mismatch from the client.
-    #
-    # TODO: Make this test unconditional once the minimum supported version of
-    # google-api-core becomes 2.15.0 or higher.
-    api_core_major, api_core_minor, _ = [
-        int(part) for part in api_core_version.__version__.split(".")
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [
+        int(part) for part in google.auth.__version__.split(".")
     ]
-    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-        client = client_class(
-            client_options={"universe_domain": "bar.com"},
-            transport=transport_class(
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
-            ),
-        )
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(transport=transport_class(credentials=credentials))
         with pytest.raises(ValueError) as excinfo:
             client._validate_universe_domain()
         assert (
             str(excinfo.value)
-            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         )
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor, _ = [
+            int(part) for part in api_core_version.__version__.split(".")
+        ]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(
+                client_options={"universe_domain": "bar.com"},
+                transport=transport_class(
+                    credentials=ga_credentials.AnonymousCredentials(),
+                ),
+            )
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert (
+                str(excinfo.value)
+                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            )
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -369,7 +364,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     ],
 )
 def test_dataform_client_from_service_account_info(client_class, transport_name):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -421,7 +416,7 @@ def test_dataform_client_service_account_always_use_jwt(
     ],
 )
 def test_dataform_client_from_service_account_file(client_class, transport_name):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -478,9 +473,7 @@ def test_dataform_client_get_transport_class():
 def test_dataform_client_client_options(client_class, transport_class, transport_name):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(DataformClient, "get_transport_class") as gtc:
-        transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain()
-        )
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -873,20 +866,20 @@ def test_dataform_client_client_api_endpoint(client_class):
             )
             client = client_class(
                 client_options=options,
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
+                credentials=ga_credentials.AnonymousCredentials(),
             )
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
@@ -898,13 +891,11 @@ def test_dataform_client_client_api_endpoint(client_class):
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     else:
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     assert client.api_endpoint == (
         mock_endpoint if universe_exists else default_endpoint
@@ -920,8 +911,7 @@ def test_dataform_client_client_api_endpoint(client_class):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
         assert client.api_endpoint == default_endpoint
 
@@ -1058,8 +1048,8 @@ def test_dataform_client_create_channel_credentials_file(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
-        file_creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -1088,7 +1078,7 @@ def test_dataform_client_create_channel_credentials_file(
 )
 def test_list_repositories(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1122,7 +1112,7 @@ def test_list_repositories_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1141,7 +1131,7 @@ async def test_list_repositories_async(
     transport: str = "grpc_asyncio", request_type=dataform.ListRepositoriesRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1180,7 +1170,7 @@ async def test_list_repositories_async_from_dict():
 
 def test_list_repositories_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1212,7 +1202,7 @@ def test_list_repositories_field_headers():
 @pytest.mark.asyncio
 async def test_list_repositories_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1245,7 +1235,7 @@ async def test_list_repositories_field_headers_async():
 
 def test_list_repositories_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1271,7 +1261,7 @@ def test_list_repositories_flattened():
 
 def test_list_repositories_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1286,7 +1276,7 @@ def test_list_repositories_flattened_error():
 @pytest.mark.asyncio
 async def test_list_repositories_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1317,7 +1307,7 @@ async def test_list_repositories_flattened_async():
 @pytest.mark.asyncio
 async def test_list_repositories_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1331,7 +1321,7 @@ async def test_list_repositories_flattened_error_async():
 
 def test_list_repositories_pager(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1383,7 +1373,7 @@ def test_list_repositories_pager(transport_name: str = "grpc"):
 
 def test_list_repositories_pages(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1427,7 +1417,7 @@ def test_list_repositories_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_repositories_async_pager():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1479,7 +1469,7 @@ async def test_list_repositories_async_pager():
 @pytest.mark.asyncio
 async def test_list_repositories_async_pages():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1536,7 +1526,7 @@ async def test_list_repositories_async_pages():
 )
 def test_get_repository(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1577,7 +1567,7 @@ def test_get_repository_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1594,7 +1584,7 @@ async def test_get_repository_async(
     transport: str = "grpc_asyncio", request_type=dataform.GetRepositoryRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1640,7 +1630,7 @@ async def test_get_repository_async_from_dict():
 
 def test_get_repository_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1670,7 +1660,7 @@ def test_get_repository_field_headers():
 @pytest.mark.asyncio
 async def test_get_repository_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1699,7 +1689,7 @@ async def test_get_repository_field_headers_async():
 
 def test_get_repository_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1723,7 +1713,7 @@ def test_get_repository_flattened():
 
 def test_get_repository_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1738,7 +1728,7 @@ def test_get_repository_flattened_error():
 @pytest.mark.asyncio
 async def test_get_repository_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1765,7 +1755,7 @@ async def test_get_repository_flattened_async():
 @pytest.mark.asyncio
 async def test_get_repository_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1786,7 +1776,7 @@ async def test_get_repository_flattened_error_async():
 )
 def test_create_repository(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1829,7 +1819,7 @@ def test_create_repository_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1848,7 +1838,7 @@ async def test_create_repository_async(
     transport: str = "grpc_asyncio", request_type=dataform.CreateRepositoryRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1896,7 +1886,7 @@ async def test_create_repository_async_from_dict():
 
 def test_create_repository_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1928,7 +1918,7 @@ def test_create_repository_field_headers():
 @pytest.mark.asyncio
 async def test_create_repository_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1959,7 +1949,7 @@ async def test_create_repository_field_headers_async():
 
 def test_create_repository_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1993,7 +1983,7 @@ def test_create_repository_flattened():
 
 def test_create_repository_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2010,7 +2000,7 @@ def test_create_repository_flattened_error():
 @pytest.mark.asyncio
 async def test_create_repository_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2047,7 +2037,7 @@ async def test_create_repository_flattened_async():
 @pytest.mark.asyncio
 async def test_create_repository_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2070,7 +2060,7 @@ async def test_create_repository_flattened_error_async():
 )
 def test_update_repository(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2113,7 +2103,7 @@ def test_update_repository_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2132,7 +2122,7 @@ async def test_update_repository_async(
     transport: str = "grpc_asyncio", request_type=dataform.UpdateRepositoryRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2180,7 +2170,7 @@ async def test_update_repository_async_from_dict():
 
 def test_update_repository_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2212,7 +2202,7 @@ def test_update_repository_field_headers():
 @pytest.mark.asyncio
 async def test_update_repository_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2243,7 +2233,7 @@ async def test_update_repository_field_headers_async():
 
 def test_update_repository_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2273,7 +2263,7 @@ def test_update_repository_flattened():
 
 def test_update_repository_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2289,7 +2279,7 @@ def test_update_repository_flattened_error():
 @pytest.mark.asyncio
 async def test_update_repository_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2322,7 +2312,7 @@ async def test_update_repository_flattened_async():
 @pytest.mark.asyncio
 async def test_update_repository_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2344,7 +2334,7 @@ async def test_update_repository_flattened_error_async():
 )
 def test_delete_repository(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2373,7 +2363,7 @@ def test_delete_repository_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2392,7 +2382,7 @@ async def test_delete_repository_async(
     transport: str = "grpc_asyncio", request_type=dataform.DeleteRepositoryRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2424,7 +2414,7 @@ async def test_delete_repository_async_from_dict():
 
 def test_delete_repository_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2456,7 +2446,7 @@ def test_delete_repository_field_headers():
 @pytest.mark.asyncio
 async def test_delete_repository_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2487,7 +2477,7 @@ async def test_delete_repository_field_headers_async():
 
 def test_delete_repository_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2513,7 +2503,7 @@ def test_delete_repository_flattened():
 
 def test_delete_repository_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2528,7 +2518,7 @@ def test_delete_repository_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_repository_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2557,7 +2547,7 @@ async def test_delete_repository_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_repository_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2578,7 +2568,7 @@ async def test_delete_repository_flattened_error_async():
 )
 def test_commit_repository_changes(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2607,7 +2597,7 @@ def test_commit_repository_changes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2627,7 +2617,7 @@ async def test_commit_repository_changes_async(
     request_type=dataform.CommitRepositoryChangesRequest,
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2659,7 +2649,7 @@ async def test_commit_repository_changes_async_from_dict():
 
 def test_commit_repository_changes_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2691,7 +2681,7 @@ def test_commit_repository_changes_field_headers():
 @pytest.mark.asyncio
 async def test_commit_repository_changes_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2729,7 +2719,7 @@ async def test_commit_repository_changes_field_headers_async():
 )
 def test_read_repository_file(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2761,7 +2751,7 @@ def test_read_repository_file_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2780,7 +2770,7 @@ async def test_read_repository_file_async(
     transport: str = "grpc_asyncio", request_type=dataform.ReadRepositoryFileRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2817,7 +2807,7 @@ async def test_read_repository_file_async_from_dict():
 
 def test_read_repository_file_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2849,7 +2839,7 @@ def test_read_repository_file_field_headers():
 @pytest.mark.asyncio
 async def test_read_repository_file_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2889,7 +2879,7 @@ async def test_read_repository_file_field_headers_async():
 )
 def test_query_repository_directory_contents(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2921,7 +2911,7 @@ def test_query_repository_directory_contents_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2941,7 +2931,7 @@ async def test_query_repository_directory_contents_async(
     request_type=dataform.QueryRepositoryDirectoryContentsRequest,
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2978,7 +2968,7 @@ async def test_query_repository_directory_contents_async_from_dict():
 
 def test_query_repository_directory_contents_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3010,7 +3000,7 @@ def test_query_repository_directory_contents_field_headers():
 @pytest.mark.asyncio
 async def test_query_repository_directory_contents_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3043,7 +3033,7 @@ async def test_query_repository_directory_contents_field_headers_async():
 
 def test_query_repository_directory_contents_pager(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -3095,7 +3085,7 @@ def test_query_repository_directory_contents_pager(transport_name: str = "grpc")
 
 def test_query_repository_directory_contents_pages(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -3139,7 +3129,7 @@ def test_query_repository_directory_contents_pages(transport_name: str = "grpc")
 @pytest.mark.asyncio
 async def test_query_repository_directory_contents_async_pager():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3191,7 +3181,7 @@ async def test_query_repository_directory_contents_async_pager():
 @pytest.mark.asyncio
 async def test_query_repository_directory_contents_async_pages():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3248,7 +3238,7 @@ async def test_query_repository_directory_contents_async_pages():
 )
 def test_fetch_repository_history(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3280,7 +3270,7 @@ def test_fetch_repository_history_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3299,7 +3289,7 @@ async def test_fetch_repository_history_async(
     transport: str = "grpc_asyncio", request_type=dataform.FetchRepositoryHistoryRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3336,7 +3326,7 @@ async def test_fetch_repository_history_async_from_dict():
 
 def test_fetch_repository_history_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3368,7 +3358,7 @@ def test_fetch_repository_history_field_headers():
 @pytest.mark.asyncio
 async def test_fetch_repository_history_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3401,7 +3391,7 @@ async def test_fetch_repository_history_field_headers_async():
 
 def test_fetch_repository_history_pager(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -3453,7 +3443,7 @@ def test_fetch_repository_history_pager(transport_name: str = "grpc"):
 
 def test_fetch_repository_history_pages(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -3497,7 +3487,7 @@ def test_fetch_repository_history_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_fetch_repository_history_async_pager():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3549,7 +3539,7 @@ async def test_fetch_repository_history_async_pager():
 @pytest.mark.asyncio
 async def test_fetch_repository_history_async_pages():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3606,7 +3596,7 @@ async def test_fetch_repository_history_async_pages():
 )
 def test_compute_repository_access_token_status(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3641,7 +3631,7 @@ def test_compute_repository_access_token_status_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3661,7 +3651,7 @@ async def test_compute_repository_access_token_status_async(
     request_type=dataform.ComputeRepositoryAccessTokenStatusRequest,
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3701,7 +3691,7 @@ async def test_compute_repository_access_token_status_async_from_dict():
 
 def test_compute_repository_access_token_status_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3733,7 +3723,7 @@ def test_compute_repository_access_token_status_field_headers():
 @pytest.mark.asyncio
 async def test_compute_repository_access_token_status_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3773,7 +3763,7 @@ async def test_compute_repository_access_token_status_field_headers_async():
 )
 def test_fetch_remote_branches(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3805,7 +3795,7 @@ def test_fetch_remote_branches_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3824,7 +3814,7 @@ async def test_fetch_remote_branches_async(
     transport: str = "grpc_asyncio", request_type=dataform.FetchRemoteBranchesRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3861,7 +3851,7 @@ async def test_fetch_remote_branches_async_from_dict():
 
 def test_fetch_remote_branches_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3893,7 +3883,7 @@ def test_fetch_remote_branches_field_headers():
 @pytest.mark.asyncio
 async def test_fetch_remote_branches_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3933,7 +3923,7 @@ async def test_fetch_remote_branches_field_headers_async():
 )
 def test_list_workspaces(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3965,7 +3955,7 @@ def test_list_workspaces_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3982,7 +3972,7 @@ async def test_list_workspaces_async(
     transport: str = "grpc_asyncio", request_type=dataform.ListWorkspacesRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4019,7 +4009,7 @@ async def test_list_workspaces_async_from_dict():
 
 def test_list_workspaces_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4049,7 +4039,7 @@ def test_list_workspaces_field_headers():
 @pytest.mark.asyncio
 async def test_list_workspaces_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4080,7 +4070,7 @@ async def test_list_workspaces_field_headers_async():
 
 def test_list_workspaces_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4104,7 +4094,7 @@ def test_list_workspaces_flattened():
 
 def test_list_workspaces_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4119,7 +4109,7 @@ def test_list_workspaces_flattened_error():
 @pytest.mark.asyncio
 async def test_list_workspaces_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4148,7 +4138,7 @@ async def test_list_workspaces_flattened_async():
 @pytest.mark.asyncio
 async def test_list_workspaces_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4162,7 +4152,7 @@ async def test_list_workspaces_flattened_error_async():
 
 def test_list_workspaces_pager(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4212,7 +4202,7 @@ def test_list_workspaces_pager(transport_name: str = "grpc"):
 
 def test_list_workspaces_pages(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4254,7 +4244,7 @@ def test_list_workspaces_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_workspaces_async_pager():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4304,7 +4294,7 @@ async def test_list_workspaces_async_pager():
 @pytest.mark.asyncio
 async def test_list_workspaces_async_pages():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4359,7 +4349,7 @@ async def test_list_workspaces_async_pages():
 )
 def test_get_workspace(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4389,7 +4379,7 @@ def test_get_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4406,7 +4396,7 @@ async def test_get_workspace_async(
     transport: str = "grpc_asyncio", request_type=dataform.GetWorkspaceRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4441,7 +4431,7 @@ async def test_get_workspace_async_from_dict():
 
 def test_get_workspace_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4471,7 +4461,7 @@ def test_get_workspace_field_headers():
 @pytest.mark.asyncio
 async def test_get_workspace_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4500,7 +4490,7 @@ async def test_get_workspace_field_headers_async():
 
 def test_get_workspace_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4524,7 +4514,7 @@ def test_get_workspace_flattened():
 
 def test_get_workspace_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4539,7 +4529,7 @@ def test_get_workspace_flattened_error():
 @pytest.mark.asyncio
 async def test_get_workspace_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4566,7 +4556,7 @@ async def test_get_workspace_flattened_async():
 @pytest.mark.asyncio
 async def test_get_workspace_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4587,7 +4577,7 @@ async def test_get_workspace_flattened_error_async():
 )
 def test_create_workspace(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4617,7 +4607,7 @@ def test_create_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4634,7 +4624,7 @@ async def test_create_workspace_async(
     transport: str = "grpc_asyncio", request_type=dataform.CreateWorkspaceRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4669,7 +4659,7 @@ async def test_create_workspace_async_from_dict():
 
 def test_create_workspace_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4699,7 +4689,7 @@ def test_create_workspace_field_headers():
 @pytest.mark.asyncio
 async def test_create_workspace_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4728,7 +4718,7 @@ async def test_create_workspace_field_headers_async():
 
 def test_create_workspace_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4760,7 +4750,7 @@ def test_create_workspace_flattened():
 
 def test_create_workspace_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4777,7 +4767,7 @@ def test_create_workspace_flattened_error():
 @pytest.mark.asyncio
 async def test_create_workspace_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4812,7 +4802,7 @@ async def test_create_workspace_flattened_async():
 @pytest.mark.asyncio
 async def test_create_workspace_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4835,7 +4825,7 @@ async def test_create_workspace_flattened_error_async():
 )
 def test_delete_workspace(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4862,7 +4852,7 @@ def test_delete_workspace_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4879,7 +4869,7 @@ async def test_delete_workspace_async(
     transport: str = "grpc_asyncio", request_type=dataform.DeleteWorkspaceRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4909,7 +4899,7 @@ async def test_delete_workspace_async_from_dict():
 
 def test_delete_workspace_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4939,7 +4929,7 @@ def test_delete_workspace_field_headers():
 @pytest.mark.asyncio
 async def test_delete_workspace_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4968,7 +4958,7 @@ async def test_delete_workspace_field_headers_async():
 
 def test_delete_workspace_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4992,7 +4982,7 @@ def test_delete_workspace_flattened():
 
 def test_delete_workspace_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5007,7 +4997,7 @@ def test_delete_workspace_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_workspace_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5034,7 +5024,7 @@ async def test_delete_workspace_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_workspace_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5055,7 +5045,7 @@ async def test_delete_workspace_flattened_error_async():
 )
 def test_install_npm_packages(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5084,7 +5074,7 @@ def test_install_npm_packages_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5103,7 +5093,7 @@ async def test_install_npm_packages_async(
     transport: str = "grpc_asyncio", request_type=dataform.InstallNpmPackagesRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5137,7 +5127,7 @@ async def test_install_npm_packages_async_from_dict():
 
 def test_install_npm_packages_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5169,7 +5159,7 @@ def test_install_npm_packages_field_headers():
 @pytest.mark.asyncio
 async def test_install_npm_packages_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5209,7 +5199,7 @@ async def test_install_npm_packages_field_headers_async():
 )
 def test_pull_git_commits(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5236,7 +5226,7 @@ def test_pull_git_commits_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5253,7 +5243,7 @@ async def test_pull_git_commits_async(
     transport: str = "grpc_asyncio", request_type=dataform.PullGitCommitsRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5283,7 +5273,7 @@ async def test_pull_git_commits_async_from_dict():
 
 def test_pull_git_commits_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5313,7 +5303,7 @@ def test_pull_git_commits_field_headers():
 @pytest.mark.asyncio
 async def test_pull_git_commits_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5349,7 +5339,7 @@ async def test_pull_git_commits_field_headers_async():
 )
 def test_push_git_commits(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5376,7 +5366,7 @@ def test_push_git_commits_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5393,7 +5383,7 @@ async def test_push_git_commits_async(
     transport: str = "grpc_asyncio", request_type=dataform.PushGitCommitsRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5423,7 +5413,7 @@ async def test_push_git_commits_async_from_dict():
 
 def test_push_git_commits_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5453,7 +5443,7 @@ def test_push_git_commits_field_headers():
 @pytest.mark.asyncio
 async def test_push_git_commits_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5489,7 +5479,7 @@ async def test_push_git_commits_field_headers_async():
 )
 def test_fetch_file_git_statuses(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5518,7 +5508,7 @@ def test_fetch_file_git_statuses_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5537,7 +5527,7 @@ async def test_fetch_file_git_statuses_async(
     transport: str = "grpc_asyncio", request_type=dataform.FetchFileGitStatusesRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5571,7 +5561,7 @@ async def test_fetch_file_git_statuses_async_from_dict():
 
 def test_fetch_file_git_statuses_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5603,7 +5593,7 @@ def test_fetch_file_git_statuses_field_headers():
 @pytest.mark.asyncio
 async def test_fetch_file_git_statuses_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5643,7 +5633,7 @@ async def test_fetch_file_git_statuses_field_headers_async():
 )
 def test_fetch_git_ahead_behind(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5677,7 +5667,7 @@ def test_fetch_git_ahead_behind_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5696,7 +5686,7 @@ async def test_fetch_git_ahead_behind_async(
     transport: str = "grpc_asyncio", request_type=dataform.FetchGitAheadBehindRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5735,7 +5725,7 @@ async def test_fetch_git_ahead_behind_async_from_dict():
 
 def test_fetch_git_ahead_behind_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5767,7 +5757,7 @@ def test_fetch_git_ahead_behind_field_headers():
 @pytest.mark.asyncio
 async def test_fetch_git_ahead_behind_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5807,7 +5797,7 @@ async def test_fetch_git_ahead_behind_field_headers_async():
 )
 def test_commit_workspace_changes(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5836,7 +5826,7 @@ def test_commit_workspace_changes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5855,7 +5845,7 @@ async def test_commit_workspace_changes_async(
     transport: str = "grpc_asyncio", request_type=dataform.CommitWorkspaceChangesRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5887,7 +5877,7 @@ async def test_commit_workspace_changes_async_from_dict():
 
 def test_commit_workspace_changes_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5919,7 +5909,7 @@ def test_commit_workspace_changes_field_headers():
 @pytest.mark.asyncio
 async def test_commit_workspace_changes_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5957,7 +5947,7 @@ async def test_commit_workspace_changes_field_headers_async():
 )
 def test_reset_workspace_changes(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5986,7 +5976,7 @@ def test_reset_workspace_changes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6005,7 +5995,7 @@ async def test_reset_workspace_changes_async(
     transport: str = "grpc_asyncio", request_type=dataform.ResetWorkspaceChangesRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6037,7 +6027,7 @@ async def test_reset_workspace_changes_async_from_dict():
 
 def test_reset_workspace_changes_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6069,7 +6059,7 @@ def test_reset_workspace_changes_field_headers():
 @pytest.mark.asyncio
 async def test_reset_workspace_changes_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6107,7 +6097,7 @@ async def test_reset_workspace_changes_field_headers_async():
 )
 def test_fetch_file_diff(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6137,7 +6127,7 @@ def test_fetch_file_diff_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6154,7 +6144,7 @@ async def test_fetch_file_diff_async(
     transport: str = "grpc_asyncio", request_type=dataform.FetchFileDiffRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6189,7 +6179,7 @@ async def test_fetch_file_diff_async_from_dict():
 
 def test_fetch_file_diff_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6219,7 +6209,7 @@ def test_fetch_file_diff_field_headers():
 @pytest.mark.asyncio
 async def test_fetch_file_diff_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6257,7 +6247,7 @@ async def test_fetch_file_diff_field_headers_async():
 )
 def test_query_directory_contents(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6289,7 +6279,7 @@ def test_query_directory_contents_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6308,7 +6298,7 @@ async def test_query_directory_contents_async(
     transport: str = "grpc_asyncio", request_type=dataform.QueryDirectoryContentsRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6345,7 +6335,7 @@ async def test_query_directory_contents_async_from_dict():
 
 def test_query_directory_contents_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6377,7 +6367,7 @@ def test_query_directory_contents_field_headers():
 @pytest.mark.asyncio
 async def test_query_directory_contents_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6410,7 +6400,7 @@ async def test_query_directory_contents_field_headers_async():
 
 def test_query_directory_contents_pager(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6462,7 +6452,7 @@ def test_query_directory_contents_pager(transport_name: str = "grpc"):
 
 def test_query_directory_contents_pages(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6506,7 +6496,7 @@ def test_query_directory_contents_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_query_directory_contents_async_pager():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6558,7 +6548,7 @@ async def test_query_directory_contents_async_pager():
 @pytest.mark.asyncio
 async def test_query_directory_contents_async_pages():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6615,7 +6605,7 @@ async def test_query_directory_contents_async_pages():
 )
 def test_make_directory(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6642,7 +6632,7 @@ def test_make_directory_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6659,7 +6649,7 @@ async def test_make_directory_async(
     transport: str = "grpc_asyncio", request_type=dataform.MakeDirectoryRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6691,7 +6681,7 @@ async def test_make_directory_async_from_dict():
 
 def test_make_directory_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6721,7 +6711,7 @@ def test_make_directory_field_headers():
 @pytest.mark.asyncio
 async def test_make_directory_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6759,7 +6749,7 @@ async def test_make_directory_field_headers_async():
 )
 def test_remove_directory(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6786,7 +6776,7 @@ def test_remove_directory_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6803,7 +6793,7 @@ async def test_remove_directory_async(
     transport: str = "grpc_asyncio", request_type=dataform.RemoveDirectoryRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6833,7 +6823,7 @@ async def test_remove_directory_async_from_dict():
 
 def test_remove_directory_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6863,7 +6853,7 @@ def test_remove_directory_field_headers():
 @pytest.mark.asyncio
 async def test_remove_directory_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6899,7 +6889,7 @@ async def test_remove_directory_field_headers_async():
 )
 def test_move_directory(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6926,7 +6916,7 @@ def test_move_directory_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6943,7 +6933,7 @@ async def test_move_directory_async(
     transport: str = "grpc_asyncio", request_type=dataform.MoveDirectoryRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6975,7 +6965,7 @@ async def test_move_directory_async_from_dict():
 
 def test_move_directory_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7005,7 +6995,7 @@ def test_move_directory_field_headers():
 @pytest.mark.asyncio
 async def test_move_directory_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7043,7 +7033,7 @@ async def test_move_directory_field_headers_async():
 )
 def test_read_file(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7073,7 +7063,7 @@ def test_read_file_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7090,7 +7080,7 @@ async def test_read_file_async(
     transport: str = "grpc_asyncio", request_type=dataform.ReadFileRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7125,7 +7115,7 @@ async def test_read_file_async_from_dict():
 
 def test_read_file_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7155,7 +7145,7 @@ def test_read_file_field_headers():
 @pytest.mark.asyncio
 async def test_read_file_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7193,7 +7183,7 @@ async def test_read_file_field_headers_async():
 )
 def test_remove_file(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7220,7 +7210,7 @@ def test_remove_file_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7237,7 +7227,7 @@ async def test_remove_file_async(
     transport: str = "grpc_asyncio", request_type=dataform.RemoveFileRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7267,7 +7257,7 @@ async def test_remove_file_async_from_dict():
 
 def test_remove_file_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7297,7 +7287,7 @@ def test_remove_file_field_headers():
 @pytest.mark.asyncio
 async def test_remove_file_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7333,7 +7323,7 @@ async def test_remove_file_field_headers_async():
 )
 def test_move_file(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7360,7 +7350,7 @@ def test_move_file_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7377,7 +7367,7 @@ async def test_move_file_async(
     transport: str = "grpc_asyncio", request_type=dataform.MoveFileRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7409,7 +7399,7 @@ async def test_move_file_async_from_dict():
 
 def test_move_file_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7439,7 +7429,7 @@ def test_move_file_field_headers():
 @pytest.mark.asyncio
 async def test_move_file_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7477,7 +7467,7 @@ async def test_move_file_field_headers_async():
 )
 def test_write_file(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7504,7 +7494,7 @@ def test_write_file_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7521,7 +7511,7 @@ async def test_write_file_async(
     transport: str = "grpc_asyncio", request_type=dataform.WriteFileRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7553,7 +7543,7 @@ async def test_write_file_async_from_dict():
 
 def test_write_file_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7583,7 +7573,7 @@ def test_write_file_field_headers():
 @pytest.mark.asyncio
 async def test_write_file_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7621,7 +7611,7 @@ async def test_write_file_field_headers_async():
 )
 def test_list_release_configs(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7655,7 +7645,7 @@ def test_list_release_configs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7674,7 +7664,7 @@ async def test_list_release_configs_async(
     transport: str = "grpc_asyncio", request_type=dataform.ListReleaseConfigsRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7713,7 +7703,7 @@ async def test_list_release_configs_async_from_dict():
 
 def test_list_release_configs_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7745,7 +7735,7 @@ def test_list_release_configs_field_headers():
 @pytest.mark.asyncio
 async def test_list_release_configs_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7778,7 +7768,7 @@ async def test_list_release_configs_field_headers_async():
 
 def test_list_release_configs_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7804,7 +7794,7 @@ def test_list_release_configs_flattened():
 
 def test_list_release_configs_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7819,7 +7809,7 @@ def test_list_release_configs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_release_configs_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7850,7 +7840,7 @@ async def test_list_release_configs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_release_configs_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7864,7 +7854,7 @@ async def test_list_release_configs_flattened_error_async():
 
 def test_list_release_configs_pager(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -7916,7 +7906,7 @@ def test_list_release_configs_pager(transport_name: str = "grpc"):
 
 def test_list_release_configs_pages(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -7960,7 +7950,7 @@ def test_list_release_configs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_release_configs_async_pager():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8012,7 +8002,7 @@ async def test_list_release_configs_async_pager():
 @pytest.mark.asyncio
 async def test_list_release_configs_async_pages():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8069,7 +8059,7 @@ async def test_list_release_configs_async_pages():
 )
 def test_get_release_config(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8109,7 +8099,7 @@ def test_get_release_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8128,7 +8118,7 @@ async def test_get_release_config_async(
     transport: str = "grpc_asyncio", request_type=dataform.GetReleaseConfigRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8173,7 +8163,7 @@ async def test_get_release_config_async_from_dict():
 
 def test_get_release_config_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8205,7 +8195,7 @@ def test_get_release_config_field_headers():
 @pytest.mark.asyncio
 async def test_get_release_config_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8238,7 +8228,7 @@ async def test_get_release_config_field_headers_async():
 
 def test_get_release_config_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8264,7 +8254,7 @@ def test_get_release_config_flattened():
 
 def test_get_release_config_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8279,7 +8269,7 @@ def test_get_release_config_flattened_error():
 @pytest.mark.asyncio
 async def test_get_release_config_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8310,7 +8300,7 @@ async def test_get_release_config_flattened_async():
 @pytest.mark.asyncio
 async def test_get_release_config_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8331,7 +8321,7 @@ async def test_get_release_config_flattened_error_async():
 )
 def test_create_release_config(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8371,7 +8361,7 @@ def test_create_release_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8390,7 +8380,7 @@ async def test_create_release_config_async(
     transport: str = "grpc_asyncio", request_type=dataform.CreateReleaseConfigRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8435,7 +8425,7 @@ async def test_create_release_config_async_from_dict():
 
 def test_create_release_config_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8467,7 +8457,7 @@ def test_create_release_config_field_headers():
 @pytest.mark.asyncio
 async def test_create_release_config_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8500,7 +8490,7 @@ async def test_create_release_config_field_headers_async():
 
 def test_create_release_config_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8534,7 +8524,7 @@ def test_create_release_config_flattened():
 
 def test_create_release_config_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8551,7 +8541,7 @@ def test_create_release_config_flattened_error():
 @pytest.mark.asyncio
 async def test_create_release_config_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8590,7 +8580,7 @@ async def test_create_release_config_flattened_async():
 @pytest.mark.asyncio
 async def test_create_release_config_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8613,7 +8603,7 @@ async def test_create_release_config_flattened_error_async():
 )
 def test_update_release_config(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8653,7 +8643,7 @@ def test_update_release_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8672,7 +8662,7 @@ async def test_update_release_config_async(
     transport: str = "grpc_asyncio", request_type=dataform.UpdateReleaseConfigRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8717,7 +8707,7 @@ async def test_update_release_config_async_from_dict():
 
 def test_update_release_config_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8749,7 +8739,7 @@ def test_update_release_config_field_headers():
 @pytest.mark.asyncio
 async def test_update_release_config_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8782,7 +8772,7 @@ async def test_update_release_config_field_headers_async():
 
 def test_update_release_config_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8812,7 +8802,7 @@ def test_update_release_config_flattened():
 
 def test_update_release_config_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8828,7 +8818,7 @@ def test_update_release_config_flattened_error():
 @pytest.mark.asyncio
 async def test_update_release_config_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8863,7 +8853,7 @@ async def test_update_release_config_flattened_async():
 @pytest.mark.asyncio
 async def test_update_release_config_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8885,7 +8875,7 @@ async def test_update_release_config_flattened_error_async():
 )
 def test_delete_release_config(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8914,7 +8904,7 @@ def test_delete_release_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8933,7 +8923,7 @@ async def test_delete_release_config_async(
     transport: str = "grpc_asyncio", request_type=dataform.DeleteReleaseConfigRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8965,7 +8955,7 @@ async def test_delete_release_config_async_from_dict():
 
 def test_delete_release_config_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8997,7 +8987,7 @@ def test_delete_release_config_field_headers():
 @pytest.mark.asyncio
 async def test_delete_release_config_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9028,7 +9018,7 @@ async def test_delete_release_config_field_headers_async():
 
 def test_delete_release_config_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9054,7 +9044,7 @@ def test_delete_release_config_flattened():
 
 def test_delete_release_config_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9069,7 +9059,7 @@ def test_delete_release_config_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_release_config_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9098,7 +9088,7 @@ async def test_delete_release_config_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_release_config_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9119,7 +9109,7 @@ async def test_delete_release_config_flattened_error_async():
 )
 def test_list_compilation_results(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9153,7 +9143,7 @@ def test_list_compilation_results_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9172,7 +9162,7 @@ async def test_list_compilation_results_async(
     transport: str = "grpc_asyncio", request_type=dataform.ListCompilationResultsRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9211,7 +9201,7 @@ async def test_list_compilation_results_async_from_dict():
 
 def test_list_compilation_results_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9243,7 +9233,7 @@ def test_list_compilation_results_field_headers():
 @pytest.mark.asyncio
 async def test_list_compilation_results_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9276,7 +9266,7 @@ async def test_list_compilation_results_field_headers_async():
 
 def test_list_compilation_results_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9302,7 +9292,7 @@ def test_list_compilation_results_flattened():
 
 def test_list_compilation_results_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9317,7 +9307,7 @@ def test_list_compilation_results_flattened_error():
 @pytest.mark.asyncio
 async def test_list_compilation_results_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9348,7 +9338,7 @@ async def test_list_compilation_results_flattened_async():
 @pytest.mark.asyncio
 async def test_list_compilation_results_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9362,7 +9352,7 @@ async def test_list_compilation_results_flattened_error_async():
 
 def test_list_compilation_results_pager(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -9414,7 +9404,7 @@ def test_list_compilation_results_pager(transport_name: str = "grpc"):
 
 def test_list_compilation_results_pages(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -9458,7 +9448,7 @@ def test_list_compilation_results_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_compilation_results_async_pager():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9510,7 +9500,7 @@ async def test_list_compilation_results_async_pager():
 @pytest.mark.asyncio
 async def test_list_compilation_results_async_pages():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9567,7 +9557,7 @@ async def test_list_compilation_results_async_pages():
 )
 def test_get_compilation_result(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9604,7 +9594,7 @@ def test_get_compilation_result_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9623,7 +9613,7 @@ async def test_get_compilation_result_async(
     transport: str = "grpc_asyncio", request_type=dataform.GetCompilationResultRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9664,7 +9654,7 @@ async def test_get_compilation_result_async_from_dict():
 
 def test_get_compilation_result_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9696,7 +9686,7 @@ def test_get_compilation_result_field_headers():
 @pytest.mark.asyncio
 async def test_get_compilation_result_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9729,7 +9719,7 @@ async def test_get_compilation_result_field_headers_async():
 
 def test_get_compilation_result_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9755,7 +9745,7 @@ def test_get_compilation_result_flattened():
 
 def test_get_compilation_result_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9770,7 +9760,7 @@ def test_get_compilation_result_flattened_error():
 @pytest.mark.asyncio
 async def test_get_compilation_result_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9801,7 +9791,7 @@ async def test_get_compilation_result_flattened_async():
 @pytest.mark.asyncio
 async def test_get_compilation_result_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9822,7 +9812,7 @@ async def test_get_compilation_result_flattened_error_async():
 )
 def test_create_compilation_result(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9859,7 +9849,7 @@ def test_create_compilation_result_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -9879,7 +9869,7 @@ async def test_create_compilation_result_async(
     request_type=dataform.CreateCompilationResultRequest,
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9920,7 +9910,7 @@ async def test_create_compilation_result_async_from_dict():
 
 def test_create_compilation_result_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9952,7 +9942,7 @@ def test_create_compilation_result_field_headers():
 @pytest.mark.asyncio
 async def test_create_compilation_result_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -9985,7 +9975,7 @@ async def test_create_compilation_result_field_headers_async():
 
 def test_create_compilation_result_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10015,7 +10005,7 @@ def test_create_compilation_result_flattened():
 
 def test_create_compilation_result_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10031,7 +10021,7 @@ def test_create_compilation_result_flattened_error():
 @pytest.mark.asyncio
 async def test_create_compilation_result_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10066,7 +10056,7 @@ async def test_create_compilation_result_flattened_async():
 @pytest.mark.asyncio
 async def test_create_compilation_result_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10088,7 +10078,7 @@ async def test_create_compilation_result_flattened_error_async():
 )
 def test_query_compilation_result_actions(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10120,7 +10110,7 @@ def test_query_compilation_result_actions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10140,7 +10130,7 @@ async def test_query_compilation_result_actions_async(
     request_type=dataform.QueryCompilationResultActionsRequest,
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10177,7 +10167,7 @@ async def test_query_compilation_result_actions_async_from_dict():
 
 def test_query_compilation_result_actions_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10209,7 +10199,7 @@ def test_query_compilation_result_actions_field_headers():
 @pytest.mark.asyncio
 async def test_query_compilation_result_actions_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10242,7 +10232,7 @@ async def test_query_compilation_result_actions_field_headers_async():
 
 def test_query_compilation_result_actions_pager(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -10294,7 +10284,7 @@ def test_query_compilation_result_actions_pager(transport_name: str = "grpc"):
 
 def test_query_compilation_result_actions_pages(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -10338,7 +10328,7 @@ def test_query_compilation_result_actions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_query_compilation_result_actions_async_pager():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10390,7 +10380,7 @@ async def test_query_compilation_result_actions_async_pager():
 @pytest.mark.asyncio
 async def test_query_compilation_result_actions_async_pages():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10447,7 +10437,7 @@ async def test_query_compilation_result_actions_async_pages():
 )
 def test_list_workflow_configs(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10481,7 +10471,7 @@ def test_list_workflow_configs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10500,7 +10490,7 @@ async def test_list_workflow_configs_async(
     transport: str = "grpc_asyncio", request_type=dataform.ListWorkflowConfigsRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10539,7 +10529,7 @@ async def test_list_workflow_configs_async_from_dict():
 
 def test_list_workflow_configs_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10571,7 +10561,7 @@ def test_list_workflow_configs_field_headers():
 @pytest.mark.asyncio
 async def test_list_workflow_configs_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -10604,7 +10594,7 @@ async def test_list_workflow_configs_field_headers_async():
 
 def test_list_workflow_configs_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10630,7 +10620,7 @@ def test_list_workflow_configs_flattened():
 
 def test_list_workflow_configs_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10645,7 +10635,7 @@ def test_list_workflow_configs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_workflow_configs_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10676,7 +10666,7 @@ async def test_list_workflow_configs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_workflow_configs_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -10690,7 +10680,7 @@ async def test_list_workflow_configs_flattened_error_async():
 
 def test_list_workflow_configs_pager(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -10742,7 +10732,7 @@ def test_list_workflow_configs_pager(transport_name: str = "grpc"):
 
 def test_list_workflow_configs_pages(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -10786,7 +10776,7 @@ def test_list_workflow_configs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_workflow_configs_async_pager():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10838,7 +10828,7 @@ async def test_list_workflow_configs_async_pager():
 @pytest.mark.asyncio
 async def test_list_workflow_configs_async_pages():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10895,7 +10885,7 @@ async def test_list_workflow_configs_async_pages():
 )
 def test_get_workflow_config(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10933,7 +10923,7 @@ def test_get_workflow_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -10952,7 +10942,7 @@ async def test_get_workflow_config_async(
     transport: str = "grpc_asyncio", request_type=dataform.GetWorkflowConfigRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10995,7 +10985,7 @@ async def test_get_workflow_config_async_from_dict():
 
 def test_get_workflow_config_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11027,7 +11017,7 @@ def test_get_workflow_config_field_headers():
 @pytest.mark.asyncio
 async def test_get_workflow_config_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11060,7 +11050,7 @@ async def test_get_workflow_config_field_headers_async():
 
 def test_get_workflow_config_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11086,7 +11076,7 @@ def test_get_workflow_config_flattened():
 
 def test_get_workflow_config_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11101,7 +11091,7 @@ def test_get_workflow_config_flattened_error():
 @pytest.mark.asyncio
 async def test_get_workflow_config_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11132,7 +11122,7 @@ async def test_get_workflow_config_flattened_async():
 @pytest.mark.asyncio
 async def test_get_workflow_config_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11153,7 +11143,7 @@ async def test_get_workflow_config_flattened_error_async():
 )
 def test_create_workflow_config(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11191,7 +11181,7 @@ def test_create_workflow_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -11210,7 +11200,7 @@ async def test_create_workflow_config_async(
     transport: str = "grpc_asyncio", request_type=dataform.CreateWorkflowConfigRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11253,7 +11243,7 @@ async def test_create_workflow_config_async_from_dict():
 
 def test_create_workflow_config_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11285,7 +11275,7 @@ def test_create_workflow_config_field_headers():
 @pytest.mark.asyncio
 async def test_create_workflow_config_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11318,7 +11308,7 @@ async def test_create_workflow_config_field_headers_async():
 
 def test_create_workflow_config_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11352,7 +11342,7 @@ def test_create_workflow_config_flattened():
 
 def test_create_workflow_config_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11369,7 +11359,7 @@ def test_create_workflow_config_flattened_error():
 @pytest.mark.asyncio
 async def test_create_workflow_config_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11408,7 +11398,7 @@ async def test_create_workflow_config_flattened_async():
 @pytest.mark.asyncio
 async def test_create_workflow_config_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11431,7 +11421,7 @@ async def test_create_workflow_config_flattened_error_async():
 )
 def test_update_workflow_config(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11469,7 +11459,7 @@ def test_update_workflow_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -11488,7 +11478,7 @@ async def test_update_workflow_config_async(
     transport: str = "grpc_asyncio", request_type=dataform.UpdateWorkflowConfigRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11531,7 +11521,7 @@ async def test_update_workflow_config_async_from_dict():
 
 def test_update_workflow_config_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11563,7 +11553,7 @@ def test_update_workflow_config_field_headers():
 @pytest.mark.asyncio
 async def test_update_workflow_config_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11596,7 +11586,7 @@ async def test_update_workflow_config_field_headers_async():
 
 def test_update_workflow_config_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11626,7 +11616,7 @@ def test_update_workflow_config_flattened():
 
 def test_update_workflow_config_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11642,7 +11632,7 @@ def test_update_workflow_config_flattened_error():
 @pytest.mark.asyncio
 async def test_update_workflow_config_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11677,7 +11667,7 @@ async def test_update_workflow_config_flattened_async():
 @pytest.mark.asyncio
 async def test_update_workflow_config_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11699,7 +11689,7 @@ async def test_update_workflow_config_flattened_error_async():
 )
 def test_delete_workflow_config(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11728,7 +11718,7 @@ def test_delete_workflow_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -11747,7 +11737,7 @@ async def test_delete_workflow_config_async(
     transport: str = "grpc_asyncio", request_type=dataform.DeleteWorkflowConfigRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11779,7 +11769,7 @@ async def test_delete_workflow_config_async_from_dict():
 
 def test_delete_workflow_config_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11811,7 +11801,7 @@ def test_delete_workflow_config_field_headers():
 @pytest.mark.asyncio
 async def test_delete_workflow_config_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -11842,7 +11832,7 @@ async def test_delete_workflow_config_field_headers_async():
 
 def test_delete_workflow_config_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11868,7 +11858,7 @@ def test_delete_workflow_config_flattened():
 
 def test_delete_workflow_config_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11883,7 +11873,7 @@ def test_delete_workflow_config_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_workflow_config_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -11912,7 +11902,7 @@ async def test_delete_workflow_config_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_workflow_config_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -11933,7 +11923,7 @@ async def test_delete_workflow_config_flattened_error_async():
 )
 def test_list_workflow_invocations(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11967,7 +11957,7 @@ def test_list_workflow_invocations_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -11987,7 +11977,7 @@ async def test_list_workflow_invocations_async(
     request_type=dataform.ListWorkflowInvocationsRequest,
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12026,7 +12016,7 @@ async def test_list_workflow_invocations_async_from_dict():
 
 def test_list_workflow_invocations_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12058,7 +12048,7 @@ def test_list_workflow_invocations_field_headers():
 @pytest.mark.asyncio
 async def test_list_workflow_invocations_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12091,7 +12081,7 @@ async def test_list_workflow_invocations_field_headers_async():
 
 def test_list_workflow_invocations_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12117,7 +12107,7 @@ def test_list_workflow_invocations_flattened():
 
 def test_list_workflow_invocations_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12132,7 +12122,7 @@ def test_list_workflow_invocations_flattened_error():
 @pytest.mark.asyncio
 async def test_list_workflow_invocations_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12163,7 +12153,7 @@ async def test_list_workflow_invocations_flattened_async():
 @pytest.mark.asyncio
 async def test_list_workflow_invocations_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12177,7 +12167,7 @@ async def test_list_workflow_invocations_flattened_error_async():
 
 def test_list_workflow_invocations_pager(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -12229,7 +12219,7 @@ def test_list_workflow_invocations_pager(transport_name: str = "grpc"):
 
 def test_list_workflow_invocations_pages(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -12273,7 +12263,7 @@ def test_list_workflow_invocations_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_workflow_invocations_async_pager():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12325,7 +12315,7 @@ async def test_list_workflow_invocations_async_pager():
 @pytest.mark.asyncio
 async def test_list_workflow_invocations_async_pages():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12382,7 +12372,7 @@ async def test_list_workflow_invocations_async_pages():
 )
 def test_get_workflow_invocation(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12417,7 +12407,7 @@ def test_get_workflow_invocation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -12436,7 +12426,7 @@ async def test_get_workflow_invocation_async(
     transport: str = "grpc_asyncio", request_type=dataform.GetWorkflowInvocationRequest
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12475,7 +12465,7 @@ async def test_get_workflow_invocation_async_from_dict():
 
 def test_get_workflow_invocation_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12507,7 +12497,7 @@ def test_get_workflow_invocation_field_headers():
 @pytest.mark.asyncio
 async def test_get_workflow_invocation_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12540,7 +12530,7 @@ async def test_get_workflow_invocation_field_headers_async():
 
 def test_get_workflow_invocation_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12566,7 +12556,7 @@ def test_get_workflow_invocation_flattened():
 
 def test_get_workflow_invocation_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12581,7 +12571,7 @@ def test_get_workflow_invocation_flattened_error():
 @pytest.mark.asyncio
 async def test_get_workflow_invocation_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12612,7 +12602,7 @@ async def test_get_workflow_invocation_flattened_async():
 @pytest.mark.asyncio
 async def test_get_workflow_invocation_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12633,7 +12623,7 @@ async def test_get_workflow_invocation_flattened_error_async():
 )
 def test_create_workflow_invocation(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12668,7 +12658,7 @@ def test_create_workflow_invocation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -12688,7 +12678,7 @@ async def test_create_workflow_invocation_async(
     request_type=dataform.CreateWorkflowInvocationRequest,
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12727,7 +12717,7 @@ async def test_create_workflow_invocation_async_from_dict():
 
 def test_create_workflow_invocation_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12759,7 +12749,7 @@ def test_create_workflow_invocation_field_headers():
 @pytest.mark.asyncio
 async def test_create_workflow_invocation_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -12792,7 +12782,7 @@ async def test_create_workflow_invocation_field_headers_async():
 
 def test_create_workflow_invocation_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12822,7 +12812,7 @@ def test_create_workflow_invocation_flattened():
 
 def test_create_workflow_invocation_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12838,7 +12828,7 @@ def test_create_workflow_invocation_flattened_error():
 @pytest.mark.asyncio
 async def test_create_workflow_invocation_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -12873,7 +12863,7 @@ async def test_create_workflow_invocation_flattened_async():
 @pytest.mark.asyncio
 async def test_create_workflow_invocation_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -12895,7 +12885,7 @@ async def test_create_workflow_invocation_flattened_error_async():
 )
 def test_delete_workflow_invocation(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12924,7 +12914,7 @@ def test_delete_workflow_invocation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -12944,7 +12934,7 @@ async def test_delete_workflow_invocation_async(
     request_type=dataform.DeleteWorkflowInvocationRequest,
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12976,7 +12966,7 @@ async def test_delete_workflow_invocation_async_from_dict():
 
 def test_delete_workflow_invocation_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13008,7 +12998,7 @@ def test_delete_workflow_invocation_field_headers():
 @pytest.mark.asyncio
 async def test_delete_workflow_invocation_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13039,7 +13029,7 @@ async def test_delete_workflow_invocation_field_headers_async():
 
 def test_delete_workflow_invocation_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13065,7 +13055,7 @@ def test_delete_workflow_invocation_flattened():
 
 def test_delete_workflow_invocation_flattened_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13080,7 +13070,7 @@ def test_delete_workflow_invocation_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_workflow_invocation_flattened_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13109,7 +13099,7 @@ async def test_delete_workflow_invocation_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_workflow_invocation_flattened_error_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -13130,7 +13120,7 @@ async def test_delete_workflow_invocation_flattened_error_async():
 )
 def test_cancel_workflow_invocation(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13159,7 +13149,7 @@ def test_cancel_workflow_invocation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -13179,7 +13169,7 @@ async def test_cancel_workflow_invocation_async(
     request_type=dataform.CancelWorkflowInvocationRequest,
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13211,7 +13201,7 @@ async def test_cancel_workflow_invocation_async_from_dict():
 
 def test_cancel_workflow_invocation_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13243,7 +13233,7 @@ def test_cancel_workflow_invocation_field_headers():
 @pytest.mark.asyncio
 async def test_cancel_workflow_invocation_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13281,7 +13271,7 @@ async def test_cancel_workflow_invocation_field_headers_async():
 )
 def test_query_workflow_invocation_actions(request_type, transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13313,7 +13303,7 @@ def test_query_workflow_invocation_actions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -13333,7 +13323,7 @@ async def test_query_workflow_invocation_actions_async(
     request_type=dataform.QueryWorkflowInvocationActionsRequest,
 ):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13370,7 +13360,7 @@ async def test_query_workflow_invocation_actions_async_from_dict():
 
 def test_query_workflow_invocation_actions_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13402,7 +13392,7 @@ def test_query_workflow_invocation_actions_field_headers():
 @pytest.mark.asyncio
 async def test_query_workflow_invocation_actions_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -13435,7 +13425,7 @@ async def test_query_workflow_invocation_actions_field_headers_async():
 
 def test_query_workflow_invocation_actions_pager(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -13487,7 +13477,7 @@ def test_query_workflow_invocation_actions_pager(transport_name: str = "grpc"):
 
 def test_query_workflow_invocation_actions_pages(transport_name: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -13531,7 +13521,7 @@ def test_query_workflow_invocation_actions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_query_workflow_invocation_actions_async_pager():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13583,7 +13573,7 @@ async def test_query_workflow_invocation_actions_async_pager():
 @pytest.mark.asyncio
 async def test_query_workflow_invocation_actions_async_pages():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -13640,7 +13630,7 @@ async def test_query_workflow_invocation_actions_async_pages():
 )
 def test_list_repositories_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13693,7 +13683,7 @@ def test_list_repositories_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_repositories._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13702,7 +13692,7 @@ def test_list_repositories_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_repositories._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -13720,7 +13710,7 @@ def test_list_repositories_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13762,7 +13752,7 @@ def test_list_repositories_rest_required_fields(
 
 def test_list_repositories_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_repositories._get_unset_required_fields({})
@@ -13782,7 +13772,7 @@ def test_list_repositories_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_repositories_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -13838,7 +13828,7 @@ def test_list_repositories_rest_bad_request(
     transport: str = "rest", request_type=dataform.ListRepositoriesRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13860,7 +13850,7 @@ def test_list_repositories_rest_bad_request(
 
 def test_list_repositories_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13902,7 +13892,7 @@ def test_list_repositories_rest_flattened():
 
 def test_list_repositories_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13917,7 +13907,7 @@ def test_list_repositories_rest_flattened_error(transport: str = "rest"):
 
 def test_list_repositories_rest_pager(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13985,7 +13975,7 @@ def test_list_repositories_rest_pager(transport: str = "rest"):
 )
 def test_get_repository_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14047,7 +14037,7 @@ def test_get_repository_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_repository._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14056,7 +14046,7 @@ def test_get_repository_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_repository._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14065,7 +14055,7 @@ def test_get_repository_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14107,7 +14097,7 @@ def test_get_repository_rest_required_fields(
 
 def test_get_repository_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_repository._get_unset_required_fields({})
@@ -14117,7 +14107,7 @@ def test_get_repository_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_repository_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -14169,7 +14159,7 @@ def test_get_repository_rest_bad_request(
     transport: str = "rest", request_type=dataform.GetRepositoryRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14191,7 +14181,7 @@ def test_get_repository_rest_bad_request(
 
 def test_get_repository_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14235,7 +14225,7 @@ def test_get_repository_rest_flattened():
 
 def test_get_repository_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14250,7 +14240,7 @@ def test_get_repository_rest_flattened_error(transport: str = "rest"):
 
 def test_get_repository_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14263,7 +14253,7 @@ def test_get_repository_rest_error():
 )
 def test_create_repository_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14417,7 +14407,7 @@ def test_create_repository_rest_required_fields(
     assert "repositoryId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_repository._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14429,7 +14419,7 @@ def test_create_repository_rest_required_fields(
     jsonified_request["repositoryId"] = "repository_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_repository._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("repository_id",))
@@ -14442,7 +14432,7 @@ def test_create_repository_rest_required_fields(
     assert jsonified_request["repositoryId"] == "repository_id_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14491,7 +14481,7 @@ def test_create_repository_rest_required_fields(
 
 def test_create_repository_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_repository._get_unset_required_fields({})
@@ -14510,7 +14500,7 @@ def test_create_repository_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_repository_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -14564,7 +14554,7 @@ def test_create_repository_rest_bad_request(
     transport: str = "rest", request_type=dataform.CreateRepositoryRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14586,7 +14576,7 @@ def test_create_repository_rest_bad_request(
 
 def test_create_repository_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14630,7 +14620,7 @@ def test_create_repository_rest_flattened():
 
 def test_create_repository_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14647,7 +14637,7 @@ def test_create_repository_rest_flattened_error(transport: str = "rest"):
 
 def test_create_repository_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14660,7 +14650,7 @@ def test_create_repository_rest_error():
 )
 def test_update_repository_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14815,14 +14805,14 @@ def test_update_repository_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_repository._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_repository._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -14831,7 +14821,7 @@ def test_update_repository_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14874,7 +14864,7 @@ def test_update_repository_rest_required_fields(
 
 def test_update_repository_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_repository._get_unset_required_fields({})
@@ -14884,7 +14874,7 @@ def test_update_repository_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_repository_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -14938,7 +14928,7 @@ def test_update_repository_rest_bad_request(
     transport: str = "rest", request_type=dataform.UpdateRepositoryRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14964,7 +14954,7 @@ def test_update_repository_rest_bad_request(
 
 def test_update_repository_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15011,7 +15001,7 @@ def test_update_repository_rest_flattened():
 
 def test_update_repository_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15027,7 +15017,7 @@ def test_update_repository_rest_flattened_error(transport: str = "rest"):
 
 def test_update_repository_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15040,7 +15030,7 @@ def test_update_repository_rest_error():
 )
 def test_delete_repository_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15086,7 +15076,7 @@ def test_delete_repository_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_repository._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15095,7 +15085,7 @@ def test_delete_repository_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_repository._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("force",))
@@ -15106,7 +15096,7 @@ def test_delete_repository_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15145,7 +15135,7 @@ def test_delete_repository_rest_required_fields(
 
 def test_delete_repository_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_repository._get_unset_required_fields({})
@@ -15155,7 +15145,7 @@ def test_delete_repository_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_repository_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -15203,7 +15193,7 @@ def test_delete_repository_rest_bad_request(
     transport: str = "rest", request_type=dataform.DeleteRepositoryRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15225,7 +15215,7 @@ def test_delete_repository_rest_bad_request(
 
 def test_delete_repository_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15267,7 +15257,7 @@ def test_delete_repository_rest_flattened():
 
 def test_delete_repository_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15282,7 +15272,7 @@ def test_delete_repository_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_repository_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15295,7 +15285,7 @@ def test_delete_repository_rest_error():
 )
 def test_commit_repository_changes_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15341,7 +15331,7 @@ def test_commit_repository_changes_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).commit_repository_changes._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15350,7 +15340,7 @@ def test_commit_repository_changes_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).commit_repository_changes._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15359,7 +15349,7 @@ def test_commit_repository_changes_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15399,7 +15389,7 @@ def test_commit_repository_changes_rest_required_fields(
 
 def test_commit_repository_changes_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.commit_repository_changes._get_unset_required_fields({})
@@ -15417,7 +15407,7 @@ def test_commit_repository_changes_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_commit_repository_changes_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -15465,7 +15455,7 @@ def test_commit_repository_changes_rest_bad_request(
     transport: str = "rest", request_type=dataform.CommitRepositoryChangesRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15487,7 +15477,7 @@ def test_commit_repository_changes_rest_bad_request(
 
 def test_commit_repository_changes_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15500,7 +15490,7 @@ def test_commit_repository_changes_rest_error():
 )
 def test_read_repository_file_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15553,7 +15543,7 @@ def test_read_repository_file_rest_required_fields(
     assert "path" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).read_repository_file._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15565,7 +15555,7 @@ def test_read_repository_file_rest_required_fields(
     jsonified_request["path"] = "path_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).read_repository_file._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -15583,7 +15573,7 @@ def test_read_repository_file_rest_required_fields(
     assert jsonified_request["path"] == "path_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15631,7 +15621,7 @@ def test_read_repository_file_rest_required_fields(
 
 def test_read_repository_file_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.read_repository_file._get_unset_required_fields({})
@@ -15654,7 +15644,7 @@ def test_read_repository_file_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_read_repository_file_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -15710,7 +15700,7 @@ def test_read_repository_file_rest_bad_request(
     transport: str = "rest", request_type=dataform.ReadRepositoryFileRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15732,7 +15722,7 @@ def test_read_repository_file_rest_bad_request(
 
 def test_read_repository_file_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15745,7 +15735,7 @@ def test_read_repository_file_rest_error():
 )
 def test_query_repository_directory_contents_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15798,7 +15788,7 @@ def test_query_repository_directory_contents_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).query_repository_directory_contents._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15807,7 +15797,7 @@ def test_query_repository_directory_contents_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).query_repository_directory_contents._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -15825,7 +15815,7 @@ def test_query_repository_directory_contents_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15869,7 +15859,7 @@ def test_query_repository_directory_contents_rest_required_fields(
 
 def test_query_repository_directory_contents_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = (
@@ -15891,7 +15881,7 @@ def test_query_repository_directory_contents_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_query_repository_directory_contents_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -15950,7 +15940,7 @@ def test_query_repository_directory_contents_rest_bad_request(
     request_type=dataform.QueryRepositoryDirectoryContentsRequest,
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15972,7 +15962,7 @@ def test_query_repository_directory_contents_rest_bad_request(
 
 def test_query_repository_directory_contents_rest_pager(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16047,7 +16037,7 @@ def test_query_repository_directory_contents_rest_pager(transport: str = "rest")
 )
 def test_fetch_repository_history_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16098,7 +16088,7 @@ def test_fetch_repository_history_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_repository_history._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16107,7 +16097,7 @@ def test_fetch_repository_history_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_repository_history._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -16123,7 +16113,7 @@ def test_fetch_repository_history_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16165,7 +16155,7 @@ def test_fetch_repository_history_rest_required_fields(
 
 def test_fetch_repository_history_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.fetch_repository_history._get_unset_required_fields({})
@@ -16183,7 +16173,7 @@ def test_fetch_repository_history_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_fetch_repository_history_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -16239,7 +16229,7 @@ def test_fetch_repository_history_rest_bad_request(
     transport: str = "rest", request_type=dataform.FetchRepositoryHistoryRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16261,7 +16251,7 @@ def test_fetch_repository_history_rest_bad_request(
 
 def test_fetch_repository_history_rest_pager(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16333,7 +16323,7 @@ def test_fetch_repository_history_rest_pager(transport: str = "rest"):
 )
 def test_compute_repository_access_token_status_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16389,7 +16379,7 @@ def test_compute_repository_access_token_status_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).compute_repository_access_token_status._get_unset_required_fields(
         jsonified_request
     )
@@ -16400,7 +16390,7 @@ def test_compute_repository_access_token_status_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).compute_repository_access_token_status._get_unset_required_fields(
         jsonified_request
     )
@@ -16411,7 +16401,7 @@ def test_compute_repository_access_token_status_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16455,7 +16445,7 @@ def test_compute_repository_access_token_status_rest_required_fields(
 
 def test_compute_repository_access_token_status_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = (
@@ -16467,7 +16457,7 @@ def test_compute_repository_access_token_status_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_compute_repository_access_token_status_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -16527,7 +16517,7 @@ def test_compute_repository_access_token_status_rest_bad_request(
     request_type=dataform.ComputeRepositoryAccessTokenStatusRequest,
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16549,7 +16539,7 @@ def test_compute_repository_access_token_status_rest_bad_request(
 
 def test_compute_repository_access_token_status_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16562,7 +16552,7 @@ def test_compute_repository_access_token_status_rest_error():
 )
 def test_fetch_remote_branches_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16613,7 +16603,7 @@ def test_fetch_remote_branches_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_remote_branches._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16622,7 +16612,7 @@ def test_fetch_remote_branches_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_remote_branches._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16631,7 +16621,7 @@ def test_fetch_remote_branches_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16673,7 +16663,7 @@ def test_fetch_remote_branches_rest_required_fields(
 
 def test_fetch_remote_branches_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.fetch_remote_branches._get_unset_required_fields({})
@@ -16683,7 +16673,7 @@ def test_fetch_remote_branches_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_fetch_remote_branches_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -16739,7 +16729,7 @@ def test_fetch_remote_branches_rest_bad_request(
     transport: str = "rest", request_type=dataform.FetchRemoteBranchesRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16761,7 +16751,7 @@ def test_fetch_remote_branches_rest_bad_request(
 
 def test_fetch_remote_branches_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16774,7 +16764,7 @@ def test_fetch_remote_branches_rest_error():
 )
 def test_list_workspaces_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16827,7 +16817,7 @@ def test_list_workspaces_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_workspaces._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16836,7 +16826,7 @@ def test_list_workspaces_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_workspaces._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -16854,7 +16844,7 @@ def test_list_workspaces_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16896,7 +16886,7 @@ def test_list_workspaces_rest_required_fields(
 
 def test_list_workspaces_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_workspaces._get_unset_required_fields({})
@@ -16916,7 +16906,7 @@ def test_list_workspaces_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_workspaces_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -16970,7 +16960,7 @@ def test_list_workspaces_rest_bad_request(
     transport: str = "rest", request_type=dataform.ListWorkspacesRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16992,7 +16982,7 @@ def test_list_workspaces_rest_bad_request(
 
 def test_list_workspaces_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17036,7 +17026,7 @@ def test_list_workspaces_rest_flattened():
 
 def test_list_workspaces_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17051,7 +17041,7 @@ def test_list_workspaces_rest_flattened_error(transport: str = "rest"):
 
 def test_list_workspaces_rest_pager(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17121,7 +17111,7 @@ def test_list_workspaces_rest_pager(transport: str = "rest"):
 )
 def test_get_workspace_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17172,7 +17162,7 @@ def test_get_workspace_rest_required_fields(request_type=dataform.GetWorkspaceRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_workspace._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17181,7 +17171,7 @@ def test_get_workspace_rest_required_fields(request_type=dataform.GetWorkspaceRe
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_workspace._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17190,7 +17180,7 @@ def test_get_workspace_rest_required_fields(request_type=dataform.GetWorkspaceRe
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17232,7 +17222,7 @@ def test_get_workspace_rest_required_fields(request_type=dataform.GetWorkspaceRe
 
 def test_get_workspace_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_workspace._get_unset_required_fields({})
@@ -17242,7 +17232,7 @@ def test_get_workspace_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_workspace_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -17294,7 +17284,7 @@ def test_get_workspace_rest_bad_request(
     transport: str = "rest", request_type=dataform.GetWorkspaceRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17318,7 +17308,7 @@ def test_get_workspace_rest_bad_request(
 
 def test_get_workspace_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17362,7 +17352,7 @@ def test_get_workspace_rest_flattened():
 
 def test_get_workspace_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17377,7 +17367,7 @@ def test_get_workspace_rest_flattened_error(transport: str = "rest"):
 
 def test_get_workspace_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17390,7 +17380,7 @@ def test_get_workspace_rest_error():
 )
 def test_create_workspace_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17511,7 +17501,7 @@ def test_create_workspace_rest_required_fields(
     assert "workspaceId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_workspace._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17523,7 +17513,7 @@ def test_create_workspace_rest_required_fields(
     jsonified_request["workspaceId"] = "workspace_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_workspace._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("workspace_id",))
@@ -17536,7 +17526,7 @@ def test_create_workspace_rest_required_fields(
     assert jsonified_request["workspaceId"] == "workspace_id_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17585,7 +17575,7 @@ def test_create_workspace_rest_required_fields(
 
 def test_create_workspace_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_workspace._get_unset_required_fields({})
@@ -17604,7 +17594,7 @@ def test_create_workspace_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_workspace_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -17658,7 +17648,7 @@ def test_create_workspace_rest_bad_request(
     transport: str = "rest", request_type=dataform.CreateWorkspaceRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17680,7 +17670,7 @@ def test_create_workspace_rest_bad_request(
 
 def test_create_workspace_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17726,7 +17716,7 @@ def test_create_workspace_rest_flattened():
 
 def test_create_workspace_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17743,7 +17733,7 @@ def test_create_workspace_rest_flattened_error(transport: str = "rest"):
 
 def test_create_workspace_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17756,7 +17746,7 @@ def test_create_workspace_rest_error():
 )
 def test_delete_workspace_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17804,7 +17794,7 @@ def test_delete_workspace_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_workspace._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17813,7 +17803,7 @@ def test_delete_workspace_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_workspace._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17822,7 +17812,7 @@ def test_delete_workspace_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17861,7 +17851,7 @@ def test_delete_workspace_rest_required_fields(
 
 def test_delete_workspace_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_workspace._get_unset_required_fields({})
@@ -17871,7 +17861,7 @@ def test_delete_workspace_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_workspace_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -17919,7 +17909,7 @@ def test_delete_workspace_rest_bad_request(
     transport: str = "rest", request_type=dataform.DeleteWorkspaceRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17943,7 +17933,7 @@ def test_delete_workspace_rest_bad_request(
 
 def test_delete_workspace_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17985,7 +17975,7 @@ def test_delete_workspace_rest_flattened():
 
 def test_delete_workspace_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18000,7 +17990,7 @@ def test_delete_workspace_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_workspace_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18013,7 +18003,7 @@ def test_delete_workspace_rest_error():
 )
 def test_install_npm_packages_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18063,7 +18053,7 @@ def test_install_npm_packages_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).install_npm_packages._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18072,7 +18062,7 @@ def test_install_npm_packages_rest_required_fields(
     jsonified_request["workspace"] = "workspace_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).install_npm_packages._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18081,7 +18071,7 @@ def test_install_npm_packages_rest_required_fields(
     assert jsonified_request["workspace"] == "workspace_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18124,7 +18114,7 @@ def test_install_npm_packages_rest_required_fields(
 
 def test_install_npm_packages_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.install_npm_packages._get_unset_required_fields({})
@@ -18134,7 +18124,7 @@ def test_install_npm_packages_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_install_npm_packages_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -18190,7 +18180,7 @@ def test_install_npm_packages_rest_bad_request(
     transport: str = "rest", request_type=dataform.InstallNpmPackagesRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18214,7 +18204,7 @@ def test_install_npm_packages_rest_bad_request(
 
 def test_install_npm_packages_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18227,7 +18217,7 @@ def test_install_npm_packages_rest_error():
 )
 def test_pull_git_commits_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18275,7 +18265,7 @@ def test_pull_git_commits_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).pull_git_commits._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18284,7 +18274,7 @@ def test_pull_git_commits_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).pull_git_commits._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18293,7 +18283,7 @@ def test_pull_git_commits_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18333,7 +18323,7 @@ def test_pull_git_commits_rest_required_fields(
 
 def test_pull_git_commits_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.pull_git_commits._get_unset_required_fields({})
@@ -18351,7 +18341,7 @@ def test_pull_git_commits_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_pull_git_commits_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -18397,7 +18387,7 @@ def test_pull_git_commits_rest_bad_request(
     transport: str = "rest", request_type=dataform.PullGitCommitsRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18421,7 +18411,7 @@ def test_pull_git_commits_rest_bad_request(
 
 def test_pull_git_commits_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18434,7 +18424,7 @@ def test_pull_git_commits_rest_error():
 )
 def test_push_git_commits_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18482,7 +18472,7 @@ def test_push_git_commits_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).push_git_commits._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18491,7 +18481,7 @@ def test_push_git_commits_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).push_git_commits._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18500,7 +18490,7 @@ def test_push_git_commits_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18540,7 +18530,7 @@ def test_push_git_commits_rest_required_fields(
 
 def test_push_git_commits_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.push_git_commits._get_unset_required_fields({})
@@ -18550,7 +18540,7 @@ def test_push_git_commits_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_push_git_commits_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -18596,7 +18586,7 @@ def test_push_git_commits_rest_bad_request(
     transport: str = "rest", request_type=dataform.PushGitCommitsRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18620,7 +18610,7 @@ def test_push_git_commits_rest_bad_request(
 
 def test_push_git_commits_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18633,7 +18623,7 @@ def test_push_git_commits_rest_error():
 )
 def test_fetch_file_git_statuses_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18683,7 +18673,7 @@ def test_fetch_file_git_statuses_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_file_git_statuses._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18692,7 +18682,7 @@ def test_fetch_file_git_statuses_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_file_git_statuses._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18701,7 +18691,7 @@ def test_fetch_file_git_statuses_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18743,7 +18733,7 @@ def test_fetch_file_git_statuses_rest_required_fields(
 
 def test_fetch_file_git_statuses_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.fetch_file_git_statuses._get_unset_required_fields({})
@@ -18753,7 +18743,7 @@ def test_fetch_file_git_statuses_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_fetch_file_git_statuses_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -18809,7 +18799,7 @@ def test_fetch_file_git_statuses_rest_bad_request(
     transport: str = "rest", request_type=dataform.FetchFileGitStatusesRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18833,7 +18823,7 @@ def test_fetch_file_git_statuses_rest_bad_request(
 
 def test_fetch_file_git_statuses_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -18846,7 +18836,7 @@ def test_fetch_file_git_statuses_rest_error():
 )
 def test_fetch_git_ahead_behind_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -18901,7 +18891,7 @@ def test_fetch_git_ahead_behind_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_git_ahead_behind._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -18910,7 +18900,7 @@ def test_fetch_git_ahead_behind_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_git_ahead_behind._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("remote_branch",))
@@ -18921,7 +18911,7 @@ def test_fetch_git_ahead_behind_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -18963,7 +18953,7 @@ def test_fetch_git_ahead_behind_rest_required_fields(
 
 def test_fetch_git_ahead_behind_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.fetch_git_ahead_behind._get_unset_required_fields({})
@@ -18973,7 +18963,7 @@ def test_fetch_git_ahead_behind_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_fetch_git_ahead_behind_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -19029,7 +19019,7 @@ def test_fetch_git_ahead_behind_rest_bad_request(
     transport: str = "rest", request_type=dataform.FetchGitAheadBehindRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19053,7 +19043,7 @@ def test_fetch_git_ahead_behind_rest_bad_request(
 
 def test_fetch_git_ahead_behind_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19066,7 +19056,7 @@ def test_fetch_git_ahead_behind_rest_error():
 )
 def test_commit_workspace_changes_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19114,7 +19104,7 @@ def test_commit_workspace_changes_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).commit_workspace_changes._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19123,7 +19113,7 @@ def test_commit_workspace_changes_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).commit_workspace_changes._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19132,7 +19122,7 @@ def test_commit_workspace_changes_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19172,7 +19162,7 @@ def test_commit_workspace_changes_rest_required_fields(
 
 def test_commit_workspace_changes_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.commit_workspace_changes._get_unset_required_fields({})
@@ -19190,7 +19180,7 @@ def test_commit_workspace_changes_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_commit_workspace_changes_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -19238,7 +19228,7 @@ def test_commit_workspace_changes_rest_bad_request(
     transport: str = "rest", request_type=dataform.CommitWorkspaceChangesRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19262,7 +19252,7 @@ def test_commit_workspace_changes_rest_bad_request(
 
 def test_commit_workspace_changes_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19275,7 +19265,7 @@ def test_commit_workspace_changes_rest_error():
 )
 def test_reset_workspace_changes_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19323,7 +19313,7 @@ def test_reset_workspace_changes_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).reset_workspace_changes._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19332,7 +19322,7 @@ def test_reset_workspace_changes_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).reset_workspace_changes._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19341,7 +19331,7 @@ def test_reset_workspace_changes_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19381,7 +19371,7 @@ def test_reset_workspace_changes_rest_required_fields(
 
 def test_reset_workspace_changes_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.reset_workspace_changes._get_unset_required_fields({})
@@ -19391,7 +19381,7 @@ def test_reset_workspace_changes_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_reset_workspace_changes_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -19439,7 +19429,7 @@ def test_reset_workspace_changes_rest_bad_request(
     transport: str = "rest", request_type=dataform.ResetWorkspaceChangesRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19463,7 +19453,7 @@ def test_reset_workspace_changes_rest_bad_request(
 
 def test_reset_workspace_changes_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19476,7 +19466,7 @@ def test_reset_workspace_changes_rest_error():
 )
 def test_fetch_file_diff_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19531,7 +19521,7 @@ def test_fetch_file_diff_rest_required_fields(
     assert "path" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_file_diff._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19543,7 +19533,7 @@ def test_fetch_file_diff_rest_required_fields(
     jsonified_request["path"] = "path_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).fetch_file_diff._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("path",))
@@ -19556,7 +19546,7 @@ def test_fetch_file_diff_rest_required_fields(
     assert jsonified_request["path"] == "path_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19604,7 +19594,7 @@ def test_fetch_file_diff_rest_required_fields(
 
 def test_fetch_file_diff_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.fetch_file_diff._get_unset_required_fields({})
@@ -19622,7 +19612,7 @@ def test_fetch_file_diff_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_fetch_file_diff_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -19676,7 +19666,7 @@ def test_fetch_file_diff_rest_bad_request(
     transport: str = "rest", request_type=dataform.FetchFileDiffRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19700,7 +19690,7 @@ def test_fetch_file_diff_rest_bad_request(
 
 def test_fetch_file_diff_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -19713,7 +19703,7 @@ def test_fetch_file_diff_rest_error():
 )
 def test_query_directory_contents_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -19766,7 +19756,7 @@ def test_query_directory_contents_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).query_directory_contents._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -19775,7 +19765,7 @@ def test_query_directory_contents_rest_required_fields(
     jsonified_request["workspace"] = "workspace_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).query_directory_contents._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -19792,7 +19782,7 @@ def test_query_directory_contents_rest_required_fields(
     assert jsonified_request["workspace"] == "workspace_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -19834,7 +19824,7 @@ def test_query_directory_contents_rest_required_fields(
 
 def test_query_directory_contents_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.query_directory_contents._get_unset_required_fields({})
@@ -19853,7 +19843,7 @@ def test_query_directory_contents_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_query_directory_contents_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -19909,7 +19899,7 @@ def test_query_directory_contents_rest_bad_request(
     transport: str = "rest", request_type=dataform.QueryDirectoryContentsRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19933,7 +19923,7 @@ def test_query_directory_contents_rest_bad_request(
 
 def test_query_directory_contents_rest_pager(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20005,7 +19995,7 @@ def test_query_directory_contents_rest_pager(transport: str = "rest"):
 )
 def test_make_directory_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20056,7 +20046,7 @@ def test_make_directory_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).make_directory._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20066,7 +20056,7 @@ def test_make_directory_rest_required_fields(
     jsonified_request["path"] = "path_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).make_directory._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20077,7 +20067,7 @@ def test_make_directory_rest_required_fields(
     assert jsonified_request["path"] == "path_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20120,7 +20110,7 @@ def test_make_directory_rest_required_fields(
 
 def test_make_directory_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.make_directory._get_unset_required_fields({})
@@ -20138,7 +20128,7 @@ def test_make_directory_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_make_directory_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -20192,7 +20182,7 @@ def test_make_directory_rest_bad_request(
     transport: str = "rest", request_type=dataform.MakeDirectoryRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20216,7 +20206,7 @@ def test_make_directory_rest_bad_request(
 
 def test_make_directory_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -20229,7 +20219,7 @@ def test_make_directory_rest_error():
 )
 def test_remove_directory_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20278,7 +20268,7 @@ def test_remove_directory_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).remove_directory._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20288,7 +20278,7 @@ def test_remove_directory_rest_required_fields(
     jsonified_request["path"] = "path_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).remove_directory._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20299,7 +20289,7 @@ def test_remove_directory_rest_required_fields(
     assert jsonified_request["path"] == "path_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20339,7 +20329,7 @@ def test_remove_directory_rest_required_fields(
 
 def test_remove_directory_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.remove_directory._get_unset_required_fields({})
@@ -20357,7 +20347,7 @@ def test_remove_directory_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_remove_directory_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -20405,7 +20395,7 @@ def test_remove_directory_rest_bad_request(
     transport: str = "rest", request_type=dataform.RemoveDirectoryRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20429,7 +20419,7 @@ def test_remove_directory_rest_bad_request(
 
 def test_remove_directory_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -20442,7 +20432,7 @@ def test_remove_directory_rest_error():
 )
 def test_move_directory_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20494,7 +20484,7 @@ def test_move_directory_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).move_directory._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20505,7 +20495,7 @@ def test_move_directory_rest_required_fields(
     jsonified_request["newPath"] = "new_path_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).move_directory._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20518,7 +20508,7 @@ def test_move_directory_rest_required_fields(
     assert jsonified_request["newPath"] == "new_path_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20561,7 +20551,7 @@ def test_move_directory_rest_required_fields(
 
 def test_move_directory_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.move_directory._get_unset_required_fields({})
@@ -20580,7 +20570,7 @@ def test_move_directory_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_move_directory_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -20634,7 +20624,7 @@ def test_move_directory_rest_bad_request(
     transport: str = "rest", request_type=dataform.MoveDirectoryRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20658,7 +20648,7 @@ def test_move_directory_rest_bad_request(
 
 def test_move_directory_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -20671,7 +20661,7 @@ def test_move_directory_rest_error():
 )
 def test_read_file_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20724,7 +20714,7 @@ def test_read_file_rest_required_fields(request_type=dataform.ReadFileRequest):
     assert "path" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).read_file._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20736,7 +20726,7 @@ def test_read_file_rest_required_fields(request_type=dataform.ReadFileRequest):
     jsonified_request["path"] = "path_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).read_file._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("path",))
@@ -20749,7 +20739,7 @@ def test_read_file_rest_required_fields(request_type=dataform.ReadFileRequest):
     assert jsonified_request["path"] == "path_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -20797,7 +20787,7 @@ def test_read_file_rest_required_fields(request_type=dataform.ReadFileRequest):
 
 def test_read_file_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.read_file._get_unset_required_fields({})
@@ -20815,7 +20805,7 @@ def test_read_file_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_read_file_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -20869,7 +20859,7 @@ def test_read_file_rest_bad_request(
     transport: str = "rest", request_type=dataform.ReadFileRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -20893,7 +20883,7 @@ def test_read_file_rest_bad_request(
 
 def test_read_file_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -20906,7 +20896,7 @@ def test_read_file_rest_error():
 )
 def test_remove_file_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -20953,7 +20943,7 @@ def test_remove_file_rest_required_fields(request_type=dataform.RemoveFileReques
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).remove_file._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20963,7 +20953,7 @@ def test_remove_file_rest_required_fields(request_type=dataform.RemoveFileReques
     jsonified_request["path"] = "path_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).remove_file._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -20974,7 +20964,7 @@ def test_remove_file_rest_required_fields(request_type=dataform.RemoveFileReques
     assert jsonified_request["path"] == "path_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -21014,7 +21004,7 @@ def test_remove_file_rest_required_fields(request_type=dataform.RemoveFileReques
 
 def test_remove_file_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.remove_file._get_unset_required_fields({})
@@ -21032,7 +21022,7 @@ def test_remove_file_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_remove_file_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -21078,7 +21068,7 @@ def test_remove_file_rest_bad_request(
     transport: str = "rest", request_type=dataform.RemoveFileRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21102,7 +21092,7 @@ def test_remove_file_rest_bad_request(
 
 def test_remove_file_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -21115,7 +21105,7 @@ def test_remove_file_rest_error():
 )
 def test_move_file_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21165,7 +21155,7 @@ def test_move_file_rest_required_fields(request_type=dataform.MoveFileRequest):
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).move_file._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21176,7 +21166,7 @@ def test_move_file_rest_required_fields(request_type=dataform.MoveFileRequest):
     jsonified_request["newPath"] = "new_path_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).move_file._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21189,7 +21179,7 @@ def test_move_file_rest_required_fields(request_type=dataform.MoveFileRequest):
     assert jsonified_request["newPath"] == "new_path_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -21232,7 +21222,7 @@ def test_move_file_rest_required_fields(request_type=dataform.MoveFileRequest):
 
 def test_move_file_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.move_file._get_unset_required_fields({})
@@ -21251,7 +21241,7 @@ def test_move_file_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_move_file_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -21305,7 +21295,7 @@ def test_move_file_rest_bad_request(
     transport: str = "rest", request_type=dataform.MoveFileRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21329,7 +21319,7 @@ def test_move_file_rest_bad_request(
 
 def test_move_file_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -21342,7 +21332,7 @@ def test_move_file_rest_error():
 )
 def test_write_file_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21392,7 +21382,7 @@ def test_write_file_rest_required_fields(request_type=dataform.WriteFileRequest)
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).write_file._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21403,7 +21393,7 @@ def test_write_file_rest_required_fields(request_type=dataform.WriteFileRequest)
     jsonified_request["contents"] = b"contents_blob"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).write_file._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21416,7 +21406,7 @@ def test_write_file_rest_required_fields(request_type=dataform.WriteFileRequest)
     assert jsonified_request["contents"] == b"contents_blob"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -21459,7 +21449,7 @@ def test_write_file_rest_required_fields(request_type=dataform.WriteFileRequest)
 
 def test_write_file_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.write_file._get_unset_required_fields({})
@@ -21478,7 +21468,7 @@ def test_write_file_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_write_file_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -21532,7 +21522,7 @@ def test_write_file_rest_bad_request(
     transport: str = "rest", request_type=dataform.WriteFileRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21556,7 +21546,7 @@ def test_write_file_rest_bad_request(
 
 def test_write_file_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -21569,7 +21559,7 @@ def test_write_file_rest_error():
 )
 def test_list_release_configs_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21622,7 +21612,7 @@ def test_list_release_configs_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_release_configs._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21631,7 +21621,7 @@ def test_list_release_configs_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_release_configs._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -21647,7 +21637,7 @@ def test_list_release_configs_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -21689,7 +21679,7 @@ def test_list_release_configs_rest_required_fields(
 
 def test_list_release_configs_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_release_configs._get_unset_required_fields({})
@@ -21707,7 +21697,7 @@ def test_list_release_configs_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_release_configs_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -21763,7 +21753,7 @@ def test_list_release_configs_rest_bad_request(
     transport: str = "rest", request_type=dataform.ListReleaseConfigsRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21785,7 +21775,7 @@ def test_list_release_configs_rest_bad_request(
 
 def test_list_release_configs_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21829,7 +21819,7 @@ def test_list_release_configs_rest_flattened():
 
 def test_list_release_configs_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21844,7 +21834,7 @@ def test_list_release_configs_rest_flattened_error(transport: str = "rest"):
 
 def test_list_release_configs_rest_pager(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -21916,7 +21906,7 @@ def test_list_release_configs_rest_pager(transport: str = "rest"):
 )
 def test_get_release_config_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -21977,7 +21967,7 @@ def test_get_release_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_release_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21986,7 +21976,7 @@ def test_get_release_config_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_release_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -21995,7 +21985,7 @@ def test_get_release_config_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -22037,7 +22027,7 @@ def test_get_release_config_rest_required_fields(
 
 def test_get_release_config_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_release_config._get_unset_required_fields({})
@@ -22047,7 +22037,7 @@ def test_get_release_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_release_config_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -22103,7 +22093,7 @@ def test_get_release_config_rest_bad_request(
     transport: str = "rest", request_type=dataform.GetReleaseConfigRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22127,7 +22117,7 @@ def test_get_release_config_rest_bad_request(
 
 def test_get_release_config_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22171,7 +22161,7 @@ def test_get_release_config_rest_flattened():
 
 def test_get_release_config_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22186,7 +22176,7 @@ def test_get_release_config_rest_flattened_error(transport: str = "rest"):
 
 def test_get_release_config_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -22199,7 +22189,7 @@ def test_get_release_config_rest_error():
 )
 def test_create_release_config_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22360,7 +22350,7 @@ def test_create_release_config_rest_required_fields(
     assert "releaseConfigId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_release_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -22372,7 +22362,7 @@ def test_create_release_config_rest_required_fields(
     jsonified_request["releaseConfigId"] = "release_config_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_release_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("release_config_id",))
@@ -22385,7 +22375,7 @@ def test_create_release_config_rest_required_fields(
     assert jsonified_request["releaseConfigId"] == "release_config_id_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -22434,7 +22424,7 @@ def test_create_release_config_rest_required_fields(
 
 def test_create_release_config_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_release_config._get_unset_required_fields({})
@@ -22453,7 +22443,7 @@ def test_create_release_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_release_config_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -22509,7 +22499,7 @@ def test_create_release_config_rest_bad_request(
     transport: str = "rest", request_type=dataform.CreateReleaseConfigRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22531,7 +22521,7 @@ def test_create_release_config_rest_bad_request(
 
 def test_create_release_config_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22577,7 +22567,7 @@ def test_create_release_config_rest_flattened():
 
 def test_create_release_config_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22594,7 +22584,7 @@ def test_create_release_config_rest_flattened_error(transport: str = "rest"):
 
 def test_create_release_config_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -22607,7 +22597,7 @@ def test_create_release_config_rest_error():
 )
 def test_update_release_config_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22769,14 +22759,14 @@ def test_update_release_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_release_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_release_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -22785,7 +22775,7 @@ def test_update_release_config_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -22828,7 +22818,7 @@ def test_update_release_config_rest_required_fields(
 
 def test_update_release_config_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_release_config._get_unset_required_fields({})
@@ -22838,7 +22828,7 @@ def test_update_release_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_release_config_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -22894,7 +22884,7 @@ def test_update_release_config_rest_bad_request(
     transport: str = "rest", request_type=dataform.UpdateReleaseConfigRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22920,7 +22910,7 @@ def test_update_release_config_rest_bad_request(
 
 def test_update_release_config_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -22967,7 +22957,7 @@ def test_update_release_config_rest_flattened():
 
 def test_update_release_config_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -22983,7 +22973,7 @@ def test_update_release_config_rest_flattened_error(transport: str = "rest"):
 
 def test_update_release_config_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -22996,7 +22986,7 @@ def test_update_release_config_rest_error():
 )
 def test_delete_release_config_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23044,7 +23034,7 @@ def test_delete_release_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_release_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23053,7 +23043,7 @@ def test_delete_release_config_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_release_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23062,7 +23052,7 @@ def test_delete_release_config_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -23101,7 +23091,7 @@ def test_delete_release_config_rest_required_fields(
 
 def test_delete_release_config_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_release_config._get_unset_required_fields({})
@@ -23111,7 +23101,7 @@ def test_delete_release_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_release_config_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -23159,7 +23149,7 @@ def test_delete_release_config_rest_bad_request(
     transport: str = "rest", request_type=dataform.DeleteReleaseConfigRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23183,7 +23173,7 @@ def test_delete_release_config_rest_bad_request(
 
 def test_delete_release_config_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23225,7 +23215,7 @@ def test_delete_release_config_rest_flattened():
 
 def test_delete_release_config_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23240,7 +23230,7 @@ def test_delete_release_config_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_release_config_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -23253,7 +23243,7 @@ def test_delete_release_config_rest_error():
 )
 def test_list_compilation_results_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23306,7 +23296,7 @@ def test_list_compilation_results_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_compilation_results._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23315,7 +23305,7 @@ def test_list_compilation_results_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_compilation_results._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -23331,7 +23321,7 @@ def test_list_compilation_results_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -23373,7 +23363,7 @@ def test_list_compilation_results_rest_required_fields(
 
 def test_list_compilation_results_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_compilation_results._get_unset_required_fields({})
@@ -23391,7 +23381,7 @@ def test_list_compilation_results_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_compilation_results_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -23447,7 +23437,7 @@ def test_list_compilation_results_rest_bad_request(
     transport: str = "rest", request_type=dataform.ListCompilationResultsRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23469,7 +23459,7 @@ def test_list_compilation_results_rest_bad_request(
 
 def test_list_compilation_results_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23513,7 +23503,7 @@ def test_list_compilation_results_rest_flattened():
 
 def test_list_compilation_results_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23528,7 +23518,7 @@ def test_list_compilation_results_rest_flattened_error(transport: str = "rest"):
 
 def test_list_compilation_results_rest_pager(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23600,7 +23590,7 @@ def test_list_compilation_results_rest_pager(transport: str = "rest"):
 )
 def test_get_compilation_result_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23658,7 +23648,7 @@ def test_get_compilation_result_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_compilation_result._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23667,7 +23657,7 @@ def test_get_compilation_result_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_compilation_result._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -23676,7 +23666,7 @@ def test_get_compilation_result_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -23718,7 +23708,7 @@ def test_get_compilation_result_rest_required_fields(
 
 def test_get_compilation_result_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_compilation_result._get_unset_required_fields({})
@@ -23728,7 +23718,7 @@ def test_get_compilation_result_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_compilation_result_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -23784,7 +23774,7 @@ def test_get_compilation_result_rest_bad_request(
     transport: str = "rest", request_type=dataform.GetCompilationResultRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23808,7 +23798,7 @@ def test_get_compilation_result_rest_bad_request(
 
 def test_get_compilation_result_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -23852,7 +23842,7 @@ def test_get_compilation_result_rest_flattened():
 
 def test_get_compilation_result_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -23867,7 +23857,7 @@ def test_get_compilation_result_rest_flattened_error(transport: str = "rest"):
 
 def test_get_compilation_result_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -23880,7 +23870,7 @@ def test_get_compilation_result_rest_error():
 )
 def test_create_compilation_result_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24035,7 +24025,7 @@ def test_create_compilation_result_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_compilation_result._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -24044,7 +24034,7 @@ def test_create_compilation_result_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_compilation_result._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -24053,7 +24043,7 @@ def test_create_compilation_result_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -24096,7 +24086,7 @@ def test_create_compilation_result_rest_required_fields(
 
 def test_create_compilation_result_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_compilation_result._get_unset_required_fields({})
@@ -24114,7 +24104,7 @@ def test_create_compilation_result_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_compilation_result_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -24170,7 +24160,7 @@ def test_create_compilation_result_rest_bad_request(
     transport: str = "rest", request_type=dataform.CreateCompilationResultRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24192,7 +24182,7 @@ def test_create_compilation_result_rest_bad_request(
 
 def test_create_compilation_result_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24237,7 +24227,7 @@ def test_create_compilation_result_rest_flattened():
 
 def test_create_compilation_result_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24253,7 +24243,7 @@ def test_create_compilation_result_rest_flattened_error(transport: str = "rest")
 
 def test_create_compilation_result_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -24266,7 +24256,7 @@ def test_create_compilation_result_rest_error():
 )
 def test_query_compilation_result_actions_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24319,7 +24309,7 @@ def test_query_compilation_result_actions_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).query_compilation_result_actions._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -24328,7 +24318,7 @@ def test_query_compilation_result_actions_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).query_compilation_result_actions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -24345,7 +24335,7 @@ def test_query_compilation_result_actions_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -24389,7 +24379,7 @@ def test_query_compilation_result_actions_rest_required_fields(
 
 def test_query_compilation_result_actions_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = (
@@ -24410,7 +24400,7 @@ def test_query_compilation_result_actions_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_query_compilation_result_actions_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -24468,7 +24458,7 @@ def test_query_compilation_result_actions_rest_bad_request(
     transport: str = "rest", request_type=dataform.QueryCompilationResultActionsRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24492,7 +24482,7 @@ def test_query_compilation_result_actions_rest_bad_request(
 
 def test_query_compilation_result_actions_rest_pager(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24566,7 +24556,7 @@ def test_query_compilation_result_actions_rest_pager(transport: str = "rest"):
 )
 def test_list_workflow_configs_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24619,7 +24609,7 @@ def test_list_workflow_configs_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_workflow_configs._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -24628,7 +24618,7 @@ def test_list_workflow_configs_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_workflow_configs._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -24644,7 +24634,7 @@ def test_list_workflow_configs_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -24686,7 +24676,7 @@ def test_list_workflow_configs_rest_required_fields(
 
 def test_list_workflow_configs_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_workflow_configs._get_unset_required_fields({})
@@ -24704,7 +24694,7 @@ def test_list_workflow_configs_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_workflow_configs_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -24760,7 +24750,7 @@ def test_list_workflow_configs_rest_bad_request(
     transport: str = "rest", request_type=dataform.ListWorkflowConfigsRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24782,7 +24772,7 @@ def test_list_workflow_configs_rest_bad_request(
 
 def test_list_workflow_configs_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24826,7 +24816,7 @@ def test_list_workflow_configs_rest_flattened():
 
 def test_list_workflow_configs_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24841,7 +24831,7 @@ def test_list_workflow_configs_rest_flattened_error(transport: str = "rest"):
 
 def test_list_workflow_configs_rest_pager(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -24913,7 +24903,7 @@ def test_list_workflow_configs_rest_pager(transport: str = "rest"):
 )
 def test_get_workflow_config_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -24972,7 +24962,7 @@ def test_get_workflow_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_workflow_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -24981,7 +24971,7 @@ def test_get_workflow_config_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_workflow_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -24990,7 +24980,7 @@ def test_get_workflow_config_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -25032,7 +25022,7 @@ def test_get_workflow_config_rest_required_fields(
 
 def test_get_workflow_config_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_workflow_config._get_unset_required_fields({})
@@ -25042,7 +25032,7 @@ def test_get_workflow_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_workflow_config_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -25098,7 +25088,7 @@ def test_get_workflow_config_rest_bad_request(
     transport: str = "rest", request_type=dataform.GetWorkflowConfigRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25122,7 +25112,7 @@ def test_get_workflow_config_rest_bad_request(
 
 def test_get_workflow_config_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -25166,7 +25156,7 @@ def test_get_workflow_config_rest_flattened():
 
 def test_get_workflow_config_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25181,7 +25171,7 @@ def test_get_workflow_config_rest_flattened_error(transport: str = "rest"):
 
 def test_get_workflow_config_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -25194,7 +25184,7 @@ def test_get_workflow_config_rest_error():
 )
 def test_create_workflow_config_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -25356,7 +25346,7 @@ def test_create_workflow_config_rest_required_fields(
     assert "workflowConfigId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_workflow_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -25368,7 +25358,7 @@ def test_create_workflow_config_rest_required_fields(
     jsonified_request["workflowConfigId"] = "workflow_config_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_workflow_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("workflow_config_id",))
@@ -25381,7 +25371,7 @@ def test_create_workflow_config_rest_required_fields(
     assert jsonified_request["workflowConfigId"] == "workflow_config_id_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -25430,7 +25420,7 @@ def test_create_workflow_config_rest_required_fields(
 
 def test_create_workflow_config_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_workflow_config._get_unset_required_fields({})
@@ -25449,7 +25439,7 @@ def test_create_workflow_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_workflow_config_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -25505,7 +25495,7 @@ def test_create_workflow_config_rest_bad_request(
     transport: str = "rest", request_type=dataform.CreateWorkflowConfigRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25527,7 +25517,7 @@ def test_create_workflow_config_rest_bad_request(
 
 def test_create_workflow_config_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -25573,7 +25563,7 @@ def test_create_workflow_config_rest_flattened():
 
 def test_create_workflow_config_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25590,7 +25580,7 @@ def test_create_workflow_config_rest_flattened_error(transport: str = "rest"):
 
 def test_create_workflow_config_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -25603,7 +25593,7 @@ def test_create_workflow_config_rest_error():
 )
 def test_update_workflow_config_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -25766,14 +25756,14 @@ def test_update_workflow_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_workflow_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_workflow_config._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -25782,7 +25772,7 @@ def test_update_workflow_config_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -25825,7 +25815,7 @@ def test_update_workflow_config_rest_required_fields(
 
 def test_update_workflow_config_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_workflow_config._get_unset_required_fields({})
@@ -25835,7 +25825,7 @@ def test_update_workflow_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_workflow_config_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -25891,7 +25881,7 @@ def test_update_workflow_config_rest_bad_request(
     transport: str = "rest", request_type=dataform.UpdateWorkflowConfigRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25917,7 +25907,7 @@ def test_update_workflow_config_rest_bad_request(
 
 def test_update_workflow_config_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -25964,7 +25954,7 @@ def test_update_workflow_config_rest_flattened():
 
 def test_update_workflow_config_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -25980,7 +25970,7 @@ def test_update_workflow_config_rest_flattened_error(transport: str = "rest"):
 
 def test_update_workflow_config_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -25993,7 +25983,7 @@ def test_update_workflow_config_rest_error():
 )
 def test_delete_workflow_config_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -26041,7 +26031,7 @@ def test_delete_workflow_config_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_workflow_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -26050,7 +26040,7 @@ def test_delete_workflow_config_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_workflow_config._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -26059,7 +26049,7 @@ def test_delete_workflow_config_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -26098,7 +26088,7 @@ def test_delete_workflow_config_rest_required_fields(
 
 def test_delete_workflow_config_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_workflow_config._get_unset_required_fields({})
@@ -26108,7 +26098,7 @@ def test_delete_workflow_config_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_workflow_config_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -26156,7 +26146,7 @@ def test_delete_workflow_config_rest_bad_request(
     transport: str = "rest", request_type=dataform.DeleteWorkflowConfigRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26180,7 +26170,7 @@ def test_delete_workflow_config_rest_bad_request(
 
 def test_delete_workflow_config_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -26222,7 +26212,7 @@ def test_delete_workflow_config_rest_flattened():
 
 def test_delete_workflow_config_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26237,7 +26227,7 @@ def test_delete_workflow_config_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_workflow_config_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -26250,7 +26240,7 @@ def test_delete_workflow_config_rest_error():
 )
 def test_list_workflow_invocations_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -26303,7 +26293,7 @@ def test_list_workflow_invocations_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_workflow_invocations._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -26312,7 +26302,7 @@ def test_list_workflow_invocations_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_workflow_invocations._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -26330,7 +26320,7 @@ def test_list_workflow_invocations_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -26372,7 +26362,7 @@ def test_list_workflow_invocations_rest_required_fields(
 
 def test_list_workflow_invocations_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_workflow_invocations._get_unset_required_fields({})
@@ -26392,7 +26382,7 @@ def test_list_workflow_invocations_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_workflow_invocations_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -26448,7 +26438,7 @@ def test_list_workflow_invocations_rest_bad_request(
     transport: str = "rest", request_type=dataform.ListWorkflowInvocationsRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26470,7 +26460,7 @@ def test_list_workflow_invocations_rest_bad_request(
 
 def test_list_workflow_invocations_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -26514,7 +26504,7 @@ def test_list_workflow_invocations_rest_flattened():
 
 def test_list_workflow_invocations_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26529,7 +26519,7 @@ def test_list_workflow_invocations_rest_flattened_error(transport: str = "rest")
 
 def test_list_workflow_invocations_rest_pager(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26601,7 +26591,7 @@ def test_list_workflow_invocations_rest_pager(transport: str = "rest"):
 )
 def test_get_workflow_invocation_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -26657,7 +26647,7 @@ def test_get_workflow_invocation_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_workflow_invocation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -26666,7 +26656,7 @@ def test_get_workflow_invocation_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_workflow_invocation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -26675,7 +26665,7 @@ def test_get_workflow_invocation_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -26717,7 +26707,7 @@ def test_get_workflow_invocation_rest_required_fields(
 
 def test_get_workflow_invocation_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_workflow_invocation._get_unset_required_fields({})
@@ -26727,7 +26717,7 @@ def test_get_workflow_invocation_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_workflow_invocation_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -26783,7 +26773,7 @@ def test_get_workflow_invocation_rest_bad_request(
     transport: str = "rest", request_type=dataform.GetWorkflowInvocationRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26807,7 +26797,7 @@ def test_get_workflow_invocation_rest_bad_request(
 
 def test_get_workflow_invocation_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -26851,7 +26841,7 @@ def test_get_workflow_invocation_rest_flattened():
 
 def test_get_workflow_invocation_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -26866,7 +26856,7 @@ def test_get_workflow_invocation_rest_flattened_error(transport: str = "rest"):
 
 def test_get_workflow_invocation_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -26879,7 +26869,7 @@ def test_get_workflow_invocation_rest_error():
 )
 def test_create_workflow_invocation_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -27026,7 +27016,7 @@ def test_create_workflow_invocation_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_workflow_invocation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -27035,7 +27025,7 @@ def test_create_workflow_invocation_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_workflow_invocation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -27044,7 +27034,7 @@ def test_create_workflow_invocation_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -27087,7 +27077,7 @@ def test_create_workflow_invocation_rest_required_fields(
 
 def test_create_workflow_invocation_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_workflow_invocation._get_unset_required_fields({})
@@ -27105,7 +27095,7 @@ def test_create_workflow_invocation_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_workflow_invocation_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -27161,7 +27151,7 @@ def test_create_workflow_invocation_rest_bad_request(
     transport: str = "rest", request_type=dataform.CreateWorkflowInvocationRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27183,7 +27173,7 @@ def test_create_workflow_invocation_rest_bad_request(
 
 def test_create_workflow_invocation_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -27228,7 +27218,7 @@ def test_create_workflow_invocation_rest_flattened():
 
 def test_create_workflow_invocation_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27244,7 +27234,7 @@ def test_create_workflow_invocation_rest_flattened_error(transport: str = "rest"
 
 def test_create_workflow_invocation_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -27257,7 +27247,7 @@ def test_create_workflow_invocation_rest_error():
 )
 def test_delete_workflow_invocation_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -27305,7 +27295,7 @@ def test_delete_workflow_invocation_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_workflow_invocation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -27314,7 +27304,7 @@ def test_delete_workflow_invocation_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_workflow_invocation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -27323,7 +27313,7 @@ def test_delete_workflow_invocation_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -27362,7 +27352,7 @@ def test_delete_workflow_invocation_rest_required_fields(
 
 def test_delete_workflow_invocation_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_workflow_invocation._get_unset_required_fields({})
@@ -27372,7 +27362,7 @@ def test_delete_workflow_invocation_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_workflow_invocation_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -27420,7 +27410,7 @@ def test_delete_workflow_invocation_rest_bad_request(
     transport: str = "rest", request_type=dataform.DeleteWorkflowInvocationRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27444,7 +27434,7 @@ def test_delete_workflow_invocation_rest_bad_request(
 
 def test_delete_workflow_invocation_rest_flattened():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -27486,7 +27476,7 @@ def test_delete_workflow_invocation_rest_flattened():
 
 def test_delete_workflow_invocation_rest_flattened_error(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27501,7 +27491,7 @@ def test_delete_workflow_invocation_rest_flattened_error(transport: str = "rest"
 
 def test_delete_workflow_invocation_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -27514,7 +27504,7 @@ def test_delete_workflow_invocation_rest_error():
 )
 def test_cancel_workflow_invocation_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -27562,7 +27552,7 @@ def test_cancel_workflow_invocation_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).cancel_workflow_invocation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -27571,7 +27561,7 @@ def test_cancel_workflow_invocation_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).cancel_workflow_invocation._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -27580,7 +27570,7 @@ def test_cancel_workflow_invocation_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -27620,7 +27610,7 @@ def test_cancel_workflow_invocation_rest_required_fields(
 
 def test_cancel_workflow_invocation_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.cancel_workflow_invocation._get_unset_required_fields({})
@@ -27630,7 +27620,7 @@ def test_cancel_workflow_invocation_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_cancel_workflow_invocation_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -27678,7 +27668,7 @@ def test_cancel_workflow_invocation_rest_bad_request(
     transport: str = "rest", request_type=dataform.CancelWorkflowInvocationRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27702,7 +27692,7 @@ def test_cancel_workflow_invocation_rest_bad_request(
 
 def test_cancel_workflow_invocation_rest_error():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -27715,7 +27705,7 @@ def test_cancel_workflow_invocation_rest_error():
 )
 def test_query_workflow_invocation_actions_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -27768,7 +27758,7 @@ def test_query_workflow_invocation_actions_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).query_workflow_invocation_actions._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -27777,7 +27767,7 @@ def test_query_workflow_invocation_actions_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).query_workflow_invocation_actions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -27793,7 +27783,7 @@ def test_query_workflow_invocation_actions_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -27837,7 +27827,7 @@ def test_query_workflow_invocation_actions_rest_required_fields(
 
 def test_query_workflow_invocation_actions_rest_unset_required_fields():
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = (
@@ -27857,7 +27847,7 @@ def test_query_workflow_invocation_actions_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_query_workflow_invocation_actions_rest_interceptors(null_interceptor):
     transport = transports.DataformRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None if null_interceptor else transports.DataformRestInterceptor(),
     )
     client = DataformClient(transport=transport)
@@ -27915,7 +27905,7 @@ def test_query_workflow_invocation_actions_rest_bad_request(
     transport: str = "rest", request_type=dataform.QueryWorkflowInvocationActionsRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -27939,7 +27929,7 @@ def test_query_workflow_invocation_actions_rest_bad_request(
 
 def test_query_workflow_invocation_actions_rest_pager(transport: str = "rest"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -28007,17 +27997,17 @@ def test_query_workflow_invocation_actions_rest_pager(transport: str = "rest"):
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DataformGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = DataformClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.DataformGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = DataformClient(
@@ -28027,7 +28017,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.DataformGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -28042,13 +28032,12 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = DataformClient(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.DataformGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = DataformClient(
@@ -28060,7 +28049,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.DataformGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = DataformClient(transport=transport)
     assert client.transport is transport
@@ -28069,13 +28058,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.DataformGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.DataformGrpcAsyncIOTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -28092,7 +28081,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -28106,7 +28095,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = DataformClient.get_transport_class(transport_name)(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
 
@@ -28114,7 +28103,7 @@ def test_transport_kind(transport_name):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
@@ -28126,7 +28115,7 @@ def test_dataform_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.DataformTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -28138,7 +28127,7 @@ def test_dataform_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.DataformTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -28225,7 +28214,7 @@ def test_dataform_base_transport_with_credentials_file():
         "google.cloud.dataform_v1beta1.services.dataform.transports.DataformTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DataformTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -28244,7 +28233,7 @@ def test_dataform_base_transport_with_adc():
         "google.cloud.dataform_v1beta1.services.dataform.transports.DataformTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DataformTransport()
         adc.assert_called_once()
 
@@ -28252,7 +28241,7 @@ def test_dataform_base_transport_with_adc():
 def test_dataform_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         DataformClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -28272,7 +28261,7 @@ def test_dataform_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -28319,7 +28308,7 @@ def test_dataform_transport_create_channel(transport_class, grpc_helpers):
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
@@ -28344,7 +28333,7 @@ def test_dataform_transport_create_channel(transport_class, grpc_helpers):
     [transports.DataformGrpcTransport, transports.DataformGrpcAsyncIOTransport],
 )
 def test_dataform_grpc_transport_client_cert_source_for_mtls(transport_class):
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -28382,7 +28371,7 @@ def test_dataform_grpc_transport_client_cert_source_for_mtls(transport_class):
 
 
 def test_dataform_http_transport_client_cert_source_for_mtls():
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -28402,7 +28391,7 @@ def test_dataform_http_transport_client_cert_source_for_mtls():
 )
 def test_dataform_host_no_port(transport_name):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="dataform.googleapis.com"
         ),
@@ -28425,7 +28414,7 @@ def test_dataform_host_no_port(transport_name):
 )
 def test_dataform_host_with_port(transport_name):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="dataform.googleapis.com:8000"
         ),
@@ -28445,8 +28434,8 @@ def test_dataform_host_with_port(transport_name):
     ],
 )
 def test_dataform_client_transport_session_collision(transport_name):
-    creds1 = _AnonymousCredentialsWithUniverseDomain()
-    creds2 = _AnonymousCredentialsWithUniverseDomain()
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
     client1 = DataformClient(
         credentials=creds1,
         transport=transport_name,
@@ -28655,7 +28644,7 @@ def test_dataform_transport_channel_mtls_with_client_cert_source(transport_class
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = _AnonymousCredentialsWithUniverseDomain()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
@@ -29045,7 +29034,7 @@ def test_client_with_default_client_info():
         transports.DataformTransport, "_prep_wrapped_messages"
     ) as prep:
         client = DataformClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -29055,7 +29044,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = DataformClient.get_transport_class()
         transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -29064,7 +29053,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(
@@ -29079,7 +29068,7 @@ def test_get_location_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.GetLocationRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29109,7 +29098,7 @@ def test_get_location_rest_bad_request(
 )
 def test_get_location_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2"}
@@ -29137,7 +29126,7 @@ def test_list_locations_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29165,7 +29154,7 @@ def test_list_locations_rest_bad_request(
 )
 def test_list_locations_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1"}
@@ -29193,7 +29182,7 @@ def test_get_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29223,7 +29212,7 @@ def test_get_iam_policy_rest_bad_request(
 )
 def test_get_iam_policy_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {
@@ -29253,7 +29242,7 @@ def test_set_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29283,7 +29272,7 @@ def test_set_iam_policy_rest_bad_request(
 )
 def test_set_iam_policy_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {
@@ -29313,7 +29302,7 @@ def test_test_iam_permissions_rest_bad_request(
     transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
 ):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29343,7 +29332,7 @@ def test_test_iam_permissions_rest_bad_request(
 )
 def test_test_iam_permissions_rest(request_type):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {
@@ -29371,7 +29360,7 @@ def test_test_iam_permissions_rest(request_type):
 
 def test_list_locations(transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29396,7 +29385,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29422,7 +29411,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
 
 def test_list_locations_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -29451,7 +29440,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -29480,7 +29469,7 @@ async def test_list_locations_field_headers_async():
 
 def test_list_locations_from_dict():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -29498,7 +29487,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -29516,7 +29505,7 @@ async def test_list_locations_from_dict_async():
 
 def test_get_location(transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29541,7 +29530,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29566,7 +29555,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_location_field_headers():
-    client = DataformClient(credentials=_AnonymousCredentialsWithUniverseDomain())
+    client = DataformClient(credentials=ga_credentials.AnonymousCredentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -29593,7 +29582,7 @@ def test_get_location_field_headers():
 
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
-    client = DataformAsyncClient(credentials=_AnonymousCredentialsWithUniverseDomain())
+    client = DataformAsyncClient(credentials=ga_credentials.AnonymousCredentials())
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -29621,7 +29610,7 @@ async def test_get_location_field_headers_async():
 
 def test_get_location_from_dict():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -29639,7 +29628,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -29657,7 +29646,7 @@ async def test_get_location_from_dict_async():
 
 def test_set_iam_policy(transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29690,7 +29679,7 @@ def test_set_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29725,7 +29714,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
 
 def test_set_iam_policy_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -29755,7 +29744,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -29784,7 +29773,7 @@ async def test_set_iam_policy_field_headers_async():
 
 def test_set_iam_policy_from_dict():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -29803,7 +29792,7 @@ def test_set_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -29821,7 +29810,7 @@ async def test_set_iam_policy_from_dict_async():
 
 def test_get_iam_policy(transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29856,7 +29845,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -29892,7 +29881,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
 
 def test_get_iam_policy_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -29922,7 +29911,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -29951,7 +29940,7 @@ async def test_get_iam_policy_field_headers_async():
 
 def test_get_iam_policy_from_dict():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -29970,7 +29959,7 @@ def test_get_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -29988,7 +29977,7 @@ async def test_get_iam_policy_from_dict_async():
 
 def test_test_iam_permissions(transport: str = "grpc"):
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -30022,7 +30011,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -30057,7 +30046,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
 
 def test_test_iam_permissions_field_headers():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -30089,7 +30078,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -30122,7 +30111,7 @@ async def test_test_iam_permissions_field_headers_async():
 
 def test_test_iam_permissions_from_dict():
     client = DataformClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -30143,7 +30132,7 @@ def test_test_iam_permissions_from_dict():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
     client = DataformAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -30171,7 +30160,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = DataformClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -30188,7 +30177,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = DataformClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
