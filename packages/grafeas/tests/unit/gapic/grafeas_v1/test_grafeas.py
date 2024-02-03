@@ -27,7 +27,7 @@ import json
 import math
 
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
-from google.api_core import client_options
+from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
 import google.auth
 from google.auth import credentials as ga_credentials
@@ -569,7 +569,7 @@ async def test_list_occurrences_flattened_error_async():
 
 def test_list_occurrences_pager(transport_name: str = "grpc"):
     client = GrafeasClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -619,7 +619,7 @@ def test_list_occurrences_pager(transport_name: str = "grpc"):
 
 def test_list_occurrences_pages(transport_name: str = "grpc"):
     client = GrafeasClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -661,7 +661,7 @@ def test_list_occurrences_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_occurrences_async_pager():
     client = GrafeasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -711,7 +711,7 @@ async def test_list_occurrences_async_pager():
 @pytest.mark.asyncio
 async def test_list_occurrences_async_pages():
     client = GrafeasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2533,7 +2533,7 @@ async def test_list_notes_flattened_error_async():
 
 def test_list_notes_pager(transport_name: str = "grpc"):
     client = GrafeasClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2583,7 +2583,7 @@ def test_list_notes_pager(transport_name: str = "grpc"):
 
 def test_list_notes_pages(transport_name: str = "grpc"):
     client = GrafeasClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2625,7 +2625,7 @@ def test_list_notes_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_notes_async_pager():
     client = GrafeasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2675,7 +2675,7 @@ async def test_list_notes_async_pager():
 @pytest.mark.asyncio
 async def test_list_notes_async_pages():
     client = GrafeasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3977,7 +3977,7 @@ async def test_list_note_occurrences_flattened_error_async():
 
 def test_list_note_occurrences_pager(transport_name: str = "grpc"):
     client = GrafeasClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4029,7 +4029,7 @@ def test_list_note_occurrences_pager(transport_name: str = "grpc"):
 
 def test_list_note_occurrences_pages(transport_name: str = "grpc"):
     client = GrafeasClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4073,7 +4073,7 @@ def test_list_note_occurrences_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_note_occurrences_async_pager():
     client = GrafeasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4125,7 +4125,7 @@ async def test_list_note_occurrences_async_pager():
 @pytest.mark.asyncio
 async def test_list_note_occurrences_async_pages():
     client = GrafeasAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
