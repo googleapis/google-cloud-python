@@ -67,6 +67,9 @@ class ProcessorVersion(proto.Message):
         deprecation_info (google.cloud.documentai_v1.types.ProcessorVersion.DeprecationInfo):
             If set, information about the eventual
             deprecation of this version.
+        model_type (google.cloud.documentai_v1.types.ProcessorVersion.ModelType):
+            Output only. The model type of this processor
+            version.
     """
 
     class State(proto.Enum):
@@ -105,6 +108,23 @@ class ProcessorVersion(proto.Message):
         DELETING = 6
         FAILED = 7
         IMPORTING = 8
+
+    class ModelType(proto.Enum):
+        r"""The possible model types of the processor version.
+
+        Values:
+            MODEL_TYPE_UNSPECIFIED (0):
+                The processor version has unspecified model
+                type.
+            MODEL_TYPE_GENERATIVE (1):
+                The processor version has generative model
+                type.
+            MODEL_TYPE_CUSTOM (2):
+                The processor version has custom model type.
+        """
+        MODEL_TYPE_UNSPECIFIED = 0
+        MODEL_TYPE_GENERATIVE = 1
+        MODEL_TYPE_CUSTOM = 2
 
     class DeprecationInfo(proto.Message):
         r"""Information about the upcoming deprecation of this processor
@@ -173,6 +193,11 @@ class ProcessorVersion(proto.Message):
         proto.MESSAGE,
         number=13,
         message=DeprecationInfo,
+    )
+    model_type: ModelType = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum=ModelType,
     )
 
 
