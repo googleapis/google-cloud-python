@@ -38,9 +38,9 @@ from google.oauth2 import service_account  # type: ignore
 from grafeas.grafeas_v1 import gapic_version as package_version
 
 try:
-    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.AsyncRetry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.AsyncRetry, object]  # type: ignore
+    OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
