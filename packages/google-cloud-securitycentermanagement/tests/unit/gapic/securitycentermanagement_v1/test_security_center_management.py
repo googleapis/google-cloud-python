@@ -83,18 +83,6 @@ def modify_default_endpoint_template(client):
     )
 
 
-# Anonymous Credentials with universe domain property. If no universe domain is provided, then
-# the default universe domain is "googleapis.com".
-class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain="googleapis.com"):
-        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
-        self._universe_domain = universe_domain
-
-    @property
-    def universe_domain(self):
-        return self._universe_domain
-
-
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -346,7 +334,7 @@ def test__get_universe_domain():
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
     client = client_class(
-        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
     )
     assert client._validate_universe_domain() == True
 
@@ -373,41 +361,48 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         client = client_class(transport=transport)
         assert client._validate_universe_domain() == True
 
-    # Test the case when there is a universe mismatch from the credentials.
-    client = client_class(
-        transport=transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(
-                universe_domain="foo.com"
-            )
-        )
-    )
-    with pytest.raises(ValueError) as excinfo:
-        client._validate_universe_domain()
-    assert (
-        str(excinfo.value)
-        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-    )
-
-    # Test the case when there is a universe mismatch from the client.
-    #
-    # TODO: Make this test unconditional once the minimum supported version of
-    # google-api-core becomes 2.15.0 or higher.
-    api_core_major, api_core_minor, _ = [
-        int(part) for part in api_core_version.__version__.split(".")
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [
+        int(part) for part in google.auth.__version__.split(".")
     ]
-    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-        client = client_class(
-            client_options={"universe_domain": "bar.com"},
-            transport=transport_class(
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
-            ),
-        )
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(transport=transport_class(credentials=credentials))
         with pytest.raises(ValueError) as excinfo:
             client._validate_universe_domain()
         assert (
             str(excinfo.value)
-            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         )
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor, _ = [
+            int(part) for part in api_core_version.__version__.split(".")
+        ]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(
+                client_options={"universe_domain": "bar.com"},
+                transport=transport_class(
+                    credentials=ga_credentials.AnonymousCredentials(),
+                ),
+            )
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert (
+                str(excinfo.value)
+                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            )
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -421,7 +416,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 def test_security_center_management_client_from_service_account_info(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -475,7 +470,7 @@ def test_security_center_management_client_service_account_always_use_jwt(
 def test_security_center_management_client_from_service_account_file(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -548,9 +543,7 @@ def test_security_center_management_client_client_options(
     with mock.patch.object(
         SecurityCenterManagementClient, "get_transport_class"
     ) as gtc:
-        transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain()
-        )
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -975,20 +968,20 @@ def test_security_center_management_client_client_api_endpoint(client_class):
             )
             client = client_class(
                 client_options=options,
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
+                credentials=ga_credentials.AnonymousCredentials(),
             )
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
@@ -1000,13 +993,11 @@ def test_security_center_management_client_client_api_endpoint(client_class):
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     else:
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     assert client.api_endpoint == (
         mock_endpoint if universe_exists else default_endpoint
@@ -1022,8 +1013,7 @@ def test_security_center_management_client_client_api_endpoint(client_class):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
         assert client.api_endpoint == default_endpoint
 
@@ -1189,8 +1179,8 @@ def test_security_center_management_client_create_channel_credentials_file(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
-        file_creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -1221,7 +1211,7 @@ def test_list_effective_security_health_analytics_custom_modules(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1261,7 +1251,7 @@ def test_list_effective_security_health_analytics_custom_modules_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1285,7 +1275,7 @@ async def test_list_effective_security_health_analytics_custom_modules_async(
     request_type=security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1332,7 +1322,7 @@ async def test_list_effective_security_health_analytics_custom_modules_async_fro
 
 def test_list_effective_security_health_analytics_custom_modules_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1369,7 +1359,7 @@ def test_list_effective_security_health_analytics_custom_modules_field_headers()
 @pytest.mark.asyncio
 async def test_list_effective_security_health_analytics_custom_modules_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1405,7 +1395,7 @@ async def test_list_effective_security_health_analytics_custom_modules_field_hea
 
 def test_list_effective_security_health_analytics_custom_modules_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1434,7 +1424,7 @@ def test_list_effective_security_health_analytics_custom_modules_flattened():
 
 def test_list_effective_security_health_analytics_custom_modules_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1449,7 +1439,7 @@ def test_list_effective_security_health_analytics_custom_modules_flattened_error
 @pytest.mark.asyncio
 async def test_list_effective_security_health_analytics_custom_modules_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1483,7 +1473,7 @@ async def test_list_effective_security_health_analytics_custom_modules_flattened
 @pytest.mark.asyncio
 async def test_list_effective_security_health_analytics_custom_modules_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1499,7 +1489,7 @@ def test_list_effective_security_health_analytics_custom_modules_pager(
     transport_name: str = "grpc",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1562,7 +1552,7 @@ def test_list_effective_security_health_analytics_custom_modules_pages(
     transport_name: str = "grpc",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1611,7 +1601,7 @@ def test_list_effective_security_health_analytics_custom_modules_pages(
 @pytest.mark.asyncio
 async def test_list_effective_security_health_analytics_custom_modules_async_pager():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1671,7 +1661,7 @@ async def test_list_effective_security_health_analytics_custom_modules_async_pag
 @pytest.mark.asyncio
 async def test_list_effective_security_health_analytics_custom_modules_async_pages():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1732,7 +1722,7 @@ def test_get_effective_security_health_analytics_custom_module(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1778,7 +1768,7 @@ def test_get_effective_security_health_analytics_custom_module_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1802,7 +1792,7 @@ async def test_get_effective_security_health_analytics_custom_module_async(
     request_type=security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1857,7 +1847,7 @@ async def test_get_effective_security_health_analytics_custom_module_async_from_
 
 def test_get_effective_security_health_analytics_custom_module_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1894,7 +1884,7 @@ def test_get_effective_security_health_analytics_custom_module_field_headers():
 @pytest.mark.asyncio
 async def test_get_effective_security_health_analytics_custom_module_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1930,7 +1920,7 @@ async def test_get_effective_security_health_analytics_custom_module_field_heade
 
 def test_get_effective_security_health_analytics_custom_module_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1959,7 +1949,7 @@ def test_get_effective_security_health_analytics_custom_module_flattened():
 
 def test_get_effective_security_health_analytics_custom_module_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1974,7 +1964,7 @@ def test_get_effective_security_health_analytics_custom_module_flattened_error()
 @pytest.mark.asyncio
 async def test_get_effective_security_health_analytics_custom_module_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2008,7 +1998,7 @@ async def test_get_effective_security_health_analytics_custom_module_flattened_a
 @pytest.mark.asyncio
 async def test_get_effective_security_health_analytics_custom_module_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2031,7 +2021,7 @@ def test_list_security_health_analytics_custom_modules(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2068,7 +2058,7 @@ def test_list_security_health_analytics_custom_modules_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2091,7 +2081,7 @@ async def test_list_security_health_analytics_custom_modules_async(
     request_type=security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2133,7 +2123,7 @@ async def test_list_security_health_analytics_custom_modules_async_from_dict():
 
 def test_list_security_health_analytics_custom_modules_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2169,7 +2159,7 @@ def test_list_security_health_analytics_custom_modules_field_headers():
 @pytest.mark.asyncio
 async def test_list_security_health_analytics_custom_modules_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2204,7 +2194,7 @@ async def test_list_security_health_analytics_custom_modules_field_headers_async
 
 def test_list_security_health_analytics_custom_modules_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2232,7 +2222,7 @@ def test_list_security_health_analytics_custom_modules_flattened():
 
 def test_list_security_health_analytics_custom_modules_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2247,7 +2237,7 @@ def test_list_security_health_analytics_custom_modules_flattened_error():
 @pytest.mark.asyncio
 async def test_list_security_health_analytics_custom_modules_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2280,7 +2270,7 @@ async def test_list_security_health_analytics_custom_modules_flattened_async():
 @pytest.mark.asyncio
 async def test_list_security_health_analytics_custom_modules_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2296,7 +2286,7 @@ def test_list_security_health_analytics_custom_modules_pager(
     transport_name: str = "grpc",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2355,7 +2345,7 @@ def test_list_security_health_analytics_custom_modules_pages(
     transport_name: str = "grpc",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2401,7 +2391,7 @@ def test_list_security_health_analytics_custom_modules_pages(
 @pytest.mark.asyncio
 async def test_list_security_health_analytics_custom_modules_async_pager():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2458,7 +2448,7 @@ async def test_list_security_health_analytics_custom_modules_async_pager():
 @pytest.mark.asyncio
 async def test_list_security_health_analytics_custom_modules_async_pages():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2517,7 +2507,7 @@ def test_list_descendant_security_health_analytics_custom_modules(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2557,7 +2547,7 @@ def test_list_descendant_security_health_analytics_custom_modules_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2581,7 +2571,7 @@ async def test_list_descendant_security_health_analytics_custom_modules_async(
     request_type=security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2630,7 +2620,7 @@ async def test_list_descendant_security_health_analytics_custom_modules_async_fr
 
 def test_list_descendant_security_health_analytics_custom_modules_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2667,7 +2657,7 @@ def test_list_descendant_security_health_analytics_custom_modules_field_headers(
 @pytest.mark.asyncio
 async def test_list_descendant_security_health_analytics_custom_modules_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2703,7 +2693,7 @@ async def test_list_descendant_security_health_analytics_custom_modules_field_he
 
 def test_list_descendant_security_health_analytics_custom_modules_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2732,7 +2722,7 @@ def test_list_descendant_security_health_analytics_custom_modules_flattened():
 
 def test_list_descendant_security_health_analytics_custom_modules_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2747,7 +2737,7 @@ def test_list_descendant_security_health_analytics_custom_modules_flattened_erro
 @pytest.mark.asyncio
 async def test_list_descendant_security_health_analytics_custom_modules_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2783,7 +2773,7 @@ async def test_list_descendant_security_health_analytics_custom_modules_flattene
 @pytest.mark.asyncio
 async def test_list_descendant_security_health_analytics_custom_modules_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2799,7 +2789,7 @@ def test_list_descendant_security_health_analytics_custom_modules_pager(
     transport_name: str = "grpc",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2861,7 +2851,7 @@ def test_list_descendant_security_health_analytics_custom_modules_pages(
     transport_name: str = "grpc",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2910,7 +2900,7 @@ def test_list_descendant_security_health_analytics_custom_modules_pages(
 @pytest.mark.asyncio
 async def test_list_descendant_security_health_analytics_custom_modules_async_pager():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2969,7 +2959,7 @@ async def test_list_descendant_security_health_analytics_custom_modules_async_pa
 @pytest.mark.asyncio
 async def test_list_descendant_security_health_analytics_custom_modules_async_pages():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3030,7 +3020,7 @@ def test_get_security_health_analytics_custom_module(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3078,7 +3068,7 @@ def test_get_security_health_analytics_custom_module_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3101,7 +3091,7 @@ async def test_get_security_health_analytics_custom_module_async(
     request_type=security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3154,7 +3144,7 @@ async def test_get_security_health_analytics_custom_module_async_from_dict():
 
 def test_get_security_health_analytics_custom_module_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3188,7 +3178,7 @@ def test_get_security_health_analytics_custom_module_field_headers():
 @pytest.mark.asyncio
 async def test_get_security_health_analytics_custom_module_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3221,7 +3211,7 @@ async def test_get_security_health_analytics_custom_module_field_headers_async()
 
 def test_get_security_health_analytics_custom_module_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3249,7 +3239,7 @@ def test_get_security_health_analytics_custom_module_flattened():
 
 def test_get_security_health_analytics_custom_module_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3264,7 +3254,7 @@ def test_get_security_health_analytics_custom_module_flattened_error():
 @pytest.mark.asyncio
 async def test_get_security_health_analytics_custom_module_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3297,7 +3287,7 @@ async def test_get_security_health_analytics_custom_module_flattened_async():
 @pytest.mark.asyncio
 async def test_get_security_health_analytics_custom_module_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3320,7 +3310,7 @@ def test_create_security_health_analytics_custom_module(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3369,7 +3359,7 @@ def test_create_security_health_analytics_custom_module_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3393,7 +3383,7 @@ async def test_create_security_health_analytics_custom_module_async(
     request_type=security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3447,7 +3437,7 @@ async def test_create_security_health_analytics_custom_module_async_from_dict():
 
 def test_create_security_health_analytics_custom_module_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3484,7 +3474,7 @@ def test_create_security_health_analytics_custom_module_field_headers():
 @pytest.mark.asyncio
 async def test_create_security_health_analytics_custom_module_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3520,7 +3510,7 @@ async def test_create_security_health_analytics_custom_module_field_headers_asyn
 
 def test_create_security_health_analytics_custom_module_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3557,7 +3547,7 @@ def test_create_security_health_analytics_custom_module_flattened():
 
 def test_create_security_health_analytics_custom_module_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3575,7 +3565,7 @@ def test_create_security_health_analytics_custom_module_flattened_error():
 @pytest.mark.asyncio
 async def test_create_security_health_analytics_custom_module_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3617,7 +3607,7 @@ async def test_create_security_health_analytics_custom_module_flattened_async():
 @pytest.mark.asyncio
 async def test_create_security_health_analytics_custom_module_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3643,7 +3633,7 @@ def test_update_security_health_analytics_custom_module(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3692,7 +3682,7 @@ def test_update_security_health_analytics_custom_module_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3716,7 +3706,7 @@ async def test_update_security_health_analytics_custom_module_async(
     request_type=security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3770,7 +3760,7 @@ async def test_update_security_health_analytics_custom_module_async_from_dict():
 
 def test_update_security_health_analytics_custom_module_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3807,7 +3797,7 @@ def test_update_security_health_analytics_custom_module_field_headers():
 @pytest.mark.asyncio
 async def test_update_security_health_analytics_custom_module_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3843,7 +3833,7 @@ async def test_update_security_health_analytics_custom_module_field_headers_asyn
 
 def test_update_security_health_analytics_custom_module_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3880,7 +3870,7 @@ def test_update_security_health_analytics_custom_module_flattened():
 
 def test_update_security_health_analytics_custom_module_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3898,7 +3888,7 @@ def test_update_security_health_analytics_custom_module_flattened_error():
 @pytest.mark.asyncio
 async def test_update_security_health_analytics_custom_module_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3940,7 +3930,7 @@ async def test_update_security_health_analytics_custom_module_flattened_async():
 @pytest.mark.asyncio
 async def test_update_security_health_analytics_custom_module_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3966,7 +3956,7 @@ def test_delete_security_health_analytics_custom_module(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3999,7 +3989,7 @@ def test_delete_security_health_analytics_custom_module_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4023,7 +4013,7 @@ async def test_delete_security_health_analytics_custom_module_async(
     request_type=security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4059,7 +4049,7 @@ async def test_delete_security_health_analytics_custom_module_async_from_dict():
 
 def test_delete_security_health_analytics_custom_module_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4094,7 +4084,7 @@ def test_delete_security_health_analytics_custom_module_field_headers():
 @pytest.mark.asyncio
 async def test_delete_security_health_analytics_custom_module_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4128,7 +4118,7 @@ async def test_delete_security_health_analytics_custom_module_field_headers_asyn
 
 def test_delete_security_health_analytics_custom_module_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4155,7 +4145,7 @@ def test_delete_security_health_analytics_custom_module_flattened():
 
 def test_delete_security_health_analytics_custom_module_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4170,7 +4160,7 @@ def test_delete_security_health_analytics_custom_module_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_security_health_analytics_custom_module_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4200,7 +4190,7 @@ async def test_delete_security_health_analytics_custom_module_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_security_health_analytics_custom_module_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4223,7 +4213,7 @@ def test_simulate_security_health_analytics_custom_module(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4261,7 +4251,7 @@ def test_simulate_security_health_analytics_custom_module_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4285,7 +4275,7 @@ async def test_simulate_security_health_analytics_custom_module_async(
     request_type=security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4328,7 +4318,7 @@ async def test_simulate_security_health_analytics_custom_module_async_from_dict(
 
 def test_simulate_security_health_analytics_custom_module_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4365,7 +4355,7 @@ def test_simulate_security_health_analytics_custom_module_field_headers():
 @pytest.mark.asyncio
 async def test_simulate_security_health_analytics_custom_module_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4401,7 +4391,7 @@ async def test_simulate_security_health_analytics_custom_module_field_headers_as
 
 def test_simulate_security_health_analytics_custom_module_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4446,7 +4436,7 @@ def test_simulate_security_health_analytics_custom_module_flattened():
 
 def test_simulate_security_health_analytics_custom_module_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4467,7 +4457,7 @@ def test_simulate_security_health_analytics_custom_module_flattened_error():
 @pytest.mark.asyncio
 async def test_simulate_security_health_analytics_custom_module_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4517,7 +4507,7 @@ async def test_simulate_security_health_analytics_custom_module_flattened_async(
 @pytest.mark.asyncio
 async def test_simulate_security_health_analytics_custom_module_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4546,7 +4536,7 @@ def test_list_effective_event_threat_detection_custom_modules(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4584,7 +4574,7 @@ def test_list_effective_event_threat_detection_custom_modules_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4608,7 +4598,7 @@ async def test_list_effective_event_threat_detection_custom_modules_async(
     request_type=security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4655,7 +4645,7 @@ async def test_list_effective_event_threat_detection_custom_modules_async_from_d
 
 def test_list_effective_event_threat_detection_custom_modules_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4692,7 +4682,7 @@ def test_list_effective_event_threat_detection_custom_modules_field_headers():
 @pytest.mark.asyncio
 async def test_list_effective_event_threat_detection_custom_modules_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4728,7 +4718,7 @@ async def test_list_effective_event_threat_detection_custom_modules_field_header
 
 def test_list_effective_event_threat_detection_custom_modules_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4757,7 +4747,7 @@ def test_list_effective_event_threat_detection_custom_modules_flattened():
 
 def test_list_effective_event_threat_detection_custom_modules_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4772,7 +4762,7 @@ def test_list_effective_event_threat_detection_custom_modules_flattened_error():
 @pytest.mark.asyncio
 async def test_list_effective_event_threat_detection_custom_modules_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4806,7 +4796,7 @@ async def test_list_effective_event_threat_detection_custom_modules_flattened_as
 @pytest.mark.asyncio
 async def test_list_effective_event_threat_detection_custom_modules_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4822,7 +4812,7 @@ def test_list_effective_event_threat_detection_custom_modules_pager(
     transport_name: str = "grpc",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4882,7 +4872,7 @@ def test_list_effective_event_threat_detection_custom_modules_pages(
     transport_name: str = "grpc",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -4931,7 +4921,7 @@ def test_list_effective_event_threat_detection_custom_modules_pages(
 @pytest.mark.asyncio
 async def test_list_effective_event_threat_detection_custom_modules_async_pager():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4988,7 +4978,7 @@ async def test_list_effective_event_threat_detection_custom_modules_async_pager(
 @pytest.mark.asyncio
 async def test_list_effective_event_threat_detection_custom_modules_async_pages():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5049,7 +5039,7 @@ def test_get_effective_event_threat_detection_custom_module(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5098,7 +5088,7 @@ def test_get_effective_event_threat_detection_custom_module_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5122,7 +5112,7 @@ async def test_get_effective_event_threat_detection_custom_module_async(
     request_type=security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5180,7 +5170,7 @@ async def test_get_effective_event_threat_detection_custom_module_async_from_dic
 
 def test_get_effective_event_threat_detection_custom_module_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5217,7 +5207,7 @@ def test_get_effective_event_threat_detection_custom_module_field_headers():
 @pytest.mark.asyncio
 async def test_get_effective_event_threat_detection_custom_module_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5253,7 +5243,7 @@ async def test_get_effective_event_threat_detection_custom_module_field_headers_
 
 def test_get_effective_event_threat_detection_custom_module_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5282,7 +5272,7 @@ def test_get_effective_event_threat_detection_custom_module_flattened():
 
 def test_get_effective_event_threat_detection_custom_module_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5297,7 +5287,7 @@ def test_get_effective_event_threat_detection_custom_module_flattened_error():
 @pytest.mark.asyncio
 async def test_get_effective_event_threat_detection_custom_module_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5331,7 +5321,7 @@ async def test_get_effective_event_threat_detection_custom_module_flattened_asyn
 @pytest.mark.asyncio
 async def test_get_effective_event_threat_detection_custom_module_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5354,7 +5344,7 @@ def test_list_event_threat_detection_custom_modules(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5391,7 +5381,7 @@ def test_list_event_threat_detection_custom_modules_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5414,7 +5404,7 @@ async def test_list_event_threat_detection_custom_modules_async(
     request_type=security_center_management.ListEventThreatDetectionCustomModulesRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5454,7 +5444,7 @@ async def test_list_event_threat_detection_custom_modules_async_from_dict():
 
 def test_list_event_threat_detection_custom_modules_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5488,7 +5478,7 @@ def test_list_event_threat_detection_custom_modules_field_headers():
 @pytest.mark.asyncio
 async def test_list_event_threat_detection_custom_modules_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5521,7 +5511,7 @@ async def test_list_event_threat_detection_custom_modules_field_headers_async():
 
 def test_list_event_threat_detection_custom_modules_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5549,7 +5539,7 @@ def test_list_event_threat_detection_custom_modules_flattened():
 
 def test_list_event_threat_detection_custom_modules_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5564,7 +5554,7 @@ def test_list_event_threat_detection_custom_modules_flattened_error():
 @pytest.mark.asyncio
 async def test_list_event_threat_detection_custom_modules_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5597,7 +5587,7 @@ async def test_list_event_threat_detection_custom_modules_flattened_async():
 @pytest.mark.asyncio
 async def test_list_event_threat_detection_custom_modules_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5611,7 +5601,7 @@ async def test_list_event_threat_detection_custom_modules_flattened_error_async(
 
 def test_list_event_threat_detection_custom_modules_pager(transport_name: str = "grpc"):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -5666,7 +5656,7 @@ def test_list_event_threat_detection_custom_modules_pager(transport_name: str = 
 
 def test_list_event_threat_detection_custom_modules_pages(transport_name: str = "grpc"):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -5712,7 +5702,7 @@ def test_list_event_threat_detection_custom_modules_pages(transport_name: str = 
 @pytest.mark.asyncio
 async def test_list_event_threat_detection_custom_modules_async_pager():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5767,7 +5757,7 @@ async def test_list_event_threat_detection_custom_modules_async_pager():
 @pytest.mark.asyncio
 async def test_list_event_threat_detection_custom_modules_async_pages():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5826,7 +5816,7 @@ def test_list_descendant_event_threat_detection_custom_modules(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5864,7 +5854,7 @@ def test_list_descendant_event_threat_detection_custom_modules_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5888,7 +5878,7 @@ async def test_list_descendant_event_threat_detection_custom_modules_async(
     request_type=security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5935,7 +5925,7 @@ async def test_list_descendant_event_threat_detection_custom_modules_async_from_
 
 def test_list_descendant_event_threat_detection_custom_modules_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5972,7 +5962,7 @@ def test_list_descendant_event_threat_detection_custom_modules_field_headers():
 @pytest.mark.asyncio
 async def test_list_descendant_event_threat_detection_custom_modules_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6008,7 +5998,7 @@ async def test_list_descendant_event_threat_detection_custom_modules_field_heade
 
 def test_list_descendant_event_threat_detection_custom_modules_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6037,7 +6027,7 @@ def test_list_descendant_event_threat_detection_custom_modules_flattened():
 
 def test_list_descendant_event_threat_detection_custom_modules_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6052,7 +6042,7 @@ def test_list_descendant_event_threat_detection_custom_modules_flattened_error()
 @pytest.mark.asyncio
 async def test_list_descendant_event_threat_detection_custom_modules_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6086,7 +6076,7 @@ async def test_list_descendant_event_threat_detection_custom_modules_flattened_a
 @pytest.mark.asyncio
 async def test_list_descendant_event_threat_detection_custom_modules_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6102,7 +6092,7 @@ def test_list_descendant_event_threat_detection_custom_modules_pager(
     transport_name: str = "grpc",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6160,7 +6150,7 @@ def test_list_descendant_event_threat_detection_custom_modules_pages(
     transport_name: str = "grpc",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -6209,7 +6199,7 @@ def test_list_descendant_event_threat_detection_custom_modules_pages(
 @pytest.mark.asyncio
 async def test_list_descendant_event_threat_detection_custom_modules_async_pager():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6266,7 +6256,7 @@ async def test_list_descendant_event_threat_detection_custom_modules_async_pager
 @pytest.mark.asyncio
 async def test_list_descendant_event_threat_detection_custom_modules_async_pages():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6327,7 +6317,7 @@ def test_get_event_threat_detection_custom_module(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6379,7 +6369,7 @@ def test_get_event_threat_detection_custom_module_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6402,7 +6392,7 @@ async def test_get_event_threat_detection_custom_module_async(
     request_type=security_center_management.GetEventThreatDetectionCustomModuleRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6459,7 +6449,7 @@ async def test_get_event_threat_detection_custom_module_async_from_dict():
 
 def test_get_event_threat_detection_custom_module_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6493,7 +6483,7 @@ def test_get_event_threat_detection_custom_module_field_headers():
 @pytest.mark.asyncio
 async def test_get_event_threat_detection_custom_module_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6526,7 +6516,7 @@ async def test_get_event_threat_detection_custom_module_field_headers_async():
 
 def test_get_event_threat_detection_custom_module_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6554,7 +6544,7 @@ def test_get_event_threat_detection_custom_module_flattened():
 
 def test_get_event_threat_detection_custom_module_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6569,7 +6559,7 @@ def test_get_event_threat_detection_custom_module_flattened_error():
 @pytest.mark.asyncio
 async def test_get_event_threat_detection_custom_module_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6602,7 +6592,7 @@ async def test_get_event_threat_detection_custom_module_flattened_async():
 @pytest.mark.asyncio
 async def test_get_event_threat_detection_custom_module_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6625,7 +6615,7 @@ def test_create_event_threat_detection_custom_module(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6677,7 +6667,7 @@ def test_create_event_threat_detection_custom_module_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6700,7 +6690,7 @@ async def test_create_event_threat_detection_custom_module_async(
     request_type=security_center_management.CreateEventThreatDetectionCustomModuleRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6757,7 +6747,7 @@ async def test_create_event_threat_detection_custom_module_async_from_dict():
 
 def test_create_event_threat_detection_custom_module_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6791,7 +6781,7 @@ def test_create_event_threat_detection_custom_module_field_headers():
 @pytest.mark.asyncio
 async def test_create_event_threat_detection_custom_module_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6824,7 +6814,7 @@ async def test_create_event_threat_detection_custom_module_field_headers_async()
 
 def test_create_event_threat_detection_custom_module_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6860,7 +6850,7 @@ def test_create_event_threat_detection_custom_module_flattened():
 
 def test_create_event_threat_detection_custom_module_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6878,7 +6868,7 @@ def test_create_event_threat_detection_custom_module_flattened_error():
 @pytest.mark.asyncio
 async def test_create_event_threat_detection_custom_module_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6919,7 +6909,7 @@ async def test_create_event_threat_detection_custom_module_flattened_async():
 @pytest.mark.asyncio
 async def test_create_event_threat_detection_custom_module_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6945,7 +6935,7 @@ def test_update_event_threat_detection_custom_module(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6997,7 +6987,7 @@ def test_update_event_threat_detection_custom_module_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7020,7 +7010,7 @@ async def test_update_event_threat_detection_custom_module_async(
     request_type=security_center_management.UpdateEventThreatDetectionCustomModuleRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7077,7 +7067,7 @@ async def test_update_event_threat_detection_custom_module_async_from_dict():
 
 def test_update_event_threat_detection_custom_module_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7111,7 +7101,7 @@ def test_update_event_threat_detection_custom_module_field_headers():
 @pytest.mark.asyncio
 async def test_update_event_threat_detection_custom_module_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7144,7 +7134,7 @@ async def test_update_event_threat_detection_custom_module_field_headers_async()
 
 def test_update_event_threat_detection_custom_module_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7180,7 +7170,7 @@ def test_update_event_threat_detection_custom_module_flattened():
 
 def test_update_event_threat_detection_custom_module_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7198,7 +7188,7 @@ def test_update_event_threat_detection_custom_module_flattened_error():
 @pytest.mark.asyncio
 async def test_update_event_threat_detection_custom_module_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7239,7 +7229,7 @@ async def test_update_event_threat_detection_custom_module_flattened_async():
 @pytest.mark.asyncio
 async def test_update_event_threat_detection_custom_module_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7265,7 +7255,7 @@ def test_delete_event_threat_detection_custom_module(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7297,7 +7287,7 @@ def test_delete_event_threat_detection_custom_module_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7320,7 +7310,7 @@ async def test_delete_event_threat_detection_custom_module_async(
     request_type=security_center_management.DeleteEventThreatDetectionCustomModuleRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7355,7 +7345,7 @@ async def test_delete_event_threat_detection_custom_module_async_from_dict():
 
 def test_delete_event_threat_detection_custom_module_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7387,7 +7377,7 @@ def test_delete_event_threat_detection_custom_module_field_headers():
 @pytest.mark.asyncio
 async def test_delete_event_threat_detection_custom_module_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7418,7 +7408,7 @@ async def test_delete_event_threat_detection_custom_module_field_headers_async()
 
 def test_delete_event_threat_detection_custom_module_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7444,7 +7434,7 @@ def test_delete_event_threat_detection_custom_module_flattened():
 
 def test_delete_event_threat_detection_custom_module_flattened_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7459,7 +7449,7 @@ def test_delete_event_threat_detection_custom_module_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_event_threat_detection_custom_module_flattened_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7488,7 +7478,7 @@ async def test_delete_event_threat_detection_custom_module_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_event_threat_detection_custom_module_flattened_error_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7511,7 +7501,7 @@ def test_validate_event_threat_detection_custom_module(
     request_type, transport: str = "grpc"
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7548,7 +7538,7 @@ def test_validate_event_threat_detection_custom_module_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7571,7 +7561,7 @@ async def test_validate_event_threat_detection_custom_module_async(
     request_type=security_center_management.ValidateEventThreatDetectionCustomModuleRequest,
 ):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7611,7 +7601,7 @@ async def test_validate_event_threat_detection_custom_module_async_from_dict():
 
 def test_validate_event_threat_detection_custom_module_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7647,7 +7637,7 @@ def test_validate_event_threat_detection_custom_module_field_headers():
 @pytest.mark.asyncio
 async def test_validate_event_threat_detection_custom_module_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7689,7 +7679,7 @@ async def test_validate_event_threat_detection_custom_module_field_headers_async
 )
 def test_list_effective_security_health_analytics_custom_modules_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -7746,7 +7736,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_required_f
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_effective_security_health_analytics_custom_modules._get_unset_required_fields(
         jsonified_request
     )
@@ -7757,7 +7747,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_required_f
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_effective_security_health_analytics_custom_modules._get_unset_required_fields(
         jsonified_request
     )
@@ -7775,7 +7765,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_required_f
     assert jsonified_request["parent"] == "parent_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -7823,7 +7813,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_required_f
 
 def test_list_effective_security_health_analytics_custom_modules_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_effective_security_health_analytics_custom_modules._get_unset_required_fields(
@@ -7845,7 +7835,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_intercepto
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -7910,7 +7900,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_bad_reques
     request_type=security_center_management.ListEffectiveSecurityHealthAnalyticsCustomModulesRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7932,7 +7922,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_bad_reques
 
 def test_list_effective_security_health_analytics_custom_modules_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -7980,7 +7970,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_flattened_
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7997,7 +7987,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_pager(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8082,7 +8072,7 @@ def test_list_effective_security_health_analytics_custom_modules_rest_pager(
 )
 def test_get_effective_security_health_analytics_custom_module_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8149,7 +8139,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_required_fie
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_effective_security_health_analytics_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -8160,7 +8150,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_required_fie
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_effective_security_health_analytics_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -8171,7 +8161,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_required_fie
     assert jsonified_request["name"] == "name_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -8219,7 +8209,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_required_fie
 
 def test_get_effective_security_health_analytics_custom_module_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_effective_security_health_analytics_custom_module._get_unset_required_fields(
@@ -8233,7 +8223,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_interceptors
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -8298,7 +8288,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_bad_request(
     request_type=security_center_management.GetEffectiveSecurityHealthAnalyticsCustomModuleRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8322,7 +8312,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_bad_request(
 
 def test_get_effective_security_health_analytics_custom_module_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8374,7 +8364,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_flattened_er
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8389,7 +8379,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_flattened_er
 
 def test_get_effective_security_health_analytics_custom_module_rest_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -8402,7 +8392,7 @@ def test_get_effective_security_health_analytics_custom_module_rest_error():
 )
 def test_list_security_health_analytics_custom_modules_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8457,7 +8447,7 @@ def test_list_security_health_analytics_custom_modules_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_security_health_analytics_custom_modules._get_unset_required_fields(
         jsonified_request
     )
@@ -8468,7 +8458,7 @@ def test_list_security_health_analytics_custom_modules_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_security_health_analytics_custom_modules._get_unset_required_fields(
         jsonified_request
     )
@@ -8486,7 +8476,7 @@ def test_list_security_health_analytics_custom_modules_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -8532,7 +8522,7 @@ def test_list_security_health_analytics_custom_modules_rest_required_fields(
 
 def test_list_security_health_analytics_custom_modules_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_security_health_analytics_custom_modules._get_unset_required_fields(
@@ -8554,7 +8544,7 @@ def test_list_security_health_analytics_custom_modules_rest_interceptors(
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -8619,7 +8609,7 @@ def test_list_security_health_analytics_custom_modules_rest_bad_request(
     request_type=security_center_management.ListSecurityHealthAnalyticsCustomModulesRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8641,7 +8631,7 @@ def test_list_security_health_analytics_custom_modules_rest_bad_request(
 
 def test_list_security_health_analytics_custom_modules_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8689,7 +8679,7 @@ def test_list_security_health_analytics_custom_modules_rest_flattened_error(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8706,7 +8696,7 @@ def test_list_security_health_analytics_custom_modules_rest_pager(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8790,7 +8780,7 @@ def test_list_security_health_analytics_custom_modules_rest_pager(
 )
 def test_list_descendant_security_health_analytics_custom_modules_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8847,7 +8837,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_required_
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_descendant_security_health_analytics_custom_modules._get_unset_required_fields(
         jsonified_request
     )
@@ -8858,7 +8848,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_required_
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_descendant_security_health_analytics_custom_modules._get_unset_required_fields(
         jsonified_request
     )
@@ -8876,7 +8866,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_required_
     assert jsonified_request["parent"] == "parent_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -8924,7 +8914,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_required_
 
 def test_list_descendant_security_health_analytics_custom_modules_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_descendant_security_health_analytics_custom_modules._get_unset_required_fields(
@@ -8946,7 +8936,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_intercept
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -9011,7 +9001,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_bad_reque
     request_type=security_center_management.ListDescendantSecurityHealthAnalyticsCustomModulesRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9033,7 +9023,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_bad_reque
 
 def test_list_descendant_security_health_analytics_custom_modules_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9081,7 +9071,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_flattened
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9098,7 +9088,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_pager(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9182,7 +9172,7 @@ def test_list_descendant_security_health_analytics_custom_modules_rest_pager(
 )
 def test_get_security_health_analytics_custom_module_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9252,7 +9242,7 @@ def test_get_security_health_analytics_custom_module_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_security_health_analytics_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -9263,7 +9253,7 @@ def test_get_security_health_analytics_custom_module_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_security_health_analytics_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -9274,7 +9264,7 @@ def test_get_security_health_analytics_custom_module_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9320,7 +9310,7 @@ def test_get_security_health_analytics_custom_module_rest_required_fields(
 
 def test_get_security_health_analytics_custom_module_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_security_health_analytics_custom_module._get_unset_required_fields(
@@ -9334,7 +9324,7 @@ def test_get_security_health_analytics_custom_module_rest_interceptors(
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -9401,7 +9391,7 @@ def test_get_security_health_analytics_custom_module_rest_bad_request(
     request_type=security_center_management.GetSecurityHealthAnalyticsCustomModuleRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9425,7 +9415,7 @@ def test_get_security_health_analytics_custom_module_rest_bad_request(
 
 def test_get_security_health_analytics_custom_module_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9475,7 +9465,7 @@ def test_get_security_health_analytics_custom_module_rest_flattened_error(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9490,7 +9480,7 @@ def test_get_security_health_analytics_custom_module_rest_flattened_error(
 
 def test_get_security_health_analytics_custom_module_rest_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -9503,7 +9493,7 @@ def test_get_security_health_analytics_custom_module_rest_error():
 )
 def test_create_security_health_analytics_custom_module_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9674,7 +9664,7 @@ def test_create_security_health_analytics_custom_module_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_security_health_analytics_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -9685,7 +9675,7 @@ def test_create_security_health_analytics_custom_module_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_security_health_analytics_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -9698,7 +9688,7 @@ def test_create_security_health_analytics_custom_module_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9745,7 +9735,7 @@ def test_create_security_health_analytics_custom_module_rest_required_fields(
 
 def test_create_security_health_analytics_custom_module_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_security_health_analytics_custom_module._get_unset_required_fields(
@@ -9767,7 +9757,7 @@ def test_create_security_health_analytics_custom_module_rest_interceptors(
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -9834,7 +9824,7 @@ def test_create_security_health_analytics_custom_module_rest_bad_request(
     request_type=security_center_management.CreateSecurityHealthAnalyticsCustomModuleRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9856,7 +9846,7 @@ def test_create_security_health_analytics_custom_module_rest_bad_request(
 
 def test_create_security_health_analytics_custom_module_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9907,7 +9897,7 @@ def test_create_security_health_analytics_custom_module_rest_flattened_error(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9925,7 +9915,7 @@ def test_create_security_health_analytics_custom_module_rest_flattened_error(
 
 def test_create_security_health_analytics_custom_module_rest_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -9938,7 +9928,7 @@ def test_create_security_health_analytics_custom_module_rest_error():
 )
 def test_update_security_health_analytics_custom_module_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10112,7 +10102,7 @@ def test_update_security_health_analytics_custom_module_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_security_health_analytics_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -10121,7 +10111,7 @@ def test_update_security_health_analytics_custom_module_rest_required_fields(
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_security_health_analytics_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -10137,7 +10127,7 @@ def test_update_security_health_analytics_custom_module_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10184,7 +10174,7 @@ def test_update_security_health_analytics_custom_module_rest_required_fields(
 
 def test_update_security_health_analytics_custom_module_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_security_health_analytics_custom_module._get_unset_required_fields(
@@ -10211,7 +10201,7 @@ def test_update_security_health_analytics_custom_module_rest_interceptors(
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -10278,7 +10268,7 @@ def test_update_security_health_analytics_custom_module_rest_bad_request(
     request_type=security_center_management.UpdateSecurityHealthAnalyticsCustomModuleRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10304,7 +10294,7 @@ def test_update_security_health_analytics_custom_module_rest_bad_request(
 
 def test_update_security_health_analytics_custom_module_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10359,7 +10349,7 @@ def test_update_security_health_analytics_custom_module_rest_flattened_error(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10377,7 +10367,7 @@ def test_update_security_health_analytics_custom_module_rest_flattened_error(
 
 def test_update_security_health_analytics_custom_module_rest_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -10390,7 +10380,7 @@ def test_update_security_health_analytics_custom_module_rest_error():
 )
 def test_delete_security_health_analytics_custom_module_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10438,7 +10428,7 @@ def test_delete_security_health_analytics_custom_module_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_security_health_analytics_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -10449,7 +10439,7 @@ def test_delete_security_health_analytics_custom_module_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_security_health_analytics_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -10462,7 +10452,7 @@ def test_delete_security_health_analytics_custom_module_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10501,7 +10491,7 @@ def test_delete_security_health_analytics_custom_module_rest_required_fields(
 
 def test_delete_security_health_analytics_custom_module_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_security_health_analytics_custom_module._get_unset_required_fields(
@@ -10515,7 +10505,7 @@ def test_delete_security_health_analytics_custom_module_rest_interceptors(
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -10569,7 +10559,7 @@ def test_delete_security_health_analytics_custom_module_rest_bad_request(
     request_type=security_center_management.DeleteSecurityHealthAnalyticsCustomModuleRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10593,7 +10583,7 @@ def test_delete_security_health_analytics_custom_module_rest_bad_request(
 
 def test_delete_security_health_analytics_custom_module_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10637,7 +10627,7 @@ def test_delete_security_health_analytics_custom_module_rest_flattened_error(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10652,7 +10642,7 @@ def test_delete_security_health_analytics_custom_module_rest_flattened_error(
 
 def test_delete_security_health_analytics_custom_module_rest_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -10665,7 +10655,7 @@ def test_delete_security_health_analytics_custom_module_rest_error():
 )
 def test_simulate_security_health_analytics_custom_module_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10720,7 +10710,7 @@ def test_simulate_security_health_analytics_custom_module_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).simulate_security_health_analytics_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -10731,7 +10721,7 @@ def test_simulate_security_health_analytics_custom_module_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).simulate_security_health_analytics_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -10742,7 +10732,7 @@ def test_simulate_security_health_analytics_custom_module_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10789,7 +10779,7 @@ def test_simulate_security_health_analytics_custom_module_rest_required_fields(
 
 def test_simulate_security_health_analytics_custom_module_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.simulate_security_health_analytics_custom_module._get_unset_required_fields(
@@ -10812,7 +10802,7 @@ def test_simulate_security_health_analytics_custom_module_rest_interceptors(
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -10877,7 +10867,7 @@ def test_simulate_security_health_analytics_custom_module_rest_bad_request(
     request_type=security_center_management.SimulateSecurityHealthAnalyticsCustomModuleRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10899,7 +10889,7 @@ def test_simulate_security_health_analytics_custom_module_rest_bad_request(
 
 def test_simulate_security_health_analytics_custom_module_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10953,7 +10943,7 @@ def test_simulate_security_health_analytics_custom_module_rest_flattened_error(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10974,7 +10964,7 @@ def test_simulate_security_health_analytics_custom_module_rest_flattened_error(
 
 def test_simulate_security_health_analytics_custom_module_rest_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -10987,7 +10977,7 @@ def test_simulate_security_health_analytics_custom_module_rest_error():
 )
 def test_list_effective_event_threat_detection_custom_modules_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11042,7 +11032,7 @@ def test_list_effective_event_threat_detection_custom_modules_rest_required_fiel
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_effective_event_threat_detection_custom_modules._get_unset_required_fields(
         jsonified_request
     )
@@ -11053,7 +11043,7 @@ def test_list_effective_event_threat_detection_custom_modules_rest_required_fiel
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_effective_event_threat_detection_custom_modules._get_unset_required_fields(
         jsonified_request
     )
@@ -11071,7 +11061,7 @@ def test_list_effective_event_threat_detection_custom_modules_rest_required_fiel
     assert jsonified_request["parent"] == "parent_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11119,7 +11109,7 @@ def test_list_effective_event_threat_detection_custom_modules_rest_required_fiel
 
 def test_list_effective_event_threat_detection_custom_modules_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_effective_event_threat_detection_custom_modules._get_unset_required_fields(
@@ -11141,7 +11131,7 @@ def test_list_effective_event_threat_detection_custom_modules_rest_interceptors(
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -11206,7 +11196,7 @@ def test_list_effective_event_threat_detection_custom_modules_rest_bad_request(
     request_type=security_center_management.ListEffectiveEventThreatDetectionCustomModulesRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11228,7 +11218,7 @@ def test_list_effective_event_threat_detection_custom_modules_rest_bad_request(
 
 def test_list_effective_event_threat_detection_custom_modules_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11276,7 +11266,7 @@ def test_list_effective_event_threat_detection_custom_modules_rest_flattened_err
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11293,7 +11283,7 @@ def test_list_effective_event_threat_detection_custom_modules_rest_pager(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11377,7 +11367,7 @@ def test_list_effective_event_threat_detection_custom_modules_rest_pager(
 )
 def test_get_effective_event_threat_detection_custom_module_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11447,7 +11437,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_required_fields
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_effective_event_threat_detection_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -11458,7 +11448,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_required_fields
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_effective_event_threat_detection_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -11469,7 +11459,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_required_fields
     assert jsonified_request["name"] == "name_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11519,7 +11509,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_required_fields
 
 def test_get_effective_event_threat_detection_custom_module_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_effective_event_threat_detection_custom_module._get_unset_required_fields(
@@ -11533,7 +11523,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_interceptors(
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -11598,7 +11588,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_bad_request(
     request_type=security_center_management.GetEffectiveEventThreatDetectionCustomModuleRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11622,7 +11612,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_bad_request(
 
 def test_get_effective_event_threat_detection_custom_module_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11674,7 +11664,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_flattened_error
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11689,7 +11679,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_flattened_error
 
 def test_get_effective_event_threat_detection_custom_module_rest_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11702,7 +11692,7 @@ def test_get_effective_event_threat_detection_custom_module_rest_error():
 )
 def test_list_event_threat_detection_custom_modules_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11759,7 +11749,7 @@ def test_list_event_threat_detection_custom_modules_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_event_threat_detection_custom_modules._get_unset_required_fields(
         jsonified_request
     )
@@ -11770,7 +11760,7 @@ def test_list_event_threat_detection_custom_modules_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_event_threat_detection_custom_modules._get_unset_required_fields(
         jsonified_request
     )
@@ -11788,7 +11778,7 @@ def test_list_event_threat_detection_custom_modules_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11834,7 +11824,7 @@ def test_list_event_threat_detection_custom_modules_rest_required_fields(
 
 def test_list_event_threat_detection_custom_modules_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = (
@@ -11856,7 +11846,7 @@ def test_list_event_threat_detection_custom_modules_rest_unset_required_fields()
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_event_threat_detection_custom_modules_rest_interceptors(null_interceptor):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -11921,7 +11911,7 @@ def test_list_event_threat_detection_custom_modules_rest_bad_request(
     request_type=security_center_management.ListEventThreatDetectionCustomModulesRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11943,7 +11933,7 @@ def test_list_event_threat_detection_custom_modules_rest_bad_request(
 
 def test_list_event_threat_detection_custom_modules_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11993,7 +11983,7 @@ def test_list_event_threat_detection_custom_modules_rest_flattened_error(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12008,7 +11998,7 @@ def test_list_event_threat_detection_custom_modules_rest_flattened_error(
 
 def test_list_event_threat_detection_custom_modules_rest_pager(transport: str = "rest"):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12090,7 +12080,7 @@ def test_list_event_threat_detection_custom_modules_rest_pager(transport: str = 
 )
 def test_list_descendant_event_threat_detection_custom_modules_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12145,7 +12135,7 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_required_fie
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_descendant_event_threat_detection_custom_modules._get_unset_required_fields(
         jsonified_request
     )
@@ -12156,7 +12146,7 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_required_fie
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_descendant_event_threat_detection_custom_modules._get_unset_required_fields(
         jsonified_request
     )
@@ -12174,7 +12164,7 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_required_fie
     assert jsonified_request["parent"] == "parent_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12222,7 +12212,7 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_required_fie
 
 def test_list_descendant_event_threat_detection_custom_modules_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_descendant_event_threat_detection_custom_modules._get_unset_required_fields(
@@ -12244,7 +12234,7 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_interceptors
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -12309,7 +12299,7 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_bad_request(
     request_type=security_center_management.ListDescendantEventThreatDetectionCustomModulesRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12331,7 +12321,7 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_bad_request(
 
 def test_list_descendant_event_threat_detection_custom_modules_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12379,7 +12369,7 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_flattened_er
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12396,7 +12386,7 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_pager(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12478,7 +12468,7 @@ def test_list_descendant_event_threat_detection_custom_modules_rest_pager(
 )
 def test_get_event_threat_detection_custom_module_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12550,7 +12540,7 @@ def test_get_event_threat_detection_custom_module_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_event_threat_detection_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -12561,7 +12551,7 @@ def test_get_event_threat_detection_custom_module_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_event_threat_detection_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -12572,7 +12562,7 @@ def test_get_event_threat_detection_custom_module_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12618,7 +12608,7 @@ def test_get_event_threat_detection_custom_module_rest_required_fields(
 
 def test_get_event_threat_detection_custom_module_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = (
@@ -12632,7 +12622,7 @@ def test_get_event_threat_detection_custom_module_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_event_threat_detection_custom_module_rest_interceptors(null_interceptor):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -12701,7 +12691,7 @@ def test_get_event_threat_detection_custom_module_rest_bad_request(
     request_type=security_center_management.GetEventThreatDetectionCustomModuleRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12725,7 +12715,7 @@ def test_get_event_threat_detection_custom_module_rest_bad_request(
 
 def test_get_event_threat_detection_custom_module_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12773,7 +12763,7 @@ def test_get_event_threat_detection_custom_module_rest_flattened_error(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12788,7 +12778,7 @@ def test_get_event_threat_detection_custom_module_rest_flattened_error(
 
 def test_get_event_threat_detection_custom_module_rest_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12801,7 +12791,7 @@ def test_get_event_threat_detection_custom_module_rest_error():
 )
 def test_create_event_threat_detection_custom_module_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12959,7 +12949,7 @@ def test_create_event_threat_detection_custom_module_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_event_threat_detection_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -12970,7 +12960,7 @@ def test_create_event_threat_detection_custom_module_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_event_threat_detection_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -12983,7 +12973,7 @@ def test_create_event_threat_detection_custom_module_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13030,7 +13020,7 @@ def test_create_event_threat_detection_custom_module_rest_required_fields(
 
 def test_create_event_threat_detection_custom_module_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_event_threat_detection_custom_module._get_unset_required_fields(
@@ -13052,7 +13042,7 @@ def test_create_event_threat_detection_custom_module_rest_interceptors(
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -13119,7 +13109,7 @@ def test_create_event_threat_detection_custom_module_rest_bad_request(
     request_type=security_center_management.CreateEventThreatDetectionCustomModuleRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13141,7 +13131,7 @@ def test_create_event_threat_detection_custom_module_rest_bad_request(
 
 def test_create_event_threat_detection_custom_module_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13190,7 +13180,7 @@ def test_create_event_threat_detection_custom_module_rest_flattened_error(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13208,7 +13198,7 @@ def test_create_event_threat_detection_custom_module_rest_flattened_error(
 
 def test_create_event_threat_detection_custom_module_rest_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13221,7 +13211,7 @@ def test_create_event_threat_detection_custom_module_rest_error():
 )
 def test_update_event_threat_detection_custom_module_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13382,7 +13372,7 @@ def test_update_event_threat_detection_custom_module_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_event_threat_detection_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -13391,7 +13381,7 @@ def test_update_event_threat_detection_custom_module_rest_required_fields(
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_event_threat_detection_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -13407,7 +13397,7 @@ def test_update_event_threat_detection_custom_module_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13454,7 +13444,7 @@ def test_update_event_threat_detection_custom_module_rest_required_fields(
 
 def test_update_event_threat_detection_custom_module_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_event_threat_detection_custom_module._get_unset_required_fields(
@@ -13481,7 +13471,7 @@ def test_update_event_threat_detection_custom_module_rest_interceptors(
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -13548,7 +13538,7 @@ def test_update_event_threat_detection_custom_module_rest_bad_request(
     request_type=security_center_management.UpdateEventThreatDetectionCustomModuleRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13574,7 +13564,7 @@ def test_update_event_threat_detection_custom_module_rest_bad_request(
 
 def test_update_event_threat_detection_custom_module_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13627,7 +13617,7 @@ def test_update_event_threat_detection_custom_module_rest_flattened_error(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13645,7 +13635,7 @@ def test_update_event_threat_detection_custom_module_rest_flattened_error(
 
 def test_update_event_threat_detection_custom_module_rest_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13658,7 +13648,7 @@ def test_update_event_threat_detection_custom_module_rest_error():
 )
 def test_delete_event_threat_detection_custom_module_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13706,7 +13696,7 @@ def test_delete_event_threat_detection_custom_module_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_event_threat_detection_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -13717,7 +13707,7 @@ def test_delete_event_threat_detection_custom_module_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_event_threat_detection_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -13730,7 +13720,7 @@ def test_delete_event_threat_detection_custom_module_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13769,7 +13759,7 @@ def test_delete_event_threat_detection_custom_module_rest_required_fields(
 
 def test_delete_event_threat_detection_custom_module_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_event_threat_detection_custom_module._get_unset_required_fields(
@@ -13783,7 +13773,7 @@ def test_delete_event_threat_detection_custom_module_rest_interceptors(
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -13837,7 +13827,7 @@ def test_delete_event_threat_detection_custom_module_rest_bad_request(
     request_type=security_center_management.DeleteEventThreatDetectionCustomModuleRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13861,7 +13851,7 @@ def test_delete_event_threat_detection_custom_module_rest_bad_request(
 
 def test_delete_event_threat_detection_custom_module_rest_flattened():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13905,7 +13895,7 @@ def test_delete_event_threat_detection_custom_module_rest_flattened_error(
     transport: str = "rest",
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13920,7 +13910,7 @@ def test_delete_event_threat_detection_custom_module_rest_flattened_error(
 
 def test_delete_event_threat_detection_custom_module_rest_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13933,7 +13923,7 @@ def test_delete_event_threat_detection_custom_module_rest_error():
 )
 def test_validate_event_threat_detection_custom_module_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13990,7 +13980,7 @@ def test_validate_event_threat_detection_custom_module_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).validate_event_threat_detection_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -14003,7 +13993,7 @@ def test_validate_event_threat_detection_custom_module_rest_required_fields(
     jsonified_request["type"] = "type__value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).validate_event_threat_detection_custom_module._get_unset_required_fields(
         jsonified_request
     )
@@ -14018,7 +14008,7 @@ def test_validate_event_threat_detection_custom_module_rest_required_fields(
     assert jsonified_request["type"] == "type__value"
 
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14065,7 +14055,7 @@ def test_validate_event_threat_detection_custom_module_rest_required_fields(
 
 def test_validate_event_threat_detection_custom_module_rest_unset_required_fields():
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.validate_event_threat_detection_custom_module._get_unset_required_fields(
@@ -14088,7 +14078,7 @@ def test_validate_event_threat_detection_custom_module_rest_interceptors(
     null_interceptor,
 ):
     transport = transports.SecurityCenterManagementRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.SecurityCenterManagementRestInterceptor(),
@@ -14153,7 +14143,7 @@ def test_validate_event_threat_detection_custom_module_rest_bad_request(
     request_type=security_center_management.ValidateEventThreatDetectionCustomModuleRequest,
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14175,24 +14165,24 @@ def test_validate_event_threat_detection_custom_module_rest_bad_request(
 
 def test_validate_event_threat_detection_custom_module_rest_error():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.SecurityCenterManagementGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = SecurityCenterManagementClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.SecurityCenterManagementGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = SecurityCenterManagementClient(
@@ -14202,7 +14192,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.SecurityCenterManagementGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -14217,13 +14207,12 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = SecurityCenterManagementClient(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.SecurityCenterManagementGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = SecurityCenterManagementClient(
@@ -14235,7 +14224,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.SecurityCenterManagementGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = SecurityCenterManagementClient(transport=transport)
     assert client.transport is transport
@@ -14244,13 +14233,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.SecurityCenterManagementGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.SecurityCenterManagementGrpcAsyncIOTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -14267,7 +14256,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -14281,7 +14270,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = SecurityCenterManagementClient.get_transport_class(transport_name)(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
 
@@ -14289,7 +14278,7 @@ def test_transport_kind(transport_name):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
@@ -14301,7 +14290,7 @@ def test_security_center_management_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.SecurityCenterManagementTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -14313,7 +14302,7 @@ def test_security_center_management_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.SecurityCenterManagementTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -14364,7 +14353,7 @@ def test_security_center_management_base_transport_with_credentials_file():
         "google.cloud.securitycentermanagement_v1.services.security_center_management.transports.SecurityCenterManagementTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SecurityCenterManagementTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -14383,7 +14372,7 @@ def test_security_center_management_base_transport_with_adc():
         "google.cloud.securitycentermanagement_v1.services.security_center_management.transports.SecurityCenterManagementTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SecurityCenterManagementTransport()
         adc.assert_called_once()
 
@@ -14391,7 +14380,7 @@ def test_security_center_management_base_transport_with_adc():
 def test_security_center_management_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         SecurityCenterManagementClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -14411,7 +14400,7 @@ def test_security_center_management_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -14460,7 +14449,7 @@ def test_security_center_management_transport_create_channel(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
@@ -14490,7 +14479,7 @@ def test_security_center_management_transport_create_channel(
 def test_security_center_management_grpc_transport_client_cert_source_for_mtls(
     transport_class,
 ):
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -14528,7 +14517,7 @@ def test_security_center_management_grpc_transport_client_cert_source_for_mtls(
 
 
 def test_security_center_management_http_transport_client_cert_source_for_mtls():
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -14548,7 +14537,7 @@ def test_security_center_management_http_transport_client_cert_source_for_mtls()
 )
 def test_security_center_management_host_no_port(transport_name):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="securitycentermanagement.googleapis.com"
         ),
@@ -14571,7 +14560,7 @@ def test_security_center_management_host_no_port(transport_name):
 )
 def test_security_center_management_host_with_port(transport_name):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="securitycentermanagement.googleapis.com:8000"
         ),
@@ -14591,8 +14580,8 @@ def test_security_center_management_host_with_port(transport_name):
     ],
 )
 def test_security_center_management_client_transport_session_collision(transport_name):
-    creds1 = _AnonymousCredentialsWithUniverseDomain()
-    creds2 = _AnonymousCredentialsWithUniverseDomain()
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
     client1 = SecurityCenterManagementClient(
         credentials=creds1,
         transport=transport_name,
@@ -14735,7 +14724,7 @@ def test_security_center_management_transport_channel_mtls_with_client_cert_sour
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = _AnonymousCredentialsWithUniverseDomain()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
@@ -15081,7 +15070,7 @@ def test_client_with_default_client_info():
         transports.SecurityCenterManagementTransport, "_prep_wrapped_messages"
     ) as prep:
         client = SecurityCenterManagementClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -15091,7 +15080,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = SecurityCenterManagementClient.get_transport_class()
         transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -15100,7 +15089,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(
@@ -15115,7 +15104,7 @@ def test_get_location_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.GetLocationRequest
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15145,7 +15134,7 @@ def test_get_location_rest_bad_request(
 )
 def test_get_location_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2"}
@@ -15173,7 +15162,7 @@ def test_list_locations_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
 ):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15201,7 +15190,7 @@ def test_list_locations_rest_bad_request(
 )
 def test_list_locations_rest(request_type):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1"}
@@ -15227,7 +15216,7 @@ def test_list_locations_rest(request_type):
 
 def test_list_locations(transport: str = "grpc"):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15252,7 +15241,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15278,7 +15267,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
 
 def test_list_locations_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15307,7 +15296,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15336,7 +15325,7 @@ async def test_list_locations_field_headers_async():
 
 def test_list_locations_from_dict():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -15354,7 +15343,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -15372,7 +15361,7 @@ async def test_list_locations_from_dict_async():
 
 def test_get_location(transport: str = "grpc"):
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15397,7 +15386,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15423,7 +15412,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
 
 def test_get_location_field_headers():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15452,7 +15441,7 @@ def test_get_location_field_headers():
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -15481,7 +15470,7 @@ async def test_get_location_field_headers_async():
 
 def test_get_location_from_dict():
     client = SecurityCenterManagementClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -15499,7 +15488,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = SecurityCenterManagementAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -15523,7 +15512,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = SecurityCenterManagementClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -15540,7 +15529,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = SecurityCenterManagementClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
