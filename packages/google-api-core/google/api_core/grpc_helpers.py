@@ -13,11 +13,10 @@
 # limitations under the License.
 
 """Helpers for :mod:`grpc`."""
-from typing import Generic, TypeVar, Iterator
+from typing import Generic, Iterator, Optional, TypeVar
 
 import collections
 import functools
-import logging
 import warnings
 
 import grpc
@@ -52,8 +51,6 @@ else:
 
 # The list of gRPC Callable interfaces that return iterators.
 _STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCallable)
-
-_LOGGER = logging.getLogger(__name__)
 
 # denotes the proto response type for grpc calls
 P = TypeVar("P")
@@ -271,11 +268,24 @@ def _create_composite_credentials(
     # Create a set of grpc.CallCredentials using the metadata plugin.
     google_auth_credentials = grpc.metadata_call_credentials(metadata_plugin)
 
-    if ssl_credentials is None:
-        ssl_credentials = grpc.ssl_channel_credentials()
-
-    # Combine the ssl credentials and the authorization credentials.
-    return grpc.composite_channel_credentials(ssl_credentials, google_auth_credentials)
+    # if `ssl_credentials` is set, use `grpc.composite_channel_credentials` instead of
+    # `grpc.compute_engine_channel_credentials` as the former supports passing
+    # `ssl_credentials` via `channel_credentials` which is needed for mTLS.
+    if ssl_credentials:
+        # Combine the ssl credentials and the authorization credentials.
+        # See https://grpc.github.io/grpc/python/grpc.html#grpc.composite_channel_credentials
+        return grpc.composite_channel_credentials(
+            ssl_credentials, google_auth_credentials
+        )
+    else:
+        # Use grpc.compute_engine_channel_credentials in order to support Direct Path.
+        # See https://grpc.github.io/grpc/python/grpc.html#grpc.compute_engine_channel_credentials
+        # TODO(https://github.com/googleapis/python-api-core/issues/598):
+        # Although `grpc.compute_engine_channel_credentials` returns channel credentials
+        # outside of a Google Compute Engine environment (GCE), we should determine if
+        # there is a way to reliably detect a GCE environment so that
+        # `grpc.compute_engine_channel_credentials` is not called outside of GCE.
+        return grpc.compute_engine_channel_credentials(google_auth_credentials)
 
 
 def create_channel(
@@ -288,6 +298,7 @@ def create_channel(
     default_scopes=None,
     default_host=None,
     compression=None,
+    attempt_direct_path: Optional[bool] = False,
     **kwargs,
 ):
     """Create a secure channel with credentials.
@@ -311,6 +322,22 @@ def create_channel(
         default_host (str): The default endpoint. e.g., "pubsub.googleapis.com".
         compression (grpc.Compression): An optional value indicating the
             compression method to be used over the lifetime of the channel.
+        attempt_direct_path (Optional[bool]): If set, Direct Path will be attempted
+            when the request is made. Direct Path is only available within a Google
+            Compute Engine (GCE) environment and provides a proxyless connection
+            which increases the available throughput, reduces latency, and increases
+            reliability. Note:
+
+            - This argument should only be set in a GCE environment and for Services
+              that are known to support Direct Path.
+            - If this argument is set outside of GCE, then this request will fail
+              unless the back-end service happens to have configured fall-back to DNS.
+            - If the request causes a `ServiceUnavailable` response, it is recommended
+              that the client repeat the request with `attempt_direct_path` set to
+              `False` as the Service may not support Direct Path.
+            - Using `ssl_credentials` with `attempt_direct_path` set to `True` will
+              result in `ValueError` as this combination  is not yet supported.
+
         kwargs: Additional key-word args passed to
             :func:`grpc_gcp.secure_channel` or :func:`grpc.secure_channel`.
             Note: `grpc_gcp` is only supported in environments with protobuf < 4.0.0.
@@ -320,7 +347,14 @@ def create_channel(
 
     Raises:
         google.api_core.DuplicateCredentialArgs: If both a credentials object and credentials_file are passed.
+        ValueError: If `ssl_credentials` is set and `attempt_direct_path` is set to `True`.
     """
+
+    # If `ssl_credentials` is set and `attempt_direct_path` is set to `True`,
+    # raise ValueError as this is not yet supported.
+    # See https://github.com/googleapis/python-api-core/issues/590
+    if ssl_credentials and attempt_direct_path:
+        raise ValueError("Using ssl_credentials with Direct Path is not supported")
 
     composite_credentials = _create_composite_credentials(
         credentials=credentials,
@@ -332,15 +366,56 @@ def create_channel(
         default_host=default_host,
     )
 
+    # Note that grpcio-gcp is deprecated
     if HAS_GRPC_GCP:  # pragma: NO COVER
         if compression is not None and compression != grpc.Compression.NoCompression:
-            _LOGGER.debug(
-                "Compression argument is being ignored for grpc_gcp.secure_channel creation."
+            warnings.warn(
+                "The `compression` argument is ignored for grpc_gcp.secure_channel creation.",
+                DeprecationWarning,
+            )
+        if attempt_direct_path:
+            warnings.warn(
+                """The `attempt_direct_path` argument is ignored for grpc_gcp.secure_channel creation.""",
+                DeprecationWarning,
             )
         return grpc_gcp.secure_channel(target, composite_credentials, **kwargs)
+
+    if attempt_direct_path:
+        target = _modify_target_for_direct_path(target)
+
     return grpc.secure_channel(
         target, composite_credentials, compression=compression, **kwargs
     )
+
+
+def _modify_target_for_direct_path(target: str) -> str:
+    """
+    Given a target, return a modified version which is compatible with Direct Path.
+
+    Args:
+        target (str): The target service address in the format 'hostname[:port]' or
+            'dns://hostname[:port]'.
+
+    Returns:
+        target (str): The target service address which is converted into a format compatible with Direct Path.
+            If the target contains `dns:///` or does not contain `:///`, the target will be converted in
+            a format compatible with Direct Path; otherwise the original target will be returned as the
+            original target may already denote Direct Path.
+    """
+
+    # A DNS prefix may be included with the target to indicate the endpoint is living in the Internet,
+    # outside of Google Cloud Platform.
+    dns_prefix = "dns:///"
+    # Remove "dns:///" if `attempt_direct_path` is set to True as
+    # the Direct Path prefix `google-c2p:///` will be used instead.
+    target = target.replace(dns_prefix, "")
+
+    direct_path_separator = ":///"
+    if direct_path_separator not in target:
+        target_without_port = target.split(":")[0]
+        # Modify the target to use Direct Path by adding the `google-c2p:///` prefix
+        target = f"google-c2p{direct_path_separator}{target_without_port}"
+    return target
 
 
 _MethodCall = collections.namedtuple(

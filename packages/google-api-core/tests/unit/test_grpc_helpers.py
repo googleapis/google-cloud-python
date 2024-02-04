@@ -365,38 +365,72 @@ def test_wrap_errors_streaming(wrap_stream_errors):
     wrap_stream_errors.assert_called_once_with(callable_)
 
 
-@mock.patch("grpc.composite_channel_credentials")
+@pytest.mark.parametrize(
+    "attempt_direct_path,target,expected_target",
+    [
+        (None, "example.com:443", "example.com:443"),
+        (False, "example.com:443", "example.com:443"),
+        (True, "example.com:443", "google-c2p:///example.com"),
+        (True, "dns:///example.com", "google-c2p:///example.com"),
+        (True, "another-c2p:///example.com", "another-c2p:///example.com"),
+    ],
+)
+@mock.patch("grpc.compute_engine_channel_credentials")
 @mock.patch(
     "google.auth.default",
     autospec=True,
     return_value=(mock.sentinel.credentials, mock.sentinel.project),
 )
 @mock.patch("grpc.secure_channel")
-def test_create_channel_implicit(grpc_secure_channel, default, composite_creds_call):
-    target = "example.com:443"
+def test_create_channel_implicit(
+    grpc_secure_channel,
+    google_auth_default,
+    composite_creds_call,
+    attempt_direct_path,
+    target,
+    expected_target,
+):
     composite_creds = composite_creds_call.return_value
 
-    channel = grpc_helpers.create_channel(target, compression=grpc.Compression.Gzip)
+    channel = grpc_helpers.create_channel(
+        target,
+        compression=grpc.Compression.Gzip,
+        attempt_direct_path=attempt_direct_path,
+    )
 
     assert channel is grpc_secure_channel.return_value
 
-    default.assert_called_once_with(scopes=None, default_scopes=None)
+    google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
 
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
-        grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
+        # The original target is the expected target
+        expected_target = target
+        grpc_secure_channel.assert_called_once_with(
+            expected_target, composite_creds, None
+        )
     else:
         grpc_secure_channel.assert_called_once_with(
-            target, composite_creds, compression=grpc.Compression.Gzip
+            expected_target, composite_creds, compression=grpc.Compression.Gzip
         )
 
 
+@pytest.mark.parametrize(
+    "attempt_direct_path,target, expected_target",
+    [
+        (None, "example.com:443", "example.com:443"),
+        (False, "example.com:443", "example.com:443"),
+        (True, "example.com:443", "google-c2p:///example.com"),
+        (True, "dns:///example.com", "google-c2p:///example.com"),
+        (True, "another-c2p:///example.com", "another-c2p:///example.com"),
+    ],
+)
 @mock.patch("google.auth.transport.grpc.AuthMetadataPlugin", autospec=True)
 @mock.patch(
     "google.auth.transport.requests.Request",
     autospec=True,
     return_value=mock.sentinel.Request,
 )
-@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
 @mock.patch(
     "google.auth.default",
     autospec=True,
@@ -404,29 +438,48 @@ def test_create_channel_implicit(grpc_secure_channel, default, composite_creds_c
 )
 @mock.patch("grpc.secure_channel")
 def test_create_channel_implicit_with_default_host(
-    grpc_secure_channel, default, composite_creds_call, request, auth_metadata_plugin
+    grpc_secure_channel,
+    google_auth_default,
+    composite_creds_call,
+    request,
+    auth_metadata_plugin,
+    attempt_direct_path,
+    target,
+    expected_target,
 ):
-    target = "example.com:443"
     default_host = "example.com"
     composite_creds = composite_creds_call.return_value
 
-    channel = grpc_helpers.create_channel(target, default_host=default_host)
+    channel = grpc_helpers.create_channel(
+        target, default_host=default_host, attempt_direct_path=attempt_direct_path
+    )
 
     assert channel is grpc_secure_channel.return_value
 
-    default.assert_called_once_with(scopes=None, default_scopes=None)
+    google_auth_default.assert_called_once_with(scopes=None, default_scopes=None)
     auth_metadata_plugin.assert_called_once_with(
         mock.sentinel.credentials, mock.sentinel.Request, default_host=default_host
     )
 
     if grpc_helpers.HAS_GRPC_GCP:  # pragma: NO COVER
-        grpc_secure_channel.assert_called_once_with(target, composite_creds, None)
+        # The original target is the expected target
+        expected_target = target
+        grpc_secure_channel.assert_called_once_with(
+            expected_target, composite_creds, None
+        )
     else:
         grpc_secure_channel.assert_called_once_with(
-            target, composite_creds, compression=None
+            expected_target, composite_creds, compression=None
         )
 
 
+@pytest.mark.parametrize(
+    "attempt_direct_path",
+    [
+        None,
+        False,
+    ],
+)
 @mock.patch("grpc.composite_channel_credentials")
 @mock.patch(
     "google.auth.default",
@@ -435,13 +488,15 @@ def test_create_channel_implicit_with_default_host(
 )
 @mock.patch("grpc.secure_channel")
 def test_create_channel_implicit_with_ssl_creds(
-    grpc_secure_channel, default, composite_creds_call
+    grpc_secure_channel, default, composite_creds_call, attempt_direct_path
 ):
     target = "example.com:443"
 
     ssl_creds = grpc.ssl_channel_credentials()
 
-    grpc_helpers.create_channel(target, ssl_credentials=ssl_creds)
+    grpc_helpers.create_channel(
+        target, ssl_credentials=ssl_creds, attempt_direct_path=attempt_direct_path
+    )
 
     default.assert_called_once_with(scopes=None, default_scopes=None)
 
@@ -456,7 +511,18 @@ def test_create_channel_implicit_with_ssl_creds(
         )
 
 
-@mock.patch("grpc.composite_channel_credentials")
+def test_create_channel_implicit_with_ssl_creds_attempt_direct_path_true():
+    target = "example.com:443"
+    ssl_creds = grpc.ssl_channel_credentials()
+    with pytest.raises(
+        ValueError, match="Using ssl_credentials with Direct Path is not supported"
+    ):
+        grpc_helpers.create_channel(
+            target, ssl_credentials=ssl_creds, attempt_direct_path=True
+        )
+
+
+@mock.patch("grpc.compute_engine_channel_credentials")
 @mock.patch(
     "google.auth.default",
     autospec=True,
@@ -483,7 +549,7 @@ def test_create_channel_implicit_with_scopes(
         )
 
 
-@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
 @mock.patch(
     "google.auth.default",
     autospec=True,
@@ -521,7 +587,7 @@ def test_create_channel_explicit_with_duplicate_credentials():
         )
 
 
-@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
 @mock.patch("google.auth.credentials.with_scopes_if_required", autospec=True)
 @mock.patch("grpc.secure_channel")
 def test_create_channel_explicit(grpc_secure_channel, auth_creds, composite_creds_call):
@@ -544,7 +610,7 @@ def test_create_channel_explicit(grpc_secure_channel, auth_creds, composite_cred
         )
 
 
-@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
 @mock.patch("grpc.secure_channel")
 def test_create_channel_explicit_scoped(grpc_secure_channel, composite_creds_call):
     target = "example.com:443"
@@ -570,7 +636,7 @@ def test_create_channel_explicit_scoped(grpc_secure_channel, composite_creds_cal
         )
 
 
-@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
 @mock.patch("grpc.secure_channel")
 def test_create_channel_explicit_default_scopes(
     grpc_secure_channel, composite_creds_call
@@ -600,7 +666,7 @@ def test_create_channel_explicit_default_scopes(
         )
 
 
-@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
 @mock.patch("grpc.secure_channel")
 def test_create_channel_explicit_with_quota_project(
     grpc_secure_channel, composite_creds_call
@@ -628,7 +694,7 @@ def test_create_channel_explicit_with_quota_project(
         )
 
 
-@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
 @mock.patch("grpc.secure_channel")
 @mock.patch(
     "google.auth.load_credentials_from_file",
@@ -659,7 +725,7 @@ def test_create_channel_with_credentials_file(
         )
 
 
-@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
 @mock.patch("grpc.secure_channel")
 @mock.patch(
     "google.auth.load_credentials_from_file",
@@ -693,7 +759,7 @@ def test_create_channel_with_credentials_file_and_scopes(
         )
 
 
-@mock.patch("grpc.composite_channel_credentials")
+@mock.patch("grpc.compute_engine_channel_credentials")
 @mock.patch("grpc.secure_channel")
 @mock.patch(
     "google.auth.load_credentials_from_file",
