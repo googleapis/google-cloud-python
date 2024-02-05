@@ -163,12 +163,6 @@ def compile_aggregate(node: nodes.AggregateNode, ordered: bool = True):
 
 
 @_compile_node.register
-def compile_corr(node: nodes.CorrNode, ordered: bool = True):
-    result = compile_unordered_ir(node.child).corr_aggregate(node.corr_aggregations)
-    return result if ordered else result.to_unordered()
-
-
-@_compile_node.register
 def compile_window(node: nodes.WindowOpNode, ordered: bool = True):
     result = compile_ordered_ir(node.child).project_window_op(
         node.column_name,

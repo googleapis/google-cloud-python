@@ -21,31 +21,63 @@ import ibis.expr.types as ibis_types
 import pandas as pd
 
 import bigframes.constants as constants
+import bigframes.core.compile.scalar_op_compiler as scalar_compilers
+import bigframes.core.expression as ex
 import bigframes.core.window_spec as window_spec
 import bigframes.dtypes as dtypes
 import bigframes.operations.aggregations as agg_ops
 import third_party.bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 
+scalar_compiler = scalar_compilers.scalar_op_compiler
 
-def compile_unary_aggregate(
-    op: agg_ops.AggregateOp, input: ibis_types.Column
+
+def compile_aggregate(
+    aggregate: ex.Aggregation,
+    bindings: typing.Dict[str, ibis_types.Value],
 ) -> ibis_types.Value:
-    return compile_agg(op, input)
+    if isinstance(aggregate, ex.UnaryAggregation):
+        input = scalar_compiler.compile_expression(aggregate.arg, bindings=bindings)
+        return compile_unary_agg(
+            aggregate.op,
+            input,
+        )
+    elif isinstance(aggregate, ex.BinaryAggregation):
+        left = scalar_compiler.compile_expression(aggregate.left, bindings=bindings)
+        right = scalar_compiler.compile_expression(aggregate.right, bindings=bindings)
+        return compile_binary_agg(aggregate.op, left, right)
+    else:
+        raise ValueError(f"Unexpected aggregation: {aggregate}")
 
 
-def compile_unary_analytic(
-    op: agg_ops.WindowOp, input: ibis_types.Column, window: window_spec.WindowSpec
+def compile_analytic(
+    aggregate: ex.Aggregation,
+    window: window_spec.WindowSpec,
+    bindings: typing.Dict[str, ibis_types.Value],
 ) -> ibis_types.Value:
-    return compile_agg(op, input, window)
+    if isinstance(aggregate, ex.UnaryAggregation):
+        input = scalar_compiler.compile_expression(aggregate.arg, bindings=bindings)
+        return compile_unary_agg(aggregate.op, input, window)
+    elif isinstance(aggregate, ex.BinaryAggregation):
+        raise NotImplementedError("binary analytic operations not yet supported")
+    else:
+        raise ValueError(f"Unexpected analytic operation: {aggregate}")
 
 
 @functools.singledispatch
-def compile_agg(
+def compile_binary_agg(
     op: agg_ops.WindowOp,
     input: ibis_types.Column,
     window: Optional[window_spec.WindowSpec] = None,
 ) -> ibis_types.Value:
-    """Defines transformation but isn't cached, always use compile_node instead"""
+    raise ValueError(f"Can't compile unrecognized operation: {op}")
+
+
+@functools.singledispatch
+def compile_unary_agg(
+    op: agg_ops.WindowOp,
+    input: ibis_types.Column,
+    window: Optional[window_spec.WindowSpec] = None,
+) -> ibis_types.Value:
     raise ValueError(f"Can't compile unrecognized operation: {op}")
 
 
@@ -66,7 +98,10 @@ def numeric_op(operation):
     return constrained_op
 
 
-@compile_agg.register
+### Specific Op implementations Below
+
+
+@compile_unary_agg.register
 @numeric_op
 def _(
     op: agg_ops.SumOp, column: ibis_types.NumericColumn, window=None
@@ -78,7 +113,7 @@ def _(
     )
 
 
-@compile_agg.register
+@compile_unary_agg.register
 @numeric_op
 def _(
     op: agg_ops.MedianOp, column: ibis_types.NumericColumn, window=None
@@ -96,7 +131,7 @@ def _(
     return cast(ibis_types.NumericValue, column.approx_median())
 
 
-@compile_agg.register
+@compile_unary_agg.register
 @numeric_op
 def _(
     op: agg_ops.ApproxQuartilesOp, column: ibis_types.NumericColumn, window=None
@@ -109,11 +144,11 @@ def _(
         )
     value = vendored_ibis_ops.ApproximateMultiQuantile(
         column, num_bins=4  # type: ignore
-    ).to_expr()[op._quartile]
+    ).to_expr()[op.quartile]
     return cast(ibis_types.NumericValue, value)
 
 
-@compile_agg.register
+@compile_unary_agg.register
 @numeric_op
 def _(
     op: agg_ops.MeanOp, column: ibis_types.NumericColumn, window=None
@@ -121,7 +156,7 @@ def _(
     return _apply_window_if_present(column.mean(), window)
 
 
-@compile_agg.register
+@compile_unary_agg.register
 @numeric_op
 def _(
     op: agg_ops.ProductOp, column: ibis_types.NumericColumn, window=None
@@ -158,29 +193,29 @@ def _(
     return float_result.cast(column.type())  # type: ignore
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(op: agg_ops.MaxOp, column: ibis_types.Column, window=None) -> ibis_types.Value:
     return _apply_window_if_present(column.max(), window)
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(op: agg_ops.MinOp, column: ibis_types.Column, window=None) -> ibis_types.Value:
     return _apply_window_if_present(column.min(), window)
 
 
-@compile_agg.register
+@compile_unary_agg.register
 @numeric_op
 def _(op: agg_ops.StdOp, x: ibis_types.Column, window=None) -> ibis_types.Value:
     return _apply_window_if_present(cast(ibis_types.NumericColumn, x).std(), window)
 
 
-@compile_agg.register
+@compile_unary_agg.register
 @numeric_op
 def _(op: agg_ops.VarOp, x: ibis_types.Column, window=None) -> ibis_types.Value:
     return _apply_window_if_present(cast(ibis_types.NumericColumn, x).var(), window)
 
 
-@compile_agg.register
+@compile_unary_agg.register
 @numeric_op
 def _(op: agg_ops.PopVarOp, x: ibis_types.Column, window=None) -> ibis_types.Value:
     return _apply_window_if_present(
@@ -188,35 +223,34 @@ def _(op: agg_ops.PopVarOp, x: ibis_types.Column, window=None) -> ibis_types.Val
     )
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(
     op: agg_ops.CountOp, column: ibis_types.Column, window=None
 ) -> ibis_types.IntegerValue:
     return _apply_window_if_present(column.count(), window)
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(op: agg_ops.CutOp, x: ibis_types.Column, window=None):
     out = ibis.case()
-
-    if op._bins_int > 0:
+    if isinstance(op.bins, int):
         col_min = _apply_window_if_present(x.min(), window)
         col_max = _apply_window_if_present(x.max(), window)
-        bin_width = (col_max - col_min) / op._bins
+        bin_width = (col_max - col_min) / op.bins
 
-        if op._labels is False:
-            for this_bin in range(op._bins_int - 1):
+        if op.labels is False:
+            for this_bin in range(op.bins - 1):
                 out = out.when(
                     x <= (col_min + (this_bin + 1) * bin_width),
                     dtypes.literal_to_ibis_scalar(
                         this_bin, force_dtype=pd.Int64Dtype()
                     ),
                 )
-            out = out.when(x.notnull(), op._bins - 1)
+            out = out.when(x.notnull(), op.bins - 1)
         else:
             interval_struct = None
             adj = (col_max - col_min) * 0.001
-            for this_bin in range(op._bins_int):
+            for this_bin in range(op.bins):
                 left_edge = (
                     col_min + this_bin * bin_width - (0 if this_bin > 0 else adj)
                 )
@@ -228,30 +262,32 @@ def _(op: agg_ops.CutOp, x: ibis_types.Column, window=None):
                     }
                 )
 
-                if this_bin < op._bins_int - 1:
+                if this_bin < op.bins - 1:
                     out = out.when(
                         x <= (col_min + (this_bin + 1) * bin_width),
                         interval_struct,
                     )
                 else:
                     out = out.when(x.notnull(), interval_struct)
-    else:
-        for interval in op._bins:
-            condition = (x > interval.left) & (x <= interval.right)
+    else:  # Interpret as intervals
+        for interval in op.bins:
+            left = dtypes.literal_to_ibis_scalar(interval[0])
+            right = dtypes.literal_to_ibis_scalar(interval[1])
+            condition = (x > left) & (x <= right)
             interval_struct = ibis.struct(
-                {"left_exclusive": interval.left, "right_inclusive": interval.right}
+                {"left_exclusive": left, "right_inclusive": right}
             )
             out = out.when(condition, interval_struct)
     return out.end()
 
 
-@compile_agg.register
+@compile_unary_agg.register
 @numeric_op
 def _(
     self: agg_ops.QcutOp, column: ibis_types.Column, window=None
 ) -> ibis_types.IntegerValue:
-    if isinstance(self._quantiles, int):
-        quantiles_ibis = dtypes.literal_to_ibis_scalar(self._quantiles)
+    if isinstance(self.quantiles, int):
+        quantiles_ibis = dtypes.literal_to_ibis_scalar(self.quantiles)
         percent_ranks = cast(
             ibis_types.FloatingColumn,
             _apply_window_if_present(column.percent_rank(), window),
@@ -264,10 +300,10 @@ def _(
             _apply_window_if_present(column.percent_rank(), window),
         )
         out = ibis.case()
-        first_ibis_quantile = dtypes.literal_to_ibis_scalar(self._quantiles[0])
+        first_ibis_quantile = dtypes.literal_to_ibis_scalar(self.quantiles[0])
         out = out.when(percent_ranks < first_ibis_quantile, None)
-        for bucket_n in range(len(self._quantiles) - 1):
-            ibis_quantile = dtypes.literal_to_ibis_scalar(self._quantiles[bucket_n + 1])
+        for bucket_n in range(len(self.quantiles) - 1):
+            ibis_quantile = dtypes.literal_to_ibis_scalar(self.quantiles[bucket_n + 1])
             out = out.when(
                 percent_ranks <= ibis_quantile,
                 dtypes.literal_to_ibis_scalar(bucket_n, force_dtype=pd.Int64Dtype()),
@@ -276,21 +312,21 @@ def _(
         return out.end()  # type: ignore
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(
     op: agg_ops.NuniqueOp, column: ibis_types.Column, window=None
 ) -> ibis_types.IntegerValue:
     return _apply_window_if_present(column.nunique(), window)
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(
     op: agg_ops.AnyValueOp, column: ibis_types.Column, window=None
 ) -> ibis_types.IntegerValue:
     return _apply_window_if_present(column.arbitrary(), window)
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(
     op: agg_ops.RankOp, column: ibis_types.Column, window=None
 ) -> ibis_types.IntegerValue:
@@ -298,7 +334,7 @@ def _(
     return _apply_window_if_present(column.rank(), window) + 1
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(
     op: agg_ops.DenseRankOp, column: ibis_types.Column, window=None
 ) -> ibis_types.IntegerValue:
@@ -306,12 +342,12 @@ def _(
     return _apply_window_if_present(column.dense_rank(), window) + 1
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(op: agg_ops.FirstOp, column: ibis_types.Column, window=None) -> ibis_types.Value:
     return _apply_window_if_present(column.first(), window)
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(
     op: agg_ops.FirstNonNullOp, column: ibis_types.Column, window=None
 ) -> ibis_types.Value:
@@ -320,12 +356,12 @@ def _(
     )
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(op: agg_ops.LastOp, column: ibis_types.Column, window=None) -> ibis_types.Value:
     return _apply_window_if_present(column.last(), window)
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(
     op: agg_ops.LastNonNullOp, column: ibis_types.Column, window=None
 ) -> ibis_types.Value:
@@ -334,18 +370,18 @@ def _(
     )
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(op: agg_ops.ShiftOp, column: ibis_types.Column, window=None) -> ibis_types.Value:
-    if op._periods == 0:  # No-op
+    if op.periods == 0:  # No-op
         return column
-    if op._periods > 0:
-        return _apply_window_if_present(column.lag(op._periods), window)
-    return _apply_window_if_present(column.lead(-op._periods), window)
+    if op.periods > 0:
+        return _apply_window_if_present(column.lag(op.periods), window)
+    return _apply_window_if_present(column.lead(-op.periods), window)
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(op: agg_ops.DiffOp, column: ibis_types.Column, window=None) -> ibis_types.Value:
-    shifted = compile_agg(agg_ops.ShiftOp(op._periods), column, window)
+    shifted = compile_unary_agg(agg_ops.ShiftOp(op.periods), column, window)
     if column.type().is_boolean():
         return cast(ibis_types.BooleanColumn, column) != cast(
             ibis_types.BooleanColumn, shifted
@@ -358,7 +394,7 @@ def _(op: agg_ops.DiffOp, column: ibis_types.Column, window=None) -> ibis_types.
         raise TypeError(f"Cannot perform diff on type{column.type()}")
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(
     op: agg_ops.AllOp, column: ibis_types.Column, window=None
 ) -> ibis_types.BooleanValue:
@@ -370,7 +406,7 @@ def _(
     )
 
 
-@compile_agg.register
+@compile_unary_agg.register
 def _(
     op: agg_ops.AnyOp, column: ibis_types.Column, window=None
 ) -> ibis_types.BooleanValue:
@@ -380,6 +416,19 @@ def _(
         ibis_types.BooleanScalar,
         _apply_window_if_present(result, window).fillna(ibis_types.literal(True)),
     )
+
+
+@compile_binary_agg.register
+def _(
+    op: agg_ops.CorrOp, left: ibis_types.Column, right: ibis_types.Column, window=None
+) -> ibis_types.NumericValue:
+    # Will be null if all inputs are null. Pandas defaults to zero sum though.
+    left_numeric = cast(ibis_types.NumericColumn, left)
+    right_numeric = cast(ibis_types.NumericColumn, right)
+    bq_corr = _apply_window_if_present(
+        left_numeric.corr(right_numeric, how="pop"), window
+    )
+    return cast(ibis_types.NumericColumn, bq_corr)
 
 
 def _apply_window_if_present(value: ibis_types.Value, window):

@@ -860,7 +860,7 @@ class Block:
 
     def aggregate_all_and_stack(
         self,
-        operation: agg_ops.AggregateOp,
+        operation: agg_ops.UnaryAggregateOp,
         *,
         axis: int | str = 0,
         value_col_id: str = "values",
@@ -872,7 +872,8 @@ class Block:
         axis_n = utils.get_axis_number(axis)
         if axis_n == 0:
             aggregations = [
-                (col_id, operation, col_id) for col_id in self.value_columns
+                (ex.UnaryAggregation(operation, ex.free_var(col_id)), col_id)
+                for col_id in self.value_columns
             ]
             index_col_ids = [
                 guid.generate_guid() for i in range(self.column_labels.nlevels)
@@ -902,10 +903,13 @@ class Block:
                 dtype=dtype,
             )
             index_aggregations = [
-                (col_id, agg_ops.AnyValueOp(), col_id)
+                (ex.UnaryAggregation(agg_ops.AnyValueOp(), ex.free_var(col_id)), col_id)
                 for col_id in [*self.index_columns]
             ]
-            main_aggregation = (value_col_id, operation, value_col_id)
+            main_aggregation = (
+                ex.UnaryAggregation(operation, ex.free_var(value_col_id)),
+                value_col_id,
+            )
             result_expr = stacked_expr.aggregate(
                 [*index_aggregations, main_aggregation],
                 by_column_ids=[offset_col],
@@ -966,7 +970,7 @@ class Block:
     def aggregate(
         self,
         by_column_ids: typing.Sequence[str] = (),
-        aggregations: typing.Sequence[typing.Tuple[str, agg_ops.AggregateOp]] = (),
+        aggregations: typing.Sequence[typing.Tuple[str, agg_ops.UnaryAggregateOp]] = (),
         *,
         dropna: bool = True,
     ) -> typing.Tuple[Block, typing.Sequence[str]]:
@@ -979,10 +983,13 @@ class Block:
             dropna: whether null keys should be dropped
         """
         agg_specs = [
-            (input_id, operation, guid.generate_guid())
+            (
+                ex.UnaryAggregation(operation, ex.free_var(input_id)),
+                guid.generate_guid(),
+            )
             for input_id, operation in aggregations
         ]
-        output_col_ids = [agg_spec[2] for agg_spec in agg_specs]
+        output_col_ids = [agg_spec[1] for agg_spec in agg_specs]
         result_expr = self.expr.aggregate(agg_specs, by_column_ids, dropna=dropna)
 
         aggregate_labels = self._get_labels_for_columns(
@@ -1004,7 +1011,7 @@ class Block:
             output_col_ids,
         )
 
-    def get_stat(self, column_id: str, stat: agg_ops.AggregateOp):
+    def get_stat(self, column_id: str, stat: agg_ops.UnaryAggregateOp):
         """Gets aggregates immediately, and caches it"""
         if stat.name in self._stats_cache[column_id]:
             return self._stats_cache[column_id][stat.name]
@@ -1014,7 +1021,10 @@ class Block:
         standard_stats = self._standard_stats(column_id)
         stats_to_fetch = standard_stats if stat in standard_stats else [stat]
 
-        aggregations = [(column_id, stat, stat.name) for stat in stats_to_fetch]
+        aggregations = [
+            (ex.UnaryAggregation(stat, ex.free_var(column_id)), stat.name)
+            for stat in stats_to_fetch
+        ]
         expr = self.expr.aggregate(aggregations)
         offset_index_id = guid.generate_guid()
         expr = expr.promote_offsets(offset_index_id)
@@ -1054,13 +1064,13 @@ class Block:
     def summarize(
         self,
         column_ids: typing.Sequence[str],
-        stats: typing.Sequence[agg_ops.AggregateOp],
+        stats: typing.Sequence[agg_ops.UnaryAggregateOp],
     ):
         """Get a list of stats as a deferred block object."""
         label_col_id = guid.generate_guid()
         labels = [stat.name for stat in stats]
         aggregations = [
-            (col_id, stat, f"{col_id}-{stat.name}")
+            (ex.UnaryAggregation(stat, ex.free_var(col_id)), f"{col_id}-{stat.name}")
             for stat in stats
             for col_id in column_ids
         ]
@@ -1076,7 +1086,7 @@ class Block:
         labels = self._get_labels_for_columns(column_ids)
         return Block(expr, column_labels=labels, index_columns=[label_col_id])
 
-    def _standard_stats(self, column_id) -> typing.Sequence[agg_ops.AggregateOp]:
+    def _standard_stats(self, column_id) -> typing.Sequence[agg_ops.UnaryAggregateOp]:
         """
         Gets a standard set of stats to preemptively fetch for a column if
         any other stat is fetched.
@@ -1087,7 +1097,7 @@ class Block:
         """
         # TODO: annotate aggregations themself with this information
         dtype = self.expr.get_column_type(column_id)
-        stats: list[agg_ops.AggregateOp] = [agg_ops.count_op]
+        stats: list[agg_ops.UnaryAggregateOp] = [agg_ops.count_op]
         if dtype not in bigframes.dtypes.UNORDERED_DTYPES:
             stats += [agg_ops.min_op, agg_ops.max_op]
         if dtype in bigframes.dtypes.NUMERIC_BIGFRAMES_TYPES_PERMISSIVE:

@@ -122,10 +122,14 @@ def cut(
         raise ValueError("`bins` should be a positive integer.")
 
     if isinstance(bins, Iterable):
-        if not isinstance(bins, pd.IntervalIndex):
-            bins = pd.IntervalIndex.from_tuples(list(bins))
+        if isinstance(bins, pd.IntervalIndex):
+            as_index: pd.IntervalIndex = bins
+            bins = tuple((bin.left.item(), bin.right.item()) for bin in bins)
+        else:
+            as_index = pd.IntervalIndex.from_tuples(list(bins))
+            bins = tuple(bins)
 
-        if bins.is_overlapping:
+        if as_index.is_overlapping:
             raise ValueError("Overlapping IntervalIndex is not accepted.")
 
     if labels is not None and labels is not False:
@@ -148,6 +152,8 @@ def qcut(
 ) -> bigframes.series.Series:
     if isinstance(q, int) and q <= 0:
         raise ValueError("`q` should be a positive integer.")
+    if utils.is_list_like(q):
+        q = tuple(q)
 
     if labels is not False:
         raise NotImplementedError(
@@ -162,7 +168,7 @@ def qcut(
     block, nullity_id = block.apply_unary_op(x._value_column, ops.notnull_op)
     block, result = block.apply_window_op(
         x._value_column,
-        agg_ops.QcutOp(q),
+        agg_ops.QcutOp(q),  # type: ignore
         window_spec=core.WindowSpec(
             grouping_keys=(nullity_id,),
             ordering=(order.OrderingColumnReference(x._value_column),),

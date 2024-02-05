@@ -18,17 +18,45 @@ import abc
 import dataclasses
 import itertools
 import typing
+from typing import Union
 
 import bigframes.dtypes as dtypes
 import bigframes.operations
+import bigframes.operations.aggregations as agg_ops
 
 
 def const(value: typing.Hashable, dtype: dtypes.ExpressionType = None) -> Expression:
     return ScalarConstantExpression(value, dtype or dtypes.infer_literal_type(value))
 
 
-def free_var(id: str) -> Expression:
+def free_var(id: str) -> UnboundVariableExpression:
     return UnboundVariableExpression(id)
+
+
+@dataclasses.dataclass(frozen=True)
+class Aggregation(abc.ABC):
+    """Represents windowing or aggregation over a column."""
+
+    op: agg_ops.WindowOp = dataclasses.field()
+
+
+@dataclasses.dataclass(frozen=True)
+class UnaryAggregation(Aggregation):
+    op: agg_ops.UnaryWindowOp = dataclasses.field()
+    arg: Union[
+        UnboundVariableExpression, ScalarConstantExpression
+    ] = dataclasses.field()
+
+
+@dataclasses.dataclass(frozen=True)
+class BinaryAggregation(Aggregation):
+    op: agg_ops.BinaryAggregateOp = dataclasses.field()
+    left: Union[
+        UnboundVariableExpression, ScalarConstantExpression
+    ] = dataclasses.field()
+    right: Union[
+        UnboundVariableExpression, ScalarConstantExpression
+    ] = dataclasses.field()
 
 
 @dataclasses.dataclass(frozen=True)

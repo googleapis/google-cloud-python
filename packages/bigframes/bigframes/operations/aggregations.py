@@ -14,14 +14,13 @@
 
 from __future__ import annotations
 
+import abc
+import dataclasses
 import typing
-
-from pandas import Int64Dtype
-import pandas as pd
-
-import bigframes.dtypes as dtypes
+from typing import ClassVar, Hashable, Optional, Tuple
 
 
+@dataclasses.dataclass(frozen=True)
 class WindowOp:
     @property
     def skips_nulls(self):
@@ -34,72 +33,110 @@ class WindowOp:
         return False
 
 
+@dataclasses.dataclass(frozen=True)
+class UnaryWindowOp(WindowOp):
+    @property
+    def arguments(self) -> int:
+        return 1
+
+
+@dataclasses.dataclass(frozen=True)
 class AggregateOp(WindowOp):
-    name = "abstract_aggregate"
+    """Aggregate ops can be applied with or without a window clause."""
+
+    @property
+    @abc.abstractmethod
+    def name(self) -> str:
+        ...
+
+    @property
+    @abc.abstractmethod
+    def arguments(self) -> int:
+        ...
 
 
-class SumOp(AggregateOp):
-    name = "sum"
+@dataclasses.dataclass(frozen=True)
+class UnaryAggregateOp(AggregateOp, UnaryWindowOp):
+    @property
+    def arguments(self) -> int:
+        return 1
 
 
-class MedianOp(AggregateOp):
-    name = "median"
+@dataclasses.dataclass(frozen=True)
+class BinaryAggregateOp(AggregateOp):
+    @property
+    def arguments(self) -> int:
+        return 2
 
 
-class ApproxQuartilesOp(AggregateOp):
-    def __init__(self, quartile: int):
-        self.name = f"{quartile*25}%"
-        self._quartile = quartile
+@dataclasses.dataclass(frozen=True)
+class SumOp(UnaryAggregateOp):
+    name: ClassVar[str] = "sum"
 
 
-class MeanOp(AggregateOp):
-    name = "mean"
+@dataclasses.dataclass(frozen=True)
+class MedianOp(UnaryAggregateOp):
+    name: ClassVar[str] = "median"
 
 
-class ProductOp(AggregateOp):
-    name = "product"
+@dataclasses.dataclass(frozen=True)
+class ApproxQuartilesOp(UnaryAggregateOp):
+    quartile: int
+
+    @property
+    def name(self):
+        return f"{self.quartile*25}%"
 
 
-class MaxOp(AggregateOp):
-    name = "max"
+@dataclasses.dataclass(frozen=True)
+class MeanOp(UnaryAggregateOp):
+    name: ClassVar[str] = "mean"
 
 
-class MinOp(AggregateOp):
-    name = "min"
+@dataclasses.dataclass(frozen=True)
+class ProductOp(UnaryAggregateOp):
+    name: ClassVar[str] = "product"
 
 
-class StdOp(AggregateOp):
-    name = "std"
+@dataclasses.dataclass(frozen=True)
+class MaxOp(UnaryAggregateOp):
+    name: ClassVar[str] = "max"
 
 
-class VarOp(AggregateOp):
-    name = "var"
+@dataclasses.dataclass(frozen=True)
+class MinOp(UnaryAggregateOp):
+    name: ClassVar[str] = "min"
 
 
-class PopVarOp(AggregateOp):
-    name = "popvar"
+@dataclasses.dataclass(frozen=True)
+class StdOp(UnaryAggregateOp):
+    name: ClassVar[str] = "std"
 
 
-class CountOp(AggregateOp):
-    name = "count"
+@dataclasses.dataclass(frozen=True)
+class VarOp(UnaryAggregateOp):
+    name: ClassVar[str] = "var"
+
+
+@dataclasses.dataclass(frozen=True)
+class PopVarOp(UnaryAggregateOp):
+    name: ClassVar[str] = "popvar"
+
+
+@dataclasses.dataclass(frozen=True)
+class CountOp(UnaryAggregateOp):
+    name: ClassVar[str] = "count"
 
     @property
     def skips_nulls(self):
         return False
 
 
-class CutOp(WindowOp):
-    def __init__(self, bins: typing.Union[int, pd.IntervalIndex], labels=None):
-        if isinstance(bins, int):
-            if not bins > 0:
-                raise ValueError("`bins` should be a positive integer.")
-            self._bins_int = bins
-            self._bins = dtypes.literal_to_ibis_scalar(bins, force_dtype=Int64Dtype())
-        else:
-            self._bins_int = 0
-            self._bins = bins
-
-        self._labels = labels
+@dataclasses.dataclass(frozen=True)
+class CutOp(UnaryWindowOp):
+    # TODO: Unintuitive, refactor into multiple ops?
+    bins: typing.Union[int, Tuple[Tuple[Hashable, Hashable], ...]]
+    labels: Optional[bool]
 
     @property
     def skips_nulls(self):
@@ -110,10 +147,13 @@ class CutOp(WindowOp):
         return True
 
 
-class QcutOp(WindowOp):
-    def __init__(self, quantiles: typing.Union[int, typing.Sequence[float]]):
-        self.name = f"qcut-{quantiles}"
-        self._quantiles = quantiles
+@dataclasses.dataclass(frozen=True)
+class QcutOp(UnaryWindowOp):
+    quantiles: typing.Union[int, typing.Tuple[float, ...]]
+
+    @property
+    def name(self):
+        return f"qcut-{self.quantiles}"
 
     @property
     def skips_nulls(self):
@@ -124,26 +164,29 @@ class QcutOp(WindowOp):
         return True
 
 
-class NuniqueOp(AggregateOp):
-    name = "nunique"
+@dataclasses.dataclass(frozen=True)
+class NuniqueOp(UnaryAggregateOp):
+    name: ClassVar[str] = "nunique"
 
     @property
     def skips_nulls(self):
         return False
 
 
-class AnyValueOp(AggregateOp):
+@dataclasses.dataclass(frozen=True)
+class AnyValueOp(UnaryAggregateOp):
     # Warning: only use if all values are equal. Non-deterministic otherwise.
     # Do not expose to users. For special cases only (e.g. pivot).
-    name = "any_value"
+    name: ClassVar[str] = "any_value"
 
     @property
     def skips_nulls(self):
         return True
 
 
-class RankOp(WindowOp):
-    name = "rank"
+@dataclasses.dataclass(frozen=True)
+class RankOp(UnaryWindowOp):
+    name: ClassVar[str] = "rank"
 
     @property
     def skips_nulls(self):
@@ -154,7 +197,8 @@ class RankOp(WindowOp):
         return True
 
 
-class DenseRankOp(WindowOp):
+@dataclasses.dataclass(frozen=True)
+class DenseRankOp(UnaryWindowOp):
     @property
     def skips_nulls(self):
         return False
@@ -164,50 +208,61 @@ class DenseRankOp(WindowOp):
         return True
 
 
-class FirstOp(WindowOp):
-    name = "first"
+@dataclasses.dataclass(frozen=True)
+class FirstOp(UnaryWindowOp):
+    name: ClassVar[str] = "first"
 
 
-class FirstNonNullOp(WindowOp):
+@dataclasses.dataclass(frozen=True)
+class FirstNonNullOp(UnaryWindowOp):
     @property
     def skips_nulls(self):
         return False
 
 
-class LastOp(WindowOp):
-    name = "last"
+@dataclasses.dataclass(frozen=True)
+class LastOp(UnaryWindowOp):
+    name: ClassVar[str] = "last"
 
 
-class LastNonNullOp(WindowOp):
+@dataclasses.dataclass(frozen=True)
+class LastNonNullOp(UnaryWindowOp):
     @property
     def skips_nulls(self):
         return False
 
 
-class ShiftOp(WindowOp):
-    def __init__(self, periods: int):
-        self._periods = periods
-
-    @property
-    def skips_nulls(self):
-        return False
-
-
-class DiffOp(WindowOp):
-    def __init__(self, periods: int):
-        self._periods = periods
+@dataclasses.dataclass(frozen=True)
+class ShiftOp(UnaryWindowOp):
+    periods: int
 
     @property
     def skips_nulls(self):
         return False
 
 
-class AllOp(AggregateOp):
-    name = "all"
+@dataclasses.dataclass(frozen=True)
+class DiffOp(UnaryWindowOp):
+    periods: int
+
+    @property
+    def skips_nulls(self):
+        return False
 
 
-class AnyOp(AggregateOp):
-    name = "any"
+@dataclasses.dataclass(frozen=True)
+class AllOp(UnaryAggregateOp):
+    name: ClassVar[str] = "all"
+
+
+@dataclasses.dataclass(frozen=True)
+class AnyOp(UnaryAggregateOp):
+    name: ClassVar[str] = "any"
+
+
+@dataclasses.dataclass(frozen=True)
+class CorrOp(BinaryAggregateOp):
+    name: ClassVar[str] = "corr"
 
 
 sum_op = SumOp()
@@ -228,7 +283,7 @@ first_op = FirstOp()
 
 
 # TODO: Alternative names and lookup from numpy function objects
-_AGGREGATIONS_LOOKUP: dict[str, AggregateOp] = {
+_AGGREGATIONS_LOOKUP: dict[str, UnaryAggregateOp] = {
     op.name: op
     for op in [
         sum_op,
@@ -250,7 +305,7 @@ _AGGREGATIONS_LOOKUP: dict[str, AggregateOp] = {
 }
 
 
-def lookup_agg_func(key: str) -> AggregateOp:
+def lookup_agg_func(key: str) -> UnaryAggregateOp:
     if callable(key):
         raise NotImplementedError(
             "Aggregating with callable object not supported, pass method name as string instead (eg. 'sum' instead of np.sum)."

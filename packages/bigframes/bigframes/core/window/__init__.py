@@ -64,7 +64,7 @@ class Window(vendored_pandas_rolling.Window):
 
     def _apply_aggregate(
         self,
-        op: agg_ops.AggregateOp,
+        op: agg_ops.UnaryAggregateOp,
     ):
         block = self._block
         labels = [block.col_id_to_label[col] for col in self._value_column_ids]

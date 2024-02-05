@@ -1045,7 +1045,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         values, index = self._align_n([other1, other2], how)
         return (values[0], values[1], values[2], index)
 
-    def _apply_aggregation(self, op: agg_ops.AggregateOp) -> Any:
+    def _apply_aggregation(self, op: agg_ops.UnaryAggregateOp) -> Any:
         return self._block.get_stat(self._value_column, op)
 
     def _apply_window_op(

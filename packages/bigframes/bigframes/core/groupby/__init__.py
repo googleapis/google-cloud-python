@@ -268,7 +268,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return dataframe if self._as_index else self._convert_index(dataframe)
 
     def _agg_dict(self, func: typing.Mapping) -> df.DataFrame:
-        aggregations: typing.List[typing.Tuple[str, agg_ops.AggregateOp]] = []
+        aggregations: typing.List[typing.Tuple[str, agg_ops.UnaryAggregateOp]] = []
         column_labels = []
 
         want_aggfunc_level = any(utils.is_list_like(aggs) for aggs in func.values())
@@ -384,7 +384,7 @@ class DataFrameGroupBy(vendored_pandas_groupby.DataFrameGroupBy):
         return dtype
 
     def _aggregate_all(
-        self, aggregate_op: agg_ops.AggregateOp, numeric_only: bool = False
+        self, aggregate_op: agg_ops.UnaryAggregateOp, numeric_only: bool = False
     ) -> df.DataFrame:
         aggregated_col_ids = self._aggregated_columns(numeric_only=numeric_only)
         aggregations = [(col_id, aggregate_op) for col_id in aggregated_col_ids]
@@ -600,7 +600,7 @@ class SeriesGroupBy(vendored_pandas_groupby.SeriesGroupBy):
             is_series=True,
         )
 
-    def _aggregate(self, aggregate_op: agg_ops.AggregateOp) -> series.Series:
+    def _aggregate(self, aggregate_op: agg_ops.UnaryAggregateOp) -> series.Series:
         result_block, _ = self._block.aggregate(
             self._by_col_ids,
             ((self._value_column, aggregate_op),),

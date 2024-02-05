@@ -247,7 +247,8 @@ class ProjectionNode(UnaryNode):
         return self._node_hash
 
 
-# TODO: Merge RowCount and Corr into Aggregate Node
+# TODO: Merge RowCount into Aggregate Node?
+# Row count can be compute from table metadata sometimes, so it is a bit special.
 @dataclass(frozen=True)
 class RowCountNode(UnaryNode):
     @property
@@ -261,7 +262,7 @@ class RowCountNode(UnaryNode):
 
 @dataclass(frozen=True)
 class AggregateNode(UnaryNode):
-    aggregations: typing.Tuple[typing.Tuple[str, agg_ops.AggregateOp, str], ...]
+    aggregations: typing.Tuple[typing.Tuple[ex.Aggregation, str], ...]
     by_column_ids: typing.Tuple[str, ...] = tuple([])
     dropna: bool = True
 
@@ -281,31 +282,10 @@ class AggregateNode(UnaryNode):
         return True
 
 
-# TODO: Unify into aggregate
-@dataclass(frozen=True)
-class CorrNode(UnaryNode):
-    corr_aggregations: typing.Tuple[typing.Tuple[str, str, str], ...]
-
-    def __hash__(self):
-        return self._node_hash
-
-    @property
-    def row_preserving(self) -> bool:
-        return False
-
-    @property
-    def peekable(self) -> bool:
-        return False
-
-    @property
-    def non_local(self) -> bool:
-        return True
-
-
 @dataclass(frozen=True)
 class WindowOpNode(UnaryNode):
     column_name: str
-    op: agg_ops.WindowOp
+    op: agg_ops.UnaryWindowOp
     window_spec: window.WindowSpec
     output_name: typing.Optional[str] = None
     never_skip_nulls: bool = False

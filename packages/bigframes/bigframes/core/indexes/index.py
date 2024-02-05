@@ -421,7 +421,7 @@ class Index(vendored_pandas_index.Index):
         block = block.set_index(result_ids, index_labels=self._block.index.names)
         return Index(block)
 
-    def _apply_aggregation(self, op: agg_ops.AggregateOp) -> typing.Any:
+    def _apply_aggregation(self, op: agg_ops.UnaryAggregateOp) -> typing.Any:
         if self.nlevels > 1:
             raise NotImplementedError(f"Multiindex does not yet support {op.name}")
         column_id = self._block.index_columns[0]

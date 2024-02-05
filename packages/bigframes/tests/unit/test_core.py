@@ -16,6 +16,7 @@ import ibis.expr.types as ibis_types
 import pandas
 
 import bigframes.core as core
+import bigframes.core.expression as ex
 import bigframes.core.ordering
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
@@ -196,7 +197,9 @@ def test_arrayvalue_to_ibis_expr_with_aggregate():
         total_ordering_columns=["col1"],
     )
     expr = value.aggregate(
-        aggregations=(("col1", agg_ops.sum_op, "col4"),),
+        aggregations=(
+            (ex.UnaryAggregation(agg_ops.sum_op, ex.free_var("col1")), "col4"),
+        ),
         by_column_ids=["col1"],
         dropna=False,
     )._compile_ordered()
