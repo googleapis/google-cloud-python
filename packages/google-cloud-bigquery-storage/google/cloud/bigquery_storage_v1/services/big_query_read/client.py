@@ -430,6 +430,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
             )
         return use_client_cert == "true", use_mtls_endpoint, universe_domain_env
 
+    @staticmethod
     def _get_client_cert_source(provided_cert_source, use_cert_flag):
         """Return the client cert source to be used by the client.
 
@@ -448,6 +449,7 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
                 client_cert_source = mtls.default_client_cert_source()
         return client_cert_source
 
+    @staticmethod
     def _get_api_endpoint(
         api_override, client_cert_source, universe_domain, use_mtls_endpoint
     ):
@@ -522,17 +524,18 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         Raises:
             ValueError: when client_universe does not match the universe in credentials.
         """
-        if credentials:
-            credentials_universe = credentials.universe_domain
-            if client_universe != credentials_universe:
-                default_universe = BigQueryReadClient._DEFAULT_UNIVERSE
-                raise ValueError(
-                    "The configured universe domain "
-                    f"({client_universe}) does not match the universe domain "
-                    f"found in the credentials ({credentials_universe}). "
-                    "If you haven't configured the universe domain explicitly, "
-                    f"`{default_universe}` is the default."
-                )
+
+        default_universe = BigQueryReadClient._DEFAULT_UNIVERSE
+        credentials_universe = getattr(credentials, "universe_domain", default_universe)
+
+        if client_universe != credentials_universe:
+            raise ValueError(
+                "The configured universe domain "
+                f"({client_universe}) does not match the universe domain "
+                f"found in the credentials ({credentials_universe}). "
+                "If you haven't configured the universe domain explicitly, "
+                f"`{default_universe}` is the default."
+            )
         return True
 
     def _validate_universe_domain(self):
