@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.31.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.31.0...google-cloud-dialogflow-cx-v1.31.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([d72e64c](https://github.com/googleapis/google-cloud-python/commit/d72e64c7dc1de6e2a097d4920496de34ebf13c7d))
+* Add google-auth as a direct dependency ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([d72e64c](https://github.com/googleapis/google-cloud-python/commit/d72e64c7dc1de6e2a097d4920496de34ebf13c7d))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([d72e64c](https://github.com/googleapis/google-cloud-python/commit/d72e64c7dc1de6e2a097d4920496de34ebf13c7d))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+
 ## [1.31.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.30.1...google-cloud-dialogflow-cx-v1.31.0) (2024-02-01)
 
 

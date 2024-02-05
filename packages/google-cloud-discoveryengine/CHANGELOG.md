@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.11.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.6...google-cloud-discoveryengine-v0.11.7) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+
 ## [0.11.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.5...google-cloud-discoveryengine-v0.11.6) (2024-02-01)
 
 

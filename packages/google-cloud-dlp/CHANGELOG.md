@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.15.0...google-cloud-dlp-v3.15.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+
 ## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.14.0...google-cloud-dlp-v3.15.0) (2024-02-01)
 
 
