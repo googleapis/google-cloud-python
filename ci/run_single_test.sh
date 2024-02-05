@@ -50,6 +50,9 @@ case ${TEST_TYPE} in
         ;;
     docs)
         nox -s docs
+        # Clean up docs after the build process to avoid `[Errno 28] No space left on device`
+        # See https://github.com/googleapis/google-cloud-python/issues/12271
+        rm -rf docs/_build
         retval=$?
         ;;
     docfx)
