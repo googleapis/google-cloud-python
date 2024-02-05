@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.21.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.21.0...google-cloud-kms-v2.21.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([27dceb9](https://github.com/googleapis/google-cloud-python/commit/27dceb901cb9bf28da82925ad382ce7c58e91f38))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([27dceb9](https://github.com/googleapis/google-cloud-python/commit/27dceb901cb9bf28da82925ad382ce7c58e91f38))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([27dceb9](https://github.com/googleapis/google-cloud-python/commit/27dceb901cb9bf28da82925ad382ce7c58e91f38))
+
 ## [2.21.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.20.0...google-cloud-kms-v2.21.0) (2024-02-01)
 
 
