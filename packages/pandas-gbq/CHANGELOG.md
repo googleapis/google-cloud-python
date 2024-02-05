@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.21.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.20.0...v0.21.0) (2024-01-25)
+
+
+### Features
+
+* Use faster query_and_wait method from google-cloud-bigquery when available ([#722](https://github.com/googleapis/python-bigquery-pandas/issues/722)) ([ac3ce3f](https://github.com/googleapis/python-bigquery-pandas/commit/ac3ce3fcd1637fe741af0a10d765ba3092d0e668))
+
+
+### Bug Fixes
+
+* Update runtime check for min google-cloud-bigquery to 3.3.5 ([#721](https://github.com/googleapis/python-bigquery-pandas/issues/721)) ([b5f4869](https://github.com/googleapis/python-bigquery-pandas/commit/b5f48690334edae5f54373a3a8864e3c3496ff29))
+
 ## [0.20.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.19.2...v0.20.0) (2023-12-10)
 
 
