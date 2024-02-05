@@ -80,18 +80,6 @@ def modify_default_endpoint_template(client):
     )
 
 
-# Anonymous Credentials with universe domain property. If no universe domain is provided, then
-# the default universe domain is "googleapis.com".
-class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain="googleapis.com"):
-        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
-        self._universe_domain = universe_domain
-
-    @property
-    def universe_domain(self):
-        return self._universe_domain
-
-
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -319,7 +307,7 @@ def test__get_universe_domain():
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
     client = client_class(
-        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
     )
     assert client._validate_universe_domain() == True
 
@@ -346,41 +334,48 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         client = client_class(transport=transport)
         assert client._validate_universe_domain() == True
 
-    # Test the case when there is a universe mismatch from the credentials.
-    client = client_class(
-        transport=transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(
-                universe_domain="foo.com"
-            )
-        )
-    )
-    with pytest.raises(ValueError) as excinfo:
-        client._validate_universe_domain()
-    assert (
-        str(excinfo.value)
-        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-    )
-
-    # Test the case when there is a universe mismatch from the client.
-    #
-    # TODO: Make this test unconditional once the minimum supported version of
-    # google-api-core becomes 2.15.0 or higher.
-    api_core_major, api_core_minor, _ = [
-        int(part) for part in api_core_version.__version__.split(".")
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [
+        int(part) for part in google.auth.__version__.split(".")
     ]
-    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-        client = client_class(
-            client_options={"universe_domain": "bar.com"},
-            transport=transport_class(
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
-            ),
-        )
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(transport=transport_class(credentials=credentials))
         with pytest.raises(ValueError) as excinfo:
             client._validate_universe_domain()
         assert (
             str(excinfo.value)
-            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         )
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor, _ = [
+            int(part) for part in api_core_version.__version__.split(".")
+        ]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(
+                client_options={"universe_domain": "bar.com"},
+                transport=transport_class(
+                    credentials=ga_credentials.AnonymousCredentials(),
+                ),
+            )
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert (
+                str(excinfo.value)
+                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            )
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -394,7 +389,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 def test_retriever_service_client_from_service_account_info(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -448,7 +443,7 @@ def test_retriever_service_client_service_account_always_use_jwt(
 def test_retriever_service_client_from_service_account_file(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -511,9 +506,7 @@ def test_retriever_service_client_client_options(
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(RetrieverServiceClient, "get_transport_class") as gtc:
-        transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain()
-        )
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -932,20 +925,20 @@ def test_retriever_service_client_client_api_endpoint(client_class):
             )
             client = client_class(
                 client_options=options,
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
+                credentials=ga_credentials.AnonymousCredentials(),
             )
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
@@ -957,13 +950,11 @@ def test_retriever_service_client_client_api_endpoint(client_class):
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     else:
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     assert client.api_endpoint == (
         mock_endpoint if universe_exists else default_endpoint
@@ -979,8 +970,7 @@ def test_retriever_service_client_client_api_endpoint(client_class):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
         assert client.api_endpoint == default_endpoint
 
@@ -1138,8 +1128,8 @@ def test_retriever_service_client_create_channel_credentials_file(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
-        file_creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -1168,7 +1158,7 @@ def test_retriever_service_client_create_channel_credentials_file(
 )
 def test_create_corpus(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1200,7 +1190,7 @@ def test_create_corpus_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1217,7 +1207,7 @@ async def test_create_corpus_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.CreateCorpusRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1254,7 +1244,7 @@ async def test_create_corpus_async_from_dict():
 
 def test_create_corpus_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1278,7 +1268,7 @@ def test_create_corpus_flattened():
 
 def test_create_corpus_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1293,7 +1283,7 @@ def test_create_corpus_flattened_error():
 @pytest.mark.asyncio
 async def test_create_corpus_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1320,7 +1310,7 @@ async def test_create_corpus_flattened_async():
 @pytest.mark.asyncio
 async def test_create_corpus_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1341,7 +1331,7 @@ async def test_create_corpus_flattened_error_async():
 )
 def test_get_corpus(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1373,7 +1363,7 @@ def test_get_corpus_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1390,7 +1380,7 @@ async def test_get_corpus_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.GetCorpusRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1427,7 +1417,7 @@ async def test_get_corpus_async_from_dict():
 
 def test_get_corpus_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1457,7 +1447,7 @@ def test_get_corpus_field_headers():
 @pytest.mark.asyncio
 async def test_get_corpus_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1486,7 +1476,7 @@ async def test_get_corpus_field_headers_async():
 
 def test_get_corpus_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1510,7 +1500,7 @@ def test_get_corpus_flattened():
 
 def test_get_corpus_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1525,7 +1515,7 @@ def test_get_corpus_flattened_error():
 @pytest.mark.asyncio
 async def test_get_corpus_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1552,7 +1542,7 @@ async def test_get_corpus_flattened_async():
 @pytest.mark.asyncio
 async def test_get_corpus_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1573,7 +1563,7 @@ async def test_get_corpus_flattened_error_async():
 )
 def test_update_corpus(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1605,7 +1595,7 @@ def test_update_corpus_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1622,7 +1612,7 @@ async def test_update_corpus_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.UpdateCorpusRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1659,7 +1649,7 @@ async def test_update_corpus_async_from_dict():
 
 def test_update_corpus_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1689,7 +1679,7 @@ def test_update_corpus_field_headers():
 @pytest.mark.asyncio
 async def test_update_corpus_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1718,7 +1708,7 @@ async def test_update_corpus_field_headers_async():
 
 def test_update_corpus_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1746,7 +1736,7 @@ def test_update_corpus_flattened():
 
 def test_update_corpus_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1762,7 +1752,7 @@ def test_update_corpus_flattened_error():
 @pytest.mark.asyncio
 async def test_update_corpus_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1793,7 +1783,7 @@ async def test_update_corpus_flattened_async():
 @pytest.mark.asyncio
 async def test_update_corpus_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1815,7 +1805,7 @@ async def test_update_corpus_flattened_error_async():
 )
 def test_delete_corpus(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1842,7 +1832,7 @@ def test_delete_corpus_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1859,7 +1849,7 @@ async def test_delete_corpus_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.DeleteCorpusRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1889,7 +1879,7 @@ async def test_delete_corpus_async_from_dict():
 
 def test_delete_corpus_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1919,7 +1909,7 @@ def test_delete_corpus_field_headers():
 @pytest.mark.asyncio
 async def test_delete_corpus_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1948,7 +1938,7 @@ async def test_delete_corpus_field_headers_async():
 
 def test_delete_corpus_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1972,7 +1962,7 @@ def test_delete_corpus_flattened():
 
 def test_delete_corpus_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1987,7 +1977,7 @@ def test_delete_corpus_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_corpus_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2014,7 +2004,7 @@ async def test_delete_corpus_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_corpus_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2035,7 +2025,7 @@ async def test_delete_corpus_flattened_error_async():
 )
 def test_list_corpora(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2065,7 +2055,7 @@ def test_list_corpora_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2082,7 +2072,7 @@ async def test_list_corpora_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.ListCorporaRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2117,7 +2107,7 @@ async def test_list_corpora_async_from_dict():
 
 def test_list_corpora_pager(transport_name: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2164,7 +2154,7 @@ def test_list_corpora_pager(transport_name: str = "grpc"):
 
 def test_list_corpora_pages(transport_name: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2206,7 +2196,7 @@ def test_list_corpora_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_corpora_async_pager():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2256,7 +2246,7 @@ async def test_list_corpora_async_pager():
 @pytest.mark.asyncio
 async def test_list_corpora_async_pages():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2311,7 +2301,7 @@ async def test_list_corpora_async_pages():
 )
 def test_query_corpus(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2338,7 +2328,7 @@ def test_query_corpus_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2355,7 +2345,7 @@ async def test_query_corpus_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.QueryCorpusRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2387,7 +2377,7 @@ async def test_query_corpus_async_from_dict():
 
 def test_query_corpus_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2417,7 +2407,7 @@ def test_query_corpus_field_headers():
 @pytest.mark.asyncio
 async def test_query_corpus_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2455,7 +2445,7 @@ async def test_query_corpus_field_headers_async():
 )
 def test_create_document(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2487,7 +2477,7 @@ def test_create_document_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2505,7 +2495,7 @@ async def test_create_document_async(
     request_type=retriever_service.CreateDocumentRequest,
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2542,7 +2532,7 @@ async def test_create_document_async_from_dict():
 
 def test_create_document_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2572,7 +2562,7 @@ def test_create_document_field_headers():
 @pytest.mark.asyncio
 async def test_create_document_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2601,7 +2591,7 @@ async def test_create_document_field_headers_async():
 
 def test_create_document_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2629,7 +2619,7 @@ def test_create_document_flattened():
 
 def test_create_document_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2645,7 +2635,7 @@ def test_create_document_flattened_error():
 @pytest.mark.asyncio
 async def test_create_document_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2676,7 +2666,7 @@ async def test_create_document_flattened_async():
 @pytest.mark.asyncio
 async def test_create_document_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2698,7 +2688,7 @@ async def test_create_document_flattened_error_async():
 )
 def test_get_document(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2730,7 +2720,7 @@ def test_get_document_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2747,7 +2737,7 @@ async def test_get_document_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.GetDocumentRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2784,7 +2774,7 @@ async def test_get_document_async_from_dict():
 
 def test_get_document_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2814,7 +2804,7 @@ def test_get_document_field_headers():
 @pytest.mark.asyncio
 async def test_get_document_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2843,7 +2833,7 @@ async def test_get_document_field_headers_async():
 
 def test_get_document_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2867,7 +2857,7 @@ def test_get_document_flattened():
 
 def test_get_document_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2882,7 +2872,7 @@ def test_get_document_flattened_error():
 @pytest.mark.asyncio
 async def test_get_document_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2909,7 +2899,7 @@ async def test_get_document_flattened_async():
 @pytest.mark.asyncio
 async def test_get_document_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2930,7 +2920,7 @@ async def test_get_document_flattened_error_async():
 )
 def test_update_document(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2962,7 +2952,7 @@ def test_update_document_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2980,7 +2970,7 @@ async def test_update_document_async(
     request_type=retriever_service.UpdateDocumentRequest,
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3017,7 +3007,7 @@ async def test_update_document_async_from_dict():
 
 def test_update_document_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3047,7 +3037,7 @@ def test_update_document_field_headers():
 @pytest.mark.asyncio
 async def test_update_document_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3076,7 +3066,7 @@ async def test_update_document_field_headers_async():
 
 def test_update_document_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3104,7 +3094,7 @@ def test_update_document_flattened():
 
 def test_update_document_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3120,7 +3110,7 @@ def test_update_document_flattened_error():
 @pytest.mark.asyncio
 async def test_update_document_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3151,7 +3141,7 @@ async def test_update_document_flattened_async():
 @pytest.mark.asyncio
 async def test_update_document_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3173,7 +3163,7 @@ async def test_update_document_flattened_error_async():
 )
 def test_delete_document(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3200,7 +3190,7 @@ def test_delete_document_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3218,7 +3208,7 @@ async def test_delete_document_async(
     request_type=retriever_service.DeleteDocumentRequest,
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3248,7 +3238,7 @@ async def test_delete_document_async_from_dict():
 
 def test_delete_document_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3278,7 +3268,7 @@ def test_delete_document_field_headers():
 @pytest.mark.asyncio
 async def test_delete_document_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3307,7 +3297,7 @@ async def test_delete_document_field_headers_async():
 
 def test_delete_document_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3331,7 +3321,7 @@ def test_delete_document_flattened():
 
 def test_delete_document_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3346,7 +3336,7 @@ def test_delete_document_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_document_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3373,7 +3363,7 @@ async def test_delete_document_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_document_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3394,7 +3384,7 @@ async def test_delete_document_flattened_error_async():
 )
 def test_list_documents(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3424,7 +3414,7 @@ def test_list_documents_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3441,7 +3431,7 @@ async def test_list_documents_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.ListDocumentsRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3476,7 +3466,7 @@ async def test_list_documents_async_from_dict():
 
 def test_list_documents_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3506,7 +3496,7 @@ def test_list_documents_field_headers():
 @pytest.mark.asyncio
 async def test_list_documents_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3537,7 +3527,7 @@ async def test_list_documents_field_headers_async():
 
 def test_list_documents_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3561,7 +3551,7 @@ def test_list_documents_flattened():
 
 def test_list_documents_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3576,7 +3566,7 @@ def test_list_documents_flattened_error():
 @pytest.mark.asyncio
 async def test_list_documents_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3605,7 +3595,7 @@ async def test_list_documents_flattened_async():
 @pytest.mark.asyncio
 async def test_list_documents_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3619,7 +3609,7 @@ async def test_list_documents_flattened_error_async():
 
 def test_list_documents_pager(transport_name: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -3669,7 +3659,7 @@ def test_list_documents_pager(transport_name: str = "grpc"):
 
 def test_list_documents_pages(transport_name: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -3711,7 +3701,7 @@ def test_list_documents_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_documents_async_pager():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3761,7 +3751,7 @@ async def test_list_documents_async_pager():
 @pytest.mark.asyncio
 async def test_list_documents_async_pages():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3816,7 +3806,7 @@ async def test_list_documents_async_pages():
 )
 def test_query_document(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3843,7 +3833,7 @@ def test_query_document_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3860,7 +3850,7 @@ async def test_query_document_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.QueryDocumentRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3892,7 +3882,7 @@ async def test_query_document_async_from_dict():
 
 def test_query_document_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3922,7 +3912,7 @@ def test_query_document_field_headers():
 @pytest.mark.asyncio
 async def test_query_document_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3960,7 +3950,7 @@ async def test_query_document_field_headers_async():
 )
 def test_create_chunk(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3992,7 +3982,7 @@ def test_create_chunk_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4009,7 +3999,7 @@ async def test_create_chunk_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.CreateChunkRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4046,7 +4036,7 @@ async def test_create_chunk_async_from_dict():
 
 def test_create_chunk_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4076,7 +4066,7 @@ def test_create_chunk_field_headers():
 @pytest.mark.asyncio
 async def test_create_chunk_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4105,7 +4095,7 @@ async def test_create_chunk_field_headers_async():
 
 def test_create_chunk_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4133,7 +4123,7 @@ def test_create_chunk_flattened():
 
 def test_create_chunk_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4149,7 +4139,7 @@ def test_create_chunk_flattened_error():
 @pytest.mark.asyncio
 async def test_create_chunk_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4180,7 +4170,7 @@ async def test_create_chunk_flattened_async():
 @pytest.mark.asyncio
 async def test_create_chunk_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4202,7 +4192,7 @@ async def test_create_chunk_flattened_error_async():
 )
 def test_batch_create_chunks(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4231,7 +4221,7 @@ def test_batch_create_chunks_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4251,7 +4241,7 @@ async def test_batch_create_chunks_async(
     request_type=retriever_service.BatchCreateChunksRequest,
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4285,7 +4275,7 @@ async def test_batch_create_chunks_async_from_dict():
 
 def test_batch_create_chunks_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4317,7 +4307,7 @@ def test_batch_create_chunks_field_headers():
 @pytest.mark.asyncio
 async def test_batch_create_chunks_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4357,7 +4347,7 @@ async def test_batch_create_chunks_field_headers_async():
 )
 def test_get_chunk(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4389,7 +4379,7 @@ def test_get_chunk_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4406,7 +4396,7 @@ async def test_get_chunk_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.GetChunkRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4443,7 +4433,7 @@ async def test_get_chunk_async_from_dict():
 
 def test_get_chunk_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4473,7 +4463,7 @@ def test_get_chunk_field_headers():
 @pytest.mark.asyncio
 async def test_get_chunk_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4502,7 +4492,7 @@ async def test_get_chunk_field_headers_async():
 
 def test_get_chunk_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4526,7 +4516,7 @@ def test_get_chunk_flattened():
 
 def test_get_chunk_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4541,7 +4531,7 @@ def test_get_chunk_flattened_error():
 @pytest.mark.asyncio
 async def test_get_chunk_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4568,7 +4558,7 @@ async def test_get_chunk_flattened_async():
 @pytest.mark.asyncio
 async def test_get_chunk_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4589,7 +4579,7 @@ async def test_get_chunk_flattened_error_async():
 )
 def test_update_chunk(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4621,7 +4611,7 @@ def test_update_chunk_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4638,7 +4628,7 @@ async def test_update_chunk_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.UpdateChunkRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4675,7 +4665,7 @@ async def test_update_chunk_async_from_dict():
 
 def test_update_chunk_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4705,7 +4695,7 @@ def test_update_chunk_field_headers():
 @pytest.mark.asyncio
 async def test_update_chunk_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4734,7 +4724,7 @@ async def test_update_chunk_field_headers_async():
 
 def test_update_chunk_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4762,7 +4752,7 @@ def test_update_chunk_flattened():
 
 def test_update_chunk_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4778,7 +4768,7 @@ def test_update_chunk_flattened_error():
 @pytest.mark.asyncio
 async def test_update_chunk_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4809,7 +4799,7 @@ async def test_update_chunk_flattened_async():
 @pytest.mark.asyncio
 async def test_update_chunk_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4831,7 +4821,7 @@ async def test_update_chunk_flattened_error_async():
 )
 def test_batch_update_chunks(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4860,7 +4850,7 @@ def test_batch_update_chunks_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4880,7 +4870,7 @@ async def test_batch_update_chunks_async(
     request_type=retriever_service.BatchUpdateChunksRequest,
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4914,7 +4904,7 @@ async def test_batch_update_chunks_async_from_dict():
 
 def test_batch_update_chunks_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4946,7 +4936,7 @@ def test_batch_update_chunks_field_headers():
 @pytest.mark.asyncio
 async def test_batch_update_chunks_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4986,7 +4976,7 @@ async def test_batch_update_chunks_field_headers_async():
 )
 def test_delete_chunk(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5013,7 +5003,7 @@ def test_delete_chunk_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5030,7 +5020,7 @@ async def test_delete_chunk_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.DeleteChunkRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5060,7 +5050,7 @@ async def test_delete_chunk_async_from_dict():
 
 def test_delete_chunk_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5090,7 +5080,7 @@ def test_delete_chunk_field_headers():
 @pytest.mark.asyncio
 async def test_delete_chunk_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5119,7 +5109,7 @@ async def test_delete_chunk_field_headers_async():
 
 def test_delete_chunk_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5143,7 +5133,7 @@ def test_delete_chunk_flattened():
 
 def test_delete_chunk_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5158,7 +5148,7 @@ def test_delete_chunk_flattened_error():
 @pytest.mark.asyncio
 async def test_delete_chunk_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5185,7 +5175,7 @@ async def test_delete_chunk_flattened_async():
 @pytest.mark.asyncio
 async def test_delete_chunk_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5206,7 +5196,7 @@ async def test_delete_chunk_flattened_error_async():
 )
 def test_batch_delete_chunks(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5235,7 +5225,7 @@ def test_batch_delete_chunks_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5255,7 +5245,7 @@ async def test_batch_delete_chunks_async(
     request_type=retriever_service.BatchDeleteChunksRequest,
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5287,7 +5277,7 @@ async def test_batch_delete_chunks_async_from_dict():
 
 def test_batch_delete_chunks_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5319,7 +5309,7 @@ def test_batch_delete_chunks_field_headers():
 @pytest.mark.asyncio
 async def test_batch_delete_chunks_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5357,7 +5347,7 @@ async def test_batch_delete_chunks_field_headers_async():
 )
 def test_list_chunks(request_type, transport: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5387,7 +5377,7 @@ def test_list_chunks_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5404,7 +5394,7 @@ async def test_list_chunks_async(
     transport: str = "grpc_asyncio", request_type=retriever_service.ListChunksRequest
 ):
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5439,7 +5429,7 @@ async def test_list_chunks_async_from_dict():
 
 def test_list_chunks_field_headers():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5469,7 +5459,7 @@ def test_list_chunks_field_headers():
 @pytest.mark.asyncio
 async def test_list_chunks_field_headers_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5500,7 +5490,7 @@ async def test_list_chunks_field_headers_async():
 
 def test_list_chunks_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5524,7 +5514,7 @@ def test_list_chunks_flattened():
 
 def test_list_chunks_flattened_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5539,7 +5529,7 @@ def test_list_chunks_flattened_error():
 @pytest.mark.asyncio
 async def test_list_chunks_flattened_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5568,7 +5558,7 @@ async def test_list_chunks_flattened_async():
 @pytest.mark.asyncio
 async def test_list_chunks_flattened_error_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5582,7 +5572,7 @@ async def test_list_chunks_flattened_error_async():
 
 def test_list_chunks_pager(transport_name: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -5632,7 +5622,7 @@ def test_list_chunks_pager(transport_name: str = "grpc"):
 
 def test_list_chunks_pages(transport_name: str = "grpc"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -5674,7 +5664,7 @@ def test_list_chunks_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_chunks_async_pager():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5724,7 +5714,7 @@ async def test_list_chunks_async_pager():
 @pytest.mark.asyncio
 async def test_list_chunks_async_pages():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5779,7 +5769,7 @@ async def test_list_chunks_async_pages():
 )
 def test_create_corpus_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -5904,21 +5894,21 @@ def test_create_corpus_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_corpus._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_corpus._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -5961,7 +5951,7 @@ def test_create_corpus_rest_required_fields(
 
 def test_create_corpus_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_corpus._get_unset_required_fields({})
@@ -5971,7 +5961,7 @@ def test_create_corpus_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_corpus_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -6027,7 +6017,7 @@ def test_create_corpus_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.CreateCorpusRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6049,7 +6039,7 @@ def test_create_corpus_rest_bad_request(
 
 def test_create_corpus_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -6089,7 +6079,7 @@ def test_create_corpus_rest_flattened():
 
 def test_create_corpus_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6104,7 +6094,7 @@ def test_create_corpus_rest_flattened_error(transport: str = "rest"):
 
 def test_create_corpus_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -6117,7 +6107,7 @@ def test_create_corpus_rest_error():
 )
 def test_get_corpus_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -6170,7 +6160,7 @@ def test_get_corpus_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_corpus._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -6179,7 +6169,7 @@ def test_get_corpus_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_corpus._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -6188,7 +6178,7 @@ def test_get_corpus_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -6230,7 +6220,7 @@ def test_get_corpus_rest_required_fields(
 
 def test_get_corpus_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_corpus._get_unset_required_fields({})
@@ -6240,7 +6230,7 @@ def test_get_corpus_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_corpus_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -6296,7 +6286,7 @@ def test_get_corpus_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.GetCorpusRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6318,7 +6308,7 @@ def test_get_corpus_rest_bad_request(
 
 def test_get_corpus_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -6358,7 +6348,7 @@ def test_get_corpus_rest_flattened():
 
 def test_get_corpus_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6373,7 +6363,7 @@ def test_get_corpus_rest_flattened_error(transport: str = "rest"):
 
 def test_get_corpus_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -6386,7 +6376,7 @@ def test_get_corpus_rest_error():
 )
 def test_update_corpus_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -6511,14 +6501,14 @@ def test_update_corpus_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_corpus._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_corpus._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -6527,7 +6517,7 @@ def test_update_corpus_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -6570,7 +6560,7 @@ def test_update_corpus_rest_required_fields(
 
 def test_update_corpus_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_corpus._get_unset_required_fields({})
@@ -6588,7 +6578,7 @@ def test_update_corpus_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_corpus_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -6644,7 +6634,7 @@ def test_update_corpus_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.UpdateCorpusRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6666,7 +6656,7 @@ def test_update_corpus_rest_bad_request(
 
 def test_update_corpus_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -6707,7 +6697,7 @@ def test_update_corpus_rest_flattened():
 
 def test_update_corpus_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6723,7 +6713,7 @@ def test_update_corpus_rest_flattened_error(transport: str = "rest"):
 
 def test_update_corpus_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -6736,7 +6726,7 @@ def test_update_corpus_rest_error():
 )
 def test_delete_corpus_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -6782,7 +6772,7 @@ def test_delete_corpus_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_corpus._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -6791,7 +6781,7 @@ def test_delete_corpus_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_corpus._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("force",))
@@ -6802,7 +6792,7 @@ def test_delete_corpus_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -6841,7 +6831,7 @@ def test_delete_corpus_rest_required_fields(
 
 def test_delete_corpus_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_corpus._get_unset_required_fields({})
@@ -6851,7 +6841,7 @@ def test_delete_corpus_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_corpus_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -6901,7 +6891,7 @@ def test_delete_corpus_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.DeleteCorpusRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6923,7 +6913,7 @@ def test_delete_corpus_rest_bad_request(
 
 def test_delete_corpus_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -6961,7 +6951,7 @@ def test_delete_corpus_rest_flattened():
 
 def test_delete_corpus_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6976,7 +6966,7 @@ def test_delete_corpus_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_corpus_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -6989,7 +6979,7 @@ def test_delete_corpus_rest_error():
 )
 def test_list_corpora_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -7023,7 +7013,7 @@ def test_list_corpora_rest(request_type):
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_corpora_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -7081,7 +7071,7 @@ def test_list_corpora_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.ListCorporaRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7103,7 +7093,7 @@ def test_list_corpora_rest_bad_request(
 
 def test_list_corpora_rest_pager(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7173,7 +7163,7 @@ def test_list_corpora_rest_pager(transport: str = "rest"):
 )
 def test_query_corpus_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -7222,7 +7212,7 @@ def test_query_corpus_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).query_corpus._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -7232,7 +7222,7 @@ def test_query_corpus_rest_required_fields(
     jsonified_request["query"] = "query_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).query_corpus._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -7243,7 +7233,7 @@ def test_query_corpus_rest_required_fields(
     assert jsonified_request["query"] == "query_value"
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -7286,7 +7276,7 @@ def test_query_corpus_rest_required_fields(
 
 def test_query_corpus_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.query_corpus._get_unset_required_fields({})
@@ -7304,7 +7294,7 @@ def test_query_corpus_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_query_corpus_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -7362,7 +7352,7 @@ def test_query_corpus_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.QueryCorpusRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7384,7 +7374,7 @@ def test_query_corpus_rest_bad_request(
 
 def test_query_corpus_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -7397,7 +7387,7 @@ def test_query_corpus_rest_error():
 )
 def test_create_document_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -7531,7 +7521,7 @@ def test_create_document_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_document._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -7540,7 +7530,7 @@ def test_create_document_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_document._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -7549,7 +7539,7 @@ def test_create_document_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -7592,7 +7582,7 @@ def test_create_document_rest_required_fields(
 
 def test_create_document_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_document._get_unset_required_fields({})
@@ -7610,7 +7600,7 @@ def test_create_document_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_document_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -7666,7 +7656,7 @@ def test_create_document_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.CreateDocumentRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7688,7 +7678,7 @@ def test_create_document_rest_bad_request(
 
 def test_create_document_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -7729,7 +7719,7 @@ def test_create_document_rest_flattened():
 
 def test_create_document_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7745,7 +7735,7 @@ def test_create_document_rest_flattened_error(transport: str = "rest"):
 
 def test_create_document_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -7758,7 +7748,7 @@ def test_create_document_rest_error():
 )
 def test_get_document_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -7811,7 +7801,7 @@ def test_get_document_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_document._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -7820,7 +7810,7 @@ def test_get_document_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_document._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -7829,7 +7819,7 @@ def test_get_document_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -7871,7 +7861,7 @@ def test_get_document_rest_required_fields(
 
 def test_get_document_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_document._get_unset_required_fields({})
@@ -7881,7 +7871,7 @@ def test_get_document_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_document_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -7937,7 +7927,7 @@ def test_get_document_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.GetDocumentRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7959,7 +7949,7 @@ def test_get_document_rest_bad_request(
 
 def test_get_document_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -7999,7 +7989,7 @@ def test_get_document_rest_flattened():
 
 def test_get_document_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8014,7 +8004,7 @@ def test_get_document_rest_flattened_error(transport: str = "rest"):
 
 def test_get_document_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -8027,7 +8017,7 @@ def test_get_document_rest_error():
 )
 def test_update_document_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8160,14 +8150,14 @@ def test_update_document_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_document._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_document._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -8176,7 +8166,7 @@ def test_update_document_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -8219,7 +8209,7 @@ def test_update_document_rest_required_fields(
 
 def test_update_document_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_document._get_unset_required_fields({})
@@ -8237,7 +8227,7 @@ def test_update_document_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_document_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -8293,7 +8283,7 @@ def test_update_document_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.UpdateDocumentRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8315,7 +8305,7 @@ def test_update_document_rest_bad_request(
 
 def test_update_document_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8357,7 +8347,7 @@ def test_update_document_rest_flattened():
 
 def test_update_document_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8373,7 +8363,7 @@ def test_update_document_rest_flattened_error(transport: str = "rest"):
 
 def test_update_document_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -8386,7 +8376,7 @@ def test_update_document_rest_error():
 )
 def test_delete_document_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8432,7 +8422,7 @@ def test_delete_document_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_document._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -8441,7 +8431,7 @@ def test_delete_document_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_document._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("force",))
@@ -8452,7 +8442,7 @@ def test_delete_document_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -8491,7 +8481,7 @@ def test_delete_document_rest_required_fields(
 
 def test_delete_document_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_document._get_unset_required_fields({})
@@ -8501,7 +8491,7 @@ def test_delete_document_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_document_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -8551,7 +8541,7 @@ def test_delete_document_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.DeleteDocumentRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8573,7 +8563,7 @@ def test_delete_document_rest_bad_request(
 
 def test_delete_document_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8611,7 +8601,7 @@ def test_delete_document_rest_flattened():
 
 def test_delete_document_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8626,7 +8616,7 @@ def test_delete_document_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_document_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -8639,7 +8629,7 @@ def test_delete_document_rest_error():
 )
 def test_list_documents_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8690,7 +8680,7 @@ def test_list_documents_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_documents._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -8699,7 +8689,7 @@ def test_list_documents_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_documents._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -8715,7 +8705,7 @@ def test_list_documents_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -8757,7 +8747,7 @@ def test_list_documents_rest_required_fields(
 
 def test_list_documents_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_documents._get_unset_required_fields({})
@@ -8775,7 +8765,7 @@ def test_list_documents_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_documents_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -8833,7 +8823,7 @@ def test_list_documents_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.ListDocumentsRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8855,7 +8845,7 @@ def test_list_documents_rest_bad_request(
 
 def test_list_documents_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -8895,7 +8885,7 @@ def test_list_documents_rest_flattened():
 
 def test_list_documents_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8910,7 +8900,7 @@ def test_list_documents_rest_flattened_error(transport: str = "rest"):
 
 def test_list_documents_rest_pager(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8980,7 +8970,7 @@ def test_list_documents_rest_pager(transport: str = "rest"):
 )
 def test_query_document_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9029,7 +9019,7 @@ def test_query_document_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).query_document._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -9039,7 +9029,7 @@ def test_query_document_rest_required_fields(
     jsonified_request["query"] = "query_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).query_document._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -9050,7 +9040,7 @@ def test_query_document_rest_required_fields(
     assert jsonified_request["query"] == "query_value"
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9093,7 +9083,7 @@ def test_query_document_rest_required_fields(
 
 def test_query_document_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.query_document._get_unset_required_fields({})
@@ -9111,7 +9101,7 @@ def test_query_document_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_query_document_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -9169,7 +9159,7 @@ def test_query_document_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.QueryDocumentRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9191,7 +9181,7 @@ def test_query_document_rest_bad_request(
 
 def test_query_document_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -9204,7 +9194,7 @@ def test_query_document_rest_error():
 )
 def test_create_chunk_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9339,7 +9329,7 @@ def test_create_chunk_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_chunk._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -9348,7 +9338,7 @@ def test_create_chunk_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_chunk._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -9357,7 +9347,7 @@ def test_create_chunk_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9400,7 +9390,7 @@ def test_create_chunk_rest_required_fields(
 
 def test_create_chunk_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_chunk._get_unset_required_fields({})
@@ -9418,7 +9408,7 @@ def test_create_chunk_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_chunk_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -9474,7 +9464,7 @@ def test_create_chunk_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.CreateChunkRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9496,7 +9486,7 @@ def test_create_chunk_rest_bad_request(
 
 def test_create_chunk_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9538,7 +9528,7 @@ def test_create_chunk_rest_flattened():
 
 def test_create_chunk_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9554,7 +9544,7 @@ def test_create_chunk_rest_flattened_error(transport: str = "rest"):
 
 def test_create_chunk_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -9567,7 +9557,7 @@ def test_create_chunk_rest_error():
 )
 def test_batch_create_chunks_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9614,21 +9604,21 @@ def test_batch_create_chunks_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).batch_create_chunks._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).batch_create_chunks._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9671,7 +9661,7 @@ def test_batch_create_chunks_rest_required_fields(
 
 def test_batch_create_chunks_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.batch_create_chunks._get_unset_required_fields({})
@@ -9681,7 +9671,7 @@ def test_batch_create_chunks_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_batch_create_chunks_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -9739,7 +9729,7 @@ def test_batch_create_chunks_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.BatchCreateChunksRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9761,7 +9751,7 @@ def test_batch_create_chunks_rest_bad_request(
 
 def test_batch_create_chunks_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -9774,7 +9764,7 @@ def test_batch_create_chunks_rest_error():
 )
 def test_get_chunk_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9825,7 +9815,7 @@ def test_get_chunk_rest_required_fields(request_type=retriever_service.GetChunkR
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_chunk._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -9834,7 +9824,7 @@ def test_get_chunk_rest_required_fields(request_type=retriever_service.GetChunkR
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_chunk._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -9843,7 +9833,7 @@ def test_get_chunk_rest_required_fields(request_type=retriever_service.GetChunkR
     assert jsonified_request["name"] == "name_value"
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9885,7 +9875,7 @@ def test_get_chunk_rest_required_fields(request_type=retriever_service.GetChunkR
 
 def test_get_chunk_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_chunk._get_unset_required_fields({})
@@ -9895,7 +9885,7 @@ def test_get_chunk_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_chunk_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -9951,7 +9941,7 @@ def test_get_chunk_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.GetChunkRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9973,7 +9963,7 @@ def test_get_chunk_rest_bad_request(
 
 def test_get_chunk_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10014,7 +10004,7 @@ def test_get_chunk_rest_flattened():
 
 def test_get_chunk_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10029,7 +10019,7 @@ def test_get_chunk_rest_flattened_error(transport: str = "rest"):
 
 def test_get_chunk_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -10042,7 +10032,7 @@ def test_get_chunk_rest_error():
 )
 def test_update_chunk_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10178,14 +10168,14 @@ def test_update_chunk_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_chunk._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_chunk._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -10194,7 +10184,7 @@ def test_update_chunk_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10237,7 +10227,7 @@ def test_update_chunk_rest_required_fields(
 
 def test_update_chunk_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_chunk._get_unset_required_fields({})
@@ -10255,7 +10245,7 @@ def test_update_chunk_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_chunk_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -10311,7 +10301,7 @@ def test_update_chunk_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.UpdateChunkRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10335,7 +10325,7 @@ def test_update_chunk_rest_bad_request(
 
 def test_update_chunk_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10380,7 +10370,7 @@ def test_update_chunk_rest_flattened():
 
 def test_update_chunk_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10396,7 +10386,7 @@ def test_update_chunk_rest_flattened_error(transport: str = "rest"):
 
 def test_update_chunk_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -10409,7 +10399,7 @@ def test_update_chunk_rest_error():
 )
 def test_batch_update_chunks_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10456,21 +10446,21 @@ def test_batch_update_chunks_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).batch_update_chunks._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).batch_update_chunks._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10513,7 +10503,7 @@ def test_batch_update_chunks_rest_required_fields(
 
 def test_batch_update_chunks_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.batch_update_chunks._get_unset_required_fields({})
@@ -10523,7 +10513,7 @@ def test_batch_update_chunks_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_batch_update_chunks_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -10581,7 +10571,7 @@ def test_batch_update_chunks_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.BatchUpdateChunksRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10603,7 +10593,7 @@ def test_batch_update_chunks_rest_bad_request(
 
 def test_batch_update_chunks_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -10616,7 +10606,7 @@ def test_batch_update_chunks_rest_error():
 )
 def test_delete_chunk_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10662,7 +10652,7 @@ def test_delete_chunk_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_chunk._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10671,7 +10661,7 @@ def test_delete_chunk_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).delete_chunk._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10680,7 +10670,7 @@ def test_delete_chunk_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10719,7 +10709,7 @@ def test_delete_chunk_rest_required_fields(
 
 def test_delete_chunk_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.delete_chunk._get_unset_required_fields({})
@@ -10729,7 +10719,7 @@ def test_delete_chunk_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_delete_chunk_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -10779,7 +10769,7 @@ def test_delete_chunk_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.DeleteChunkRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10801,7 +10791,7 @@ def test_delete_chunk_rest_bad_request(
 
 def test_delete_chunk_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10840,7 +10830,7 @@ def test_delete_chunk_rest_flattened():
 
 def test_delete_chunk_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10855,7 +10845,7 @@ def test_delete_chunk_rest_flattened_error(transport: str = "rest"):
 
 def test_delete_chunk_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -10868,7 +10858,7 @@ def test_delete_chunk_rest_error():
 )
 def test_batch_delete_chunks_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10913,21 +10903,21 @@ def test_batch_delete_chunks_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).batch_delete_chunks._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).batch_delete_chunks._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10967,7 +10957,7 @@ def test_batch_delete_chunks_rest_required_fields(
 
 def test_batch_delete_chunks_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.batch_delete_chunks._get_unset_required_fields({})
@@ -10977,7 +10967,7 @@ def test_batch_delete_chunks_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_batch_delete_chunks_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -11027,7 +11017,7 @@ def test_batch_delete_chunks_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.BatchDeleteChunksRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11049,7 +11039,7 @@ def test_batch_delete_chunks_rest_bad_request(
 
 def test_batch_delete_chunks_rest_error():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11062,7 +11052,7 @@ def test_batch_delete_chunks_rest_error():
 )
 def test_list_chunks_rest(request_type):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11113,7 +11103,7 @@ def test_list_chunks_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_chunks._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11122,7 +11112,7 @@ def test_list_chunks_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_chunks._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -11138,7 +11128,7 @@ def test_list_chunks_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11180,7 +11170,7 @@ def test_list_chunks_rest_required_fields(
 
 def test_list_chunks_rest_unset_required_fields():
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_chunks._get_unset_required_fields({})
@@ -11198,7 +11188,7 @@ def test_list_chunks_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_chunks_rest_interceptors(null_interceptor):
     transport = transports.RetrieverServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.RetrieverServiceRestInterceptor(),
@@ -11256,7 +11246,7 @@ def test_list_chunks_rest_bad_request(
     transport: str = "rest", request_type=retriever_service.ListChunksRequest
 ):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11278,7 +11268,7 @@ def test_list_chunks_rest_bad_request(
 
 def test_list_chunks_rest_flattened():
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11319,7 +11309,7 @@ def test_list_chunks_rest_flattened():
 
 def test_list_chunks_rest_flattened_error(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11334,7 +11324,7 @@ def test_list_chunks_rest_flattened_error(transport: str = "rest"):
 
 def test_list_chunks_rest_pager(transport: str = "rest"):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11398,17 +11388,17 @@ def test_list_chunks_rest_pager(transport: str = "rest"):
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.RetrieverServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = RetrieverServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.RetrieverServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = RetrieverServiceClient(
@@ -11418,7 +11408,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.RetrieverServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -11433,13 +11423,12 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = RetrieverServiceClient(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.RetrieverServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = RetrieverServiceClient(
@@ -11451,7 +11440,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.RetrieverServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = RetrieverServiceClient(transport=transport)
     assert client.transport is transport
@@ -11460,13 +11449,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.RetrieverServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.RetrieverServiceGrpcAsyncIOTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -11483,7 +11472,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -11497,7 +11486,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = RetrieverServiceClient.get_transport_class(transport_name)(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
 
@@ -11505,7 +11494,7 @@ def test_transport_kind(transport_name):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
@@ -11517,7 +11506,7 @@ def test_retriever_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.RetrieverServiceTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -11529,7 +11518,7 @@ def test_retriever_service_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.RetrieverServiceTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -11580,7 +11569,7 @@ def test_retriever_service_base_transport_with_credentials_file():
         "google.ai.generativelanguage_v1beta.services.retriever_service.transports.RetrieverServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RetrieverServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -11599,7 +11588,7 @@ def test_retriever_service_base_transport_with_adc():
         "google.ai.generativelanguage_v1beta.services.retriever_service.transports.RetrieverServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RetrieverServiceTransport()
         adc.assert_called_once()
 
@@ -11607,7 +11596,7 @@ def test_retriever_service_base_transport_with_adc():
 def test_retriever_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         RetrieverServiceClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -11627,7 +11616,7 @@ def test_retriever_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -11674,7 +11663,7 @@ def test_retriever_service_transport_create_channel(transport_class, grpc_helper
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
@@ -11702,7 +11691,7 @@ def test_retriever_service_transport_create_channel(transport_class, grpc_helper
     ],
 )
 def test_retriever_service_grpc_transport_client_cert_source_for_mtls(transport_class):
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -11740,7 +11729,7 @@ def test_retriever_service_grpc_transport_client_cert_source_for_mtls(transport_
 
 
 def test_retriever_service_http_transport_client_cert_source_for_mtls():
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -11760,7 +11749,7 @@ def test_retriever_service_http_transport_client_cert_source_for_mtls():
 )
 def test_retriever_service_host_no_port(transport_name):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="generativelanguage.googleapis.com"
         ),
@@ -11783,7 +11772,7 @@ def test_retriever_service_host_no_port(transport_name):
 )
 def test_retriever_service_host_with_port(transport_name):
     client = RetrieverServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="generativelanguage.googleapis.com:8000"
         ),
@@ -11803,8 +11792,8 @@ def test_retriever_service_host_with_port(transport_name):
     ],
 )
 def test_retriever_service_client_transport_session_collision(transport_name):
-    creds1 = _AnonymousCredentialsWithUniverseDomain()
-    creds2 = _AnonymousCredentialsWithUniverseDomain()
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
     client1 = RetrieverServiceClient(
         credentials=creds1,
         transport=transport_name,
@@ -11925,7 +11914,7 @@ def test_retriever_service_transport_channel_mtls_with_client_cert_source(
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = _AnonymousCredentialsWithUniverseDomain()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
@@ -12180,7 +12169,7 @@ def test_client_with_default_client_info():
         transports.RetrieverServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = RetrieverServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -12190,7 +12179,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = RetrieverServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -12199,7 +12188,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = RetrieverServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(
@@ -12218,7 +12207,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = RetrieverServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -12235,7 +12224,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = RetrieverServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
