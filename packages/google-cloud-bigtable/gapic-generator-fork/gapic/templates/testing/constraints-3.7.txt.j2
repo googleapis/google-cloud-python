@@ -1,0 +1,18 @@
+{% from '_pypi_packages.j2' import pypi_packages %}
+# This constraints file is used to check that lower bounds
+# are correct in setup.py
+# List all library dependencies and extras in this file.
+# Pin the version to the lower bound.
+# e.g., if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0dev",
+# Then this file should have google-cloud-foo==1.14.0
+google-api-core==1.34.0
+proto-plus==1.22.0
+protobuf==3.19.5
+{% for package_tuple, package_info in pypi_packages.items() %}
+{# Quick check to make sure the package is different from this setup.py #}
+{% if api.naming.warehouse_package_name != package_info.package_name %}
+{% if api.requires_package(package_tuple) %}
+{{ package_info.package_name }}=={{ package_info.lower_bound }}
+{% endif %}
+{% endif %}
+{% endfor %}

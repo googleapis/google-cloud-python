@@ -1,0 +1,208 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.asset_v1",
+  "protoPackage": "google.cloud.asset.v1",
+  "schema": "1.0",
+  "services": {
+    "AssetService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AssetServiceClient",
+          "rpcs": {
+            "AnalyzeIamPolicy": {
+              "methods": [
+                "analyze_iam_policy"
+              ]
+            },
+            "AnalyzeIamPolicyLongrunning": {
+              "methods": [
+                "analyze_iam_policy_longrunning"
+              ]
+            },
+            "BatchGetAssetsHistory": {
+              "methods": [
+                "batch_get_assets_history"
+              ]
+            },
+            "CreateFeed": {
+              "methods": [
+                "create_feed"
+              ]
+            },
+            "DeleteFeed": {
+              "methods": [
+                "delete_feed"
+              ]
+            },
+            "ExportAssets": {
+              "methods": [
+                "export_assets"
+              ]
+            },
+            "GetFeed": {
+              "methods": [
+                "get_feed"
+              ]
+            },
+            "ListAssets": {
+              "methods": [
+                "list_assets"
+              ]
+            },
+            "ListFeeds": {
+              "methods": [
+                "list_feeds"
+              ]
+            },
+            "SearchAllIamPolicies": {
+              "methods": [
+                "search_all_iam_policies"
+              ]
+            },
+            "SearchAllResources": {
+              "methods": [
+                "search_all_resources"
+              ]
+            },
+            "UpdateFeed": {
+              "methods": [
+                "update_feed"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AssetServiceAsyncClient",
+          "rpcs": {
+            "AnalyzeIamPolicy": {
+              "methods": [
+                "analyze_iam_policy"
+              ]
+            },
+            "AnalyzeIamPolicyLongrunning": {
+              "methods": [
+                "analyze_iam_policy_longrunning"
+              ]
+            },
+            "BatchGetAssetsHistory": {
+              "methods": [
+                "batch_get_assets_history"
+              ]
+            },
+            "CreateFeed": {
+              "methods": [
+                "create_feed"
+              ]
+            },
+            "DeleteFeed": {
+              "methods": [
+                "delete_feed"
+              ]
+            },
+            "ExportAssets": {
+              "methods": [
+                "export_assets"
+              ]
+            },
+            "GetFeed": {
+              "methods": [
+                "get_feed"
+              ]
+            },
+            "ListAssets": {
+              "methods": [
+                "list_assets"
+              ]
+            },
+            "ListFeeds": {
+              "methods": [
+                "list_feeds"
+              ]
+            },
+            "SearchAllIamPolicies": {
+              "methods": [
+                "search_all_iam_policies"
+              ]
+            },
+            "SearchAllResources": {
+              "methods": [
+                "search_all_resources"
+              ]
+            },
+            "UpdateFeed": {
+              "methods": [
+                "update_feed"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AssetServiceClient",
+          "rpcs": {
+            "AnalyzeIamPolicy": {
+              "methods": [
+                "analyze_iam_policy"
+              ]
+            },
+            "AnalyzeIamPolicyLongrunning": {
+              "methods": [
+                "analyze_iam_policy_longrunning"
+              ]
+            },
+            "BatchGetAssetsHistory": {
+              "methods": [
+                "batch_get_assets_history"
+              ]
+            },
+            "CreateFeed": {
+              "methods": [
+                "create_feed"
+              ]
+            },
+            "DeleteFeed": {
+              "methods": [
+                "delete_feed"
+              ]
+            },
+            "ExportAssets": {
+              "methods": [
+                "export_assets"
+              ]
+            },
+            "GetFeed": {
+              "methods": [
+                "get_feed"
+              ]
+            },
+            "ListAssets": {
+              "methods": [
+                "list_assets"
+              ]
+            },
+            "ListFeeds": {
+              "methods": [
+                "list_feeds"
+              ]
+            },
+            "SearchAllIamPolicies": {
+              "methods": [
+                "search_all_iam_policies"
+              ]
+            },
+            "SearchAllResources": {
+              "methods": [
+                "search_all_resources"
+              ]
+            },
+            "UpdateFeed": {
+              "methods": [
+                "update_feed"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

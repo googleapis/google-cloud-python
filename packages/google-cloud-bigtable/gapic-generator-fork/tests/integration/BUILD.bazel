@@ -1,0 +1,175 @@
+load(
+    "@gapic_generator_python//rules_python_gapic:py_gapic.bzl",
+    "py_gapic_library",
+)
+load(
+    "@gapic_generator_python//rules_python_gapic:py_gapic_pkg.bzl",
+    "py_gapic_assembly_pkg",
+)
+load(
+    "@gapic_generator_python//rules_python_gapic/test:integration_test.bzl",
+    "golden_update",
+    "integration_test",
+)
+load(
+    "@com_github_grpc_grpc//bazel:python_rules.bzl",
+    "py_proto_library",
+)
+
+load("@rules_proto//proto:defs.bzl", "proto_library")
+
+package(default_visibility = ["//visibility:public"])
+
+####################################################
+# Integration Test Rules
+#
+# Usage:
+#    Run tests: bazel test tests/integration:asset
+#    Update goldens: bazel run tests/integration:asset_update
+####################################################
+
+INTEGRATION_TEST_LIBRARIES = [
+    "asset",  # Basic case.
+    "credentials",  # Check that the capital name edge case is handled.
+    "eventarc",  # create_channel is a reserved term in transport layer.
+    "logging",  # Java package remapping in gapic.yaml.
+    "redis",  # Has a gapic.yaml.
+]
+
+[integration_test(
+    name = lib_name,
+    data = ["//tests/integration/goldens/%s:goldens_files" % lib_name],
+    target = ":%s_py_gapic" % lib_name,
+) for lib_name in INTEGRATION_TEST_LIBRARIES]
+
+[golden_update(
+    name = "%s_update" % lib_name,
+    data = ["//tests/integration/goldens/%s:goldens_files" % lib_name],
+    target = ":%s_py_gapic" % lib_name,
+) for lib_name in INTEGRATION_TEST_LIBRARIES]
+
+####################################################
+# API Library Rules
+####################################################
+
+# Asset.
+py_gapic_library(
+    name = "asset_py_gapic",
+    srcs = ["@com_google_googleapis//google/cloud/asset/v1:asset_proto"],
+    grpc_service_config = "cloudasset_grpc_service_config.json",
+    opt_args = [
+        "autogen-snippets",
+    ],
+    transport = "grpc+rest",
+)
+
+# Credentials.
+py_gapic_library(
+    name = "credentials_py_gapic",
+    srcs = ["@com_google_googleapis//google/iam/credentials/v1:credentials_proto"],
+    grpc_service_config = "iamcredentials_grpc_service_config.json",
+    opt_args = [
+        "autogen-snippets",
+    ],
+    transport = "grpc+rest",
+)
+
+py_test(
+    name = "credentials_py_gapic_test",
+    srcs = [
+        "credentials_py_gapic_pytest.py",
+        "credentials_py_gapic_test.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":credentials_py_gapic",
+    ],
+)
+
+py_proto_library(
+    name = "iam_policy_py_proto",
+    deps = ["@com_google_googleapis//google/iam/v1:iam_policy_proto"],
+)
+
+# Eventarc.
+py_gapic_library(
+    name = "eventarc_py_gapic",
+    srcs = ["@com_google_googleapis//google/cloud/eventarc/v1:eventarc_proto"],
+    grpc_service_config = "eventarc_grpc_service_config.json",
+    opt_args = [
+        "python-gapic-namespace=google.cloud",
+        "python-gapic-name=eventarc",
+        "autogen-snippets",
+    ],
+    service_yaml = "eventarc_v1.yaml",
+    transport = "grpc+rest",
+    deps = [":iam_policy_py_proto"]
+)
+
+py_test(
+    name = "eventarc_py_gapic_test",
+    srcs = [
+        "eventarc_py_gapic_pytest.py",
+        "eventarc_py_gapic_test.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":eventarc_py_gapic",
+    ],
+)
+
+# Logging.
+py_gapic_library(
+    name = "logging_py_gapic",
+    srcs = ["@com_google_googleapis//google/logging/v2:logging_proto"],
+    grpc_service_config = "logging_grpc_service_config.json",
+    opt_args = [
+        "python-gapic-namespace=google.cloud",
+        "python-gapic-name=logging",
+        "autogen-snippets",
+    ],
+    transport = "grpc+rest",
+)
+
+py_test(
+    name = "logging_py_gapic_test",
+    srcs = [
+        "logging_py_gapic_pytest.py",
+        "logging_py_gapic_test.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":logging_py_gapic",
+    ],
+)
+
+py_gapic_library(
+    name = "redis_py_gapic",
+    srcs = ["@com_google_googleapis//google/cloud/redis/v1:redis_proto"],
+    grpc_service_config = "redis_grpc_service_config.json",
+    opt_args = [
+        "autogen-snippets",
+    ],
+    transport = "grpc+rest",
+)
+
+py_test(
+    name = "redis_py_gapic_test",
+    srcs = [
+        "redis_py_gapic_pytest.py",
+        "redis_py_gapic_test.py",
+    ],
+    legacy_create_init = False,
+    deps = [
+        ":redis_py_gapic",
+    ],
+)
+
+test_suite(
+    name = "googleapis_test_suite",
+    tests = [
+        ":credentials_py_gapic_test",
+        ":eventarc_py_gapic_test",
+        ":redis_py_gapic_test",
+    ],
+)

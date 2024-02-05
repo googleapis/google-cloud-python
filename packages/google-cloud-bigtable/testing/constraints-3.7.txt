@@ -5,8 +5,8 @@
 #
 # e.g., if setup.py has "foo >= 1.14.0, < 2.0.0dev",
 # Then this file should have foo==1.14.0
-google-api-core==1.34.0
-google-cloud-core==1.4.4
+google-api-core==2.16.0
+google-cloud-core==2.0.0
 grpc-google-iam-v1==0.12.4
 proto-plus==1.22.0
 libcst==0.2.5

@@ -1,0 +1,12 @@
+[flake8]
+ignore =
+  # Closing bracket mismatches opening bracket's line.
+  # This works poorly with type annotations in method declarations.
+  E123, E124
+  # Line over-indented for visual indent.
+  # This works poorly with type annotations in method declarations.
+  E126, E128, E131
+  # Line break after binary operator.
+  # This catches line breaks after "and" / "or" as a means of breaking up
+  # long if statements, which PEP 8 explicitly encourages.
+  W504

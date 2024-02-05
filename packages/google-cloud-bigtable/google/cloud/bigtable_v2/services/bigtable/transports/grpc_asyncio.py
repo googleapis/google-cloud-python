@@ -18,6 +18,8 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers_async
+from google.api_core import exceptions as core_exceptions
+from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
@@ -511,6 +513,66 @@ class BigtableGrpcAsyncIOTransport(BigtableTransport):
                 response_deserializer=bigtable.ReadChangeStreamResponse.deserialize,
             )
         return self._stubs["read_change_stream"]
+
+    def _prep_wrapped_messages(self, client_info):
+        # Precompute the wrapped methods.
+        self._wrapped_methods = {
+            self.read_rows: gapic_v1.method_async.wrap_method(
+                self.read_rows,
+                default_timeout=43200.0,
+                client_info=client_info,
+            ),
+            self.sample_row_keys: gapic_v1.method_async.wrap_method(
+                self.sample_row_keys,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.mutate_row: gapic_v1.method_async.wrap_method(
+                self.mutate_row,
+                default_retry=retries.Retry(
+                    initial=0.01,
+                    maximum=60.0,
+                    multiplier=2,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=60.0,
+                ),
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.mutate_rows: gapic_v1.method_async.wrap_method(
+                self.mutate_rows,
+                default_timeout=600.0,
+                client_info=client_info,
+            ),
+            self.check_and_mutate_row: gapic_v1.method_async.wrap_method(
+                self.check_and_mutate_row,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.ping_and_warm: gapic_v1.method_async.wrap_method(
+                self.ping_and_warm,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.read_modify_write_row: gapic_v1.method_async.wrap_method(
+                self.read_modify_write_row,
+                default_timeout=20.0,
+                client_info=client_info,
+            ),
+            self.generate_initial_change_stream_partitions: gapic_v1.method_async.wrap_method(
+                self.generate_initial_change_stream_partitions,
+                default_timeout=60.0,
+                client_info=client_info,
+            ),
+            self.read_change_stream: gapic_v1.method_async.wrap_method(
+                self.read_change_stream,
+                default_timeout=43200.0,
+                client_info=client_info,
+            ),
+        }
 
     def close(self):
         return self.grpc_channel.close()

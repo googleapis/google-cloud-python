@@ -1,0 +1,93 @@
+    {% if "rest" in opts.transport %}
+
+    {% for name, sig in api.mixin_api_signatures.items() %} 
+    @property
+    def {{ name|snake_case }}(self):
+        return self._{{ name }}(self._session, self._host, self._interceptor) # type: ignore
+    
+    class _{{ name }}({{service.name}}RestStub):
+        def __call__(self,
+            request: {{ sig.request_type }}, *,
+            retry: OptionalRetry=gapic_v1.method.DEFAULT,
+            timeout: Optional[float]=None,
+            metadata: Sequence[Tuple[str, str]]=(),
+            ) -> {{ sig.response_type }}:
+
+            r"""Call the {{- ' ' -}}
+            {{ (name|snake_case).replace('_',' ')|wrap(
+                    width=70, offset=45, indent=8) }}
+            {{- ' ' -}} method over HTTP.
+
+            Args:
+                request ({{ sig.request_type }}):
+                    The request object for {{ name }} method.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            {% if sig.response_type != 'None' %}
+
+            Returns:
+                {{ sig.response_type }}: Response from {{ name }} method.
+            {% endif %}
+            """
+
+            http_options: List[Dict[str, str]] = [
+            {%- for rule in api.mixin_http_options["{}".format(name)] %}{
+                'method': '{{ rule.method }}',
+                'uri': '{{ rule.uri }}',
+                {% if rule.body %}
+                'body': '{{ rule.body }}',
+                {% endif %}{# rule.body #}
+            },
+            {% endfor %}
+            ]
+
+            request, metadata = self._interceptor.pre_{{ name|snake_case }}(request, metadata)
+            request_kwargs = json_format.MessageToDict(request)
+            transcoded_request = path_template.transcode(
+                http_options, **request_kwargs)
+
+            {% set body_spec = api.mixin_http_options["{}".format(name)][0].body %}
+            {%- if body_spec %}
+            body = json.dumps(transcoded_request['body'])
+            {%- endif %}
+
+            uri = transcoded_request['uri']
+            method = transcoded_request['method']
+
+            # Jsonify the query params
+            query_params = json.loads(json.dumps(transcoded_request['query_params']))
+
+            # Send the request
+            headers = dict(metadata)
+            headers['Content-Type'] = 'application/json'
+
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params),
+                {% if body_spec %}
+                data=body,
+                {% endif %}
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+            
+            {% if sig.response_type == "None" %}
+            return self._interceptor.post_{{ name|snake_case }}(None)
+            {% else %}
+            
+            resp = {{ sig.response_type }}()
+            resp = json_format.Parse(response.content.decode("utf-8"), resp)
+            resp = self._interceptor.post_{{ name|snake_case }}(resp)
+            return resp
+            {% endif %}
+
+    {% endfor %}
+    {% endif %} {# rest in opts.transport #}
