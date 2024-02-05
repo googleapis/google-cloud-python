@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.7.0...google-cloud-bare-metal-solution-v1.7.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([8465244](https://github.com/googleapis/google-cloud-python/commit/8465244deff230202eebab526092c780c6b60f4e))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([8465244](https://github.com/googleapis/google-cloud-python/commit/8465244deff230202eebab526092c780c6b60f4e))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([8465244](https://github.com/googleapis/google-cloud-python/commit/8465244deff230202eebab526092c780c6b60f4e))
+
 ## [1.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.6.0...google-cloud-bare-metal-solution-v1.7.0) (2024-02-01)
 
 
