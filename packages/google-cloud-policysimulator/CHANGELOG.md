@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policysimulator-v0.1.3...google-cloud-policysimulator-v0.1.4) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([e75fcf6](https://github.com/googleapis/google-cloud-python/commit/e75fcf6e389fd2e90ec00b87a625b208837c72dc))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([e75fcf6](https://github.com/googleapis/google-cloud-python/commit/e75fcf6e389fd2e90ec00b87a625b208837c72dc))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([e75fcf6](https://github.com/googleapis/google-cloud-python/commit/e75fcf6e389fd2e90ec00b87a625b208837c72dc))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policysimulator-v0.1.2...google-cloud-policysimulator-v0.1.3) (2024-02-01)
 
 

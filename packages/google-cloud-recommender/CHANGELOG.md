@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-recommender/#history
 
+## [2.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.15.0...google-cloud-recommender-v2.15.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([e75fcf6](https://github.com/googleapis/google-cloud-python/commit/e75fcf6e389fd2e90ec00b87a625b208837c72dc))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([e75fcf6](https://github.com/googleapis/google-cloud-python/commit/e75fcf6e389fd2e90ec00b87a625b208837c72dc))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([e75fcf6](https://github.com/googleapis/google-cloud-python/commit/e75fcf6e389fd2e90ec00b87a625b208837c72dc))
+
 ## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommender-v2.14.0...google-cloud-recommender-v2.15.0) (2024-02-01)
 
 
