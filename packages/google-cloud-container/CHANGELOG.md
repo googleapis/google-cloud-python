@@ -4,6 +4,27 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.39.0...google-cloud-container-v2.40.0) (2024-02-05)
+
+
+### Features
+
+* new AddonsConfig field stateful_ha_config ([e5788c2](https://github.com/googleapis/google-cloud-python/commit/e5788c240181151820f62329b34c004dcf73e94c))
+* new message StatefulHAConfig ([e5788c2](https://github.com/googleapis/google-cloud-python/commit/e5788c240181151820f62329b34c004dcf73e94c))
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([f3db074](https://github.com/googleapis/google-cloud-python/commit/f3db074e7bbf505d5989e4c353461ab6bef4905c))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([f3db074](https://github.com/googleapis/google-cloud-python/commit/f3db074e7bbf505d5989e4c353461ab6bef4905c))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([f3db074](https://github.com/googleapis/google-cloud-python/commit/f3db074e7bbf505d5989e4c353461ab6bef4905c))
+
+
+### Documentation
+
+* Autopilot.conversion_status is now OUTPUT_ONLY ([e5788c2](https://github.com/googleapis/google-cloud-python/commit/e5788c240181151820f62329b34c004dcf73e94c))
+* update Autopilot.conversion_status comment with behavior ([e5788c2](https://github.com/googleapis/google-cloud-python/commit/e5788c240181151820f62329b34c004dcf73e94c))
+
 ## [2.39.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.38.0...google-cloud-container-v2.39.0) (2024-02-01)
 
 
