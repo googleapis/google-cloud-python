@@ -846,7 +846,7 @@ class SpannerDialect(DefaultDialect):
                 col.spanner_type, col.is_nullable, col.generation_expression
             FROM information_schema.columns as col
             JOIN information_schema.tables AS t
-                ON col.table_name = t.table_name
+                USING (TABLE_CATALOG, TABLE_SCHEMA, TABLE_NAME)
             WHERE
                 {table_filter_query}
                 {table_type_query}
@@ -979,9 +979,14 @@ class SpannerDialect(DefaultDialect):
                ARRAY_AGG(ic.column_ordering)
             FROM information_schema.indexes as i
             JOIN information_schema.index_columns AS ic
-                ON ic.index_name = i.index_name AND ic.table_name = i.table_name
+                ON  ic.index_name = i.index_name
+                AND ic.table_catalog = i.table_catalog
+                AND ic.table_schema = i.table_schema
+                AND ic.table_name = i.table_name
             JOIN information_schema.tables AS t
-                ON i.table_name = t.table_name
+                ON  i.table_catalog = t.table_catalog
+                AND i.table_schema = t.table_schema
+                AND i.table_name = t.table_name
             WHERE
                 {table_filter_query}
                 {table_type_query}
@@ -1076,9 +1081,11 @@ class SpannerDialect(DefaultDialect):
             SELECT tc.table_schema, tc.table_name, ccu.COLUMN_NAME
             FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS tc
             JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS ccu
-                ON ccu.CONSTRAINT_NAME = tc.CONSTRAINT_NAME
+                USING (TABLE_CATALOG, TABLE_SCHEMA, CONSTRAINT_NAME)
             JOIN information_schema.tables AS t
-                ON tc.table_name = t.table_name
+                ON  tc.TABLE_CATALOG = t.TABLE_CATALOG
+                AND tc.TABLE_SCHEMA = t.TABLE_SCHEMA
+                AND tc.TABLE_NAME = t.TABLE_NAME
             WHERE {table_filter_query} {table_type_query}
             {schema_filter_query} tc.CONSTRAINT_TYPE = "PRIMARY KEY"
         """.format(
@@ -1196,13 +1203,19 @@ class SpannerDialect(DefaultDialect):
             )
             FROM information_schema.table_constraints AS tc
             JOIN information_schema.constraint_column_usage AS ccu
-                ON ccu.constraint_name = tc.constraint_name
+                USING (table_catalog, table_schema, constraint_name)
             JOIN information_schema.constraint_table_usage AS ctu
-                ON ctu.constraint_name = tc.constraint_name
+                ON ctu.table_catalog = tc.table_catalog
+                and ctu.table_schema = tc.table_schema
+                and ctu.constraint_name = tc.constraint_name
             JOIN information_schema.key_column_usage AS kcu
-                ON kcu.constraint_name = tc.constraint_name
+                ON kcu.table_catalog = tc.table_catalog
+                and kcu.table_schema = tc.table_schema
+                and kcu.constraint_name = tc.constraint_name
             JOIN information_schema.tables AS t
-                ON tc.table_name = t.table_name
+                ON t.table_catalog = tc.table_catalog
+                and t.table_schema = tc.table_schema
+                and t.table_name = tc.table_name
             WHERE
                 {table_filter_query}
                 {table_type_query}
@@ -1323,15 +1336,14 @@ WHERE table_type = 'BASE TABLE' AND table_schema = '{schema}'
 SELECT ccu.CONSTRAINT_NAME, ccu.COLUMN_NAME
 FROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS tc
 JOIN INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS ccu
-    ON ccu.CONSTRAINT_NAME = tc.CONSTRAINT_NAME
-LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS AS rc
-    on tc.CONSTRAINT_NAME = rc.CONSTRAINT_NAME
+    USING (TABLE_CATALOG, TABLE_SCHEMA, CONSTRAINT_NAME)
 WHERE
     tc.TABLE_NAME="{table_name}"
+    AND tc.TABLE_SCHEMA="{table_schema}"
     AND tc.CONSTRAINT_TYPE = "UNIQUE"
-    AND rc.CONSTRAINT_NAME IS NOT NULL
+    AND tc.CONSTRAINT_NAME IS NOT NULL
 """.format(
-            table_name=table_name
+            table_schema=schema or "", table_name=table_name
         )
 
         cols = []
@@ -1363,10 +1375,10 @@ WHERE
                 """
 SELECT true
 FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_NAME="{table_name}"
+WHERE TABLE_SCHEMA="{table_schema}" AND TABLE_NAME="{table_name}"
 LIMIT 1
 """.format(
-                    table_name=table_name
+                    table_schema=schema or "", table_name=table_name
                 )
             )
 
@@ -1390,9 +1402,10 @@ LIMIT 1
                 SELECT true
                 FROM INFORMATION_SCHEMA.SEQUENCES
                 WHERE NAME="{sequence_name}"
+                AND SCHEMA="{schema}"
                 LIMIT 1
                 """.format(
-                    sequence_name=sequence_name
+                    sequence_name=sequence_name, schema=schema or ""
                 )
             )
 
