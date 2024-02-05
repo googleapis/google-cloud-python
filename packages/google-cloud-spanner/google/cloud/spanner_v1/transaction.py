@@ -180,7 +180,9 @@ class Transaction(_SnapshotBase, _BatchBase):
         self.rolled_back = True
         del self._session._transaction
 
-    def commit(self, return_commit_stats=False, request_options=None):
+    def commit(
+        self, return_commit_stats=False, request_options=None, max_commit_delay=None
+    ):
         """Commit mutations to the database.
 
         :type return_commit_stats: bool
@@ -193,6 +195,12 @@ class Transaction(_SnapshotBase, _BatchBase):
                 (Optional) Common options for this request.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
+
+        :type max_commit_delay: :class:`datetime.timedelta`
+        :param max_commit_delay:
+                (Optional) The amount of latency this request is willing to incur
+                in order to improve throughput.
+                :class:`~google.cloud.spanner_v1.types.MaxCommitDelay`.
 
         :rtype: datetime
         :returns: timestamp of the committed changes.
@@ -228,6 +236,7 @@ class Transaction(_SnapshotBase, _BatchBase):
             mutations=self._mutations,
             transaction_id=self._transaction_id,
             return_commit_stats=return_commit_stats,
+            max_commit_delay=max_commit_delay,
             request_options=request_options,
         )
         with trace_call("CloudSpanner.Commit", self._session, trace_attributes):

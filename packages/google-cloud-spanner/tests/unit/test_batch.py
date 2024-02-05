@@ -233,7 +233,14 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         self.assertEqual(committed, now)
         self.assertEqual(batch.committed, committed)
 
-        (session, mutations, single_use_txn, request_options, metadata) = api._committed
+        (
+            session,
+            mutations,
+            single_use_txn,
+            request_options,
+            max_commit_delay,
+            metadata,
+        ) = api._committed
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
@@ -246,12 +253,13 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
             ],
         )
         self.assertEqual(request_options, RequestOptions())
+        self.assertEqual(max_commit_delay, None)
 
         self.assertSpanAttributes(
             "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
         )
 
-    def _test_commit_with_request_options(self, request_options=None):
+    def _test_commit_with_options(self, request_options=None, max_commit_delay_in=None):
         import datetime
         from google.cloud.spanner_v1 import CommitResponse
         from google.cloud.spanner_v1 import TransactionOptions
@@ -267,7 +275,9 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         batch = self._make_one(session)
         batch.transaction_tag = self.TRANSACTION_TAG
         batch.insert(TABLE_NAME, COLUMNS, VALUES)
-        committed = batch.commit(request_options=request_options)
+        committed = batch.commit(
+            request_options=request_options, max_commit_delay=max_commit_delay_in
+        )
 
         self.assertEqual(committed, now)
         self.assertEqual(batch.committed, committed)
@@ -284,6 +294,7 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
             mutations,
             single_use_txn,
             actual_request_options,
+            max_commit_delay,
             metadata,
         ) = api._committed
         self.assertEqual(session, self.SESSION_NAME)
@@ -303,33 +314,46 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
             "CloudSpanner.Commit", attributes=dict(BASE_ATTRIBUTES, num_mutations=1)
         )
 
+        self.assertEqual(max_commit_delay_in, max_commit_delay)
+
     def test_commit_w_request_tag_success(self):
         request_options = RequestOptions(
             request_tag="tag-1",
         )
-        self._test_commit_with_request_options(request_options=request_options)
+        self._test_commit_with_options(request_options=request_options)
 
     def test_commit_w_transaction_tag_success(self):
         request_options = RequestOptions(
             transaction_tag="tag-1-1",
         )
-        self._test_commit_with_request_options(request_options=request_options)
+        self._test_commit_with_options(request_options=request_options)
 
     def test_commit_w_request_and_transaction_tag_success(self):
         request_options = RequestOptions(
             request_tag="tag-1",
             transaction_tag="tag-1-1",
         )
-        self._test_commit_with_request_options(request_options=request_options)
+        self._test_commit_with_options(request_options=request_options)
 
     def test_commit_w_request_and_transaction_tag_dictionary_success(self):
         request_options = {"request_tag": "tag-1", "transaction_tag": "tag-1-1"}
-        self._test_commit_with_request_options(request_options=request_options)
+        self._test_commit_with_options(request_options=request_options)
 
     def test_commit_w_incorrect_tag_dictionary_error(self):
         request_options = {"incorrect_tag": "tag-1-1"}
         with self.assertRaises(ValueError):
-            self._test_commit_with_request_options(request_options=request_options)
+            self._test_commit_with_options(request_options=request_options)
+
+    def test_commit_w_max_commit_delay(self):
+        import datetime
+
+        request_options = RequestOptions(
+            request_tag="tag-1",
+        )
+        self._test_commit_with_options(
+            request_options=request_options,
+            max_commit_delay_in=datetime.timedelta(milliseconds=100),
+        )
 
     def test_context_mgr_already_committed(self):
         import datetime
@@ -368,7 +392,14 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
 
         self.assertEqual(batch.committed, now)
 
-        (session, mutations, single_use_txn, request_options, metadata) = api._committed
+        (
+            session,
+            mutations,
+            single_use_txn,
+            request_options,
+            _,
+            metadata,
+        ) = api._committed
         self.assertEqual(session, self.SESSION_NAME)
         self.assertEqual(mutations, batch._mutations)
         self.assertIsInstance(single_use_txn, TransactionOptions)
@@ -565,12 +596,17 @@ class _FauxSpannerAPI:
     ):
         from google.api_core.exceptions import Unknown
 
+        max_commit_delay = None
+        if type(request).pb(request).HasField("max_commit_delay"):
+            max_commit_delay = request.max_commit_delay
+
         assert request.transaction_id == b""
         self._committed = (
             request.session,
             request.mutations,
             request.single_use_transaction,
             request.request_options,
+            max_commit_delay,
             metadata,
         )
         if self._rpc_error:

@@ -346,9 +346,14 @@ class TestTransaction(OpenTelemetryBase):
         )
 
     def _commit_helper(
-        self, mutate=True, return_commit_stats=False, request_options=None
+        self,
+        mutate=True,
+        return_commit_stats=False,
+        request_options=None,
+        max_commit_delay_in=None,
     ):
         import datetime
+
         from google.cloud.spanner_v1 import CommitResponse
         from google.cloud.spanner_v1.keyset import KeySet
         from google.cloud._helpers import UTC
@@ -370,13 +375,22 @@ class TestTransaction(OpenTelemetryBase):
             transaction.delete(TABLE_NAME, keyset)
 
         transaction.commit(
-            return_commit_stats=return_commit_stats, request_options=request_options
+            return_commit_stats=return_commit_stats,
+            request_options=request_options,
+            max_commit_delay=max_commit_delay_in,
         )
 
         self.assertEqual(transaction.committed, now)
         self.assertIsNone(session._transaction)
 
-        session_id, mutations, txn_id, actual_request_options, metadata = api._committed
+        (
+            session_id,
+            mutations,
+            txn_id,
+            actual_request_options,
+            max_commit_delay,
+            metadata,
+        ) = api._committed
 
         if request_options is None:
             expected_request_options = RequestOptions(
@@ -391,6 +405,7 @@ class TestTransaction(OpenTelemetryBase):
             expected_request_options.transaction_tag = self.TRANSACTION_TAG
             expected_request_options.request_tag = None
 
+        self.assertEqual(max_commit_delay_in, max_commit_delay)
         self.assertEqual(session_id, session.name)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(mutations, transaction._mutations)
@@ -422,6 +437,11 @@ class TestTransaction(OpenTelemetryBase):
 
     def test_commit_w_return_commit_stats(self):
         self._commit_helper(return_commit_stats=True)
+
+    def test_commit_w_max_commit_delay(self):
+        import datetime
+
+        self._commit_helper(max_commit_delay_in=datetime.timedelta(milliseconds=100))
 
     def test_commit_w_request_tag_success(self):
         request_options = RequestOptions(
@@ -851,7 +871,7 @@ class TestTransaction(OpenTelemetryBase):
 
         self.assertEqual(transaction.committed, now)
 
-        session_id, mutations, txn_id, _, metadata = api._committed
+        session_id, mutations, txn_id, _, _, metadata = api._committed
         self.assertEqual(session_id, self.SESSION_NAME)
         self.assertEqual(txn_id, self.TRANSACTION_ID)
         self.assertEqual(mutations, transaction._mutations)
@@ -938,11 +958,17 @@ class _FauxSpannerAPI(object):
         metadata=None,
     ):
         assert not request.single_use_transaction
+
+        max_commit_delay = None
+        if type(request).pb(request).HasField("max_commit_delay"):
+            max_commit_delay = request.max_commit_delay
+
         self._committed = (
             request.session,
             request.mutations,
             request.transaction_id,
             request.request_options,
+            max_commit_delay,
             metadata,
         )
         return self._commit_response

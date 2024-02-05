@@ -363,6 +363,8 @@ class Session(object):
                    to continue retrying the transaction.
                    "commit_request_options" will be removed and used to set the
                    request options for the commit request.
+                   "max_commit_delay" will be removed and used to set the max commit delay for the request.
+                   "transaction_tag" will be removed and used to set the transaction tag for the request.
 
         :rtype: Any
         :returns: The return value of ``func``.
@@ -372,6 +374,7 @@ class Session(object):
         """
         deadline = time.time() + kw.pop("timeout_secs", DEFAULT_RETRY_TIMEOUT_SECS)
         commit_request_options = kw.pop("commit_request_options", None)
+        max_commit_delay = kw.pop("max_commit_delay", None)
         transaction_tag = kw.pop("transaction_tag", None)
         attempts = 0
 
@@ -400,6 +403,7 @@ class Session(object):
                 txn.commit(
                     return_commit_stats=self._database.log_commit_stats,
                     request_options=commit_request_options,
+                    max_commit_delay=max_commit_delay,
                 )
             except Aborted as exc:
                 del self._transaction
