@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.14.0...google-cloud-bigquery-datatransfer-v3.14.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([8465244](https://github.com/googleapis/google-cloud-python/commit/8465244deff230202eebab526092c780c6b60f4e))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([8465244](https://github.com/googleapis/google-cloud-python/commit/8465244deff230202eebab526092c780c6b60f4e))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([8465244](https://github.com/googleapis/google-cloud-python/commit/8465244deff230202eebab526092c780c6b60f4e))
+
 ## [3.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.13.0...google-cloud-bigquery-datatransfer-v3.14.0) (2024-02-01)
 
 

@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.11.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.4...google-cloud-bigquery-migration-v0.11.5) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([8465244](https://github.com/googleapis/google-cloud-python/commit/8465244deff230202eebab526092c780c6b60f4e))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([8465244](https://github.com/googleapis/google-cloud-python/commit/8465244deff230202eebab526092c780c6b60f4e))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([8465244](https://github.com/googleapis/google-cloud-python/commit/8465244deff230202eebab526092c780c6b60f4e))
+
 ## [0.11.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.3...google-cloud-bigquery-migration-v0.11.4) (2024-02-01)
 
 

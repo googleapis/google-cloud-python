@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.6.0...google-cloud-certificate-manager-v1.6.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([f3db074](https://github.com/googleapis/google-cloud-python/commit/f3db074e7bbf505d5989e4c353461ab6bef4905c))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([f3db074](https://github.com/googleapis/google-cloud-python/commit/f3db074e7bbf505d5989e4c353461ab6bef4905c))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([f3db074](https://github.com/googleapis/google-cloud-python/commit/f3db074e7bbf505d5989e4c353461ab6bef4905c))
+
 ## [1.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.5.0...google-cloud-certificate-manager-v1.6.0) (2024-02-01)
 
 
