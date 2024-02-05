@@ -251,7 +251,7 @@ class Retry(_BaseRetry):
             must be greater than 0.
         maximum (float): The maximum amount of time to delay in seconds.
         multiplier (float): The multiplier applied to the delay.
-        timeout (float): How long to keep retrying, in seconds.
+        timeout (Optional[float]): How long to keep retrying, in seconds.
             Note: timeout is only checked before initiating a retry, so the target may
             run past the timeout value as long as it is healthy.
         on_error (Callable[Exception]): A function to call while processing

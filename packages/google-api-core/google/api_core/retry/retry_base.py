@@ -25,7 +25,7 @@ import random
 import time
 
 from enum import Enum
-from typing import Any, Callable, TYPE_CHECKING
+from typing import Any, Callable, Optional, TYPE_CHECKING
 
 import requests.exceptions
 
@@ -238,8 +238,8 @@ class _BaseRetry(object):
         initial: float = _DEFAULT_INITIAL_DELAY,
         maximum: float = _DEFAULT_MAXIMUM_DELAY,
         multiplier: float = _DEFAULT_DELAY_MULTIPLIER,
-        timeout: float = _DEFAULT_DEADLINE,
-        on_error: Callable[[Exception], Any] | None = None,
+        timeout: Optional[float] = _DEFAULT_DEADLINE,
+        on_error: Optional[Callable[[Exception], Any]] = None,
         **kwargs: Any,
     ) -> None:
         self._predicate = predicate
@@ -265,24 +265,6 @@ class _BaseRetry(object):
     def timeout(self) -> float | None:
         return self._timeout
 
-    def _replace(
-        self,
-        predicate: Callable[[Exception], bool] | None = None,
-        initial: float | None = None,
-        maximum: float | None = None,
-        multiplier: float | None = None,
-        timeout: float | None = None,
-        on_error: Callable[[Exception], Any] | None = None,
-    ) -> Self:
-        return type(self)(
-            predicate=predicate or self._predicate,
-            initial=initial or self._initial,
-            maximum=maximum or self._maximum,
-            multiplier=multiplier or self._multiplier,
-            timeout=timeout or self._timeout,
-            on_error=on_error or self._on_error,
-        )
-
     def with_deadline(self, deadline: float | None) -> Self:
         """Return a copy of this retry with the given timeout.
 
@@ -290,23 +272,32 @@ class _BaseRetry(object):
         documentation for details.
 
         Args:
-            deadline (float): How long to keep retrying, in seconds.
+            deadline (float|None): How long to keep retrying, in seconds. If None,
+                no timeout is enforced.
 
         Returns:
             Retry: A new retry instance with the given timeout.
         """
-        return self._replace(timeout=deadline)
+        return self.with_timeout(deadline)
 
-    def with_timeout(self, timeout: float) -> Self:
+    def with_timeout(self, timeout: float | None) -> Self:
         """Return a copy of this retry with the given timeout.
 
         Args:
-            timeout (float): How long to keep retrying, in seconds.
+            timeout (float): How long to keep retrying, in seconds. If None,
+                no timeout will be enforced.
 
         Returns:
             Retry: A new retry instance with the given timeout.
         """
-        return self._replace(timeout=timeout)
+        return type(self)(
+            predicate=self._predicate,
+            initial=self._initial,
+            maximum=self._maximum,
+            multiplier=self._multiplier,
+            timeout=timeout,
+            on_error=self._on_error,
+        )
 
     def with_predicate(self, predicate: Callable[[Exception], bool]) -> Self:
         """Return a copy of this retry with the given predicate.
@@ -318,26 +309,42 @@ class _BaseRetry(object):
         Returns:
             Retry: A new retry instance with the given predicate.
         """
-        return self._replace(predicate=predicate)
+        return type(self)(
+            predicate=predicate,
+            initial=self._initial,
+            maximum=self._maximum,
+            multiplier=self._multiplier,
+            timeout=self._timeout,
+            on_error=self._on_error,
+        )
 
     def with_delay(
         self,
-        initial: float | None = None,
-        maximum: float | None = None,
-        multiplier: float | None = None,
+        initial: Optional[float] = None,
+        maximum: Optional[float] = None,
+        multiplier: Optional[float] = None,
     ) -> Self:
         """Return a copy of this retry with the given delay options.
 
         Args:
             initial (float): The minimum amount of time to delay (in seconds). This must
-                be greater than 0.
-            maximum (float): The maximum amount of time to delay (in seconds).
-            multiplier (float): The multiplier applied to the delay.
+                be greater than 0. If None, the current value is used.
+            maximum (float): The maximum amount of time to delay (in seconds). If None, the
+                current value is used.
+            multiplier (float): The multiplier applied to the delay. If None, the current
+                value is used.
 
         Returns:
-            Retry: A new retry instance with the given predicate.
+            Retry: A new retry instance with the given delay options.
         """
-        return self._replace(initial=initial, maximum=maximum, multiplier=multiplier)
+        return type(self)(
+            predicate=self._predicate,
+            initial=initial if initial is not None else self._initial,
+            maximum=maximum if maximum is not None else self._maximum,
+            multiplier=multiplier if multiplier is not None else self._multiplier,
+            timeout=self._timeout,
+            on_error=self._on_error,
+        )
 
     def __str__(self) -> str:
         return (
