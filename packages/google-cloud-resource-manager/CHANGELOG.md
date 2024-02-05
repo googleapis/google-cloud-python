@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-resource-manager/#history
 
+## [1.12.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-manager-v1.12.0...google-cloud-resource-manager-v1.12.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([9e8d039](https://github.com/googleapis/google-cloud-python/commit/9e8d0399c488cb5125d3144ad4a8e25794c123fb))
+* Add staticmethod decorator to `_get_client_cert_source` and `_get_api_endpoint` ([9e8d039](https://github.com/googleapis/google-cloud-python/commit/9e8d0399c488cb5125d3144ad4a8e25794c123fb))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([9e8d039](https://github.com/googleapis/google-cloud-python/commit/9e8d0399c488cb5125d3144ad4a8e25794c123fb))
+
 ## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-resource-manager-v1.11.0...google-cloud-resource-manager-v1.12.0) (2024-02-01)
 
 
