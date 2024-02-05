@@ -86,18 +86,6 @@ def modify_default_endpoint_template(client):
     )
 
 
-# Anonymous Credentials with universe domain property. If no universe domain is provided, then
-# the default universe domain is "googleapis.com".
-class _AnonymousCredentialsWithUniverseDomain(ga_credentials.AnonymousCredentials):
-    def __init__(self, universe_domain="googleapis.com"):
-        super(_AnonymousCredentialsWithUniverseDomain, self).__init__()
-        self._universe_domain = universe_domain
-
-    @property
-    def universe_domain(self):
-        return self._universe_domain
-
-
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -347,7 +335,7 @@ def test__get_universe_domain():
 )
 def test__validate_universe_domain(client_class, transport_class, transport_name):
     client = client_class(
-        transport=transport_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
     )
     assert client._validate_universe_domain() == True
 
@@ -374,41 +362,48 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         client = client_class(transport=transport)
         assert client._validate_universe_domain() == True
 
-    # Test the case when there is a universe mismatch from the credentials.
-    client = client_class(
-        transport=transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(
-                universe_domain="foo.com"
-            )
-        )
-    )
-    with pytest.raises(ValueError) as excinfo:
-        client._validate_universe_domain()
-    assert (
-        str(excinfo.value)
-        == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
-    )
-
-    # Test the case when there is a universe mismatch from the client.
-    #
-    # TODO: Make this test unconditional once the minimum supported version of
-    # google-api-core becomes 2.15.0 or higher.
-    api_core_major, api_core_minor, _ = [
-        int(part) for part in api_core_version.__version__.split(".")
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor, _ = [
+        int(part) for part in google.auth.__version__.split(".")
     ]
-    if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
-        client = client_class(
-            client_options={"universe_domain": "bar.com"},
-            transport=transport_class(
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
-            ),
-        )
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(transport=transport_class(credentials=credentials))
         with pytest.raises(ValueError) as excinfo:
             client._validate_universe_domain()
         assert (
             str(excinfo.value)
-            == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
         )
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor, _ = [
+            int(part) for part in api_core_version.__version__.split(".")
+        ]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(
+                client_options={"universe_domain": "bar.com"},
+                transport=transport_class(
+                    credentials=ga_credentials.AnonymousCredentials(),
+                ),
+            )
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert (
+                str(excinfo.value)
+                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            )
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -422,7 +417,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
 def test_key_management_service_client_from_service_account_info(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
@@ -476,7 +471,7 @@ def test_key_management_service_client_service_account_always_use_jwt(
 def test_key_management_service_client_from_service_account_file(
     client_class, transport_name
 ):
-    creds = _AnonymousCredentialsWithUniverseDomain()
+    creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
@@ -547,9 +542,7 @@ def test_key_management_service_client_client_options(
 ):
     # Check that if channel is provided we won't create a new one.
     with mock.patch.object(KeyManagementServiceClient, "get_transport_class") as gtc:
-        transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain()
-        )
+        transport = transport_class(credentials=ga_credentials.AnonymousCredentials())
         client = client_class(transport=transport)
         gtc.assert_not_called()
 
@@ -968,20 +961,20 @@ def test_key_management_service_client_client_api_endpoint(client_class):
             )
             client = client_class(
                 client_options=options,
-                credentials=_AnonymousCredentialsWithUniverseDomain(),
+                credentials=ga_credentials.AnonymousCredentials(),
             )
             assert client.api_endpoint == api_override
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
     # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == default_endpoint
 
     # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
     # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
-        client = client_class(credentials=_AnonymousCredentialsWithUniverseDomain())
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
         assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
 
     # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
@@ -993,13 +986,11 @@ def test_key_management_service_client_client_api_endpoint(client_class):
     if universe_exists:
         options = client_options.ClientOptions(universe_domain=mock_universe)
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     else:
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
     assert client.api_endpoint == (
         mock_endpoint if universe_exists else default_endpoint
@@ -1015,8 +1006,7 @@ def test_key_management_service_client_client_api_endpoint(client_class):
         delattr(options, "universe_domain")
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
         client = client_class(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
         assert client.api_endpoint == default_endpoint
 
@@ -1182,8 +1172,8 @@ def test_key_management_service_client_create_channel_credentials_file(
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel"
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
-        file_creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
+        file_creds = ga_credentials.AnonymousCredentials()
         load_creds.return_value = (file_creds, None)
         adc.return_value = (creds, None)
         client = client_class(client_options=options, transport=transport_name)
@@ -1215,7 +1205,7 @@ def test_key_management_service_client_create_channel_credentials_file(
 )
 def test_list_key_rings(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1247,7 +1237,7 @@ def test_list_key_rings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1264,7 +1254,7 @@ async def test_list_key_rings_async(
     transport: str = "grpc_asyncio", request_type=service.ListKeyRingsRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1301,7 +1291,7 @@ async def test_list_key_rings_async_from_dict():
 
 def test_list_key_rings_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1331,7 +1321,7 @@ def test_list_key_rings_field_headers():
 @pytest.mark.asyncio
 async def test_list_key_rings_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1362,7 +1352,7 @@ async def test_list_key_rings_field_headers_async():
 
 def test_list_key_rings_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1386,7 +1376,7 @@ def test_list_key_rings_flattened():
 
 def test_list_key_rings_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1401,7 +1391,7 @@ def test_list_key_rings_flattened_error():
 @pytest.mark.asyncio
 async def test_list_key_rings_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1430,7 +1420,7 @@ async def test_list_key_rings_flattened_async():
 @pytest.mark.asyncio
 async def test_list_key_rings_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1444,7 +1434,7 @@ async def test_list_key_rings_flattened_error_async():
 
 def test_list_key_rings_pager(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1494,7 +1484,7 @@ def test_list_key_rings_pager(transport_name: str = "grpc"):
 
 def test_list_key_rings_pages(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1536,7 +1526,7 @@ def test_list_key_rings_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_key_rings_async_pager():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1586,7 +1576,7 @@ async def test_list_key_rings_async_pager():
 @pytest.mark.asyncio
 async def test_list_key_rings_async_pages():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1641,7 +1631,7 @@ async def test_list_key_rings_async_pages():
 )
 def test_list_crypto_keys(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1673,7 +1663,7 @@ def test_list_crypto_keys_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -1690,7 +1680,7 @@ async def test_list_crypto_keys_async(
     transport: str = "grpc_asyncio", request_type=service.ListCryptoKeysRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -1727,7 +1717,7 @@ async def test_list_crypto_keys_async_from_dict():
 
 def test_list_crypto_keys_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1757,7 +1747,7 @@ def test_list_crypto_keys_field_headers():
 @pytest.mark.asyncio
 async def test_list_crypto_keys_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -1788,7 +1778,7 @@ async def test_list_crypto_keys_field_headers_async():
 
 def test_list_crypto_keys_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1812,7 +1802,7 @@ def test_list_crypto_keys_flattened():
 
 def test_list_crypto_keys_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1827,7 +1817,7 @@ def test_list_crypto_keys_flattened_error():
 @pytest.mark.asyncio
 async def test_list_crypto_keys_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1856,7 +1846,7 @@ async def test_list_crypto_keys_flattened_async():
 @pytest.mark.asyncio
 async def test_list_crypto_keys_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1870,7 +1860,7 @@ async def test_list_crypto_keys_flattened_error_async():
 
 def test_list_crypto_keys_pager(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1920,7 +1910,7 @@ def test_list_crypto_keys_pager(transport_name: str = "grpc"):
 
 def test_list_crypto_keys_pages(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1962,7 +1952,7 @@ def test_list_crypto_keys_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_crypto_keys_async_pager():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2012,7 +2002,7 @@ async def test_list_crypto_keys_async_pager():
 @pytest.mark.asyncio
 async def test_list_crypto_keys_async_pages():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2067,7 +2057,7 @@ async def test_list_crypto_keys_async_pages():
 )
 def test_list_crypto_key_versions(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2101,7 +2091,7 @@ def test_list_crypto_key_versions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2120,7 +2110,7 @@ async def test_list_crypto_key_versions_async(
     transport: str = "grpc_asyncio", request_type=service.ListCryptoKeyVersionsRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2159,7 +2149,7 @@ async def test_list_crypto_key_versions_async_from_dict():
 
 def test_list_crypto_key_versions_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2191,7 +2181,7 @@ def test_list_crypto_key_versions_field_headers():
 @pytest.mark.asyncio
 async def test_list_crypto_key_versions_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2224,7 +2214,7 @@ async def test_list_crypto_key_versions_field_headers_async():
 
 def test_list_crypto_key_versions_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2250,7 +2240,7 @@ def test_list_crypto_key_versions_flattened():
 
 def test_list_crypto_key_versions_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2265,7 +2255,7 @@ def test_list_crypto_key_versions_flattened_error():
 @pytest.mark.asyncio
 async def test_list_crypto_key_versions_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2296,7 +2286,7 @@ async def test_list_crypto_key_versions_flattened_async():
 @pytest.mark.asyncio
 async def test_list_crypto_key_versions_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2310,7 +2300,7 @@ async def test_list_crypto_key_versions_flattened_error_async():
 
 def test_list_crypto_key_versions_pager(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2362,7 +2352,7 @@ def test_list_crypto_key_versions_pager(transport_name: str = "grpc"):
 
 def test_list_crypto_key_versions_pages(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2406,7 +2396,7 @@ def test_list_crypto_key_versions_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_crypto_key_versions_async_pager():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2458,7 +2448,7 @@ async def test_list_crypto_key_versions_async_pager():
 @pytest.mark.asyncio
 async def test_list_crypto_key_versions_async_pages():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2515,7 +2505,7 @@ async def test_list_crypto_key_versions_async_pages():
 )
 def test_list_import_jobs(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2547,7 +2537,7 @@ def test_list_import_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2564,7 +2554,7 @@ async def test_list_import_jobs_async(
     transport: str = "grpc_asyncio", request_type=service.ListImportJobsRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2601,7 +2591,7 @@ async def test_list_import_jobs_async_from_dict():
 
 def test_list_import_jobs_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2631,7 +2621,7 @@ def test_list_import_jobs_field_headers():
 @pytest.mark.asyncio
 async def test_list_import_jobs_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -2662,7 +2652,7 @@ async def test_list_import_jobs_field_headers_async():
 
 def test_list_import_jobs_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2686,7 +2676,7 @@ def test_list_import_jobs_flattened():
 
 def test_list_import_jobs_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2701,7 +2691,7 @@ def test_list_import_jobs_flattened_error():
 @pytest.mark.asyncio
 async def test_list_import_jobs_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2730,7 +2720,7 @@ async def test_list_import_jobs_flattened_async():
 @pytest.mark.asyncio
 async def test_list_import_jobs_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2744,7 +2734,7 @@ async def test_list_import_jobs_flattened_error_async():
 
 def test_list_import_jobs_pager(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2794,7 +2784,7 @@ def test_list_import_jobs_pager(transport_name: str = "grpc"):
 
 def test_list_import_jobs_pages(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2836,7 +2826,7 @@ def test_list_import_jobs_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_import_jobs_async_pager():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2886,7 +2876,7 @@ async def test_list_import_jobs_async_pager():
 @pytest.mark.asyncio
 async def test_list_import_jobs_async_pages():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2941,7 +2931,7 @@ async def test_list_import_jobs_async_pages():
 )
 def test_get_key_ring(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -2971,7 +2961,7 @@ def test_get_key_ring_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -2988,7 +2978,7 @@ async def test_get_key_ring_async(
     transport: str = "grpc_asyncio", request_type=service.GetKeyRingRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3023,7 +3013,7 @@ async def test_get_key_ring_async_from_dict():
 
 def test_get_key_ring_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3053,7 +3043,7 @@ def test_get_key_ring_field_headers():
 @pytest.mark.asyncio
 async def test_get_key_ring_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3082,7 +3072,7 @@ async def test_get_key_ring_field_headers_async():
 
 def test_get_key_ring_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3106,7 +3096,7 @@ def test_get_key_ring_flattened():
 
 def test_get_key_ring_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3121,7 +3111,7 @@ def test_get_key_ring_flattened_error():
 @pytest.mark.asyncio
 async def test_get_key_ring_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3148,7 +3138,7 @@ async def test_get_key_ring_flattened_async():
 @pytest.mark.asyncio
 async def test_get_key_ring_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3169,7 +3159,7 @@ async def test_get_key_ring_flattened_error_async():
 )
 def test_get_crypto_key(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3205,7 +3195,7 @@ def test_get_crypto_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3222,7 +3212,7 @@ async def test_get_crypto_key_async(
     transport: str = "grpc_asyncio", request_type=service.GetCryptoKeyRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3263,7 +3253,7 @@ async def test_get_crypto_key_async_from_dict():
 
 def test_get_crypto_key_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3293,7 +3283,7 @@ def test_get_crypto_key_field_headers():
 @pytest.mark.asyncio
 async def test_get_crypto_key_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3322,7 +3312,7 @@ async def test_get_crypto_key_field_headers_async():
 
 def test_get_crypto_key_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3346,7 +3336,7 @@ def test_get_crypto_key_flattened():
 
 def test_get_crypto_key_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3361,7 +3351,7 @@ def test_get_crypto_key_flattened_error():
 @pytest.mark.asyncio
 async def test_get_crypto_key_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3388,7 +3378,7 @@ async def test_get_crypto_key_flattened_async():
 @pytest.mark.asyncio
 async def test_get_crypto_key_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3409,7 +3399,7 @@ async def test_get_crypto_key_flattened_error_async():
 )
 def test_get_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3466,7 +3456,7 @@ def test_get_crypto_key_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3485,7 +3475,7 @@ async def test_get_crypto_key_version_async(
     transport: str = "grpc_asyncio", request_type=service.GetCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3547,7 +3537,7 @@ async def test_get_crypto_key_version_async_from_dict():
 
 def test_get_crypto_key_version_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3579,7 +3569,7 @@ def test_get_crypto_key_version_field_headers():
 @pytest.mark.asyncio
 async def test_get_crypto_key_version_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3612,7 +3602,7 @@ async def test_get_crypto_key_version_field_headers_async():
 
 def test_get_crypto_key_version_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3638,7 +3628,7 @@ def test_get_crypto_key_version_flattened():
 
 def test_get_crypto_key_version_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3653,7 +3643,7 @@ def test_get_crypto_key_version_flattened_error():
 @pytest.mark.asyncio
 async def test_get_crypto_key_version_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3684,7 +3674,7 @@ async def test_get_crypto_key_version_flattened_async():
 @pytest.mark.asyncio
 async def test_get_crypto_key_version_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3705,7 +3695,7 @@ async def test_get_crypto_key_version_flattened_error_async():
 )
 def test_get_public_key(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3744,7 +3734,7 @@ def test_get_public_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -3761,7 +3751,7 @@ async def test_get_public_key_async(
     transport: str = "grpc_asyncio", request_type=service.GetPublicKeyRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3805,7 +3795,7 @@ async def test_get_public_key_async_from_dict():
 
 def test_get_public_key_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3835,7 +3825,7 @@ def test_get_public_key_field_headers():
 @pytest.mark.asyncio
 async def test_get_public_key_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -3864,7 +3854,7 @@ async def test_get_public_key_field_headers_async():
 
 def test_get_public_key_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3888,7 +3878,7 @@ def test_get_public_key_flattened():
 
 def test_get_public_key_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3903,7 +3893,7 @@ def test_get_public_key_flattened_error():
 @pytest.mark.asyncio
 async def test_get_public_key_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3930,7 +3920,7 @@ async def test_get_public_key_flattened_async():
 @pytest.mark.asyncio
 async def test_get_public_key_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3951,7 +3941,7 @@ async def test_get_public_key_flattened_error_async():
 )
 def test_get_import_job(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -3990,7 +3980,7 @@ def test_get_import_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4007,7 +3997,7 @@ async def test_get_import_job_async(
     transport: str = "grpc_asyncio", request_type=service.GetImportJobRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4051,7 +4041,7 @@ async def test_get_import_job_async_from_dict():
 
 def test_get_import_job_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4081,7 +4071,7 @@ def test_get_import_job_field_headers():
 @pytest.mark.asyncio
 async def test_get_import_job_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4110,7 +4100,7 @@ async def test_get_import_job_field_headers_async():
 
 def test_get_import_job_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4134,7 +4124,7 @@ def test_get_import_job_flattened():
 
 def test_get_import_job_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4149,7 +4139,7 @@ def test_get_import_job_flattened_error():
 @pytest.mark.asyncio
 async def test_get_import_job_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4176,7 +4166,7 @@ async def test_get_import_job_flattened_async():
 @pytest.mark.asyncio
 async def test_get_import_job_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4197,7 +4187,7 @@ async def test_get_import_job_flattened_error_async():
 )
 def test_create_key_ring(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4227,7 +4217,7 @@ def test_create_key_ring_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4244,7 +4234,7 @@ async def test_create_key_ring_async(
     transport: str = "grpc_asyncio", request_type=service.CreateKeyRingRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4279,7 +4269,7 @@ async def test_create_key_ring_async_from_dict():
 
 def test_create_key_ring_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4309,7 +4299,7 @@ def test_create_key_ring_field_headers():
 @pytest.mark.asyncio
 async def test_create_key_ring_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4338,7 +4328,7 @@ async def test_create_key_ring_field_headers_async():
 
 def test_create_key_ring_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4370,7 +4360,7 @@ def test_create_key_ring_flattened():
 
 def test_create_key_ring_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4387,7 +4377,7 @@ def test_create_key_ring_flattened_error():
 @pytest.mark.asyncio
 async def test_create_key_ring_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4422,7 +4412,7 @@ async def test_create_key_ring_flattened_async():
 @pytest.mark.asyncio
 async def test_create_key_ring_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4445,7 +4435,7 @@ async def test_create_key_ring_flattened_error_async():
 )
 def test_create_crypto_key(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4483,7 +4473,7 @@ def test_create_crypto_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4502,7 +4492,7 @@ async def test_create_crypto_key_async(
     transport: str = "grpc_asyncio", request_type=service.CreateCryptoKeyRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4545,7 +4535,7 @@ async def test_create_crypto_key_async_from_dict():
 
 def test_create_crypto_key_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4577,7 +4567,7 @@ def test_create_crypto_key_field_headers():
 @pytest.mark.asyncio
 async def test_create_crypto_key_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4608,7 +4598,7 @@ async def test_create_crypto_key_field_headers_async():
 
 def test_create_crypto_key_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4642,7 +4632,7 @@ def test_create_crypto_key_flattened():
 
 def test_create_crypto_key_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4659,7 +4649,7 @@ def test_create_crypto_key_flattened_error():
 @pytest.mark.asyncio
 async def test_create_crypto_key_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4696,7 +4686,7 @@ async def test_create_crypto_key_flattened_async():
 @pytest.mark.asyncio
 async def test_create_crypto_key_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4719,7 +4709,7 @@ async def test_create_crypto_key_flattened_error_async():
 )
 def test_create_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4776,7 +4766,7 @@ def test_create_crypto_key_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -4795,7 +4785,7 @@ async def test_create_crypto_key_version_async(
     transport: str = "grpc_asyncio", request_type=service.CreateCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -4857,7 +4847,7 @@ async def test_create_crypto_key_version_async_from_dict():
 
 def test_create_crypto_key_version_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4889,7 +4879,7 @@ def test_create_crypto_key_version_field_headers():
 @pytest.mark.asyncio
 async def test_create_crypto_key_version_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -4922,7 +4912,7 @@ async def test_create_crypto_key_version_field_headers_async():
 
 def test_create_crypto_key_version_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4952,7 +4942,7 @@ def test_create_crypto_key_version_flattened():
 
 def test_create_crypto_key_version_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4968,7 +4958,7 @@ def test_create_crypto_key_version_flattened_error():
 @pytest.mark.asyncio
 async def test_create_crypto_key_version_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5003,7 +4993,7 @@ async def test_create_crypto_key_version_flattened_async():
 @pytest.mark.asyncio
 async def test_create_crypto_key_version_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5025,7 +5015,7 @@ async def test_create_crypto_key_version_flattened_error_async():
 )
 def test_import_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5082,7 +5072,7 @@ def test_import_crypto_key_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5101,7 +5091,7 @@ async def test_import_crypto_key_version_async(
     transport: str = "grpc_asyncio", request_type=service.ImportCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5163,7 +5153,7 @@ async def test_import_crypto_key_version_async_from_dict():
 
 def test_import_crypto_key_version_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5195,7 +5185,7 @@ def test_import_crypto_key_version_field_headers():
 @pytest.mark.asyncio
 async def test_import_crypto_key_version_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5235,7 +5225,7 @@ async def test_import_crypto_key_version_field_headers_async():
 )
 def test_create_import_job(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5276,7 +5266,7 @@ def test_create_import_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5295,7 +5285,7 @@ async def test_create_import_job_async(
     transport: str = "grpc_asyncio", request_type=service.CreateImportJobRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5341,7 +5331,7 @@ async def test_create_import_job_async_from_dict():
 
 def test_create_import_job_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5373,7 +5363,7 @@ def test_create_import_job_field_headers():
 @pytest.mark.asyncio
 async def test_create_import_job_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5404,7 +5394,7 @@ async def test_create_import_job_field_headers_async():
 
 def test_create_import_job_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5438,7 +5428,7 @@ def test_create_import_job_flattened():
 
 def test_create_import_job_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5455,7 +5445,7 @@ def test_create_import_job_flattened_error():
 @pytest.mark.asyncio
 async def test_create_import_job_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5492,7 +5482,7 @@ async def test_create_import_job_flattened_async():
 @pytest.mark.asyncio
 async def test_create_import_job_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5515,7 +5505,7 @@ async def test_create_import_job_flattened_error_async():
 )
 def test_update_crypto_key(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5553,7 +5543,7 @@ def test_update_crypto_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5572,7 +5562,7 @@ async def test_update_crypto_key_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateCryptoKeyRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5615,7 +5605,7 @@ async def test_update_crypto_key_async_from_dict():
 
 def test_update_crypto_key_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5647,7 +5637,7 @@ def test_update_crypto_key_field_headers():
 @pytest.mark.asyncio
 async def test_update_crypto_key_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5678,7 +5668,7 @@ async def test_update_crypto_key_field_headers_async():
 
 def test_update_crypto_key_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5708,7 +5698,7 @@ def test_update_crypto_key_flattened():
 
 def test_update_crypto_key_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5724,7 +5714,7 @@ def test_update_crypto_key_flattened_error():
 @pytest.mark.asyncio
 async def test_update_crypto_key_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5757,7 +5747,7 @@ async def test_update_crypto_key_flattened_async():
 @pytest.mark.asyncio
 async def test_update_crypto_key_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5779,7 +5769,7 @@ async def test_update_crypto_key_flattened_error_async():
 )
 def test_update_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5836,7 +5826,7 @@ def test_update_crypto_key_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -5855,7 +5845,7 @@ async def test_update_crypto_key_version_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -5917,7 +5907,7 @@ async def test_update_crypto_key_version_async_from_dict():
 
 def test_update_crypto_key_version_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5949,7 +5939,7 @@ def test_update_crypto_key_version_field_headers():
 @pytest.mark.asyncio
 async def test_update_crypto_key_version_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -5982,7 +5972,7 @@ async def test_update_crypto_key_version_field_headers_async():
 
 def test_update_crypto_key_version_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6012,7 +6002,7 @@ def test_update_crypto_key_version_flattened():
 
 def test_update_crypto_key_version_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6028,7 +6018,7 @@ def test_update_crypto_key_version_flattened_error():
 @pytest.mark.asyncio
 async def test_update_crypto_key_version_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6063,7 +6053,7 @@ async def test_update_crypto_key_version_flattened_async():
 @pytest.mark.asyncio
 async def test_update_crypto_key_version_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6085,7 +6075,7 @@ async def test_update_crypto_key_version_flattened_error_async():
 )
 def test_update_crypto_key_primary_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6123,7 +6113,7 @@ def test_update_crypto_key_primary_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6143,7 +6133,7 @@ async def test_update_crypto_key_primary_version_async(
     request_type=service.UpdateCryptoKeyPrimaryVersionRequest,
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6186,7 +6176,7 @@ async def test_update_crypto_key_primary_version_async_from_dict():
 
 def test_update_crypto_key_primary_version_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6218,7 +6208,7 @@ def test_update_crypto_key_primary_version_field_headers():
 @pytest.mark.asyncio
 async def test_update_crypto_key_primary_version_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6249,7 +6239,7 @@ async def test_update_crypto_key_primary_version_field_headers_async():
 
 def test_update_crypto_key_primary_version_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6279,7 +6269,7 @@ def test_update_crypto_key_primary_version_flattened():
 
 def test_update_crypto_key_primary_version_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6295,7 +6285,7 @@ def test_update_crypto_key_primary_version_flattened_error():
 @pytest.mark.asyncio
 async def test_update_crypto_key_primary_version_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6328,7 +6318,7 @@ async def test_update_crypto_key_primary_version_flattened_async():
 @pytest.mark.asyncio
 async def test_update_crypto_key_primary_version_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6350,7 +6340,7 @@ async def test_update_crypto_key_primary_version_flattened_error_async():
 )
 def test_destroy_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6407,7 +6397,7 @@ def test_destroy_crypto_key_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6426,7 +6416,7 @@ async def test_destroy_crypto_key_version_async(
     transport: str = "grpc_asyncio", request_type=service.DestroyCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6488,7 +6478,7 @@ async def test_destroy_crypto_key_version_async_from_dict():
 
 def test_destroy_crypto_key_version_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6520,7 +6510,7 @@ def test_destroy_crypto_key_version_field_headers():
 @pytest.mark.asyncio
 async def test_destroy_crypto_key_version_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6553,7 +6543,7 @@ async def test_destroy_crypto_key_version_field_headers_async():
 
 def test_destroy_crypto_key_version_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6579,7 +6569,7 @@ def test_destroy_crypto_key_version_flattened():
 
 def test_destroy_crypto_key_version_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6594,7 +6584,7 @@ def test_destroy_crypto_key_version_flattened_error():
 @pytest.mark.asyncio
 async def test_destroy_crypto_key_version_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6625,7 +6615,7 @@ async def test_destroy_crypto_key_version_flattened_async():
 @pytest.mark.asyncio
 async def test_destroy_crypto_key_version_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6646,7 +6636,7 @@ async def test_destroy_crypto_key_version_flattened_error_async():
 )
 def test_restore_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6703,7 +6693,7 @@ def test_restore_crypto_key_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6722,7 +6712,7 @@ async def test_restore_crypto_key_version_async(
     transport: str = "grpc_asyncio", request_type=service.RestoreCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6784,7 +6774,7 @@ async def test_restore_crypto_key_version_async_from_dict():
 
 def test_restore_crypto_key_version_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6816,7 +6806,7 @@ def test_restore_crypto_key_version_field_headers():
 @pytest.mark.asyncio
 async def test_restore_crypto_key_version_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -6849,7 +6839,7 @@ async def test_restore_crypto_key_version_field_headers_async():
 
 def test_restore_crypto_key_version_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6875,7 +6865,7 @@ def test_restore_crypto_key_version_flattened():
 
 def test_restore_crypto_key_version_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6890,7 +6880,7 @@ def test_restore_crypto_key_version_flattened_error():
 @pytest.mark.asyncio
 async def test_restore_crypto_key_version_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6921,7 +6911,7 @@ async def test_restore_crypto_key_version_flattened_async():
 @pytest.mark.asyncio
 async def test_restore_crypto_key_version_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6942,7 +6932,7 @@ async def test_restore_crypto_key_version_flattened_error_async():
 )
 def test_encrypt(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -6980,7 +6970,7 @@ def test_encrypt_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -6997,7 +6987,7 @@ async def test_encrypt_async(
     transport: str = "grpc_asyncio", request_type=service.EncryptRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7040,7 +7030,7 @@ async def test_encrypt_async_from_dict():
 
 def test_encrypt_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7070,7 +7060,7 @@ def test_encrypt_field_headers():
 @pytest.mark.asyncio
 async def test_encrypt_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7101,7 +7091,7 @@ async def test_encrypt_field_headers_async():
 
 def test_encrypt_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7129,7 +7119,7 @@ def test_encrypt_flattened():
 
 def test_encrypt_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7145,7 +7135,7 @@ def test_encrypt_flattened_error():
 @pytest.mark.asyncio
 async def test_encrypt_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7178,7 +7168,7 @@ async def test_encrypt_flattened_async():
 @pytest.mark.asyncio
 async def test_encrypt_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7200,7 +7190,7 @@ async def test_encrypt_flattened_error_async():
 )
 def test_decrypt(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7234,7 +7224,7 @@ def test_decrypt_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7251,7 +7241,7 @@ async def test_decrypt_async(
     transport: str = "grpc_asyncio", request_type=service.DecryptRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7290,7 +7280,7 @@ async def test_decrypt_async_from_dict():
 
 def test_decrypt_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7320,7 +7310,7 @@ def test_decrypt_field_headers():
 @pytest.mark.asyncio
 async def test_decrypt_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7351,7 +7341,7 @@ async def test_decrypt_field_headers_async():
 
 def test_decrypt_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7379,7 +7369,7 @@ def test_decrypt_flattened():
 
 def test_decrypt_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7395,7 +7385,7 @@ def test_decrypt_flattened_error():
 @pytest.mark.asyncio
 async def test_decrypt_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7428,7 +7418,7 @@ async def test_decrypt_flattened_async():
 @pytest.mark.asyncio
 async def test_decrypt_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7450,7 +7440,7 @@ async def test_decrypt_flattened_error_async():
 )
 def test_raw_encrypt(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7494,7 +7484,7 @@ def test_raw_encrypt_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7511,7 +7501,7 @@ async def test_raw_encrypt_async(
     transport: str = "grpc_asyncio", request_type=service.RawEncryptRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7560,7 +7550,7 @@ async def test_raw_encrypt_async_from_dict():
 
 def test_raw_encrypt_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7590,7 +7580,7 @@ def test_raw_encrypt_field_headers():
 @pytest.mark.asyncio
 async def test_raw_encrypt_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7628,7 +7618,7 @@ async def test_raw_encrypt_field_headers_async():
 )
 def test_raw_decrypt(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7666,7 +7656,7 @@ def test_raw_decrypt_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7683,7 +7673,7 @@ async def test_raw_decrypt_async(
     transport: str = "grpc_asyncio", request_type=service.RawDecryptRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7726,7 +7716,7 @@ async def test_raw_decrypt_async_from_dict():
 
 def test_raw_decrypt_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7756,7 +7746,7 @@ def test_raw_decrypt_field_headers():
 @pytest.mark.asyncio
 async def test_raw_decrypt_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7794,7 +7784,7 @@ async def test_raw_decrypt_field_headers_async():
 )
 def test_asymmetric_sign(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7832,7 +7822,7 @@ def test_asymmetric_sign_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -7849,7 +7839,7 @@ async def test_asymmetric_sign_async(
     transport: str = "grpc_asyncio", request_type=service.AsymmetricSignRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -7892,7 +7882,7 @@ async def test_asymmetric_sign_async_from_dict():
 
 def test_asymmetric_sign_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7922,7 +7912,7 @@ def test_asymmetric_sign_field_headers():
 @pytest.mark.asyncio
 async def test_asymmetric_sign_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -7953,7 +7943,7 @@ async def test_asymmetric_sign_field_headers_async():
 
 def test_asymmetric_sign_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7981,7 +7971,7 @@ def test_asymmetric_sign_flattened():
 
 def test_asymmetric_sign_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7997,7 +7987,7 @@ def test_asymmetric_sign_flattened_error():
 @pytest.mark.asyncio
 async def test_asymmetric_sign_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8030,7 +8020,7 @@ async def test_asymmetric_sign_flattened_async():
 @pytest.mark.asyncio
 async def test_asymmetric_sign_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8052,7 +8042,7 @@ async def test_asymmetric_sign_flattened_error_async():
 )
 def test_asymmetric_decrypt(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8088,7 +8078,7 @@ def test_asymmetric_decrypt_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8107,7 +8097,7 @@ async def test_asymmetric_decrypt_async(
     transport: str = "grpc_asyncio", request_type=service.AsymmetricDecryptRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8148,7 +8138,7 @@ async def test_asymmetric_decrypt_async_from_dict():
 
 def test_asymmetric_decrypt_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8180,7 +8170,7 @@ def test_asymmetric_decrypt_field_headers():
 @pytest.mark.asyncio
 async def test_asymmetric_decrypt_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8213,7 +8203,7 @@ async def test_asymmetric_decrypt_field_headers_async():
 
 def test_asymmetric_decrypt_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8243,7 +8233,7 @@ def test_asymmetric_decrypt_flattened():
 
 def test_asymmetric_decrypt_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8259,7 +8249,7 @@ def test_asymmetric_decrypt_flattened_error():
 @pytest.mark.asyncio
 async def test_asymmetric_decrypt_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8294,7 +8284,7 @@ async def test_asymmetric_decrypt_flattened_async():
 @pytest.mark.asyncio
 async def test_asymmetric_decrypt_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8316,7 +8306,7 @@ async def test_asymmetric_decrypt_flattened_error_async():
 )
 def test_mac_sign(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8352,7 +8342,7 @@ def test_mac_sign_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8369,7 +8359,7 @@ async def test_mac_sign_async(
     transport: str = "grpc_asyncio", request_type=service.MacSignRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8410,7 +8400,7 @@ async def test_mac_sign_async_from_dict():
 
 def test_mac_sign_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8440,7 +8430,7 @@ def test_mac_sign_field_headers():
 @pytest.mark.asyncio
 async def test_mac_sign_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8471,7 +8461,7 @@ async def test_mac_sign_field_headers_async():
 
 def test_mac_sign_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8499,7 +8489,7 @@ def test_mac_sign_flattened():
 
 def test_mac_sign_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8515,7 +8505,7 @@ def test_mac_sign_flattened_error():
 @pytest.mark.asyncio
 async def test_mac_sign_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8548,7 +8538,7 @@ async def test_mac_sign_flattened_async():
 @pytest.mark.asyncio
 async def test_mac_sign_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8570,7 +8560,7 @@ async def test_mac_sign_flattened_error_async():
 )
 def test_mac_verify(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8610,7 +8600,7 @@ def test_mac_verify_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8627,7 +8617,7 @@ async def test_mac_verify_async(
     transport: str = "grpc_asyncio", request_type=service.MacVerifyRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8672,7 +8662,7 @@ async def test_mac_verify_async_from_dict():
 
 def test_mac_verify_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8702,7 +8692,7 @@ def test_mac_verify_field_headers():
 @pytest.mark.asyncio
 async def test_mac_verify_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8733,7 +8723,7 @@ async def test_mac_verify_field_headers_async():
 
 def test_mac_verify_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8765,7 +8755,7 @@ def test_mac_verify_flattened():
 
 def test_mac_verify_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8782,7 +8772,7 @@ def test_mac_verify_flattened_error():
 @pytest.mark.asyncio
 async def test_mac_verify_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8819,7 +8809,7 @@ async def test_mac_verify_flattened_async():
 @pytest.mark.asyncio
 async def test_mac_verify_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -8842,7 +8832,7 @@ async def test_mac_verify_flattened_error_async():
 )
 def test_generate_random_bytes(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8874,7 +8864,7 @@ def test_generate_random_bytes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc",
     )
 
@@ -8893,7 +8883,7 @@ async def test_generate_random_bytes_async(
     transport: str = "grpc_asyncio", request_type=service.GenerateRandomBytesRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -8930,7 +8920,7 @@ async def test_generate_random_bytes_async_from_dict():
 
 def test_generate_random_bytes_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8962,7 +8952,7 @@ def test_generate_random_bytes_field_headers():
 @pytest.mark.asyncio
 async def test_generate_random_bytes_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -8995,7 +8985,7 @@ async def test_generate_random_bytes_field_headers_async():
 
 def test_generate_random_bytes_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9029,7 +9019,7 @@ def test_generate_random_bytes_flattened():
 
 def test_generate_random_bytes_flattened_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9046,7 +9036,7 @@ def test_generate_random_bytes_flattened_error():
 @pytest.mark.asyncio
 async def test_generate_random_bytes_flattened_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9085,7 +9075,7 @@ async def test_generate_random_bytes_flattened_async():
 @pytest.mark.asyncio
 async def test_generate_random_bytes_flattened_error_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -9108,7 +9098,7 @@ async def test_generate_random_bytes_flattened_error_async():
 )
 def test_list_key_rings_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9159,7 +9149,7 @@ def test_list_key_rings_rest_required_fields(request_type=service.ListKeyRingsRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_key_rings._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -9168,7 +9158,7 @@ def test_list_key_rings_rest_required_fields(request_type=service.ListKeyRingsRe
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_key_rings._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -9186,7 +9176,7 @@ def test_list_key_rings_rest_required_fields(request_type=service.ListKeyRingsRe
     assert jsonified_request["parent"] == "parent_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9228,7 +9218,7 @@ def test_list_key_rings_rest_required_fields(request_type=service.ListKeyRingsRe
 
 def test_list_key_rings_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_key_rings._get_unset_required_fields({})
@@ -9248,7 +9238,7 @@ def test_list_key_rings_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_key_rings_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -9304,7 +9294,7 @@ def test_list_key_rings_rest_bad_request(
     transport: str = "rest", request_type=service.ListKeyRingsRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9326,7 +9316,7 @@ def test_list_key_rings_rest_bad_request(
 
 def test_list_key_rings_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9367,7 +9357,7 @@ def test_list_key_rings_rest_flattened():
 
 def test_list_key_rings_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9382,7 +9372,7 @@ def test_list_key_rings_rest_flattened_error(transport: str = "rest"):
 
 def test_list_key_rings_rest_pager(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9450,7 +9440,7 @@ def test_list_key_rings_rest_pager(transport: str = "rest"):
 )
 def test_list_crypto_keys_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9503,7 +9493,7 @@ def test_list_crypto_keys_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_crypto_keys._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -9512,7 +9502,7 @@ def test_list_crypto_keys_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_crypto_keys._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -9531,7 +9521,7 @@ def test_list_crypto_keys_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9573,7 +9563,7 @@ def test_list_crypto_keys_rest_required_fields(
 
 def test_list_crypto_keys_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_crypto_keys._get_unset_required_fields({})
@@ -9594,7 +9584,7 @@ def test_list_crypto_keys_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_crypto_keys_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -9650,7 +9640,7 @@ def test_list_crypto_keys_rest_bad_request(
     transport: str = "rest", request_type=service.ListCryptoKeysRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9672,7 +9662,7 @@ def test_list_crypto_keys_rest_bad_request(
 
 def test_list_crypto_keys_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9716,7 +9706,7 @@ def test_list_crypto_keys_rest_flattened():
 
 def test_list_crypto_keys_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9731,7 +9721,7 @@ def test_list_crypto_keys_rest_flattened_error(transport: str = "rest"):
 
 def test_list_crypto_keys_rest_pager(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -9801,7 +9791,7 @@ def test_list_crypto_keys_rest_pager(transport: str = "rest"):
 )
 def test_list_crypto_key_versions_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -9856,7 +9846,7 @@ def test_list_crypto_key_versions_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_crypto_key_versions._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -9865,7 +9855,7 @@ def test_list_crypto_key_versions_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_crypto_key_versions._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -9884,7 +9874,7 @@ def test_list_crypto_key_versions_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -9926,7 +9916,7 @@ def test_list_crypto_key_versions_rest_required_fields(
 
 def test_list_crypto_key_versions_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_crypto_key_versions._get_unset_required_fields({})
@@ -9947,7 +9937,7 @@ def test_list_crypto_key_versions_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_crypto_key_versions_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -10005,7 +9995,7 @@ def test_list_crypto_key_versions_rest_bad_request(
     transport: str = "rest", request_type=service.ListCryptoKeyVersionsRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10029,7 +10019,7 @@ def test_list_crypto_key_versions_rest_bad_request(
 
 def test_list_crypto_key_versions_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10073,7 +10063,7 @@ def test_list_crypto_key_versions_rest_flattened():
 
 def test_list_crypto_key_versions_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10088,7 +10078,7 @@ def test_list_crypto_key_versions_rest_flattened_error(transport: str = "rest"):
 
 def test_list_crypto_key_versions_rest_pager(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10160,7 +10150,7 @@ def test_list_crypto_key_versions_rest_pager(transport: str = "rest"):
 )
 def test_list_import_jobs_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10213,7 +10203,7 @@ def test_list_import_jobs_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_import_jobs._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10222,7 +10212,7 @@ def test_list_import_jobs_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).list_import_jobs._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -10240,7 +10230,7 @@ def test_list_import_jobs_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10282,7 +10272,7 @@ def test_list_import_jobs_rest_required_fields(
 
 def test_list_import_jobs_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.list_import_jobs._get_unset_required_fields({})
@@ -10302,7 +10292,7 @@ def test_list_import_jobs_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_list_import_jobs_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -10358,7 +10348,7 @@ def test_list_import_jobs_rest_bad_request(
     transport: str = "rest", request_type=service.ListImportJobsRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10380,7 +10370,7 @@ def test_list_import_jobs_rest_bad_request(
 
 def test_list_import_jobs_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10424,7 +10414,7 @@ def test_list_import_jobs_rest_flattened():
 
 def test_list_import_jobs_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10439,7 +10429,7 @@ def test_list_import_jobs_rest_flattened_error(transport: str = "rest"):
 
 def test_list_import_jobs_rest_pager(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10509,7 +10499,7 @@ def test_list_import_jobs_rest_pager(transport: str = "rest"):
 )
 def test_get_key_ring_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10558,7 +10548,7 @@ def test_get_key_ring_rest_required_fields(request_type=service.GetKeyRingReques
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_key_ring._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10567,7 +10557,7 @@ def test_get_key_ring_rest_required_fields(request_type=service.GetKeyRingReques
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_key_ring._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10576,7 +10566,7 @@ def test_get_key_ring_rest_required_fields(request_type=service.GetKeyRingReques
     assert jsonified_request["name"] == "name_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10618,7 +10608,7 @@ def test_get_key_ring_rest_required_fields(request_type=service.GetKeyRingReques
 
 def test_get_key_ring_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_key_ring._get_unset_required_fields({})
@@ -10628,7 +10618,7 @@ def test_get_key_ring_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_key_ring_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -10682,7 +10672,7 @@ def test_get_key_ring_rest_bad_request(
     transport: str = "rest", request_type=service.GetKeyRingRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10704,7 +10694,7 @@ def test_get_key_ring_rest_bad_request(
 
 def test_get_key_ring_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10745,7 +10735,7 @@ def test_get_key_ring_rest_flattened():
 
 def test_get_key_ring_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10760,7 +10750,7 @@ def test_get_key_ring_rest_flattened_error(transport: str = "rest"):
 
 def test_get_key_ring_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -10773,7 +10763,7 @@ def test_get_key_ring_rest_error():
 )
 def test_get_crypto_key_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -10830,7 +10820,7 @@ def test_get_crypto_key_rest_required_fields(request_type=service.GetCryptoKeyRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_crypto_key._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10839,7 +10829,7 @@ def test_get_crypto_key_rest_required_fields(request_type=service.GetCryptoKeyRe
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_crypto_key._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -10848,7 +10838,7 @@ def test_get_crypto_key_rest_required_fields(request_type=service.GetCryptoKeyRe
     assert jsonified_request["name"] == "name_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -10890,7 +10880,7 @@ def test_get_crypto_key_rest_required_fields(request_type=service.GetCryptoKeyRe
 
 def test_get_crypto_key_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_crypto_key._get_unset_required_fields({})
@@ -10900,7 +10890,7 @@ def test_get_crypto_key_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_crypto_key_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -10954,7 +10944,7 @@ def test_get_crypto_key_rest_bad_request(
     transport: str = "rest", request_type=service.GetCryptoKeyRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -10978,7 +10968,7 @@ def test_get_crypto_key_rest_bad_request(
 
 def test_get_crypto_key_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11022,7 +11012,7 @@ def test_get_crypto_key_rest_flattened():
 
 def test_get_crypto_key_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11037,7 +11027,7 @@ def test_get_crypto_key_rest_flattened_error(transport: str = "rest"):
 
 def test_get_crypto_key_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11050,7 +11040,7 @@ def test_get_crypto_key_rest_error():
 )
 def test_get_crypto_key_version_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11128,7 +11118,7 @@ def test_get_crypto_key_version_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_crypto_key_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11137,7 +11127,7 @@ def test_get_crypto_key_version_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_crypto_key_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11146,7 +11136,7 @@ def test_get_crypto_key_version_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11188,7 +11178,7 @@ def test_get_crypto_key_version_rest_required_fields(
 
 def test_get_crypto_key_version_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_crypto_key_version._get_unset_required_fields({})
@@ -11198,7 +11188,7 @@ def test_get_crypto_key_version_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_crypto_key_version_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -11256,7 +11246,7 @@ def test_get_crypto_key_version_rest_bad_request(
     transport: str = "rest", request_type=service.GetCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11280,7 +11270,7 @@ def test_get_crypto_key_version_rest_bad_request(
 
 def test_get_crypto_key_version_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11324,7 +11314,7 @@ def test_get_crypto_key_version_rest_flattened():
 
 def test_get_crypto_key_version_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11339,7 +11329,7 @@ def test_get_crypto_key_version_rest_flattened_error(transport: str = "rest"):
 
 def test_get_crypto_key_version_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11352,7 +11342,7 @@ def test_get_crypto_key_version_rest_error():
 )
 def test_get_public_key_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11412,7 +11402,7 @@ def test_get_public_key_rest_required_fields(request_type=service.GetPublicKeyRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_public_key._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11421,7 +11411,7 @@ def test_get_public_key_rest_required_fields(request_type=service.GetPublicKeyRe
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_public_key._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11430,7 +11420,7 @@ def test_get_public_key_rest_required_fields(request_type=service.GetPublicKeyRe
     assert jsonified_request["name"] == "name_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11472,7 +11462,7 @@ def test_get_public_key_rest_required_fields(request_type=service.GetPublicKeyRe
 
 def test_get_public_key_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_public_key._get_unset_required_fields({})
@@ -11482,7 +11472,7 @@ def test_get_public_key_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_public_key_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -11536,7 +11526,7 @@ def test_get_public_key_rest_bad_request(
     transport: str = "rest", request_type=service.GetPublicKeyRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11560,7 +11550,7 @@ def test_get_public_key_rest_bad_request(
 
 def test_get_public_key_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11604,7 +11594,7 @@ def test_get_public_key_rest_flattened():
 
 def test_get_public_key_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11619,7 +11609,7 @@ def test_get_public_key_rest_flattened_error(transport: str = "rest"):
 
 def test_get_public_key_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11632,7 +11622,7 @@ def test_get_public_key_rest_error():
 )
 def test_get_import_job_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11692,7 +11682,7 @@ def test_get_import_job_rest_required_fields(request_type=service.GetImportJobRe
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_import_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11701,7 +11691,7 @@ def test_get_import_job_rest_required_fields(request_type=service.GetImportJobRe
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).get_import_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -11710,7 +11700,7 @@ def test_get_import_job_rest_required_fields(request_type=service.GetImportJobRe
     assert jsonified_request["name"] == "name_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -11752,7 +11742,7 @@ def test_get_import_job_rest_required_fields(request_type=service.GetImportJobRe
 
 def test_get_import_job_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.get_import_job._get_unset_required_fields({})
@@ -11762,7 +11752,7 @@ def test_get_import_job_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_get_import_job_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -11816,7 +11806,7 @@ def test_get_import_job_rest_bad_request(
     transport: str = "rest", request_type=service.GetImportJobRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11840,7 +11830,7 @@ def test_get_import_job_rest_bad_request(
 
 def test_get_import_job_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -11884,7 +11874,7 @@ def test_get_import_job_rest_flattened():
 
 def test_get_import_job_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -11899,7 +11889,7 @@ def test_get_import_job_rest_flattened_error(transport: str = "rest"):
 
 def test_get_import_job_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -11912,7 +11902,7 @@ def test_get_import_job_rest_error():
 )
 def test_create_key_ring_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12036,7 +12026,7 @@ def test_create_key_ring_rest_required_fields(
     assert "keyRingId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_key_ring._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12048,7 +12038,7 @@ def test_create_key_ring_rest_required_fields(
     jsonified_request["keyRingId"] = "key_ring_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_key_ring._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("key_ring_id",))
@@ -12061,7 +12051,7 @@ def test_create_key_ring_rest_required_fields(
     assert jsonified_request["keyRingId"] == "key_ring_id_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12110,7 +12100,7 @@ def test_create_key_ring_rest_required_fields(
 
 def test_create_key_ring_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_key_ring._get_unset_required_fields({})
@@ -12129,7 +12119,7 @@ def test_create_key_ring_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_key_ring_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -12183,7 +12173,7 @@ def test_create_key_ring_rest_bad_request(
     transport: str = "rest", request_type=service.CreateKeyRingRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12205,7 +12195,7 @@ def test_create_key_ring_rest_bad_request(
 
 def test_create_key_ring_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12248,7 +12238,7 @@ def test_create_key_ring_rest_flattened():
 
 def test_create_key_ring_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12265,7 +12255,7 @@ def test_create_key_ring_rest_flattened_error(transport: str = "rest"):
 
 def test_create_key_ring_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12278,7 +12268,7 @@ def test_create_key_ring_rest_error():
 )
 def test_create_crypto_key_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12451,7 +12441,7 @@ def test_create_crypto_key_rest_required_fields(
     assert "cryptoKeyId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_crypto_key._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12463,7 +12453,7 @@ def test_create_crypto_key_rest_required_fields(
     jsonified_request["cryptoKeyId"] = "crypto_key_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_crypto_key._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
@@ -12481,7 +12471,7 @@ def test_create_crypto_key_rest_required_fields(
     assert jsonified_request["cryptoKeyId"] == "crypto_key_id_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12530,7 +12520,7 @@ def test_create_crypto_key_rest_required_fields(
 
 def test_create_crypto_key_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_crypto_key._get_unset_required_fields({})
@@ -12554,7 +12544,7 @@ def test_create_crypto_key_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_crypto_key_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -12608,7 +12598,7 @@ def test_create_crypto_key_rest_bad_request(
     transport: str = "rest", request_type=service.CreateCryptoKeyRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12630,7 +12620,7 @@ def test_create_crypto_key_rest_bad_request(
 
 def test_create_crypto_key_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12676,7 +12666,7 @@ def test_create_crypto_key_rest_flattened():
 
 def test_create_crypto_key_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -12693,7 +12683,7 @@ def test_create_crypto_key_rest_flattened_error(transport: str = "rest"):
 
 def test_create_crypto_key_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -12706,7 +12696,7 @@ def test_create_crypto_key_rest_error():
 )
 def test_create_crypto_key_version_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -12886,7 +12876,7 @@ def test_create_crypto_key_version_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_crypto_key_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12895,7 +12885,7 @@ def test_create_crypto_key_version_rest_required_fields(
     jsonified_request["parent"] = "parent_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_crypto_key_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -12904,7 +12894,7 @@ def test_create_crypto_key_version_rest_required_fields(
     assert jsonified_request["parent"] == "parent_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -12947,7 +12937,7 @@ def test_create_crypto_key_version_rest_required_fields(
 
 def test_create_crypto_key_version_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_crypto_key_version._get_unset_required_fields({})
@@ -12965,7 +12955,7 @@ def test_create_crypto_key_version_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_crypto_key_version_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -13023,7 +13013,7 @@ def test_create_crypto_key_version_rest_bad_request(
     transport: str = "rest", request_type=service.CreateCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13047,7 +13037,7 @@ def test_create_crypto_key_version_rest_bad_request(
 
 def test_create_crypto_key_version_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13092,7 +13082,7 @@ def test_create_crypto_key_version_rest_flattened():
 
 def test_create_crypto_key_version_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13108,7 +13098,7 @@ def test_create_crypto_key_version_rest_flattened_error(transport: str = "rest")
 
 def test_create_crypto_key_version_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13121,7 +13111,7 @@ def test_create_crypto_key_version_rest_error():
 )
 def test_import_crypto_key_version_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13200,7 +13190,7 @@ def test_import_crypto_key_version_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).import_crypto_key_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13210,7 +13200,7 @@ def test_import_crypto_key_version_rest_required_fields(
     jsonified_request["importJob"] = "import_job_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).import_crypto_key_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13221,7 +13211,7 @@ def test_import_crypto_key_version_rest_required_fields(
     assert jsonified_request["importJob"] == "import_job_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13264,7 +13254,7 @@ def test_import_crypto_key_version_rest_required_fields(
 
 def test_import_crypto_key_version_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.import_crypto_key_version._get_unset_required_fields({})
@@ -13283,7 +13273,7 @@ def test_import_crypto_key_version_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_import_crypto_key_version_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -13341,7 +13331,7 @@ def test_import_crypto_key_version_rest_bad_request(
     transport: str = "rest", request_type=service.ImportCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13365,7 +13355,7 @@ def test_import_crypto_key_version_rest_bad_request(
 
 def test_import_crypto_key_version_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13378,7 +13368,7 @@ def test_import_crypto_key_version_rest_error():
 )
 def test_create_import_job_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13533,7 +13523,7 @@ def test_create_import_job_rest_required_fields(
     assert "importJobId" not in jsonified_request
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_import_job._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -13545,7 +13535,7 @@ def test_create_import_job_rest_required_fields(
     jsonified_request["importJobId"] = "import_job_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).create_import_job._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("import_job_id",))
@@ -13558,7 +13548,7 @@ def test_create_import_job_rest_required_fields(
     assert jsonified_request["importJobId"] == "import_job_id_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -13607,7 +13597,7 @@ def test_create_import_job_rest_required_fields(
 
 def test_create_import_job_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.create_import_job._get_unset_required_fields({})
@@ -13626,7 +13616,7 @@ def test_create_import_job_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_create_import_job_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -13680,7 +13670,7 @@ def test_create_import_job_rest_bad_request(
     transport: str = "rest", request_type=service.CreateImportJobRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13702,7 +13692,7 @@ def test_create_import_job_rest_bad_request(
 
 def test_create_import_job_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13748,7 +13738,7 @@ def test_create_import_job_rest_flattened():
 
 def test_create_import_job_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -13765,7 +13755,7 @@ def test_create_import_job_rest_flattened_error(transport: str = "rest"):
 
 def test_create_import_job_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -13778,7 +13768,7 @@ def test_create_import_job_rest_error():
 )
 def test_update_crypto_key_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -13952,14 +13942,14 @@ def test_update_crypto_key_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_crypto_key._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_crypto_key._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -13968,7 +13958,7 @@ def test_update_crypto_key_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14011,7 +14001,7 @@ def test_update_crypto_key_rest_required_fields(
 
 def test_update_crypto_key_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_crypto_key._get_unset_required_fields({})
@@ -14029,7 +14019,7 @@ def test_update_crypto_key_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_crypto_key_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -14083,7 +14073,7 @@ def test_update_crypto_key_rest_bad_request(
     transport: str = "rest", request_type=service.UpdateCryptoKeyRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14109,7 +14099,7 @@ def test_update_crypto_key_rest_bad_request(
 
 def test_update_crypto_key_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14156,7 +14146,7 @@ def test_update_crypto_key_rest_flattened():
 
 def test_update_crypto_key_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14172,7 +14162,7 @@ def test_update_crypto_key_rest_flattened_error(transport: str = "rest"):
 
 def test_update_crypto_key_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14185,7 +14175,7 @@ def test_update_crypto_key_rest_error():
 )
 def test_update_crypto_key_version_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14366,14 +14356,14 @@ def test_update_crypto_key_version_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_crypto_key_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_crypto_key_version._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(("update_mask",))
@@ -14382,7 +14372,7 @@ def test_update_crypto_key_version_rest_required_fields(
     # verify required fields with non-default values are left alone
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14425,7 +14415,7 @@ def test_update_crypto_key_version_rest_required_fields(
 
 def test_update_crypto_key_version_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.update_crypto_key_version._get_unset_required_fields({})
@@ -14443,7 +14433,7 @@ def test_update_crypto_key_version_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_crypto_key_version_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -14501,7 +14491,7 @@ def test_update_crypto_key_version_rest_bad_request(
     transport: str = "rest", request_type=service.UpdateCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14527,7 +14517,7 @@ def test_update_crypto_key_version_rest_bad_request(
 
 def test_update_crypto_key_version_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14574,7 +14564,7 @@ def test_update_crypto_key_version_rest_flattened():
 
 def test_update_crypto_key_version_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14590,7 +14580,7 @@ def test_update_crypto_key_version_rest_flattened_error(transport: str = "rest")
 
 def test_update_crypto_key_version_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14603,7 +14593,7 @@ def test_update_crypto_key_version_rest_error():
 )
 def test_update_crypto_key_primary_version_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14663,7 +14653,7 @@ def test_update_crypto_key_primary_version_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_crypto_key_primary_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14673,7 +14663,7 @@ def test_update_crypto_key_primary_version_rest_required_fields(
     jsonified_request["cryptoKeyVersionId"] = "crypto_key_version_id_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).update_crypto_key_primary_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14684,7 +14674,7 @@ def test_update_crypto_key_primary_version_rest_required_fields(
     assert jsonified_request["cryptoKeyVersionId"] == "crypto_key_version_id_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -14727,7 +14717,7 @@ def test_update_crypto_key_primary_version_rest_required_fields(
 
 def test_update_crypto_key_primary_version_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = (
@@ -14747,7 +14737,7 @@ def test_update_crypto_key_primary_version_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_update_crypto_key_primary_version_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -14805,7 +14795,7 @@ def test_update_crypto_key_primary_version_rest_bad_request(
     transport: str = "rest", request_type=service.UpdateCryptoKeyPrimaryVersionRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14829,7 +14819,7 @@ def test_update_crypto_key_primary_version_rest_bad_request(
 
 def test_update_crypto_key_primary_version_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14876,7 +14866,7 @@ def test_update_crypto_key_primary_version_rest_flattened_error(
     transport: str = "rest",
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -14892,7 +14882,7 @@ def test_update_crypto_key_primary_version_rest_flattened_error(
 
 def test_update_crypto_key_primary_version_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -14905,7 +14895,7 @@ def test_update_crypto_key_primary_version_rest_error():
 )
 def test_destroy_crypto_key_version_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -14983,7 +14973,7 @@ def test_destroy_crypto_key_version_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).destroy_crypto_key_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -14992,7 +14982,7 @@ def test_destroy_crypto_key_version_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).destroy_crypto_key_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15001,7 +14991,7 @@ def test_destroy_crypto_key_version_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15044,7 +15034,7 @@ def test_destroy_crypto_key_version_rest_required_fields(
 
 def test_destroy_crypto_key_version_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.destroy_crypto_key_version._get_unset_required_fields({})
@@ -15054,7 +15044,7 @@ def test_destroy_crypto_key_version_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_destroy_crypto_key_version_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -15113,7 +15103,7 @@ def test_destroy_crypto_key_version_rest_bad_request(
     transport: str = "rest", request_type=service.DestroyCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15137,7 +15127,7 @@ def test_destroy_crypto_key_version_rest_bad_request(
 
 def test_destroy_crypto_key_version_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15181,7 +15171,7 @@ def test_destroy_crypto_key_version_rest_flattened():
 
 def test_destroy_crypto_key_version_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15196,7 +15186,7 @@ def test_destroy_crypto_key_version_rest_flattened_error(transport: str = "rest"
 
 def test_destroy_crypto_key_version_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15209,7 +15199,7 @@ def test_destroy_crypto_key_version_rest_error():
 )
 def test_restore_crypto_key_version_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15287,7 +15277,7 @@ def test_restore_crypto_key_version_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).restore_crypto_key_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15296,7 +15286,7 @@ def test_restore_crypto_key_version_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).restore_crypto_key_version._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15305,7 +15295,7 @@ def test_restore_crypto_key_version_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15348,7 +15338,7 @@ def test_restore_crypto_key_version_rest_required_fields(
 
 def test_restore_crypto_key_version_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.restore_crypto_key_version._get_unset_required_fields({})
@@ -15358,7 +15348,7 @@ def test_restore_crypto_key_version_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_restore_crypto_key_version_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -15417,7 +15407,7 @@ def test_restore_crypto_key_version_rest_bad_request(
     transport: str = "rest", request_type=service.RestoreCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15441,7 +15431,7 @@ def test_restore_crypto_key_version_rest_bad_request(
 
 def test_restore_crypto_key_version_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15485,7 +15475,7 @@ def test_restore_crypto_key_version_rest_flattened():
 
 def test_restore_crypto_key_version_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15500,7 +15490,7 @@ def test_restore_crypto_key_version_rest_flattened_error(transport: str = "rest"
 
 def test_restore_crypto_key_version_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15513,7 +15503,7 @@ def test_restore_crypto_key_version_rest_error():
 )
 def test_encrypt_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15573,7 +15563,7 @@ def test_encrypt_rest_required_fields(request_type=service.EncryptRequest):
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).encrypt._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15583,7 +15573,7 @@ def test_encrypt_rest_required_fields(request_type=service.EncryptRequest):
     jsonified_request["plaintext"] = b"plaintext_blob"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).encrypt._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15594,7 +15584,7 @@ def test_encrypt_rest_required_fields(request_type=service.EncryptRequest):
     assert jsonified_request["plaintext"] == b"plaintext_blob"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15637,7 +15627,7 @@ def test_encrypt_rest_required_fields(request_type=service.EncryptRequest):
 
 def test_encrypt_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.encrypt._get_unset_required_fields({})
@@ -15655,7 +15645,7 @@ def test_encrypt_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_encrypt_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -15711,7 +15701,7 @@ def test_encrypt_rest_bad_request(
     transport: str = "rest", request_type=service.EncryptRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15735,7 +15725,7 @@ def test_encrypt_rest_bad_request(
 
 def test_encrypt_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15780,7 +15770,7 @@ def test_encrypt_rest_flattened():
 
 def test_encrypt_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -15796,7 +15786,7 @@ def test_encrypt_rest_flattened_error(transport: str = "rest"):
 
 def test_encrypt_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -15809,7 +15799,7 @@ def test_encrypt_rest_error():
 )
 def test_decrypt_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -15865,7 +15855,7 @@ def test_decrypt_rest_required_fields(request_type=service.DecryptRequest):
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).decrypt._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15875,7 +15865,7 @@ def test_decrypt_rest_required_fields(request_type=service.DecryptRequest):
     jsonified_request["ciphertext"] = b"ciphertext_blob"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).decrypt._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -15886,7 +15876,7 @@ def test_decrypt_rest_required_fields(request_type=service.DecryptRequest):
     assert jsonified_request["ciphertext"] == b"ciphertext_blob"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -15929,7 +15919,7 @@ def test_decrypt_rest_required_fields(request_type=service.DecryptRequest):
 
 def test_decrypt_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.decrypt._get_unset_required_fields({})
@@ -15947,7 +15937,7 @@ def test_decrypt_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_decrypt_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -16003,7 +15993,7 @@ def test_decrypt_rest_bad_request(
     transport: str = "rest", request_type=service.DecryptRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16027,7 +16017,7 @@ def test_decrypt_rest_bad_request(
 
 def test_decrypt_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16072,7 +16062,7 @@ def test_decrypt_rest_flattened():
 
 def test_decrypt_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16088,7 +16078,7 @@ def test_decrypt_rest_flattened_error(transport: str = "rest"):
 
 def test_decrypt_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16101,7 +16091,7 @@ def test_decrypt_rest_error():
 )
 def test_raw_encrypt_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16167,7 +16157,7 @@ def test_raw_encrypt_rest_required_fields(request_type=service.RawEncryptRequest
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).raw_encrypt._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16177,7 +16167,7 @@ def test_raw_encrypt_rest_required_fields(request_type=service.RawEncryptRequest
     jsonified_request["plaintext"] = b"plaintext_blob"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).raw_encrypt._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16188,7 +16178,7 @@ def test_raw_encrypt_rest_required_fields(request_type=service.RawEncryptRequest
     assert jsonified_request["plaintext"] == b"plaintext_blob"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16231,7 +16221,7 @@ def test_raw_encrypt_rest_required_fields(request_type=service.RawEncryptRequest
 
 def test_raw_encrypt_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.raw_encrypt._get_unset_required_fields({})
@@ -16249,7 +16239,7 @@ def test_raw_encrypt_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_raw_encrypt_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -16305,7 +16295,7 @@ def test_raw_encrypt_rest_bad_request(
     transport: str = "rest", request_type=service.RawEncryptRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16329,7 +16319,7 @@ def test_raw_encrypt_rest_bad_request(
 
 def test_raw_encrypt_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16342,7 +16332,7 @@ def test_raw_encrypt_rest_error():
 )
 def test_raw_decrypt_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16403,7 +16393,7 @@ def test_raw_decrypt_rest_required_fields(request_type=service.RawDecryptRequest
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).raw_decrypt._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16414,7 +16404,7 @@ def test_raw_decrypt_rest_required_fields(request_type=service.RawDecryptRequest
     jsonified_request["initializationVector"] = b"initialization_vector_blob"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).raw_decrypt._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16427,7 +16417,7 @@ def test_raw_decrypt_rest_required_fields(request_type=service.RawDecryptRequest
     assert jsonified_request["initializationVector"] == b"initialization_vector_blob"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16470,7 +16460,7 @@ def test_raw_decrypt_rest_required_fields(request_type=service.RawDecryptRequest
 
 def test_raw_decrypt_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.raw_decrypt._get_unset_required_fields({})
@@ -16489,7 +16479,7 @@ def test_raw_decrypt_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_raw_decrypt_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -16545,7 +16535,7 @@ def test_raw_decrypt_rest_bad_request(
     transport: str = "rest", request_type=service.RawDecryptRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16569,7 +16559,7 @@ def test_raw_decrypt_rest_bad_request(
 
 def test_raw_decrypt_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16582,7 +16572,7 @@ def test_raw_decrypt_rest_error():
 )
 def test_asymmetric_sign_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16643,7 +16633,7 @@ def test_asymmetric_sign_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).asymmetric_sign._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16652,7 +16642,7 @@ def test_asymmetric_sign_rest_required_fields(
     jsonified_request["name"] = "name_value"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).asymmetric_sign._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16661,7 +16651,7 @@ def test_asymmetric_sign_rest_required_fields(
     assert jsonified_request["name"] == "name_value"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16704,7 +16694,7 @@ def test_asymmetric_sign_rest_required_fields(
 
 def test_asymmetric_sign_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.asymmetric_sign._get_unset_required_fields({})
@@ -16714,7 +16704,7 @@ def test_asymmetric_sign_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_asymmetric_sign_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -16770,7 +16760,7 @@ def test_asymmetric_sign_rest_bad_request(
     transport: str = "rest", request_type=service.AsymmetricSignRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16794,7 +16784,7 @@ def test_asymmetric_sign_rest_bad_request(
 
 def test_asymmetric_sign_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16839,7 +16829,7 @@ def test_asymmetric_sign_rest_flattened():
 
 def test_asymmetric_sign_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -16855,7 +16845,7 @@ def test_asymmetric_sign_rest_flattened_error(transport: str = "rest"):
 
 def test_asymmetric_sign_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -16868,7 +16858,7 @@ def test_asymmetric_sign_rest_error():
 )
 def test_asymmetric_decrypt_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -16926,7 +16916,7 @@ def test_asymmetric_decrypt_rest_required_fields(
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).asymmetric_decrypt._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16936,7 +16926,7 @@ def test_asymmetric_decrypt_rest_required_fields(
     jsonified_request["ciphertext"] = b"ciphertext_blob"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).asymmetric_decrypt._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -16947,7 +16937,7 @@ def test_asymmetric_decrypt_rest_required_fields(
     assert jsonified_request["ciphertext"] == b"ciphertext_blob"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -16990,7 +16980,7 @@ def test_asymmetric_decrypt_rest_required_fields(
 
 def test_asymmetric_decrypt_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.asymmetric_decrypt._get_unset_required_fields({})
@@ -17008,7 +16998,7 @@ def test_asymmetric_decrypt_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_asymmetric_decrypt_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -17066,7 +17056,7 @@ def test_asymmetric_decrypt_rest_bad_request(
     transport: str = "rest", request_type=service.AsymmetricDecryptRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17090,7 +17080,7 @@ def test_asymmetric_decrypt_rest_bad_request(
 
 def test_asymmetric_decrypt_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17135,7 +17125,7 @@ def test_asymmetric_decrypt_rest_flattened():
 
 def test_asymmetric_decrypt_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17151,7 +17141,7 @@ def test_asymmetric_decrypt_rest_flattened_error(transport: str = "rest"):
 
 def test_asymmetric_decrypt_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17164,7 +17154,7 @@ def test_asymmetric_decrypt_rest_error():
 )
 def test_mac_sign_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17222,7 +17212,7 @@ def test_mac_sign_rest_required_fields(request_type=service.MacSignRequest):
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).mac_sign._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17232,7 +17222,7 @@ def test_mac_sign_rest_required_fields(request_type=service.MacSignRequest):
     jsonified_request["data"] = b"data_blob"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).mac_sign._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17243,7 +17233,7 @@ def test_mac_sign_rest_required_fields(request_type=service.MacSignRequest):
     assert jsonified_request["data"] == b"data_blob"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17286,7 +17276,7 @@ def test_mac_sign_rest_required_fields(request_type=service.MacSignRequest):
 
 def test_mac_sign_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.mac_sign._get_unset_required_fields({})
@@ -17304,7 +17294,7 @@ def test_mac_sign_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_mac_sign_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -17360,7 +17350,7 @@ def test_mac_sign_rest_bad_request(
     transport: str = "rest", request_type=service.MacSignRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17384,7 +17374,7 @@ def test_mac_sign_rest_bad_request(
 
 def test_mac_sign_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17429,7 +17419,7 @@ def test_mac_sign_rest_flattened():
 
 def test_mac_sign_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17445,7 +17435,7 @@ def test_mac_sign_rest_flattened_error(transport: str = "rest"):
 
 def test_mac_sign_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17458,7 +17448,7 @@ def test_mac_sign_rest_error():
 )
 def test_mac_verify_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17521,7 +17511,7 @@ def test_mac_verify_rest_required_fields(request_type=service.MacVerifyRequest):
     # verify fields with default values are dropped
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).mac_verify._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17532,7 +17522,7 @@ def test_mac_verify_rest_required_fields(request_type=service.MacVerifyRequest):
     jsonified_request["mac"] = b"mac_blob"
 
     unset_fields = transport_class(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     ).mac_verify._get_unset_required_fields(jsonified_request)
     jsonified_request.update(unset_fields)
 
@@ -17545,7 +17535,7 @@ def test_mac_verify_rest_required_fields(request_type=service.MacVerifyRequest):
     assert jsonified_request["mac"] == b"mac_blob"
 
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request = request_type(**request_init)
@@ -17588,7 +17578,7 @@ def test_mac_verify_rest_required_fields(request_type=service.MacVerifyRequest):
 
 def test_mac_verify_rest_unset_required_fields():
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain
+        credentials=ga_credentials.AnonymousCredentials
     )
 
     unset_fields = transport.mac_verify._get_unset_required_fields({})
@@ -17607,7 +17597,7 @@ def test_mac_verify_rest_unset_required_fields():
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_mac_verify_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -17663,7 +17653,7 @@ def test_mac_verify_rest_bad_request(
     transport: str = "rest", request_type=service.MacVerifyRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17687,7 +17677,7 @@ def test_mac_verify_rest_bad_request(
 
 def test_mac_verify_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17733,7 +17723,7 @@ def test_mac_verify_rest_flattened():
 
 def test_mac_verify_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17750,7 +17740,7 @@ def test_mac_verify_rest_flattened_error(transport: str = "rest"):
 
 def test_mac_verify_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
@@ -17763,7 +17753,7 @@ def test_mac_verify_rest_error():
 )
 def test_generate_random_bytes_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17797,7 +17787,7 @@ def test_generate_random_bytes_rest(request_type):
 @pytest.mark.parametrize("null_interceptor", [True, False])
 def test_generate_random_bytes_rest_interceptors(null_interceptor):
     transport = transports.KeyManagementServiceRestTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         interceptor=None
         if null_interceptor
         else transports.KeyManagementServiceRestInterceptor(),
@@ -17855,7 +17845,7 @@ def test_generate_random_bytes_rest_bad_request(
     transport: str = "rest", request_type=service.GenerateRandomBytesRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17877,7 +17867,7 @@ def test_generate_random_bytes_rest_bad_request(
 
 def test_generate_random_bytes_rest_flattened():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
 
@@ -17921,7 +17911,7 @@ def test_generate_random_bytes_rest_flattened():
 
 def test_generate_random_bytes_rest_flattened_error(transport: str = "rest"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -17938,24 +17928,24 @@ def test_generate_random_bytes_rest_flattened_error(transport: str = "rest"):
 
 def test_generate_random_bytes_rest_error():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(), transport="rest"
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
 
 
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.KeyManagementServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = KeyManagementServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
     transport = transports.KeyManagementServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = KeyManagementServiceClient(
@@ -17965,7 +17955,7 @@ def test_credentials_transport_error():
 
     # It is an error to provide an api_key and a transport instance.
     transport = transports.KeyManagementServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     options = client_options.ClientOptions()
     options.api_key = "api_key"
@@ -17980,13 +17970,12 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = KeyManagementServiceClient(
-            client_options=options,
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
         )
 
     # It is an error to provide scopes and a transport instance.
     transport = transports.KeyManagementServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
         client = KeyManagementServiceClient(
@@ -17998,7 +17987,7 @@ def test_credentials_transport_error():
 def test_transport_instance():
     # A client may be instantiated with a custom transport instance.
     transport = transports.KeyManagementServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     client = KeyManagementServiceClient(transport=transport)
     assert client.transport is transport
@@ -18007,13 +17996,13 @@ def test_transport_instance():
 def test_transport_get_channel():
     # A client may be instantiated with a custom transport instance.
     transport = transports.KeyManagementServiceGrpcTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
 
     transport = transports.KeyManagementServiceGrpcAsyncIOTransport(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     channel = transport.grpc_channel
     assert channel
@@ -18030,7 +18019,7 @@ def test_transport_get_channel():
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
 
@@ -18044,7 +18033,7 @@ def test_transport_adc(transport_class):
 )
 def test_transport_kind(transport_name):
     transport = KeyManagementServiceClient.get_transport_class(transport_name)(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert transport.kind == transport_name
 
@@ -18052,7 +18041,7 @@ def test_transport_kind(transport_name):
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
         client.transport,
@@ -18064,7 +18053,7 @@ def test_key_management_service_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
         transport = transports.KeyManagementServiceTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             credentials_file="credentials.json",
         )
 
@@ -18076,7 +18065,7 @@ def test_key_management_service_base_transport():
     ) as Transport:
         Transport.return_value = None
         transport = transports.KeyManagementServiceTransport(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
         )
 
     # Every method on the transport should just blindly
@@ -18140,7 +18129,7 @@ def test_key_management_service_base_transport_with_credentials_file():
         "google.cloud.kms_v1.services.key_management_service.transports.KeyManagementServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        load_creds.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.KeyManagementServiceTransport(
             credentials_file="credentials.json",
             quota_project_id="octopus",
@@ -18162,7 +18151,7 @@ def test_key_management_service_base_transport_with_adc():
         "google.cloud.kms_v1.services.key_management_service.transports.KeyManagementServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.KeyManagementServiceTransport()
         adc.assert_called_once()
 
@@ -18170,7 +18159,7 @@ def test_key_management_service_base_transport_with_adc():
 def test_key_management_service_auth_adc():
     # If no credentials are provided, we should use ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         KeyManagementServiceClient()
         adc.assert_called_once_with(
             scopes=None,
@@ -18193,7 +18182,7 @@ def test_key_management_service_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
     # ADC credentials.
     with mock.patch.object(google.auth, "default", autospec=True) as adc:
-        adc.return_value = (_AnonymousCredentialsWithUniverseDomain(), None)
+        adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
         adc.assert_called_once_with(
             scopes=["1", "2"],
@@ -18243,7 +18232,7 @@ def test_key_management_service_transport_create_channel(transport_class, grpc_h
     ) as adc, mock.patch.object(
         grpc_helpers, "create_channel", autospec=True
     ) as create_channel:
-        creds = _AnonymousCredentialsWithUniverseDomain()
+        creds = ga_credentials.AnonymousCredentials()
         adc.return_value = (creds, None)
         transport_class(quota_project_id="octopus", scopes=["1", "2"])
 
@@ -18276,7 +18265,7 @@ def test_key_management_service_transport_create_channel(transport_class, grpc_h
 def test_key_management_service_grpc_transport_client_cert_source_for_mtls(
     transport_class,
 ):
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
 
     # Check ssl_channel_credentials is used if provided.
     with mock.patch.object(transport_class, "create_channel") as mock_create_channel:
@@ -18314,7 +18303,7 @@ def test_key_management_service_grpc_transport_client_cert_source_for_mtls(
 
 
 def test_key_management_service_http_transport_client_cert_source_for_mtls():
-    cred = _AnonymousCredentialsWithUniverseDomain()
+    cred = ga_credentials.AnonymousCredentials()
     with mock.patch(
         "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
     ) as mock_configure_mtls_channel:
@@ -18334,7 +18323,7 @@ def test_key_management_service_http_transport_client_cert_source_for_mtls():
 )
 def test_key_management_service_host_no_port(transport_name):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="cloudkms.googleapis.com"
         ),
@@ -18357,7 +18346,7 @@ def test_key_management_service_host_no_port(transport_name):
 )
 def test_key_management_service_host_with_port(transport_name):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="cloudkms.googleapis.com:8000"
         ),
@@ -18377,8 +18366,8 @@ def test_key_management_service_host_with_port(transport_name):
     ],
 )
 def test_key_management_service_client_transport_session_collision(transport_name):
-    creds1 = _AnonymousCredentialsWithUniverseDomain()
-    creds2 = _AnonymousCredentialsWithUniverseDomain()
+    creds1 = ga_credentials.AnonymousCredentials()
+    creds2 = ga_credentials.AnonymousCredentials()
     client1 = KeyManagementServiceClient(
         credentials=creds1,
         transport=transport_name,
@@ -18523,7 +18512,7 @@ def test_key_management_service_transport_channel_mtls_with_client_cert_source(
             mock_grpc_channel = mock.Mock()
             grpc_create_channel.return_value = mock_grpc_channel
 
-            cred = _AnonymousCredentialsWithUniverseDomain()
+            cred = ga_credentials.AnonymousCredentials()
             with pytest.warns(DeprecationWarning):
                 with mock.patch.object(google.auth, "default") as adc:
                     adc.return_value = (cred, None)
@@ -18865,7 +18854,7 @@ def test_client_with_default_client_info():
         transports.KeyManagementServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = KeyManagementServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -18875,7 +18864,7 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = KeyManagementServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=_AnonymousCredentialsWithUniverseDomain(),
+            credentials=ga_credentials.AnonymousCredentials(),
             client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
@@ -18884,7 +18873,7 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="grpc_asyncio",
     )
     with mock.patch.object(
@@ -18899,7 +18888,7 @@ def test_get_location_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.GetLocationRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18929,7 +18918,7 @@ def test_get_location_rest_bad_request(
 )
 def test_get_location_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1/locations/sample2"}
@@ -18957,7 +18946,7 @@ def test_list_locations_rest_bad_request(
     transport: str = "rest", request_type=locations_pb2.ListLocationsRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -18985,7 +18974,7 @@ def test_list_locations_rest_bad_request(
 )
 def test_list_locations_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"name": "projects/sample1"}
@@ -19013,7 +19002,7 @@ def test_get_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19043,7 +19032,7 @@ def test_get_iam_policy_rest_bad_request(
 )
 def test_get_iam_policy_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"resource": "projects/sample1/locations/sample2/keyRings/sample3"}
@@ -19071,7 +19060,7 @@ def test_set_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19101,7 +19090,7 @@ def test_set_iam_policy_rest_bad_request(
 )
 def test_set_iam_policy_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"resource": "projects/sample1/locations/sample2/keyRings/sample3"}
@@ -19129,7 +19118,7 @@ def test_test_iam_permissions_rest_bad_request(
     transport: str = "rest", request_type=iam_policy_pb2.TestIamPermissionsRequest
 ):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19159,7 +19148,7 @@ def test_test_iam_permissions_rest_bad_request(
 )
 def test_test_iam_permissions_rest(request_type):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport="rest",
     )
     request_init = {"resource": "projects/sample1/locations/sample2/keyRings/sample3"}
@@ -19185,7 +19174,7 @@ def test_test_iam_permissions_rest(request_type):
 
 def test_list_locations(transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19210,7 +19199,7 @@ def test_list_locations(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_locations_async(transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19236,7 +19225,7 @@ async def test_list_locations_async(transport: str = "grpc_asyncio"):
 
 def test_list_locations_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19265,7 +19254,7 @@ def test_list_locations_field_headers():
 @pytest.mark.asyncio
 async def test_list_locations_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19294,7 +19283,7 @@ async def test_list_locations_field_headers_async():
 
 def test_list_locations_from_dict():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -19312,7 +19301,7 @@ def test_list_locations_from_dict():
 @pytest.mark.asyncio
 async def test_list_locations_from_dict_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -19330,7 +19319,7 @@ async def test_list_locations_from_dict_async():
 
 def test_get_location(transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19355,7 +19344,7 @@ def test_get_location(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_location_async(transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19381,7 +19370,7 @@ async def test_get_location_async(transport: str = "grpc_asyncio"):
 
 def test_get_location_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19410,7 +19399,7 @@ def test_get_location_field_headers():
 @pytest.mark.asyncio
 async def test_get_location_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain()
+        credentials=ga_credentials.AnonymousCredentials()
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19439,7 +19428,7 @@ async def test_get_location_field_headers_async():
 
 def test_get_location_from_dict():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -19457,7 +19446,7 @@ def test_get_location_from_dict():
 @pytest.mark.asyncio
 async def test_get_location_from_dict_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_locations), "__call__") as call:
@@ -19475,7 +19464,7 @@ async def test_get_location_from_dict_async():
 
 def test_set_iam_policy(transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19508,7 +19497,7 @@ def test_set_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19543,7 +19532,7 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
 
 def test_set_iam_policy_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19573,7 +19562,7 @@ def test_set_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19602,7 +19591,7 @@ async def test_set_iam_policy_field_headers_async():
 
 def test_set_iam_policy_from_dict():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -19621,7 +19610,7 @@ def test_set_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
@@ -19639,7 +19628,7 @@ async def test_set_iam_policy_from_dict_async():
 
 def test_get_iam_policy(transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19674,7 +19663,7 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19710,7 +19699,7 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
 
 def test_get_iam_policy_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19740,7 +19729,7 @@ def test_get_iam_policy_field_headers():
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19769,7 +19758,7 @@ async def test_get_iam_policy_field_headers_async():
 
 def test_get_iam_policy_from_dict():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -19788,7 +19777,7 @@ def test_get_iam_policy_from_dict():
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
@@ -19806,7 +19795,7 @@ async def test_get_iam_policy_from_dict_async():
 
 def test_test_iam_permissions(transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19840,7 +19829,7 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
     )
 
@@ -19875,7 +19864,7 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
 
 def test_test_iam_permissions_field_headers():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19907,7 +19896,7 @@ def test_test_iam_permissions_field_headers():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
@@ -19940,7 +19929,7 @@ async def test_test_iam_permissions_field_headers_async():
 
 def test_test_iam_permissions_from_dict():
     client = KeyManagementServiceClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19961,7 +19950,7 @@ def test_test_iam_permissions_from_dict():
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=_AnonymousCredentialsWithUniverseDomain(),
+        credentials=ga_credentials.AnonymousCredentials(),
     )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -19989,7 +19978,7 @@ def test_transport_close():
 
     for transport, close_name in transports.items():
         client = KeyManagementServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         with mock.patch.object(
             type(getattr(client.transport, close_name)), "close"
@@ -20006,7 +19995,7 @@ def test_client_ctx():
     ]
     for transport in transports:
         client = KeyManagementServiceClient(
-            credentials=_AnonymousCredentialsWithUniverseDomain(), transport=transport
+            credentials=ga_credentials.AnonymousCredentials(), transport=transport
         )
         # Test client calls underlying transport.
         with mock.patch.object(type(client.transport), "close") as close:
