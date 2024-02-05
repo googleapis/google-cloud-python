@@ -480,7 +480,7 @@ def test_conditional_row_commit_too_many_mutations():
 
 
 def test_conditional_row_commit_no_mutations():
-    from tests.unit._testing import _FakeStub
+    from ._testing import _FakeStub
 
     project_id = "project-id"
     row_key = b"row_key"
@@ -607,7 +607,7 @@ def test_append_row_commit():
 
 
 def test_append_row_commit_no_rules():
-    from tests.unit._testing import _FakeStub
+    from ._testing import _FakeStub
 
     project_id = "project-id"
     row_key = b"row_key"

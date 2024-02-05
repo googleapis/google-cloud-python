@@ -336,7 +336,7 @@ def _create_test_helper(gc_rule=None):
     from google.cloud.bigtable_admin_v2.types import (
         bigtable_table_admin as table_admin_v2_pb2,
     )
-    from tests.unit._testing import _FakeStub
+    from ._testing import _FakeStub
     from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
         BigtableTableAdminClient,
     )
@@ -404,7 +404,7 @@ def test_column_family_create_with_gc_rule():
 
 
 def _update_test_helper(gc_rule=None):
-    from tests.unit._testing import _FakeStub
+    from ._testing import _FakeStub
     from google.cloud.bigtable_admin_v2.types import (
         bigtable_table_admin as table_admin_v2_pb2,
     )
@@ -478,7 +478,7 @@ def test_column_family_delete():
     from google.cloud.bigtable_admin_v2.types import (
         bigtable_table_admin as table_admin_v2_pb2,
     )
-    from tests.unit._testing import _FakeStub
+    from ._testing import _FakeStub
     from google.cloud.bigtable_admin_v2.services.bigtable_table_admin import (
         BigtableTableAdminClient,
     )

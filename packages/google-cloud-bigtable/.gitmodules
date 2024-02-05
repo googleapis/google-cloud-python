@@ -1,0 +1,6 @@
+[submodule "python-api-core"]
+	path = python-api-core
+	url = git@github.com:googleapis/python-api-core.git
+[submodule "gapic-generator-fork"]
+	path = gapic-generator-fork
+	url = git@github.com:googleapis/gapic-generator-python.git

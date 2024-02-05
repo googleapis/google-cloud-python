@@ -198,7 +198,7 @@ def test_mutations_batcher_response_with_error_codes():
 
     mocked_response = [Status(code=1), Status(code=5)]
 
-    with mock.patch("tests.unit.test_batcher._Table") as mocked_table:
+    with mock.patch("tests.unit.v2_client.test_batcher._Table") as mocked_table:
         table = mocked_table.return_value
         mutation_batcher = MutationsBatcher(table=table)
 

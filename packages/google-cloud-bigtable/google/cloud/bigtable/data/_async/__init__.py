@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2023 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,4 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
+
+from google.cloud.bigtable.data._async.client import BigtableDataClientAsync
+from google.cloud.bigtable.data._async.client import TableAsync
+
+from google.cloud.bigtable.data._async.mutations_batcher import MutationsBatcherAsync
+
+
+__all__ = [
+    "BigtableDataClientAsync",
+    "TableAsync",
+    "MutationsBatcherAsync",
+]

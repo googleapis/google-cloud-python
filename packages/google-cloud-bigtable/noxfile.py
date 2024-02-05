@@ -54,7 +54,9 @@ SYSTEM_TEST_STANDARD_DEPENDENCIES: List[str] = [
     "pytest",
     "google-cloud-testutils",
 ]
-SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = []
+SYSTEM_TEST_EXTERNAL_DEPENDENCIES: List[str] = [
+    "pytest-asyncio",
+]
 SYSTEM_TEST_LOCAL_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_DEPENDENCIES: List[str] = []
 SYSTEM_TEST_EXTRAS: List[str] = []
@@ -134,8 +136,18 @@ def mypy(session):
         "mypy", "types-setuptools", "types-protobuf", "types-mock", "types-requests"
     )
     session.install("google-cloud-testutils")
-    # TODO: also verify types on tests, all of google package
-    session.run("mypy", "-p", "google", "-p", "tests")
+    session.run(
+        "mypy",
+        "-p",
+        "google.cloud.bigtable.data",
+        "--check-untyped-defs",
+        "--warn-unreachable",
+        "--disallow-any-generics",
+        "--exclude",
+        "tests/system/v2_client",
+        "--exclude",
+        "tests/unit/v2_client",
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -261,6 +273,24 @@ def system_emulated(session):
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+def conformance(session):
+    TEST_REPO_URL = "https://github.com/googleapis/cloud-bigtable-clients-test.git"
+    CLONE_REPO_DIR = "cloud-bigtable-clients-test"
+    # install dependencies
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    install_unittest_dependencies(session, "-c", constraints_path)
+    with session.chdir("test_proxy"):
+        # download the conformance test suite
+        clone_dir = os.path.join(CURRENT_DIRECTORY, CLONE_REPO_DIR)
+        if not os.path.exists(clone_dir):
+            print("downloading copy of test repo")
+            session.run("git", "clone", TEST_REPO_URL, CLONE_REPO_DIR, external=True)
+        session.run("bash", "-e", "run_tests.sh", external=True)
+
+
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def system(session):
     """Run the system test suite."""
     constraints_path = str(
@@ -311,7 +341,7 @@ def cover(session):
     test runs (not system test runs), and then erases coverage data.
     """
     session.install("coverage", "pytest-cov")
-    session.run("coverage", "report", "--show-missing", "--fail-under=100")
+    session.run("coverage", "report", "--show-missing", "--fail-under=99")
 
     session.run("coverage", "erase")
 

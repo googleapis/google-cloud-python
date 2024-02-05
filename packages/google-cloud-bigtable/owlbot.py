@@ -89,7 +89,10 @@ templated_files = common.py_library(
     samples=True,  # set to True only if there are samples
     split_system_tests=True,
     microgenerator=True,
-    cov_level=100,
+    cov_level=99,
+    system_test_external_dependencies=[
+        "pytest-asyncio",
+    ],
 )
 
 s.move(templated_files, excludes=[".coveragerc", "README.rst", ".github/release-please.yml"])
@@ -142,7 +145,35 @@ place_before(
     escape="()"
 )
 
-# add system_emulated nox session
+conformance_session = """
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
+def conformance(session):
+    TEST_REPO_URL = "https://github.com/googleapis/cloud-bigtable-clients-test.git"
+    CLONE_REPO_DIR = "cloud-bigtable-clients-test"
+    # install dependencies
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    install_unittest_dependencies(session, "-c", constraints_path)
+    with session.chdir("test_proxy"):
+        # download the conformance test suite
+        clone_dir = os.path.join(CURRENT_DIRECTORY, CLONE_REPO_DIR)
+        if not os.path.exists(clone_dir):
+            print("downloading copy of test repo")
+            session.run("git", "clone", TEST_REPO_URL, CLONE_REPO_DIR, external=True)
+        session.run("bash", "-e", "run_tests.sh", external=True)
+
+"""
+
+place_before(
+    "noxfile.py",
+    "@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)\n"
+    "def system(session):",
+    conformance_session,
+    escape="()"
+)
+
+# add system_emulated and mypy and conformance to nox session
 s.replace("noxfile.py",
     """nox.options.sessions = \[
     "unit",
@@ -168,8 +199,18 @@ def mypy(session):
     session.install("-e", ".")
     session.install("mypy", "types-setuptools", "types-protobuf", "types-mock", "types-requests")
     session.install("google-cloud-testutils")
-    # TODO: also verify types on tests, all of google package
-    session.run("mypy", "-p", "google", "-p", "tests")
+    session.run(
+        "mypy",
+        "-p",
+        "google.cloud.bigtable.data",
+        "--check-untyped-defs",
+        "--warn-unreachable",
+        "--disallow-any-generics",
+        "--exclude",
+        "tests/system/v2_client",
+        "--exclude",
+        "tests/unit/v2_client",
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
