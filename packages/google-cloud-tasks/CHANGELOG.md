@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-tasks/#history
 
+## [2.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.16.0...google-cloud-tasks-v2.16.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([e16032f](https://github.com/googleapis/google-cloud-python/commit/e16032ffe9b15dfd008b51f046dbb10211356998))
+* Add staticmethod decorator to `_get_client_cert_source` and `_get_api_endpoint` ([e16032f](https://github.com/googleapis/google-cloud-python/commit/e16032ffe9b15dfd008b51f046dbb10211356998))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([e16032f](https://github.com/googleapis/google-cloud-python/commit/e16032ffe9b15dfd008b51f046dbb10211356998))
+
 ## [2.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-tasks-v2.15.1...google-cloud-tasks-v2.16.0) (2024-02-01)
 
 

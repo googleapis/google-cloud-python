@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+## [2.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.13.0...google-cloud-talent-v2.13.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([e16032f](https://github.com/googleapis/google-cloud-python/commit/e16032ffe9b15dfd008b51f046dbb10211356998))
+* Add staticmethod decorator to `_get_client_cert_source` and `_get_api_endpoint` ([e16032f](https://github.com/googleapis/google-cloud-python/commit/e16032ffe9b15dfd008b51f046dbb10211356998))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([e16032f](https://github.com/googleapis/google-cloud-python/commit/e16032ffe9b15dfd008b51f046dbb10211356998))
+
 ## [2.13.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-talent-v2.12.0...google-cloud-talent-v2.13.0) (2024-02-01)
 
 
