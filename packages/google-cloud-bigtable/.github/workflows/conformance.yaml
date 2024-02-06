@@ -30,18 +30,18 @@ jobs:
       fail-fast: false
     name: "${{ matrix.client-type }} Client / Python ${{ matrix.py-version }} / Test Tag ${{ matrix.test-version }}"
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       name: "Checkout python-bigtable"
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       name: "Checkout conformance tests"
       with:
         repository: googleapis/cloud-bigtable-clients-test
         ref: ${{ matrix.test-version }}
         path: cloud-bigtable-clients-test
-    - uses: actions/setup-python@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.py-version }}
-    - uses: actions/setup-go@v4
+    - uses: actions/setup-go@v5
       with:
         go-version: '>=1.20.2'
     - run: chmod +x .kokoro/conformance.sh
