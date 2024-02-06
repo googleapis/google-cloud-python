@@ -1185,8 +1185,9 @@ class SearchAllResourcesRequest(proto.Message):
                in the ``us-west1`` region or the ``global`` location.
         asset_types (MutableSequence[str]):
             Optional. A list of asset types that this request searches
-            for. If empty, it will search all the `searchable asset
-            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__.
+            for. If empty, it will search all the asset types `supported
+            by search
+            APIs <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__.
 
             Regular expressions are also supported. For example:
 
@@ -1411,8 +1412,8 @@ class SearchAllIamPoliciesRequest(proto.Message):
         asset_types (MutableSequence[str]):
             Optional. A list of asset types that the IAM policies are
             attached to. If empty, it will search the IAM policies that
-            are attached to all the `searchable asset
-            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__.
+            are attached to all the asset types `supported by search
+            APIs <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
 
             Regular expressions are also supported. For example:
 
@@ -2962,8 +2963,8 @@ class BatchGetEffectiveIamPoliciesRequest(proto.Message):
         names (MutableSequence[str]):
             Required. The names refer to the [full_resource_names]
             (https://cloud.google.com/asset-inventory/docs/resource-name-format)
-            of `searchable asset
-            types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__.
+            of the asset types `supported by search
+            APIs <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__.
             A maximum of 20 resources' effective policies can be
             retrieved in a batch.
     """

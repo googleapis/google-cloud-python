@@ -1824,9 +1824,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
                 should not be set.
             asset_types (MutableSequence[str]):
                 Optional. A list of asset types that this request
-                searches for. If empty, it will search all the
-                `searchable asset
-                types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__.
+                searches for. If empty, it will search all the asset
+                types `supported by search
+                APIs <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__.
 
                 Regular expressions are also supported. For example:
 
@@ -3534,9 +3534,9 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         -  compute.requireOsLogin
         -  compute.disableNestedVirtualization
 
-        This RPC only returns either resources of types supported by
-        `searchable asset
-        types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__,
+        This RPC only returns either resources of types `supported by
+        search
+        APIs <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
         or IAM policies.
 
         .. code-block:: python
