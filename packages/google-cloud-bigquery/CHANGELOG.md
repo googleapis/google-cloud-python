@@ -5,6 +5,25 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.17.2](https://github.com/googleapis/python-bigquery/compare/v3.17.1...v3.17.2) (2024-01-30)
+
+
+### Bug Fixes
+
+* Change load_table_from_json autodetect logic ([#1804](https://github.com/googleapis/python-bigquery/issues/1804)) ([6249032](https://github.com/googleapis/python-bigquery/commit/62490325f64e5d66303d9218992e28ac5f21cb3f))
+
+
+### Documentation
+
+* Update  to use  API ([#1781](https://github.com/googleapis/python-bigquery/issues/1781)) ([81563b0](https://github.com/googleapis/python-bigquery/commit/81563b06298fe3a64be6a89b583c3d64758ca12a))
+* Update `client_query_destination_table.py` sample to use `query_and_wait` ([#1783](https://github.com/googleapis/python-bigquery/issues/1783)) ([68ebbe1](https://github.com/googleapis/python-bigquery/commit/68ebbe12d455ce8e9b1784fb11787c2fb842ef22))
+* Update query_external_sheets_permanent_table.py to use query_and_wait API ([#1778](https://github.com/googleapis/python-bigquery/issues/1778)) ([a7be88a](https://github.com/googleapis/python-bigquery/commit/a7be88adf8a480ee61aa79789cb53df1b79bb091))
+* Update sample for query_to_arrow to use query_and_wait API ([#1776](https://github.com/googleapis/python-bigquery/issues/1776)) ([dbf10de](https://github.com/googleapis/python-bigquery/commit/dbf10dee51a7635e9b98658f205ded2de087a06f))
+* Update the query destination table legacy file to use query_and_wait API ([#1775](https://github.com/googleapis/python-bigquery/issues/1775)) ([ef89f9e](https://github.com/googleapis/python-bigquery/commit/ef89f9e58c22b3af5a7757b69daa030116012350))
+* Update to use `query_and_wait` in `client_query_w_positional_params.py` ([#1786](https://github.com/googleapis/python-bigquery/issues/1786)) ([410f71e](https://github.com/googleapis/python-bigquery/commit/410f71e6b6e755928e363ed89c1044e14b0db9cc))
+* Update to use `query_and_wait` in `samples/client_query_w_timestamp_params.py` ([#1785](https://github.com/googleapis/python-bigquery/issues/1785)) ([ba36948](https://github.com/googleapis/python-bigquery/commit/ba3694852c13c8a29fe0f9d923353e82acfd4278))
+* Update to_geodataframe to use query_and_wait functionality ([#1800](https://github.com/googleapis/python-bigquery/issues/1800)) ([1298594](https://github.com/googleapis/python-bigquery/commit/12985942942b8f205ecd261fcdf620df9a640460))
+
 ## [3.17.1](https://github.com/googleapis/python-bigquery/compare/v3.17.0...v3.17.1) (2024-01-24)
 
 
