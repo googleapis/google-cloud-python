@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [0.20.1](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.20.0...v0.20.1) (2024-02-06)
+
+
+### Performance Improvements
+
+* Make repr cache the block where appropriate ([#350](https://github.com/googleapis/python-bigquery-dataframes/issues/350)) ([068879f](https://github.com/googleapis/python-bigquery-dataframes/commit/068879f97fb1626aca081106150803f832a0cf81))
+
+
+### Documentation
+
+* Add a sample to demonstrate the evaluation results ([#364](https://github.com/googleapis/python-bigquery-dataframes/issues/364)) ([cff0919](https://github.com/googleapis/python-bigquery-dataframes/commit/cff09194b2c3a96a1f50e86a38ee59783c2a343b))
+* Fix the `DataFrame.apply` code sample ([#366](https://github.com/googleapis/python-bigquery-dataframes/issues/366)) ([1866a26](https://github.com/googleapis/python-bigquery-dataframes/commit/1866a266f0fa40882b589579654c1ad428b036d8))
+
 ## [0.20.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.19.2...v0.20.0) (2024-01-30)
 
 
