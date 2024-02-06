@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 from typing import Dict, List, Optional
 import unittest.mock as mock
 
@@ -49,14 +50,21 @@ def create_bigquery_session(
             "test_dataset",
         )
 
-    query_job = mock.create_autospec(google.cloud.bigquery.QueryJob)
-    type(query_job).destination = mock.PropertyMock(
-        return_value=anonymous_dataset.table("test_table"),
-    )
-    type(query_job).session_info = google.cloud.bigquery.SessionInfo(
-        {"sessionInfo": {"sessionId": session_id}},
-    )
-    bqclient.query.return_value = query_job
+    def query_mock(query, *args, **kwargs):
+        query_job = mock.create_autospec(google.cloud.bigquery.QueryJob)
+        type(query_job).destination = mock.PropertyMock(
+            return_value=anonymous_dataset.table("test_table"),
+        )
+        type(query_job).session_info = google.cloud.bigquery.SessionInfo(
+            {"sessionInfo": {"sessionId": session_id}},
+        )
+
+        if query.startswith("SELECT CURRENT_TIMESTAMP()"):
+            query_job.result = mock.MagicMock(return_value=[[datetime.datetime.now()]])
+
+        return query_job
+
+    bqclient.query = query_mock
 
     clients_provider = mock.create_autospec(bigframes.session.clients.ClientsProvider)
     type(clients_provider).bqclient = mock.PropertyMock(return_value=bqclient)

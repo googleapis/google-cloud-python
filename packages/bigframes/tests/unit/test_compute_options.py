@@ -11,6 +11,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from unittest import mock
+
 import bigframes as bf
 
 from . import resources
@@ -18,8 +20,8 @@ from . import resources
 
 def test_maximum_bytes_option():
     session = resources.create_bigquery_session()
+    session.bqclient.query = mock.MagicMock()
     with bf.option_context("compute.maximum_bytes_billed", 10000):
-        session.bqclient.query.reset_mock()
         session._start_query("query")
         call = session.bqclient.query.call_args
         assert call.kwargs["job_config"].maximum_bytes_billed == 10000
