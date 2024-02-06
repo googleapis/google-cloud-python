@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [1.14.2](https://github.com/googleapis/gapic-generator-python/compare/v1.14.1...v1.14.2) (2024-02-06)
+
+
+### Bug Fixes
+
+* Fix `ValueError` in `test__validate_universe_domain` ([#1931](https://github.com/googleapis/gapic-generator-python/issues/1931)) ([ce855a8](https://github.com/googleapis/gapic-generator-python/commit/ce855a866c43e80fb3f9ba3b295c83afcd6297b7))
+
 ## [1.14.1](https://github.com/googleapis/gapic-generator-python/compare/v1.14.0...v1.14.1) (2024-02-02)
 
 
