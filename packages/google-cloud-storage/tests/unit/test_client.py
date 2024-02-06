@@ -30,7 +30,9 @@ from google.oauth2.service_account import Credentials
 
 from google.cloud.storage import _helpers
 from google.cloud.storage._helpers import STORAGE_EMULATOR_ENV_VAR
+from google.cloud.storage._helpers import _API_ENDPOINT_OVERRIDE_ENV_VAR
 from google.cloud.storage._helpers import _get_default_headers
+from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN
 from google.cloud.storage._http import Connection
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
@@ -45,13 +47,19 @@ _POST_POLICY_TESTS = [test for test in _CONFORMANCE_TESTS if "policyInput" in te
 _FAKE_CREDENTIALS = Credentials.from_service_account_info(_SERVICE_ACCOUNT_JSON)
 
 
-def _make_credentials(project=None):
+def _make_credentials(project=None, universe_domain=_DEFAULT_UNIVERSE_DOMAIN):
     import google.auth.credentials
 
     if project is not None:
-        return mock.Mock(spec=google.auth.credentials.Credentials, project_id=project)
+        return mock.Mock(
+            spec=google.auth.credentials.Credentials,
+            project_id=project,
+            universe_domain=universe_domain,
+        )
 
-    return mock.Mock(spec=google.auth.credentials.Credentials)
+    return mock.Mock(
+        spec=google.auth.credentials.Credentials, universe_domain=universe_domain
+    )
 
 
 def _create_signing_credentials():
@@ -62,7 +70,9 @@ def _create_signing_credentials():
     ):
         pass
 
-    credentials = mock.Mock(spec=_SigningCredentials)
+    credentials = mock.Mock(
+        spec=_SigningCredentials, universe_domain=_DEFAULT_UNIVERSE_DOMAIN
+    )
     credentials.sign_bytes = mock.Mock(return_value=b"Signature_bytes")
     credentials.signer_email = "test@mail.com"
     return credentials
@@ -162,21 +172,62 @@ class TestClient(unittest.TestCase):
         )
 
         self.assertEqual(client._connection.API_BASE_URL, api_endpoint)
+        self.assertEqual(client.api_endpoint, api_endpoint)
 
     def test_ctor_w_client_options_object(self):
         from google.api_core.client_options import ClientOptions
 
         PROJECT = "PROJECT"
         credentials = _make_credentials()
-        client_options = ClientOptions(api_endpoint="https://www.foo-googleapis.com")
+        api_endpoint = "https://www.foo-googleapis.com"
+        client_options = ClientOptions(api_endpoint=api_endpoint)
 
         client = self._make_one(
             project=PROJECT, credentials=credentials, client_options=client_options
         )
 
-        self.assertEqual(
-            client._connection.API_BASE_URL, "https://www.foo-googleapis.com"
+        self.assertEqual(client._connection.API_BASE_URL, api_endpoint)
+        self.assertEqual(client.api_endpoint, api_endpoint)
+
+    def test_ctor_w_universe_domain_and_matched_credentials(self):
+        PROJECT = "PROJECT"
+        universe_domain = "example.com"
+        expected_api_endpoint = f"https://storage.{universe_domain}"
+        credentials = _make_credentials(universe_domain=universe_domain)
+        client_options = {"universe_domain": universe_domain}
+
+        client = self._make_one(
+            project=PROJECT, credentials=credentials, client_options=client_options
         )
+
+        self.assertEqual(client._connection.API_BASE_URL, expected_api_endpoint)
+        self.assertEqual(client.api_endpoint, expected_api_endpoint)
+        self.assertEqual(client.universe_domain, universe_domain)
+
+    def test_ctor_w_universe_domain_and_mismatched_credentials(self):
+        PROJECT = "PROJECT"
+        universe_domain = "example.com"
+        credentials = _make_credentials()  # default universe domain
+        client_options = {"universe_domain": universe_domain}
+
+        with self.assertRaises(ValueError):
+            self._make_one(
+                project=PROJECT, credentials=credentials, client_options=client_options
+            )
+
+    def test_ctor_w_universe_domain_and_mtls(self):
+        PROJECT = "PROJECT"
+        universe_domain = "example.com"
+        client_options = {"universe_domain": universe_domain}
+
+        credentials = _make_credentials(
+            project=PROJECT, universe_domain=universe_domain
+        )
+
+        environ = {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}
+        with mock.patch("os.environ", environ):
+            with self.assertRaises(ValueError):
+                self._make_one(credentials=credentials, client_options=client_options)
 
     def test_ctor_w_custom_headers(self):
         PROJECT = "PROJECT"
@@ -329,6 +380,16 @@ class TestClient(unittest.TestCase):
 
         self.assertEqual(client._connection.API_BASE_URL, host)
         self.assertIs(client._connection.credentials, credentials)
+
+    def test_ctor_w_api_endpoint_override(self):
+        host = "http://localhost:8080"
+        environ = {_API_ENDPOINT_OVERRIDE_ENV_VAR: host}
+        project = "my-test-project"
+        with mock.patch("os.environ", environ):
+            client = self._make_one(project=project)
+
+        self.assertEqual(client.project, project)
+        self.assertEqual(client._connection.API_BASE_URL, host)
 
     def test_create_anonymous_client(self):
         klass = self._get_target_class()
@@ -2676,6 +2737,25 @@ class TestClient(unittest.TestCase):
                 credentials=_create_signing_credentials(),
             )
         self.assertEqual(policy["url"], "https://bucket.bound_hostname/")
+
+    def test_get_signed_policy_v4_with_conflicting_arguments(self):
+        import datetime
+
+        project = "PROJECT"
+        credentials = _make_credentials(project=project)
+        client = self._make_one(credentials=credentials)
+
+        dtstamps_patch, _, _ = _time_functions_patches()
+        with dtstamps_patch:
+            with self.assertRaises(ValueError):
+                client.generate_signed_post_policy_v4(
+                    "bucket-name",
+                    "object-name",
+                    expiration=datetime.datetime(2020, 3, 12),
+                    bucket_bound_hostname="https://bucket.bound_hostname",
+                    virtual_hosted_style=True,
+                    credentials=_create_signing_credentials(),
+                )
 
     def test_get_signed_policy_v4_bucket_bound_hostname_with_scheme(self):
         import datetime

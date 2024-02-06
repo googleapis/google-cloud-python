@@ -29,6 +29,8 @@ import pytest
 
 from google.cloud.storage import _helpers
 from google.cloud.storage._helpers import _get_default_headers
+from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN
+from google.cloud.storage._helpers import _get_default_storage_base_url
 from google.cloud.storage.retry import (
     DEFAULT_RETRY,
     DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED,
@@ -64,6 +66,7 @@ class Test_Blob(unittest.TestCase):
     def _make_client(*args, **kw):
         from google.cloud.storage.client import Client
 
+        kw["api_endpoint"] = kw.get("api_endpoint") or _get_default_storage_base_url()
         return mock.create_autospec(Client, instance=True, **kw)
 
     def test_ctor_wo_encryption_key(self):
@@ -426,6 +429,15 @@ class Test_Blob(unittest.TestCase):
         expected_url = "https://storage.googleapis.com/name/winter%20%E2%98%83"
         self.assertEqual(blob.public_url, expected_url)
 
+    def test_public_url_without_client(self):
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        bucket.client = None
+        blob = self._make_one(BLOB_NAME, bucket=bucket)
+        self.assertEqual(
+            blob.public_url, f"https://storage.googleapis.com/name/{BLOB_NAME}"
+        )
+
     def test_generate_signed_url_w_invalid_version(self):
         BLOB_NAME = "blob-name"
         EXPIRATION = "2014-10-16T20:34:37.000Z"
@@ -461,10 +473,8 @@ class Test_Blob(unittest.TestCase):
         from urllib import parse
         from google.cloud._helpers import UTC
         from google.cloud.storage._helpers import _bucket_bound_hostname_url
-        from google.cloud.storage.blob import _API_ACCESS_ENDPOINT
+        from google.cloud.storage._helpers import _get_default_storage_base_url
         from google.cloud.storage.blob import _get_encryption_headers
-
-        api_access_endpoint = api_access_endpoint or _API_ACCESS_ENDPOINT
 
         delta = datetime.timedelta(hours=1)
 
@@ -522,7 +532,11 @@ class Test_Blob(unittest.TestCase):
                 bucket_bound_hostname, scheme
             )
         else:
-            expected_api_access_endpoint = api_access_endpoint
+            expected_api_access_endpoint = (
+                api_access_endpoint
+                if api_access_endpoint
+                else _get_default_storage_base_url()
+            )
             expected_resource = f"/{bucket.name}/{quoted_name}"
 
         if virtual_hosted_style or bucket_bound_hostname:
@@ -693,6 +707,17 @@ class Test_Blob(unittest.TestCase):
     def test_generate_signed_url_v4_w_credentials(self):
         credentials = object()
         self._generate_signed_url_v4_helper(credentials=credentials)
+
+    def test_generate_signed_url_v4_w_incompatible_params(self):
+        with self.assertRaises(ValueError):
+            self._generate_signed_url_v4_helper(
+                api_access_endpoint="example.com",
+                bucket_bound_hostname="cdn.example.com",
+            )
+        with self.assertRaises(ValueError):
+            self._generate_signed_url_v4_helper(
+                virtual_hosted_style=True, bucket_bound_hostname="cdn.example.com"
+            )
 
     def test_exists_miss_w_defaults(self):
         from google.cloud.exceptions import NotFound
@@ -5905,7 +5930,10 @@ class Test_Blob(unittest.TestCase):
             "x-goog-custom-audit-foo": "bar",
             "x-goog-custom-audit-user": "baz",
         }
-        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        credentials = mock.Mock(
+            spec=google.auth.credentials.Credentials,
+            universe_domain=_DEFAULT_UNIVERSE_DOMAIN,
+        )
         client = Client(
             project="project", credentials=credentials, extra_headers=custom_headers
         )

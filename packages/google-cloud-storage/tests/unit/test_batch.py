@@ -20,11 +20,16 @@ import unittest
 import mock
 import requests
 
+from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN
+
 
 def _make_credentials():
     import google.auth.credentials
 
-    return mock.Mock(spec=google.auth.credentials.Credentials)
+    return mock.Mock(
+        spec=google.auth.credentials.Credentials,
+        universe_domain=_DEFAULT_UNIVERSE_DOMAIN,
+    )
 
 
 def _make_response(status=http.client.OK, content=b"", headers={}):

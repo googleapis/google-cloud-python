@@ -21,6 +21,7 @@ import base64
 from hashlib import md5
 import os
 from urllib.parse import urlsplit
+from urllib.parse import urlunsplit
 from uuid import uuid4
 
 from google import resumable_media
@@ -30,19 +31,24 @@ from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
 
 
-STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"
+STORAGE_EMULATOR_ENV_VAR = "STORAGE_EMULATOR_HOST"  # Despite name, includes scheme.
 """Environment variable defining host for Storage emulator."""
 
-_API_ENDPOINT_OVERRIDE_ENV_VAR = "API_ENDPOINT_OVERRIDE"
+_API_ENDPOINT_OVERRIDE_ENV_VAR = "API_ENDPOINT_OVERRIDE"  # Includes scheme.
 """This is an experimental configuration variable. Use api_endpoint instead."""
 
 _API_VERSION_OVERRIDE_ENV_VAR = "API_VERSION_OVERRIDE"
 """This is an experimental configuration variable used for internal testing."""
 
-_DEFAULT_STORAGE_HOST = os.getenv(
-    _API_ENDPOINT_OVERRIDE_ENV_VAR, "https://storage.googleapis.com"
+_DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
+
+_STORAGE_HOST_TEMPLATE = "storage.{universe_domain}"
+
+_TRUE_DEFAULT_STORAGE_HOST = _STORAGE_HOST_TEMPLATE.format(
+    universe_domain=_DEFAULT_UNIVERSE_DOMAIN
 )
-"""Default storage host for JSON API."""
+
+_DEFAULT_SCHEME = "https://"
 
 _API_VERSION = os.getenv(_API_VERSION_OVERRIDE_ENV_VAR, "v1")
 """API version of the default storage host"""
@@ -72,8 +78,39 @@ _NUM_RETRIES_MESSAGE = (
 )
 
 
-def _get_storage_host():
-    return os.environ.get(STORAGE_EMULATOR_ENV_VAR, _DEFAULT_STORAGE_HOST)
+def _get_storage_emulator_override():
+    return os.environ.get(STORAGE_EMULATOR_ENV_VAR, None)
+
+
+def _get_default_storage_base_url():
+    return os.getenv(
+        _API_ENDPOINT_OVERRIDE_ENV_VAR, _DEFAULT_SCHEME + _TRUE_DEFAULT_STORAGE_HOST
+    )
+
+
+def _get_api_endpoint_override():
+    """This is an experimental configuration variable. Use api_endpoint instead."""
+    if _get_default_storage_base_url() != _DEFAULT_SCHEME + _TRUE_DEFAULT_STORAGE_HOST:
+        return _get_default_storage_base_url()
+    return None
+
+
+def _virtual_hosted_style_base_url(url, bucket, trailing_slash=False):
+    """Returns the scheme and netloc sections of the url, with the bucket
+    prepended to the netloc.
+
+    Not intended for use with netlocs which include a username and password.
+    """
+    parsed_url = urlsplit(url)
+    new_netloc = f"{bucket}.{parsed_url.netloc}"
+    base_url = urlunsplit(
+        (parsed_url.scheme, new_netloc, "/" if trailing_slash else "", "", "")
+    )
+    return base_url
+
+
+def _use_client_cert():
+    return os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE") == "true"
 
 
 def _get_environ_project():

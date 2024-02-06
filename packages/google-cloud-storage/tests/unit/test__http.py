@@ -89,7 +89,10 @@ class TestConnection(unittest.TestCase):
         response._content = data
         http.is_mtls = False
         http.request.return_value = response
-        credentials = mock.Mock(spec=google.auth.credentials.Credentials)
+        credentials = mock.Mock(
+            spec=google.auth.credentials.Credentials,
+            universe_domain=_helpers._DEFAULT_UNIVERSE_DOMAIN,
+        )
         client = Client(
             project="project",
             credentials=credentials,

@@ -27,6 +27,7 @@ from google.cloud.storage.constants import PUBLIC_ACCESS_PREVENTION_INHERITED
 from google.cloud.storage.constants import PUBLIC_ACCESS_PREVENTION_UNSPECIFIED
 from google.cloud.storage.constants import RPO_DEFAULT
 from google.cloud.storage.constants import RPO_ASYNC_TURBO
+from google.cloud.storage._helpers import _get_default_storage_base_url
 
 
 def _create_signing_credentials():
@@ -608,6 +609,7 @@ class Test_Bucket(unittest.TestCase):
     def _make_client(**kw):
         from google.cloud.storage.client import Client
 
+        kw["api_endpoint"] = kw.get("api_endpoint") or _get_default_storage_base_url()
         return mock.create_autospec(Client, instance=True, **kw)
 
     def _make_one(self, client=None, name=None, properties=None, user_project=None):
@@ -4058,9 +4060,7 @@ class Test_Bucket(unittest.TestCase):
         from urllib import parse
         from google.cloud._helpers import UTC
         from google.cloud.storage._helpers import _bucket_bound_hostname_url
-        from google.cloud.storage.blob import _API_ACCESS_ENDPOINT
-
-        api_access_endpoint = api_access_endpoint or _API_ACCESS_ENDPOINT
+        from google.cloud.storage._helpers import _get_default_storage_base_url
 
         delta = datetime.timedelta(hours=1)
 
@@ -4108,7 +4108,9 @@ class Test_Bucket(unittest.TestCase):
                 bucket_bound_hostname, scheme
             )
         else:
-            expected_api_access_endpoint = api_access_endpoint
+            expected_api_access_endpoint = (
+                api_access_endpoint or _get_default_storage_base_url()
+            )
             expected_resource = f"/{parse.quote(bucket_name)}"
 
         if virtual_hosted_style or bucket_bound_hostname:
@@ -4257,6 +4259,17 @@ class Test_Bucket(unittest.TestCase):
 
     def test_generate_signed_url_v4_w_bucket_bound_hostname_w_bare_hostname(self):
         self._generate_signed_url_v4_helper(bucket_bound_hostname="cdn.example.com")
+
+    def test_generate_signed_url_v4_w_incompatible_params(self):
+        with self.assertRaises(ValueError):
+            self._generate_signed_url_v4_helper(
+                api_access_endpoint="example.com",
+                bucket_bound_hostname="cdn.example.com",
+            )
+        with self.assertRaises(ValueError):
+            self._generate_signed_url_v4_helper(
+                virtual_hosted_style=True, bucket_bound_hostname="cdn.example.com"
+            )
 
 
 class Test__item_to_notification(unittest.TestCase):

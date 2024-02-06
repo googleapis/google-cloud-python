@@ -466,7 +466,7 @@ def generate_signed_url_v4(
                        ``tzinfo`` set,  it will be assumed to be ``UTC``.
 
     :type api_access_endpoint: str
-    :param api_access_endpoint: (Optional) URI base. Defaults to
+    :param api_access_endpoint: URI base. Defaults to
                                 "https://storage.googleapis.com/"
 
     :type method: str

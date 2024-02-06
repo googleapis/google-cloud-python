@@ -36,6 +36,7 @@ from google.cloud.storage._helpers import _validate_name
 from google.cloud.storage._signing import generate_signed_url_v2
 from google.cloud.storage._signing import generate_signed_url_v4
 from google.cloud.storage._helpers import _bucket_bound_hostname_url
+from google.cloud.storage._helpers import _virtual_hosted_style_base_url
 from google.cloud.storage.acl import BucketACL
 from google.cloud.storage.acl import DefaultObjectACL
 from google.cloud.storage.blob import Blob
@@ -82,7 +83,6 @@ _LOCATION_SETTER_MESSAGE = (
     "valid before the bucket is created. Instead, pass the location "
     "to `Bucket.create`."
 )
-_API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
 
 
 def _blobs_page_start(iterator, page, response):
@@ -3265,7 +3265,7 @@ class Bucket(_PropertyMixin):
     def generate_signed_url(
         self,
         expiration=None,
-        api_access_endpoint=_API_ACCESS_ENDPOINT,
+        api_access_endpoint=None,
         method="GET",
         headers=None,
         query_parameters=None,
@@ -3298,7 +3298,9 @@ class Bucket(_PropertyMixin):
                            ``tzinfo`` set,  it will be assumed to be ``UTC``.
 
         :type api_access_endpoint: str
-        :param api_access_endpoint: (Optional) URI base.
+        :param api_access_endpoint: (Optional) URI base, for instance
+            "https://storage.googleapis.com". If not specified, the client's
+            api_endpoint will be used. Incompatible with bucket_bound_hostname.
 
         :type method: str
         :param method: The HTTP verb that will be used when requesting the URL.
@@ -3322,7 +3324,6 @@ class Bucket(_PropertyMixin):
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the blob's bucket.
 
-
         :type credentials: :class:`google.auth.credentials.Credentials` or
                            :class:`NoneType`
         :param credentials: The authorization credentials to attach to requests.
@@ -3338,11 +3339,13 @@ class Bucket(_PropertyMixin):
         :param virtual_hosted_style:
             (Optional) If true, then construct the URL relative the bucket's
             virtual hostname, e.g., '<bucket-name>.storage.googleapis.com'.
+            Incompatible with bucket_bound_hostname.
 
         :type bucket_bound_hostname: str
         :param bucket_bound_hostname:
-            (Optional) If pass, then construct the URL relative to the bucket-bound hostname.
-            Value cane be a bare or with scheme, e.g., 'example.com' or 'http://example.com'.
+            (Optional) If passed, then construct the URL relative to the bucket-bound hostname.
+            Value can be a bare or with scheme, e.g., 'example.com' or 'http://example.com'.
+            Incompatible with api_access_endpoint and virtual_hosted_style.
             See: https://cloud.google.com/storage/docs/request-endpoints#cname
 
         :type scheme: str
@@ -3351,7 +3354,7 @@ class Bucket(_PropertyMixin):
             this value as the scheme.  ``https`` will work only when using a CDN.
             Defaults to ``"http"``.
 
-        :raises: :exc:`ValueError` when version is invalid.
+        :raises: :exc:`ValueError` when version is invalid or mutually exclusive arguments are used.
         :raises: :exc:`TypeError` when expiration is not a valid type.
         :raises: :exc:`AttributeError` if credentials is not an instance
                 of :class:`google.auth.credentials.Signing`.
@@ -3365,23 +3368,36 @@ class Bucket(_PropertyMixin):
         elif version not in ("v2", "v4"):
             raise ValueError("'version' must be either 'v2' or 'v4'")
 
+        if (
+            api_access_endpoint is not None or virtual_hosted_style
+        ) and bucket_bound_hostname:
+            raise ValueError(
+                "The bucket_bound_hostname argument is not compatible with "
+                "either api_access_endpoint or virtual_hosted_style."
+            )
+
+        if api_access_endpoint is None:
+            client = self._require_client(client)
+            api_access_endpoint = client.api_endpoint
+
         # If you are on Google Compute Engine, you can't generate a signed URL
         # using GCE service account.
         # See https://github.com/googleapis/google-auth-library-python/issues/50
         if virtual_hosted_style:
-            api_access_endpoint = f"https://{self.name}.storage.googleapis.com"
+            api_access_endpoint = _virtual_hosted_style_base_url(
+                api_access_endpoint, self.name
+            )
+            resource = "/"
         elif bucket_bound_hostname:
             api_access_endpoint = _bucket_bound_hostname_url(
                 bucket_bound_hostname, scheme
             )
+            resource = "/"
         else:
             resource = f"/{self.name}"
 
-        if virtual_hosted_style or bucket_bound_hostname:
-            resource = "/"
-
         if credentials is None:
-            client = self._require_client(client)
+            client = self._require_client(client)  # May be redundant, but that's ok.
             credentials = client._credentials
 
         if version == "v2":

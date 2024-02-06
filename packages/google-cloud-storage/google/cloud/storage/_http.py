@@ -21,8 +21,14 @@ from google.cloud.storage import _helpers
 
 
 class Connection(_http.JSONConnection):
-    """A connection to Google Cloud Storage via the JSON REST API. Mutual TLS feature will be
-    enabled if `GOOGLE_API_USE_CLIENT_CERTIFICATE` environment variable is set to "true".
+    """A connection to Google Cloud Storage via the JSON REST API.
+
+    Mutual TLS will be enabled if the "GOOGLE_API_USE_CLIENT_CERTIFICATE"
+    environment variable is set to the exact string "true" (case-sensitive).
+
+    Mutual TLS is not compatible with any API endpoint or universe domain
+    override at this time. If such settings are enabled along with
+    "GOOGLE_API_USE_CLIENT_CERTIFICATE", a ValueError will be raised.
 
     :type client: :class:`~google.cloud.storage.client.Client`
     :param client: The client that owns the current connection.
@@ -34,7 +40,7 @@ class Connection(_http.JSONConnection):
     :param api_endpoint: (Optional) api endpoint to use.
     """
 
-    DEFAULT_API_ENDPOINT = _helpers._DEFAULT_STORAGE_HOST
+    DEFAULT_API_ENDPOINT = _helpers._get_default_storage_base_url()
     DEFAULT_API_MTLS_ENDPOINT = "https://storage.mtls.googleapis.com"
 
     def __init__(self, client, client_info=None, api_endpoint=None):

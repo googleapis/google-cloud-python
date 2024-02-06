@@ -45,7 +45,7 @@ def _create_signed_list_blobs_url_helper(
         method=method,
         client=client,
         version=version,
-        api_access_endpoint=_helpers._DEFAULT_STORAGE_HOST,
+        api_access_endpoint=_helpers._get_default_storage_base_url(),
     )
 
     response = requests.get(signed_url)
