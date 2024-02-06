@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.4...google-cloud-config-v0.1.5) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([f3db074](https://github.com/googleapis/google-cloud-python/commit/f3db074e7bbf505d5989e4c353461ab6bef4905c))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([f3db074](https://github.com/googleapis/google-cloud-python/commit/f3db074e7bbf505d5989e4c353461ab6bef4905c))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([f3db074](https://github.com/googleapis/google-cloud-python/commit/f3db074e7bbf505d5989e4c353461ab6bef4905c))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.3...google-cloud-config-v0.1.4) (2024-02-01)
 
 
