@@ -16,8 +16,6 @@ import datetime
 
 import pytest
 
-from google.cloud import _helpers as _cloud_helpers
-
 from . import _helpers
 
 
@@ -32,9 +30,12 @@ def ensure_hmac_key_deleted(hmac_key):
 
 @pytest.fixture
 def scrubbed_hmac_keys(storage_client):
+    from google.cloud.storage._helpers import _NOW
+    from google.cloud.storage._helpers import _UTC
+
     before_hmac_keys = set(storage_client.list_hmac_keys())
 
-    now = datetime.datetime.utcnow().replace(tzinfo=_cloud_helpers.UTC)
+    now = _NOW(_UTC)
     yesterday = now - datetime.timedelta(days=1)
 
     # Delete any HMAC keys older than a day.

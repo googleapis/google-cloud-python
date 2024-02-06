@@ -29,6 +29,8 @@ from google.auth.credentials import AnonymousCredentials
 from google.oauth2.service_account import Credentials
 
 from google.cloud.storage import _helpers
+from google.cloud.storage._helpers import _NOW
+from google.cloud.storage._helpers import _UTC
 from google.cloud.storage._helpers import STORAGE_EMULATOR_ENV_VAR
 from google.cloud.storage._helpers import _API_ENDPOINT_OVERRIDE_ENV_VAR
 from google.cloud.storage._helpers import _get_default_headers
@@ -2311,8 +2313,6 @@ class TestClient(unittest.TestCase):
         timeout=None,
         retry=None,
     ):
-        import datetime
-        from google.cloud._helpers import UTC
         from google.cloud.storage.hmac_key import HMACKeyMetadata
 
         project = "PROJECT"
@@ -2320,7 +2320,7 @@ class TestClient(unittest.TestCase):
         credentials = _make_credentials()
         email = "storage-user-123@example.com"
         secret = "a" * 40
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = _NOW(_UTC)
         now_stamp = f"{now.isoformat()}Z"
 
         if explicit_project is not None:
@@ -2907,7 +2907,7 @@ def test_conformance_post_policy(test_data):
     client = Client(credentials=_FAKE_CREDENTIALS, project="PROJECT")
 
     # mocking time functions
-    with mock.patch("google.cloud.storage._signing.NOW", return_value=timestamp):
+    with mock.patch("google.cloud.storage._signing._NOW", return_value=timestamp):
         with mock.patch(
             "google.cloud.storage.client.get_expiration_seconds_v4",
             return_value=in_data["expiration"],

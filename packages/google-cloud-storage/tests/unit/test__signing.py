@@ -26,6 +26,7 @@ import urllib.parse
 import mock
 import pytest
 
+from google.cloud.storage._helpers import _UTC
 from . import _read_local_json
 
 
@@ -74,9 +75,7 @@ class Test_get_expiration_seconds_v2(unittest.TestCase):
         self.assertEqual(self._call_fut(expiration_no_tz), utc_seconds)
 
     def test_w_expiration_utc_datetime(self):
-        from google.cloud._helpers import UTC
-
-        expiration_utc = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, UTC)
+        expiration_utc = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, _UTC)
         utc_seconds = _utc_seconds(expiration_utc)
         self.assertEqual(self._call_fut(expiration_utc), utc_seconds)
 
@@ -88,32 +87,32 @@ class Test_get_expiration_seconds_v2(unittest.TestCase):
         self.assertEqual(self._call_fut(expiration_other), cet_seconds)
 
     def test_w_expiration_timedelta_seconds(self):
-        fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
+        fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, _UTC)
         utc_seconds = _utc_seconds(fake_utcnow)
         expiration_as_delta = datetime.timedelta(seconds=10)
 
         patch = mock.patch(
-            "google.cloud.storage._signing.NOW", return_value=fake_utcnow
+            "google.cloud.storage._signing._NOW", return_value=fake_utcnow
         )
         with patch as utcnow:
             result = self._call_fut(expiration_as_delta)
 
         self.assertEqual(result, utc_seconds + 10)
-        utcnow.assert_called_once_with()
+        utcnow.assert_called_once_with(datetime.timezone.utc)
 
     def test_w_expiration_timedelta_days(self):
-        fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
+        fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, _UTC)
         utc_seconds = _utc_seconds(fake_utcnow)
         expiration_as_delta = datetime.timedelta(days=1)
 
         patch = mock.patch(
-            "google.cloud.storage._signing.NOW", return_value=fake_utcnow
+            "google.cloud.storage._signing._NOW", return_value=fake_utcnow
         )
         with patch as utcnow:
             result = self._call_fut(expiration_as_delta)
 
         self.assertEqual(result, utc_seconds + 86400)
-        utcnow.assert_called_once_with()
+        utcnow.assert_called_once_with(datetime.timezone.utc)
 
 
 class Test_get_expiration_seconds_v4(unittest.TestCase):
@@ -138,88 +137,83 @@ class Test_get_expiration_seconds_v4(unittest.TestCase):
         expiration_seconds = _utc_seconds(expiration_utc)
 
         patch = mock.patch(
-            "google.cloud.storage._signing.NOW", return_value=fake_utcnow
+            "google.cloud.storage._signing._NOW", return_value=fake_utcnow
         )
 
         with patch as utcnow:
             with self.assertRaises(ValueError):
                 self._call_fut(expiration_seconds)
-        utcnow.assert_called_once_with()
+        utcnow.assert_called_once_with(datetime.timezone.utc)
 
     def test_w_expiration_int(self):
         fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
         expiration_seconds = 10
 
         patch = mock.patch(
-            "google.cloud.storage._signing.NOW", return_value=fake_utcnow
+            "google.cloud.storage._signing._NOW", return_value=fake_utcnow
         )
 
         with patch as utcnow:
             result = self._call_fut(expiration_seconds)
 
         self.assertEqual(result, expiration_seconds)
-        utcnow.assert_called_once_with()
+        utcnow.assert_called_once_with(datetime.timezone.utc)
 
     def test_w_expiration_naive_datetime(self):
-        fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
+        fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, _UTC)
         delta = datetime.timedelta(seconds=10)
         expiration_no_tz = fake_utcnow + delta
 
         patch = mock.patch(
-            "google.cloud.storage._signing.NOW", return_value=fake_utcnow
+            "google.cloud.storage._signing._NOW", return_value=fake_utcnow
         )
         with patch as utcnow:
             result = self._call_fut(expiration_no_tz)
 
         self.assertEqual(result, delta.seconds)
-        utcnow.assert_called_once_with()
+        utcnow.assert_called_once()
 
     def test_w_expiration_utc_datetime(self):
-        from google.cloud._helpers import UTC
-
-        fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, UTC)
+        fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, _UTC)
         delta = datetime.timedelta(seconds=10)
         expiration_utc = fake_utcnow + delta
 
         patch = mock.patch(
-            "google.cloud.storage._signing.NOW", return_value=fake_utcnow
+            "google.cloud.storage._signing._NOW", return_value=fake_utcnow
         )
         with patch as utcnow:
             result = self._call_fut(expiration_utc)
 
         self.assertEqual(result, delta.seconds)
-        utcnow.assert_called_once_with()
+        utcnow.assert_called_once_with(datetime.timezone.utc)
 
     def test_w_expiration_other_zone_datetime(self):
-        from google.cloud._helpers import UTC
-
         zone = _make_cet_timezone()
-        fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, UTC)
+        fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, _UTC)
         fake_cetnow = fake_utcnow.astimezone(zone)
         delta = datetime.timedelta(seconds=10)
         expiration_other = fake_cetnow + delta
 
         patch = mock.patch(
-            "google.cloud.storage._signing.NOW", return_value=fake_utcnow
+            "google.cloud.storage._signing._NOW", return_value=fake_utcnow
         )
         with patch as utcnow:
             result = self._call_fut(expiration_other)
-
         self.assertEqual(result, delta.seconds)
-        utcnow.assert_called_once_with()
+        utcnow.assert_called_once_with(datetime.timezone.utc)
 
     def test_w_expiration_timedelta(self):
-        fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0)
+        fake_utcnow = datetime.datetime(2004, 8, 19, 0, 0, 0, 0, _UTC)
         expiration_as_delta = datetime.timedelta(seconds=10)
 
         patch = mock.patch(
-            "google.cloud.storage._signing.NOW", return_value=fake_utcnow
+            "google.cloud.storage._signing._NOW", return_value=fake_utcnow
         )
         with patch as utcnow:
             result = self._call_fut(expiration_as_delta)
 
         self.assertEqual(result, expiration_as_delta.total_seconds())
-        utcnow.assert_called_once_with()
+        utcnow.assert_called_once_with(datetime.timezone.utc)
 
 
 class Test_get_signed_query_params_v2(unittest.TestCase):
@@ -534,7 +528,7 @@ class Test_generate_signed_url_v4(unittest.TestCase):
         credentials = _make_credentials(signer_email=signer_email)
         credentials.sign_bytes.return_value = b"DEADBEEF"
 
-        with mock.patch("google.cloud.storage._signing.NOW", lambda: now):
+        with mock.patch("google.cloud.storage._signing._NOW", lambda tz: now):
             url = self._call_fut(
                 credentials,
                 resource,
@@ -797,7 +791,7 @@ class TestV4Stamps(unittest.TestCase):
         from google.cloud.storage._signing import get_v4_now_dtstamps
 
         with mock.patch(
-            "google.cloud.storage._signing.NOW",
+            "google.cloud.storage._signing._NOW",
             return_value=datetime.datetime(2020, 3, 12, 13, 14, 15),
         ) as now_mock:
             timestamp, datestamp = get_v4_now_dtstamps()

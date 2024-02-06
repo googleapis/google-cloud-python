@@ -26,19 +26,21 @@ import google.api_core.client_options
 from google.auth.credentials import AnonymousCredentials
 
 from google.api_core import page_iterator
-from google.cloud._helpers import _LocalStack, _NOW
+from google.cloud._helpers import _LocalStack
 from google.cloud.client import ClientWithProject
 from google.cloud.exceptions import NotFound
 
-from google.cloud.storage._helpers import _get_environ_project
-from google.cloud.storage._helpers import _use_client_cert
-from google.cloud.storage._helpers import _get_storage_emulator_override
-from google.cloud.storage._helpers import _get_api_endpoint_override
-from google.cloud.storage._helpers import _STORAGE_HOST_TEMPLATE
 from google.cloud.storage._helpers import _bucket_bound_hostname_url
+from google.cloud.storage._helpers import _get_api_endpoint_override
+from google.cloud.storage._helpers import _get_environ_project
+from google.cloud.storage._helpers import _get_storage_emulator_override
+from google.cloud.storage._helpers import _use_client_cert
+from google.cloud.storage._helpers import _virtual_hosted_style_base_url
 from google.cloud.storage._helpers import _DEFAULT_UNIVERSE_DOMAIN
 from google.cloud.storage._helpers import _DEFAULT_SCHEME
-from google.cloud.storage._helpers import _virtual_hosted_style_base_url
+from google.cloud.storage._helpers import _STORAGE_HOST_TEMPLATE
+from google.cloud.storage._helpers import _NOW
+from google.cloud.storage._helpers import _UTC
 
 from google.cloud.storage._http import Connection
 from google.cloud.storage._signing import (
@@ -1707,7 +1709,7 @@ class Client(ClientWithProject):
         conditions += required_conditions
 
         # calculate policy expiration time
-        now = _NOW()
+        now = _NOW(_UTC).replace(tzinfo=None)
         if expiration is None:
             expiration = now + datetime.timedelta(hours=1)
 

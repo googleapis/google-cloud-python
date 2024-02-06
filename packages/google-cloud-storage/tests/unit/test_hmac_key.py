@@ -18,6 +18,8 @@ import mock
 
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_ETAG_IN_JSON
+from google.cloud.storage._helpers import _NOW
+from google.cloud.storage._helpers import _UTC
 
 
 class TestHMACKeyMetadata(unittest.TestCase):
@@ -173,24 +175,18 @@ class TestHMACKeyMetadata(unittest.TestCase):
         self.assertEqual(metadata._properties["state"], expected)
 
     def test_time_created_getter(self):
-        import datetime
-        from google.cloud._helpers import UTC
-
         metadata = self._make_one()
-        now = datetime.datetime.utcnow()
+        now = _NOW()
         now_stamp = f"{now.isoformat()}Z"
         metadata._properties["timeCreated"] = now_stamp
-        self.assertEqual(metadata.time_created, now.replace(tzinfo=UTC))
+        self.assertEqual(metadata.time_created, now.replace(tzinfo=_UTC))
 
     def test_updated_getter(self):
-        import datetime
-        from google.cloud._helpers import UTC
-
         metadata = self._make_one()
-        now = datetime.datetime.utcnow()
+        now = _NOW()
         now_stamp = f"{now.isoformat()}Z"
         metadata._properties["updated"] = now_stamp
-        self.assertEqual(metadata.updated, now.replace(tzinfo=UTC))
+        self.assertEqual(metadata.updated, now.replace(tzinfo=_UTC))
 
     def test_path_wo_access_id(self):
         metadata = self._make_one()

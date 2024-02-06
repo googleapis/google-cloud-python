@@ -1120,6 +1120,9 @@ def test_blob_update_storage_class_large_file(
 
 
 def test_object_retention_lock(storage_client, buckets_to_delete, blobs_to_delete):
+    from google.cloud.storage._helpers import _NOW
+    from google.cloud.storage._helpers import _UTC
+
     # Test bucket created with object retention enabled
     new_bucket_name = _helpers.unique_name("object-retention")
     created_bucket = _helpers.retry_429_503(storage_client.create_bucket)(
@@ -1131,7 +1134,7 @@ def test_object_retention_lock(storage_client, buckets_to_delete, blobs_to_delet
     # Test create object with object retention enabled
     payload = b"Hello World"
     mode = "Unlocked"
-    current_time = datetime.datetime.utcnow()
+    current_time = _NOW(_UTC).replace(tzinfo=None)
     expiration_time = current_time + datetime.timedelta(seconds=10)
     blob = created_bucket.blob("object-retention-lock")
     blob.retention.mode = mode

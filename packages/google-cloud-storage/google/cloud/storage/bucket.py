@@ -23,14 +23,15 @@ import warnings
 
 from google.api_core import datetime_helpers
 from google.cloud._helpers import _datetime_to_rfc3339
-from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_nanos_to_datetime
 from google.cloud.exceptions import NotFound
 from google.api_core.iam import Policy
 from google.cloud.storage import _signing
 from google.cloud.storage._helpers import _add_etag_match_headers
 from google.cloud.storage._helpers import _add_generation_match_parameters
+from google.cloud.storage._helpers import _NOW
 from google.cloud.storage._helpers import _PropertyMixin
+from google.cloud.storage._helpers import _UTC
 from google.cloud.storage._helpers import _scalar_property
 from google.cloud.storage._helpers import _validate_name
 from google.cloud.storage._signing import generate_signed_url_v2
@@ -3186,7 +3187,7 @@ class Bucket(_PropertyMixin):
         _signing.ensure_signed_credentials(credentials)
 
         if expiration is None:
-            expiration = _NOW() + datetime.timedelta(hours=1)
+            expiration = _NOW(_UTC).replace(tzinfo=None) + datetime.timedelta(hours=1)
 
         conditions = conditions + [{"bucket": self.name}]
 

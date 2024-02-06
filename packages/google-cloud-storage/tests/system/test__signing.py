@@ -22,6 +22,8 @@ import requests
 
 from google.api_core import path_template
 from google.cloud import iam_credentials_v1
+from google.cloud.storage._helpers import _NOW
+from google.cloud.storage._helpers import _UTC
 from . import _helpers
 
 
@@ -63,7 +65,7 @@ def test_create_signed_list_blobs_url_v2(storage_client, signing_bucket, no_mtls
 def test_create_signed_list_blobs_url_v2_w_expiration(
     storage_client, signing_bucket, no_mtls
 ):
-    now = datetime.datetime.utcnow()
+    now = _NOW(_UTC).replace(tzinfo=None)
     delta = datetime.timedelta(seconds=10)
 
     _create_signed_list_blobs_url_helper(
@@ -85,7 +87,7 @@ def test_create_signed_list_blobs_url_v4(storage_client, signing_bucket, no_mtls
 def test_create_signed_list_blobs_url_v4_w_expiration(
     storage_client, signing_bucket, no_mtls
 ):
-    now = datetime.datetime.utcnow()
+    now = _NOW(_UTC).replace(tzinfo=None)
     delta = datetime.timedelta(seconds=10)
     _create_signed_list_blobs_url_helper(
         storage_client,
@@ -158,7 +160,7 @@ def test_create_signed_read_url_v4(storage_client, signing_bucket, no_mtls):
 def test_create_signed_read_url_v2_w_expiration(
     storage_client, signing_bucket, no_mtls
 ):
-    now = datetime.datetime.utcnow()
+    now = _NOW(_UTC).replace(tzinfo=None)
     delta = datetime.timedelta(seconds=10)
 
     _create_signed_read_url_helper(
@@ -169,7 +171,7 @@ def test_create_signed_read_url_v2_w_expiration(
 def test_create_signed_read_url_v4_w_expiration(
     storage_client, signing_bucket, no_mtls
 ):
-    now = datetime.datetime.utcnow()
+    now = _NOW(_UTC).replace(tzinfo=None)
     delta = datetime.timedelta(seconds=10)
     _create_signed_read_url_helper(
         storage_client, signing_bucket, expiration=now + delta, version="v4"
@@ -391,6 +393,7 @@ def test_generate_signed_post_policy_v4(
     with open(blob_name, "wb") as f:
         f.write(payload)
 
+    now = _NOW(_UTC).replace(tzinfo=None)
     policy = storage_client.generate_signed_post_policy_v4(
         bucket_name,
         blob_name,
@@ -398,7 +401,7 @@ def test_generate_signed_post_policy_v4(
             {"bucket": bucket_name},
             ["starts-with", "$Content-Type", "text/pla"],
         ],
-        expiration=datetime.datetime.utcnow() + datetime.timedelta(hours=1),
+        expiration=now + datetime.timedelta(hours=1),
         fields={"content-type": "text/plain"},
     )
     with open(blob_name, "r") as f:
@@ -424,6 +427,7 @@ def test_generate_signed_post_policy_v4_invalid_field(
     with open(blob_name, "wb") as f:
         f.write(payload)
 
+    now = _NOW(_UTC).replace(tzinfo=None)
     policy = storage_client.generate_signed_post_policy_v4(
         bucket_name,
         blob_name,
@@ -431,7 +435,7 @@ def test_generate_signed_post_policy_v4_invalid_field(
             {"bucket": bucket_name},
             ["starts-with", "$Content-Type", "text/pla"],
         ],
-        expiration=datetime.datetime.utcnow() + datetime.timedelta(hours=1),
+        expiration=now + datetime.timedelta(hours=1),
         fields={"x-goog-random": "invalid_field", "content-type": "text/plain"},
     )
     with open(blob_name, "r") as f:

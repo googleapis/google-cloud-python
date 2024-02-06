@@ -18,6 +18,7 @@ These are *not* part of the API.
 """
 
 import base64
+import datetime
 from hashlib import md5
 import os
 from urllib.parse import urlsplit
@@ -76,6 +77,12 @@ _NUM_RETRIES_MESSAGE = (
     "release. Use the `retry` argument with a Retry or ConditionalRetryPolicy "
     "object, or None, instead."
 )
+
+# _NOW() returns the current local date and time.
+# It is preferred to use timezone-aware datetimes _NOW(_UTC),
+# which returns the current UTC date and time.
+_NOW = datetime.datetime.now
+_UTC = datetime.timezone.utc
 
 
 def _get_storage_emulator_override():

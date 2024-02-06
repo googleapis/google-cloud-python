@@ -267,10 +267,10 @@ def test_upload_chunks_concurrently(shared_bucket, file_data, blobs_to_delete):
 def test_upload_chunks_concurrently_with_metadata(
     shared_bucket, file_data, blobs_to_delete
 ):
-    import datetime
-    from google.cloud._helpers import UTC
+    from google.cloud.storage._helpers import _NOW
+    from google.cloud.storage._helpers import _UTC
 
-    now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    now = _NOW(_UTC)
     custom_metadata = {"key_a": "value_a", "key_b": "value_b"}
 
     METADATA = {

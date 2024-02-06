@@ -27,6 +27,8 @@ from google.cloud.storage.constants import PUBLIC_ACCESS_PREVENTION_INHERITED
 from google.cloud.storage.constants import PUBLIC_ACCESS_PREVENTION_UNSPECIFIED
 from google.cloud.storage.constants import RPO_DEFAULT
 from google.cloud.storage.constants import RPO_ASYNC_TURBO
+from google.cloud.storage._helpers import _NOW
+from google.cloud.storage._helpers import _UTC
 from google.cloud.storage._helpers import _get_default_storage_base_url
 
 
@@ -430,11 +432,8 @@ class Test_IAMConfiguration(unittest.TestCase):
         self.assertIsNone(config.bucket_policy_only_locked_time)
 
     def test_ctor_explicit_ubla(self):
-        import datetime
-        from google.cloud._helpers import UTC
-
         bucket = self._make_bucket()
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = _NOW(_UTC)
 
         config = self._make_one(
             bucket,
@@ -470,11 +469,8 @@ class Test_IAMConfiguration(unittest.TestCase):
         )
 
     def test_ctor_explicit_bpo(self):
-        import datetime
-        from google.cloud._helpers import UTC
-
         bucket = self._make_bucket()
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = _NOW(_UTC)
 
         config = pytest.deprecated_call(
             self._make_one,
@@ -500,11 +496,8 @@ class Test_IAMConfiguration(unittest.TestCase):
             )
 
     def test_ctor_ubla_and_bpo_time(self):
-        import datetime
-        from google.cloud._helpers import UTC
-
         bucket = self._make_bucket()
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = _NOW(_UTC)
 
         with self.assertRaises(ValueError):
             self._make_one(
@@ -548,13 +541,11 @@ class Test_IAMConfiguration(unittest.TestCase):
         self.assertIsNone(config.bucket_policy_only_locked_time)
 
     def test_from_api_repr_w_enabled(self):
-        import datetime
-        from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_rfc3339
 
         klass = self._get_target_class()
         bucket = self._make_bucket()
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = _NOW(_UTC)
         resource = {
             "uniformBucketLevelAccess": {
                 "enabled": True,
@@ -2326,12 +2317,10 @@ class Test_Bucket(unittest.TestCase):
         self.assertIsNone(config.bucket_policy_only_locked_time)
 
     def test_iam_configuration_policy_w_entry(self):
-        import datetime
-        from google.cloud._helpers import UTC
         from google.cloud._helpers import _datetime_to_rfc3339
         from google.cloud.storage.bucket import IAMConfiguration
 
-        now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        now = _NOW(_UTC)
         NAME = "name"
         properties = {
             "iamConfiguration": {
@@ -2680,11 +2669,9 @@ class Test_Bucket(unittest.TestCase):
         self.assertIsNone(bucket.autoclass_terminal_storage_class_update_time)
 
     def test_autoclass_toggle_and_tsc_update_time(self):
-        import datetime
         from google.cloud._helpers import _datetime_to_rfc3339
-        from google.cloud._helpers import UTC
 
-        effective_time = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        effective_time = _NOW(_UTC)
         properties = {
             "autoclass": {
                 "enabled": True,
@@ -2807,11 +2794,9 @@ class Test_Bucket(unittest.TestCase):
         self.assertIsNone(bucket.retention_policy_effective_time)
 
     def test_retention_policy_effective_time(self):
-        import datetime
         from google.cloud._helpers import _datetime_to_rfc3339
-        from google.cloud._helpers import UTC
 
-        effective_time = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        effective_time = _NOW(_UTC)
         properties = {
             "retentionPolicy": {"effectiveTime": _datetime_to_rfc3339(effective_time)}
         }
@@ -2963,9 +2948,8 @@ class Test_Bucket(unittest.TestCase):
 
     def test_time_created(self):
         from google.cloud._helpers import _RFC3339_MICROS
-        from google.cloud._helpers import UTC
 
-        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=UTC)
+        TIMESTAMP = datetime.datetime(2014, 11, 5, 20, 34, 37, tzinfo=_UTC)
         TIME_CREATED = TIMESTAMP.strftime(_RFC3339_MICROS)
         properties = {"timeCreated": TIME_CREATED}
         bucket = self._make_one(properties=properties)
@@ -4058,14 +4042,13 @@ class Test_Bucket(unittest.TestCase):
         scheme="http",
     ):
         from urllib import parse
-        from google.cloud._helpers import UTC
         from google.cloud.storage._helpers import _bucket_bound_hostname_url
         from google.cloud.storage._helpers import _get_default_storage_base_url
 
         delta = datetime.timedelta(hours=1)
 
         if expiration is None:
-            expiration = datetime.datetime.utcnow().replace(tzinfo=UTC) + delta
+            expiration = _NOW(_UTC) + delta
 
         client = self._make_client(_credentials=credentials)
         bucket = self._make_one(name=bucket_name, client=client)
@@ -4171,9 +4154,7 @@ class Test_Bucket(unittest.TestCase):
         self._generate_signed_url_v2_helper()
 
     def test_generate_signed_url_v2_w_expiration(self):
-        from google.cloud._helpers import UTC
-
-        expiration = datetime.datetime.utcnow().replace(tzinfo=UTC)
+        expiration = _NOW(_UTC)
         self._generate_signed_url_v2_helper(expiration=expiration)
 
     def test_generate_signed_url_v2_w_endpoint(self):

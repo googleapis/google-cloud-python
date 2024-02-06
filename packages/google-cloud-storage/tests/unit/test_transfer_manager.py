@@ -841,10 +841,10 @@ def test_upload_chunks_concurrently_passes_concurrency_options():
 
 def test_upload_chunks_concurrently_with_metadata_and_encryption():
     import datetime
-    from google.cloud._helpers import UTC
+    from google.cloud.storage._helpers import _UTC
     from google.cloud._helpers import _RFC3339_MICROS
 
-    now = datetime.datetime.utcnow().replace(tzinfo=UTC)
+    now = datetime.datetime.now(_UTC)
     now_str = now.strftime(_RFC3339_MICROS)
 
     custom_metadata = {"key_a": "value_a", "key_b": "value_b"}
