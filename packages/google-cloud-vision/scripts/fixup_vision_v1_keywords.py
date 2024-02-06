@@ -40,10 +40,10 @@ class visionCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'add_product_to_product_set': ('name', 'product', ),
-        'async_batch_annotate_files': ('requests', 'parent', ),
-        'async_batch_annotate_images': ('requests', 'output_config', 'parent', ),
-        'batch_annotate_files': ('requests', 'parent', ),
-        'batch_annotate_images': ('requests', 'parent', ),
+        'async_batch_annotate_files': ('requests', 'parent', 'labels', ),
+        'async_batch_annotate_images': ('requests', 'output_config', 'parent', 'labels', ),
+        'batch_annotate_files': ('requests', 'parent', 'labels', ),
+        'batch_annotate_images': ('requests', 'parent', 'labels', ),
         'create_product': ('parent', 'product', 'product_id', ),
         'create_product_set': ('parent', 'product_set', 'product_set_id', ),
         'create_reference_image': ('parent', 'reference_image', 'reference_image_id', ),

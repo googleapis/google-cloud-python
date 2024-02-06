@@ -720,7 +720,9 @@ class SafeSearchAnnotation(proto.Message):
             Likelihood that this is a medical image.
         violence (google.cloud.vision_v1.types.Likelihood):
             Likelihood that this image contains violent
-            content.
+            content. Violent content may include death,
+            serious harm, or injury to individuals or groups
+            of individuals.
         racy (google.cloud.vision_v1.types.Likelihood):
             Likelihood that the request image contains
             racy content. Racy content may include (but is
@@ -913,8 +915,7 @@ class WebDetectionParams(proto.Message):
 
     Attributes:
         include_geo_results (bool):
-            Whether to include results derived from the
-            geo information in the image.
+            This field has no effect on results.
     """
 
     include_geo_results: bool = proto.Field(
@@ -933,8 +934,14 @@ class TextDetectionParams(proto.Message):
             for DOCUMENT_TEXT_DETECTION result. Set the flag to true to
             include confidence score for TEXT_DETECTION as well.
         advanced_ocr_options (MutableSequence[str]):
-            A list of advanced OCR options to fine-tune
-            OCR behavior.
+            A list of advanced OCR options to further fine-tune OCR
+            behavior. Current valid values are:
+
+            -  ``legacy_layout``: a heuristics layout detection
+               algorithm, which serves as an alternative to the current
+               ML-based layout detection algorithm. Customers can choose
+               the best suitable layout algorithm based on their
+               situation.
     """
 
     enable_text_detection_confidence_score: bool = proto.Field(
@@ -1209,6 +1216,15 @@ class BatchAnnotateImagesRequest(proto.Message):
             Union.
 
             Example: ``projects/project-A/locations/eu``.
+        labels (MutableMapping[str, str]):
+            Optional. The labels with user-defined
+            metadata for the request.
+            Label keys and values can be no longer than 63
+            characters (Unicode codepoints), can only
+            contain lowercase letters, numeric characters,
+            underscores and dashes. International characters
+            are allowed. Label values are optional. Label
+            keys must start with a letter.
     """
 
     requests: MutableSequence["AnnotateImageRequest"] = proto.RepeatedField(
@@ -1219,6 +1235,11 @@ class BatchAnnotateImagesRequest(proto.Message):
     parent: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
     )
 
 
@@ -1355,6 +1376,15 @@ class BatchAnnotateFilesRequest(proto.Message):
             Union.
 
             Example: ``projects/project-A/locations/eu``.
+        labels (MutableMapping[str, str]):
+            Optional. The labels with user-defined
+            metadata for the request.
+            Label keys and values can be no longer than 63
+            characters (Unicode codepoints), can only
+            contain lowercase letters, numeric characters,
+            underscores and dashes. International characters
+            are allowed. Label values are optional. Label
+            keys must start with a letter.
     """
 
     requests: MutableSequence["AnnotateFileRequest"] = proto.RepeatedField(
@@ -1365,6 +1395,11 @@ class BatchAnnotateFilesRequest(proto.Message):
     parent: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
     )
 
 
@@ -1463,6 +1498,15 @@ class AsyncBatchAnnotateImagesRequest(proto.Message):
             Union.
 
             Example: ``projects/project-A/locations/eu``.
+        labels (MutableMapping[str, str]):
+            Optional. The labels with user-defined
+            metadata for the request.
+            Label keys and values can be no longer than 63
+            characters (Unicode codepoints), can only
+            contain lowercase letters, numeric characters,
+            underscores and dashes. International characters
+            are allowed. Label values are optional. Label
+            keys must start with a letter.
     """
 
     requests: MutableSequence["AnnotateImageRequest"] = proto.RepeatedField(
@@ -1478,6 +1522,11 @@ class AsyncBatchAnnotateImagesRequest(proto.Message):
     parent: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
     )
 
 
@@ -1518,6 +1567,15 @@ class AsyncBatchAnnotateFilesRequest(proto.Message):
             Union.
 
             Example: ``projects/project-A/locations/eu``.
+        labels (MutableMapping[str, str]):
+            Optional. The labels with user-defined
+            metadata for the request.
+            Label keys and values can be no longer than 63
+            characters (Unicode codepoints), can only
+            contain lowercase letters, numeric characters,
+            underscores and dashes. International characters
+            are allowed. Label values are optional. Label
+            keys must start with a letter.
     """
 
     requests: MutableSequence["AsyncAnnotateFileRequest"] = proto.RepeatedField(
@@ -1528,6 +1586,11 @@ class AsyncBatchAnnotateFilesRequest(proto.Message):
     parent: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
     )
 
 
