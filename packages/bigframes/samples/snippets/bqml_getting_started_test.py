@@ -91,3 +91,78 @@ def test_bqml_getting_started(random_model_id):
         replace=True,
     )
     # [END bigquery_dataframes_bqml_getting_started_tutorial]
+
+    # [START bigquery_dataframes_bqml_getting_started_tutorial_evaluate]
+    import bigframes.pandas as bpd
+
+    # Select model you'll use for training. `read_gbq_model` loads model data from a
+    # BigQuery, but you could also use the `model` object from the previous steps.
+    model = bpd.read_gbq_model(
+        your_model_id,  # For example: "bqml_tutorial.sample_model",
+    )
+
+    # The WHERE clause — _TABLE_SUFFIX BETWEEN '20170701' AND '20170801' —
+    # limits the number of tables scanned by the query. The date range scanned is
+    # July 1, 2017 to August 1, 2017. This is the data you're using to evaluate the predictive performance
+    # of the model. It was collected in the month immediately following the time
+    # period spanned by the training data.
+
+    df = bpd.read_gbq(
+        """
+        SELECT GENERATE_UUID() AS rowindex, *
+        FROM
+        `bigquery-public-data.google_analytics_sample.ga_sessions_*`
+        WHERE
+        _TABLE_SUFFIX BETWEEN '20170701' AND '20170801'
+        """,
+        index_col="rowindex",
+    )
+    transactions = df["totals"].struct.field("transactions")
+    label = transactions.notnull().map({True: 1, False: 0})
+    operatingSystem = df["device"].struct.field("operatingSystem")
+    operatingSystem = operatingSystem.fillna("")
+    isMobile = df["device"].struct.field("isMobile")
+    country = df["geoNetwork"].struct.field("country").fillna("")
+    pageviews = df["totals"].struct.field("pageviews").fillna(0)
+    features = bpd.DataFrame(
+        {
+            "os": operatingSystem,
+            "is_mobile": isMobile,
+            "country": country,
+            "pageviews": pageviews,
+        }
+    )
+
+    # Some models include a convenient .score(X, y) method for evaluation with a preset accuracy metric:
+
+    # Because you performed a logistic regression, the results include the following columns:
+
+    # - precision — A metric for classification models. Precision identifies the frequency with
+    # which a model was correct when predicting the positive class.
+
+    # - recall — A metric for classification models that answers the following question:
+    # Out of all the possible positive labels, how many did the model correctly identify?
+
+    # - accuracy — Accuracy is the fraction of predictions that a classification model got right.
+
+    # - f1_score — A measure of the accuracy of the model. The f1 score is the harmonic average of
+    # the precision and recall. An f1 score's best value is 1. The worst value is 0.
+
+    # - log_loss — The loss function used in a logistic regression. This is the measure of how far the
+    # model's predictions are from the correct labels.
+
+    # - roc_auc — The area under the ROC curve. This is the probability that a classifier is more confident that
+    # a randomly chosen positive example
+    # is actually positive than that a randomly chosen negative example is positive. For more information,
+    # see ['Classification']('https://developers.google.com/machine-learning/crash-course/classification/video-lecture')
+    # in the Machine Learning Crash Course.
+
+    model.score(features, label)
+    #    precision    recall  accuracy  f1_score  log_loss   roc_auc
+    # 0   0.412621  0.079143  0.985074  0.132812  0.049764  0.974285
+    # [1 rows x 6 columns]
+    # [END bigquery_dataframes_bqml_getting_started_tutorial_evaluate]
+
+    # [START bigquery_dataframes_bqml_getting_started_tutorial_predict]
+
+    # [END bigquery_dataframes_bqml_getting_started_tutorial_predict]
