@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.4.0...google-cloud-network-connectivity-v2.4.1) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([27dceb9](https://github.com/googleapis/google-cloud-python/commit/27dceb901cb9bf28da82925ad382ce7c58e91f38))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([27dceb9](https://github.com/googleapis/google-cloud-python/commit/27dceb901cb9bf28da82925ad382ce7c58e91f38))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([27dceb9](https://github.com/googleapis/google-cloud-python/commit/27dceb901cb9bf28da82925ad382ce7c58e91f38))
+
 ## [2.4.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-connectivity-v2.3.0...google-cloud-network-connectivity-v2.4.0) (2024-02-01)
 
 
