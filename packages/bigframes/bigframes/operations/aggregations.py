@@ -265,6 +265,11 @@ class CorrOp(BinaryAggregateOp):
     name: ClassVar[str] = "corr"
 
 
+@dataclasses.dataclass(frozen=True)
+class CovOp(BinaryAggregateOp):
+    name: ClassVar[str] = "cov"
+
+
 sum_op = SumOp()
 mean_op = MeanOp()
 median_op = MedianOp()

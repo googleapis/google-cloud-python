@@ -1040,26 +1040,29 @@ class Block:
         self._stats_cache[column_id].update(stats_map)
         return stats_map[stat.name]
 
-    def get_corr_stat(self, column_id_left: str, column_id_right: str):
+    def get_binary_stat(
+        self, column_id_left: str, column_id_right: str, stat: agg_ops.BinaryAggregateOp
+    ):
         # TODO(kemppeterson): Clean up the column names for DataFrames.corr support
         # TODO(kemppeterson): Add a cache here.
-        corr_aggregations = [
+        aggregations = [
             (
-                column_id_left,
-                column_id_right,
-                "corr_" + column_id_left + column_id_right,
+                ex.BinaryAggregation(
+                    stat, ex.free_var(column_id_left), ex.free_var(column_id_right)
+                ),
+                f"{stat.name}_{column_id_left}{column_id_right}",
             )
         ]
-        expr = self.expr.corr_aggregate(corr_aggregations)
+        expr = self.expr.aggregate(aggregations)
         offset_index_id = guid.generate_guid()
         expr = expr.promote_offsets(offset_index_id)
         block = Block(
             expr,
             index_columns=[offset_index_id],
-            column_labels=[a[2] for a in corr_aggregations],
+            column_labels=[a[1] for a in aggregations],
         )
         df, _ = block.to_pandas()
-        return df.loc[0, "corr_" + column_id_left + column_id_right]
+        return df.loc[0, f"{stat.name}_{column_id_left}{column_id_right}"]
 
     def summarize(
         self,

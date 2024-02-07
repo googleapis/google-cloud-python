@@ -261,28 +261,6 @@ class ArrayValue:
             )
         )
 
-    def corr_aggregate(
-        self, corr_aggregations: typing.Sequence[typing.Tuple[str, str, str]]
-    ) -> ArrayValue:
-        """
-        Get correlations between each lef_column_id and right_column_id, stored in the respective output_column_id.
-        This uses BigQuery's CORR under the hood, and thus only Pearson's method is used.
-        Arguments:
-            corr_aggregations: left_column_id, right_column_id, output_column_id tuples
-        """
-        aggregations = tuple(
-            (
-                ex.BinaryAggregation(
-                    agg_ops.CorrOp(), ex.free_var(agg[0]), ex.free_var(agg[1])
-                ),
-                agg[2],
-            )
-            for agg in corr_aggregations
-        )
-        return ArrayValue(
-            nodes.AggregateNode(child=self.node, aggregations=aggregations)
-        )
-
     def project_window_op(
         self,
         column_name: str,

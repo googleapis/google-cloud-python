@@ -431,6 +431,19 @@ def _(
     return cast(ibis_types.NumericColumn, bq_corr)
 
 
+@compile_binary_agg.register
+def _(
+    op: agg_ops.CovOp, left: ibis_types.Column, right: ibis_types.Column, window=None
+) -> ibis_types.NumericValue:
+    # Will be null if all inputs are null. Pandas defaults to zero sum though.
+    left_numeric = cast(ibis_types.NumericColumn, left)
+    right_numeric = cast(ibis_types.NumericColumn, right)
+    bq_cov = _apply_window_if_present(
+        left_numeric.cov(right_numeric, how="sample"), window
+    )
+    return cast(ibis_types.NumericColumn, bq_cov)
+
+
 def _apply_window_if_present(value: ibis_types.Value, window):
     return value.over(window) if (window is not None) else value
 

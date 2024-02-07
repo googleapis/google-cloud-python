@@ -842,6 +842,27 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError("abstract method")
 
+    def cov(
+        self,
+        other,
+    ) -> float:
+        """
+        Compute covariance with Series, excluding missing values.
+
+        The two `Series` objects are not required to be the same length and
+        will be aligned internally before the covariance is calculated.
+
+        Args:
+            other (Series):
+                Series with which to compute the covariance.
+
+        Returns:
+            float:
+                Covariance between Series and other normalized by N-1
+                (unbiased estimator).
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def diff(self) -> Series:
         """
         First discrete difference of element.

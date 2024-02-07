@@ -656,13 +656,24 @@ def test_mods(scalars_dfs, col_x, col_y, method):
 
 # We work around a pandas bug that doesn't handle correlating nullable dtypes by doing this
 # manually with dumb self-correlation instead of parameterized as test_mods is above.
-def test_corr(scalars_dfs):
+def test_series_corr(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     bf_result = scalars_df["int64_too"].corr(scalars_df["int64_too"])
     pd_result = (
         scalars_pandas_df["int64_too"]
         .astype("int64")
         .corr(scalars_pandas_df["int64_too"].astype("int64"))
+    )
+    assert math.isclose(pd_result, bf_result)
+
+
+def test_series_cov(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df["int64_too"].cov(scalars_df["int64_too"])
+    pd_result = (
+        scalars_pandas_df["int64_too"]
+        .astype("int64")
+        .cov(scalars_pandas_df["int64_too"].astype("int64"))
     )
     assert math.isclose(pd_result, bf_result)
 

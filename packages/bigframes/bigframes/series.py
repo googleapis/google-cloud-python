@@ -734,8 +734,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         return self._apply_binary_op(decimals, ops.round_op)
 
     def corr(self, other: Series, method="pearson", min_periods=None) -> float:
-        # TODO(kemppeterson): Validate early that both are numeric
-        # TODO(kemppeterson): Handle partially-numeric columns
+        # TODO(tbergeron): Validate early that both are numeric
+        # TODO(tbergeron): Handle partially-numeric columns
         if method != "pearson":
             raise NotImplementedError(
                 f"Only Pearson correlation is currently supported. {constants.FEEDBACK_LINK}"
@@ -744,7 +744,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             raise NotImplementedError(
                 f"min_periods not yet supported. {constants.FEEDBACK_LINK}"
             )
-        return self._apply_corr_aggregation(other)
+        return self._apply_binary_aggregation(other, agg_ops.CorrOp())
+
+    def cov(self, other: Series) -> float:
+        return self._apply_binary_aggregation(other, agg_ops.CovOp())
 
     def all(self) -> bool:
         return typing.cast(bool, self._apply_aggregation(agg_ops.all_op))
