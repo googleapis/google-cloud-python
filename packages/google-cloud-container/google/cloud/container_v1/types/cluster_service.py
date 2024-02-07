@@ -69,6 +69,7 @@ __protobuf__ = proto.module(
         "GcpFilestoreCsiDriverConfig",
         "GcsFuseCsiDriverConfig",
         "GkeBackupAgentConfig",
+        "StatefulHAConfig",
         "MasterAuthorizedNetworksConfig",
         "LegacyAbac",
         "NetworkPolicy",
@@ -1585,6 +1586,9 @@ class AddonsConfig(proto.Message):
         gcs_fuse_csi_driver_config (google.cloud.container_v1.types.GcsFuseCsiDriverConfig):
             Configuration for the Cloud Storage Fuse CSI
             driver.
+        stateful_ha_config (google.cloud.container_v1.types.StatefulHAConfig):
+            Optional. Configuration for the StatefulHA
+            add-on.
     """
 
     http_load_balancing: "HttpLoadBalancing" = proto.Field(
@@ -1643,6 +1647,11 @@ class AddonsConfig(proto.Message):
         proto.MESSAGE,
         number=17,
         message="GcsFuseCsiDriverConfig",
+    )
+    stateful_ha_config: "StatefulHAConfig" = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message="StatefulHAConfig",
     )
 
 
@@ -1948,6 +1957,21 @@ class GkeBackupAgentConfig(proto.Message):
         enabled (bool):
             Whether the Backup for GKE agent is enabled
             for this cluster.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
+class StatefulHAConfig(proto.Message):
+    r"""Configuration for the Stateful HA add-on.
+
+    Attributes:
+        enabled (bool):
+            Whether the Stateful HA add-on is enabled for
+            this cluster.
     """
 
     enabled: bool = proto.Field(
