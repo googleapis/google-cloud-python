@@ -5,6 +5,15 @@
 [1]: https://pypi.org/project/google-cloud-phishing-protection/#history
 
 
+## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-phishing-protection-v1.11.0...google-cloud-phishing-protection-v1.11.1) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([e75fcf6](https://github.com/googleapis/google-cloud-python/commit/e75fcf6e389fd2e90ec00b87a625b208837c72dc))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([e75fcf6](https://github.com/googleapis/google-cloud-python/commit/e75fcf6e389fd2e90ec00b87a625b208837c72dc))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([e75fcf6](https://github.com/googleapis/google-cloud-python/commit/e75fcf6e389fd2e90ec00b87a625b208837c72dc))
+
 ## [1.11.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-phishing-protection-v1.10.0...google-cloud-phishing-protection-v1.11.0) (2024-02-01)
 
 

@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.19.0...google-cloud-monitoring-v2.19.1) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([27dceb9](https://github.com/googleapis/google-cloud-python/commit/27dceb901cb9bf28da82925ad382ce7c58e91f38))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([27dceb9](https://github.com/googleapis/google-cloud-python/commit/27dceb901cb9bf28da82925ad382ce7c58e91f38))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([27dceb9](https://github.com/googleapis/google-cloud-python/commit/27dceb901cb9bf28da82925ad382ce7c58e91f38))
+
 ## [2.19.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.18.0...google-cloud-monitoring-v2.19.0) (2024-02-01)
 
 
