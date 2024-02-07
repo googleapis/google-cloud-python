@@ -191,8 +191,26 @@ def onnx_iris_pandas_df():
 
 
 @pytest.fixture(scope="session")
+def xgboost_iris_pandas_df():
+    """Data matching the iris dataset."""
+    return pd.DataFrame(
+        {
+            "sepal_length": [4.9, 5.1, 34.7],
+            "sepal_width": [3.0, 5.1, 24.7],
+            "petal_length": [1.4, 1.5, 13.3],
+            "petal_width": [0.4, 0.2, 18.3],
+        }
+    )
+
+
+@pytest.fixture(scope="session")
 def onnx_iris_df(session, onnx_iris_pandas_df):
     return session.read_pandas(onnx_iris_pandas_df)
+
+
+@pytest.fixture(scope="session")
+def xgboost_iris_df(session, xgboost_iris_pandas_df):
+    return session.read_pandas(xgboost_iris_pandas_df)
 
 
 @pytest.fixture(scope="session")
@@ -323,6 +341,11 @@ def imported_onnx_model_path() -> str:
 
 
 @pytest.fixture(scope="session")
+def imported_xgboost_array_model_path() -> str:
+    return "gs://bigframes-dev-testing/xgboost-testdata/model.bst"
+
+
+@pytest.fixture(scope="session")
 def imported_tensorflow_model(
     session, imported_tensorflow_model_path
 ) -> imported.TensorFlowModel:
@@ -345,4 +368,21 @@ def imported_onnx_model(session, imported_onnx_model_path) -> imported.ONNXModel
     return imported.ONNXModel(
         session=session,
         model_path=imported_onnx_model_path,
+    )
+
+
+@pytest.fixture(scope="session")
+def imported_xgboost_model(
+    session, imported_xgboost_array_model_path
+) -> imported.XGBoostModel:
+    return imported.XGBoostModel(
+        session=session,
+        input={
+            "petal_length": "float64",
+            "petal_width": "float64",
+            "sepal_length": "float64",
+            "sepal_width": "float64",
+        },
+        output={"predicted_label": "float64"},
+        model_path=imported_xgboost_array_model_path,
     )

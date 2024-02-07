@@ -23,18 +23,8 @@ import bigframes
 from bigframes import clients
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
+from bigframes.ml.globals import _SUPPORTED_DTYPES
 import bigframes.pandas as bpd
-
-_SUPPORTED_DTYPES = (
-    "bool",
-    "string",
-    "int64",
-    "float64",
-    "array<bool>",
-    "array<string>",
-    "array<int64>",
-    "array<float64>",
-)
 
 _REMOTE_MODEL_STATUS = "remote_model_status"
 

@@ -70,7 +70,7 @@ def test_onnx_create_model(imported_onnx_model):
 
 
 def test_onnx_create_model_default_session(imported_onnx_model_path):
-    model = imported.TensorFlowModel(model_path=imported_onnx_model_path)
+    model = imported.ONNXModel(model_path=imported_onnx_model_path)
     assert model is not None
 
 
@@ -100,3 +100,43 @@ def test_onnx_model_to_gbq(imported_onnx_model: imported.ONNXModel, dataset_id: 
     imported_onnx_model.to_gbq(f"{dataset_id}.test_onnx_model", replace=True)
     with pytest.raises(google.api_core.exceptions.Conflict):
         imported_onnx_model.to_gbq(f"{dataset_id}.test_onnx_model")
+
+
+def test_xgboost_create_model(imported_xgboost_model):
+    # Model creation doesn't return error
+    assert imported_xgboost_model is not None
+
+
+def test_xgboost_create_model_default_session(imported_xgboost_array_model_path):
+    model = imported.XGBoostModel(model_path=imported_xgboost_array_model_path)
+    assert model is not None
+
+
+def test_xgboost_model_predict(imported_xgboost_model, xgboost_iris_df):
+    predictions = imported_xgboost_model.predict(xgboost_iris_df).to_pandas()
+    assert predictions.shape == (3, 5)
+    result = predictions[["predicted_label"]]
+    value1 = np.array([0.00362173, 0.01580198, 0.98057634])
+    value2 = np.array([0.00349651, 0.00999565, 0.98650789])
+    value3 = np.array([0.00561748, 0.0108124, 0.98357016])
+    expected = pd.DataFrame(
+        {
+            "predicted_label": [value1, value2, value3],
+        },
+        index=pd.Index([0, 1, 2], dtype="Int64"),
+    )
+    pd.testing.assert_frame_equal(
+        result,
+        expected,
+        check_exact=False,
+        check_dtype=False,
+        atol=0.1,
+    )
+
+
+def test_xgboost_model_to_gbq(
+    imported_xgboost_model: imported.XGBoostModel, dataset_id: str
+):
+    imported_xgboost_model.to_gbq(f"{dataset_id}.test_xgboost_model", replace=True)
+    with pytest.raises(google.api_core.exceptions.Conflict):
+        imported_xgboost_model.to_gbq(f"{dataset_id}.test_xgboost_model")

@@ -172,6 +172,8 @@ Create estimators for imported models by using the `bigframes.ml.imported module
   to import Open Neural Network Exchange (ONNX) models.
 * Use the `TensorFlowModel class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.imported.TensorFlowModel>`_
   to import TensorFlow models.
+* Use the `XGBoostModel class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.imported.XGBoostModel>`_
+  to import XGBoostModel models.
 
 **Linear models**
 

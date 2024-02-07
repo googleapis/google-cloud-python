@@ -91,6 +91,8 @@
         uid: bigframes.ml.imported.ONNXModel
       - name: TensorFlowModel
         uid: bigframes.ml.imported.TensorFlowModel
+      - name: XGBoostModel
+        uid: bigframes.ml.imported.XGBoostModel
       name: imported
     - items:
       - name: Overview

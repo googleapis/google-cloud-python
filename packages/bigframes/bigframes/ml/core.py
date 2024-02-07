@@ -355,3 +355,33 @@ class BqmlModelFactory:
         )
 
         return self._create_model_with_sql(session=session, sql=sql)
+
+    def create_xgboost_imported_model(
+        self,
+        session: bigframes.Session,
+        input: Mapping[str, str] = {},
+        output: Mapping[str, str] = {},
+        options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
+    ) -> BqmlModel:
+        """Create a session-temporary BQML imported model with the CREATE OR REPLACE MODEL statement
+
+        Args:
+            input:
+                input schema for imported xgboost models
+            output:
+                output schema for imported xgboost models
+            options: a dict of options to configure the model. Generates a BQML OPTIONS
+                clause
+
+        Returns: a BqmlModel, wrapping a trained model in BigQuery
+        """
+        model_ref = self._create_model_ref(session._anonymous_dataset)
+
+        sql = self._model_creation_sql_generator.create_xgboost_imported_model(
+            model_ref=model_ref,
+            input=input,
+            output=output,
+            options=options,
+        )
+
+        return self._create_model_with_sql(session=session, sql=sql)

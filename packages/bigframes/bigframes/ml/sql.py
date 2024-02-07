@@ -193,6 +193,24 @@ class ModelCreationSqlGenerator(BaseSqlGenerator):
             parts.append(self.options(**options))
         return "\n".join(parts)
 
+    def create_xgboost_imported_model(
+        self,
+        model_ref: google.cloud.bigquery.ModelReference,
+        input: Mapping[str, str] = {},
+        output: Mapping[str, str] = {},
+        options: Mapping[str, Union[str, int, float, Iterable[str]]] = {},
+    ) -> str:
+        """Encode the CREATE OR REPLACE MODEL statement for BQML remote model."""
+
+        parts = [f"CREATE OR REPLACE MODEL {self._model_id_sql(model_ref)}"]
+        if input:
+            parts.append(self.input(**input))
+        if output:
+            parts.append(self.output(**output))
+        if options:
+            parts.append(self.options(**options))
+        return "\n".join(parts)
+
 
 class ModelManipulationSqlGenerator(BaseSqlGenerator):
     """Sql generator for manipulating a model entity. Model name is the full model path of project_id.dataset_id.model_id."""

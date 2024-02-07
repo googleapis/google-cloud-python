@@ -234,6 +234,30 @@ OPTIONS(
     )
 
 
+def test_create_xgboost_imported_model_produces_correct_sql(
+    model_creation_sql_generator: ml_sql.ModelCreationSqlGenerator,
+):
+    sql = model_creation_sql_generator.create_xgboost_imported_model(
+        model_ref=bigquery.ModelReference.from_string(
+            "test-proj._anonXYZ.create_xgboost_imported_model"
+        ),
+        input={"column1": "int64"},
+        output={"result": "array<float64>"},
+        options={"option_key1": "option_value1", "option_key2": 2},
+    )
+    assert (
+        sql
+        == """CREATE OR REPLACE MODEL `test-proj`.`_anonXYZ`.`create_xgboost_imported_model`
+INPUT(
+  column1 int64)
+OUTPUT(
+  result array<float64>)
+OPTIONS(
+  option_key1="option_value1",
+  option_key2=2)"""
+    )
+
+
 def test_alter_model_correct_sql(
     model_manipulation_sql_generator: ml_sql.ModelManipulationSqlGenerator,
 ):

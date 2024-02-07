@@ -19,6 +19,17 @@ from bigframes.ml import core, sql
 _BASE_SQL_GENERATOR = sql.BaseSqlGenerator()
 _BQML_MODEL_FACTORY = core.BqmlModelFactory()
 
+_SUPPORTED_DTYPES = (
+    "bool",
+    "string",
+    "int64",
+    "float64",
+    "array<bool>",
+    "array<string>",
+    "array<int64>",
+    "array<float64>",
+)
+
 
 def base_sql_generator() -> sql.BaseSqlGenerator:
     """Base SQL Generator."""
