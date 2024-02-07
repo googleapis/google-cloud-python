@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.2...google-cloud-securesourcemanager-v0.1.3) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([9e8d039](https://github.com/googleapis/google-cloud-python/commit/9e8d0399c488cb5125d3144ad4a8e25794c123fb))
+* Add staticmethod decorator to `_get_client_cert_source` and `_get_api_endpoint` ([9e8d039](https://github.com/googleapis/google-cloud-python/commit/9e8d0399c488cb5125d3144ad4a8e25794c123fb))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([9e8d039](https://github.com/googleapis/google-cloud-python/commit/9e8d0399c488cb5125d3144ad4a8e25794c123fb))
+
 ## [0.1.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securesourcemanager-v0.1.1...google-cloud-securesourcemanager-v0.1.2) (2024-02-01)
 
 

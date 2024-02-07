@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.6.5](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.4...google-maps-routing-v0.6.5) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([d7d730a](https://github.com/googleapis/google-cloud-python/commit/d7d730acd3b1da86b996fa18c81272f1c9a00406))
+* Add staticmethod decorator to `_get_client_cert_source` and `_get_api_endpoint` ([d7d730a](https://github.com/googleapis/google-cloud-python/commit/d7d730acd3b1da86b996fa18c81272f1c9a00406))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([d7d730a](https://github.com/googleapis/google-cloud-python/commit/d7d730acd3b1da86b996fa18c81272f1c9a00406))
+
 ## [0.6.4](https://github.com/googleapis/google-cloud-python/compare/google-maps-routing-v0.6.3...google-maps-routing-v0.6.4) (2024-02-01)
 
 
