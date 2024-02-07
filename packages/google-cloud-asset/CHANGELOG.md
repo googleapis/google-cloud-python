@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.24.0...google-cloud-asset-v3.24.1) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([780c5f1](https://github.com/googleapis/google-cloud-python/commit/780c5f15d4099da6b5c3b966267bc7d7c63d6303))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([780c5f1](https://github.com/googleapis/google-cloud-python/commit/780c5f15d4099da6b5c3b966267bc7d7c63d6303))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([780c5f1](https://github.com/googleapis/google-cloud-python/commit/780c5f15d4099da6b5c3b966267bc7d7c63d6303))
+
 ## [3.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.23.0...google-cloud-asset-v3.24.0) (2024-02-01)
 
 
