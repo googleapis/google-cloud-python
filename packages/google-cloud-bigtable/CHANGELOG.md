@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.23.0](https://github.com/googleapis/python-bigtable/compare/v2.22.0...v2.23.0) (2024-02-07)
+
+
+### Features
+
+* Add async data client preview ([7088e39](https://github.com/googleapis/python-bigtable/commit/7088e39c6bac10e5f830e8fa68e181412910ec5a))
+* Adding feature flags for routing cookie and retry info ([#905](https://github.com/googleapis/python-bigtable/issues/905)) ([1859e67](https://github.com/googleapis/python-bigtable/commit/1859e67961629663a8749eea849b5b005fcbc09f))
+
+
+### Bug Fixes
+
+* Fix `ValueError` in `test__validate_universe_domain` ([#929](https://github.com/googleapis/python-bigtable/issues/929)) ([aa76a5a](https://github.com/googleapis/python-bigtable/commit/aa76a5aaa349386d5972d96e1255389e30df8764))
+
 ## [2.22.0](https://github.com/googleapis/python-bigtable/compare/v2.21.0...v2.22.0) (2023-12-12)
 
 
