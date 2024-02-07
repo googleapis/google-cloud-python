@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.15.0...google-cloud-translate-v3.15.1) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([e16032f](https://github.com/googleapis/google-cloud-python/commit/e16032ffe9b15dfd008b51f046dbb10211356998))
+* Add staticmethod decorator to `_get_client_cert_source` and `_get_api_endpoint` ([e16032f](https://github.com/googleapis/google-cloud-python/commit/e16032ffe9b15dfd008b51f046dbb10211356998))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([e16032f](https://github.com/googleapis/google-cloud-python/commit/e16032ffe9b15dfd008b51f046dbb10211356998))
+
 ## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.14.0...google-cloud-translate-v3.15.0) (2024-02-01)
 
 

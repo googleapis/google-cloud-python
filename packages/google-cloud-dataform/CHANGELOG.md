@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.5.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.5.6...google-cloud-dataform-v0.5.7) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([f3db074](https://github.com/googleapis/google-cloud-python/commit/f3db074e7bbf505d5989e4c353461ab6bef4905c))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([f3db074](https://github.com/googleapis/google-cloud-python/commit/f3db074e7bbf505d5989e4c353461ab6bef4905c))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([f3db074](https://github.com/googleapis/google-cloud-python/commit/f3db074e7bbf505d5989e4c353461ab6bef4905c))
+
 ## [0.5.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataform-v0.5.5...google-cloud-dataform-v0.5.6) (2024-02-01)
 
 
