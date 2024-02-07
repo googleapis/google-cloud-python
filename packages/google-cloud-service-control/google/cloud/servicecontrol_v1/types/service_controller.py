@@ -127,7 +127,7 @@ class CheckResponse(proto.Message):
             project_number (int):
                 The Google cloud project number, e.g.
                 1234567890. A value of 0 indicates no project
-                number is found.
+                    number is found.
 
                 NOTE: This field is deprecated after we support
                 flexible consumer id. New code should not depend
