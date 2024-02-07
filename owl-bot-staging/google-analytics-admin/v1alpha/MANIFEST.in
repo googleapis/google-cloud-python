@@ -1,2 +1,0 @@
-recursive-include google/analytics/admin *.py
-recursive-include google/analytics/admin_v1alpha *.py
