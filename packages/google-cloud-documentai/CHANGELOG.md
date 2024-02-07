@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.22.0...google-cloud-documentai-v2.23.0) (2024-02-06)
+
+
+### Features
+
+* expose model_type in v1 processor, so that user can see the model_type after get or list processor version ([81d36fc](https://github.com/googleapis/google-cloud-python/commit/81d36fcb96026891a851c7bce119a274c3b0abbd))
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([81d36fc](https://github.com/googleapis/google-cloud-python/commit/81d36fcb96026891a851c7bce119a274c3b0abbd))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([81d36fc](https://github.com/googleapis/google-cloud-python/commit/81d36fcb96026891a851c7bce119a274c3b0abbd))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([81d36fc](https://github.com/googleapis/google-cloud-python/commit/81d36fcb96026891a851c7bce119a274c3b0abbd))
+
 ## [2.22.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.21.1...google-cloud-documentai-v2.22.0) (2024-02-01)
 
 
