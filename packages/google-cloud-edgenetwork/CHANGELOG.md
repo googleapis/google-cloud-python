@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.3...google-cloud-edgenetwork-v0.1.4) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.2...google-cloud-edgenetwork-v0.1.3) (2024-02-01)
 
 
