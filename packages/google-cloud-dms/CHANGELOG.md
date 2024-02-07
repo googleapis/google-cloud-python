@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.9.0...google-cloud-dms-v1.9.1) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([c721248](https://github.com/googleapis/google-cloud-python/commit/c721248accc77f0b1fba9605a65ea95a86f023a5))
+
 ## [1.9.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dms-v1.8.0...google-cloud-dms-v1.9.0) (2024-02-01)
 
 
