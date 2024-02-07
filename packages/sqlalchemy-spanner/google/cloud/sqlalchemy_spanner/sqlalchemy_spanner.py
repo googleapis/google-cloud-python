@@ -438,7 +438,7 @@ class SpannerDDLCompiler(DDLCompiler):
         for index in drop_table.element.indexes:
             indexes += "DROP INDEX {};".format(self.preparer.quote(index.name))
 
-        return indexes + constrs + str(drop_table)
+        return indexes + constrs + super().visit_drop_table(drop_table)
 
     def visit_primary_key_constraint(self, constraint, **kw):
         """Build primary key definition.
