@@ -1,0 +1,2 @@
+recursive-include google/cloud/api_keys *.py
+recursive-include google/cloud/api_keys_v2 *.py
