@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-vision/#history
 
+## [3.7.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.6.0...google-cloud-vision-v3.7.0) (2024-02-06)
+
+
+### Features
+
+* [google-cloud-vision] Added option for user to set labels ([#12277](https://github.com/googleapis/google-cloud-python/issues/12277)) ([f7e25db](https://github.com/googleapis/google-cloud-python/commit/f7e25db2716970a04b222a6f237020b2977e6932))
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([e16032f](https://github.com/googleapis/google-cloud-python/commit/e16032ffe9b15dfd008b51f046dbb10211356998))
+* Add staticmethod decorator to `_get_client_cert_source` and `_get_api_endpoint` ([e16032f](https://github.com/googleapis/google-cloud-python/commit/e16032ffe9b15dfd008b51f046dbb10211356998))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([e16032f](https://github.com/googleapis/google-cloud-python/commit/e16032ffe9b15dfd008b51f046dbb10211356998))
+
 ## [3.6.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-vision-v3.5.0...google-cloud-vision-v3.6.0) (2024-02-01)
 
 
