@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.17.0](https://github.com/googleapis/python-api-core/compare/v2.16.2...v2.17.0) (2024-02-06)
+
+
+### Features
+
+* Add attempt_direct_path argument to create_channel ([#583](https://github.com/googleapis/python-api-core/issues/583)) ([94726e7](https://github.com/googleapis/python-api-core/commit/94726e739698035b00667983f854c600252abd28))
+
+
+### Bug Fixes
+
+* Retry constructors methods support None ([#592](https://github.com/googleapis/python-api-core/issues/592)) ([416203c](https://github.com/googleapis/python-api-core/commit/416203c1888934670bfeccafe5f5469f87314512))
+
 ## [2.16.2](https://github.com/googleapis/python-api-core/compare/v2.16.1...v2.16.2) (2024-02-02)
 
 
