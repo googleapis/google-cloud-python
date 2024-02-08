@@ -63,6 +63,16 @@ from .control_service import (
     ListControlsResponse,
     UpdateControlRequest,
 )
+from .export_config import (
+    BigQueryOutputResult,
+    ExportAnalyticsMetricsRequest,
+    ExportAnalyticsMetricsResponse,
+    ExportErrorsConfig,
+    ExportMetadata,
+    GcsOutputResult,
+    OutputConfig,
+    OutputResult,
+)
 from .import_config import (
     BigQuerySource,
     CompletionDataInputConfig,
@@ -188,6 +198,14 @@ __all__ = (
     "ListControlsRequest",
     "ListControlsResponse",
     "UpdateControlRequest",
+    "BigQueryOutputResult",
+    "ExportAnalyticsMetricsRequest",
+    "ExportAnalyticsMetricsResponse",
+    "ExportErrorsConfig",
+    "ExportMetadata",
+    "GcsOutputResult",
+    "OutputConfig",
+    "OutputResult",
     "BigQuerySource",
     "CompletionDataInputConfig",
     "GcsSource",

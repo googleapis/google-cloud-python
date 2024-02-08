@@ -18,6 +18,12 @@ from google.cloud.retail import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from google.cloud.retail_v2.services.analytics_service.async_client import (
+    AnalyticsServiceAsyncClient,
+)
+from google.cloud.retail_v2.services.analytics_service.client import (
+    AnalyticsServiceClient,
+)
 from google.cloud.retail_v2.services.catalog_service.async_client import (
     CatalogServiceAsyncClient,
 )
@@ -114,6 +120,16 @@ from google.cloud.retail_v2.types.control_service import (
     ListControlsRequest,
     ListControlsResponse,
     UpdateControlRequest,
+)
+from google.cloud.retail_v2.types.export_config import (
+    BigQueryOutputResult,
+    ExportAnalyticsMetricsRequest,
+    ExportAnalyticsMetricsResponse,
+    ExportErrorsConfig,
+    ExportMetadata,
+    GcsOutputResult,
+    OutputConfig,
+    OutputResult,
 )
 from google.cloud.retail_v2.types.import_config import (
     BigQuerySource,
@@ -213,6 +229,8 @@ from google.cloud.retail_v2.types.user_event_service import (
 )
 
 __all__ = (
+    "AnalyticsServiceClient",
+    "AnalyticsServiceAsyncClient",
     "CatalogServiceClient",
     "CatalogServiceAsyncClient",
     "CompletionServiceClient",
@@ -274,6 +292,14 @@ __all__ = (
     "ListControlsRequest",
     "ListControlsResponse",
     "UpdateControlRequest",
+    "BigQueryOutputResult",
+    "ExportAnalyticsMetricsRequest",
+    "ExportAnalyticsMetricsResponse",
+    "ExportErrorsConfig",
+    "ExportMetadata",
+    "GcsOutputResult",
+    "OutputConfig",
+    "OutputResult",
     "BigQuerySource",
     "CompletionDataInputConfig",
     "GcsSource",
