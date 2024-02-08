@@ -880,7 +880,7 @@ def read_gbq_function(
         ibis_signature = ibis_signature_from_routine(routine)
     except ReturnTypeMissingError:
         raise ValueError(
-            "Function return type must be specified. {constants.FEEDBACK_LINK}"
+            f"Function return type must be specified. {constants.FEEDBACK_LINK}"
         )
     except bigframes.dtypes.UnsupportedTypeError as e:
         raise ValueError(

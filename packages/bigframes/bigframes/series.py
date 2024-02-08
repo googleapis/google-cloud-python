@@ -1242,7 +1242,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             )
         if len(self._block.index_columns) > 1:
             raise NotImplementedError(
-                "Method filter does not support rows multiindex. {constants.FEEDBACK_LINK}"
+                f"Method filter does not support rows multiindex. {constants.FEEDBACK_LINK}"
             )
         if (like is not None) or (regex is not None):
             block = self._block

@@ -1532,7 +1532,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         if len(self._block.index_columns) > 1:
             raise NotImplementedError(
-                "Method filter does not support rows multiindex. {constants.FEEDBACK_LINK}"
+                f"Method filter does not support rows multiindex. {constants.FEEDBACK_LINK}"
             )
         if (like is not None) or (regex is not None):
             block = self._block
@@ -1760,7 +1760,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         if inplace:
             raise NotImplementedError(
-                "'inplace'=True not supported. {constants.FEEDBACK_LINK}"
+                f"'inplace'=True not supported. {constants.FEEDBACK_LINK}"
             )
         if how not in ("any", "all"):
             raise ValueError("'how' must be one of 'any', 'all'")
