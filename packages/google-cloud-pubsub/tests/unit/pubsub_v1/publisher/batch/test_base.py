@@ -13,13 +13,7 @@
 # limitations under the License.
 
 from __future__ import absolute_import
-import sys
 
-# special case python < 3.8
-if sys.version_info.major == 3 and sys.version_info.minor < 8:
-    import mock
-else:
-    from unittest import mock
 
 from google.auth import credentials
 from google.cloud.pubsub_v1 import publisher
@@ -38,8 +32,7 @@ def create_batch(status, settings=types.BatchSettings()):
     Returns:
         ~.pubsub_v1.publisher.batch.thread.Batch: The batch object
     """
-    creds = mock.Mock(spec=credentials.Credentials)
-    client = publisher.Client(credentials=creds)
+    client = publisher.Client(credentials=credentials.AnonymousCredentials())
     batch = Batch(client, "topic_name", settings)
     batch._status = status
     return batch

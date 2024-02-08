@@ -39,8 +39,7 @@ from google.pubsub_v1 import types as gapic_types
 
 
 def create_client():
-    creds = mock.Mock(spec=credentials.Credentials)
-    return publisher.Client(credentials=creds)
+    return publisher.Client(credentials=credentials.AnonymousCredentials())
 
 
 def create_batch(

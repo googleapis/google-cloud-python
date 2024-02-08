@@ -34,8 +34,7 @@ def create_message():
 
 
 def create_client():
-    creds = mock.Mock(spec=credentials.Credentials)
-    return publisher.Client(credentials=creds)
+    return publisher.Client(credentials=credentials.AnonymousCredentials())
 
 
 def test_stop():
