@@ -169,6 +169,312 @@
       "clientMethod": {
         "async": true,
         "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.CompletionServiceAsyncClient",
+          "shortName": "CompletionServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.CompletionServiceAsyncClient.import_suggestion_deny_list_entries",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.CompletionService.ImportSuggestionDenyListEntries",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.CompletionService",
+            "shortName": "CompletionService"
+          },
+          "shortName": "ImportSuggestionDenyListEntries"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ImportSuggestionDenyListEntriesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "import_suggestion_deny_list_entries"
+      },
+      "description": "Sample for ImportSuggestionDenyListEntries",
+      "file": "discoveryengine_v1beta_generated_completion_service_import_suggestion_deny_list_entries_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_CompletionService_ImportSuggestionDenyListEntries_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_completion_service_import_suggestion_deny_list_entries_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.CompletionServiceClient",
+          "shortName": "CompletionServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.CompletionServiceClient.import_suggestion_deny_list_entries",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.CompletionService.ImportSuggestionDenyListEntries",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.CompletionService",
+            "shortName": "CompletionService"
+          },
+          "shortName": "ImportSuggestionDenyListEntries"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ImportSuggestionDenyListEntriesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "import_suggestion_deny_list_entries"
+      },
+      "description": "Sample for ImportSuggestionDenyListEntries",
+      "file": "discoveryengine_v1beta_generated_completion_service_import_suggestion_deny_list_entries_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_CompletionService_ImportSuggestionDenyListEntries_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_completion_service_import_suggestion_deny_list_entries_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.CompletionServiceAsyncClient",
+          "shortName": "CompletionServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.CompletionServiceAsyncClient.purge_suggestion_deny_list_entries",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.CompletionService.PurgeSuggestionDenyListEntries",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.CompletionService",
+            "shortName": "CompletionService"
+          },
+          "shortName": "PurgeSuggestionDenyListEntries"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.PurgeSuggestionDenyListEntriesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "purge_suggestion_deny_list_entries"
+      },
+      "description": "Sample for PurgeSuggestionDenyListEntries",
+      "file": "discoveryengine_v1beta_generated_completion_service_purge_suggestion_deny_list_entries_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_CompletionService_PurgeSuggestionDenyListEntries_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_completion_service_purge_suggestion_deny_list_entries_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.CompletionServiceClient",
+          "shortName": "CompletionServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.CompletionServiceClient.purge_suggestion_deny_list_entries",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.CompletionService.PurgeSuggestionDenyListEntries",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.CompletionService",
+            "shortName": "CompletionService"
+          },
+          "shortName": "PurgeSuggestionDenyListEntries"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.PurgeSuggestionDenyListEntriesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "purge_suggestion_deny_list_entries"
+      },
+      "description": "Sample for PurgeSuggestionDenyListEntries",
+      "file": "discoveryengine_v1beta_generated_completion_service_purge_suggestion_deny_list_entries_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_CompletionService_PurgeSuggestionDenyListEntries_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_completion_service_purge_suggestion_deny_list_entries_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
           "fullName": "google.cloud.discoveryengine_v1beta.ConversationalSearchServiceAsyncClient",
           "shortName": "ConversationalSearchServiceAsyncClient"
         },
@@ -1147,6 +1453,835 @@
         }
       ],
       "title": "discoveryengine_v1beta_generated_conversational_search_service_update_conversation_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceAsyncClient",
+          "shortName": "DataStoreServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceAsyncClient.create_data_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService.CreateDataStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService",
+            "shortName": "DataStoreService"
+          },
+          "shortName": "CreateDataStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.CreateDataStoreRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "data_store",
+            "type": "google.cloud.discoveryengine_v1beta.types.DataStore"
+          },
+          {
+            "name": "data_store_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_data_store"
+      },
+      "description": "Sample for CreateDataStore",
+      "file": "discoveryengine_v1beta_generated_data_store_service_create_data_store_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_DataStoreService_CreateDataStore_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_data_store_service_create_data_store_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceClient",
+          "shortName": "DataStoreServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceClient.create_data_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService.CreateDataStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService",
+            "shortName": "DataStoreService"
+          },
+          "shortName": "CreateDataStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.CreateDataStoreRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "data_store",
+            "type": "google.cloud.discoveryengine_v1beta.types.DataStore"
+          },
+          {
+            "name": "data_store_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_data_store"
+      },
+      "description": "Sample for CreateDataStore",
+      "file": "discoveryengine_v1beta_generated_data_store_service_create_data_store_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_DataStoreService_CreateDataStore_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_data_store_service_create_data_store_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceAsyncClient",
+          "shortName": "DataStoreServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceAsyncClient.delete_data_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService.DeleteDataStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService",
+            "shortName": "DataStoreService"
+          },
+          "shortName": "DeleteDataStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.DeleteDataStoreRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_data_store"
+      },
+      "description": "Sample for DeleteDataStore",
+      "file": "discoveryengine_v1beta_generated_data_store_service_delete_data_store_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_DataStoreService_DeleteDataStore_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_data_store_service_delete_data_store_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceClient",
+          "shortName": "DataStoreServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceClient.delete_data_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService.DeleteDataStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService",
+            "shortName": "DataStoreService"
+          },
+          "shortName": "DeleteDataStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.DeleteDataStoreRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_data_store"
+      },
+      "description": "Sample for DeleteDataStore",
+      "file": "discoveryengine_v1beta_generated_data_store_service_delete_data_store_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_DataStoreService_DeleteDataStore_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_data_store_service_delete_data_store_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceAsyncClient",
+          "shortName": "DataStoreServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceAsyncClient.get_data_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService.GetDataStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService",
+            "shortName": "DataStoreService"
+          },
+          "shortName": "GetDataStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetDataStoreRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.DataStore",
+        "shortName": "get_data_store"
+      },
+      "description": "Sample for GetDataStore",
+      "file": "discoveryengine_v1beta_generated_data_store_service_get_data_store_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_DataStoreService_GetDataStore_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_data_store_service_get_data_store_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceClient",
+          "shortName": "DataStoreServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceClient.get_data_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService.GetDataStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService",
+            "shortName": "DataStoreService"
+          },
+          "shortName": "GetDataStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetDataStoreRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.DataStore",
+        "shortName": "get_data_store"
+      },
+      "description": "Sample for GetDataStore",
+      "file": "discoveryengine_v1beta_generated_data_store_service_get_data_store_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_DataStoreService_GetDataStore_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_data_store_service_get_data_store_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceAsyncClient",
+          "shortName": "DataStoreServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceAsyncClient.list_data_stores",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService.ListDataStores",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService",
+            "shortName": "DataStoreService"
+          },
+          "shortName": "ListDataStores"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListDataStoresRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.data_store_service.pagers.ListDataStoresAsyncPager",
+        "shortName": "list_data_stores"
+      },
+      "description": "Sample for ListDataStores",
+      "file": "discoveryengine_v1beta_generated_data_store_service_list_data_stores_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_DataStoreService_ListDataStores_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_data_store_service_list_data_stores_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceClient",
+          "shortName": "DataStoreServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceClient.list_data_stores",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService.ListDataStores",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService",
+            "shortName": "DataStoreService"
+          },
+          "shortName": "ListDataStores"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListDataStoresRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.data_store_service.pagers.ListDataStoresPager",
+        "shortName": "list_data_stores"
+      },
+      "description": "Sample for ListDataStores",
+      "file": "discoveryengine_v1beta_generated_data_store_service_list_data_stores_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_DataStoreService_ListDataStores_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_data_store_service_list_data_stores_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceAsyncClient",
+          "shortName": "DataStoreServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceAsyncClient.update_data_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService.UpdateDataStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService",
+            "shortName": "DataStoreService"
+          },
+          "shortName": "UpdateDataStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.UpdateDataStoreRequest"
+          },
+          {
+            "name": "data_store",
+            "type": "google.cloud.discoveryengine_v1beta.types.DataStore"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.DataStore",
+        "shortName": "update_data_store"
+      },
+      "description": "Sample for UpdateDataStore",
+      "file": "discoveryengine_v1beta_generated_data_store_service_update_data_store_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_DataStoreService_UpdateDataStore_async",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_data_store_service_update_data_store_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceClient",
+          "shortName": "DataStoreServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.DataStoreServiceClient.update_data_store",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService.UpdateDataStore",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.DataStoreService",
+            "shortName": "DataStoreService"
+          },
+          "shortName": "UpdateDataStore"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.UpdateDataStoreRequest"
+          },
+          {
+            "name": "data_store",
+            "type": "google.cloud.discoveryengine_v1beta.types.DataStore"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.DataStore",
+        "shortName": "update_data_store"
+      },
+      "description": "Sample for UpdateDataStore",
+      "file": "discoveryengine_v1beta_generated_data_store_service_update_data_store_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_DataStoreService_UpdateDataStore_sync",
+      "segments": [
+        {
+          "end": 54,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 54,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 55,
+          "start": 52,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_data_store_service_update_data_store_sync.py"
     },
     {
       "canonical": true,
@@ -2266,6 +3401,835 @@
       "clientMethod": {
         "async": true,
         "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceAsyncClient",
+          "shortName": "EngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceAsyncClient.create_engine",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EngineService.CreateEngine",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EngineService",
+            "shortName": "EngineService"
+          },
+          "shortName": "CreateEngine"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.CreateEngineRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "engine",
+            "type": "google.cloud.discoveryengine_v1beta.types.Engine"
+          },
+          {
+            "name": "engine_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_engine"
+      },
+      "description": "Sample for CreateEngine",
+      "file": "discoveryengine_v1beta_generated_engine_service_create_engine_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EngineService_CreateEngine_async",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_engine_service_create_engine_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceClient",
+          "shortName": "EngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceClient.create_engine",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EngineService.CreateEngine",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EngineService",
+            "shortName": "EngineService"
+          },
+          "shortName": "CreateEngine"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.CreateEngineRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "engine",
+            "type": "google.cloud.discoveryengine_v1beta.types.Engine"
+          },
+          {
+            "name": "engine_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_engine"
+      },
+      "description": "Sample for CreateEngine",
+      "file": "discoveryengine_v1beta_generated_engine_service_create_engine_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EngineService_CreateEngine_sync",
+      "segments": [
+        {
+          "end": 61,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 61,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 58,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 62,
+          "start": 59,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_engine_service_create_engine_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceAsyncClient",
+          "shortName": "EngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceAsyncClient.delete_engine",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EngineService.DeleteEngine",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EngineService",
+            "shortName": "EngineService"
+          },
+          "shortName": "DeleteEngine"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.DeleteEngineRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_engine"
+      },
+      "description": "Sample for DeleteEngine",
+      "file": "discoveryengine_v1beta_generated_engine_service_delete_engine_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EngineService_DeleteEngine_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_engine_service_delete_engine_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceClient",
+          "shortName": "EngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceClient.delete_engine",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EngineService.DeleteEngine",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EngineService",
+            "shortName": "EngineService"
+          },
+          "shortName": "DeleteEngine"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.DeleteEngineRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_engine"
+      },
+      "description": "Sample for DeleteEngine",
+      "file": "discoveryengine_v1beta_generated_engine_service_delete_engine_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EngineService_DeleteEngine_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_engine_service_delete_engine_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceAsyncClient",
+          "shortName": "EngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceAsyncClient.get_engine",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EngineService.GetEngine",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EngineService",
+            "shortName": "EngineService"
+          },
+          "shortName": "GetEngine"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetEngineRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.Engine",
+        "shortName": "get_engine"
+      },
+      "description": "Sample for GetEngine",
+      "file": "discoveryengine_v1beta_generated_engine_service_get_engine_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EngineService_GetEngine_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_engine_service_get_engine_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceClient",
+          "shortName": "EngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceClient.get_engine",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EngineService.GetEngine",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EngineService",
+            "shortName": "EngineService"
+          },
+          "shortName": "GetEngine"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetEngineRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.Engine",
+        "shortName": "get_engine"
+      },
+      "description": "Sample for GetEngine",
+      "file": "discoveryengine_v1beta_generated_engine_service_get_engine_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EngineService_GetEngine_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_engine_service_get_engine_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceAsyncClient",
+          "shortName": "EngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceAsyncClient.list_engines",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EngineService.ListEngines",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EngineService",
+            "shortName": "EngineService"
+          },
+          "shortName": "ListEngines"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListEnginesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.engine_service.pagers.ListEnginesAsyncPager",
+        "shortName": "list_engines"
+      },
+      "description": "Sample for ListEngines",
+      "file": "discoveryengine_v1beta_generated_engine_service_list_engines_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EngineService_ListEngines_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_engine_service_list_engines_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceClient",
+          "shortName": "EngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceClient.list_engines",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EngineService.ListEngines",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EngineService",
+            "shortName": "EngineService"
+          },
+          "shortName": "ListEngines"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListEnginesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.engine_service.pagers.ListEnginesPager",
+        "shortName": "list_engines"
+      },
+      "description": "Sample for ListEngines",
+      "file": "discoveryengine_v1beta_generated_engine_service_list_engines_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EngineService_ListEngines_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_engine_service_list_engines_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceAsyncClient",
+          "shortName": "EngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceAsyncClient.update_engine",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EngineService.UpdateEngine",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EngineService",
+            "shortName": "EngineService"
+          },
+          "shortName": "UpdateEngine"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.UpdateEngineRequest"
+          },
+          {
+            "name": "engine",
+            "type": "google.cloud.discoveryengine_v1beta.types.Engine"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.Engine",
+        "shortName": "update_engine"
+      },
+      "description": "Sample for UpdateEngine",
+      "file": "discoveryengine_v1beta_generated_engine_service_update_engine_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EngineService_UpdateEngine_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_engine_service_update_engine_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceClient",
+          "shortName": "EngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.EngineServiceClient.update_engine",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.EngineService.UpdateEngine",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.EngineService",
+            "shortName": "EngineService"
+          },
+          "shortName": "UpdateEngine"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.UpdateEngineRequest"
+          },
+          {
+            "name": "engine",
+            "type": "google.cloud.discoveryengine_v1beta.types.Engine"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.Engine",
+        "shortName": "update_engine"
+      },
+      "description": "Sample for UpdateEngine",
+      "file": "discoveryengine_v1beta_generated_engine_service_update_engine_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_EngineService_UpdateEngine_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_engine_service_update_engine_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
           "fullName": "google.cloud.discoveryengine_v1beta.RecommendationServiceAsyncClient",
           "shortName": "RecommendationServiceAsyncClient"
         },
@@ -3379,6 +5343,2389 @@
         }
       ],
       "title": "discoveryengine_v1beta_generated_search_service_search_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.ServingConfigServiceAsyncClient",
+          "shortName": "ServingConfigServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.ServingConfigServiceAsyncClient.get_serving_config",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.ServingConfigService.GetServingConfig",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.ServingConfigService",
+            "shortName": "ServingConfigService"
+          },
+          "shortName": "GetServingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetServingConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.ServingConfig",
+        "shortName": "get_serving_config"
+      },
+      "description": "Sample for GetServingConfig",
+      "file": "discoveryengine_v1beta_generated_serving_config_service_get_serving_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_ServingConfigService_GetServingConfig_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_serving_config_service_get_serving_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.ServingConfigServiceClient",
+          "shortName": "ServingConfigServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.ServingConfigServiceClient.get_serving_config",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.ServingConfigService.GetServingConfig",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.ServingConfigService",
+            "shortName": "ServingConfigService"
+          },
+          "shortName": "GetServingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetServingConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.ServingConfig",
+        "shortName": "get_serving_config"
+      },
+      "description": "Sample for GetServingConfig",
+      "file": "discoveryengine_v1beta_generated_serving_config_service_get_serving_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_ServingConfigService_GetServingConfig_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_serving_config_service_get_serving_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.ServingConfigServiceAsyncClient",
+          "shortName": "ServingConfigServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.ServingConfigServiceAsyncClient.list_serving_configs",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.ServingConfigService.ListServingConfigs",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.ServingConfigService",
+            "shortName": "ServingConfigService"
+          },
+          "shortName": "ListServingConfigs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListServingConfigsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.serving_config_service.pagers.ListServingConfigsAsyncPager",
+        "shortName": "list_serving_configs"
+      },
+      "description": "Sample for ListServingConfigs",
+      "file": "discoveryengine_v1beta_generated_serving_config_service_list_serving_configs_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_ServingConfigService_ListServingConfigs_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_serving_config_service_list_serving_configs_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.ServingConfigServiceClient",
+          "shortName": "ServingConfigServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.ServingConfigServiceClient.list_serving_configs",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.ServingConfigService.ListServingConfigs",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.ServingConfigService",
+            "shortName": "ServingConfigService"
+          },
+          "shortName": "ListServingConfigs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListServingConfigsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.serving_config_service.pagers.ListServingConfigsPager",
+        "shortName": "list_serving_configs"
+      },
+      "description": "Sample for ListServingConfigs",
+      "file": "discoveryengine_v1beta_generated_serving_config_service_list_serving_configs_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_ServingConfigService_ListServingConfigs_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_serving_config_service_list_serving_configs_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.ServingConfigServiceAsyncClient",
+          "shortName": "ServingConfigServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.ServingConfigServiceAsyncClient.update_serving_config",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.ServingConfigService.UpdateServingConfig",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.ServingConfigService",
+            "shortName": "ServingConfigService"
+          },
+          "shortName": "UpdateServingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.UpdateServingConfigRequest"
+          },
+          {
+            "name": "serving_config",
+            "type": "google.cloud.discoveryengine_v1beta.types.ServingConfig"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.ServingConfig",
+        "shortName": "update_serving_config"
+      },
+      "description": "Sample for UpdateServingConfig",
+      "file": "discoveryengine_v1beta_generated_serving_config_service_update_serving_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_ServingConfigService_UpdateServingConfig_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_serving_config_service_update_serving_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.ServingConfigServiceClient",
+          "shortName": "ServingConfigServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.ServingConfigServiceClient.update_serving_config",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.ServingConfigService.UpdateServingConfig",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.ServingConfigService",
+            "shortName": "ServingConfigService"
+          },
+          "shortName": "UpdateServingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.UpdateServingConfigRequest"
+          },
+          {
+            "name": "serving_config",
+            "type": "google.cloud.discoveryengine_v1beta.types.ServingConfig"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.ServingConfig",
+        "shortName": "update_serving_config"
+      },
+      "description": "Sample for UpdateServingConfig",
+      "file": "discoveryengine_v1beta_generated_serving_config_service_update_serving_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_ServingConfigService_UpdateServingConfig_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_serving_config_service_update_serving_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient",
+          "shortName": "SiteSearchEngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient.batch_create_target_sites",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchCreateTargetSites",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "BatchCreateTargetSites"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.BatchCreateTargetSitesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "batch_create_target_sites"
+      },
+      "description": "Sample for BatchCreateTargetSites",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_batch_create_target_sites_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_BatchCreateTargetSites_async",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_batch_create_target_sites_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient",
+          "shortName": "SiteSearchEngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient.batch_create_target_sites",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchCreateTargetSites",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "BatchCreateTargetSites"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.BatchCreateTargetSitesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "batch_create_target_sites"
+      },
+      "description": "Sample for BatchCreateTargetSites",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_batch_create_target_sites_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_BatchCreateTargetSites_sync",
+      "segments": [
+        {
+          "end": 60,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 60,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 57,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 61,
+          "start": 58,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_batch_create_target_sites_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient",
+          "shortName": "SiteSearchEngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient.batch_verify_target_sites",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchVerifyTargetSites",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "BatchVerifyTargetSites"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.BatchVerifyTargetSitesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "batch_verify_target_sites"
+      },
+      "description": "Sample for BatchVerifyTargetSites",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_batch_verify_target_sites_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_BatchVerifyTargetSites_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_batch_verify_target_sites_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient",
+          "shortName": "SiteSearchEngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient.batch_verify_target_sites",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.BatchVerifyTargetSites",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "BatchVerifyTargetSites"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.BatchVerifyTargetSitesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "batch_verify_target_sites"
+      },
+      "description": "Sample for BatchVerifyTargetSites",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_batch_verify_target_sites_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_BatchVerifyTargetSites_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_batch_verify_target_sites_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient",
+          "shortName": "SiteSearchEngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient.create_target_site",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateTargetSite",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "CreateTargetSite"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.CreateTargetSiteRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "target_site",
+            "type": "google.cloud.discoveryengine_v1beta.types.TargetSite"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_target_site"
+      },
+      "description": "Sample for CreateTargetSite",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_create_target_site_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_CreateTargetSite_async",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_create_target_site_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient",
+          "shortName": "SiteSearchEngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient.create_target_site",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.CreateTargetSite",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "CreateTargetSite"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.CreateTargetSiteRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "target_site",
+            "type": "google.cloud.discoveryengine_v1beta.types.TargetSite"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_target_site"
+      },
+      "description": "Sample for CreateTargetSite",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_create_target_site_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_CreateTargetSite_sync",
+      "segments": [
+        {
+          "end": 59,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 59,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 56,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 60,
+          "start": 57,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_create_target_site_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient",
+          "shortName": "SiteSearchEngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient.delete_target_site",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteTargetSite",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "DeleteTargetSite"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.DeleteTargetSiteRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_target_site"
+      },
+      "description": "Sample for DeleteTargetSite",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_delete_target_site_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_DeleteTargetSite_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_delete_target_site_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient",
+          "shortName": "SiteSearchEngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient.delete_target_site",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DeleteTargetSite",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "DeleteTargetSite"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.DeleteTargetSiteRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_target_site"
+      },
+      "description": "Sample for DeleteTargetSite",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_delete_target_site_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_DeleteTargetSite_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_delete_target_site_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient",
+          "shortName": "SiteSearchEngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient.disable_advanced_site_search",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DisableAdvancedSiteSearch",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "DisableAdvancedSiteSearch"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.DisableAdvancedSiteSearchRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "disable_advanced_site_search"
+      },
+      "description": "Sample for DisableAdvancedSiteSearch",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_disable_advanced_site_search_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_DisableAdvancedSiteSearch_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_disable_advanced_site_search_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient",
+          "shortName": "SiteSearchEngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient.disable_advanced_site_search",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.DisableAdvancedSiteSearch",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "DisableAdvancedSiteSearch"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.DisableAdvancedSiteSearchRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "disable_advanced_site_search"
+      },
+      "description": "Sample for DisableAdvancedSiteSearch",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_disable_advanced_site_search_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_DisableAdvancedSiteSearch_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_disable_advanced_site_search_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient",
+          "shortName": "SiteSearchEngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient.enable_advanced_site_search",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.EnableAdvancedSiteSearch",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "EnableAdvancedSiteSearch"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.EnableAdvancedSiteSearchRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "enable_advanced_site_search"
+      },
+      "description": "Sample for EnableAdvancedSiteSearch",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_enable_advanced_site_search_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_EnableAdvancedSiteSearch_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_enable_advanced_site_search_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient",
+          "shortName": "SiteSearchEngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient.enable_advanced_site_search",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.EnableAdvancedSiteSearch",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "EnableAdvancedSiteSearch"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.EnableAdvancedSiteSearchRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "enable_advanced_site_search"
+      },
+      "description": "Sample for EnableAdvancedSiteSearch",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_enable_advanced_site_search_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_EnableAdvancedSiteSearch_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_enable_advanced_site_search_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient",
+          "shortName": "SiteSearchEngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient.fetch_domain_verification_status",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchDomainVerificationStatus",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "FetchDomainVerificationStatus"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.FetchDomainVerificationStatusRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.site_search_engine_service.pagers.FetchDomainVerificationStatusAsyncPager",
+        "shortName": "fetch_domain_verification_status"
+      },
+      "description": "Sample for FetchDomainVerificationStatus",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_fetch_domain_verification_status_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_FetchDomainVerificationStatus_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_fetch_domain_verification_status_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient",
+          "shortName": "SiteSearchEngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient.fetch_domain_verification_status",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.FetchDomainVerificationStatus",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "FetchDomainVerificationStatus"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.FetchDomainVerificationStatusRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.site_search_engine_service.pagers.FetchDomainVerificationStatusPager",
+        "shortName": "fetch_domain_verification_status"
+      },
+      "description": "Sample for FetchDomainVerificationStatus",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_fetch_domain_verification_status_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_FetchDomainVerificationStatus_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_fetch_domain_verification_status_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient",
+          "shortName": "SiteSearchEngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient.get_site_search_engine",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.GetSiteSearchEngine",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "GetSiteSearchEngine"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetSiteSearchEngineRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SiteSearchEngine",
+        "shortName": "get_site_search_engine"
+      },
+      "description": "Sample for GetSiteSearchEngine",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_get_site_search_engine_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_GetSiteSearchEngine_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_get_site_search_engine_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient",
+          "shortName": "SiteSearchEngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient.get_site_search_engine",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.GetSiteSearchEngine",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "GetSiteSearchEngine"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetSiteSearchEngineRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.SiteSearchEngine",
+        "shortName": "get_site_search_engine"
+      },
+      "description": "Sample for GetSiteSearchEngine",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_get_site_search_engine_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_GetSiteSearchEngine_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_get_site_search_engine_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient",
+          "shortName": "SiteSearchEngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient.get_target_site",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.GetTargetSite",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "GetTargetSite"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetTargetSiteRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.TargetSite",
+        "shortName": "get_target_site"
+      },
+      "description": "Sample for GetTargetSite",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_get_target_site_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_GetTargetSite_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_get_target_site_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient",
+          "shortName": "SiteSearchEngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient.get_target_site",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.GetTargetSite",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "GetTargetSite"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.GetTargetSiteRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.types.TargetSite",
+        "shortName": "get_target_site"
+      },
+      "description": "Sample for GetTargetSite",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_get_target_site_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_GetTargetSite_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_get_target_site_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient",
+          "shortName": "SiteSearchEngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient.list_target_sites",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.ListTargetSites",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "ListTargetSites"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListTargetSitesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.site_search_engine_service.pagers.ListTargetSitesAsyncPager",
+        "shortName": "list_target_sites"
+      },
+      "description": "Sample for ListTargetSites",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_list_target_sites_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_ListTargetSites_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_list_target_sites_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient",
+          "shortName": "SiteSearchEngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient.list_target_sites",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.ListTargetSites",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "ListTargetSites"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.ListTargetSitesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.discoveryengine_v1beta.services.site_search_engine_service.pagers.ListTargetSitesPager",
+        "shortName": "list_target_sites"
+      },
+      "description": "Sample for ListTargetSites",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_list_target_sites_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_ListTargetSites_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_list_target_sites_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient",
+          "shortName": "SiteSearchEngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient.recrawl_uris",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.RecrawlUris",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "RecrawlUris"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.RecrawlUrisRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "recrawl_uris"
+      },
+      "description": "Sample for RecrawlUris",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_recrawl_uris_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_RecrawlUris_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_recrawl_uris_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient",
+          "shortName": "SiteSearchEngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient.recrawl_uris",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.RecrawlUris",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "RecrawlUris"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.RecrawlUrisRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "recrawl_uris"
+      },
+      "description": "Sample for RecrawlUris",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_recrawl_uris_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_RecrawlUris_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 46,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 47,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_recrawl_uris_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient",
+          "shortName": "SiteSearchEngineServiceAsyncClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceAsyncClient.update_target_site",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.UpdateTargetSite",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "UpdateTargetSite"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.UpdateTargetSiteRequest"
+          },
+          {
+            "name": "target_site",
+            "type": "google.cloud.discoveryengine_v1beta.types.TargetSite"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_target_site"
+      },
+      "description": "Sample for UpdateTargetSite",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_update_target_site_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_UpdateTargetSite_async",
+      "segments": [
+        {
+          "end": 58,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 58,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 55,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 59,
+          "start": 56,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_update_target_site_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient",
+          "shortName": "SiteSearchEngineServiceClient"
+        },
+        "fullName": "google.cloud.discoveryengine_v1beta.SiteSearchEngineServiceClient.update_target_site",
+        "method": {
+          "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService.UpdateTargetSite",
+          "service": {
+            "fullName": "google.cloud.discoveryengine.v1beta.SiteSearchEngineService",
+            "shortName": "SiteSearchEngineService"
+          },
+          "shortName": "UpdateTargetSite"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.discoveryengine_v1beta.types.UpdateTargetSiteRequest"
+          },
+          {
+            "name": "target_site",
+            "type": "google.cloud.discoveryengine_v1beta.types.TargetSite"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_target_site"
+      },
+      "description": "Sample for UpdateTargetSite",
+      "file": "discoveryengine_v1beta_generated_site_search_engine_service_update_target_site_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "discoveryengine_v1beta_generated_SiteSearchEngineService_UpdateTargetSite_sync",
+      "segments": [
+        {
+          "end": 58,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 58,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 55,
+          "start": 49,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 59,
+          "start": 56,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "discoveryengine_v1beta_generated_site_search_engine_service_update_target_site_sync.py"
     },
     {
       "canonical": true,

@@ -14,6 +14,16 @@
               "methods": [
                 "complete_query"
               ]
+            },
+            "ImportSuggestionDenyListEntries": {
+              "methods": [
+                "import_suggestion_deny_list_entries"
+              ]
+            },
+            "PurgeSuggestionDenyListEntries": {
+              "methods": [
+                "purge_suggestion_deny_list_entries"
+              ]
             }
           }
         },
@@ -24,6 +34,16 @@
               "methods": [
                 "complete_query"
               ]
+            },
+            "ImportSuggestionDenyListEntries": {
+              "methods": [
+                "import_suggestion_deny_list_entries"
+              ]
+            },
+            "PurgeSuggestionDenyListEntries": {
+              "methods": [
+                "purge_suggestion_deny_list_entries"
+              ]
             }
           }
         },
@@ -33,6 +53,16 @@
             "CompleteQuery": {
               "methods": [
                 "complete_query"
+              ]
+            },
+            "ImportSuggestionDenyListEntries": {
+              "methods": [
+                "import_suggestion_deny_list_entries"
+              ]
+            },
+            "PurgeSuggestionDenyListEntries": {
+              "methods": [
+                "purge_suggestion_deny_list_entries"
               ]
             }
           }
@@ -142,6 +172,100 @@
             "UpdateConversation": {
               "methods": [
                 "update_conversation"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "DataStoreService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "DataStoreServiceClient",
+          "rpcs": {
+            "CreateDataStore": {
+              "methods": [
+                "create_data_store"
+              ]
+            },
+            "DeleteDataStore": {
+              "methods": [
+                "delete_data_store"
+              ]
+            },
+            "GetDataStore": {
+              "methods": [
+                "get_data_store"
+              ]
+            },
+            "ListDataStores": {
+              "methods": [
+                "list_data_stores"
+              ]
+            },
+            "UpdateDataStore": {
+              "methods": [
+                "update_data_store"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "DataStoreServiceAsyncClient",
+          "rpcs": {
+            "CreateDataStore": {
+              "methods": [
+                "create_data_store"
+              ]
+            },
+            "DeleteDataStore": {
+              "methods": [
+                "delete_data_store"
+              ]
+            },
+            "GetDataStore": {
+              "methods": [
+                "get_data_store"
+              ]
+            },
+            "ListDataStores": {
+              "methods": [
+                "list_data_stores"
+              ]
+            },
+            "UpdateDataStore": {
+              "methods": [
+                "update_data_store"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "DataStoreServiceClient",
+          "rpcs": {
+            "CreateDataStore": {
+              "methods": [
+                "create_data_store"
+              ]
+            },
+            "DeleteDataStore": {
+              "methods": [
+                "delete_data_store"
+              ]
+            },
+            "GetDataStore": {
+              "methods": [
+                "get_data_store"
+              ]
+            },
+            "ListDataStores": {
+              "methods": [
+                "list_data_stores"
+              ]
+            },
+            "UpdateDataStore": {
+              "methods": [
+                "update_data_store"
               ]
             }
           }
@@ -266,6 +390,100 @@
             "UpdateDocument": {
               "methods": [
                 "update_document"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "EngineService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "EngineServiceClient",
+          "rpcs": {
+            "CreateEngine": {
+              "methods": [
+                "create_engine"
+              ]
+            },
+            "DeleteEngine": {
+              "methods": [
+                "delete_engine"
+              ]
+            },
+            "GetEngine": {
+              "methods": [
+                "get_engine"
+              ]
+            },
+            "ListEngines": {
+              "methods": [
+                "list_engines"
+              ]
+            },
+            "UpdateEngine": {
+              "methods": [
+                "update_engine"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "EngineServiceAsyncClient",
+          "rpcs": {
+            "CreateEngine": {
+              "methods": [
+                "create_engine"
+              ]
+            },
+            "DeleteEngine": {
+              "methods": [
+                "delete_engine"
+              ]
+            },
+            "GetEngine": {
+              "methods": [
+                "get_engine"
+              ]
+            },
+            "ListEngines": {
+              "methods": [
+                "list_engines"
+              ]
+            },
+            "UpdateEngine": {
+              "methods": [
+                "update_engine"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "EngineServiceClient",
+          "rpcs": {
+            "CreateEngine": {
+              "methods": [
+                "create_engine"
+              ]
+            },
+            "DeleteEngine": {
+              "methods": [
+                "delete_engine"
+              ]
+            },
+            "GetEngine": {
+              "methods": [
+                "get_engine"
+              ]
+            },
+            "ListEngines": {
+              "methods": [
+                "list_engines"
+              ]
+            },
+            "UpdateEngine": {
+              "methods": [
+                "update_engine"
               ]
             }
           }
@@ -428,6 +646,269 @@
             "Search": {
               "methods": [
                 "search"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ServingConfigService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ServingConfigServiceClient",
+          "rpcs": {
+            "GetServingConfig": {
+              "methods": [
+                "get_serving_config"
+              ]
+            },
+            "ListServingConfigs": {
+              "methods": [
+                "list_serving_configs"
+              ]
+            },
+            "UpdateServingConfig": {
+              "methods": [
+                "update_serving_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ServingConfigServiceAsyncClient",
+          "rpcs": {
+            "GetServingConfig": {
+              "methods": [
+                "get_serving_config"
+              ]
+            },
+            "ListServingConfigs": {
+              "methods": [
+                "list_serving_configs"
+              ]
+            },
+            "UpdateServingConfig": {
+              "methods": [
+                "update_serving_config"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ServingConfigServiceClient",
+          "rpcs": {
+            "GetServingConfig": {
+              "methods": [
+                "get_serving_config"
+              ]
+            },
+            "ListServingConfigs": {
+              "methods": [
+                "list_serving_configs"
+              ]
+            },
+            "UpdateServingConfig": {
+              "methods": [
+                "update_serving_config"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "SiteSearchEngineService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SiteSearchEngineServiceClient",
+          "rpcs": {
+            "BatchCreateTargetSites": {
+              "methods": [
+                "batch_create_target_sites"
+              ]
+            },
+            "BatchVerifyTargetSites": {
+              "methods": [
+                "batch_verify_target_sites"
+              ]
+            },
+            "CreateTargetSite": {
+              "methods": [
+                "create_target_site"
+              ]
+            },
+            "DeleteTargetSite": {
+              "methods": [
+                "delete_target_site"
+              ]
+            },
+            "DisableAdvancedSiteSearch": {
+              "methods": [
+                "disable_advanced_site_search"
+              ]
+            },
+            "EnableAdvancedSiteSearch": {
+              "methods": [
+                "enable_advanced_site_search"
+              ]
+            },
+            "FetchDomainVerificationStatus": {
+              "methods": [
+                "fetch_domain_verification_status"
+              ]
+            },
+            "GetSiteSearchEngine": {
+              "methods": [
+                "get_site_search_engine"
+              ]
+            },
+            "GetTargetSite": {
+              "methods": [
+                "get_target_site"
+              ]
+            },
+            "ListTargetSites": {
+              "methods": [
+                "list_target_sites"
+              ]
+            },
+            "RecrawlUris": {
+              "methods": [
+                "recrawl_uris"
+              ]
+            },
+            "UpdateTargetSite": {
+              "methods": [
+                "update_target_site"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SiteSearchEngineServiceAsyncClient",
+          "rpcs": {
+            "BatchCreateTargetSites": {
+              "methods": [
+                "batch_create_target_sites"
+              ]
+            },
+            "BatchVerifyTargetSites": {
+              "methods": [
+                "batch_verify_target_sites"
+              ]
+            },
+            "CreateTargetSite": {
+              "methods": [
+                "create_target_site"
+              ]
+            },
+            "DeleteTargetSite": {
+              "methods": [
+                "delete_target_site"
+              ]
+            },
+            "DisableAdvancedSiteSearch": {
+              "methods": [
+                "disable_advanced_site_search"
+              ]
+            },
+            "EnableAdvancedSiteSearch": {
+              "methods": [
+                "enable_advanced_site_search"
+              ]
+            },
+            "FetchDomainVerificationStatus": {
+              "methods": [
+                "fetch_domain_verification_status"
+              ]
+            },
+            "GetSiteSearchEngine": {
+              "methods": [
+                "get_site_search_engine"
+              ]
+            },
+            "GetTargetSite": {
+              "methods": [
+                "get_target_site"
+              ]
+            },
+            "ListTargetSites": {
+              "methods": [
+                "list_target_sites"
+              ]
+            },
+            "RecrawlUris": {
+              "methods": [
+                "recrawl_uris"
+              ]
+            },
+            "UpdateTargetSite": {
+              "methods": [
+                "update_target_site"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SiteSearchEngineServiceClient",
+          "rpcs": {
+            "BatchCreateTargetSites": {
+              "methods": [
+                "batch_create_target_sites"
+              ]
+            },
+            "BatchVerifyTargetSites": {
+              "methods": [
+                "batch_verify_target_sites"
+              ]
+            },
+            "CreateTargetSite": {
+              "methods": [
+                "create_target_site"
+              ]
+            },
+            "DeleteTargetSite": {
+              "methods": [
+                "delete_target_site"
+              ]
+            },
+            "DisableAdvancedSiteSearch": {
+              "methods": [
+                "disable_advanced_site_search"
+              ]
+            },
+            "EnableAdvancedSiteSearch": {
+              "methods": [
+                "enable_advanced_site_search"
+              ]
+            },
+            "FetchDomainVerificationStatus": {
+              "methods": [
+                "fetch_domain_verification_status"
+              ]
+            },
+            "GetSiteSearchEngine": {
+              "methods": [
+                "get_site_search_engine"
+              ]
+            },
+            "GetTargetSite": {
+              "methods": [
+                "get_target_site"
+              ]
+            },
+            "ListTargetSites": {
+              "methods": [
+                "list_target_sites"
+              ]
+            },
+            "RecrawlUris": {
+              "methods": [
+                "recrawl_uris"
+              ]
+            },
+            "UpdateTargetSite": {
+              "methods": [
+                "update_target_site"
               ]
             }
           }

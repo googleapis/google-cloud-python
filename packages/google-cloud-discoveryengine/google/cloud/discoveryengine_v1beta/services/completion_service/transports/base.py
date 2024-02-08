@@ -18,7 +18,7 @@ from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
 
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -27,7 +27,11 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.discoveryengine_v1beta import gapic_version as package_version
-from google.cloud.discoveryengine_v1beta.types import completion_service
+from google.cloud.discoveryengine_v1beta.types import (
+    completion_service,
+    import_config,
+    purge_config,
+)
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -133,6 +137,16 @@ class CompletionServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.import_suggestion_deny_list_entries: gapic_v1.method.wrap_method(
+                self.import_suggestion_deny_list_entries,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.purge_suggestion_deny_list_entries: gapic_v1.method.wrap_method(
+                self.purge_suggestion_deny_list_entries,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -145,6 +159,11 @@ class CompletionServiceTransport(abc.ABC):
         raise NotImplementedError()
 
     @property
+    def operations_client(self):
+        """Return the client designed to process long-running operations."""
+        raise NotImplementedError()
+
+    @property
     def complete_query(
         self,
     ) -> Callable[
@@ -153,6 +172,24 @@ class CompletionServiceTransport(abc.ABC):
             completion_service.CompleteQueryResponse,
             Awaitable[completion_service.CompleteQueryResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def import_suggestion_deny_list_entries(
+        self,
+    ) -> Callable[
+        [import_config.ImportSuggestionDenyListEntriesRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def purge_suggestion_deny_list_entries(
+        self,
+    ) -> Callable[
+        [purge_config.PurgeSuggestionDenyListEntriesRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()
 

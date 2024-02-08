@@ -297,6 +297,11 @@ class RecommendationServiceRestTransport(RecommendationServiceTransport):
                     "uri": "/v1beta/{serving_config=projects/*/locations/*/collections/*/dataStores/*/servingConfigs/*}:recommend",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{serving_config=projects/*/locations/*/collections/*/engines/*/servingConfigs/*}:recommend",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_recommend(request, metadata)
             pb_request = recommendation_service.RecommendRequest.pb(request)
@@ -388,6 +393,10 @@ class RecommendationServiceRestTransport(RecommendationServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                },
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
@@ -502,6 +511,10 @@ class RecommendationServiceRestTransport(RecommendationServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                },
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",

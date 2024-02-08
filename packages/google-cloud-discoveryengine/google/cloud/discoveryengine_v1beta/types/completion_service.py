@@ -42,8 +42,9 @@ class CompleteQueryRequest(proto.Message):
             Required. The typeahead input used to fetch
             suggestions. Maximum length is 128 characters.
         query_model (str):
-            Selects data model of query suggestions for serving.
-            Currently supported values:
+            Specifies the autocomplete data model. This overrides any
+            model specified in the Configuration > Autocomplete section
+            of the Cloud console. Currently supported values:
 
             -  ``document`` - Using suggestions generated from
                user-imported documents.
@@ -61,8 +62,8 @@ class CompleteQueryRequest(proto.Message):
             Default values:
 
             -  ``document`` is the default model for regular dataStores.
-            -  ``search-history`` is the default model for
-               [IndustryVertical.SITE_SEARCH][] dataStores.
+            -  ``search-history`` is the default model for site search
+               dataStores.
         user_pseudo_id (str):
             A unique identifier for tracking visitors. For example, this
             could be implemented with an HTTP cookie, which should be
@@ -136,11 +137,22 @@ class CompleteQueryResponse(proto.Message):
         Attributes:
             suggestion (str):
                 The suggestion for the query.
+            completable_field_paths (MutableSequence[str]):
+                The unique document field paths that serve as
+                the source of this suggestion if it was
+                generated from completable fields.
+
+                This field is only populated for the
+                document-completable model.
         """
 
         suggestion: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        completable_field_paths: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
         )
 
     query_suggestions: MutableSequence[QuerySuggestion] = proto.RepeatedField(
