@@ -430,6 +430,8 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -524,9 +526,9 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                 `Regional <https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules>`__
                 A forwarding rule and its corresponding IP address
                 represent the frontend configuration of a Google Cloud
-                Platform load balancer. Forwarding rules can also
-                reference target instances and Cloud VPN Classic
-                gateways (targetVpnGateway). For more information, read
+                load balancer. Forwarding rules can also reference
+                target instances and Cloud VPN Classic gateways
+                (targetVpnGateway). For more information, read
                 Forwarding rule concepts and Using protocol forwarding.
 
             """
@@ -629,6 +631,8 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -827,6 +831,8 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -937,6 +943,8 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -1047,6 +1055,8 @@ class GlobalForwardingRulesRestTransport(GlobalForwardingRulesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 

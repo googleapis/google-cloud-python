@@ -2838,6 +2838,7 @@ def test_get_rest(request_type):
             private_ipv6_google_access="private_ipv6_google_access_value",
             purpose="purpose_value",
             region="region_value",
+            reserved_internal_range="reserved_internal_range_value",
             role="role_value",
             self_link="self_link_value",
             stack_type="stack_type_value",
@@ -2875,6 +2876,7 @@ def test_get_rest(request_type):
     assert response.private_ipv6_google_access == "private_ipv6_google_access_value"
     assert response.purpose == "purpose_value"
     assert response.region == "region_value"
+    assert response.reserved_internal_range == "reserved_internal_range_value"
     assert response.role == "role_value"
     assert response.self_link == "self_link_value"
     assert response.stack_type == "stack_type_value"
@@ -3473,9 +3475,14 @@ def test_insert_rest(request_type):
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "purpose": "purpose_value",
         "region": "region_value",
+        "reserved_internal_range": "reserved_internal_range_value",
         "role": "role_value",
         "secondary_ip_ranges": [
-            {"ip_cidr_range": "ip_cidr_range_value", "range_name": "range_name_value"}
+            {
+                "ip_cidr_range": "ip_cidr_range_value",
+                "range_name": "range_name_value",
+                "reserved_internal_range": "reserved_internal_range_value",
+            }
         ],
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
@@ -3908,9 +3915,14 @@ def test_insert_unary_rest(request_type):
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "purpose": "purpose_value",
         "region": "region_value",
+        "reserved_internal_range": "reserved_internal_range_value",
         "role": "role_value",
         "secondary_ip_ranges": [
-            {"ip_cidr_range": "ip_cidr_range_value", "range_name": "range_name_value"}
+            {
+                "ip_cidr_range": "ip_cidr_range_value",
+                "range_name": "range_name_value",
+                "reserved_internal_range": "reserved_internal_range_value",
+            }
         ],
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
@@ -5038,9 +5050,14 @@ def test_patch_rest(request_type):
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "purpose": "purpose_value",
         "region": "region_value",
+        "reserved_internal_range": "reserved_internal_range_value",
         "role": "role_value",
         "secondary_ip_ranges": [
-            {"ip_cidr_range": "ip_cidr_range_value", "range_name": "range_name_value"}
+            {
+                "ip_cidr_range": "ip_cidr_range_value",
+                "range_name": "range_name_value",
+                "reserved_internal_range": "reserved_internal_range_value",
+            }
         ],
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
@@ -5492,9 +5509,14 @@ def test_patch_unary_rest(request_type):
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "purpose": "purpose_value",
         "region": "region_value",
+        "reserved_internal_range": "reserved_internal_range_value",
         "role": "role_value",
         "secondary_ip_ranges": [
-            {"ip_cidr_range": "ip_cidr_range_value", "range_name": "range_name_value"}
+            {
+                "ip_cidr_range": "ip_cidr_range_value",
+                "range_name": "range_name_value",
+                "reserved_internal_range": "reserved_internal_range_value",
+            }
         ],
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",

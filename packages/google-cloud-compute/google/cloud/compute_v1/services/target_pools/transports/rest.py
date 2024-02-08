@@ -579,6 +579,8 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -691,6 +693,8 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -887,6 +891,8 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -974,10 +980,10 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
             Returns:
                 ~.compute.TargetPool:
                     Represents a Target Pool resource.
-                Target pools are used for network
-                TCP/UDP load balancing. A target pool
-                references member instances, an
-                associated legacy HttpHealthCheck
+                Target pools are used with external
+                passthrough Network Load Balancers. A
+                target pool references member instances,
+                an associated legacy HttpHealthCheck
                 resource, and, optionally, a backup
                 target pool. For more information, read
                 Using target pools.
@@ -1177,6 +1183,8 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -1375,6 +1383,8 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -1487,6 +1497,8 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -1597,6 +1609,8 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -1707,6 +1721,8 @@ class TargetPoolsRestTransport(TargetPoolsTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 

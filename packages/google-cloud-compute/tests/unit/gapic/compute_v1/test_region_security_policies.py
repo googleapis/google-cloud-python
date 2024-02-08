@@ -1048,6 +1048,18 @@ def test_add_rule_rest(request_type):
                 "location": "location_value",
                 "title": "title_value",
             },
+            "expr_options": {
+                "recaptcha_options": {
+                    "action_token_site_keys": [
+                        "action_token_site_keys_value1",
+                        "action_token_site_keys_value2",
+                    ],
+                    "session_token_site_keys": [
+                        "session_token_site_keys_value1",
+                        "session_token_site_keys_value2",
+                    ],
+                }
+            },
             "versioned_expr": "versioned_expr_value",
         },
         "network_match": {
@@ -1552,6 +1564,18 @@ def test_add_rule_unary_rest(request_type):
                 "expression": "expression_value",
                 "location": "location_value",
                 "title": "title_value",
+            },
+            "expr_options": {
+                "recaptcha_options": {
+                    "action_token_site_keys": [
+                        "action_token_site_keys_value1",
+                        "action_token_site_keys_value2",
+                    ],
+                    "session_token_site_keys": [
+                        "session_token_site_keys_value1",
+                        "session_token_site_keys_value2",
+                    ],
+                }
             },
             "versioned_expr": "versioned_expr_value",
         },
@@ -3378,6 +3402,18 @@ def test_insert_rest(request_type):
                         "location": "location_value",
                         "title": "title_value",
                     },
+                    "expr_options": {
+                        "recaptcha_options": {
+                            "action_token_site_keys": [
+                                "action_token_site_keys_value1",
+                                "action_token_site_keys_value2",
+                            ],
+                            "session_token_site_keys": [
+                                "session_token_site_keys_value1",
+                                "session_token_site_keys_value2",
+                            ],
+                        }
+                    },
                     "versioned_expr": "versioned_expr_value",
                 },
                 "network_match": {
@@ -3941,6 +3977,18 @@ def test_insert_unary_rest(request_type):
                         "expression": "expression_value",
                         "location": "location_value",
                         "title": "title_value",
+                    },
+                    "expr_options": {
+                        "recaptcha_options": {
+                            "action_token_site_keys": [
+                                "action_token_site_keys_value1",
+                                "action_token_site_keys_value2",
+                            ],
+                            "session_token_site_keys": [
+                                "session_token_site_keys_value1",
+                                "session_token_site_keys_value2",
+                            ],
+                        }
                     },
                     "versioned_expr": "versioned_expr_value",
                 },
@@ -4850,6 +4898,18 @@ def test_patch_rest(request_type):
                         "location": "location_value",
                         "title": "title_value",
                     },
+                    "expr_options": {
+                        "recaptcha_options": {
+                            "action_token_site_keys": [
+                                "action_token_site_keys_value1",
+                                "action_token_site_keys_value2",
+                            ],
+                            "session_token_site_keys": [
+                                "session_token_site_keys_value1",
+                                "session_token_site_keys_value2",
+                            ],
+                        }
+                    },
                     "versioned_expr": "versioned_expr_value",
                 },
                 "network_match": {
@@ -5433,6 +5493,18 @@ def test_patch_unary_rest(request_type):
                         "location": "location_value",
                         "title": "title_value",
                     },
+                    "expr_options": {
+                        "recaptcha_options": {
+                            "action_token_site_keys": [
+                                "action_token_site_keys_value1",
+                                "action_token_site_keys_value2",
+                            ],
+                            "session_token_site_keys": [
+                                "session_token_site_keys_value1",
+                                "session_token_site_keys_value2",
+                            ],
+                        }
+                    },
                     "versioned_expr": "versioned_expr_value",
                 },
                 "network_match": {
@@ -5952,6 +6024,18 @@ def test_patch_rule_rest(request_type):
                 "location": "location_value",
                 "title": "title_value",
             },
+            "expr_options": {
+                "recaptcha_options": {
+                    "action_token_site_keys": [
+                        "action_token_site_keys_value1",
+                        "action_token_site_keys_value2",
+                    ],
+                    "session_token_site_keys": [
+                        "session_token_site_keys_value1",
+                        "session_token_site_keys_value2",
+                    ],
+                }
+            },
             "versioned_expr": "versioned_expr_value",
         },
         "network_match": {
@@ -6468,6 +6552,18 @@ def test_patch_rule_unary_rest(request_type):
                 "expression": "expression_value",
                 "location": "location_value",
                 "title": "title_value",
+            },
+            "expr_options": {
+                "recaptcha_options": {
+                    "action_token_site_keys": [
+                        "action_token_site_keys_value1",
+                        "action_token_site_keys_value2",
+                    ],
+                    "session_token_site_keys": [
+                        "session_token_site_keys_value1",
+                        "session_token_site_keys_value2",
+                    ],
+                }
             },
             "versioned_expr": "versioned_expr_value",
         },

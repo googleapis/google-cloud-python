@@ -6384,6 +6384,7 @@ def test_insert_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["instance_group_manager_resource"] = {
+        "all_instances_config": {"properties": {"labels": {}, "metadata": {}}},
         "auto_healing_policies": [
             {"health_check": "health_check_value", "initial_delay_sec": 1778}
         ],
@@ -6426,6 +6427,10 @@ def test_insert_rest(request_type):
             "preserved_state": {"disks": {}, "external_i_ps": {}, "internal_i_ps": {}}
         },
         "status": {
+            "all_instances_config": {
+                "current_revision": "current_revision_value",
+                "effective": True,
+            },
             "autoscaler": "autoscaler_value",
             "is_stable": True,
             "stateful": {
@@ -6798,11 +6803,11 @@ def test_insert_rest_flattened():
             project="project_value",
             region="region_value",
             instance_group_manager_resource=compute.InstanceGroupManager(
-                auto_healing_policies=[
-                    compute.InstanceGroupManagerAutoHealingPolicy(
-                        health_check="health_check_value"
+                all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
+                    properties=compute.InstancePropertiesPatch(
+                        labels={"key_value": "value_value"}
                     )
-                ]
+                )
             ),
         )
         mock_args.update(sample_request)
@@ -6843,11 +6848,11 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             instance_group_manager_resource=compute.InstanceGroupManager(
-                auto_healing_policies=[
-                    compute.InstanceGroupManagerAutoHealingPolicy(
-                        health_check="health_check_value"
+                all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
+                    properties=compute.InstancePropertiesPatch(
+                        labels={"key_value": "value_value"}
                     )
-                ]
+                )
             ),
         )
 
@@ -6874,6 +6879,7 @@ def test_insert_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "region": "sample2"}
     request_init["instance_group_manager_resource"] = {
+        "all_instances_config": {"properties": {"labels": {}, "metadata": {}}},
         "auto_healing_policies": [
             {"health_check": "health_check_value", "initial_delay_sec": 1778}
         ],
@@ -6916,6 +6922,10 @@ def test_insert_unary_rest(request_type):
             "preserved_state": {"disks": {}, "external_i_ps": {}, "internal_i_ps": {}}
         },
         "status": {
+            "all_instances_config": {
+                "current_revision": "current_revision_value",
+                "effective": True,
+            },
             "autoscaler": "autoscaler_value",
             "is_stable": True,
             "stateful": {
@@ -7266,11 +7276,11 @@ def test_insert_unary_rest_flattened():
             project="project_value",
             region="region_value",
             instance_group_manager_resource=compute.InstanceGroupManager(
-                auto_healing_policies=[
-                    compute.InstanceGroupManagerAutoHealingPolicy(
-                        health_check="health_check_value"
+                all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
+                    properties=compute.InstancePropertiesPatch(
+                        labels={"key_value": "value_value"}
                     )
-                ]
+                )
             ),
         )
         mock_args.update(sample_request)
@@ -7311,11 +7321,11 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             region="region_value",
             instance_group_manager_resource=compute.InstanceGroupManager(
-                auto_healing_policies=[
-                    compute.InstanceGroupManagerAutoHealingPolicy(
-                        health_check="health_check_value"
+                all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
+                    properties=compute.InstancePropertiesPatch(
+                        labels={"key_value": "value_value"}
                     )
-                ]
+                )
             ),
         )
 
@@ -8899,6 +8909,7 @@ def test_patch_rest(request_type):
         "instance_group_manager": "sample3",
     }
     request_init["instance_group_manager_resource"] = {
+        "all_instances_config": {"properties": {"labels": {}, "metadata": {}}},
         "auto_healing_policies": [
             {"health_check": "health_check_value", "initial_delay_sec": 1778}
         ],
@@ -8941,6 +8952,10 @@ def test_patch_rest(request_type):
             "preserved_state": {"disks": {}, "external_i_ps": {}, "internal_i_ps": {}}
         },
         "status": {
+            "all_instances_config": {
+                "current_revision": "current_revision_value",
+                "effective": True,
+            },
             "autoscaler": "autoscaler_value",
             "is_stable": True,
             "stateful": {
@@ -9326,11 +9341,11 @@ def test_patch_rest_flattened():
             region="region_value",
             instance_group_manager="instance_group_manager_value",
             instance_group_manager_resource=compute.InstanceGroupManager(
-                auto_healing_policies=[
-                    compute.InstanceGroupManagerAutoHealingPolicy(
-                        health_check="health_check_value"
+                all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
+                    properties=compute.InstancePropertiesPatch(
+                        labels={"key_value": "value_value"}
                     )
-                ]
+                )
             ),
         )
         mock_args.update(sample_request)
@@ -9372,11 +9387,11 @@ def test_patch_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             instance_group_manager="instance_group_manager_value",
             instance_group_manager_resource=compute.InstanceGroupManager(
-                auto_healing_policies=[
-                    compute.InstanceGroupManagerAutoHealingPolicy(
-                        health_check="health_check_value"
+                all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
+                    properties=compute.InstancePropertiesPatch(
+                        labels={"key_value": "value_value"}
                     )
-                ]
+                )
             ),
         )
 
@@ -9407,6 +9422,7 @@ def test_patch_unary_rest(request_type):
         "instance_group_manager": "sample3",
     }
     request_init["instance_group_manager_resource"] = {
+        "all_instances_config": {"properties": {"labels": {}, "metadata": {}}},
         "auto_healing_policies": [
             {"health_check": "health_check_value", "initial_delay_sec": 1778}
         ],
@@ -9449,6 +9465,10 @@ def test_patch_unary_rest(request_type):
             "preserved_state": {"disks": {}, "external_i_ps": {}, "internal_i_ps": {}}
         },
         "status": {
+            "all_instances_config": {
+                "current_revision": "current_revision_value",
+                "effective": True,
+            },
             "autoscaler": "autoscaler_value",
             "is_stable": True,
             "stateful": {
@@ -9812,11 +9832,11 @@ def test_patch_unary_rest_flattened():
             region="region_value",
             instance_group_manager="instance_group_manager_value",
             instance_group_manager_resource=compute.InstanceGroupManager(
-                auto_healing_policies=[
-                    compute.InstanceGroupManagerAutoHealingPolicy(
-                        health_check="health_check_value"
+                all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
+                    properties=compute.InstancePropertiesPatch(
+                        labels={"key_value": "value_value"}
                     )
-                ]
+                )
             ),
         )
         mock_args.update(sample_request)
@@ -9858,11 +9878,11 @@ def test_patch_unary_rest_flattened_error(transport: str = "rest"):
             region="region_value",
             instance_group_manager="instance_group_manager_value",
             instance_group_manager_resource=compute.InstanceGroupManager(
-                auto_healing_policies=[
-                    compute.InstanceGroupManagerAutoHealingPolicy(
-                        health_check="health_check_value"
+                all_instances_config=compute.InstanceGroupManagerAllInstancesConfig(
+                    properties=compute.InstancePropertiesPatch(
+                        labels={"key_value": "value_value"}
                     )
-                ]
+                )
             ),
         )
 

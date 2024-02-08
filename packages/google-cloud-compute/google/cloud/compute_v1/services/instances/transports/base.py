@@ -221,6 +221,11 @@ class InstancesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.perform_maintenance: gapic_v1.method.wrap_method(
+                self.perform_maintenance,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.remove_resource_policies: gapic_v1.method.wrap_method(
                 self.remove_resource_policies,
                 default_timeout=None,
@@ -544,6 +549,15 @@ class InstancesTransport(abc.ABC):
     ) -> Callable[
         [compute.ListReferrersInstancesRequest],
         Union[compute.InstanceListReferrers, Awaitable[compute.InstanceListReferrers]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def perform_maintenance(
+        self,
+    ) -> Callable[
+        [compute.PerformMaintenanceInstanceRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 
