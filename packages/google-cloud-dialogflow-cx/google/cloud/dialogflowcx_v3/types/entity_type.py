@@ -20,10 +20,18 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.dialogflowcx_v3.types import inline
+
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
     manifest={
         "EntityType",
+        "ExportEntityTypesRequest",
+        "ExportEntityTypesResponse",
+        "ExportEntityTypesMetadata",
+        "ImportEntityTypesRequest",
+        "ImportEntityTypesResponse",
+        "ImportEntityTypesMetadata",
         "ListEntityTypesRequest",
         "ListEntityTypesResponse",
         "GetEntityTypeRequest",
@@ -228,6 +236,317 @@ class EntityType(proto.Message):
         proto.BOOL,
         number=9,
     )
+
+
+class ExportEntityTypesRequest(proto.Message):
+    r"""The request message for
+    [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. The name of the parent agent to export entity
+            types. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+        entity_types (MutableSequence[str]):
+            Required. The name of the entity types to export. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entityTypes/<EntityType ID>``.
+        entity_types_uri (str):
+            Optional. The `Google Cloud
+            Storage <https://cloud.google.com/storage/docs/>`__ URI to
+            export the entity types to. The format of this URI must be
+            ``gs://<bucket-name>/<object-name>``.
+
+            Dialogflow performs a write operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have write permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+
+            This field is a member of `oneof`_ ``destination``.
+        entity_types_content_inline (bool):
+            Optional. The option to return the serialized
+            entity types inline.
+
+            This field is a member of `oneof`_ ``destination``.
+        data_format (google.cloud.dialogflowcx_v3.types.ExportEntityTypesRequest.DataFormat):
+            Optional. The data format of the exported entity types. If
+            not specified, ``BLOB`` is assumed.
+        language_code (str):
+            Optional. The language to retrieve the entity type for. The
+            following fields are language dependent:
+
+            -  ``EntityType.entities.value``
+            -  ``EntityType.entities.synonyms``
+            -  ``EntityType.excluded_phrases.value``
+
+            If not specified, all language dependent fields will be
+            retrieved. `Many
+            languages <https://cloud.google.com/dialogflow/docs/reference/language>`__
+            are supported. Note: languages must be enabled in the agent
+            before they can be used.
+    """
+
+    class DataFormat(proto.Enum):
+        r"""Data format of the exported entity types.
+
+        Values:
+            DATA_FORMAT_UNSPECIFIED (0):
+                Unspecified format. Treated as ``BLOB``.
+            BLOB (1):
+                EntityTypes will be exported as raw bytes.
+            JSON_PACKAGE (5):
+                EntityTypes will be exported in JSON Package
+                format.
+        """
+        DATA_FORMAT_UNSPECIFIED = 0
+        BLOB = 1
+        JSON_PACKAGE = 5
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    entity_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    entity_types_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="destination",
+    )
+    entity_types_content_inline: bool = proto.Field(
+        proto.BOOL,
+        number=4,
+        oneof="destination",
+    )
+    data_format: DataFormat = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=DataFormat,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+
+
+class ExportEntityTypesResponse(proto.Message):
+    r"""The response message for
+    [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        entity_types_uri (str):
+            The URI to a file containing the exported entity types. This
+            field is populated only if ``entity_types_uri`` is specified
+            in
+            [ExportEntityTypesRequest][google.cloud.dialogflow.cx.v3.ExportEntityTypesRequest].
+
+            This field is a member of `oneof`_ ``exported_entity_types``.
+        entity_types_content (google.cloud.dialogflowcx_v3.types.InlineDestination):
+            Uncompressed byte content for entity types. This field is
+            populated only if ``entity_types_content_inline`` is set to
+            true in
+            [ExportEntityTypesRequest][google.cloud.dialogflow.cx.v3.ExportEntityTypesRequest].
+
+            This field is a member of `oneof`_ ``exported_entity_types``.
+    """
+
+    entity_types_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="exported_entity_types",
+    )
+    entity_types_content: inline.InlineDestination = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="exported_entity_types",
+        message=inline.InlineDestination,
+    )
+
+
+class ExportEntityTypesMetadata(proto.Message):
+    r"""Metadata returned for the
+    [EntityTypes.ExportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ExportEntityTypes]
+    long running operation.
+
+    """
+
+
+class ImportEntityTypesRequest(proto.Message):
+    r"""The request message for
+    [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes].
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        parent (str):
+            Required. The agent to import the entity types into. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>``.
+        entity_types_uri (str):
+            The `Google Cloud
+            Storage <https://cloud.google.com/storage/docs/>`__ URI to
+            import entity types from. The format of this URI must be
+            ``gs://<bucket-name>/<object-name>``.
+
+            Dialogflow performs a read operation for the Cloud Storage
+            object on the caller's behalf, so your request
+            authentication must have read permissions for the object.
+            For more information, see `Dialogflow access
+            control <https://cloud.google.com/dialogflow/cx/docs/concept/access-control#storage>`__.
+
+            This field is a member of `oneof`_ ``entity_types``.
+        entity_types_content (google.cloud.dialogflowcx_v3.types.InlineSource):
+            Uncompressed byte content of entity types.
+
+            This field is a member of `oneof`_ ``entity_types``.
+        merge_option (google.cloud.dialogflowcx_v3.types.ImportEntityTypesRequest.MergeOption):
+            Required. Merge option for importing entity
+            types.
+        target_entity_type (str):
+            Optional. The target entity type to import into. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entity_types/<EntityType ID>``.
+            If set, there should be only one entity type included in
+            [entity_types][google.cloud.dialogflow.cx.v3.ImportEntityTypesRequest.entity_types],
+            of which the type should match the type of the target entity
+            type. All
+            [entities][google.cloud.dialogflow.cx.v3.EntityType.entities]
+            in the imported entity type will be added to the target
+            entity type.
+    """
+
+    class MergeOption(proto.Enum):
+        r"""Merge option when display name conflicts exist during import.
+
+        Values:
+            MERGE_OPTION_UNSPECIFIED (0):
+                Unspecified. If used, system uses REPORT_CONFLICT as
+                default.
+            REPLACE (1):
+                Replace the original entity type in the agent
+                with the new entity type when display name
+                conflicts exist.
+            MERGE (2):
+                Merge the original entity type with the new
+                entity type when display name conflicts exist.
+            RENAME (3):
+                Create new entity types with new display
+                names to differentiate them from the existing
+                entity types when display name conflicts exist.
+            REPORT_CONFLICT (4):
+                Report conflict information if display names
+                conflict is detected. Otherwise, import entity
+                types.
+            KEEP (5):
+                Keep the original entity type and discard the
+                conflicting new entity type when display name
+                conflicts exist.
+        """
+        MERGE_OPTION_UNSPECIFIED = 0
+        REPLACE = 1
+        MERGE = 2
+        RENAME = 3
+        REPORT_CONFLICT = 4
+        KEEP = 5
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    entity_types_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="entity_types",
+    )
+    entity_types_content: inline.InlineSource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="entity_types",
+        message=inline.InlineSource,
+    )
+    merge_option: MergeOption = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=MergeOption,
+    )
+    target_entity_type: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+
+
+class ImportEntityTypesResponse(proto.Message):
+    r"""The response message for
+    [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes].
+
+    Attributes:
+        entity_types (MutableSequence[str]):
+            The unique identifier of the imported entity types. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/entity_types/<EntityType ID>``.
+        conflicting_resources (google.cloud.dialogflowcx_v3.types.ImportEntityTypesResponse.ConflictingResources):
+            Info which resources have conflicts when
+            [REPORT_CONFLICT][ImportEntityTypesResponse.REPORT_CONFLICT]
+            merge_option is set in ImportEntityTypesRequest.
+    """
+
+    class ConflictingResources(proto.Message):
+        r"""Conflicting resources detected during the import process. Only
+        filled when
+        [REPORT_CONFLICT][ImportEntityTypesResponse.REPORT_CONFLICT] is set
+        in the request and there are conflicts in the display names.
+
+        Attributes:
+            entity_type_display_names (MutableSequence[str]):
+                Display names of conflicting entity types.
+            entity_display_names (MutableSequence[str]):
+                Display names of conflicting entities.
+        """
+
+        entity_type_display_names: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        entity_display_names: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=2,
+        )
+
+    entity_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    conflicting_resources: ConflictingResources = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ConflictingResources,
+    )
+
+
+class ImportEntityTypesMetadata(proto.Message):
+    r"""Metadata returned for the
+    [EntityTypes.ImportEntityTypes][google.cloud.dialogflow.cx.v3.EntityTypes.ImportEntityTypes]
+    long running operation.
+
+    """
 
 
 class ListEntityTypesRequest(proto.Message):

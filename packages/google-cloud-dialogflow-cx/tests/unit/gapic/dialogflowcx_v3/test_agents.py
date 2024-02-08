@@ -6667,6 +6667,7 @@ def test_update_generative_settings_rest(request_type):
             "agent_identity": "agent_identity_value",
             "business_description": "business_description_value",
             "agent_scope": "agent_scope_value",
+            "disable_data_store_fallback": True,
         },
         "language_code": "language_code_value",
     }

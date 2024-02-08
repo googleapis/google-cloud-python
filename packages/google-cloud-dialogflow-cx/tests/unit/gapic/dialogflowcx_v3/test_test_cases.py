@@ -4904,6 +4904,7 @@ def test_create_test_case_rest(request_type):
                                     },
                                     "total_duration": {},
                                 },
+                                "opt_out_conformer_model_migration": True,
                             },
                             "audio": b"audio_blob",
                         },
@@ -4953,6 +4954,7 @@ def test_create_test_case_rest(request_type):
                     "current_page": {
                         "name": "name_value",
                         "display_name": "display_name_value",
+                        "description": "description_value",
                         "entry_fulfillment": {
                             "messages": [
                                 {
@@ -5502,6 +5504,7 @@ def test_update_test_case_rest(request_type):
                                     },
                                     "total_duration": {},
                                 },
+                                "opt_out_conformer_model_migration": True,
                             },
                             "audio": b"audio_blob",
                         },
@@ -5551,6 +5554,7 @@ def test_update_test_case_rest(request_type):
                     "current_page": {
                         "name": "name_value",
                         "display_name": "display_name_value",
+                        "description": "description_value",
                         "entry_fulfillment": {
                             "messages": [
                                 {

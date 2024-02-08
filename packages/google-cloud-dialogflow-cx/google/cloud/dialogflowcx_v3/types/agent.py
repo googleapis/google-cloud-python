@@ -127,6 +127,8 @@ class Agent(proto.Message):
             created, and can only be deleted by deleting the agent.
             Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            Currently only the default start flow with id
+            "00000000-0000-0000-0000-000000000000" is allowed.
         security_settings (str):
             Name of the
             [SecuritySettings][google.cloud.dialogflow.cx.v3.SecuritySettings]

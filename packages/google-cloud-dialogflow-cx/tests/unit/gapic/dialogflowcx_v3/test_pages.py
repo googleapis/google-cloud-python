@@ -1504,6 +1504,7 @@ def test_get_page(request_type, transport: str = "grpc"):
         call.return_value = page.Page(
             name="name_value",
             display_name="display_name_value",
+            description="description_value",
             transition_route_groups=["transition_route_groups_value"],
         )
         response = client.get_page(request)
@@ -1517,6 +1518,7 @@ def test_get_page(request_type, transport: str = "grpc"):
     assert isinstance(response, page.Page)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
 
 
@@ -1556,6 +1558,7 @@ async def test_get_page_async(
             page.Page(
                 name="name_value",
                 display_name="display_name_value",
+                description="description_value",
                 transition_route_groups=["transition_route_groups_value"],
             )
         )
@@ -1570,6 +1573,7 @@ async def test_get_page_async(
     assert isinstance(response, page.Page)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
 
 
@@ -1740,6 +1744,7 @@ def test_create_page(request_type, transport: str = "grpc"):
         call.return_value = gcdc_page.Page(
             name="name_value",
             display_name="display_name_value",
+            description="description_value",
             transition_route_groups=["transition_route_groups_value"],
         )
         response = client.create_page(request)
@@ -1753,6 +1758,7 @@ def test_create_page(request_type, transport: str = "grpc"):
     assert isinstance(response, gcdc_page.Page)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
 
 
@@ -1792,6 +1798,7 @@ async def test_create_page_async(
             gcdc_page.Page(
                 name="name_value",
                 display_name="display_name_value",
+                description="description_value",
                 transition_route_groups=["transition_route_groups_value"],
             )
         )
@@ -1806,6 +1813,7 @@ async def test_create_page_async(
     assert isinstance(response, gcdc_page.Page)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
 
 
@@ -1986,6 +1994,7 @@ def test_update_page(request_type, transport: str = "grpc"):
         call.return_value = gcdc_page.Page(
             name="name_value",
             display_name="display_name_value",
+            description="description_value",
             transition_route_groups=["transition_route_groups_value"],
         )
         response = client.update_page(request)
@@ -1999,6 +2008,7 @@ def test_update_page(request_type, transport: str = "grpc"):
     assert isinstance(response, gcdc_page.Page)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
 
 
@@ -2038,6 +2048,7 @@ async def test_update_page_async(
             gcdc_page.Page(
                 name="name_value",
                 display_name="display_name_value",
+                description="description_value",
                 transition_route_groups=["transition_route_groups_value"],
             )
         )
@@ -2052,6 +2063,7 @@ async def test_update_page_async(
     assert isinstance(response, gcdc_page.Page)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
 
 
@@ -2799,6 +2811,7 @@ def test_get_page_rest(request_type):
         return_value = page.Page(
             name="name_value",
             display_name="display_name_value",
+            description="description_value",
             transition_route_groups=["transition_route_groups_value"],
         )
 
@@ -2817,6 +2830,7 @@ def test_get_page_rest(request_type):
     assert isinstance(response, page.Page)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
 
 
@@ -3069,6 +3083,7 @@ def test_create_page_rest(request_type):
     request_init["page"] = {
         "name": "name_value",
         "display_name": "display_name_value",
+        "description": "description_value",
         "entry_fulfillment": {
             "messages": [
                 {
@@ -3271,6 +3286,7 @@ def test_create_page_rest(request_type):
         return_value = gcdc_page.Page(
             name="name_value",
             display_name="display_name_value",
+            description="description_value",
             transition_route_groups=["transition_route_groups_value"],
         )
 
@@ -3289,6 +3305,7 @@ def test_create_page_rest(request_type):
     assert isinstance(response, gcdc_page.Page)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
 
 
@@ -3554,6 +3571,7 @@ def test_update_page_rest(request_type):
     request_init["page"] = {
         "name": "projects/sample1/locations/sample2/agents/sample3/flows/sample4/pages/sample5",
         "display_name": "display_name_value",
+        "description": "description_value",
         "entry_fulfillment": {
             "messages": [
                 {
@@ -3756,6 +3774,7 @@ def test_update_page_rest(request_type):
         return_value = gcdc_page.Page(
             name="name_value",
             display_name="display_name_value",
+            description="description_value",
             transition_route_groups=["transition_route_groups_value"],
         )
 
@@ -3774,6 +3793,7 @@ def test_update_page_rest(request_type):
     assert isinstance(response, gcdc_page.Page)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
+    assert response.description == "description_value"
     assert response.transition_route_groups == ["transition_route_groups_value"]
 
 
