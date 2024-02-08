@@ -25,6 +25,7 @@ from google.auth import credentials
 from google.auth import downscoped
 from google.auth import exceptions
 from google.auth import transport
+from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 from google.auth.credentials import TokenState
 
 
@@ -447,7 +448,11 @@ class TestCredentialAccessBoundary(object):
 
 class TestCredentials(object):
     @staticmethod
-    def make_credentials(source_credentials=SourceCredentials(), quota_project_id=None):
+    def make_credentials(
+        source_credentials=SourceCredentials(),
+        quota_project_id=None,
+        universe_domain=None,
+    ):
         availability_condition = make_availability_condition(
             EXPRESSION, TITLE, DESCRIPTION
         )
@@ -458,7 +463,10 @@ class TestCredentials(object):
         credential_access_boundary = make_credential_access_boundary(rules)
 
         return downscoped.Credentials(
-            source_credentials, credential_access_boundary, quota_project_id
+            source_credentials,
+            credential_access_boundary,
+            quota_project_id,
+            universe_domain,
         )
 
     @staticmethod
@@ -473,10 +481,12 @@ class TestCredentials(object):
         return request
 
     @staticmethod
-    def assert_request_kwargs(request_kwargs, headers, request_data):
+    def assert_request_kwargs(
+        request_kwargs, headers, request_data, token_endpoint=TOKEN_EXCHANGE_ENDPOINT
+    ):
         """Asserts the request was called with the expected parameters.
         """
-        assert request_kwargs["url"] == TOKEN_EXCHANGE_ENDPOINT
+        assert request_kwargs["url"] == token_endpoint
         assert request_kwargs["method"] == "POST"
         assert request_kwargs["headers"] == headers
         assert request_kwargs["body"] is not None
@@ -496,6 +506,33 @@ class TestCredentials(object):
         assert not credentials.expired
         # No quota project ID set.
         assert not credentials.quota_project_id
+        assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+
+    def test_default_state_with_explicit_none_value(self):
+        credentials = self.make_credentials(universe_domain=None)
+
+        # No token acquired yet.
+        assert not credentials.token
+        assert not credentials.valid
+        # Expiration hasn't been set yet.
+        assert not credentials.expiry
+        assert not credentials.expired
+        # No quota project ID set.
+        assert not credentials.quota_project_id
+        assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
+
+    def test_create_with_customized_universe_domain(self):
+        test_universe_domain = "foo.com"
+        credentials = self.make_credentials(universe_domain=test_universe_domain)
+        # No token acquired yet.
+        assert not credentials.token
+        assert not credentials.valid
+        # Expiration hasn't been set yet.
+        assert not credentials.expiry
+        assert not credentials.expired
+        # No quota project ID set.
+        assert not credentials.quota_project_id
+        assert credentials.universe_domain == test_universe_domain
 
     def test_with_quota_project(self):
         credentials = self.make_credentials()
@@ -505,6 +542,49 @@ class TestCredentials(object):
         quota_project_creds = credentials.with_quota_project("project-foo")
 
         assert quota_project_creds.quota_project_id == "project-foo"
+
+    @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
+    def test_refresh_on_custom_universe(self, unused_utcnow):
+        test_universe_domain = "foo.com"
+        response = SUCCESS_RESPONSE.copy()
+        # Test custom expiration to confirm expiry is set correctly.
+        response["expires_in"] = 2800
+        expected_expiry = datetime.datetime.min + datetime.timedelta(
+            seconds=response["expires_in"]
+        )
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        request_data = {
+            "grant_type": GRANT_TYPE,
+            "subject_token": "ACCESS_TOKEN_1",
+            "subject_token_type": SUBJECT_TOKEN_TYPE,
+            "requested_token_type": REQUESTED_TOKEN_TYPE,
+            "options": urllib.parse.quote(json.dumps(CREDENTIAL_ACCESS_BOUNDARY_JSON)),
+        }
+        request = self.make_mock_request(status=http_client.OK, data=response)
+        source_credentials = SourceCredentials()
+        credentials = self.make_credentials(
+            source_credentials=source_credentials, universe_domain=test_universe_domain
+        )
+        token_exchange_endpoint = downscoped._STS_TOKEN_URL_PATTERN.format(
+            test_universe_domain
+        )
+
+        # Spy on calls to source credentials refresh to confirm the expected request
+        # instance is used.
+        with mock.patch.object(
+            source_credentials, "refresh", wraps=source_credentials.refresh
+        ) as wrapped_souce_cred_refresh:
+            credentials.refresh(request)
+
+            self.assert_request_kwargs(
+                request.call_args[1], headers, request_data, token_exchange_endpoint
+            )
+            assert credentials.valid
+            assert credentials.expiry == expected_expiry
+            assert not credentials.expired
+            assert credentials.token == response["access_token"]
+            # Confirm source credentials called with the same request instance.
+            wrapped_souce_cred_refresh.assert_called_with(request)
 
     @mock.patch("google.auth._helpers.utcnow", return_value=datetime.datetime.min)
     def test_refresh(self, unused_utcnow):

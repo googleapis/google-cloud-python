@@ -63,7 +63,7 @@ _STS_GRANT_TYPE = "urn:ietf:params:oauth:grant-type:token-exchange"
 # The token exchange requested_token_type. This is always an access_token.
 _STS_REQUESTED_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:access_token"
 # The STS token URL used to exchanged a short lived access token for a downscoped one.
-_STS_TOKEN_URL = "https://sts.googleapis.com/v1/token"
+_STS_TOKEN_URL_PATTERN = "https://sts.{}/v1/token"
 # The subject token type to use when exchanging a short lived access token for a
 # downscoped token.
 _STS_SUBJECT_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:access_token"
@@ -437,7 +437,11 @@ class Credentials(credentials.CredentialsWithQuotaProject):
     """
 
     def __init__(
-        self, source_credentials, credential_access_boundary, quota_project_id=None
+        self,
+        source_credentials,
+        credential_access_boundary,
+        quota_project_id=None,
+        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
     ):
         """Instantiates a downscoped credentials object using the provided source
         credentials and credential access boundary rules.
@@ -456,6 +460,7 @@ class Credentials(credentials.CredentialsWithQuotaProject):
                 the upper bound of the permissions that are available on that resource and an
                 optional condition to further restrict permissions.
             quota_project_id (Optional[str]): The optional quota project ID.
+            universe_domain (Optional[str]): The universe domain value, default is googleapis.com
         Raises:
             google.auth.exceptions.RefreshError: If the source credentials
                 return an error on token refresh.
@@ -467,7 +472,10 @@ class Credentials(credentials.CredentialsWithQuotaProject):
         self._source_credentials = source_credentials
         self._credential_access_boundary = credential_access_boundary
         self._quota_project_id = quota_project_id
-        self._sts_client = sts.Client(_STS_TOKEN_URL)
+        self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
+        self._sts_client = sts.Client(
+            _STS_TOKEN_URL_PATTERN.format(self.universe_domain)
+        )
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
