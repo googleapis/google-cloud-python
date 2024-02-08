@@ -3285,6 +3285,9 @@ class TestRowIterator(unittest.TestCase):
         # Don't close the client if it was passed in.
         bqstorage_client._transport.grpc_channel.close.assert_not_called()
 
+    @unittest.skipIf(
+        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
+    )
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     def test_to_dataframe_iterable_w_bqstorage_max_results_warning(self):
         from google.cloud.bigquery import schema
