@@ -22,7 +22,7 @@ from google.rpc import status_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import document, user_event
+from google.cloud.discoveryengine_v1.types import completion, document, user_event
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
@@ -36,6 +36,9 @@ __protobuf__ = proto.module(
         "ImportDocumentsMetadata",
         "ImportDocumentsRequest",
         "ImportDocumentsResponse",
+        "ImportSuggestionDenyListEntriesRequest",
+        "ImportSuggestionDenyListEntriesResponse",
+        "ImportSuggestionDenyListEntriesMetadata",
     },
 )
 
@@ -597,6 +600,133 @@ class ImportDocumentsResponse(proto.Message):
         proto.MESSAGE,
         number=2,
         message="ImportErrorConfig",
+    )
+
+
+class ImportSuggestionDenyListEntriesRequest(proto.Message):
+    r"""Request message for
+    [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries]
+    method.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        inline_source (google.cloud.discoveryengine_v1.types.ImportSuggestionDenyListEntriesRequest.InlineSource):
+            The Inline source for the input content for
+            suggestion deny list entries.
+
+            This field is a member of `oneof`_ ``source``.
+        gcs_source (google.cloud.discoveryengine_v1.types.GcsSource):
+            Cloud Storage location for the input content.
+
+            Only 1 file can be specified that contains all entries to
+            import. Supported values ``gcs_source.schema`` for
+            autocomplete suggestion deny list entry imports:
+
+            -  ``suggestion_deny_list`` (default): One JSON
+               [SuggestionDenyListEntry] per line.
+
+            This field is a member of `oneof`_ ``source``.
+        parent (str):
+            Required. The parent data store resource name for which to
+            import denylist entries. Follows pattern
+            projects/\ */locations/*/collections/*/dataStores/*.
+    """
+
+    class InlineSource(proto.Message):
+        r"""The inline source for SuggestionDenyListEntry.
+
+        Attributes:
+            entries (MutableSequence[google.cloud.discoveryengine_v1.types.SuggestionDenyListEntry]):
+                Required. A list of all denylist entries to
+                import. Max of 1000 items.
+        """
+
+        entries: MutableSequence[
+            completion.SuggestionDenyListEntry
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=completion.SuggestionDenyListEntry,
+        )
+
+    inline_source: InlineSource = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message=InlineSource,
+    )
+    gcs_source: "GcsSource" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="source",
+        message="GcsSource",
+    )
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ImportSuggestionDenyListEntriesResponse(proto.Message):
+    r"""Response message for
+    [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries]
+    method.
+
+    Attributes:
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
+            A sample of errors encountered while
+            processing the request.
+        imported_entries_count (int):
+            Count of deny list entries successfully
+            imported.
+        failed_entries_count (int):
+            Count of deny list entries that failed to be
+            imported.
+    """
+
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
+    )
+    imported_entries_count: int = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    failed_entries_count: int = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+
+
+class ImportSuggestionDenyListEntriesMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    ImportSuggestionDenyListEntries operation. This is returned by
+    the google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
 
 

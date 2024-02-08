@@ -22,11 +22,86 @@ import proto  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1",
     manifest={
+        "IndustryVertical",
+        "SolutionType",
+        "SearchTier",
+        "SearchAddOn",
         "Interval",
         "CustomAttribute",
         "UserInfo",
     },
 )
+
+
+class IndustryVertical(proto.Enum):
+    r"""The industry vertical associated with the
+    [DataStore][google.cloud.discoveryengine.v1.DataStore].
+
+    Values:
+        INDUSTRY_VERTICAL_UNSPECIFIED (0):
+            Value used when unset.
+        GENERIC (1):
+            The generic vertical for documents that are
+            not specific to any industry vertical.
+        MEDIA (2):
+            The media industry vertical.
+    """
+    INDUSTRY_VERTICAL_UNSPECIFIED = 0
+    GENERIC = 1
+    MEDIA = 2
+
+
+class SolutionType(proto.Enum):
+    r"""The type of solution.
+
+    Values:
+        SOLUTION_TYPE_UNSPECIFIED (0):
+            Default value.
+        SOLUTION_TYPE_RECOMMENDATION (1):
+            Used for Recommendations AI.
+        SOLUTION_TYPE_SEARCH (2):
+            Used for Discovery Search.
+        SOLUTION_TYPE_CHAT (3):
+            Used for use cases related to the Generative
+            AI agent.
+    """
+    SOLUTION_TYPE_UNSPECIFIED = 0
+    SOLUTION_TYPE_RECOMMENDATION = 1
+    SOLUTION_TYPE_SEARCH = 2
+    SOLUTION_TYPE_CHAT = 3
+
+
+class SearchTier(proto.Enum):
+    r"""Tiers of search features. Different tiers might have
+    different pricing. To learn more, please check the pricing
+    documentation.
+
+    Values:
+        SEARCH_TIER_UNSPECIFIED (0):
+            Default value when the enum is unspecified.
+            This is invalid to use.
+        SEARCH_TIER_STANDARD (1):
+            Standard tier.
+        SEARCH_TIER_ENTERPRISE (2):
+            Enterprise tier.
+    """
+    SEARCH_TIER_UNSPECIFIED = 0
+    SEARCH_TIER_STANDARD = 1
+    SEARCH_TIER_ENTERPRISE = 2
+
+
+class SearchAddOn(proto.Enum):
+    r"""Add-on that provides additional functionality for search.
+
+    Values:
+        SEARCH_ADD_ON_UNSPECIFIED (0):
+            Default value when the enum is unspecified.
+            This is invalid to use.
+        SEARCH_ADD_ON_LLM (1):
+            Large language model add-on.
+    """
+    SEARCH_ADD_ON_UNSPECIFIED = 0
+    SEARCH_ADD_ON_LLM = 1
 
 
 class Interval(proto.Message):

@@ -338,6 +338,10 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
                     },
                     {
@@ -393,6 +397,10 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                     {
                         "method": "get",
                         "uri": "/v1/{name=projects/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
                     },
                     {
                         "method": "get",
@@ -879,6 +887,10 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
                 },
                 {
@@ -994,6 +1006,10 @@ class UserEventServiceRestTransport(UserEventServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
                 },
                 {
                     "method": "get",
