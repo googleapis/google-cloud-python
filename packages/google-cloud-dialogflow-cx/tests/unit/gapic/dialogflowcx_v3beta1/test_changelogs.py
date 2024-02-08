@@ -1530,6 +1530,7 @@ def test_get_changelog(request_type, transport: str = "grpc"):
             action="action_value",
             type_="type__value",
             resource="resource_value",
+            language_code="language_code_value",
         )
         response = client.get_changelog(request)
 
@@ -1546,6 +1547,7 @@ def test_get_changelog(request_type, transport: str = "grpc"):
     assert response.action == "action_value"
     assert response.type_ == "type__value"
     assert response.resource == "resource_value"
+    assert response.language_code == "language_code_value"
 
 
 def test_get_changelog_empty_call():
@@ -1588,6 +1590,7 @@ async def test_get_changelog_async(
                 action="action_value",
                 type_="type__value",
                 resource="resource_value",
+                language_code="language_code_value",
             )
         )
         response = await client.get_changelog(request)
@@ -1605,6 +1608,7 @@ async def test_get_changelog_async(
     assert response.action == "action_value"
     assert response.type_ == "type__value"
     assert response.resource == "resource_value"
+    assert response.language_code == "language_code_value"
 
 
 @pytest.mark.asyncio
@@ -2123,6 +2127,7 @@ def test_get_changelog_rest(request_type):
             action="action_value",
             type_="type__value",
             resource="resource_value",
+            language_code="language_code_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2144,6 +2149,7 @@ def test_get_changelog_rest(request_type):
     assert response.action == "action_value"
     assert response.type_ == "type__value"
     assert response.resource == "resource_value"
+    assert response.language_code == "language_code_value"
 
 
 def test_get_changelog_rest_required_fields(request_type=changelog.GetChangelogRequest):

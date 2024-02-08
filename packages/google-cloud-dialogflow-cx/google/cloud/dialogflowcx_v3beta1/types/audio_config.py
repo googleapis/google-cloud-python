@@ -118,10 +118,6 @@ class SpeechModelVariant(proto.Enum):
             Use the best available variant of the [Speech
             model][InputAudioConfig.model] that the caller is eligible
             for.
-
-            Please see the `Dialogflow
-            docs <https://cloud.google.com/dialogflow/docs/data-logging>`__
-            for how to make your project eligible for enhanced models.
         USE_STANDARD (2):
             Use standard model variant even if an enhanced model is
             available. See the `Cloud Speech
@@ -138,11 +134,6 @@ class SpeechModelVariant(proto.Enum):
                The `Cloud Speech
                documentation <https://cloud.google.com/speech-to-text/docs/enhanced-models>`__
                describes which models have enhanced variants.
-
-            -  If the API caller isn't eligible for enhanced models,
-               Dialogflow returns an error. Please see the `Dialogflow
-               docs <https://cloud.google.com/dialogflow/docs/data-logging>`__
-               for how to make your project eligible.
     """
     SPEECH_MODEL_VARIANT_UNSPECIFIED = 0
     USE_BEST_AVAILABLE = 1
@@ -333,25 +324,8 @@ class InputAudioConfig(proto.Message):
             for more details.
         model (str):
             Optional. Which Speech model to select for the given
-            request. Select the model best suited to your domain to get
-            best results. If a model is not explicitly specified, then
-            Dialogflow auto-selects a model based on other parameters in
-            the InputAudioConfig and Agent settings. If enhanced speech
-            model is enabled for the agent and an enhanced version of
-            the specified model for the language does not exist, then
-            the speech is recognized using the standard version of the
-            specified model. Refer to `Cloud Speech API
-            documentation <https://cloud.google.com/speech-to-text/docs/basics#select-model>`__
-            for more details. If you specify a model, the following
-            models typically have the best performance:
-
-            -  phone_call (best for Agent Assist and telephony)
-            -  latest_short (best for Dialogflow non-telephony)
-            -  command_and_search
-
-            Leave this field unspecified to use `Agent Speech
-            settings <https://cloud.google.com/dialogflow/cx/docs/concept/agent#settings-speech>`__
-            for model selection.
+            request. For more information, see `Speech
+            models <https://cloud.google.com/dialogflow/cx/docs/concept/speech-models>`__.
         model_variant (google.cloud.dialogflowcx_v3beta1.types.SpeechModelVariant):
             Optional. Which variant of the [Speech
             model][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.model]
@@ -368,6 +342,12 @@ class InputAudioConfig(proto.Message):
         barge_in_config (google.cloud.dialogflowcx_v3beta1.types.BargeInConfig):
             Configuration of barge-in behavior during the
             streaming of input audio.
+        opt_out_conformer_model_migration (bool):
+            If ``true``, the request will opt out for STT conformer
+            model migration. This field will be deprecated once force
+            migration takes place in June 2024. Please refer to
+            `Dialogflow CX Speech model
+            migration <https://cloud.google.com/dialogflow/cx/docs/concept/speech-model-migration>`__.
     """
 
     audio_encoding: "AudioEncoding" = proto.Field(
@@ -404,6 +384,10 @@ class InputAudioConfig(proto.Message):
         proto.MESSAGE,
         number=15,
         message="BargeInConfig",
+    )
+    opt_out_conformer_model_migration: bool = proto.Field(
+        proto.BOOL,
+        number=26,
     )
 
 

@@ -25,6 +25,7 @@ __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3beta1",
     manifest={
         "GenerativeSettings",
+        "LlmModelSettings",
     },
 )
 
@@ -44,6 +45,8 @@ class GenerativeSettings(proto.Message):
             Settings for knowledge connector.
         language_code (str):
             Language for this settings.
+        llm_model_settings (google.cloud.dialogflowcx_v3beta1.types.LlmModelSettings):
+            LLM model settings.
     """
 
     class FallbackSettings(proto.Message):
@@ -125,6 +128,11 @@ class GenerativeSettings(proto.Message):
                 Agent scope, e.g. "Example company website",
                 "internal Example company website for
                 employees", "manual of car owner".
+            disable_data_store_fallback (bool):
+                Whether to disable fallback to Data Store
+                search results (in case the LLM couldn't pick a
+                proper answer). Per default the feature is
+                enabled.
         """
 
         business: str = proto.Field(
@@ -146,6 +154,10 @@ class GenerativeSettings(proto.Message):
         agent_scope: str = proto.Field(
             proto.STRING,
             number=5,
+        )
+        disable_data_store_fallback: bool = proto.Field(
+            proto.BOOL,
+            number=8,
         )
 
     name: str = proto.Field(
@@ -170,6 +182,31 @@ class GenerativeSettings(proto.Message):
     language_code: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    llm_model_settings: "LlmModelSettings" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="LlmModelSettings",
+    )
+
+
+class LlmModelSettings(proto.Message):
+    r"""Settings for LLM models.
+
+    Attributes:
+        model (str):
+            The selected LLM model.
+        prompt_text (str):
+            The custom prompt to use.
+    """
+
+    model: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    prompt_text: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

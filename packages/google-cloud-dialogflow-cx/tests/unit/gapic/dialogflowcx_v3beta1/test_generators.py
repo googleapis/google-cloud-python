@@ -51,6 +51,7 @@ from google.cloud.dialogflowcx_v3beta1.services.generators import (
     pagers,
     transports,
 )
+from google.cloud.dialogflowcx_v3beta1.types import generative_settings
 from google.cloud.dialogflowcx_v3beta1.types import generator
 from google.cloud.dialogflowcx_v3beta1.types import generator as gcdc_generator
 
@@ -3086,6 +3087,10 @@ def test_create_generator_rest(request_type):
         "display_name": "display_name_value",
         "prompt_text": {"text": "text_value"},
         "placeholders": [{"id": "id_value", "name": "name_value"}],
+        "llm_model_settings": {
+            "model": "model_value",
+            "prompt_text": "prompt_text_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3449,6 +3454,10 @@ def test_update_generator_rest(request_type):
         "display_name": "display_name_value",
         "prompt_text": {"text": "text_value"},
         "placeholders": [{"id": "id_value", "name": "name_value"}],
+        "llm_model_settings": {
+            "model": "model_value",
+            "prompt_text": "prompt_text_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

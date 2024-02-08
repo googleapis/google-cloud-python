@@ -1524,6 +1524,7 @@ def test_get_agent(request_type, transport: str = "grpc"):
             description="description_value",
             avatar_uri="avatar_uri_value",
             start_flow="start_flow_value",
+            start_playbook="start_playbook_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
@@ -1546,6 +1547,7 @@ def test_get_agent(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
     assert response.start_flow == "start_flow_value"
+    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -1594,6 +1596,7 @@ async def test_get_agent_async(
                 description="description_value",
                 avatar_uri="avatar_uri_value",
                 start_flow="start_flow_value",
+                start_playbook="start_playbook_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -1617,6 +1620,7 @@ async def test_get_agent_async(
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
     assert response.start_flow == "start_flow_value"
+    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -1796,6 +1800,7 @@ def test_create_agent(request_type, transport: str = "grpc"):
             description="description_value",
             avatar_uri="avatar_uri_value",
             start_flow="start_flow_value",
+            start_playbook="start_playbook_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
@@ -1818,6 +1823,7 @@ def test_create_agent(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
     assert response.start_flow == "start_flow_value"
+    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -1866,6 +1872,7 @@ async def test_create_agent_async(
                 description="description_value",
                 avatar_uri="avatar_uri_value",
                 start_flow="start_flow_value",
+                start_playbook="start_playbook_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -1889,6 +1896,7 @@ async def test_create_agent_async(
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
     assert response.start_flow == "start_flow_value"
+    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -2078,6 +2086,7 @@ def test_update_agent(request_type, transport: str = "grpc"):
             description="description_value",
             avatar_uri="avatar_uri_value",
             start_flow="start_flow_value",
+            start_playbook="start_playbook_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
@@ -2100,6 +2109,7 @@ def test_update_agent(request_type, transport: str = "grpc"):
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
     assert response.start_flow == "start_flow_value"
+    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -2148,6 +2158,7 @@ async def test_update_agent_async(
                 description="description_value",
                 avatar_uri="avatar_uri_value",
                 start_flow="start_flow_value",
+                start_playbook="start_playbook_value",
                 security_settings="security_settings_value",
                 enable_stackdriver_logging=True,
                 enable_spell_correction=True,
@@ -2171,6 +2182,7 @@ async def test_update_agent_async(
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
     assert response.start_flow == "start_flow_value"
+    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -4127,6 +4139,7 @@ def test_get_agent_rest(request_type):
             description="description_value",
             avatar_uri="avatar_uri_value",
             start_flow="start_flow_value",
+            start_playbook="start_playbook_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
@@ -4154,6 +4167,7 @@ def test_get_agent_rest(request_type):
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
     assert response.start_flow == "start_flow_value"
+    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -4411,6 +4425,7 @@ def test_create_agent_rest(request_type):
         "avatar_uri": "avatar_uri_value",
         "speech_to_text_settings": {"enable_speech_adaptation": True},
         "start_flow": "start_flow_value",
+        "start_playbook": "start_playbook_value",
         "security_settings": "security_settings_value",
         "enable_stackdriver_logging": True,
         "enable_spell_correction": True,
@@ -4521,6 +4536,7 @@ def test_create_agent_rest(request_type):
             description="description_value",
             avatar_uri="avatar_uri_value",
             start_flow="start_flow_value",
+            start_playbook="start_playbook_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
@@ -4548,6 +4564,7 @@ def test_create_agent_rest(request_type):
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
     assert response.start_flow == "start_flow_value"
+    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -4818,6 +4835,7 @@ def test_update_agent_rest(request_type):
         "avatar_uri": "avatar_uri_value",
         "speech_to_text_settings": {"enable_speech_adaptation": True},
         "start_flow": "start_flow_value",
+        "start_playbook": "start_playbook_value",
         "security_settings": "security_settings_value",
         "enable_stackdriver_logging": True,
         "enable_spell_correction": True,
@@ -4928,6 +4946,7 @@ def test_update_agent_rest(request_type):
             description="description_value",
             avatar_uri="avatar_uri_value",
             start_flow="start_flow_value",
+            start_playbook="start_playbook_value",
             security_settings="security_settings_value",
             enable_stackdriver_logging=True,
             enable_spell_correction=True,
@@ -4955,6 +4974,7 @@ def test_update_agent_rest(request_type):
     assert response.description == "description_value"
     assert response.avatar_uri == "avatar_uri_value"
     assert response.start_flow == "start_flow_value"
+    assert response.start_playbook == "start_playbook_value"
     assert response.security_settings == "security_settings_value"
     assert response.enable_stackdriver_logging is True
     assert response.enable_spell_correction is True
@@ -6671,8 +6691,13 @@ def test_update_generative_settings_rest(request_type):
             "agent_identity": "agent_identity_value",
             "business_description": "business_description_value",
             "agent_scope": "agent_scope_value",
+            "disable_data_store_fallback": True,
         },
         "language_code": "language_code_value",
+        "llm_model_settings": {
+            "model": "model_value",
+            "prompt_text": "prompt_text_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -7809,10 +7834,39 @@ def test_parse_flow_validation_result_path():
     assert expected == actual
 
 
-def test_security_settings_path():
+def test_playbook_path():
     project = "cuttlefish"
     location = "mussel"
-    security_settings = "winkle"
+    agent = "winkle"
+    playbook = "nautilus"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}".format(
+        project=project,
+        location=location,
+        agent=agent,
+        playbook=playbook,
+    )
+    actual = AgentsClient.playbook_path(project, location, agent, playbook)
+    assert expected == actual
+
+
+def test_parse_playbook_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "agent": "squid",
+        "playbook": "clam",
+    }
+    path = AgentsClient.playbook_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = AgentsClient.parse_playbook_path(path)
+    assert expected == actual
+
+
+def test_security_settings_path():
+    project = "whelk"
+    location = "octopus"
+    security_settings = "oyster"
     expected = "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
         project=project,
         location=location,
@@ -7824,9 +7878,9 @@ def test_security_settings_path():
 
 def test_parse_security_settings_path():
     expected = {
-        "project": "nautilus",
-        "location": "scallop",
-        "security_settings": "abalone",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "security_settings": "mussel",
     }
     path = AgentsClient.security_settings_path(**expected)
 
@@ -7836,7 +7890,7 @@ def test_parse_security_settings_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -7846,7 +7900,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nautilus",
     }
     path = AgentsClient.common_billing_account_path(**expected)
 
@@ -7856,7 +7910,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -7866,7 +7920,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "abalone",
     }
     path = AgentsClient.common_folder_path(**expected)
 
@@ -7876,7 +7930,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -7886,7 +7940,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "clam",
     }
     path = AgentsClient.common_organization_path(**expected)
 
@@ -7896,7 +7950,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -7906,7 +7960,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "octopus",
     }
     path = AgentsClient.common_project_path(**expected)
 
@@ -7916,8 +7970,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -7928,8 +7982,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = AgentsClient.common_location_path(**expected)
 

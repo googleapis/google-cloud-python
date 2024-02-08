@@ -25,14 +25,20 @@ from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dialogflowcx_v3beta1.types import (
+    audio_config,
+    example,
+    flow,
+    generative_settings,
+)
+from google.cloud.dialogflowcx_v3beta1.types import (
     page,
     response_message,
     session_entity_type,
+    tool_call,
 )
 from google.cloud.dialogflowcx_v3beta1.types import (
     advanced_settings as gcdc_advanced_settings,
 )
-from google.cloud.dialogflowcx_v3beta1.types import audio_config
 from google.cloud.dialogflowcx_v3beta1.types import intent as gcdc_intent
 
 __protobuf__ = proto.module(
@@ -52,6 +58,7 @@ __protobuf__ = proto.module(
         "BoostSpecs",
         "FilterSpecs",
         "QueryInput",
+        "GenerativeInfo",
         "QueryResult",
         "TextInput",
         "IntentInput",
@@ -742,14 +749,14 @@ class StreamingRecognitionResult(proto.Message):
                 Message contains a (possibly partial)
                 transcript.
             END_OF_SINGLE_UTTERANCE (2):
-                Event indicates that the server has detected the end of the
-                user's speech utterance and expects no additional speech.
-                Therefore, the server will not process additional audio
-                (although it may subsequently return additional results).
-                The client should stop sending additional audio data,
-                half-close the gRPC connection, and wait for any additional
-                results until the server closes the gRPC connection. This
-                message is only sent if
+                This event indicates that the server has detected the end of
+                the user's speech utterance and expects no additional
+                speech. Therefore, the server will not process additional
+                audio (although it may subsequently return additional
+                results). The client should stop sending additional audio
+                data, half-close the gRPC connection, and wait for any
+                additional results until the server closes the gRPC
+                connection. This message is only sent if
                 [``single_utterance``][google.cloud.dialogflow.cx.v3beta1.InputAudioConfig.single_utterance]
                 was set to ``true``, and is not used otherwise.
         """
@@ -896,6 +903,17 @@ class QueryParameters(proto.Message):
             of flow X will go through version 1 regardless of the
             version configuration in the environment. Each flow can have
             at most one version specified in this list.
+        current_playbook (str):
+            Optional. Start the session with the specified
+            [playbook][google.cloud.dialogflow.cx.v3beta1.Playbook]. You
+            can only specify the playbook at the beginning of the
+            session. Otherwise, an error will be thrown.
+
+            Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+        llm_model_settings (google.cloud.dialogflowcx_v3beta1.types.LlmModelSettings):
+            Optional. Use the specified LLM model
+            settings for processing the request.
         channel (str):
             The channel which this query is for.
 
@@ -911,11 +929,12 @@ class QueryParameters(proto.Message):
             [ResponseMessage][google.cloud.dialogflow.cx.v3beta1.ResponseMessage]
             with unspecified channel will be returned.
         session_ttl (google.protobuf.duration_pb2.Duration):
-            Optional. Sets Dialogflow session life time.
-            By default, a Dialogflow session remains active
-            and its data is stored for 30 minutes after the
-            last request is sent for the session. This value
-            should be no longer than 1 day.
+            Optional. Configure lifetime of the
+            Dialogflow session. By default, a Dialogflow
+            session remains active and its data is stored
+            for 30 minutes after the last request is sent
+            for the session. This value should be no longer
+            than 1 day.
         end_user_metadata (google.protobuf.struct_pb2.Struct):
             Optional. Information about the end-user to improve the
             relevance and accuracy of generative answers.
@@ -986,6 +1005,15 @@ class QueryParameters(proto.Message):
     flow_versions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=14,
+    )
+    current_playbook: str = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    llm_model_settings: generative_settings.LlmModelSettings = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=generative_settings.LlmModelSettings,
     )
     channel: str = proto.Field(
         proto.STRING,
@@ -1163,6 +1191,8 @@ class QueryInput(proto.Message):
 
     5. DTMF digits to invoke an intent and fill in parameter value.
 
+    6. The results of a tool executed by the client.
+
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
     Setting any member of the oneof automatically clears all other
@@ -1190,6 +1220,10 @@ class QueryInput(proto.Message):
             This field is a member of `oneof`_ ``input``.
         dtmf (google.cloud.dialogflowcx_v3beta1.types.DtmfInput):
             The DTMF event to be handled.
+
+            This field is a member of `oneof`_ ``input``.
+        tool_call_result (google.cloud.dialogflowcx_v3beta1.types.ToolCallResult):
+            The results of a tool executed by the client.
 
             This field is a member of `oneof`_ ``input``.
         language_code (str):
@@ -1230,9 +1264,41 @@ class QueryInput(proto.Message):
         oneof="input",
         message="DtmfInput",
     )
+    tool_call_result: tool_call.ToolCallResult = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="input",
+        message=tool_call.ToolCallResult,
+    )
     language_code: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+
+
+class GenerativeInfo(proto.Message):
+    r"""Represents the information of a query if handled by
+    generative agent resources.
+
+    Attributes:
+        current_playbooks (MutableSequence[str]):
+            The stack of
+            [playbooks][google.cloud.dialogflow.cx.v3beta1.Playbook]
+            that the conversation has currently entered, with the most
+            recent one on the top.
+        action_tracing_info (google.cloud.dialogflowcx_v3beta1.types.Example):
+            The actions performed by the generative
+            playbook for the current agent response.
+    """
+
+    current_playbooks: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    action_tracing_info: example.Example = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=example.Example,
     )
 
 
@@ -1309,6 +1375,18 @@ class QueryResult(proto.Message):
             client. Responses vary from simple text messages
             to more sophisticated, structured payloads used
             to drive complex logic.
+        webhook_ids (MutableSequence[str]):
+            The list of webhook ids in the order of call
+            sequence.
+        webhook_display_names (MutableSequence[str]):
+            The list of webhook display names in the
+            order of call sequence.
+        webhook_latencies (MutableSequence[google.protobuf.duration_pb2.Duration]):
+            The list of webhook latencies in the order of
+            call sequence.
+        webhook_tags (MutableSequence[str]):
+            The list of webhook tags in the order of call
+            sequence.
         webhook_statuses (MutableSequence[google.rpc.status_pb2.Status]):
             The list of webhook call status in the order
             of call sequence.
@@ -1320,6 +1398,10 @@ class QueryResult(proto.Message):
             used instead.
         current_page (google.cloud.dialogflowcx_v3beta1.types.Page):
             The current [Page][google.cloud.dialogflow.cx.v3beta1.Page].
+            Some, not all fields are filled in this message, including
+            but not limited to ``name`` and ``display_name``.
+        current_flow (google.cloud.dialogflowcx_v3beta1.types.Flow):
+            The current [Flow][google.cloud.dialogflow.cx.v3beta1.Flow].
             Some, not all fields are filled in this message, including
             but not limited to ``name`` and ``display_name``.
         intent (google.cloud.dialogflowcx_v3beta1.types.Intent):
@@ -1365,6 +1447,9 @@ class QueryResult(proto.Message):
                are included.
             -  Other intents referenced by intent routes in scope that
                matched end-user input, but had a lower confidence score.
+        generative_info (google.cloud.dialogflowcx_v3beta1.types.GenerativeInfo):
+            The information of a query if handled by
+            generative agent resources.
         sentiment_analysis_result (google.cloud.dialogflowcx_v3beta1.types.SentimentAnalysisResult):
             The sentiment analyss result, which depends on
             [``analyze_query_text_sentiment``]
@@ -1428,6 +1513,23 @@ class QueryResult(proto.Message):
         number=4,
         message=response_message.ResponseMessage,
     )
+    webhook_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=25,
+    )
+    webhook_display_names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=26,
+    )
+    webhook_latencies: MutableSequence[duration_pb2.Duration] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=27,
+        message=duration_pb2.Duration,
+    )
+    webhook_tags: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=29,
+    )
     webhook_statuses: MutableSequence[status_pb2.Status] = proto.RepeatedField(
         proto.MESSAGE,
         number=13,
@@ -1442,6 +1544,11 @@ class QueryResult(proto.Message):
         proto.MESSAGE,
         number=7,
         message=page.Page,
+    )
+    current_flow: flow.Flow = proto.Field(
+        proto.MESSAGE,
+        number=31,
+        message=flow.Flow,
     )
     intent: gcdc_intent.Intent = proto.Field(
         proto.MESSAGE,
@@ -1461,6 +1568,11 @@ class QueryResult(proto.Message):
         proto.MESSAGE,
         number=10,
         message=struct_pb2.Struct,
+    )
+    generative_info: "GenerativeInfo" = proto.Field(
+        proto.MESSAGE,
+        number=33,
+        message="GenerativeInfo",
     )
     sentiment_analysis_result: "SentimentAnalysisResult" = proto.Field(
         proto.MESSAGE,
@@ -1484,8 +1596,7 @@ class TextInput(proto.Message):
     Attributes:
         text (str):
             Required. The UTF-8 encoded natural language
-            text to be processed. Text length must not
-            exceed 256 characters.
+            text to be processed.
     """
 
     text: str = proto.Field(

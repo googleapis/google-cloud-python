@@ -122,11 +122,26 @@ class Agent(proto.Message):
         speech_to_text_settings (google.cloud.dialogflowcx_v3beta1.types.SpeechToTextSettings):
             Speech recognition related settings.
         start_flow (str):
-            Immutable. Name of the start flow in this agent. A start
-            flow will be automatically created when the agent is
+            Optional. Name of the start flow in this agent. A start flow
+            will be automatically created when the agent is created, and
+            can only be deleted by deleting the agent. Format:
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            Currently only the default start flow with id
+            "00000000-0000-0000-0000-000000000000" is allowed.
+
+            Only one of ``start_flow`` or ``start_playbook`` should be
+            set, but not both.
+        start_playbook (str):
+            Optional. Name of the start playbook in this agent. A start
+            playbook will be automatically created when the agent is
             created, and can only be deleted by deleting the agent.
             Format:
-            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>``.
+            ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/playbooks/<Playbook ID>``.
+            Currently only the default playbook with id
+            "00000000-0000-0000-0000-000000000000" is allowed.
+
+            Only one of ``start_flow`` or ``start_playbook`` should be
+            set, but not both.
         security_settings (str):
             Name of the
             [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings]
@@ -293,6 +308,10 @@ class Agent(proto.Message):
     start_flow: str = proto.Field(
         proto.STRING,
         number=16,
+    )
+    start_playbook: str = proto.Field(
+        proto.STRING,
+        number=39,
     )
     security_settings: str = proto.Field(
         proto.STRING,
