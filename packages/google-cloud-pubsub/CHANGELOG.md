@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.19.4](https://github.com/googleapis/python-pubsub/compare/v2.19.3...v2.19.4) (2024-02-09)
+
+
+### Bug Fixes
+
+* **diregapic:** S/bazel/bazelisk/ in DIREGAPIC build GitHub action ([#1064](https://github.com/googleapis/python-pubsub/issues/1064)) ([d56ad12](https://github.com/googleapis/python-pubsub/commit/d56ad12f197e9e379d2a4a0a38be108808985c23))
+
 ## [2.19.3](https://github.com/googleapis/python-pubsub/compare/v2.19.2...v2.19.3) (2024-02-08)
 
 
