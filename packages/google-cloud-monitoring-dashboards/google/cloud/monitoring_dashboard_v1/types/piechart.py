@@ -17,16 +17,15 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import metrics
-from google.protobuf import duration_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
-    package='google.monitoring.dashboard.v1',
+    package="google.monitoring.dashboard.v1",
     manifest={
-        'PieChart',
+        "PieChart",
     },
 )
 
@@ -44,6 +43,7 @@ class PieChart(proto.Message):
             Optional. Indicates whether or not the pie
             chart should show slices' labels
     """
+
     class PieChartType(proto.Enum):
         r"""Types for the pie chart.
 

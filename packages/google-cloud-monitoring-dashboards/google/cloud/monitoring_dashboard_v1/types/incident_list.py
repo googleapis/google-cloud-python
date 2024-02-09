@@ -17,15 +17,13 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.api import monitored_resource_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.api import monitored_resource_pb2  # type: ignore
-
-
 __protobuf__ = proto.module(
-    package='google.monitoring.dashboard.v1',
+    package="google.monitoring.dashboard.v1",
     manifest={
-        'IncidentList',
+        "IncidentList",
     },
 )
 
@@ -47,7 +45,9 @@ class IncidentList(proto.Message):
             policy name. For example, use ``alertPolicies/utilization``.
     """
 
-    monitored_resources: MutableSequence[monitored_resource_pb2.MonitoredResource] = proto.RepeatedField(
+    monitored_resources: MutableSequence[
+        monitored_resource_pb2.MonitoredResource
+    ] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message=monitored_resource_pb2.MonitoredResource,

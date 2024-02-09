@@ -26,6 +26,7 @@ from collections.abc import Iterable
 import json
 import math
 
+from google.api import monitored_resource_pb2  # type: ignore
 from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import api_core_version, client_options
 from google.api_core import exceptions as core_exceptions
@@ -36,6 +37,8 @@ from google.oauth2 import service_account
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import json_format
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import interval_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
 from proto.marshal.rules import wrappers
@@ -54,19 +57,27 @@ from google.cloud.monitoring_dashboard_v1.types import (
     alertchart,
     collapsible_group,
     common,
-    dashboard,
+)
+from google.cloud.monitoring_dashboard_v1.types import (
     dashboard_filter,
     dashboards_service,
+    error_reporting_panel,
+    incident_list,
     layouts,
     logs_panel,
     metrics,
+    piechart,
     scorecard,
+    section_header,
+    single_view_group,
     table,
     table_display_options,
     text,
     widget,
     xychart,
 )
+from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
+from google.cloud.monitoring_dashboard_v1.types import dashboard
 
 
 def client_cert_source_callback():
@@ -1197,7 +1208,7 @@ def test_create_dashboard(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dashboard), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = dashboard.Dashboard(
+        call.return_value = gmd_dashboard.Dashboard(
             name="name_value",
             display_name="display_name_value",
             etag="etag_value",
@@ -1210,7 +1221,7 @@ def test_create_dashboard(request_type, transport: str = "grpc"):
         assert args[0] == dashboards_service.CreateDashboardRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, dashboard.Dashboard)
+    assert isinstance(response, gmd_dashboard.Dashboard)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
@@ -1250,7 +1261,7 @@ async def test_create_dashboard_async(
     with mock.patch.object(type(client.transport.create_dashboard), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            dashboard.Dashboard(
+            gmd_dashboard.Dashboard(
                 name="name_value",
                 display_name="display_name_value",
                 etag="etag_value",
@@ -1264,7 +1275,7 @@ async def test_create_dashboard_async(
         assert args[0] == dashboards_service.CreateDashboardRequest()
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, dashboard.Dashboard)
+    assert isinstance(response, gmd_dashboard.Dashboard)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
@@ -1288,7 +1299,7 @@ def test_create_dashboard_field_headers():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dashboard), "__call__") as call:
-        call.return_value = dashboard.Dashboard()
+        call.return_value = gmd_dashboard.Dashboard()
         client.create_dashboard(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1318,7 +1329,9 @@ async def test_create_dashboard_field_headers_async():
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dashboard), "__call__") as call:
-        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(dashboard.Dashboard())
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gmd_dashboard.Dashboard()
+        )
         await client.create_dashboard(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1332,6 +1345,98 @@ async def test_create_dashboard_field_headers_async():
         "x-goog-request-params",
         "parent=parent_value",
     ) in kw["metadata"]
+
+
+def test_create_dashboard_flattened():
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_dashboard), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gmd_dashboard.Dashboard()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_dashboard(
+            parent="parent_value",
+            dashboard=gmd_dashboard.Dashboard(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].dashboard
+        mock_val = gmd_dashboard.Dashboard(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_dashboard_flattened_error():
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_dashboard(
+            dashboards_service.CreateDashboardRequest(),
+            parent="parent_value",
+            dashboard=gmd_dashboard.Dashboard(name="name_value"),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_dashboard_flattened_async():
+    client = DashboardsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_dashboard), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = gmd_dashboard.Dashboard()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gmd_dashboard.Dashboard()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_dashboard(
+            parent="parent_value",
+            dashboard=gmd_dashboard.Dashboard(name="name_value"),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].dashboard
+        mock_val = gmd_dashboard.Dashboard(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_dashboard_flattened_error_async():
+    client = DashboardsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_dashboard(
+            dashboards_service.CreateDashboardRequest(),
+            parent="parent_value",
+            dashboard=gmd_dashboard.Dashboard(name="name_value"),
+        )
 
 
 @pytest.mark.parametrize(
@@ -1483,6 +1588,88 @@ async def test_list_dashboards_field_headers_async():
         "x-goog-request-params",
         "parent=parent_value",
     ) in kw["metadata"]
+
+
+def test_list_dashboards_flattened():
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_dashboards), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dashboards_service.ListDashboardsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_dashboards(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_dashboards_flattened_error():
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_dashboards(
+            dashboards_service.ListDashboardsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_dashboards_flattened_async():
+    client = DashboardsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_dashboards), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dashboards_service.ListDashboardsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dashboards_service.ListDashboardsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_dashboards(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_dashboards_flattened_error_async():
+    client = DashboardsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_dashboards(
+            dashboards_service.ListDashboardsRequest(),
+            parent="parent_value",
+        )
 
 
 def test_list_dashboards_pager(transport_name: str = "grpc"):
@@ -1831,6 +2018,86 @@ async def test_get_dashboard_field_headers_async():
     ) in kw["metadata"]
 
 
+def test_get_dashboard_flattened():
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_dashboard), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dashboard.Dashboard()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_dashboard(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_dashboard_flattened_error():
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_dashboard(
+            dashboards_service.GetDashboardRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_dashboard_flattened_async():
+    client = DashboardsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_dashboard), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = dashboard.Dashboard()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(dashboard.Dashboard())
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_dashboard(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_dashboard_flattened_error_async():
+    client = DashboardsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_dashboard(
+            dashboards_service.GetDashboardRequest(),
+            name="name_value",
+        )
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -1970,6 +2237,86 @@ async def test_delete_dashboard_field_headers_async():
         "x-goog-request-params",
         "name=name_value",
     ) in kw["metadata"]
+
+
+def test_delete_dashboard_flattened():
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dashboard), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_dashboard(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_dashboard_flattened_error():
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_dashboard(
+            dashboards_service.DeleteDashboardRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_dashboard_flattened_async():
+    client = DashboardsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dashboard), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_dashboard(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_dashboard_flattened_error_async():
+    client = DashboardsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_dashboard(
+            dashboards_service.DeleteDashboardRequest(),
+            name="name_value",
+        )
 
 
 @pytest.mark.parametrize(
@@ -2176,6 +2523,13 @@ def test_create_dashboard_rest(request_type):
                                             "ranking_method": 1,
                                             "num_time_series": 1608,
                                             "direction": 1,
+                                            "interval": {
+                                                "start_time": {
+                                                    "seconds": 751,
+                                                    "nanos": 543,
+                                                },
+                                                "end_time": {},
+                                            },
                                         },
                                         "statistical_time_series_filter": {
                                             "ranking_method": 1,
@@ -2195,6 +2549,7 @@ def test_create_dashboard_rest(request_type):
                                     "time_series_query_language": "time_series_query_language_value",
                                     "prometheus_query": "prometheus_query_value",
                                     "unit_override": "unit_override_value",
+                                    "output_full_duration": True,
                                 },
                                 "plot_type": 1,
                                 "legend_template": "legend_template_value",
@@ -2224,9 +2579,22 @@ def test_create_dashboard_rest(request_type):
                             "spark_chart_type": 1,
                             "min_alignment_period": {},
                         },
+                        "blank_view": {},
                         "thresholds": {},
                     },
-                    "text": {"content": "content_value", "format_": 1},
+                    "text": {
+                        "content": "content_value",
+                        "format_": 1,
+                        "style": {
+                            "background_color": "background_color_value",
+                            "text_color": "text_color_value",
+                            "horizontal_alignment": 1,
+                            "vertical_alignment": 1,
+                            "padding": 1,
+                            "font_size": 1,
+                            "pointer_location": 1,
+                        },
+                    },
                     "blank": {},
                     "alert_chart": {"name": "name_value"},
                     "time_series_table": {
@@ -2256,6 +2624,35 @@ def test_create_dashboard_rest(request_type):
                             "resource_names_value2",
                         ],
                     },
+                    "incident_list": {
+                        "monitored_resources": [{"type": "type_value", "labels": {}}],
+                        "policy_names": ["policy_names_value1", "policy_names_value2"],
+                    },
+                    "pie_chart": {
+                        "data_sets": [
+                            {
+                                "time_series_query": {},
+                                "slice_name_template": "slice_name_template_value",
+                                "min_alignment_period": {},
+                            }
+                        ],
+                        "chart_type": 1,
+                        "show_labels": True,
+                    },
+                    "error_reporting_panel": {
+                        "project_names": [
+                            "project_names_value1",
+                            "project_names_value2",
+                        ],
+                        "services": ["services_value1", "services_value2"],
+                        "versions": ["versions_value1", "versions_value2"],
+                    },
+                    "section_header": {
+                        "subtitle": "subtitle_value",
+                        "divider_below": True,
+                    },
+                    "single_view_group": {},
+                    "id": "id_value",
                 }
             ],
         },
@@ -2349,7 +2746,7 @@ def test_create_dashboard_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = dashboard.Dashboard(
+        return_value = gmd_dashboard.Dashboard(
             name="name_value",
             display_name="display_name_value",
             etag="etag_value",
@@ -2359,7 +2756,7 @@ def test_create_dashboard_rest(request_type):
         response_value = Response()
         response_value.status_code = 200
         # Convert return value to protobuf type
-        return_value = dashboard.Dashboard.pb(return_value)
+        return_value = gmd_dashboard.Dashboard.pb(return_value)
         json_return_value = json_format.MessageToJson(return_value)
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -2367,7 +2764,7 @@ def test_create_dashboard_rest(request_type):
         response = client.create_dashboard(request)
 
     # Establish that the response is the type that we expect.
-    assert isinstance(response, dashboard.Dashboard)
+    assert isinstance(response, gmd_dashboard.Dashboard)
     assert response.name == "name_value"
     assert response.display_name == "display_name_value"
     assert response.etag == "etag_value"
@@ -2419,7 +2816,7 @@ def test_create_dashboard_rest_required_fields(
     request = request_type(**request_init)
 
     # Designate an appropriate value for the returned response.
-    return_value = dashboard.Dashboard()
+    return_value = gmd_dashboard.Dashboard()
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(Session, "request") as req:
         # We need to mock transcode() because providing default values
@@ -2441,7 +2838,7 @@ def test_create_dashboard_rest_required_fields(
             response_value.status_code = 200
 
             # Convert return value to protobuf type
-            return_value = dashboard.Dashboard.pb(return_value)
+            return_value = gmd_dashboard.Dashboard.pb(return_value)
             json_return_value = json_format.MessageToJson(return_value)
 
             response_value._content = json_return_value.encode("UTF-8")
@@ -2504,7 +2901,9 @@ def test_create_dashboard_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = dashboard.Dashboard.to_json(dashboard.Dashboard())
+        req.return_value._content = gmd_dashboard.Dashboard.to_json(
+            gmd_dashboard.Dashboard()
+        )
 
         request = dashboards_service.CreateDashboardRequest()
         metadata = [
@@ -2512,7 +2911,7 @@ def test_create_dashboard_rest_interceptors(null_interceptor):
             ("cephalopod", "squid"),
         ]
         pre.return_value = request, metadata
-        post.return_value = dashboard.Dashboard()
+        post.return_value = gmd_dashboard.Dashboard()
 
         client.create_dashboard(
             request,
@@ -2548,6 +2947,63 @@ def test_create_dashboard_rest_bad_request(
         response_value.request = Request()
         req.return_value = response_value
         client.create_dashboard(request)
+
+
+def test_create_dashboard_rest_flattened():
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = gmd_dashboard.Dashboard()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+            dashboard=gmd_dashboard.Dashboard(name="name_value"),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = gmd_dashboard.Dashboard.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.create_dashboard(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*}/dashboards" % client.transport._host, args[1]
+        )
+
+
+def test_create_dashboard_rest_flattened_error(transport: str = "rest"):
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_dashboard(
+            dashboards_service.CreateDashboardRequest(),
+            parent="parent_value",
+            dashboard=gmd_dashboard.Dashboard(name="name_value"),
+        )
 
 
 def test_create_dashboard_rest_error():
@@ -2777,6 +3233,61 @@ def test_list_dashboards_rest_bad_request(
         response_value.request = Request()
         req.return_value = response_value
         client.list_dashboards(request)
+
+
+def test_list_dashboards_rest_flattened():
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dashboards_service.ListDashboardsResponse()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"parent": "projects/sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            parent="parent_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dashboards_service.ListDashboardsResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.list_dashboards(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{parent=projects/*}/dashboards" % client.transport._host, args[1]
+        )
+
+
+def test_list_dashboards_rest_flattened_error(transport: str = "rest"):
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_dashboards(
+            dashboards_service.ListDashboardsRequest(),
+            parent="parent_value",
+        )
 
 
 def test_list_dashboards_rest_pager(transport: str = "rest"):
@@ -3052,6 +3563,61 @@ def test_get_dashboard_rest_bad_request(
         client.get_dashboard(request)
 
 
+def test_get_dashboard_rest_flattened():
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = dashboard.Dashboard()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/dashboards/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = dashboard.Dashboard.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.get_dashboard(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/dashboards/*}" % client.transport._host, args[1]
+        )
+
+
+def test_get_dashboard_rest_flattened_error(transport: str = "rest"):
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_dashboard(
+            dashboards_service.GetDashboardRequest(),
+            name="name_value",
+        )
+
+
 def test_get_dashboard_rest_error():
     client = DashboardsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -3250,6 +3816,59 @@ def test_delete_dashboard_rest_bad_request(
         client.delete_dashboard(request)
 
 
+def test_delete_dashboard_rest_flattened():
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = None
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/dashboards/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = ""
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_dashboard(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/dashboards/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_dashboard_rest_flattened_error(transport: str = "rest"):
+    client = DashboardsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_dashboard(
+            dashboards_service.DeleteDashboardRequest(),
+            name="name_value",
+        )
+
+
 def test_delete_dashboard_rest_error():
     client = DashboardsServiceClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
@@ -3303,6 +3922,13 @@ def test_update_dashboard_rest(request_type):
                                             "ranking_method": 1,
                                             "num_time_series": 1608,
                                             "direction": 1,
+                                            "interval": {
+                                                "start_time": {
+                                                    "seconds": 751,
+                                                    "nanos": 543,
+                                                },
+                                                "end_time": {},
+                                            },
                                         },
                                         "statistical_time_series_filter": {
                                             "ranking_method": 1,
@@ -3322,6 +3948,7 @@ def test_update_dashboard_rest(request_type):
                                     "time_series_query_language": "time_series_query_language_value",
                                     "prometheus_query": "prometheus_query_value",
                                     "unit_override": "unit_override_value",
+                                    "output_full_duration": True,
                                 },
                                 "plot_type": 1,
                                 "legend_template": "legend_template_value",
@@ -3351,9 +3978,22 @@ def test_update_dashboard_rest(request_type):
                             "spark_chart_type": 1,
                             "min_alignment_period": {},
                         },
+                        "blank_view": {},
                         "thresholds": {},
                     },
-                    "text": {"content": "content_value", "format_": 1},
+                    "text": {
+                        "content": "content_value",
+                        "format_": 1,
+                        "style": {
+                            "background_color": "background_color_value",
+                            "text_color": "text_color_value",
+                            "horizontal_alignment": 1,
+                            "vertical_alignment": 1,
+                            "padding": 1,
+                            "font_size": 1,
+                            "pointer_location": 1,
+                        },
+                    },
                     "blank": {},
                     "alert_chart": {"name": "name_value"},
                     "time_series_table": {
@@ -3383,6 +4023,35 @@ def test_update_dashboard_rest(request_type):
                             "resource_names_value2",
                         ],
                     },
+                    "incident_list": {
+                        "monitored_resources": [{"type": "type_value", "labels": {}}],
+                        "policy_names": ["policy_names_value1", "policy_names_value2"],
+                    },
+                    "pie_chart": {
+                        "data_sets": [
+                            {
+                                "time_series_query": {},
+                                "slice_name_template": "slice_name_template_value",
+                                "min_alignment_period": {},
+                            }
+                        ],
+                        "chart_type": 1,
+                        "show_labels": True,
+                    },
+                    "error_reporting_panel": {
+                        "project_names": [
+                            "project_names_value1",
+                            "project_names_value2",
+                        ],
+                        "services": ["services_value1", "services_value2"],
+                        "versions": ["versions_value1", "versions_value2"],
+                    },
+                    "section_header": {
+                        "subtitle": "subtitle_value",
+                        "divider_below": True,
+                    },
+                    "single_view_group": {},
+                    "id": "id_value",
                 }
             ],
         },

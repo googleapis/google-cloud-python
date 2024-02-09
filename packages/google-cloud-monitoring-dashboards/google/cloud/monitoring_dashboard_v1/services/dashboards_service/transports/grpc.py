@@ -23,7 +23,9 @@ from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
-from google.cloud.monitoring_dashboard_v1.types import dashboard, dashboards_service
+from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
+from google.cloud.monitoring_dashboard_v1.types import dashboard
+from google.cloud.monitoring_dashboard_v1.types import dashboards_service
 
 from .base import DEFAULT_CLIENT_INFO, DashboardsServiceTransport
 
@@ -233,7 +235,7 @@ class DashboardsServiceGrpcTransport(DashboardsServiceTransport):
     @property
     def create_dashboard(
         self,
-    ) -> Callable[[dashboards_service.CreateDashboardRequest], dashboard.Dashboard]:
+    ) -> Callable[[dashboards_service.CreateDashboardRequest], gmd_dashboard.Dashboard]:
         r"""Return a callable for the create dashboard method over gRPC.
 
         Creates a new custom dashboard. For examples on how you can use
@@ -258,7 +260,7 @@ class DashboardsServiceGrpcTransport(DashboardsServiceTransport):
             self._stubs["create_dashboard"] = self.grpc_channel.unary_unary(
                 "/google.monitoring.dashboard.v1.DashboardsService/CreateDashboard",
                 request_serializer=dashboards_service.CreateDashboardRequest.serialize,
-                response_deserializer=dashboard.Dashboard.deserialize,
+                response_deserializer=gmd_dashboard.Dashboard.deserialize,
             )
         return self._stubs["create_dashboard"]
 

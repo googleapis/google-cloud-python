@@ -44,11 +44,12 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.monitoring_dashboard_v1.services.dashboards_service import pagers
 from google.cloud.monitoring_dashboard_v1.types import (
-    dashboard,
     dashboard_filter,
     dashboards_service,
     layouts,
 )
+from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
+from google.cloud.monitoring_dashboard_v1.types import dashboard
 
 from .client import DashboardsServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, DashboardsServiceTransport
@@ -269,10 +270,12 @@ class DashboardsServiceAsyncClient:
             Union[dashboards_service.CreateDashboardRequest, dict]
         ] = None,
         *,
+        parent: Optional[str] = None,
+        dashboard: Optional[gmd_dashboard.Dashboard] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> dashboard.Dashboard:
+    ) -> gmd_dashboard.Dashboard:
         r"""Creates a new custom dashboard. For examples on how you can use
         this API to create dashboards, see `Managing dashboards by
         API <https://cloud.google.com/monitoring/dashboards/api-dashboard>`__.
@@ -314,6 +317,27 @@ class DashboardsServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest, dict]]):
                 The request object. The ``CreateDashboard`` request.
+            parent (:class:`str`):
+                Required. The project on which to execute the request.
+                The format is:
+
+                ::
+
+                    projects/[PROJECT_ID_OR_NUMBER]
+
+                The ``[PROJECT_ID_OR_NUMBER]`` must match the dashboard
+                resource name.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            dashboard (:class:`google.cloud.monitoring_dashboard_v1.types.Dashboard`):
+                Required. The initial dashboard
+                specification.
+
+                This corresponds to the ``dashboard`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -329,7 +353,23 @@ class DashboardsServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, dashboard])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         request = dashboards_service.CreateDashboardRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if dashboard is not None:
+            request.dashboard = dashboard
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -363,6 +403,7 @@ class DashboardsServiceAsyncClient:
         self,
         request: Optional[Union[dashboards_service.ListDashboardsRequest, dict]] = None,
         *,
+        parent: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -404,6 +445,17 @@ class DashboardsServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest, dict]]):
                 The request object. The ``ListDashboards`` request.
+            parent (:class:`str`):
+                Required. The scope of the dashboards to list. The
+                format is:
+
+                ::
+
+                    projects/[PROJECT_ID_OR_NUMBER]
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -419,7 +471,21 @@ class DashboardsServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         request = dashboards_service.ListDashboardsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -462,6 +528,7 @@ class DashboardsServiceAsyncClient:
         self,
         request: Optional[Union[dashboards_service.GetDashboardRequest, dict]] = None,
         *,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -502,6 +569,17 @@ class DashboardsServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.monitoring_dashboard_v1.types.GetDashboardRequest, dict]]):
                 The request object. The ``GetDashboard`` request.
+            name (:class:`str`):
+                Required. The resource name of the Dashboard. The format
+                is one of:
+
+                -  ``dashboards/[DASHBOARD_ID]`` (for system dashboards)
+                -  ``projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]``
+                   (for custom dashboards).
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -517,7 +595,21 @@ class DashboardsServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         request = dashboards_service.GetDashboardRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -553,6 +645,7 @@ class DashboardsServiceAsyncClient:
             Union[dashboards_service.DeleteDashboardRequest, dict]
         ] = None,
         *,
+        name: Optional[str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -590,6 +683,17 @@ class DashboardsServiceAsyncClient:
         Args:
             request (Optional[Union[google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest, dict]]):
                 The request object. The ``DeleteDashboard`` request.
+            name (:class:`str`):
+                Required. The resource name of the Dashboard. The format
+                is:
+
+                ::
+
+                    projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -597,7 +701,21 @@ class DashboardsServiceAsyncClient:
                 sent along with the request as metadata.
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         request = dashboards_service.DeleteDashboardRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.

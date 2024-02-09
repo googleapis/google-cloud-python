@@ -19,29 +19,34 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.monitoring.dashboard.v1',
+    package="google.monitoring.dashboard.v1",
     manifest={
-        'CollapsibleGroup',
+        "SectionHeader",
     },
 )
 
 
-class CollapsibleGroup(proto.Message):
-    r"""A widget that groups the other widgets. All widgets that are
-    within the area spanned by the grouping widget are considered
-    member widgets.
+class SectionHeader(proto.Message):
+    r"""A widget that defines a new section header. Sections populate
+    a table of contents and allow easier navigation of long-form
+    content.
 
     Attributes:
-        collapsed (bool):
-            The collapsed state of the widget on first
-            page load.
+        subtitle (str):
+            The subtitle of the section
+        divider_below (bool):
+            Whether to insert a divider below the section
+            in the table of contents
     """
 
-    collapsed: bool = proto.Field(
-        proto.BOOL,
+    subtitle: str = proto.Field(
+        proto.STRING,
         number=1,
+    )
+    divider_below: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
