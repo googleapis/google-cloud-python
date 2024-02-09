@@ -1,8 +1,8 @@
 alembic==1.13.1
 certifi==2024.2.2
 charset-normalizer==3.3.2
-geoalchemy2==0.14.3
-google-api-core[grpc]==2.16.2
+geoalchemy2==0.14.4
+google-api-core[grpc]==2.17.0
 google-auth==2.27.0
 google-cloud-bigquery==3.17.2
 google-cloud-core==2.4.1
