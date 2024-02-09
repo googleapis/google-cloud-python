@@ -636,7 +636,7 @@ class Key(object):
         return self._key.name
 
     def integer_id(self):
-        """The string ID in the last ``(kind, id)`` pair, if any.
+        """The integer ID in the last ``(kind, id)`` pair, if any.
 
         .. doctest:: key-integer-id
 
