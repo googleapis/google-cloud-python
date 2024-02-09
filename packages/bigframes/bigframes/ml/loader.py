@@ -55,6 +55,7 @@ _BQML_ENDPOINT_TYPE_MAPPING = MappingProxyType(
         llm._TEXT_GENERATOR_BISON_32K_ENDPOINT: llm.PaLM2TextGenerator,
         llm._EMBEDDING_GENERATOR_GECKO_ENDPOINT: llm.PaLM2TextEmbeddingGenerator,
         llm._EMBEDDING_GENERATOR_GECKO_MULTILINGUAL_ENDPOINT: llm.PaLM2TextEmbeddingGenerator,
+        llm._GEMINI_PRO_ENDPOINT: llm.GeminiTextGenerator,
     }
 )
 

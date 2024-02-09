@@ -272,3 +272,42 @@ def test_embedding_generator_predict_series_success(
     series = df["text_embedding"]
     value = series[0]
     assert len(value) == 768
+
+
+def test_create_gemini_text_generator_model(
+    gemini_text_generator_model, dataset_id, bq_connection
+):
+    # Model creation doesn't return error
+    assert gemini_text_generator_model is not None
+    assert gemini_text_generator_model._bqml_model is not None
+
+    # save, load to ensure configuration was kept
+    reloaded_model = gemini_text_generator_model.to_gbq(
+        f"{dataset_id}.temp_text_model", replace=True
+    )
+    assert f"{dataset_id}.temp_text_model" == reloaded_model._bqml_model.model_name
+    assert reloaded_model.connection_name == bq_connection
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_gemini_text_generator_predict_default_params_success(
+    gemini_text_generator_model, llm_text_df
+):
+    df = gemini_text_generator_model.predict(llm_text_df).to_pandas()
+    assert df.shape == (3, 4)
+    assert "ml_generate_text_llm_result" in df.columns
+    series = df["ml_generate_text_llm_result"]
+    assert all(series.str.len() > 20)
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_gemini_text_generator_predict_with_params_success(
+    gemini_text_generator_model, llm_text_df
+):
+    df = gemini_text_generator_model.predict(
+        llm_text_df, temperature=0.5, max_output_tokens=100, top_k=20, top_p=0.5
+    ).to_pandas()
+    assert df.shape == (3, 4)
+    assert "ml_generate_text_llm_result" in df.columns
+    series = df["ml_generate_text_llm_result"]
+    assert all(series.str.len() > 20)

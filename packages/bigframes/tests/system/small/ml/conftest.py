@@ -268,6 +268,11 @@ def palm2_embedding_generator_multilingual_model(
 
 
 @pytest.fixture(scope="session")
+def gemini_text_generator_model(session, bq_connection) -> llm.GeminiTextGenerator:
+    return llm.GeminiTextGenerator(session=session, connection_name=bq_connection)
+
+
+@pytest.fixture(scope="session")
 def linear_remote_model_params() -> dict:
     # Pre-deployed endpoint of linear reg model in Vertex.
     # bigframes-test-linreg2 -> bigframes-test-linreg-endpoint2

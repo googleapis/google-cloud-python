@@ -105,6 +105,8 @@
     - items:
       - name: Overview
         uid: bigframes.ml.llm
+      - name: GeminiTextGenerator
+        uid: bigframes.ml.llm.GeminiTextGenerator
       - name: PaLM2TextGenerator
         uid: bigframes.ml.llm.PaLM2TextGenerator
       - name: PaLM2TextEmbeddingGenerator

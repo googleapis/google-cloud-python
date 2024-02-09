@@ -194,6 +194,8 @@ Create estimators for linear models by using the `bigframes.ml.linear_model modu
 
 Create estimators for LLMs by using the `bigframes.ml.llm module <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm>`_.
 
+* Use the `GeminiTextGenerator class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.GeminiTextGenerator>`_ to create Gemini text generator models. Use these models
+  for text generation tasks.
 * Use the `PaLM2TextGenerator class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.PaLM2TextGenerator>`_ to create PaLM2 text generator models. Use these models
   for text generation tasks.
 * Use the `PaLM2TextEmbeddingGenerator class <https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.llm.PaLM2TextEmbeddingGenerator>`_ to create PaLM2 text embedding generator models.
