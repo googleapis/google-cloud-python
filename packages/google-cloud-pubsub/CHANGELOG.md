@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.19.3](https://github.com/googleapis/python-pubsub/compare/v2.19.2...v2.19.3) (2024-02-08)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([#1076](https://github.com/googleapis/python-pubsub/issues/1076)) ([5ce7301](https://github.com/googleapis/python-pubsub/commit/5ce7301b3056191203bc89bbcf1f33083de72a2d))
+
 ## [2.19.2](https://github.com/googleapis/python-pubsub/compare/v2.19.1...v2.19.2) (2024-02-08)
 
 
