@@ -70,7 +70,7 @@ class SubscriberGrpcTransport(SubscriberTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'pubsub.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -307,7 +307,8 @@ class SubscriberGrpcTransport(SubscriberTransport):
     ) -> Callable[[pubsub.UpdateSubscriptionRequest], pubsub.Subscription]:
         r"""Return a callable for the update subscription method over gRPC.
 
-        Updates an existing subscription. Note that certain
+        Updates an existing subscription by updating the
+        fields specified in the update mask. Note that certain
         properties of a subscription, such as its topic, are not
         modifiable.
 
@@ -646,7 +647,8 @@ class SubscriberGrpcTransport(SubscriberTransport):
     ) -> Callable[[pubsub.UpdateSnapshotRequest], pubsub.Snapshot]:
         r"""Return a callable for the update snapshot method over gRPC.
 
-        Updates an existing snapshot. Snapshots are used in
+        Updates an existing snapshot by updating the fields specified in
+        the update mask. Snapshots are used in
         `Seek <https://cloud.google.com/pubsub/docs/replay-overview>`__
         operations, which allow you to manage message acknowledgments in
         bulk. That is, you can set the acknowledgment state of messages

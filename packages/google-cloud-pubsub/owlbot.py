@@ -101,7 +101,7 @@ for library in s.get_staging_dirs(default_version):
 
     count = s.replace(
         clients_to_patch,
-        r"Transport = type\(self\)\.get_transport_class\(transport\)",
+        r"Transport = type\(self\)\.get_transport_class\(cast\(str, transport\)\)",
         """\g<0>
 
             emulator_host = os.environ.get("PUBSUB_EMULATOR_HOST")
@@ -324,7 +324,7 @@ for library in s.get_staging_dirs(default_version):
     if count < 1:
         raise Exception(".coveragerc replacement failed.")
 
-    s.move([library], excludes=["**/gapic_version.py", "README.rst", "docs/**/*", "setup.py", "testing/constraints-3.7.txt"])
+    s.move([library], excludes=["**/gapic_version.py", "README.rst", "docs/**/*", "setup.py", "testing/constraints-3.7.txt", "testing/constraints-3.8.txt"])
 s.remove_staging_dirs()
 
 # ----------------------------------------------------------------------------

@@ -41,6 +41,7 @@ from google.pubsub_v1.types.pubsub import ExpirationPolicy
 from google.pubsub_v1.types.pubsub import GetSnapshotRequest
 from google.pubsub_v1.types.pubsub import GetSubscriptionRequest
 from google.pubsub_v1.types.pubsub import GetTopicRequest
+from google.pubsub_v1.types.pubsub import IngestionDataSourceSettings
 from google.pubsub_v1.types.pubsub import ListSnapshotsRequest
 from google.pubsub_v1.types.pubsub import ListSnapshotsResponse
 from google.pubsub_v1.types.pubsub import ListSubscriptionsRequest
@@ -112,6 +113,7 @@ __all__ = (
     "GetSnapshotRequest",
     "GetSubscriptionRequest",
     "GetTopicRequest",
+    "IngestionDataSourceSettings",
     "ListSnapshotsRequest",
     "ListSnapshotsResponse",
     "ListSubscriptionsRequest",

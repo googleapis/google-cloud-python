@@ -317,6 +317,32 @@ def test_publish_with_ordering_key_uses_extended_retry_deadline(creds):
     _assert_retries_equal(batch_commit_retry, expected_retry)
 
 
+def test_publish_with_ordering_key_with_no_retry(creds):
+    client = publisher.Client(
+        credentials=creds,
+        publisher_options=types.PublisherOptions(enable_message_ordering=True),
+    )
+
+    # Use mocks in lieu of the actual batch class.
+    batch = mock.Mock(spec=client._batch_class)
+    future = mock.sentinel.future
+    future.add_done_callback = mock.Mock(spec=["__call__"])
+    batch.publish.return_value = future
+
+    topic = "topic/path"
+    client._set_batch(topic, batch)
+
+    # Actually mock the batch class now.
+    batch_class = mock.Mock(spec=(), return_value=batch)
+    client._set_batch_class(batch_class)
+
+    future = client.publish(topic, b"foo", ordering_key="first", retry=None)
+    assert future is mock.sentinel.future
+
+    # Check the retry settings used for the batch.
+    batch_class.assert_called_once()
+
+
 def test_publish_attrs_bytestring(creds):
     client = publisher.Client(credentials=creds)
 
@@ -447,20 +473,12 @@ def test_stop(creds):
 def test_gapic_instance_method(creds):
     client = publisher.Client(credentials=creds)
 
-    transport_mock = mock.Mock(create_topic=mock.sentinel)
-    fake_create_topic_rpc = mock.Mock()
-    transport_mock._wrapped_methods = {
-        transport_mock.create_topic: fake_create_topic_rpc
-    }
-    patcher = mock.patch.object(client, "_transport", new=transport_mock)
-
     topic = gapic_types.Topic(name="projects/foo/topics/bar")
-
-    with patcher:
+    with mock.patch.object(client, "create_topic") as patched:
         client.create_topic(topic)
 
-    assert fake_create_topic_rpc.call_count == 1
-    _, args, _ = fake_create_topic_rpc.mock_calls[0]
+    assert patched.call_count == 1
+    _, args, _ = patched.mock_calls[0]
     assert args[0] == gapic_types.Topic(name="projects/foo/topics/bar")
 
 

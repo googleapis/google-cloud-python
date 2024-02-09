@@ -113,7 +113,7 @@ class PublisherGrpcAsyncIOTransport(PublisherTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'pubsub.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -270,7 +270,8 @@ class PublisherGrpcAsyncIOTransport(PublisherTransport):
     ) -> Callable[[pubsub.UpdateTopicRequest], Awaitable[pubsub.Topic]]:
         r"""Return a callable for the update topic method over gRPC.
 
-        Updates an existing topic. Note that certain
+        Updates an existing topic by updating the fields
+        specified in the update mask. Note that certain
         properties of a topic are not modifiable.
 
         Returns:

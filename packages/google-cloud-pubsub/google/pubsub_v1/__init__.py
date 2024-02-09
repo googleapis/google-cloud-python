@@ -39,6 +39,7 @@ from .types.pubsub import ExpirationPolicy
 from .types.pubsub import GetSnapshotRequest
 from .types.pubsub import GetSubscriptionRequest
 from .types.pubsub import GetTopicRequest
+from .types.pubsub import IngestionDataSourceSettings
 from .types.pubsub import ListSnapshotsRequest
 from .types.pubsub import ListSnapshotsResponse
 from .types.pubsub import ListSubscriptionsRequest
@@ -113,6 +114,7 @@ __all__ = (
     "GetSnapshotRequest",
     "GetSubscriptionRequest",
     "GetTopicRequest",
+    "IngestionDataSourceSettings",
     "ListSchemaRevisionsRequest",
     "ListSchemaRevisionsResponse",
     "ListSchemasRequest",

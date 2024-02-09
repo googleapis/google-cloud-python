@@ -399,7 +399,7 @@ class Client(publisher_client.PublisherClient):
                     transport = self._transport
                     base_retry = transport._wrapped_methods[transport.publish]._retry
                     retry = base_retry.with_deadline(2.0**32)
-                else:
+                elif retry is not None:
                     retry = retry.with_deadline(2.0**32)
 
             # Delegate the publishing to the sequencer.

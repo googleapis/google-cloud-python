@@ -30,6 +30,7 @@ __protobuf__ = proto.module(
     manifest={
         "MessageStoragePolicy",
         "SchemaSettings",
+        "IngestionDataSourceSettings",
         "Topic",
         "PubsubMessage",
         "GetTopicRequest",
@@ -84,20 +85,31 @@ class MessageStoragePolicy(proto.Message):
 
     Attributes:
         allowed_persistence_regions (MutableSequence[str]):
-            A list of IDs of Google Cloud regions where
-            messages that are published to the topic may be
-            persisted in storage. Messages published by
-            publishers running in non-allowed Google Cloud
-            regions (or running outside of Google Cloud
-            altogether) are routed for storage in one of the
-            allowed regions. An empty list means that no
-            regions are allowed, and is not a valid
-            configuration.
+            Optional. A list of IDs of Google Cloud
+            regions where messages that are published to the
+            topic may be persisted in storage. Messages
+            published by publishers running in non-allowed
+            Google Cloud regions (or running outside of
+            Google Cloud altogether) are routed for storage
+            in one of the allowed regions. An empty list
+            means that no regions are allowed, and is not a
+            valid configuration.
+        enforce_in_transit (bool):
+            Optional. If true, ``allowed_persistence_regions`` is also
+            used to enforce in-transit guarantees for messages. That is,
+            Pub/Sub will fail Publish operations on this topic and
+            subscribe operations on any subscription attached to this
+            topic in any region that is not in
+            ``allowed_persistence_regions``.
     """
 
     allowed_persistence_regions: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=1,
+    )
+    enforce_in_transit: bool = proto.Field(
+        proto.BOOL,
+        number=2,
     )
 
 
@@ -112,17 +124,18 @@ class SchemaSettings(proto.Message):
             field will be ``_deleted-schema_`` if the schema has been
             deleted.
         encoding (google.pubsub_v1.types.Encoding):
-            The encoding of messages validated against ``schema``.
+            Optional. The encoding of messages validated against
+            ``schema``.
         first_revision_id (str):
-            The minimum (inclusive) revision allowed for validating
-            messages. If empty or not present, allow any revision to be
-            validated against last_revision or any revision created
-            before.
+            Optional. The minimum (inclusive) revision allowed for
+            validating messages. If empty or not present, allow any
+            revision to be validated against last_revision or any
+            revision created before.
         last_revision_id (str):
-            The maximum (inclusive) revision allowed for validating
-            messages. If empty or not present, allow any revision to be
-            validated against first_revision or any revision created
-            after.
+            Optional. The maximum (inclusive) revision allowed for
+            validating messages. If empty or not present, allow any
+            revision to be validated against first_revision or any
+            revision created after.
     """
 
     schema: str = proto.Field(
@@ -144,6 +157,116 @@ class SchemaSettings(proto.Message):
     )
 
 
+class IngestionDataSourceSettings(proto.Message):
+    r"""Settings for an ingestion data source on a topic.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        aws_kinesis (google.pubsub_v1.types.IngestionDataSourceSettings.AwsKinesis):
+            Optional. Amazon Kinesis Data Streams.
+
+            This field is a member of `oneof`_ ``source``.
+    """
+
+    class AwsKinesis(proto.Message):
+        r"""Ingestion settings for Amazon Kinesis Data Streams.
+
+        Attributes:
+            state (google.pubsub_v1.types.IngestionDataSourceSettings.AwsKinesis.State):
+                Output only. An output-only field that
+                indicates the state of the Kinesis ingestion
+                source.
+            stream_arn (str):
+                Required. The Kinesis stream ARN to ingest
+                data from.
+            consumer_arn (str):
+                Required. The Kinesis consumer ARN to used
+                for ingestion in Enhanced Fan-Out mode. The
+                consumer must be already created and ready to be
+                used.
+            aws_role_arn (str):
+                Required. AWS role ARN to be used for
+                Federated Identity authentication with Kinesis.
+                Check the Pub/Sub docs for how to set up this
+                role and the required permissions that need to
+                be attached to it.
+            gcp_service_account (str):
+                Required. The GCP service account to be used for Federated
+                Identity authentication with Kinesis (via a
+                ``AssumeRoleWithWebIdentity`` call for the provided role).
+                The ``aws_role_arn`` must be set up with
+                ``accounts.google.com:sub`` equals to this service account
+                number.
+        """
+
+        class State(proto.Enum):
+            r"""Possible states for managed ingestion from Amazon Kinesis
+            Data Streams.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Default value. This value is unused.
+                ACTIVE (1):
+                    Ingestion is active.
+                KINESIS_PERMISSION_DENIED (2):
+                    Permission denied encountered while consuming data from
+                    Kinesis. This can happen if:
+
+                    -  The provided ``aws_role_arn`` does not exist or does not
+                       have the appropriate permissions attached.
+                    -  The provided ``aws_role_arn`` is not set up properly for
+                       Identity Federation using ``gcp_service_account``.
+                    -  The Pub/Sub SA is not granted the
+                       ``iam.serviceAccounts.getOpenIdToken`` permission on
+                       ``gcp_service_account``.
+                PUBLISH_PERMISSION_DENIED (3):
+                    Permission denied encountered while publishing to the topic.
+                    This can happen due to Pub/Sub SA has not been granted the
+                    `appropriate publish
+                    permissions <https://cloud.google.com/pubsub/docs/access-control#pubsub.publisher>`__
+                STREAM_NOT_FOUND (4):
+                    The Kinesis stream does not exist.
+                CONSUMER_NOT_FOUND (5):
+                    The Kinesis consumer does not exist.
+            """
+            STATE_UNSPECIFIED = 0
+            ACTIVE = 1
+            KINESIS_PERMISSION_DENIED = 2
+            PUBLISH_PERMISSION_DENIED = 3
+            STREAM_NOT_FOUND = 4
+            CONSUMER_NOT_FOUND = 5
+
+        state: "IngestionDataSourceSettings.AwsKinesis.State" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="IngestionDataSourceSettings.AwsKinesis.State",
+        )
+        stream_arn: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        consumer_arn: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        aws_role_arn: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        gcp_service_account: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+
+    aws_kinesis: AwsKinesis = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message=AwsKinesis,
+    )
+
+
 class Topic(proto.Message):
     r"""A topic resource.
 
@@ -158,30 +281,30 @@ class Topic(proto.Message):
             255 characters in length, and it must not start with
             ``"goog"``.
         labels (MutableMapping[str, str]):
-            See [Creating and managing labels]
+            Optional. See [Creating and managing labels]
             (https://cloud.google.com/pubsub/docs/labels).
         message_storage_policy (google.pubsub_v1.types.MessageStoragePolicy):
-            Policy constraining the set of Google Cloud
-            Platform regions where messages published to the
-            topic may be stored. If not present, then no
-            constraints are in effect.
+            Optional. Policy constraining the set of
+            Google Cloud Platform regions where messages
+            published to the topic may be stored. If not
+            present, then no constraints are in effect.
         kms_key_name (str):
-            The resource name of the Cloud KMS CryptoKey to be used to
-            protect access to messages published on this topic.
+            Optional. The resource name of the Cloud KMS CryptoKey to be
+            used to protect access to messages published on this topic.
 
             The expected format is
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
         schema_settings (google.pubsub_v1.types.SchemaSettings):
-            Settings for validating messages published
-            against a schema.
+            Optional. Settings for validating messages
+            published against a schema.
         satisfies_pzs (bool):
-            Reserved for future use. This field is set
-            only in responses from the server; it is ignored
-            if it is set in any requests.
+            Optional. Reserved for future use. This field
+            is set only in responses from the server; it is
+            ignored if it is set in any requests.
         message_retention_duration (google.protobuf.duration_pb2.Duration):
-            Indicates the minimum duration to retain a message after it
-            is published to the topic. If this field is set, messages
-            published to the topic in the last
+            Optional. Indicates the minimum duration to retain a message
+            after it is published to the topic. If this field is set,
+            messages published to the topic in the last
             ``message_retention_duration`` are always available to
             subscribers. For instance, it allows any attached
             subscription to `seek to a
@@ -190,7 +313,32 @@ class Topic(proto.Message):
             this field is not set, message retention is controlled by
             settings on individual subscriptions. Cannot be more than 31
             days or less than 10 minutes.
+        state (google.pubsub_v1.types.Topic.State):
+            Output only. An output-only field indicating
+            the state of the topic.
+        ingestion_data_source_settings (google.pubsub_v1.types.IngestionDataSourceSettings):
+            Optional. Settings for managed ingestion from
+            a data source into this topic.
     """
+
+    class State(proto.Enum):
+        r"""The state of the topic.
+
+        Values:
+            STATE_UNSPECIFIED (0):
+                Default value. This value is unused.
+            ACTIVE (1):
+                The topic does not have any persistent
+                errors.
+            INGESTION_RESOURCE_ERROR (2):
+                Ingestion from the data source has
+                encountered a permanent error. See the more
+                detailed error state in the corresponding
+                ingestion source configuration.
+        """
+        STATE_UNSPECIFIED = 0
+        ACTIVE = 1
+        INGESTION_RESOURCE_ERROR = 2
 
     name: str = proto.Field(
         proto.STRING,
@@ -224,6 +372,16 @@ class Topic(proto.Message):
         number=8,
         message=duration_pb2.Duration,
     )
+    state: State = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=State,
+    )
+    ingestion_data_source_settings: "IngestionDataSourceSettings" = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="IngestionDataSourceSettings",
+    )
 
 
 class PubsubMessage(proto.Message):
@@ -239,14 +397,14 @@ class PubsubMessage(proto.Message):
 
     Attributes:
         data (bytes):
-            The message data field. If this field is
-            empty, the message must contain at least one
-            attribute.
+            Optional. The message data field. If this
+            field is empty, the message must contain at
+            least one attribute.
         attributes (MutableMapping[str, str]):
-            Attributes for this message. If this field is
-            empty, the message must contain non-empty data.
-            This can be used to filter messages on the
-            subscription.
+            Optional. Attributes for this message. If
+            this field is empty, the message must contain
+            non-empty data. This can be used to filter
+            messages on the subscription.
         message_id (str):
             ID of this message, assigned by the server when the message
             is published. Guaranteed to be unique within the topic. This
@@ -259,15 +417,15 @@ class PubsubMessage(proto.Message):
             the server when it receives the ``Publish`` call. It must
             not be populated by the publisher in a ``Publish`` call.
         ordering_key (str):
-            If non-empty, identifies related messages for which publish
-            order should be respected. If a ``Subscription`` has
-            ``enable_message_ordering`` set to ``true``, messages
-            published with the same non-empty ``ordering_key`` value
-            will be delivered to subscribers in the order in which they
-            are received by the Pub/Sub system. All ``PubsubMessage``\ s
-            published in a given ``PublishRequest`` must specify the
-            same ``ordering_key`` value. For more information, see
-            `ordering
+            Optional. If non-empty, identifies related messages for
+            which publish order should be respected. If a
+            ``Subscription`` has ``enable_message_ordering`` set to
+            ``true``, messages published with the same non-empty
+            ``ordering_key`` value will be delivered to subscribers in
+            the order in which they are received by the Pub/Sub system.
+            All ``PubsubMessage``\ s published in a given
+            ``PublishRequest`` must specify the same ``ordering_key``
+            value. For more information, see `ordering
             messages <https://cloud.google.com/pubsub/docs/ordering>`__.
     """
 
@@ -364,10 +522,10 @@ class PublishResponse(proto.Message):
 
     Attributes:
         message_ids (MutableSequence[str]):
-            The server-assigned ID of each published
-            message, in the same order as the messages in
-            the request. IDs are guaranteed to be unique
-            within the topic.
+            Optional. The server-assigned ID of each
+            published message, in the same order as the
+            messages in the request. IDs are guaranteed to
+            be unique within the topic.
     """
 
     message_ids: MutableSequence[str] = proto.RepeatedField(
@@ -384,12 +542,12 @@ class ListTopicsRequest(proto.Message):
             Required. The name of the project in which to list topics.
             Format is ``projects/{project-id}``.
         page_size (int):
-            Maximum number of topics to return.
+            Optional. Maximum number of topics to return.
         page_token (str):
-            The value returned by the last ``ListTopicsResponse``;
-            indicates that this is a continuation of a prior
-            ``ListTopics`` call, and that the system should return the
-            next page of data.
+            Optional. The value returned by the last
+            ``ListTopicsResponse``; indicates that this is a
+            continuation of a prior ``ListTopics`` call, and that the
+            system should return the next page of data.
     """
 
     project: str = proto.Field(
@@ -411,11 +569,11 @@ class ListTopicsResponse(proto.Message):
 
     Attributes:
         topics (MutableSequence[google.pubsub_v1.types.Topic]):
-            The resulting topics.
+            Optional. The resulting topics.
         next_page_token (str):
-            If not empty, indicates that there may be more topics that
-            match the request; this value should be passed in a new
-            ``ListTopicsRequest``.
+            Optional. If not empty, indicates that there may be more
+            topics that match the request; this value should be passed
+            in a new ``ListTopicsRequest``.
     """
 
     @property
@@ -442,10 +600,10 @@ class ListTopicSubscriptionsRequest(proto.Message):
             attached to. Format is
             ``projects/{project}/topics/{topic}``.
         page_size (int):
-            Maximum number of subscription names to
-            return.
+            Optional. Maximum number of subscription
+            names to return.
         page_token (str):
-            The value returned by the last
+            Optional. The value returned by the last
             ``ListTopicSubscriptionsResponse``; indicates that this is a
             continuation of a prior ``ListTopicSubscriptions`` call, and
             that the system should return the next page of data.
@@ -470,12 +628,13 @@ class ListTopicSubscriptionsResponse(proto.Message):
 
     Attributes:
         subscriptions (MutableSequence[str]):
-            The names of subscriptions attached to the
-            topic specified in the request.
+            Optional. The names of subscriptions attached
+            to the topic specified in the request.
         next_page_token (str):
-            If not empty, indicates that there may be more subscriptions
-            that match the request; this value should be passed in a new
-            ``ListTopicSubscriptionsRequest`` to get more subscriptions.
+            Optional. If not empty, indicates that there may be more
+            subscriptions that match the request; this value should be
+            passed in a new ``ListTopicSubscriptionsRequest`` to get
+            more subscriptions.
     """
 
     @property
@@ -500,9 +659,10 @@ class ListTopicSnapshotsRequest(proto.Message):
             Required. The name of the topic that snapshots are attached
             to. Format is ``projects/{project}/topics/{topic}``.
         page_size (int):
-            Maximum number of snapshot names to return.
+            Optional. Maximum number of snapshot names to
+            return.
         page_token (str):
-            The value returned by the last
+            Optional. The value returned by the last
             ``ListTopicSnapshotsResponse``; indicates that this is a
             continuation of a prior ``ListTopicSnapshots`` call, and
             that the system should return the next page of data.
@@ -527,12 +687,13 @@ class ListTopicSnapshotsResponse(proto.Message):
 
     Attributes:
         snapshots (MutableSequence[str]):
-            The names of the snapshots that match the
-            request.
+            Optional. The names of the snapshots that
+            match the request.
         next_page_token (str):
-            If not empty, indicates that there may be more snapshots
-            that match the request; this value should be passed in a new
-            ``ListTopicSnapshotsRequest`` to get more snapshots.
+            Optional. If not empty, indicates that there may be more
+            snapshots that match the request; this value should be
+            passed in a new ``ListTopicSnapshotsRequest`` to get more
+            snapshots.
     """
 
     @property
@@ -610,24 +771,25 @@ class Subscription(proto.Message):
             field will be ``_deleted-topic_`` if the topic has been
             deleted.
         push_config (google.pubsub_v1.types.PushConfig):
-            If push delivery is used with this
+            Optional. If push delivery is used with this
             subscription, this field is used to configure
             it.
         bigquery_config (google.pubsub_v1.types.BigQueryConfig):
-            If delivery to BigQuery is used with this
-            subscription, this field is used to configure
-            it.
-        cloud_storage_config (google.pubsub_v1.types.CloudStorageConfig):
-            If delivery to Google Cloud Storage is used
+            Optional. If delivery to BigQuery is used
             with this subscription, this field is used to
             configure it.
+        cloud_storage_config (google.pubsub_v1.types.CloudStorageConfig):
+            Optional. If delivery to Google Cloud Storage
+            is used with this subscription, this field is
+            used to configure it.
         ack_deadline_seconds (int):
-            The approximate amount of time (on a best-effort basis)
-            Pub/Sub waits for the subscriber to acknowledge receipt
-            before resending the message. In the interval after the
-            message is delivered and before it is acknowledged, it is
-            considered to be *outstanding*. During that time period, the
-            message will not be redelivered (on a best-effort basis).
+            Optional. The approximate amount of time (on a best-effort
+            basis) Pub/Sub waits for the subscriber to acknowledge
+            receipt before resending the message. In the interval after
+            the message is delivered and before it is acknowledged, it
+            is considered to be *outstanding*. During that time period,
+            the message will not be redelivered (on a best-effort
+            basis).
 
             For pull subscriptions, this value is used as the initial
             value for the ack deadline. To override this value for a
@@ -645,15 +807,16 @@ class Subscription(proto.Message):
             If the subscriber never acknowledges the message, the
             Pub/Sub system will eventually redeliver the message.
         retain_acked_messages (bool):
-            Indicates whether to retain acknowledged messages. If true,
-            then messages are not expunged from the subscription's
-            backlog, even if they are acknowledged, until they fall out
-            of the ``message_retention_duration`` window. This must be
-            true if you would like to [``Seek`` to a timestamp]
+            Optional. Indicates whether to retain acknowledged messages.
+            If true, then messages are not expunged from the
+            subscription's backlog, even if they are acknowledged, until
+            they fall out of the ``message_retention_duration`` window.
+            This must be true if you would like to [``Seek`` to a
+            timestamp]
             (https://cloud.google.com/pubsub/docs/replay-overview#seek_to_a_time)
             in the past to replay previously-acknowledged messages.
         message_retention_duration (google.protobuf.duration_pb2.Duration):
-            How long to retain unacknowledged messages in the
+            Optional. How long to retain unacknowledged messages in the
             subscription's backlog, from the moment a message is
             published. If ``retain_acked_messages`` is true, then this
             also configures the retention of acknowledged messages, and
@@ -661,15 +824,16 @@ class Subscription(proto.Message):
             Defaults to 7 days. Cannot be more than 7 days or less than
             10 minutes.
         labels (MutableMapping[str, str]):
-            See `Creating and managing
+            Optional. See `Creating and managing
             labels <https://cloud.google.com/pubsub/docs/labels>`__.
         enable_message_ordering (bool):
-            If true, messages published with the same ``ordering_key``
-            in ``PubsubMessage`` will be delivered to the subscribers in
-            the order in which they are received by the Pub/Sub system.
-            Otherwise, they may be delivered in any order.
+            Optional. If true, messages published with the same
+            ``ordering_key`` in ``PubsubMessage`` will be delivered to
+            the subscribers in the order in which they are received by
+            the Pub/Sub system. Otherwise, they may be delivered in any
+            order.
         expiration_policy (google.pubsub_v1.types.ExpirationPolicy):
-            A policy that specifies the conditions for this
+            Optional. A policy that specifies the conditions for this
             subscription's expiration. A subscription is considered
             active as long as any connected subscriber is successfully
             consuming messages from the subscription or is issuing
@@ -680,25 +844,25 @@ class Subscription(proto.Message):
             is set, but ``expiration_policy.ttl`` is not set, the
             subscription never expires.
         filter (str):
-            An expression written in the Pub/Sub `filter
+            Optional. An expression written in the Pub/Sub `filter
             language <https://cloud.google.com/pubsub/docs/filtering>`__.
             If non-empty, then only ``PubsubMessage``\ s whose
             ``attributes`` field matches the filter are delivered on
             this subscription. If empty, then no messages are filtered
             out.
         dead_letter_policy (google.pubsub_v1.types.DeadLetterPolicy):
-            A policy that specifies the conditions for dead lettering
-            messages in this subscription. If dead_letter_policy is not
-            set, dead lettering is disabled.
+            Optional. A policy that specifies the conditions for dead
+            lettering messages in this subscription. If
+            dead_letter_policy is not set, dead lettering is disabled.
 
-            The Cloud Pub/Sub service account associated with this
+            The Pub/Sub service account associated with this
             subscriptions's parent project (i.e.,
             service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com)
             must have permission to Acknowledge() messages on this
             subscription.
         retry_policy (google.pubsub_v1.types.RetryPolicy):
-            A policy that specifies how Pub/Sub retries
-            message delivery for this subscription.
+            Optional. A policy that specifies how Pub/Sub
+            retries message delivery for this subscription.
 
             If not set, the default retry policy is applied.
             This generally implies that messages will be
@@ -707,16 +871,16 @@ class Subscription(proto.Message):
             NACKs or acknowledgement deadline exceeded
             events for a given message.
         detached (bool):
-            Indicates whether the subscription is detached from its
-            topic. Detached subscriptions don't receive messages from
-            their topic and don't retain any backlog. ``Pull`` and
-            ``StreamingPull`` requests will return FAILED_PRECONDITION.
-            If the subscription is a push subscription, pushes to the
-            endpoint will not be made.
+            Optional. Indicates whether the subscription is detached
+            from its topic. Detached subscriptions don't receive
+            messages from their topic and don't retain any backlog.
+            ``Pull`` and ``StreamingPull`` requests will return
+            FAILED_PRECONDITION. If the subscription is a push
+            subscription, pushes to the endpoint will not be made.
         enable_exactly_once_delivery (bool):
-            If true, Pub/Sub provides the following guarantees for the
-            delivery of a message with a given value of ``message_id``
-            on this subscription:
+            Optional. If true, Pub/Sub provides the following guarantees
+            for the delivery of a message with a given value of
+            ``message_id`` on this subscription:
 
             -  The message sent to a subscriber is guaranteed not to be
                resent before the message's acknowledgement deadline
@@ -848,7 +1012,7 @@ class Subscription(proto.Message):
 
 
 class RetryPolicy(proto.Message):
-    r"""A policy that specifies how Cloud Pub/Sub retries message delivery.
+    r"""A policy that specifies how Pub/Sub retries message delivery.
 
     Retry delay will be exponential based on provided minimum and
     maximum backoffs. https://en.wikipedia.org/wiki/Exponential_backoff.
@@ -863,15 +1027,15 @@ class RetryPolicy(proto.Message):
 
     Attributes:
         minimum_backoff (google.protobuf.duration_pb2.Duration):
-            The minimum delay between consecutive
-            deliveries of a given message. Value should be
-            between 0 and 600 seconds. Defaults to 10
-            seconds.
+            Optional. The minimum delay between
+            consecutive deliveries of a given message. Value
+            should be between 0 and 600 seconds. Defaults to
+            10 seconds.
         maximum_backoff (google.protobuf.duration_pb2.Duration):
-            The maximum delay between consecutive
-            deliveries of a given message. Value should be
-            between 0 and 600 seconds. Defaults to 600
-            seconds.
+            Optional. The maximum delay between
+            consecutive deliveries of a given message. Value
+            should be between 0 and 600 seconds. Defaults to
+            600 seconds.
     """
 
     minimum_backoff: duration_pb2.Duration = proto.Field(
@@ -896,11 +1060,11 @@ class DeadLetterPolicy(proto.Message):
 
     Attributes:
         dead_letter_topic (str):
-            The name of the topic to which dead letter messages should
-            be published. Format is
-            ``projects/{project}/topics/{topic}``.The Cloud Pub/Sub
-            service account associated with the enclosing subscription's
-            parent project (i.e.,
+            Optional. The name of the topic to which dead letter
+            messages should be published. Format is
+            ``projects/{project}/topics/{topic}``.The Pub/Sub service
+            account associated with the enclosing subscription's parent
+            project (i.e.,
             service-{project_number}@gcp-sa-pubsub.iam.gserviceaccount.com)
             must have permission to Publish() to this topic.
 
@@ -909,8 +1073,8 @@ class DeadLetterPolicy(proto.Message):
             topic since messages published to a topic with no
             subscriptions are lost.
         max_delivery_attempts (int):
-            The maximum number of delivery attempts for any message. The
-            value must be between 5 and 100.
+            Optional. The maximum number of delivery attempts for any
+            message. The value must be between 5 and 100.
 
             The number of delivery attempts is defined as 1 + (the sum
             of number of NACKs and number of times the acknowledgement
@@ -941,12 +1105,12 @@ class ExpirationPolicy(proto.Message):
 
     Attributes:
         ttl (google.protobuf.duration_pb2.Duration):
-            Specifies the "time-to-live" duration for an associated
-            resource. The resource expires if it is not active for a
-            period of ``ttl``. The definition of "activity" depends on
-            the type of the associated resource. The minimum and maximum
-            allowed values for ``ttl`` depend on the type of the
-            associated resource, as well. If ``ttl`` is not set, the
+            Optional. Specifies the "time-to-live" duration for an
+            associated resource. The resource expires if it is not
+            active for a period of ``ttl``. The definition of "activity"
+            depends on the type of the associated resource. The minimum
+            and maximum allowed values for ``ttl`` depend on the type of
+            the associated resource, as well. If ``ttl`` is not set, the
             associated resource never expires.
     """
 
@@ -969,12 +1133,12 @@ class PushConfig(proto.Message):
 
     Attributes:
         push_endpoint (str):
-            A URL locating the endpoint to which messages should be
-            pushed. For example, a Webhook endpoint might use
+            Optional. A URL locating the endpoint to which messages
+            should be pushed. For example, a Webhook endpoint might use
             ``https://example.com/push``.
         attributes (MutableMapping[str, str]):
-            Endpoint configuration attributes that can be used to
-            control different aspects of the message delivery.
+            Optional. Endpoint configuration attributes that can be used
+            to control different aspects of the message delivery.
 
             The only currently supported attribute is
             ``x-goog-version``, which you can use to change the format
@@ -999,21 +1163,21 @@ class PushConfig(proto.Message):
 
             For example: ``attributes { "x-goog-version": "v1" }``
         oidc_token (google.pubsub_v1.types.PushConfig.OidcToken):
-            If specified, Pub/Sub will generate and attach an OIDC JWT
-            token as an ``Authorization`` header in the HTTP request for
-            every pushed message.
+            Optional. If specified, Pub/Sub will generate and attach an
+            OIDC JWT token as an ``Authorization`` header in the HTTP
+            request for every pushed message.
 
             This field is a member of `oneof`_ ``authentication_method``.
         pubsub_wrapper (google.pubsub_v1.types.PushConfig.PubsubWrapper):
-            When set, the payload to the push endpoint is
-            in the form of the JSON representation of a
-            PubsubMessage
+            Optional. When set, the payload to the push
+            endpoint is in the form of the JSON
+            representation of a PubsubMessage
             (https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#pubsubmessage).
 
             This field is a member of `oneof`_ ``wrapper``.
         no_wrapper (google.pubsub_v1.types.PushConfig.NoWrapper):
-            When set, the payload to the push endpoint is
-            not wrapped.
+            Optional. When set, the payload to the push
+            endpoint is not wrapped.
 
             This field is a member of `oneof`_ ``wrapper``.
     """
@@ -1024,19 +1188,20 @@ class PushConfig(proto.Message):
 
         Attributes:
             service_account_email (str):
-                `Service account
+                Optional. `Service account
                 email <https://cloud.google.com/iam/docs/service-accounts>`__
                 used for generating the OIDC token. For more information on
                 setting up authentication, see `Push
                 subscriptions <https://cloud.google.com/pubsub/docs/push>`__.
             audience (str):
-                Audience to be used when generating OIDC
-                token. The audience claim identifies the
+                Optional. Audience to be used when generating
+                OIDC token. The audience claim identifies the
                 recipients that the JWT is intended for. The
                 audience value is a single case-sensitive
                 string. Having multiple values (array) for the
                 audience field is not supported. More info about
                 the OIDC JWT token audience here:
+
                 https://tools.ietf.org/html/rfc7519#section-4.1.3
                 Note: if not specified, the Push endpoint URL
                 will be used.
@@ -1063,7 +1228,7 @@ class PushConfig(proto.Message):
 
         Attributes:
             write_metadata (bool):
-                When true, writes the Pub/Sub message metadata to
+                Optional. When true, writes the Pub/Sub message metadata to
                 ``x-goog-pubsub-<KEY>:<VAL>`` headers of the HTTP request.
                 Writes the Pub/Sub message attributes to ``<KEY>:<VAL>``
                 headers of the HTTP request.
@@ -1108,23 +1273,24 @@ class BigQueryConfig(proto.Message):
 
     Attributes:
         table (str):
-            The name of the table to which to write data,
-            of the form {projectId}.{datasetId}.{tableId}
+            Optional. The name of the table to which to
+            write data, of the form
+            {projectId}.{datasetId}.{tableId}
         use_topic_schema (bool):
             Optional. When true, use the topic's schema as the columns
             to write to in BigQuery, if it exists. ``use_topic_schema``
             and ``use_table_schema`` cannot be enabled at the same time.
         write_metadata (bool):
-            When true, write the subscription name, message_id,
-            publish_time, attributes, and ordering_key to additional
-            columns in the table. The subscription name, message_id, and
-            publish_time fields are put in their own columns while all
-            other message properties (other than data) are written to a
-            JSON object in the attributes column.
+            Optional. When true, write the subscription name,
+            message_id, publish_time, attributes, and ordering_key to
+            additional columns in the table. The subscription name,
+            message_id, and publish_time fields are put in their own
+            columns while all other message properties (other than data)
+            are written to a JSON object in the attributes column.
         drop_unknown_fields (bool):
-            When true and use_topic_schema is true, any fields that are
-            a part of the topic schema that are not part of the BigQuery
-            table schema are dropped when writing to BigQuery.
+            Optional. When true and use_topic_schema is true, any fields
+            that are a part of the topic schema that are not part of the
+            BigQuery table schema are dropped when writing to BigQuery.
             Otherwise, the schemas must be kept in sync and any messages
             with extra fields are not written and remain in the
             subscription's backlog.
@@ -1163,12 +1329,17 @@ class BigQueryConfig(proto.Message):
             SCHEMA_MISMATCH (4):
                 Cannot write to the BigQuery table due to a
                 schema mismatch.
+            IN_TRANSIT_LOCATION_RESTRICTION (5):
+                Cannot write to the destination because enforce_in_transit
+                is set to true and the destination locations are not in the
+                allowed regions.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PERMISSION_DENIED = 2
         NOT_FOUND = 3
         SCHEMA_MISMATCH = 4
+        IN_TRANSIT_LOCATION_RESTRICTION = 5
 
     table: str = proto.Field(
         proto.STRING,
@@ -1215,35 +1386,35 @@ class CloudStorageConfig(proto.Message):
             requirements]
             (https://cloud.google.com/storage/docs/buckets#naming).
         filename_prefix (str):
-            User-provided prefix for Cloud Storage filename. See the
-            `object naming
+            Optional. User-provided prefix for Cloud Storage filename.
+            See the `object naming
             requirements <https://cloud.google.com/storage/docs/objects#naming>`__.
         filename_suffix (str):
-            User-provided suffix for Cloud Storage filename. See the
-            `object naming
+            Optional. User-provided suffix for Cloud Storage filename.
+            See the `object naming
             requirements <https://cloud.google.com/storage/docs/objects#naming>`__.
             Must not end in "/".
         text_config (google.pubsub_v1.types.CloudStorageConfig.TextConfig):
-            If set, message data will be written to Cloud
-            Storage in text format.
+            Optional. If set, message data will be
+            written to Cloud Storage in text format.
 
             This field is a member of `oneof`_ ``output_format``.
         avro_config (google.pubsub_v1.types.CloudStorageConfig.AvroConfig):
-            If set, message data will be written to Cloud
-            Storage in Avro format.
+            Optional. If set, message data will be
+            written to Cloud Storage in Avro format.
 
             This field is a member of `oneof`_ ``output_format``.
         max_duration (google.protobuf.duration_pb2.Duration):
-            The maximum duration that can elapse before a
-            new Cloud Storage file is created. Min 1 minute,
-            max 10 minutes, default 5 minutes. May not
-            exceed the subscription's acknowledgement
-            deadline.
+            Optional. The maximum duration that can
+            elapse before a new Cloud Storage file is
+            created. Min 1 minute, max 10 minutes, default 5
+            minutes. May not exceed the subscription's
+            acknowledgement deadline.
         max_bytes (int):
-            The maximum bytes that can be written to a Cloud Storage
-            file before a new file is created. Min 1 KB, max 10 GiB. The
-            max_bytes limit may be exceeded in cases where messages are
-            larger than the limit.
+            Optional. The maximum bytes that can be written to a Cloud
+            Storage file before a new file is created. Min 1 KB, max 10
+            GiB. The max_bytes limit may be exceeded in cases where
+            messages are larger than the limit.
         state (google.pubsub_v1.types.CloudStorageConfig.State):
             Output only. An output-only field that
             indicates whether or not the subscription can
@@ -1265,11 +1436,16 @@ class CloudStorageConfig(proto.Message):
             NOT_FOUND (3):
                 Cannot write to the Cloud Storage bucket
                 because it does not exist.
+            IN_TRANSIT_LOCATION_RESTRICTION (4):
+                Cannot write to the destination because enforce_in_transit
+                is set to true and the destination locations are not in the
+                allowed regions.
         """
         STATE_UNSPECIFIED = 0
         ACTIVE = 1
         PERMISSION_DENIED = 2
         NOT_FOUND = 3
+        IN_TRANSIT_LOCATION_RESTRICTION = 4
 
     class TextConfig(proto.Message):
         r"""Configuration for writing message data in text format.
@@ -1285,13 +1461,13 @@ class CloudStorageConfig(proto.Message):
 
         Attributes:
             write_metadata (bool):
-                When true, write the subscription name, message_id,
-                publish_time, attributes, and ordering_key as additional
-                fields in the output. The subscription name, message_id, and
-                publish_time fields are put in their own fields while all
-                other message properties other than data (for example, an
-                ordering_key, if present) are added as entries in the
-                attributes map.
+                Optional. When true, write the subscription name,
+                message_id, publish_time, attributes, and ordering_key as
+                additional fields in the output. The subscription name,
+                message_id, and publish_time fields are put in their own
+                fields while all other message properties other than data
+                (for example, an ordering_key, if present) are added as
+                entries in the attributes map.
         """
 
         write_metadata: bool = proto.Field(
@@ -1344,12 +1520,12 @@ class ReceivedMessage(proto.Message):
 
     Attributes:
         ack_id (str):
-            This ID can be used to acknowledge the
-            received message.
+            Optional. This ID can be used to acknowledge
+            the received message.
         message (google.pubsub_v1.types.PubsubMessage):
-            The message.
+            Optional. The message.
         delivery_attempt (int):
-            The approximate number of times that Cloud Pub/Sub has
+            Optional. The approximate number of times that Pub/Sub has
             attempted to deliver the associated message to a subscriber.
 
             More precisely, this is 1 + (number of NACKs) + (number of
@@ -1431,9 +1607,10 @@ class ListSubscriptionsRequest(proto.Message):
             Required. The name of the project in which to list
             subscriptions. Format is ``projects/{project-id}``.
         page_size (int):
-            Maximum number of subscriptions to return.
+            Optional. Maximum number of subscriptions to
+            return.
         page_token (str):
-            The value returned by the last
+            Optional. The value returned by the last
             ``ListSubscriptionsResponse``; indicates that this is a
             continuation of a prior ``ListSubscriptions`` call, and that
             the system should return the next page of data.
@@ -1458,11 +1635,13 @@ class ListSubscriptionsResponse(proto.Message):
 
     Attributes:
         subscriptions (MutableSequence[google.pubsub_v1.types.Subscription]):
-            The subscriptions that match the request.
+            Optional. The subscriptions that match the
+            request.
         next_page_token (str):
-            If not empty, indicates that there may be more subscriptions
-            that match the request; this value should be passed in a new
-            ``ListSubscriptionsRequest`` to get more subscriptions.
+            Optional. If not empty, indicates that there may be more
+            subscriptions that match the request; this value should be
+            passed in a new ``ListSubscriptionsRequest`` to get more
+            subscriptions.
     """
 
     @property
@@ -1566,12 +1745,12 @@ class PullResponse(proto.Message):
 
     Attributes:
         received_messages (MutableSequence[google.pubsub_v1.types.ReceivedMessage]):
-            Received Pub/Sub messages. The list will be empty if there
-            are no more messages available in the backlog, or if no
-            messages could be returned before the request timeout. For
-            JSON, the response can be entirely empty. The Pub/Sub system
-            may return fewer than the ``maxMessages`` requested even if
-            there are more messages available in the backlog.
+            Optional. Received Pub/Sub messages. The list will be empty
+            if there are no more messages available in the backlog, or
+            if no messages could be returned before the request timeout.
+            For JSON, the response can be entirely empty. The Pub/Sub
+            system may return fewer than the ``maxMessages`` requested
+            even if there are more messages available in the backlog.
     """
 
     received_messages: MutableSequence["ReceivedMessage"] = proto.RepeatedField(
@@ -1599,8 +1778,8 @@ class ModifyAckDeadlineRequest(proto.Message):
             delivery to another subscriber client. This typically
             results in an increase in the rate of message redeliveries
             (that is, duplicates). The minimum deadline you can specify
-            is 0 seconds. The maximum deadline you can specify is 600
-            seconds (10 minutes).
+            is 0 seconds. The maximum deadline you can specify in a
+            single request is 600 seconds (10 minutes).
     """
 
     subscription: str = proto.Field(
@@ -1655,18 +1834,18 @@ class StreamingPullRequest(proto.Message):
             client to server. Format is
             ``projects/{project}/subscriptions/{sub}``.
         ack_ids (MutableSequence[str]):
-            List of acknowledgement IDs for acknowledging previously
-            received messages (received on this stream or a different
-            stream). If an ack ID has expired, the corresponding message
-            may be redelivered later. Acknowledging a message more than
-            once will not result in an error. If the acknowledgement ID
-            is malformed, the stream will be aborted with status
-            ``INVALID_ARGUMENT``.
+            Optional. List of acknowledgement IDs for acknowledging
+            previously received messages (received on this stream or a
+            different stream). If an ack ID has expired, the
+            corresponding message may be redelivered later.
+            Acknowledging a message more than once will not result in an
+            error. If the acknowledgement ID is malformed, the stream
+            will be aborted with status ``INVALID_ARGUMENT``.
         modify_deadline_seconds (MutableSequence[int]):
-            The list of new ack deadlines for the IDs listed in
-            ``modify_deadline_ack_ids``. The size of this list must be
-            the same as the size of ``modify_deadline_ack_ids``. If it
-            differs the stream will be aborted with
+            Optional. The list of new ack deadlines for the IDs listed
+            in ``modify_deadline_ack_ids``. The size of this list must
+            be the same as the size of ``modify_deadline_ack_ids``. If
+            it differs the stream will be aborted with
             ``INVALID_ARGUMENT``. Each element in this list is applied
             to the element in the same position in
             ``modify_deadline_ack_ids``. The new ack deadline is with
@@ -1678,8 +1857,8 @@ class StreamingPullRequest(proto.Message):
             request. If the value is < 0 (an error), the stream will be
             aborted with status ``INVALID_ARGUMENT``.
         modify_deadline_ack_ids (MutableSequence[str]):
-            List of acknowledgement IDs whose deadline will be modified
-            based on the corresponding element in
+            Optional. List of acknowledgement IDs whose deadline will be
+            modified based on the corresponding element in
             ``modify_deadline_seconds``. This field can be used to
             indicate that more time is needed to process a message by
             the subscriber, or to make the message available for
@@ -1693,36 +1872,37 @@ class StreamingPullRequest(proto.Message):
             10 seconds. The maximum deadline you can specify
             is 600 seconds (10 minutes).
         client_id (str):
-            A unique identifier that is used to distinguish client
-            instances from each other. Only needs to be provided on the
-            initial request. When a stream disconnects and reconnects
-            for the same stream, the client_id should be set to the same
-            value so that state associated with the old stream can be
-            transferred to the new stream. The same client_id should not
-            be used for different client instances.
+            Optional. A unique identifier that is used to distinguish
+            client instances from each other. Only needs to be provided
+            on the initial request. When a stream disconnects and
+            reconnects for the same stream, the client_id should be set
+            to the same value so that state associated with the old
+            stream can be transferred to the new stream. The same
+            client_id should not be used for different client instances.
         max_outstanding_messages (int):
-            Flow control settings for the maximum number of outstanding
-            messages. When there are ``max_outstanding_messages`` or
-            more currently sent to the streaming pull client that have
-            not yet been acked or nacked, the server stops sending more
-            messages. The sending of messages resumes once the number of
-            outstanding messages is less than this value. If the value
-            is <= 0, there is no limit to the number of outstanding
-            messages. This property can only be set on the initial
-            StreamingPullRequest. If it is set on a subsequent request,
-            the stream will be aborted with status ``INVALID_ARGUMENT``.
-        max_outstanding_bytes (int):
-            Flow control settings for the maximum number of outstanding
-            bytes. When there are ``max_outstanding_bytes`` or more
-            worth of messages currently sent to the streaming pull
-            client that have not yet been acked or nacked, the server
-            will stop sending more messages. The sending of messages
-            resumes once the number of outstanding bytes is less than
+            Optional. Flow control settings for the maximum number of
+            outstanding messages. When there are
+            ``max_outstanding_messages`` currently sent to the streaming
+            pull client that have not yet been acked or nacked, the
+            server stops sending more messages. The sending of messages
+            resumes once the number of outstanding messages is less than
             this value. If the value is <= 0, there is no limit to the
-            number of outstanding bytes. This property can only be set
-            on the initial StreamingPullRequest. If it is set on a
+            number of outstanding messages. This property can only be
+            set on the initial StreamingPullRequest. If it is set on a
             subsequent request, the stream will be aborted with status
             ``INVALID_ARGUMENT``.
+        max_outstanding_bytes (int):
+            Optional. Flow control settings for the maximum number of
+            outstanding bytes. When there are ``max_outstanding_bytes``
+            or more worth of messages currently sent to the streaming
+            pull client that have not yet been acked or nacked, the
+            server will stop sending more messages. The sending of
+            messages resumes once the number of outstanding bytes is
+            less than this value. If the value is <= 0, there is no
+            limit to the number of outstanding bytes. This property can
+            only be set on the initial StreamingPullRequest. If it is
+            set on a subsequent request, the stream will be aborted with
+            status ``INVALID_ARGUMENT``.
     """
 
     subscription: str = proto.Field(
@@ -1765,16 +1945,17 @@ class StreamingPullResponse(proto.Message):
 
     Attributes:
         received_messages (MutableSequence[google.pubsub_v1.types.ReceivedMessage]):
-            Received Pub/Sub messages. This will not be
-            empty.
+            Optional. Received Pub/Sub messages. This
+            will not be empty.
         acknowledge_confirmation (google.pubsub_v1.types.StreamingPullResponse.AcknowledgeConfirmation):
-            This field will only be set if
+            Optional. This field will only be set if
             ``enable_exactly_once_delivery`` is set to ``true``.
         modify_ack_deadline_confirmation (google.pubsub_v1.types.StreamingPullResponse.ModifyAckDeadlineConfirmation):
-            This field will only be set if
+            Optional. This field will only be set if
             ``enable_exactly_once_delivery`` is set to ``true``.
         subscription_properties (google.pubsub_v1.types.StreamingPullResponse.SubscriptionProperties):
-            Properties associated with this subscription.
+            Optional. Properties associated with this
+            subscription.
     """
 
     class AcknowledgeConfirmation(proto.Message):
@@ -1783,17 +1964,18 @@ class StreamingPullResponse(proto.Message):
 
         Attributes:
             ack_ids (MutableSequence[str]):
-                Successfully processed acknowledgement IDs.
+                Optional. Successfully processed
+                acknowledgement IDs.
             invalid_ack_ids (MutableSequence[str]):
-                List of acknowledgement IDs that were
-                malformed or whose acknowledgement deadline has
-                expired.
+                Optional. List of acknowledgement IDs that
+                were malformed or whose acknowledgement deadline
+                has expired.
             unordered_ack_ids (MutableSequence[str]):
-                List of acknowledgement IDs that were out of
-                order.
+                Optional. List of acknowledgement IDs that
+                were out of order.
             temporary_failed_ack_ids (MutableSequence[str]):
-                List of acknowledgement IDs that failed
-                processing with temporary issues.
+                Optional. List of acknowledgement IDs that
+                failed processing with temporary issues.
         """
 
         ack_ids: MutableSequence[str] = proto.RepeatedField(
@@ -1819,14 +2001,15 @@ class StreamingPullResponse(proto.Message):
 
         Attributes:
             ack_ids (MutableSequence[str]):
-                Successfully processed acknowledgement IDs.
+                Optional. Successfully processed
+                acknowledgement IDs.
             invalid_ack_ids (MutableSequence[str]):
-                List of acknowledgement IDs that were
-                malformed or whose acknowledgement deadline has
-                expired.
+                Optional. List of acknowledgement IDs that
+                were malformed or whose acknowledgement deadline
+                has expired.
             temporary_failed_ack_ids (MutableSequence[str]):
-                List of acknowledgement IDs that failed
-                processing with temporary issues.
+                Optional. List of acknowledgement IDs that
+                failed processing with temporary issues.
         """
 
         ack_ids: MutableSequence[str] = proto.RepeatedField(
@@ -1847,11 +2030,11 @@ class StreamingPullResponse(proto.Message):
 
         Attributes:
             exactly_once_delivery_enabled (bool):
-                True iff exactly once delivery is enabled for
-                this subscription.
+                Optional. True iff exactly once delivery is
+                enabled for this subscription.
             message_ordering_enabled (bool):
-                True iff message ordering is enabled for this
-                subscription.
+                Optional. True iff message ordering is
+                enabled for this subscription.
         """
 
         exactly_once_delivery_enabled: bool = proto.Field(
@@ -1909,7 +2092,7 @@ class CreateSnapshotRequest(proto.Message):
             CreateSnapshot request. Format is
             ``projects/{project}/subscriptions/{sub}``.
         labels (MutableMapping[str, str]):
-            See `Creating and managing
+            Optional. See `Creating and managing
             labels <https://cloud.google.com/pubsub/docs/labels>`__.
     """
 
@@ -1961,16 +2144,16 @@ class Snapshot(proto.Message):
 
     Attributes:
         name (str):
-            The name of the snapshot.
+            Optional. The name of the snapshot.
         topic (str):
-            The name of the topic from which this
-            snapshot is retaining messages.
+            Optional. The name of the topic from which
+            this snapshot is retaining messages.
         expire_time (google.protobuf.timestamp_pb2.Timestamp):
-            The snapshot is guaranteed to exist up until this time. A
-            newly-created snapshot expires no later than 7 days from the
-            time of its creation. Its exact lifetime is determined at
-            creation by the existing backlog in the source subscription.
-            Specifically, the lifetime of the snapshot is
+            Optional. The snapshot is guaranteed to exist up until this
+            time. A newly-created snapshot expires no later than 7 days
+            from the time of its creation. Its exact lifetime is
+            determined at creation by the existing backlog in the source
+            subscription. Specifically, the lifetime of the snapshot is
             ``7 days - (age of oldest unacked message in the subscription)``.
             For example, consider a subscription whose oldest unacked
             message is 3 days old. If a snapshot is created from this
@@ -1980,7 +2163,7 @@ class Snapshot(proto.Message):
             snapshot that would expire in less than 1 hour after
             creation.
         labels (MutableMapping[str, str]):
-            See [Creating and managing labels]
+            Optional. See [Creating and managing labels]
             (https://cloud.google.com/pubsub/docs/labels).
     """
 
@@ -2027,12 +2210,13 @@ class ListSnapshotsRequest(proto.Message):
             Required. The name of the project in which to list
             snapshots. Format is ``projects/{project-id}``.
         page_size (int):
-            Maximum number of snapshots to return.
+            Optional. Maximum number of snapshots to
+            return.
         page_token (str):
-            The value returned by the last ``ListSnapshotsResponse``;
-            indicates that this is a continuation of a prior
-            ``ListSnapshots`` call, and that the system should return
-            the next page of data.
+            Optional. The value returned by the last
+            ``ListSnapshotsResponse``; indicates that this is a
+            continuation of a prior ``ListSnapshots`` call, and that the
+            system should return the next page of data.
     """
 
     project: str = proto.Field(
@@ -2054,11 +2238,11 @@ class ListSnapshotsResponse(proto.Message):
 
     Attributes:
         snapshots (MutableSequence[google.pubsub_v1.types.Snapshot]):
-            The resulting snapshots.
+            Optional. The resulting snapshots.
         next_page_token (str):
-            If not empty, indicates that there may be more snapshot that
-            match the request; this value should be passed in a new
-            ``ListSnapshotsRequest``.
+            Optional. If not empty, indicates that there may be more
+            snapshot that match the request; this value should be passed
+            in a new ``ListSnapshotsRequest``.
     """
 
     @property
@@ -2105,13 +2289,13 @@ class SeekRequest(proto.Message):
         subscription (str):
             Required. The subscription to affect.
         time (google.protobuf.timestamp_pb2.Timestamp):
-            The time to seek to. Messages retained in the subscription
-            that were published before this time are marked as
-            acknowledged, and messages retained in the subscription that
-            were published after this time are marked as unacknowledged.
-            Note that this operation affects only those messages
-            retained in the subscription (configured by the combination
-            of ``message_retention_duration`` and
+            Optional. The time to seek to. Messages retained in the
+            subscription that were published before this time are marked
+            as acknowledged, and messages retained in the subscription
+            that were published after this time are marked as
+            unacknowledged. Note that this operation affects only those
+            messages retained in the subscription (configured by the
+            combination of ``message_retention_duration`` and
             ``retain_acked_messages``). For example, if ``time``
             corresponds to a point before the message retention window
             (or to a point before the system's notion of the
@@ -2121,8 +2305,8 @@ class SeekRequest(proto.Message):
 
             This field is a member of `oneof`_ ``target``.
         snapshot (str):
-            The snapshot to seek to. The snapshot's topic must be the
-            same as that of the provided subscription. Format is
+            Optional. The snapshot to seek to. The snapshot's topic must
+            be the same as that of the provided subscription. Format is
             ``projects/{project}/snapshots/{snap}``.
 
             This field is a member of `oneof`_ ``target``.
