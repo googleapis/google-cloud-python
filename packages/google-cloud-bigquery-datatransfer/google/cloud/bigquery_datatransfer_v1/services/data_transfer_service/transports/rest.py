@@ -166,6 +166,10 @@ class DataTransferServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_unenroll_data_sources(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
             def pre_update_transfer_config(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -468,6 +472,18 @@ class DataTransferServiceRestInterceptor:
         it is returned to user code.
         """
         return response
+
+    def pre_unenroll_data_sources(
+        self,
+        request: datatransfer.UnenrollDataSourcesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[datatransfer.UnenrollDataSourcesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for unenroll_data_sources
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataTransferService server.
+        """
+        return request, metadata
 
     def pre_update_transfer_config(
         self,
@@ -1979,6 +1995,81 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
             resp = self._interceptor.post_start_manual_transfer_runs(resp)
             return resp
 
+    class _UnenrollDataSources(DataTransferServiceRestStub):
+        def __hash__(self):
+            return hash("UnenrollDataSources")
+
+        def __call__(
+            self,
+            request: datatransfer.UnenrollDataSourcesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the unenroll data sources method over HTTP.
+
+            Args:
+                request (~.datatransfer.UnenrollDataSourcesRequest):
+                    The request object. A request to unenroll a set of data sources so they are
+                no longer visible in the BigQuery UI's ``Transfer`` tab.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{name=projects/*/locations/*}:unenrollDataSources",
+                    "body": "*",
+                },
+            ]
+            request, metadata = self._interceptor.pre_unenroll_data_sources(
+                request, metadata
+            )
+            pb_request = datatransfer.UnenrollDataSourcesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
     class _UpdateTransferConfig(DataTransferServiceRestStub):
         def __hash__(self):
             return hash("UpdateTransferConfig")
@@ -2221,6 +2312,14 @@ class DataTransferServiceRestTransport(DataTransferServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._StartManualTransferRuns(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def unenroll_data_sources(
+        self,
+    ) -> Callable[[datatransfer.UnenrollDataSourcesRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UnenrollDataSources(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def update_transfer_config(

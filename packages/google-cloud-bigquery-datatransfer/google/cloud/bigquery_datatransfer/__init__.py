@@ -48,6 +48,7 @@ from google.cloud.bigquery_datatransfer_v1.types.datatransfer import (
     ScheduleTransferRunsResponse,
     StartManualTransferRunsRequest,
     StartManualTransferRunsResponse,
+    UnenrollDataSourcesRequest,
     UpdateTransferConfigRequest,
 )
 from google.cloud.bigquery_datatransfer_v1.types.transfer import (
@@ -88,6 +89,7 @@ __all__ = (
     "ScheduleTransferRunsResponse",
     "StartManualTransferRunsRequest",
     "StartManualTransferRunsResponse",
+    "UnenrollDataSourcesRequest",
     "UpdateTransferConfigRequest",
     "EmailPreferences",
     "EncryptionConfiguration",

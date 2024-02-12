@@ -303,6 +303,11 @@ class DataTransferServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.unenroll_data_sources: gapic_v1.method.wrap_method(
+                self.unenroll_data_sources,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -466,6 +471,15 @@ class DataTransferServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [datatransfer.EnrollDataSourcesRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def unenroll_data_sources(
+        self,
+    ) -> Callable[
+        [datatransfer.UnenrollDataSourcesRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()

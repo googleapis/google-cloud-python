@@ -80,6 +80,11 @@
                 "start_manual_transfer_runs"
               ]
             },
+            "UnenrollDataSources": {
+              "methods": [
+                "unenroll_data_sources"
+              ]
+            },
             "UpdateTransferConfig": {
               "methods": [
                 "update_transfer_config"
@@ -160,6 +165,11 @@
                 "start_manual_transfer_runs"
               ]
             },
+            "UnenrollDataSources": {
+              "methods": [
+                "unenroll_data_sources"
+              ]
+            },
             "UpdateTransferConfig": {
               "methods": [
                 "update_transfer_config"
@@ -238,6 +248,11 @@
             "StartManualTransferRuns": {
               "methods": [
                 "start_manual_transfer_runs"
+              ]
+            },
+            "UnenrollDataSources": {
+              "methods": [
+                "unenroll_data_sources"
               ]
             },
             "UpdateTransferConfig": {

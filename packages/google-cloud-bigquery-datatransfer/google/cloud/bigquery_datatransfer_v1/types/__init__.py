@@ -37,6 +37,7 @@ from .datatransfer import (
     ScheduleTransferRunsResponse,
     StartManualTransferRunsRequest,
     StartManualTransferRunsResponse,
+    UnenrollDataSourcesRequest,
     UpdateTransferConfigRequest,
 )
 from .transfer import (
@@ -75,6 +76,7 @@ __all__ = (
     "ScheduleTransferRunsResponse",
     "StartManualTransferRunsRequest",
     "StartManualTransferRunsResponse",
+    "UnenrollDataSourcesRequest",
     "UpdateTransferConfigRequest",
     "EmailPreferences",
     "EncryptionConfiguration",

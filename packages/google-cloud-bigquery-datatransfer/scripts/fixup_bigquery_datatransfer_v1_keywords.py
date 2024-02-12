@@ -53,6 +53,7 @@ class bigquery_datatransferCallTransformer(cst.CSTTransformer):
         'list_transfer_runs': ('parent', 'states', 'page_token', 'page_size', 'run_attempt', ),
         'schedule_transfer_runs': ('parent', 'start_time', 'end_time', ),
         'start_manual_transfer_runs': ('parent', 'requested_time_range', 'requested_run_time', ),
+        'unenroll_data_sources': ('name', 'data_source_ids', ),
         'update_transfer_config': ('transfer_config', 'update_mask', 'authorization_code', 'version_info', 'service_account_name', ),
     }
 
