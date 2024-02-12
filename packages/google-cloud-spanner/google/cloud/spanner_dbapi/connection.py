@@ -118,6 +118,13 @@ class Connection:
         self._transaction_helper = TransactionRetryHelper(self)
 
     @property
+    def spanner_client(self):
+        """Client for interacting with Cloud Spanner API. This property exposes
+        the spanner client so that underlying methods can be accessed.
+        """
+        return self._instance._client
+
+    @property
     def autocommit(self):
         """Autocommit mode flag for this connection.
 
