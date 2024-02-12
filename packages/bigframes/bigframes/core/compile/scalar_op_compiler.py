@@ -40,6 +40,17 @@ _NEG_INF = typing.cast(ibis_types.NumericValue, ibis_types.literal(-np.inf))
 # ln(2**(2**10)) == (2**10)*ln(2) ~= 709.78, so EXP(x) for x>709.78 will overflow.
 _FLOAT64_EXP_BOUND = typing.cast(ibis_types.NumericValue, ibis_types.literal(709.78))
 
+# Datetime constants
+UNIT_TO_US_CONVERSION_FACTORS = {
+    "D": 24 * 60 * 60 * 1000 * 1000,
+    "h": 60 * 60 * 1000 * 1000,
+    "m": 60 * 1000 * 1000,
+    "s": 1000 * 1000,
+    "ms": 1000,
+    "us": 1,
+    "ns": 1e-3,
+}
+
 
 class ScalarOpCompiler:
     # Mapping of operation name to implemenations
@@ -656,6 +667,33 @@ def isin_op_impl(x: ibis_types.Value, op: ops.IsInOp):
         return x.isin(matchable_ibis_values)
 
 
+@scalar_op_compiler.register_unary_op(ops.ToDatetimeOp, pass_op=True)
+def to_datetime_op_impl(x: ibis_types.Value, op: ops.ToDatetimeOp):
+    if x.type() == ibis_dtypes.str:
+        x = x.to_timestamp(op.format) if op.format else timestamp(x)
+    elif x.type() == ibis_dtypes.Timestamp(timezone="UTC"):
+        return x
+    elif x.type() != ibis_dtypes.timestamp:
+        # The default unit is set to "ns" (nanoseconds) for consistency
+        # with pandas, where "ns" is the default unit for datetime operations.
+        unit = op.unit or "ns"
+        if unit not in UNIT_TO_US_CONVERSION_FACTORS:
+            raise ValueError(f"Cannot convert input with unit '{unit}'.")
+        x_converted = x * UNIT_TO_US_CONVERSION_FACTORS[unit]
+        x_converted = x_converted.cast(ibis_dtypes.int64)
+
+        # Note: Due to an issue where casting directly to a timestamp
+        # without a timezone does not work, we first cast to UTC. This
+        # approach appears to bypass a potential bug in Ibis's cast function,
+        # allowing for subsequent casting to a timestamp type without timezone
+        # information. Further investigation is needed to confirm this behavior.
+        x = x_converted.to_timestamp(unit="us").cast(
+            ibis_dtypes.Timestamp(timezone="UTC")
+        )
+
+    return x.cast(ibis_dtypes.Timestamp(timezone="UTC" if op.utc else None))
+
+
 @scalar_op_compiler.register_unary_op(ops.RemoteFunctionOp, pass_op=True)
 def remote_function_op_impl(x: ibis_types.Value, op: ops.RemoteFunctionOp):
     if not hasattr(op.func, "bigframes_remote_function"):
@@ -1141,3 +1179,8 @@ def is_null(value) -> bool:
 
 def _ibis_num(number: float):
     return typing.cast(ibis_types.NumericValue, ibis_types.literal(number))
+
+
+@ibis.udf.scalar.builtin
+def timestamp(a: str) -> ibis_dtypes.timestamp:
+    """Convert string to timestamp."""

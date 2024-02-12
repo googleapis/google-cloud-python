@@ -17,6 +17,7 @@
 from __future__ import annotations
 
 from collections import namedtuple
+from datetime import datetime
 import inspect
 import sys
 import typing
@@ -52,6 +53,7 @@ import bigframes.core.expression as ex
 import bigframes.core.global_session as global_session
 import bigframes.core.indexes
 import bigframes.core.reshape
+import bigframes.core.tools
 import bigframes.dataframe
 import bigframes.operations as ops
 import bigframes.series
@@ -61,6 +63,7 @@ import third_party.bigframes_vendored.pandas.core.reshape.concat as vendored_pan
 import third_party.bigframes_vendored.pandas.core.reshape.encoding as vendored_pandas_encoding
 import third_party.bigframes_vendored.pandas.core.reshape.merge as vendored_pandas_merge
 import third_party.bigframes_vendored.pandas.core.reshape.tile as vendored_pandas_tile
+import third_party.bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetimes
 import third_party.bigframes_vendored.pandas.io.gbq as vendored_pandas_gbq
 
 
@@ -635,6 +638,30 @@ def read_gbq_function(function_name: str):
 
 read_gbq_function.__doc__ = inspect.getdoc(bigframes.session.Session.read_gbq_function)
 
+
+def to_datetime(
+    arg: Union[
+        vendored_pandas_datetimes.local_scalars,
+        vendored_pandas_datetimes.local_iterables,
+        bigframes.series.Series,
+        bigframes.dataframe.DataFrame,
+    ],
+    *,
+    utc: bool = False,
+    format: Optional[str] = None,
+    unit: Optional[str] = None,
+) -> Union[pandas.Timestamp, datetime, bigframes.series.Series]:
+    return bigframes.core.tools.to_datetime(
+        arg,
+        utc=utc,
+        format=format,
+        unit=unit,
+    )
+
+
+to_datetime.__doc__ = vendored_pandas_datetimes.to_datetime.__doc__
+
+
 # pandas dtype attributes
 NA = pandas.NA
 BooleanDtype = pandas.BooleanDtype
@@ -680,6 +707,7 @@ __all___ = [
     "read_pandas",
     "read_pickle",
     "remote_function",
+    "to_datetime",
     # pandas dtype attributes
     "NA",
     "BooleanDtype",
