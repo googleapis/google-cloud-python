@@ -58,6 +58,12 @@ LevelType = typing.Union[str, int]
 LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
 
 
+_remote_function_recommendation_message = (
+    "Your functions could not be applied directly to the Series."
+    " Try converting it to a remote function."
+)
+
+
 @log_adapter.class_logger
 class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Series):
     def __init__(self, *args, **kwargs):
@@ -1210,12 +1216,43 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             dropna=dropna,
         )
 
-    def apply(self, func) -> Series:
+    def apply(
+        self, func, by_row: typing.Union[typing.Literal["compat"], bool] = "compat"
+    ) -> Series:
         # TODO(shobs, b/274645634): Support convert_dtype, args, **kwargs
         # is actually a ternary op
         # Reproject as workaround to applying filter too late. This forces the filter
         # to be applied before passing data to remote function, protecting from bad
         # inputs causing errors.
+
+        if by_row not in ["compat", False]:
+            raise ValueError("Param by_row must be one of 'compat' or False")
+
+        if not callable(func):
+            raise ValueError(
+                "Only a ufunc (a function that applies to the entire Series) or a remote function that only works on single values are supported."
+            )
+
+        if not hasattr(func, "bigframes_remote_function"):
+            # It is not a remote function
+            # Then it must be a vectorized function that applies to the Series
+            # as a whole
+            if by_row:
+                raise ValueError(
+                    "A vectorized non-remote function can be provided only with by_row=False."
+                    " For element-wise operation it must be a remote function."
+                )
+
+            try:
+                return func(self)
+            except Exception as ex:
+                # This could happen if any of the operators in func is not
+                # supported on a Series. Let's guide the customer to use a
+                # remote function instead
+                if hasattr(ex, "message"):
+                    ex.message += f"\n{_remote_function_recommendation_message}"
+                raise
+
         reprojected_series = Series(self._block._force_reproject())
         return reprojected_series._apply_unary_op(
             ops.RemoteFunctionOp(func=func, apply_on_null=True)
@@ -1325,7 +1362,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def mask(self, cond, other=None) -> Series:
         if callable(cond):
-            cond = self.apply(cond)
+            if hasattr(cond, "bigframes_remote_function"):
+                cond = self.apply(cond)
+            else:
+                # For non-remote function assume that it is applicable on Series
+                cond = self.apply(cond, by_row=False)
 
         if not isinstance(cond, Series):
             raise TypeError(

@@ -2561,6 +2561,51 @@ def test_mask_custom_value(scalars_dfs):
 
 
 @pytest.mark.parametrize(
+    ("lambda_",),
+    [
+        pytest.param(lambda x: x > 0),
+        pytest.param(
+            lambda x: True if x > 0 else False,
+            marks=pytest.mark.xfail(
+                raises=ValueError,
+            ),
+        ),
+    ],
+    ids=[
+        "lambda_arithmatic",
+        "lambda_arbitrary",
+    ],
+)
+def test_mask_lambda(scalars_dfs, lambda_):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_col = scalars_df["int64_col"]
+    bf_result = bf_col.mask(lambda_).to_pandas()
+
+    pd_col = scalars_pandas_df["int64_col"]
+    pd_result = pd_col.mask(lambda_)
+
+    # ignore dtype check, which are Int64 and object respectively
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+def test_mask_simple_udf(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    def foo(x):
+        return x < 1000000
+
+    bf_col = scalars_df["int64_col"]
+    bf_result = bf_col.mask(foo).to_pandas()
+
+    pd_col = scalars_pandas_df["int64_col"]
+    pd_result = pd_col.mask(foo)
+
+    # ignore dtype check, which are Int64 and object respectively
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+@pytest.mark.parametrize(
     ("column", "to_type"),
     [
         ("int64_col", "Float64"),
@@ -3042,3 +3087,109 @@ def test_series_iter(
         scalars_df_index["int64_too"], scalars_pandas_df_index["int64_too"]
     ):
         assert bf_i == pd_i
+
+
+@pytest.mark.parametrize(
+    (
+        "col",
+        "lambda_",
+    ),
+    [
+        pytest.param("int64_col", lambda x: x * x + x + 1),
+        pytest.param("int64_col", lambda x: x % 2 == 1),
+        pytest.param("string_col", lambda x: x + "_suffix"),
+    ],
+    ids=[
+        "lambda_int_int",
+        "lambda_int_bool",
+        "lambda_str_str",
+    ],
+)
+def test_apply_lambda(scalars_dfs, col, lambda_):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_col = scalars_df[col]
+
+    # Can't be applied to BigFrames Series without by_row=False
+    with pytest.raises(ValueError, match="by_row=False"):
+        bf_col.apply(lambda_)
+
+    bf_result = bf_col.apply(lambda_, by_row=False).to_pandas()
+
+    pd_col = scalars_pandas_df[col]
+    pd_result = pd_col.apply(lambda_)
+
+    # ignore dtype check, which are Int64 and object respectively
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+@pytest.mark.parametrize(
+    ("ufunc",),
+    [
+        pytest.param(numpy.log),
+        pytest.param(numpy.sqrt),
+        pytest.param(numpy.sin),
+    ],
+    ids=[
+        "log",
+        "sqrt",
+        "sin",
+    ],
+)
+def test_apply_numpy_ufunc(scalars_dfs, ufunc):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    bf_col = scalars_df["int64_col"]
+
+    # Can't be applied to BigFrames Series without by_row=False
+    with pytest.raises(ValueError, match="by_row=False"):
+        bf_col.apply(ufunc)
+
+    bf_result = bf_col.apply(ufunc, by_row=False).to_pandas()
+
+    pd_col = scalars_pandas_df["int64_col"]
+    pd_result = pd_col.apply(ufunc)
+
+    assert_series_equal(bf_result, pd_result)
+
+
+def test_apply_simple_udf(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+
+    def foo(x):
+        return x * x + 2 * x + 3
+
+    bf_col = scalars_df["int64_col"]
+
+    # Can't be applied to BigFrames Series without by_row=False
+    with pytest.raises(ValueError, match="by_row=False"):
+        bf_col.apply(foo)
+
+    bf_result = bf_col.apply(foo, by_row=False).to_pandas()
+
+    pd_col = scalars_pandas_df["int64_col"]
+    pd_result = pd_col.apply(foo)
+
+    # ignore dtype check, which are Int64 and object respectively
+    assert_series_equal(bf_result, pd_result, check_dtype=False)
+
+
+@pytest.mark.parametrize(
+    ("col", "lambda_", "exception"),
+    [
+        pytest.param("int64_col", {1: 2, 3: 4}, ValueError),
+        pytest.param("int64_col", numpy.square, TypeError),
+        pytest.param("string_col", lambda x: x.capitalize(), AttributeError),
+    ],
+    ids=[
+        "not_callable",
+        "numpy_ufunc",
+        "custom_lambda",
+    ],
+)
+def test_apply_not_supported(scalars_dfs, col, lambda_, exception):
+    scalars_df, _ = scalars_dfs
+
+    bf_col = scalars_df[col]
+    with pytest.raises(exception):
+        bf_col.apply(lambda_, by_row=False)

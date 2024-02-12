@@ -1116,18 +1116,24 @@ class Series(NDFrame):  # type: ignore[misc]
     def apply(
         self,
         func,
+        by_row="compat",
     ) -> DataFrame | Series:
         """
         Invoke function on values of a Series.
+
+        Can be ufunc (a NumPy function that applies to the entire Series) or a
+        Python function that only works on single values. If it is an arbitrary
+        python function then converting it into a `remote_function` is recommended.
 
         **Examples:**
 
             >>> import bigframes.pandas as bpd
             >>> bpd.options.display.progress_bar = None
 
-        Let's use ``reuse=False`` flag to make sure a new ``remote_function``
+        For applying arbitrary python function a `remote_funciton` is recommended.
+        Let's use ``reuse=False`` flag to make sure a new `remote_function`
         is created every time we run the following code, but you can skip it
-        to potentially reuse a previously deployed ``remote_function`` from
+        to potentially reuse a previously deployed `remote_function` from
         the same user defined function.
 
             >>> @bpd.remote_function([int], float, reuse=False)
@@ -1152,9 +1158,9 @@ class Series(NDFrame):  # type: ignore[misc]
             4    2.0
             dtype: Float64
 
-        You could turn a user defined function with external package
-        dependencies into a BigQuery DataFrames remote function. You would
-        provide the names of the packages via ``packages`` param.
+        To turn a user defined function with external package dependencies into
+        a `remote_function`, you would provide the names of the packages via
+        `packages` param.
 
             >>> @bpd.remote_function(
             ...     [str],
@@ -1176,11 +1182,48 @@ class Series(NDFrame):  # type: ignore[misc]
             >>> names = bpd.Series(["Alice", "Bob"])
             >>> hashes = names.apply(get_hash)
 
+        Simple vectorized functions, lambdas or ufuncs can be applied directly
+        with `by_row=False`.
+
+            >>> nums = bpd.Series([1, 2, 3, 4])
+            >>> nums
+            0    1
+            1    2
+            2    3
+            3    4
+            dtype: Int64
+            >>> nums.apply(lambda x: x*x + 2*x + 1, by_row=False)
+            0     4
+            1     9
+            2    16
+            3    25
+            dtype: Int64
+
+            >>> def is_odd(num):
+            ...     return num % 2 == 1
+            >>> nums.apply(is_odd, by_row=False)
+            0     True
+            1    False
+            2     True
+            3    False
+            dtype: boolean
+
+            >>> nums.apply(np.log, by_row=False)
+            0         0.0
+            1    0.693147
+            2    1.098612
+            3    1.386294
+            dtype: Float64
+
         Args:
             func (function):
                 BigFrames DataFrames ``remote_function`` to apply. The function
                 should take a scalar and return a scalar. It will be applied to
                 every element in the ``Series``.
+            by_row (False or "compat", default "compat"):
+                If `"compat"` , func must be a remote function which will be
+                passed each element of the Series, like `Series.map`. If False,
+                the func will be passed the whole Series at once.
 
         Returns:
             bigframes.series.Series: A new Series with values representing the
@@ -2680,7 +2723,8 @@ class Series(NDFrame):  # type: ignore[misc]
             dtype: Int64
 
         You can mask the values in the Series based on a condition. The values
-        matching the condition would be masked.
+        matching the condition would be masked. The condition can be provided in
+        formm of a Series.
 
             >>> s.mask(s % 2 == 0)
             0    <NA>
@@ -2735,6 +2779,32 @@ class Series(NDFrame):  # type: ignore[misc]
             1         Bob
             2    Caroline
             dtype: string
+
+        Simple vectorized (i.e. they only perform operations supported on a
+        Series) lambdas or python functions can be used directly.
+
+            >>> nums = bpd.Series([1, 2, 3, 4], name="nums")
+            >>> nums
+            0    1
+            1    2
+            2    3
+            3    4
+            Name: nums, dtype: Int64
+            >>> nums.mask(lambda x: (x+1) % 2 == 1)
+            0        1
+            1     <NA>
+            2        3
+            3     <NA>
+            Name: nums, dtype: Int64
+
+            >>> def is_odd(num):
+            ...     return num % 2 == 1
+            >>> nums.mask(is_odd)
+            0     <NA>
+            1        2
+            2     <NA>
+            3        4
+            Name: nums, dtype: Int64
 
         Args:
             cond (bool Series/DataFrame, array-like, or callable):
