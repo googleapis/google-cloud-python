@@ -835,7 +835,9 @@ def test_insert_rows_from_dataframe(bigquery_client, dataset_id):
     schema = [
         SF("float_col", "FLOAT", mode="REQUIRED"),
         SF("int_col", "INTEGER", mode="REQUIRED"),
+        SF("int64_col", "INTEGER", mode="NULLABLE"),
         SF("bool_col", "BOOLEAN", mode="REQUIRED"),
+        SF("boolean_col", "BOOLEAN", mode="NULLABLE"),
         SF("string_col", "STRING", mode="NULLABLE"),
         SF("date_col", "DATE", mode="NULLABLE"),
         SF("time_col", "TIME", mode="NULLABLE"),
@@ -898,6 +900,15 @@ def test_insert_rows_from_dataframe(bigquery_client, dataset_id):
     dataframe["date_col"] = dataframe["date_col"].astype("dbdate")
     dataframe["time_col"] = dataframe["time_col"].astype("dbtime")
 
+    # Support nullable integer and boolean dtypes.
+    # https://github.com/googleapis/python-bigquery/issues/1815
+    dataframe["int64_col"] = pandas.Series(
+        [-11, -22, pandas.NA, -44, -55, -66], dtype="Int64"
+    )
+    dataframe["boolean_col"] = pandas.Series(
+        [True, False, True, pandas.NA, True, False], dtype="boolean"
+    )
+
     table_id = f"{bigquery_client.project}.{dataset_id}.test_insert_rows_from_dataframe"
     table_arg = bigquery.Table(table_id, schema=schema)
     table = helpers.retry_403(bigquery_client.create_table)(table_arg)
@@ -910,7 +921,7 @@ def test_insert_rows_from_dataframe(bigquery_client, dataset_id):
     expected = [
         # Pandas often represents NULL values as NaN. Convert to None for
         # easier comparison.
-        tuple(None if col != col else col for col in data_row)
+        tuple(None if pandas.isna(col) else col for col in data_row)
         for data_row in dataframe.itertuples(index=False)
     ]
 

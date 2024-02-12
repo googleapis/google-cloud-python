@@ -958,6 +958,25 @@ def dataframe_to_json_generator(dataframe):
             # considered a NaN, however.
             if isinstance(is_nan, bool) and is_nan:
                 continue
+
+            # Convert numpy types to corresponding Python types.
+            # https://stackoverflow.com/a/60441783/101923
+            if isinstance(value, numpy.bool_):
+                value = bool(value)
+            elif isinstance(
+                value,
+                (
+                    numpy.int64,
+                    numpy.int32,
+                    numpy.int16,
+                    numpy.int8,
+                    numpy.uint64,
+                    numpy.uint32,
+                    numpy.uint16,
+                    numpy.uint8,
+                ),
+            ):
+                value = int(value)
             output[column] = value
 
         yield output
