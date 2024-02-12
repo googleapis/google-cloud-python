@@ -17,7 +17,10 @@ import unittest
 
 import mock
 from google.api_core import gapic_v1
-from google.cloud.spanner_admin_database_v1 import Database as DatabasePB
+from google.cloud.spanner_admin_database_v1 import (
+    Database as DatabasePB,
+    DatabaseDialect,
+)
 from google.cloud.spanner_v1.param_types import INT64
 from google.api_core.retry import Retry
 from google.protobuf.field_mask_pb2 import FieldMask
@@ -1680,6 +1683,7 @@ class TestDatabase(_BaseTest):
         instance = _Instance(self.INSTANCE_NAME, client=client)
         pool = _Pool()
         database = self._make_one(self.DATABASE_ID, instance, pool=pool)
+        database._database_dialect = DatabaseDialect.GOOGLE_STANDARD_SQL
         my_table = database.table("my_table")
         self.assertIsInstance(my_table, Table)
         self.assertIs(my_table._database, database)
@@ -3011,6 +3015,12 @@ def _make_instance_api():
     return mock.create_autospec(InstanceAdminClient)
 
 
+def _make_database_admin_api():
+    from google.cloud.spanner_admin_database_v1 import DatabaseAdminClient
+
+    return mock.create_autospec(DatabaseAdminClient)
+
+
 class _Client(object):
     def __init__(
         self,
@@ -3023,6 +3033,7 @@ class _Client(object):
         self.project = project
         self.project_name = "projects/" + self.project
         self._endpoint_cache = {}
+        self.database_admin_api = _make_database_admin_api()
         self.instance_admin_api = _make_instance_api()
         self._client_info = mock.Mock()
         self._client_options = mock.Mock()

@@ -936,6 +936,7 @@ class TestCursor(unittest.TestCase):
 
     def test_list_tables(self):
         from google.cloud.spanner_dbapi import _helpers
+        from google.cloud.spanner_v1 import param_types
 
         connection = self._make_connection(self.INSTANCE, self.DATABASE)
         cursor = self._make_one(connection)
@@ -946,7 +947,11 @@ class TestCursor(unittest.TestCase):
             return_value=table_list,
         ) as mock_run_sql:
             cursor.list_tables()
-            mock_run_sql.assert_called_once_with(_helpers.SQL_LIST_TABLES)
+            mock_run_sql.assert_called_once_with(
+                sql=_helpers.SQL_LIST_TABLES,
+                params={"table_schema": ""},
+                param_types={"table_schema": param_types.STRING},
+            )
 
     def test_run_sql_in_snapshot(self):
         connection = self._make_connection(self.INSTANCE, mock.MagicMock())
@@ -987,8 +992,11 @@ class TestCursor(unittest.TestCase):
             result = cursor.get_table_column_schema(table_name=table_name)
             mock_run_sql.assert_called_once_with(
                 sql=_helpers.SQL_GET_TABLE_COLUMN_SCHEMA,
-                params={"table_name": table_name},
-                param_types={"table_name": param_types.STRING},
+                params={"schema_name": "", "table_name": table_name},
+                param_types={
+                    "schema_name": param_types.STRING,
+                    "table_name": param_types.STRING,
+                },
             )
             self.assertEqual(result, expected)
 

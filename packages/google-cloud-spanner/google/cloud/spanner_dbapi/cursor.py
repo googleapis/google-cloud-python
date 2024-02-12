@@ -510,13 +510,17 @@ class Cursor(object):
             raise ProgrammingError("no results to return")
         return self._itr
 
-    def list_tables(self):
+    def list_tables(self, schema_name=""):
         """List the tables of the linked Database.
 
         :rtype: list
         :returns: The list of tables within the Database.
         """
-        return self.run_sql_in_snapshot(_helpers.SQL_LIST_TABLES)
+        return self.run_sql_in_snapshot(
+            sql=_helpers.SQL_LIST_TABLES,
+            params={"table_schema": schema_name},
+            param_types={"table_schema": spanner.param_types.STRING},
+        )
 
     def run_sql_in_snapshot(self, sql, params=None, param_types=None):
         # Some SQL e.g. for INFORMATION_SCHEMA cannot be run in read-write transactions
@@ -528,11 +532,14 @@ class Cursor(object):
         with self.connection.database.snapshot() as snapshot:
             return list(snapshot.execute_sql(sql, params, param_types))
 
-    def get_table_column_schema(self, table_name):
+    def get_table_column_schema(self, table_name, schema_name=""):
         rows = self.run_sql_in_snapshot(
             sql=_helpers.SQL_GET_TABLE_COLUMN_SCHEMA,
-            params={"table_name": table_name},
-            param_types={"table_name": spanner.param_types.STRING},
+            params={"schema_name": schema_name, "table_name": table_name},
+            param_types={
+                "schema_name": spanner.param_types.STRING,
+                "table_name": spanner.param_types.STRING,
+            },
         )
 
         column_details = {}

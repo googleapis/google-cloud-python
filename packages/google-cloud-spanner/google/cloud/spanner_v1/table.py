@@ -43,12 +43,25 @@ class Table(object):
     :param database: The database that owns the table.
     """
 
-    def __init__(self, table_id, database):
+    def __init__(self, table_id, database, schema_name=None):
+        if schema_name is None:
+            self._schema_name = database.default_schema_name
+        else:
+            self._schema_name = schema_name
         self._table_id = table_id
         self._database = database
 
         # Calculated properties.
         self._schema = None
+
+    @property
+    def schema_name(self):
+        """The schema name of the table used in SQL.
+
+        :rtype: str
+        :returns: The table schema name.
+        """
+        return self._schema_name
 
     @property
     def table_id(self):
@@ -58,6 +71,30 @@ class Table(object):
         :returns: The table ID.
         """
         return self._table_id
+
+    @property
+    def qualified_table_name(self):
+        """The qualified name of the table used in SQL.
+
+        :rtype: str
+        :returns: The qualified table name.
+        """
+        if self.schema_name == self._database.default_schema_name:
+            return self._quote_identifier(self.table_id)
+        return "{}.{}".format(
+            self._quote_identifier(self.schema_name),
+            self._quote_identifier(self.table_id),
+        )
+
+    def _quote_identifier(self, identifier):
+        """Quotes the given identifier using the rules of the dialect of the database of this table.
+
+        :rtype: str
+        :returns: The quoted identifier.
+        """
+        if self._database.database_dialect == DatabaseDialect.POSTGRESQL:
+            return '"{}"'.format(identifier)
+        return "`{}`".format(identifier)
 
     def exists(self):
         """Test whether this table exists.
@@ -77,22 +114,27 @@ class Table(object):
         :rtype: bool
         :returns: True if the table exists, else false.
         """
-        if (
-            self._database.database_dialect
-            == DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED
-        ):
-            self._database.reload()
         if self._database.database_dialect == DatabaseDialect.POSTGRESQL:
             results = snapshot.execute_sql(
-                _EXISTS_TEMPLATE.format("WHERE TABLE_NAME = $1"),
-                params={"p1": self.table_id},
-                param_types={"p1": Type(code=TypeCode.STRING)},
+                sql=_EXISTS_TEMPLATE.format(
+                    "WHERE TABLE_SCHEMA=$1 AND TABLE_NAME = $2"
+                ),
+                params={"p1": self.schema_name, "p2": self.table_id},
+                param_types={
+                    "p1": Type(code=TypeCode.STRING),
+                    "p2": Type(code=TypeCode.STRING),
+                },
             )
         else:
             results = snapshot.execute_sql(
-                _EXISTS_TEMPLATE.format("WHERE TABLE_NAME = @table_id"),
-                params={"table_id": self.table_id},
-                param_types={"table_id": Type(code=TypeCode.STRING)},
+                sql=_EXISTS_TEMPLATE.format(
+                    "WHERE TABLE_SCHEMA = @schema_name AND TABLE_NAME = @table_id"
+                ),
+                params={"schema_name": self.schema_name, "table_id": self.table_id},
+                param_types={
+                    "schema_name": Type(code=TypeCode.STRING),
+                    "table_id": Type(code=TypeCode.STRING),
+                },
             )
         return next(iter(results))[0]
 
@@ -117,7 +159,7 @@ class Table(object):
         :rtype: list of :class:`~google.cloud.spanner_v1.types.StructType.Field`
         :returns: The table schema.
         """
-        query = _GET_SCHEMA_TEMPLATE.format(self.table_id)
+        query = _GET_SCHEMA_TEMPLATE.format(self.qualified_table_name)
         results = snapshot.execute_sql(query)
         # Start iterating to force the schema to download.
         try:

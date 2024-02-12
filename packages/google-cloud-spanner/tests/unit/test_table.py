@@ -26,6 +26,7 @@ from google.cloud.spanner_v1.types import (
 
 class _BaseTest(unittest.TestCase):
     TABLE_ID = "test_table"
+    TABLE_SCHEMA = ""
 
     def _make_one(self, *args, **kwargs):
         return self._get_target_class()(*args, **kwargs)
@@ -55,13 +56,18 @@ class TestTable(_BaseTest):
         db.snapshot.return_value = checkout
         checkout.__enter__.return_value = snapshot
         snapshot.execute_sql.return_value = [[False]]
-        table = self._make_one(self.TABLE_ID, db)
+        table = self._make_one(self.TABLE_ID, db, schema_name=self.TABLE_SCHEMA)
         exists = table.exists()
         self.assertFalse(exists)
         snapshot.execute_sql.assert_called_with(
-            _EXISTS_TEMPLATE.format("WHERE TABLE_NAME = @table_id"),
-            params={"table_id": self.TABLE_ID},
-            param_types={"table_id": Type(code=TypeCode.STRING)},
+            _EXISTS_TEMPLATE.format(
+                "WHERE TABLE_SCHEMA = @schema_name AND TABLE_NAME = @table_id"
+            ),
+            params={"schema_name": self.TABLE_SCHEMA, "table_id": self.TABLE_ID},
+            param_types={
+                "schema_name": Type(code=TypeCode.STRING),
+                "table_id": Type(code=TypeCode.STRING),
+            },
         )
 
     def test_schema_executes_query(self):
@@ -70,14 +76,15 @@ class TestTable(_BaseTest):
         from google.cloud.spanner_v1.table import _GET_SCHEMA_TEMPLATE
 
         db = mock.create_autospec(Database, instance=True)
+        db.default_schema_name = ""
         checkout = mock.create_autospec(SnapshotCheckout, instance=True)
         snapshot = mock.create_autospec(Snapshot, instance=True)
         db.snapshot.return_value = checkout
         checkout.__enter__.return_value = snapshot
-        table = self._make_one(self.TABLE_ID, db)
+        table = self._make_one(self.TABLE_ID, db, schema_name=self.TABLE_SCHEMA)
         schema = table.schema
         self.assertIsInstance(schema, list)
-        expected_query = _GET_SCHEMA_TEMPLATE.format(self.TABLE_ID)
+        expected_query = _GET_SCHEMA_TEMPLATE.format("`{}`".format(self.TABLE_ID))
         snapshot.execute_sql.assert_called_with(expected_query)
 
     def test_schema_returns_cache(self):

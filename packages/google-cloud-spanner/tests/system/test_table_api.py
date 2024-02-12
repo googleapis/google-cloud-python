@@ -33,7 +33,7 @@ def test_table_exists_reload_database_dialect(
     shared_instance, shared_database, not_emulator
 ):
     database = shared_instance.database(shared_database.database_id)
-    assert database.database_dialect == DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED
+    assert database.database_dialect != DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED
     table = database.table("all_types")
     assert table.exists()
     assert database.database_dialect != DatabaseDialect.DATABASE_DIALECT_UNSPECIFIED
