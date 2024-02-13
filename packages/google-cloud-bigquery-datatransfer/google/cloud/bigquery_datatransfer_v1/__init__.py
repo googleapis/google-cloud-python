@@ -46,6 +46,7 @@ from .types.datatransfer import (
     ScheduleTransferRunsResponse,
     StartManualTransferRunsRequest,
     StartManualTransferRunsResponse,
+    UnenrollDataSourcesRequest,
     UpdateTransferConfigRequest,
 )
 from .types.transfer import (
@@ -94,6 +95,7 @@ __all__ = (
     "TransferRun",
     "TransferState",
     "TransferType",
+    "UnenrollDataSourcesRequest",
     "UpdateTransferConfigRequest",
     "UserInfo",
 )
