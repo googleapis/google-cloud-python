@@ -276,14 +276,9 @@ class Transaction(_SnapshotBase, _BatchBase):
             If ``params`` is None but ``param_types`` is not None.
         """
         if params is not None:
-            if param_types is None:
-                raise ValueError("Specify 'param_types' when passing 'params'.")
             return Struct(
                 fields={key: _make_value_pb(value) for key, value in params.items()}
             )
-        else:
-            if param_types is not None:
-                raise ValueError("Specify 'params' when passing 'param_types'.")
 
         return {}
 

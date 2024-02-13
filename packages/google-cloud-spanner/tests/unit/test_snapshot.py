@@ -868,16 +868,6 @@ class Test_SnapshotBase(OpenTelemetryBase):
             attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY}),
         )
 
-    def test_execute_sql_w_params_wo_param_types(self):
-        database = _Database()
-        session = _Session(database)
-        derived = self._makeDerived(session)
-
-        with self.assertRaises(ValueError):
-            derived.execute_sql(SQL_QUERY_WITH_PARAM, PARAMS)
-
-        self.assertNoSpans()
-
     def _execute_sql_helper(
         self,
         multi_use,
@@ -1396,18 +1386,6 @@ class Test_SnapshotBase(OpenTelemetryBase):
             status=StatusCode.ERROR,
             attributes=dict(BASE_ATTRIBUTES, **{"db.statement": SQL_QUERY}),
         )
-
-    def test_partition_query_w_params_wo_param_types(self):
-        database = _Database()
-        session = _Session(database)
-        derived = self._makeDerived(session)
-        derived._multi_use = True
-        derived._transaction_id = TXN_ID
-
-        with self.assertRaises(ValueError):
-            list(derived.partition_query(SQL_QUERY_WITH_PARAM, PARAMS))
-
-        self.assertNoSpans()
 
     def test_partition_query_single_use_raises(self):
         with self.assertRaises(ValueError):

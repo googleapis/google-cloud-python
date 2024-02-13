@@ -471,20 +471,6 @@ class TestTransaction(OpenTelemetryBase):
         with self.assertRaises(ValueError):
             self._commit_helper(request_options=request_options)
 
-    def test__make_params_pb_w_params_wo_param_types(self):
-        session = _Session()
-        transaction = self._make_one(session)
-
-        with self.assertRaises(ValueError):
-            transaction._make_params_pb(PARAMS, None)
-
-    def test__make_params_pb_wo_params_w_param_types(self):
-        session = _Session()
-        transaction = self._make_one(session)
-
-        with self.assertRaises(ValueError):
-            transaction._make_params_pb(None, PARAM_TYPES)
-
     def test__make_params_pb_w_params_w_param_types(self):
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1._helpers import _make_value_pb
@@ -509,16 +495,6 @@ class TestTransaction(OpenTelemetryBase):
 
         with self.assertRaises(RuntimeError):
             transaction.execute_update(DML_QUERY)
-
-    def test_execute_update_w_params_wo_param_types(self):
-        database = _Database()
-        database.spanner_api = self._make_spanner_api()
-        session = _Session(database)
-        transaction = self._make_one(session)
-        transaction._transaction_id = self.TRANSACTION_ID
-
-        with self.assertRaises(ValueError):
-            transaction.execute_update(DML_QUERY_WITH_PARAM, PARAMS)
 
     def _execute_update_helper(
         self,

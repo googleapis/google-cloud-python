@@ -1136,10 +1136,6 @@ class TestDatabase(_BaseTest):
     def test_execute_partitioned_dml_wo_params(self):
         self._execute_partitioned_dml_helper(dml=DML_WO_PARAM)
 
-    def test_execute_partitioned_dml_w_params_wo_param_types(self):
-        with self.assertRaises(ValueError):
-            self._execute_partitioned_dml_helper(dml=DML_W_PARAM, params=PARAMS)
-
     def test_execute_partitioned_dml_w_params_and_param_types(self):
         self._execute_partitioned_dml_helper(
             dml=DML_W_PARAM, params=PARAMS, param_types=PARAM_TYPES
