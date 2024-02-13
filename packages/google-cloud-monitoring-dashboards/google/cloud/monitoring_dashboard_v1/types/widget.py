@@ -23,9 +23,22 @@ import proto  # type: ignore
 from google.cloud.monitoring_dashboard_v1.types import (
     collapsible_group as gmd_collapsible_group,
 )
+from google.cloud.monitoring_dashboard_v1.types import (
+    error_reporting_panel as gmd_error_reporting_panel,
+)
+from google.cloud.monitoring_dashboard_v1.types import (
+    incident_list as gmd_incident_list,
+)
 from google.cloud.monitoring_dashboard_v1.types import logs_panel as gmd_logs_panel
 from google.cloud.monitoring_dashboard_v1.types import scorecard as gmd_scorecard
+from google.cloud.monitoring_dashboard_v1.types import (
+    section_header as gmd_section_header,
+)
+from google.cloud.monitoring_dashboard_v1.types import (
+    single_view_group as gmd_single_view_group,
+)
 from google.cloud.monitoring_dashboard_v1.types import alertchart
+from google.cloud.monitoring_dashboard_v1.types import piechart
 from google.cloud.monitoring_dashboard_v1.types import table
 from google.cloud.monitoring_dashboard_v1.types import text as gmd_text
 from google.cloud.monitoring_dashboard_v1.types import xychart
@@ -88,6 +101,34 @@ class Widget(proto.Message):
             A widget that shows a stream of logs.
 
             This field is a member of `oneof`_ ``content``.
+        incident_list (google.cloud.monitoring_dashboard_v1.types.IncidentList):
+            A widget that shows list of incidents.
+
+            This field is a member of `oneof`_ ``content``.
+        pie_chart (google.cloud.monitoring_dashboard_v1.types.PieChart):
+            A widget that displays timeseries data as a
+            pie chart.
+
+            This field is a member of `oneof`_ ``content``.
+        error_reporting_panel (google.cloud.monitoring_dashboard_v1.types.ErrorReportingPanel):
+            A widget that displays a list of error
+            groups.
+
+            This field is a member of `oneof`_ ``content``.
+        section_header (google.cloud.monitoring_dashboard_v1.types.SectionHeader):
+            A widget that defines a section header for
+            easier navigation of the dashboard.
+
+            This field is a member of `oneof`_ ``content``.
+        single_view_group (google.cloud.monitoring_dashboard_v1.types.SingleViewGroup):
+            A widget that groups the other widgets by
+            using a dropdown menu.
+
+            This field is a member of `oneof`_ ``content``.
+        id (str):
+            Optional. The widget id. Ids may be made up
+            of alphanumerics, dashes and underscores. Widget
+            ids are optional.
     """
 
     title: str = proto.Field(
@@ -141,6 +182,40 @@ class Widget(proto.Message):
         number=10,
         oneof="content",
         message=gmd_logs_panel.LogsPanel,
+    )
+    incident_list: gmd_incident_list.IncidentList = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="content",
+        message=gmd_incident_list.IncidentList,
+    )
+    pie_chart: piechart.PieChart = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="content",
+        message=piechart.PieChart,
+    )
+    error_reporting_panel: gmd_error_reporting_panel.ErrorReportingPanel = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        oneof="content",
+        message=gmd_error_reporting_panel.ErrorReportingPanel,
+    )
+    section_header: gmd_section_header.SectionHeader = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        oneof="content",
+        message=gmd_section_header.SectionHeader,
+    )
+    single_view_group: gmd_single_view_group.SingleViewGroup = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        oneof="content",
+        message=gmd_single_view_group.SingleViewGroup,
+    )
+    id: str = proto.Field(
+        proto.STRING,
+        number=17,
     )
 
 

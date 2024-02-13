@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import metrics
@@ -53,6 +54,11 @@ class Scorecard(proto.Message):
         spark_chart_view (google.cloud.monitoring_dashboard_v1.types.Scorecard.SparkChartView):
             Will cause the scorecard to show a spark
             chart.
+
+            This field is a member of `oneof`_ ``data_view``.
+        blank_view (google.protobuf.empty_pb2.Empty):
+            Will cause the ``Scorecard`` to show only the value, with no
+            indicator to its value relative to its thresholds.
 
             This field is a member of `oneof`_ ``data_view``.
         thresholds (MutableSequence[google.cloud.monitoring_dashboard_v1.types.Threshold]):
@@ -172,6 +178,12 @@ class Scorecard(proto.Message):
         number=5,
         oneof="data_view",
         message=SparkChartView,
+    )
+    blank_view: empty_pb2.Empty = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        oneof="data_view",
+        message=empty_pb2.Empty,
     )
     thresholds: MutableSequence[metrics.Threshold] = proto.RepeatedField(
         proto.MESSAGE,

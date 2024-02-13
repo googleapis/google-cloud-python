@@ -42,7 +42,7 @@ class Dashboard(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The resource name of the
+            Identifier. The resource name of the
             dashboard.
         display_name (str):
             Required. The mutable, human-readable name.

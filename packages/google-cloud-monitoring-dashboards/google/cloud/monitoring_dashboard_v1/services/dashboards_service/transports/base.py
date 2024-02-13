@@ -26,7 +26,9 @@ from google.oauth2 import service_account  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1 import gapic_version as package_version
-from google.cloud.monitoring_dashboard_v1.types import dashboard, dashboards_service
+from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
+from google.cloud.monitoring_dashboard_v1.types import dashboard
+from google.cloud.monitoring_dashboard_v1.types import dashboards_service
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -173,7 +175,7 @@ class DashboardsServiceTransport(abc.ABC):
         self,
     ) -> Callable[
         [dashboards_service.CreateDashboardRequest],
-        Union[dashboard.Dashboard, Awaitable[dashboard.Dashboard]],
+        Union[gmd_dashboard.Dashboard, Awaitable[gmd_dashboard.Dashboard]],
     ]:
         raise NotImplementedError()
 

@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import duration_pb2  # type: ignore
+from google.type import interval_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -467,6 +468,9 @@ class PickTimeSeriesFilter(proto.Message):
         direction (google.cloud.monitoring_dashboard_v1.types.PickTimeSeriesFilter.Direction):
             How to use the ranking to select time series
             that pass through the filter.
+        interval (google.type.interval_pb2.Interval):
+            Select the top N streams/time series within
+            this time interval
     """
 
     class Method(proto.Enum):
@@ -524,6 +528,11 @@ class PickTimeSeriesFilter(proto.Message):
         proto.ENUM,
         number=3,
         enum=Direction,
+    )
+    interval: interval_pb2.Interval = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=interval_pb2.Interval,
     )
 
 

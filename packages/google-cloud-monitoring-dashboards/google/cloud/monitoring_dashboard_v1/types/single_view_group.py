@@ -13,4 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-__version__ = "0.0.0"  # {x-release-please-version}
+from __future__ import annotations
+
+from typing import MutableMapping, MutableSequence
+
+import proto  # type: ignore
+
+__protobuf__ = proto.module(
+    package="google.monitoring.dashboard.v1",
+    manifest={
+        "SingleViewGroup",
+    },
+)
+
+
+class SingleViewGroup(proto.Message):
+    r"""A widget that groups the other widgets by using a dropdown
+    menu. All widgets that are within the area spanned by the
+    grouping widget are considered member widgets.
+
+    """
+
+
+__all__ = tuple(sorted(__protobuf__.manifest))

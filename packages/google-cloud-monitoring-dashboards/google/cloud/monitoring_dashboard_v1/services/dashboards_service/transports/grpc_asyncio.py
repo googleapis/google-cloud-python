@@ -23,7 +23,9 @@ from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.monitoring_dashboard_v1.types import dashboard, dashboards_service
+from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
+from google.cloud.monitoring_dashboard_v1.types import dashboard
+from google.cloud.monitoring_dashboard_v1.types import dashboards_service
 
 from .base import DEFAULT_CLIENT_INFO, DashboardsServiceTransport
 from .grpc import DashboardsServiceGrpcTransport
@@ -237,7 +239,7 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
     def create_dashboard(
         self,
     ) -> Callable[
-        [dashboards_service.CreateDashboardRequest], Awaitable[dashboard.Dashboard]
+        [dashboards_service.CreateDashboardRequest], Awaitable[gmd_dashboard.Dashboard]
     ]:
         r"""Return a callable for the create dashboard method over gRPC.
 
@@ -263,7 +265,7 @@ class DashboardsServiceGrpcAsyncIOTransport(DashboardsServiceTransport):
             self._stubs["create_dashboard"] = self.grpc_channel.unary_unary(
                 "/google.monitoring.dashboard.v1.DashboardsService/CreateDashboard",
                 request_serializer=dashboards_service.CreateDashboardRequest.serialize,
-                response_deserializer=dashboard.Dashboard.deserialize,
+                response_deserializer=gmd_dashboard.Dashboard.deserialize,
             )
         return self._stubs["create_dashboard"]
 

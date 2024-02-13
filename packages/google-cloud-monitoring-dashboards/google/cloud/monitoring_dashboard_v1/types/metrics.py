@@ -88,6 +88,17 @@ class TimeSeriesQuery(proto.Message):
             fetched data. The format is the same as the
             ```unit`` <https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors>`__
             field in ``MetricDescriptor``.
+        output_full_duration (bool):
+            Optional. If set, Cloud Monitoring will treat the full query
+            duration as the alignment period so that there will be only
+            1 output value.
+
+            \*Note: This could override the configured alignment period
+            except for the cases where a series of data points are
+            expected, like
+
+            -  XyChart
+            -  Scorecard's spark chart
     """
 
     time_series_filter: "TimeSeriesFilter" = proto.Field(
@@ -115,6 +126,10 @@ class TimeSeriesQuery(proto.Message):
     unit_override: str = proto.Field(
         proto.STRING,
         number=5,
+    )
+    output_full_duration: bool = proto.Field(
+        proto.BOOL,
+        number=7,
     )
 
 

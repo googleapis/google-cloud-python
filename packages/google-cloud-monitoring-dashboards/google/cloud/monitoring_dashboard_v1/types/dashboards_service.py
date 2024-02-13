@@ -87,9 +87,9 @@ class ListDashboardsRequest(proto.Message):
             of results to return. If unspecified, a default
             of 1000 is used.
         page_token (str):
-            If this field is not empty then it must contain the
-            ``nextPageToken`` value returned by a previous call to this
-            method. Using this field causes the method to return
+            Optional. If this field is not empty then it must contain
+            the ``nextPageToken`` value returned by a previous call to
+            this method. Using this field causes the method to return
             additional results from the previous method call.
     """
 
