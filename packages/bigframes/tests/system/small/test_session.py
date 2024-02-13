@@ -327,6 +327,32 @@ def test_read_gbq_twice_with_same_timestamp(session, penguins_table_id):
     assert df3 is not None
 
 
+def test_read_gbq_wildcard(session: bigframes.Session):
+    df = session.read_gbq("bigquery-public-data.noaa_gsod.gsod193*")
+    assert df.shape == (348485, 32)
+
+
+def test_read_gbq_wildcard_with_filter(session: bigframes.Session):
+    df = session.read_gbq(
+        "bigquery-public-data.noaa_gsod.gsod19*",
+        filters=[("_table_suffix", ">=", "30"), ("_table_suffix", "<=", "39")],  # type: ignore
+    )
+    assert df.shape == (348485, 32)
+
+
+def test_read_gbq_table_wildcard(session: bigframes.Session):
+    df = session.read_gbq_table("bigquery-public-data.noaa_gsod.gsod193*")
+    assert df.shape == (348485, 32)
+
+
+def test_read_gbq_table_wildcard_with_filter(session: bigframes.Session):
+    df = session.read_gbq_table(
+        "bigquery-public-data.noaa_gsod.gsod19*",
+        filters=[("_table_suffix", ">=", "30"), ("_table_suffix", "<=", "39")],  # type: ignore
+    )
+    assert df.shape == (348485, 32)
+
+
 def test_read_gbq_model(session, penguins_linear_model_name):
     model = session.read_gbq_model(penguins_linear_model_name)
     assert isinstance(model, bigframes.ml.linear_model.LinearRegression)

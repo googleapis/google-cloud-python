@@ -125,7 +125,7 @@ def test_session_init_fails_with_no_project():
             "test_table",
             [],
             [("date_col", ">", "2022-10-20")],
-            "SELECT * FROM test_table AS sub WHERE `date_col` > '2022-10-20'",
+            "SELECT * FROM `test_table` AS sub WHERE `date_col` > '2022-10-20'",
             id="table_input",
         ),
         pytest.param(
@@ -136,7 +136,7 @@ def test_session_init_fails_with_no_project():
                 (("string_col", "in", ["Hello, World!", "こんにちは"]),),
             ],
             (
-                "SELECT `row_index`, `string_col` FROM test_table AS sub WHERE "
+                "SELECT `row_index`, `string_col` FROM `test_table` AS sub WHERE "
                 "`rowindex` NOT IN (0, 6) OR `string_col` IN ('Hello, World!', "
                 "'こんにちは')"
             ),
@@ -156,5 +156,30 @@ def test_session_init_fails_with_no_project():
 )
 def test_read_gbq_with_filters(query_or_table, columns, filters, expected_output):
     session = resources.create_bigquery_session()
-    query = session._filters_to_query(query_or_table, columns, filters)
+    query = session._to_query(query_or_table, columns, filters)
+    assert query == expected_output
+
+
+@pytest.mark.parametrize(
+    ("query_or_table", "columns", "filters", "expected_output"),
+    [
+        pytest.param(
+            "test_table*",
+            [],
+            [],
+            "SELECT * FROM `test_table*` AS sub",
+            id="wildcard_table_input",
+        ),
+        pytest.param(
+            "test_table*",
+            [],
+            [("_TABLE_SUFFIX", ">", "2022-10-20")],
+            "SELECT * FROM `test_table*` AS sub WHERE `_TABLE_SUFFIX` > '2022-10-20'",
+            id="wildcard_table_input_with_filter",
+        ),
+    ],
+)
+def test_read_gbq_wildcard(query_or_table, columns, filters, expected_output):
+    session = resources.create_bigquery_session()
+    query = session._to_query(query_or_table, columns, filters)
     assert query == expected_output
