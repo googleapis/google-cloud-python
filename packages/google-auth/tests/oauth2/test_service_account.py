@@ -24,6 +24,7 @@ from google.auth import crypt
 from google.auth import exceptions
 from google.auth import jwt
 from google.auth import transport
+from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 from google.oauth2 import service_account
 
 
@@ -58,7 +59,7 @@ class TestCredentials(object):
     TOKEN_URI = "https://example.com/oauth2/token"
 
     @classmethod
-    def make_credentials(cls, universe_domain=service_account._DEFAULT_UNIVERSE_DOMAIN):
+    def make_credentials(cls, universe_domain=DEFAULT_UNIVERSE_DOMAIN):
         return service_account.Credentials(
             SIGNER,
             cls.SERVICE_ACCOUNT_EMAIL,
@@ -70,7 +71,7 @@ class TestCredentials(object):
         credentials = service_account.Credentials(
             SIGNER, self.SERVICE_ACCOUNT_EMAIL, self.TOKEN_URI, universe_domain=None
         )
-        assert credentials.universe_domain == service_account._DEFAULT_UNIVERSE_DOMAIN
+        assert credentials.universe_domain == DEFAULT_UNIVERSE_DOMAIN
 
     def test_from_service_account_info(self):
         credentials = service_account.Credentials.from_service_account_info(
@@ -80,7 +81,7 @@ class TestCredentials(object):
         assert credentials._signer.key_id == SERVICE_ACCOUNT_INFO["private_key_id"]
         assert credentials.service_account_email == SERVICE_ACCOUNT_INFO["client_email"]
         assert credentials._token_uri == SERVICE_ACCOUNT_INFO["token_uri"]
-        assert credentials._universe_domain == service_account._DEFAULT_UNIVERSE_DOMAIN
+        assert credentials._universe_domain == DEFAULT_UNIVERSE_DOMAIN
         assert not credentials._always_use_jwt_access
 
     def test_from_service_account_info_non_gdu(self):
@@ -595,7 +596,7 @@ class TestIDTokenCredentials(object):
     TARGET_AUDIENCE = "https://example.com"
 
     @classmethod
-    def make_credentials(cls, universe_domain=service_account._DEFAULT_UNIVERSE_DOMAIN):
+    def make_credentials(cls, universe_domain=DEFAULT_UNIVERSE_DOMAIN):
         return service_account.IDTokenCredentials(
             SIGNER,
             cls.SERVICE_ACCOUNT_EMAIL,
@@ -612,7 +613,7 @@ class TestIDTokenCredentials(object):
             self.TARGET_AUDIENCE,
             universe_domain=None,
         )
-        assert credentials._universe_domain == service_account._DEFAULT_UNIVERSE_DOMAIN
+        assert credentials._universe_domain == DEFAULT_UNIVERSE_DOMAIN
 
     def test_from_service_account_info(self):
         credentials = service_account.IDTokenCredentials.from_service_account_info(

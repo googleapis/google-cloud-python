@@ -43,7 +43,6 @@ from google.auth import exceptions
 from google.oauth2 import sts
 from google.oauth2 import utils
 
-_DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
 _EXTERNAL_ACCOUNT_AUTHORIZED_USER_JSON_TYPE = "external_account_authorized_user"
 
 
@@ -76,7 +75,7 @@ class Credentials(
         revoke_url=None,
         scopes=None,
         quota_project_id=None,
-        universe_domain=_DEFAULT_UNIVERSE_DOMAIN,
+        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
     ):
         """Instantiates a external account authorized user credentials object.
 
@@ -120,7 +119,7 @@ class Credentials(
         self._revoke_url = revoke_url
         self._quota_project_id = quota_project_id
         self._scopes = scopes
-        self._universe_domain = universe_domain or _DEFAULT_UNIVERSE_DOMAIN
+        self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
 
         if not self.valid and not self.can_refresh:
             raise exceptions.InvalidOperation(
@@ -342,7 +341,9 @@ class Credentials(
             revoke_url=info.get("revoke_url"),
             quota_project_id=info.get("quota_project_id"),
             scopes=info.get("scopes"),
-            universe_domain=info.get("universe_domain", _DEFAULT_UNIVERSE_DOMAIN),
+            universe_domain=info.get(
+                "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
+            ),
             **kwargs
         )
 

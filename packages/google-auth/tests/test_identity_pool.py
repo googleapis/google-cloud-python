@@ -26,7 +26,7 @@ from google.auth import exceptions
 from google.auth import identity_pool
 from google.auth import metrics
 from google.auth import transport
-
+from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 
 CLIENT_ID = "username"
 CLIENT_SECRET = "password"
@@ -66,8 +66,6 @@ WORKFORCE_AUDIENCE = (
 )
 WORKFORCE_SUBJECT_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:id_token"
 WORKFORCE_POOL_USER_PROJECT = "WORKFORCE_POOL_USER_PROJECT_NUMBER"
-
-DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
 
 VALID_TOKEN_URLS = [
     "https://sts.googleapis.com",

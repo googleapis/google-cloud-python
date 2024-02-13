@@ -22,6 +22,7 @@ import pytest  # type: ignore
 from google.auth import exceptions
 from google.auth import external_account_authorized_user
 from google.auth import transport
+from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 
 TOKEN_URL = "https://sts.googleapis.com/v1/token"
 TOKEN_INFO_URL = "https://sts.googleapis.com/v1/introspect"
@@ -45,7 +46,6 @@ BASIC_AUTH_ENCODING = "dXNlcm5hbWU6cGFzc3dvcmQ="
 SCOPES = ["email", "profile"]
 NOW = datetime.datetime(1990, 8, 27, 6, 54, 30)
 FAKE_UNIVERSE_DOMAIN = "fake-universe-domain"
-DEFAULT_UNIVERSE_DOMAIN = external_account_authorized_user._DEFAULT_UNIVERSE_DOMAIN
 
 
 class TestCredentials(object):

@@ -49,7 +49,6 @@ _LOGGER = logging.getLogger(__name__)
 
 # The Google OAuth 2.0 token endpoint. Used for authorized user credentials.
 _GOOGLE_OAUTH2_TOKEN_ENDPOINT = "https://oauth2.googleapis.com/token"
-_DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
 
 
 class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaProject):
@@ -86,7 +85,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         enable_reauth_refresh=False,
         granted_scopes=None,
         trust_boundary=None,
-        universe_domain=_DEFAULT_UNIVERSE_DOMAIN,
+        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
         account=None,
     ):
         """
@@ -150,7 +149,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self.refresh_handler = refresh_handler
         self._enable_reauth_refresh = enable_reauth_refresh
         self._trust_boundary = trust_boundary
-        self._universe_domain = universe_domain or _DEFAULT_UNIVERSE_DOMAIN
+        self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
         self._account = account or ""
 
     def __getstate__(self):
@@ -187,7 +186,9 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
         self._rapt_token = d.get("_rapt_token")
         self._enable_reauth_refresh = d.get("_enable_reauth_refresh")
         self._trust_boundary = d.get("_trust_boundary")
-        self._universe_domain = d.get("_universe_domain") or _DEFAULT_UNIVERSE_DOMAIN
+        self._universe_domain = (
+            d.get("_universe_domain") or credentials.DEFAULT_UNIVERSE_DOMAIN
+        )
         # The refresh_handler setter should be used to repopulate this.
         self._refresh_handler = None
         self._refresh_worker = None
@@ -373,7 +374,7 @@ class Credentials(credentials.ReadOnlyScoped, credentials.CredentialsWithQuotaPr
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
-        if self._universe_domain != _DEFAULT_UNIVERSE_DOMAIN:
+        if self._universe_domain != credentials.DEFAULT_UNIVERSE_DOMAIN:
             raise exceptions.RefreshError(
                 "User credential refresh is only supported in the default "
                 "googleapis.com universe domain, but the current universe "

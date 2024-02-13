@@ -26,7 +26,7 @@ from google.auth import aws
 from google.auth import environment_vars
 from google.auth import exceptions
 from google.auth import transport
-
+from google.auth.credentials import DEFAULT_UNIVERSE_DOMAIN
 
 IMPERSONATE_ACCESS_TOKEN_REQUEST_METRICS_HEADER_VALUE = (
     "gl-python/3.7 auth/1.1 auth-request-type/at cred-type/imp"
@@ -75,7 +75,6 @@ REQUEST_PARAMS = '{"KeySchema":[{"KeyType":"HASH","AttributeName":"Id"}],"TableN
 # Each tuple contains the following entries:
 # region, time, credentials, original_request, signed_request
 
-DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
 VALID_TOKEN_URLS = [
     "https://sts.googleapis.com",
     "https://us-east-1.sts.googleapis.com",

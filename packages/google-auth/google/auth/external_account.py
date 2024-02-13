@@ -51,8 +51,6 @@ _STS_REQUESTED_TOKEN_TYPE = "urn:ietf:params:oauth:token-type:access_token"
 # Cloud resource manager URL used to retrieve project information.
 _CLOUD_RESOURCE_MANAGER = "https://cloudresourcemanager.googleapis.com/v1/projects/"
 
-_DEFAULT_UNIVERSE_DOMAIN = "googleapis.com"
-
 
 class Credentials(
     credentials.Scoped,
@@ -83,7 +81,7 @@ class Credentials(
         scopes=None,
         default_scopes=None,
         workforce_pool_user_project=None,
-        universe_domain=_DEFAULT_UNIVERSE_DOMAIN,
+        universe_domain=credentials.DEFAULT_UNIVERSE_DOMAIN,
         trust_boundary=None,
     ):
         """Instantiates an external account credentials object.
@@ -131,7 +129,7 @@ class Credentials(
         self._scopes = scopes
         self._default_scopes = default_scopes
         self._workforce_pool_user_project = workforce_pool_user_project
-        self._universe_domain = universe_domain or _DEFAULT_UNIVERSE_DOMAIN
+        self._universe_domain = universe_domain or credentials.DEFAULT_UNIVERSE_DOMAIN
         self._trust_boundary = {
             "locations": [],
             "encoded_locations": "0x0",
@@ -513,7 +511,9 @@ class Credentials(
             credential_source=info.get("credential_source"),
             quota_project_id=info.get("quota_project_id"),
             workforce_pool_user_project=info.get("workforce_pool_user_project"),
-            universe_domain=info.get("universe_domain", _DEFAULT_UNIVERSE_DOMAIN),
+            universe_domain=info.get(
+                "universe_domain", credentials.DEFAULT_UNIVERSE_DOMAIN
+            ),
             **kwargs
         )
 
