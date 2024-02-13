@@ -4,6 +4,29 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [0.21.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.20.1...v0.21.0) (2024-02-13)
+
+
+### Features
+
+* Add `Series.cov` method ([#368](https://github.com/googleapis/python-bigquery-dataframes/issues/368)) ([443db22](https://github.com/googleapis/python-bigquery-dataframes/commit/443db228375da9b232376140c9d5b0db14895eae))
+* Add ml.llm.GeminiTextGenerator model ([#370](https://github.com/googleapis/python-bigquery-dataframes/issues/370)) ([de1e0a4](https://github.com/googleapis/python-bigquery-dataframes/commit/de1e0a451785e679f37b083be6d58c267319f56a))
+* Add ml.metrics.pairwise.cosine_similarity function ([#374](https://github.com/googleapis/python-bigquery-dataframes/issues/374)) ([126f566](https://github.com/googleapis/python-bigquery-dataframes/commit/126f5660bd61bd8998e5f17ca0cbd39959590367))
+* Add XGBoostModel ([#363](https://github.com/googleapis/python-bigquery-dataframes/issues/363)) ([d5518b2](https://github.com/googleapis/python-bigquery-dataframes/commit/d5518b28509be0ce070b22d9134a6a662412010a))
+* Limited support of lambdas in `Series.apply` ([#345](https://github.com/googleapis/python-bigquery-dataframes/issues/345)) ([208e081](https://github.com/googleapis/python-bigquery-dataframes/commit/208e081fa99e17b8085e83c111c07eb6fc5c4730))
+* Support bigframes.pandas.to_datetime for scalars, iterables and series. ([#372](https://github.com/googleapis/python-bigquery-dataframes/issues/372)) ([ffb0d15](https://github.com/googleapis/python-bigquery-dataframes/commit/ffb0d15602fe4d86e7a1aad72bba0a7049193a14))
+* Support read_gbq wildcard table path ([#377](https://github.com/googleapis/python-bigquery-dataframes/issues/377)) ([90caf86](https://github.com/googleapis/python-bigquery-dataframes/commit/90caf865efc940f94e16643bda7ba261c2f2e473))
+
+
+### Bug Fixes
+
+* Error message fix. ([#375](https://github.com/googleapis/python-bigquery-dataframes/issues/375)) ([930cf6b](https://github.com/googleapis/python-bigquery-dataframes/commit/930cf6b9ae8a48f422586dbd21b52e15c9ef9492))
+
+
+### Documentation
+
+* Clarify ADC pre-auth in a non-interactive environment ([#348](https://github.com/googleapis/python-bigquery-dataframes/issues/348)) ([99a9e6e](https://github.com/googleapis/python-bigquery-dataframes/commit/99a9e6e15c6eef4297035ce89bb619f8e4ca54ff))
+
 ## [0.20.1](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.20.0...v0.20.1) (2024-02-06)
 
 
