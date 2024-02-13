@@ -40,6 +40,7 @@ from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attac
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerability
 from google.cloud.securitycenter_v1.types import access as gcs_access
+from google.cloud.securitycenter_v1.types import application as gcs_application
 from google.cloud.securitycenter_v1.types import database as gcs_database
 from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v1.types import kubernetes as gcs_kubernetes
@@ -238,6 +239,9 @@ class Finding(proto.Message):
             with the finding.
         kernel_rootkit (google.cloud.securitycenter_v1.types.KernelRootkit):
             Signature of the kernel rootkit.
+        application (google.cloud.securitycenter_v1.types.Application):
+            Represents an application associated with the
+            finding.
     """
 
     class State(proto.Enum):
@@ -579,6 +583,11 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=50,
         message=gcs_kernel_rootkit.KernelRootkit,
+    )
+    application: gcs_application.Application = proto.Field(
+        proto.MESSAGE,
+        number=53,
+        message=gcs_application.Application,
     )
 
 

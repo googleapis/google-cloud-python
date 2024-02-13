@@ -19,42 +19,35 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.securitycenter.v1',
+    package="google.cloud.securitycenter.v1",
     manifest={
-        'ContactDetails',
-        'Contact',
+        "Application",
     },
 )
 
 
-class ContactDetails(proto.Message):
-    r"""Details about specific contacts
+class Application(proto.Message):
+    r"""Represents an application associated with a finding.
 
     Attributes:
-        contacts (MutableSequence[google.cloud.securitycenter_v1.types.Contact]):
-            A list of contacts
+        base_uri (str):
+            The base URI that identifies the network location of the
+            application in which the vulnerability was detected. For
+            example, ``http://example.com``.
+        full_uri (str):
+            The full URI with payload that can be used to reproduce the
+            vulnerability. For example,
+            ``http://example.com?p=aMmYgI6H``.
     """
 
-    contacts: MutableSequence['Contact'] = proto.RepeatedField(
-        proto.MESSAGE,
-        number=1,
-        message='Contact',
-    )
-
-
-class Contact(proto.Message):
-    r"""The email address of a contact.
-
-    Attributes:
-        email (str):
-            An email address. For example, "``person123@company.com``".
-    """
-
-    email: str = proto.Field(
+    base_uri: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    full_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
