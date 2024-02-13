@@ -16,9 +16,12 @@
 
 from collections import deque
 import string
-from typing import Deque
+from typing import Deque, Union
 
+import proto
 import requests
+import google.protobuf.message
+from google.protobuf.json_format import Parse
 
 
 class ResponseIterator:
@@ -26,11 +29,18 @@ class ResponseIterator:
 
     Args:
         response (requests.Response): An API response object.
-        response_message_cls (Callable[proto.Message]): A proto
+        response_message_cls (Union[proto.Message, google.protobuf.message.Message]): A response
         class expected to be returned from an API.
+
+    Raises:
+        ValueError: If `response_message_cls` is not a subclass of `proto.Message` or `google.protobuf.message.Message`.
     """
 
-    def __init__(self, response: requests.Response, response_message_cls):
+    def __init__(
+        self,
+        response: requests.Response,
+        response_message_cls: Union[proto.Message, google.protobuf.message.Message],
+    ):
         self._response = response
         self._response_message_cls = response_message_cls
         # Inner iterator over HTTP response's content.
@@ -107,7 +117,14 @@ class ResponseIterator:
 
     def _grab(self):
         # Add extra quotes to make json.loads happy.
-        return self._response_message_cls.from_json(self._ready_objs.popleft())
+        if issubclass(self._response_message_cls, proto.Message):
+            return self._response_message_cls.from_json(self._ready_objs.popleft())
+        elif issubclass(self._response_message_cls, google.protobuf.message.Message):
+            return Parse(self._ready_objs.popleft(), self._response_message_cls())
+        else:
+            raise ValueError(
+                "Response message class must be a subclass of proto.Message or google.protobuf.message.Message."
+            )
 
     def __iter__(self):
         return self
