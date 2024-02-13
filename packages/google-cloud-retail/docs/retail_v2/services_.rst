@@ -3,6 +3,7 @@ Services for Google Cloud Retail v2 API
 .. toctree::
     :maxdepth: 2
 
+    analytics_service
     catalog_service
     completion_service
     control_service
