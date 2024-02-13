@@ -117,6 +117,10 @@
         uid: bigframes.ml.metrics
       name: metrics
     - items:
+      - name: metrics.pairwise
+        uid: bigframes.ml.metrics.pairwise
+      name: metrics.pairwise
+    - items:
       - name: model_selection
         uid: bigframes.ml.model_selection
       name: model_selection

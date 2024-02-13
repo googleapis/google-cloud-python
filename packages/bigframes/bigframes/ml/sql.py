@@ -16,7 +16,7 @@
 Generates SQL queries needed for BigQuery DataFrames ML
 """
 
-from typing import Iterable, Mapping, Optional, Union
+from typing import Iterable, Literal, Mapping, Optional, Union
 
 import google.cloud.bigquery
 
@@ -132,6 +132,19 @@ class BaseSqlGenerator:
         """Encode ML.LABEL_ENCODER for BQML.
         https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-label-encoder for params."""
         return f"""ML.LABEL_ENCODER({numeric_expr_sql}, {top_k}, {frequency_threshold}) OVER() AS {name}"""
+
+    def ml_distance(
+        self,
+        col_x: str,
+        col_y: str,
+        type: Literal["EUCLIDEAN", "MANHATTAN", "COSINE"],
+        source_df: bpd.DataFrame,
+        name: str,
+    ) -> str:
+        """Encode ML.DISTANCE for BQML.
+        https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-distance"""
+        source_sql, _, _ = source_df._to_sql_query(include_index=True)
+        return f"""SELECT *, ML.DISTANCE({col_x}, {col_y}, '{type}') AS {name} FROM ({source_sql})"""
 
 
 class ModelCreationSqlGenerator(BaseSqlGenerator):
