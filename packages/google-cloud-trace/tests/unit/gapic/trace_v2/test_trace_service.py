@@ -1548,11 +1548,7 @@ def test_batch_write_spans_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -1819,11 +1815,7 @@ def test_create_span_rest_required_fields(request_type=trace.Span):
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped

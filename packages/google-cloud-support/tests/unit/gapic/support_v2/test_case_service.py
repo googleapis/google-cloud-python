@@ -3405,11 +3405,7 @@ def test_get_case_rest_required_fields(request_type=case_service.GetCaseRequest)
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -3668,11 +3664,7 @@ def test_list_cases_rest_required_fields(request_type=case_service.ListCasesRequ
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -4298,11 +4290,7 @@ def test_create_case_rest_required_fields(request_type=case_service.CreateCaseRe
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -4682,11 +4670,7 @@ def test_update_case_rest_required_fields(request_type=case_service.UpdateCaseRe
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -4968,11 +4952,7 @@ def test_escalate_case_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -5199,11 +5179,7 @@ def test_close_case_rest_required_fields(request_type=case_service.CloseCaseRequ
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped

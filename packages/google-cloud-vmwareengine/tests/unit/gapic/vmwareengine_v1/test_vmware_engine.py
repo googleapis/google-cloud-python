@@ -23272,11 +23272,7 @@ def test_list_private_clouds_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -23627,11 +23623,7 @@ def test_get_private_cloud_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -24007,11 +23999,7 @@ def test_create_private_cloud_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -24424,11 +24412,7 @@ def test_update_private_cloud_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -24714,11 +24698,7 @@ def test_delete_private_cloud_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -24996,11 +24976,7 @@ def test_undelete_private_cloud_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -25271,11 +25247,7 @@ def test_list_clusters_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -25628,11 +25600,7 @@ def test_get_cluster_rest_required_fields(request_type=vmwareengine.GetClusterRe
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -25979,11 +25947,7 @@ def test_create_cluster_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -26369,11 +26333,7 @@ def test_update_cluster_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -26663,11 +26623,7 @@ def test_delete_cluster_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -26937,11 +26893,7 @@ def test_list_nodes_rest_required_fields(request_type=vmwareengine.ListNodesRequ
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -27294,11 +27246,7 @@ def test_get_node_rest_required_fields(request_type=vmwareengine.GetNodeRequest)
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -27571,11 +27519,7 @@ def test_list_external_addresses_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -27930,11 +27874,7 @@ def test_fetch_network_policy_external_addresses_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -28313,11 +28253,7 @@ def test_get_external_address_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -28665,11 +28601,7 @@ def test_create_external_address_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -29052,11 +28984,7 @@ def test_update_external_address_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -29344,11 +29272,7 @@ def test_delete_external_address_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -29622,11 +29546,7 @@ def test_list_subnets_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -29979,11 +29899,7 @@ def test_get_subnet_rest_required_fields(request_type=vmwareengine.GetSubnetRequ
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -30325,11 +30241,7 @@ def test_update_subnet_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -30614,11 +30526,7 @@ def test_list_external_access_rules_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -30989,11 +30897,7 @@ def test_get_external_access_rule_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -31354,11 +31258,7 @@ def test_create_external_access_rule_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -31761,11 +31661,7 @@ def test_update_external_access_rule_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -32057,11 +31953,7 @@ def test_delete_external_access_rule_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -32335,11 +32227,7 @@ def test_list_logging_servers_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -32700,11 +32588,7 @@ def test_get_logging_server_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -33050,11 +32934,7 @@ def test_create_logging_server_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -33435,11 +33315,7 @@ def test_update_logging_server_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -33727,11 +33603,7 @@ def test_delete_logging_server_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -34003,11 +33875,7 @@ def test_list_node_types_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -34371,11 +34239,7 @@ def test_get_node_type_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -34647,11 +34511,7 @@ def test_show_nsx_credentials_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -34926,11 +34786,7 @@ def test_show_vcenter_credentials_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -35200,11 +35056,7 @@ def test_reset_nsx_credentials_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -35470,11 +35322,7 @@ def test_reset_vcenter_credentials_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -35745,11 +35593,7 @@ def test_get_dns_forwarding_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -36096,11 +35940,7 @@ def test_update_dns_forwarding_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -36422,11 +36262,7 @@ def test_get_network_peering_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -36699,11 +36535,7 @@ def test_list_network_peerings_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -37129,11 +36961,7 @@ def test_create_network_peering_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -37432,11 +37260,7 @@ def test_delete_network_peering_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -37789,11 +37613,7 @@ def test_update_network_peering_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -38086,11 +37906,7 @@ def test_list_peering_routes_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -38511,11 +38327,7 @@ def test_create_hcx_activation_key_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -38831,11 +38643,7 @@ def test_list_hcx_activation_keys_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -39190,11 +38998,7 @@ def test_get_hcx_activation_key_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -39480,11 +39284,7 @@ def test_get_network_policy_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -39757,11 +39557,7 @@ def test_list_network_policies_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -40179,11 +39975,7 @@ def test_create_network_policy_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -40562,11 +40354,7 @@ def test_update_network_policy_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -40854,11 +40642,7 @@ def test_delete_network_policy_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -41134,11 +40918,7 @@ def test_list_management_dns_zone_bindings_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -41515,11 +41295,7 @@ def test_get_management_dns_zone_binding_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -41878,11 +41654,7 @@ def test_create_management_dns_zone_binding_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -42287,11 +42059,7 @@ def test_update_management_dns_zone_binding_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -42589,11 +42357,7 @@ def test_delete_management_dns_zone_binding_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -42866,11 +42630,7 @@ def test_repair_management_dns_zone_binding_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -43223,11 +42983,7 @@ def test_create_vmware_engine_network_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -43618,11 +43374,7 @@ def test_update_vmware_engine_network_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -43914,11 +43666,7 @@ def test_delete_vmware_engine_network_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -44213,11 +43961,7 @@ def test_get_vmware_engine_network_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -44490,11 +44234,7 @@ def test_list_vmware_engine_networks_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -44923,11 +44663,7 @@ def test_create_private_connection_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -45270,11 +45006,7 @@ def test_get_private_connection_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -45547,11 +45279,7 @@ def test_list_private_connections_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -45978,11 +45706,7 @@ def test_update_private_connection_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -46274,11 +45998,7 @@ def test_delete_private_connection_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -46552,11 +46272,7 @@ def test_list_private_connection_peering_routes_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -46916,11 +46632,7 @@ def test_grant_dns_bind_permission_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -47197,11 +46909,7 @@ def test_get_dns_bind_permission_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -47465,11 +47173,7 @@ def test_revoke_dns_bind_permission_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
