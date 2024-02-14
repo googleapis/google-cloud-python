@@ -7088,7 +7088,6 @@ def test_export_assets_rest_required_fields(request_type=asset_service.ExportAss
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7269,7 +7268,6 @@ def test_list_assets_rest_required_fields(request_type=asset_service.ListAssetsR
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7559,7 +7557,6 @@ def test_batch_get_assets_history_rest_required_fields(request_type=asset_servic
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7752,7 +7749,6 @@ def test_create_feed_rest_required_fields(request_type=asset_service.CreateFeedR
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7999,7 +7995,6 @@ def test_get_feed_rest_required_fields(request_type=asset_service.GetFeedRequest
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -8232,7 +8227,6 @@ def test_list_feeds_rest_required_fields(request_type=asset_service.ListFeedsReq
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -8474,7 +8468,6 @@ def test_update_feed_rest_required_fields(request_type=asset_service.UpdateFeedR
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -8701,7 +8694,6 @@ def test_delete_feed_rest_required_fields(request_type=asset_service.DeleteFeedR
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -8926,7 +8918,6 @@ def test_search_all_resources_rest_required_fields(request_type=asset_service.Se
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -9222,7 +9213,6 @@ def test_search_all_iam_policies_rest_required_fields(request_type=asset_service
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -9515,7 +9505,6 @@ def test_analyze_iam_policy_rest_required_fields(request_type=asset_service.Anal
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -9689,7 +9678,6 @@ def test_analyze_iam_policy_longrunning_rest_required_fields(request_type=asset_
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -9865,7 +9853,6 @@ def test_analyze_move_rest_required_fields(request_type=asset_service.AnalyzeMov
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -10061,7 +10048,6 @@ def test_query_assets_rest_required_fields(request_type=asset_service.QueryAsset
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -10315,7 +10301,6 @@ def test_create_saved_query_rest_required_fields(request_type=asset_service.Crea
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -10573,7 +10558,6 @@ def test_get_saved_query_rest_required_fields(request_type=asset_service.GetSave
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -10808,7 +10792,6 @@ def test_list_saved_queries_rest_required_fields(request_type=asset_service.List
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -11169,7 +11152,6 @@ def test_update_saved_query_rest_required_fields(request_type=asset_service.Upda
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -11400,7 +11382,6 @@ def test_delete_saved_query_rest_required_fields(request_type=asset_service.Dele
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -11624,7 +11605,6 @@ def test_batch_get_effective_iam_policies_rest_required_fields(request_type=asse
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -11819,7 +11799,6 @@ def test_analyze_org_policies_rest_required_fields(request_type=asset_service.An
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -12126,7 +12105,6 @@ def test_analyze_org_policy_governed_containers_rest_required_fields(request_typ
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -12433,7 +12411,6 @@ def test_analyze_org_policy_governed_assets_rest_required_fields(request_type=as
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 

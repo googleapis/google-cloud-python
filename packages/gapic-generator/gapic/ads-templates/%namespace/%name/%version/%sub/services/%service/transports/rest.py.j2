@@ -335,7 +335,6 @@ class {{service.name}}RestTransport({{service.name}}Transport):
 
             body = json_format.MessageToJson(
                 transcoded_request['body'],
-                including_default_value_fields=False,
                 use_integers_for_enums={{ opts.rest_numeric_enums }}
             )
             {%- endif %}
@@ -346,7 +345,6 @@ class {{service.name}}RestTransport({{service.name}}Transport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums={{ opts.rest_numeric_enums }},
             ))
             {% if method.input.required_fields %}

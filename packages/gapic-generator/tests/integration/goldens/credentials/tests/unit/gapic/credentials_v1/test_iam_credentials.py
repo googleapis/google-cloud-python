@@ -1837,7 +1837,6 @@ def test_generate_access_token_rest_required_fields(request_type=common.Generate
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -2083,7 +2082,6 @@ def test_generate_id_token_rest_required_fields(request_type=common.GenerateIdTo
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -2331,7 +2329,6 @@ def test_sign_blob_rest_required_fields(request_type=common.SignBlobRequest):
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -2577,7 +2574,6 @@ def test_sign_jwt_rest_required_fields(request_type=common.SignJwtRequest):
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 

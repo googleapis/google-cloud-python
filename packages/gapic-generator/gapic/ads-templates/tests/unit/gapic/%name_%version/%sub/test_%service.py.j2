@@ -1201,7 +1201,6 @@ def test_{{ method_name }}_rest_required_fields(request_type={{ method.input.ide
     {% endif %}
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 

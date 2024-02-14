@@ -900,7 +900,6 @@ class EventarcRestTransport(EventarcTransport):
 
             body = json_format.MessageToJson(
                 transcoded_request['body'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False
             )
             uri = transcoded_request['uri']
@@ -909,7 +908,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -987,7 +985,6 @@ class EventarcRestTransport(EventarcTransport):
 
             body = json_format.MessageToJson(
                 transcoded_request['body'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False
             )
             uri = transcoded_request['uri']
@@ -996,7 +993,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -1074,7 +1070,6 @@ class EventarcRestTransport(EventarcTransport):
 
             body = json_format.MessageToJson(
                 transcoded_request['body'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False
             )
             uri = transcoded_request['uri']
@@ -1083,7 +1078,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -1162,7 +1156,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -1240,7 +1233,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -1318,7 +1310,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -1401,7 +1392,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -1485,7 +1475,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -1570,7 +1559,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -1649,7 +1637,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -1728,7 +1715,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -1807,7 +1793,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -1884,7 +1869,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -1961,7 +1945,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -2038,7 +2021,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -2117,7 +2099,6 @@ class EventarcRestTransport(EventarcTransport):
 
             body = json_format.MessageToJson(
                 transcoded_request['body'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False
             )
             uri = transcoded_request['uri']
@@ -2126,7 +2107,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -2210,7 +2190,6 @@ class EventarcRestTransport(EventarcTransport):
 
             body = json_format.MessageToJson(
                 transcoded_request['body'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False
             )
             uri = transcoded_request['uri']
@@ -2219,7 +2198,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))
@@ -2299,7 +2277,6 @@ class EventarcRestTransport(EventarcTransport):
 
             body = json_format.MessageToJson(
                 transcoded_request['body'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False
             )
             uri = transcoded_request['uri']
@@ -2308,7 +2285,6 @@ class EventarcRestTransport(EventarcTransport):
             # Jsonify the query params
             query_params = json.loads(json_format.MessageToJson(
                 transcoded_request['query_params'],
-                including_default_value_fields=False,
                 use_integers_for_enums=False,
             ))
             query_params.update(self._get_unset_required_fields(query_params))

@@ -5947,7 +5947,6 @@ def test_get_trigger_rest_required_fields(request_type=eventarc.GetTriggerReques
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -6184,7 +6183,6 @@ def test_list_triggers_rest_required_fields(request_type=eventarc.ListTriggersRe
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -6537,7 +6535,6 @@ def test_create_trigger_rest_required_fields(request_type=eventarc.CreateTrigger
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -6854,7 +6851,6 @@ def test_update_trigger_rest_required_fields(request_type=eventarc.UpdateTrigger
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7095,7 +7091,6 @@ def test_delete_trigger_rest_required_fields(request_type=eventarc.DeleteTrigger
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7351,7 +7346,6 @@ def test_get_channel_rest_required_fields(request_type=eventarc.GetChannelReques
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7588,7 +7582,6 @@ def test_list_channels_rest_required_fields(request_type=eventarc.ListChannelsRe
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -7941,7 +7934,6 @@ def test_create_channel_rest_required_fields(request_type=eventarc.CreateChannel
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -8258,7 +8250,6 @@ def test_update_channel_rest_required_fields(request_type=eventarc.UpdateChannel
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -8497,7 +8488,6 @@ def test_delete_channel_rest_required_fields(request_type=eventarc.DeleteChannel
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -8742,7 +8732,6 @@ def test_get_provider_rest_required_fields(request_type=eventarc.GetProviderRequ
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -8979,7 +8968,6 @@ def test_list_providers_rest_required_fields(request_type=eventarc.ListProviders
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -9277,7 +9265,6 @@ def test_get_channel_connection_rest_required_fields(request_type=eventarc.GetCh
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -9514,7 +9501,6 @@ def test_list_channel_connections_rest_required_fields(request_type=eventarc.Lis
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -9866,7 +9852,6 @@ def test_create_channel_connection_rest_required_fields(request_type=eventarc.Cr
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -10109,7 +10094,6 @@ def test_delete_channel_connection_rest_required_fields(request_type=eventarc.De
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -10342,7 +10326,6 @@ def test_get_google_channel_config_rest_required_fields(request_type=eventarc.Ge
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
@@ -10642,7 +10625,6 @@ def test_update_google_channel_config_rest_required_fields(request_type=eventarc
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(json_format.MessageToJson(
         pb_request,
-        including_default_value_fields=False,
         use_integers_for_enums=False
     ))
 
