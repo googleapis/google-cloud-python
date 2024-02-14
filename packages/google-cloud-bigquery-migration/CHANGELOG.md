@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.5...google-cloud-bigquery-migration-v0.11.6) (2024-02-14)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12281](https://github.com/googleapis/google-cloud-python/issues/12281)) ([62cf934](https://github.com/googleapis/google-cloud-python/commit/62cf934b140173d7b39e6c9ffa66e218b98260d4))
+
 ## [0.11.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-migration-v0.11.4...google-cloud-bigquery-migration-v0.11.5) (2024-02-06)
 
 

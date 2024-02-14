@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.6.1...google-cloud-certificate-manager-v1.6.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12281](https://github.com/googleapis/google-cloud-python/issues/12281)) ([62cf934](https://github.com/googleapis/google-cloud-python/commit/62cf934b140173d7b39e6c9ffa66e218b98260d4))
+
 ## [1.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-certificate-manager-v1.6.0...google-cloud-certificate-manager-v1.6.1) (2024-02-06)
 
 

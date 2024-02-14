@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-v1.13.1...google-cloud-billing-v1.13.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12281](https://github.com/googleapis/google-cloud-python/issues/12281)) ([62cf934](https://github.com/googleapis/google-cloud-python/commit/62cf934b140173d7b39e6c9ffa66e218b98260d4))
+
+
+### Documentation
+
+* [google-cloud-billing] Clarify that the parent field in the CreateBillingAccountRequest must be a billing account ([#12299](https://github.com/googleapis/google-cloud-python/issues/12299)) ([1ff477c](https://github.com/googleapis/google-cloud-python/commit/1ff477c9b959f1fc4b3b0e46721141702a47aff2))
+
 ## [1.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-billing-v1.13.0...google-cloud-billing-v1.13.1) (2024-02-06)
 
 

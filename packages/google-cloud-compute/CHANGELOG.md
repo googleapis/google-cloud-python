@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.16.1...google-cloud-compute-v1.17.0) (2024-02-14)
+
+
+### Features
+
+* Update Compute Engine API to revision 20240130 ([#881](https://github.com/googleapis/google-cloud-python/issues/881)) ([#12292](https://github.com/googleapis/google-cloud-python/issues/12292)) ([3f0e861](https://github.com/googleapis/google-cloud-python/commit/3f0e86105b994d3f5f5212c62a39aea2be7989cc))
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12282](https://github.com/googleapis/google-cloud-python/issues/12282)) ([b985096](https://github.com/googleapis/google-cloud-python/commit/b985096d43add8214172ff993e00293e6c8757cb))
+
 ## [1.16.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.16.0...google-cloud-compute-v1.16.1) (2024-02-06)
 
 
