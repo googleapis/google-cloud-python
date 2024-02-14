@@ -69,6 +69,7 @@ from google.cloud.securitycenter_v1.services.security_center import (
 )
 from google.cloud.securitycenter_v1.types import (
     access,
+    application,
     bigquery_export,
     cloud_dlp_data_profile,
     cloud_dlp_inspection,
@@ -16405,6 +16406,7 @@ def test_create_finding_rest(request_type):
             "unexpected_interrupt_handler": True,
             "unexpected_processes_in_runqueue": True,
         },
+        "application": {"base_uri": "base_uri_value", "full_uri": "full_uri_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -26431,6 +26433,7 @@ def test_update_finding_rest(request_type):
             "unexpected_interrupt_handler": True,
             "unexpected_processes_in_runqueue": True,
         },
+        "application": {"base_uri": "base_uri_value", "full_uri": "full_uri_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

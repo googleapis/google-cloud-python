@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .access import Access, Geolocation, ServiceAccountDelegationInfo
+from .application import Application
 from .asset import Asset
 from .bigquery_export import BigQueryExport
 from .cloud_dlp_data_profile import CloudDlpDataProfile
@@ -112,6 +113,7 @@ __all__ = (
     "Access",
     "Geolocation",
     "ServiceAccountDelegationInfo",
+    "Application",
     "Asset",
     "BigQueryExport",
     "CloudDlpDataProfile",
