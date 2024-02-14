@@ -569,20 +569,42 @@ class ChannelStub(grpc.Channel):
         except KeyError:
             raise AttributeError
 
-    def unary_unary(self, method, request_serializer=None, response_deserializer=None):
+    def unary_unary(
+        self,
+        method,
+        request_serializer=None,
+        response_deserializer=None,
+        _registered_method=False,
+    ):
         """grpc.Channel.unary_unary implementation."""
         return self._stub_for_method(method)
 
-    def unary_stream(self, method, request_serializer=None, response_deserializer=None):
+    def unary_stream(
+        self,
+        method,
+        request_serializer=None,
+        response_deserializer=None,
+        _registered_method=False,
+    ):
         """grpc.Channel.unary_stream implementation."""
         return self._stub_for_method(method)
 
-    def stream_unary(self, method, request_serializer=None, response_deserializer=None):
+    def stream_unary(
+        self,
+        method,
+        request_serializer=None,
+        response_deserializer=None,
+        _registered_method=False,
+    ):
         """grpc.Channel.stream_unary implementation."""
         return self._stub_for_method(method)
 
     def stream_stream(
-        self, method, request_serializer=None, response_deserializer=None
+        self,
+        method,
+        request_serializer=None,
+        response_deserializer=None,
+        _registered_method=False,
     ):
         """grpc.Channel.stream_stream implementation."""
         return self._stub_for_method(method)
