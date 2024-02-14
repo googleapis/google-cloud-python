@@ -1,0 +1,2 @@
+recursive-include google/cloud/notebooks *.py
+recursive-include google/cloud/notebooks_v1 *.py
