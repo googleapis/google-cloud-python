@@ -155,7 +155,7 @@ class ListEffectiveSecurityHealthAnalyticsCustomModulesRequest(proto.Message):
             minimum is 1, maximum is 1000.
         page_token (str):
             Optional. The value returned by the last call
-            indicating a continuation
+            indicating a continuation.
     """
 
     parent: str = proto.Field(
