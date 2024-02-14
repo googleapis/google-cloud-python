@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-metrics-scopes-v1.6.1...google-cloud-monitoring-metrics-scopes-v1.6.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* fix ValueError in test__validate_universe_domain ([7c2f2c2](https://github.com/googleapis/google-cloud-python/commit/7c2f2c29d74c9584efc42ddfe8bc098a594391a2))
+
 ## [1.6.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-metrics-scopes-v1.6.0...google-cloud-monitoring-metrics-scopes-v1.6.1) (2024-02-06)
 
 

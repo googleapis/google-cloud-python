@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.14.1...google-cloud-monitoring-dashboards-v2.15.0) (2024-02-14)
+
+
+### Features
+
+* [google-cloud-monitoring-dashboards] Add support for pie charts, incident lists, dropdown groups, error reporting panels, section headers, and styling options on text widgets ([#12295](https://github.com/googleapis/google-cloud-python/issues/12295)) ([95825ee](https://github.com/googleapis/google-cloud-python/commit/95825ee48e4f00ae0bcd385ca0822f7e4e86b90e))
+
+
+### Bug Fixes
+
+* fix ValueError in test__validate_universe_domain ([7c2f2c2](https://github.com/googleapis/google-cloud-python/commit/7c2f2c29d74c9584efc42ddfe8bc098a594391a2))
+
 ## [2.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-dashboards-v2.14.0...google-cloud-monitoring-dashboards-v2.14.1) (2024-02-06)
 
 

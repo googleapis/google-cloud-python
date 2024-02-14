@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-migrationcenter-v0.1.5...google-cloud-migrationcenter-v0.1.6) (2024-02-14)
+
+
+### Bug Fixes
+
+* fix ValueError in test__validate_universe_domain ([7c2f2c2](https://github.com/googleapis/google-cloud-python/commit/7c2f2c29d74c9584efc42ddfe8bc098a594391a2))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-migrationcenter-v0.1.4...google-cloud-migrationcenter-v0.1.5) (2024-02-06)
 
 
