@@ -140,6 +140,7 @@ from .generator import (
     Phrase,
     UpdateGeneratorRequest,
 )
+from .import_strategy import ImportStrategy
 from .inline import InlineDestination, InlineSource
 from .intent import (
     CreateIntentRequest,
