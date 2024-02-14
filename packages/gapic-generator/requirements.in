@@ -6,7 +6,6 @@ MarkupSafe
 protobuf
 pypandoc
 PyYAML
-setuptools
 grpc-google-iam-v1
 proto-plus
 pytest-asyncio

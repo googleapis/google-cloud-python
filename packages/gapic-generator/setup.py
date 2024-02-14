@@ -28,7 +28,7 @@ dependencies = [
     # Ensure that the lower bounds of these dependencies match what we have in the
     # templated setup.py.j2: https://github.com/googleapis/gapic-generator-python/blob/main/gapic/templates/setup.py.j2
     "click >= 6.7",
-    "google-api-core[grpc] >= 1.34.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+    "google-api-core[grpc] >= 1.34.1, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
     "googleapis-common-protos >= 1.55.0",
     "grpcio >= 1.24.3",
     "jinja2 >= 2.10",

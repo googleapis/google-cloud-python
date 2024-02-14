@@ -16,12 +16,26 @@ syntax = "proto3";
 
 package google.fragment;
 
+import "google/api/annotations.proto";
 import "google/api/client.proto";
+import "google/api/httpbody.proto";
 
 service MyService {
   option (google.api.default_host) = "my.example.com";
 
-  rpc MyMethod(MethodRequest) returns (stream MethodResponse) {
+  rpc MyMethodApiSpecificResponse(MethodRequest) returns (stream MethodResponse) {
+    option (google.api.http) = {
+      post: "/v1/{from=projects/*}"
+      body: "*"
+    };
+    option (google.api.method_signature) = "from,class,import,any,license,type";
+  }
+
+  rpc MyMethodCommonResponse(MethodRequest) returns (stream google.api.HttpBody) {
+    option (google.api.http) = {
+      post: "/v1/{from=projects/*}"
+      body: "*"
+    };
     option (google.api.method_signature) = "from,class,import,any,license,type";
   }
 }
@@ -39,5 +53,4 @@ message MethodRequest {
 
 message MethodResponse {
   string result = 1;
-  string next_page_token = 2;
 }
