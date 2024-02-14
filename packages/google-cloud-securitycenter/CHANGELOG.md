@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.26.1...google-cloud-securitycenter-v1.27.0) (2024-02-14)
+
+
+### Features
+
+* [google-cloud-securitycenter] Add application field to finding's list of attributes ([#12301](https://github.com/googleapis/google-cloud-python/issues/12301)) ([c26abaf](https://github.com/googleapis/google-cloud-python/commit/c26abaf0206db382a6f8262f8cabddd87e6eed69))
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12309](https://github.com/googleapis/google-cloud-python/issues/12309)) ([c23398a](https://github.com/googleapis/google-cloud-python/commit/c23398a48d23d48e7f96971dd504ff184841666b))
+* fix ValueError in test__validate_universe_domain ([89c1b05](https://github.com/googleapis/google-cloud-python/commit/89c1b054f321b90ab4eed0139a3a2a79c369730d))
+
 ## [1.26.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.26.0...google-cloud-securitycenter-v1.26.1) (2024-02-06)
 
 

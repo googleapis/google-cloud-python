@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.5...google-cloud-securitycentermanagement-v0.1.6) (2024-02-14)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12309](https://github.com/googleapis/google-cloud-python/issues/12309)) ([c23398a](https://github.com/googleapis/google-cloud-python/commit/c23398a48d23d48e7f96971dd504ff184841666b))
+* fix ValueError in test__validate_universe_domain ([89c1b05](https://github.com/googleapis/google-cloud-python/commit/89c1b054f321b90ab4eed0139a3a2a79c369730d))
+
+
+### Documentation
+
+* [google-cloud-securitycentermanagement] Finish a sentence with a period ([#12300](https://github.com/googleapis/google-cloud-python/issues/12300)) ([833998a](https://github.com/googleapis/google-cloud-python/commit/833998a27193f6d9c95d054a352702439c596165))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.4...google-cloud-securitycentermanagement-v0.1.5) (2024-02-06)
 
 

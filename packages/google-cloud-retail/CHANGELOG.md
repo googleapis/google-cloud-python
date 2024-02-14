@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.20.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.19.1...google-cloud-retail-v1.20.0) (2024-02-14)
+
+
+### Features
+
+* [google-cloud-retail] add analytics service ([#12294](https://github.com/googleapis/google-cloud-python/issues/12294)) ([8b5f319](https://github.com/googleapis/google-cloud-python/commit/8b5f319689a0b8ac4af3055b9705bfaf0706bd37))
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12309](https://github.com/googleapis/google-cloud-python/issues/12309)) ([c23398a](https://github.com/googleapis/google-cloud-python/commit/c23398a48d23d48e7f96971dd504ff184841666b))
+* fix ValueError in test__validate_universe_domain ([89c1b05](https://github.com/googleapis/google-cloud-python/commit/89c1b054f321b90ab4eed0139a3a2a79c369730d))
+
 ## [1.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-retail-v1.19.0...google-cloud-retail-v1.19.1) (2024-02-06)
 
 
