@@ -533,7 +533,6 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -634,9 +633,7 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -645,7 +642,6 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -743,9 +739,7 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -754,7 +748,6 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
