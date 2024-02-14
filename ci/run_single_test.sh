@@ -50,21 +50,25 @@ case ${TEST_TYPE} in
         ;;
     docs)
         nox -s docs
+        # This line needs to be directly after `nox -s docs` in order
+        # for the failure to appear in Github presubmits
+        retval=$?
         # Clean up built docs and python cache after the build process to avoid
         # `[Errno 28] No space left on device`
         # See https://github.com/googleapis/google-cloud-python/issues/12271
         rm -rf docs/_build
         find . | grep -E "(__pycache__)" | xargs rm -rf
-        retval=$?
         ;;
     docfx)
         nox -s docfx
+        # This line needs to be directly after `nox -s docfx` in order
+        # for the failure to appear in Github presubmits
+        retval=$?
         # Clean up built docs and python cache after the build process to avoid
         # `[Errno 28] No space left on device`
         # See https://github.com/googleapis/google-cloud-python/issues/12271
         rm -rf docs/_build
         find . | grep -E "(__pycache__)" | xargs rm -rf
-        retval=$?
         ;;
     prerelease)
         nox -s prerelease_deps-3.12

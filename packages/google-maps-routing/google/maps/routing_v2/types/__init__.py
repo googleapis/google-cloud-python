@@ -17,6 +17,7 @@ from .fallback_info import FallbackInfo, FallbackReason, FallbackRoutingMode
 from .geocoding_results import GeocodedWaypoint, GeocodingResults
 from .localized_time import LocalizedTime
 from .location import Location
+from .maneuver import Maneuver
 from .navigation_instruction import NavigationInstruction
 from .polyline import Polyline, PolylineEncoding, PolylineQuality
 from .route import (
@@ -28,7 +29,9 @@ from .route import (
     RouteLegTravelAdvisory,
     RouteTravelAdvisory,
 )
+from .route_label import RouteLabel
 from .route_modifiers import RouteModifiers
+from .route_travel_mode import RouteTravelMode
 from .routes_service import (
     ComputeRouteMatrixRequest,
     ComputeRoutesRequest,
@@ -38,10 +41,15 @@ from .routes_service import (
     RouteMatrixElementCondition,
     RouteMatrixOrigin,
 )
+from .routing_preference import RoutingPreference
 from .speed_reading_interval import SpeedReadingInterval
 from .toll_info import TollInfo
+from .toll_passes import TollPass
+from .traffic_model import TrafficModel
 from .transit import TransitAgency, TransitLine, TransitStop, TransitVehicle
 from .transit_preferences import TransitPreferences
+from .units import Units
+from .vehicle_emission_type import VehicleEmissionType
 from .vehicle_info import VehicleInfo
 from .waypoint import Waypoint
 
