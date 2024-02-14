@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{% for _, proto in api.protos|dictsort if proto.file_to_generate and proto.messages %}
+{% for _, proto in api.protos|dictsort if proto.file_to_generate and proto.messages or proto.enums %}
 from .{{proto.module_name }} import (
   {% for _, message in proto.messages|dictsort %}
     {{message.name }},
