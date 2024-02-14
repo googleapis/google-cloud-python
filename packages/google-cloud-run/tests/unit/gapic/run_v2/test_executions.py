@@ -2336,11 +2336,7 @@ def test_get_execution_rest_required_fields(request_type=execution.GetExecutionR
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -2607,11 +2603,7 @@ def test_list_executions_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -2947,11 +2939,7 @@ def test_delete_execution_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -3231,11 +3219,7 @@ def test_cancel_execution_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
