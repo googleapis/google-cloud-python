@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.40.0...google-cloud-container-v2.41.0) (2024-02-14)
+
+
+### Features
+
+* [google-cloud-container] added configuration for the StatefulHA addon to the AddonsConfig ([38daeac](https://github.com/googleapis/google-cloud-python/commit/38daeace2bf4a8fdf6662799b7350b516013aff4))
+
+
+### Bug Fixes
+
+* fix ValueError in test__validate_universe_domain ([38daeac](https://github.com/googleapis/google-cloud-python/commit/38daeace2bf4a8fdf6662799b7350b516013aff4))
+
 ## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.39.0...google-cloud-container-v2.40.0) (2024-02-06)
 
 

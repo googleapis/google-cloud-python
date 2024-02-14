@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.7.5...google-cloud-contentwarehouse-v0.7.6) (2024-02-14)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12282](https://github.com/googleapis/google-cloud-python/issues/12282)) ([b985096](https://github.com/googleapis/google-cloud-python/commit/b985096d43add8214172ff993e00293e6c8757cb))
+
 ## [0.7.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-contentwarehouse-v0.7.4...google-cloud-contentwarehouse-v0.7.5) (2024-02-06)
 
 

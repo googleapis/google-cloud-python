@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.7...google-cloud-data-qna-v0.10.8) (2024-02-14)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12282](https://github.com/googleapis/google-cloud-python/issues/12282)) ([b985096](https://github.com/googleapis/google-cloud-python/commit/b985096d43add8214172ff993e00293e6c8757cb))
+
 ## [0.10.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-data-qna-v0.10.6...google-cloud-data-qna-v0.10.7) (2024-02-06)
 
 
