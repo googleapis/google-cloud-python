@@ -66,7 +66,7 @@ def get_request_data_from_flask():
     Returns:
         Tuple[Optional[dict], Optional[str], Optional[str], bool]:
             Data related to the current http request, trace_id, span_id and trace_sampled
-            for the request. All fields will be None if a django request isn't found.
+            for the request. All fields will be None if a Flask request isn't found.
     """
     if flask is None or not flask.request:
         return None, None, None, False

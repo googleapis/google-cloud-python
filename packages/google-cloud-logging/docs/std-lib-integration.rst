@@ -44,6 +44,16 @@ There are two supported handler classes to choose from:
       to standard out, to be read and parsed by a GCP logging agent
     - This is the default handler on Kubernetes Engine, Cloud Functions and Cloud Run
 
+Handler classes can also be specified via `dictConfig <https://docs.python.org/3/library/logging.config.html#logging-config-dictschema>`_:
+
+.. literalinclude:: ../samples/snippets/usage_guide.py
+    :start-after: [START logging_dict_config]
+    :end-before: [END logging_dict_config]
+    :dedent: 4
+
+Note that since :class:`~google.cloud.logging_v2.handlers.handlers.CloudLoggingHandler` requires an already initialized :class:`~google.cloud.logging_v2.client.Client`,
+you must initialize a client and include it in the dictConfig entry for a `CloudLoggingHandler`.
+
 Standard Library
 ---------------------------
 
@@ -101,8 +111,7 @@ The following fields are currently supported:
 - :ref:`json_fields<JSON>`
 
 .. note::
-    Fields marked with "*" require a supported Python web framework. The Google Cloud Logging
-    library currently supports `flask <https://flask.palletsprojects.com/>`_ and `django <https://www.djangoproject.com/>`_
+    Fields marked with "*" require a :doc:`supported Python web framework </web-framework-integration>`.
 
 Manual Metadata Using the `extra` Argument
 --------------------------------------------
