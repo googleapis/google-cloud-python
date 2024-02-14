@@ -389,6 +389,10 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
                 "google.longrunning.Operations.GetOperation": [
                     {
                         "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
                     },
                     {
@@ -441,6 +445,10 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
                     },
                 ],
                 "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                    },
                     {
                         "method": "get",
                         "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
@@ -1073,6 +1081,10 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
                 },
                 {
@@ -1185,6 +1197,10 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                },
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",

@@ -3258,6 +3258,25 @@ def test_create_conversation_rest(request_type):
                             "categories": ["categories_value1", "categories_value2"],
                             "scores": [0.656, 0.657],
                         },
+                        "summary_with_metadata": {
+                            "summary": "summary_value",
+                            "citation_metadata": {
+                                "citations": [
+                                    {
+                                        "start_index": 1189,
+                                        "end_index": 942,
+                                        "sources": [{"reference_index": 1574}],
+                                    }
+                                ]
+                            },
+                            "references": [
+                                {
+                                    "title": "title_value",
+                                    "document": "document_value",
+                                    "uri": "uri_value",
+                                }
+                            ],
+                        },
                     }
                 },
                 "create_time": {"seconds": 751, "nanos": 543},
@@ -3912,6 +3931,25 @@ def test_update_conversation_rest(request_type):
                         "safety_attributes": {
                             "categories": ["categories_value1", "categories_value2"],
                             "scores": [0.656, 0.657],
+                        },
+                        "summary_with_metadata": {
+                            "summary": "summary_value",
+                            "citation_metadata": {
+                                "citations": [
+                                    {
+                                        "start_index": 1189,
+                                        "end_index": 942,
+                                        "sources": [{"reference_index": 1574}],
+                                    }
+                                ]
+                            },
+                            "references": [
+                                {
+                                    "title": "title_value",
+                                    "document": "document_value",
+                                    "uri": "uri_value",
+                                }
+                            ],
                         },
                     }
                 },

@@ -393,6 +393,10 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
                     },
                     {
                         "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                    },
+                    {
+                        "method": "get",
                         "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
                     },
                     {
@@ -448,6 +452,10 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
                     {
                         "method": "get",
                         "uri": "/v1/{name=projects/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
                     },
                     {
                         "method": "get",
@@ -1085,6 +1093,10 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
                 },
                 {
                     "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                },
+                {
+                    "method": "get",
                     "uri": "/v1/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
                 },
                 {
@@ -1200,6 +1212,10 @@ class SchemaServiceRestTransport(SchemaServiceTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*}/operations",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
                 },
                 {
                     "method": "get",

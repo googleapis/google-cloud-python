@@ -90,6 +90,26 @@ class ConverseConversationRequest(proto.Message):
         summary_spec (google.cloud.discoveryengine_v1.types.SearchRequest.ContentSearchSpec.SummarySpec):
             A specification for configuring the summary
             returned in the response.
+        filter (str):
+            The filter syntax consists of an expression language for
+            constructing a predicate from one or more fields of the
+            documents being filtered. Filter expression is
+            case-sensitive. This will be used to filter search results
+            which may affect the summary response.
+
+            If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
+            returned.
+
+            Filtering in Vertex AI Search is done by mapping the LHS
+            filter key to a key property defined in the Vertex AI Search
+            backend -- this mapping is defined by the customer in their
+            schema. For example a media customer might have a field
+            'name' in their schema. In this case the filter would look
+            like this: filter --> name:'ANY("king kong")'
+
+            For more information about filtering including syntax and
+            filter operators, see
+            `Filter <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
     """
 
     name: str = proto.Field(
@@ -125,6 +145,10 @@ class ConverseConversationRequest(proto.Message):
             number=8,
             message=search_service.SearchRequest.ContentSearchSpec.SummarySpec,
         )
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=9,
     )
 
 
@@ -194,7 +218,7 @@ class UpdateConversationRequest(proto.Message):
             [Conversation][google.cloud.discoveryengine.v1.Conversation]
             to update. The following are NOT supported:
 
-            -  [conversation.name][]
+            -  [Conversation.name][google.cloud.discoveryengine.v1.Conversation.name]
 
             If not set or empty, all supported fields are updated.
     """

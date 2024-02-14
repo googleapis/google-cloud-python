@@ -20,7 +20,13 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
+from google.api_core import (
+    gapic_v1,
+    operations_v1,
+    path_template,
+    rest_helpers,
+    rest_streaming,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -39,7 +45,11 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import completion_service
+from google.cloud.discoveryengine_v1beta.types import (
+    completion_service,
+    import_config,
+    purge_config,
+)
 
 from .base import CompletionServiceTransport
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
@@ -74,6 +84,22 @@ class CompletionServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_import_suggestion_deny_list_entries(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_import_suggestion_deny_list_entries(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_purge_suggestion_deny_list_entries(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_purge_suggestion_deny_list_entries(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = CompletionServiceRestTransport(interceptor=MyCustomCompletionServiceInterceptor())
         client = CompletionServiceClient(transport=transport)
 
@@ -96,6 +122,56 @@ class CompletionServiceRestInterceptor:
         self, response: completion_service.CompleteQueryResponse
     ) -> completion_service.CompleteQueryResponse:
         """Post-rpc interceptor for complete_query
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CompletionService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_import_suggestion_deny_list_entries(
+        self,
+        request: import_config.ImportSuggestionDenyListEntriesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        import_config.ImportSuggestionDenyListEntriesRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for import_suggestion_deny_list_entries
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CompletionService server.
+        """
+        return request, metadata
+
+    def post_import_suggestion_deny_list_entries(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for import_suggestion_deny_list_entries
+
+        Override in a subclass to manipulate the response
+        after it is returned by the CompletionService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_purge_suggestion_deny_list_entries(
+        self,
+        request: purge_config.PurgeSuggestionDenyListEntriesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        purge_config.PurgeSuggestionDenyListEntriesRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for purge_suggestion_deny_list_entries
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the CompletionService server.
+        """
+        return request, metadata
+
+    def post_purge_suggestion_deny_list_entries(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for purge_suggestion_deny_list_entries
 
         Override in a subclass to manipulate the response
         after it is returned by the CompletionService server but before
@@ -241,10 +317,155 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
         )
+        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
         self._interceptor = interceptor or CompletionServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
+
+    @property
+    def operations_client(self) -> operations_v1.AbstractOperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            http_options: Dict[str, List[Dict[str, str]]] = {
+                "google.longrunning.Operations.GetOperation": [
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/operations/*}",
+                    },
+                ],
+                "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*}/operations",
+                    },
+                ],
+            }
+
+            rest_transport = operations_v1.OperationsRestTransport(
+                host=self._host,
+                # use the credentials which are saved
+                credentials=self._credentials,
+                scopes=self._scopes,
+                http_options=http_options,
+                path_prefix="v1beta",
+            )
+
+            self._operations_client = operations_v1.AbstractOperationsClient(
+                transport=rest_transport
+            )
+
+        # Return the client from cache.
+        return self._operations_client
 
     class _CompleteQuery(CompletionServiceRestStub):
         def __hash__(self):
@@ -343,6 +564,226 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             resp = self._interceptor.post_complete_query(resp)
             return resp
 
+    class _ImportSuggestionDenyListEntries(CompletionServiceRestStub):
+        def __hash__(self):
+            return hash("ImportSuggestionDenyListEntries")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: import_config.ImportSuggestionDenyListEntriesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the import suggestion deny
+            list entries method over HTTP.
+
+                Args:
+                    request (~.import_config.ImportSuggestionDenyListEntriesRequest):
+                        The request object. Request message for
+                    [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1beta.CompletionService.ImportSuggestionDenyListEntries]
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/suggestionDenyListEntries:import",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*}/suggestionDenyListEntries:import",
+                    "body": "*",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_import_suggestion_deny_list_entries(
+                request, metadata
+            )
+            pb_request = import_config.ImportSuggestionDenyListEntriesRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_import_suggestion_deny_list_entries(resp)
+            return resp
+
+    class _PurgeSuggestionDenyListEntries(CompletionServiceRestStub):
+        def __hash__(self):
+            return hash("PurgeSuggestionDenyListEntries")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: purge_config.PurgeSuggestionDenyListEntriesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> operations_pb2.Operation:
+            r"""Call the purge suggestion deny
+            list entries method over HTTP.
+
+                Args:
+                    request (~.purge_config.PurgeSuggestionDenyListEntriesRequest):
+                        The request object. Request message for
+                    [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1beta.CompletionService.PurgeSuggestionDenyListEntries]
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.operations_pb2.Operation:
+                        This resource represents a
+                    long-running operation that is the
+                    result of a network API call.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/suggestionDenyListEntries:purge",
+                    "body": "*",
+                },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/**}/suggestionDenyListEntries:purge",
+                    "body": "*",
+                },
+            ]
+            (
+                request,
+                metadata,
+            ) = self._interceptor.pre_purge_suggestion_deny_list_entries(
+                request, metadata
+            )
+            pb_request = purge_config.PurgeSuggestionDenyListEntriesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_purge_suggestion_deny_list_entries(resp)
+            return resp
+
     @property
     def complete_query(
         self,
@@ -353,6 +794,26 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CompleteQuery(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def import_suggestion_deny_list_entries(
+        self,
+    ) -> Callable[
+        [import_config.ImportSuggestionDenyListEntriesRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ImportSuggestionDenyListEntries(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def purge_suggestion_deny_list_entries(
+        self,
+    ) -> Callable[
+        [purge_config.PurgeSuggestionDenyListEntriesRequest], operations_pb2.Operation
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._PurgeSuggestionDenyListEntries(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):
@@ -383,6 +844,10 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                },
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
@@ -497,6 +962,10 @@ class CompletionServiceRestTransport(CompletionServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                },
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",

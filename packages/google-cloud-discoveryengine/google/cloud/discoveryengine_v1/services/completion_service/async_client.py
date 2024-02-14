@@ -42,10 +42,16 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import completion_service
+from google.cloud.discoveryengine_v1.types import (
+    completion_service,
+    import_config,
+    purge_config,
+)
 
 from .client import CompletionServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, CompletionServiceTransport
@@ -338,6 +344,217 @@ class CompletionServiceAsyncClient:
             retry=retry,
             timeout=timeout,
             metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def import_suggestion_deny_list_entries(
+        self,
+        request: Optional[
+            Union[import_config.ImportSuggestionDenyListEntriesRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Imports all
+        [SuggestionDenyListEntry][google.cloud.discoveryengine.v1.SuggestionDenyListEntry]
+        for a DataStore.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1
+
+            async def sample_import_suggestion_deny_list_entries():
+                # Create a client
+                client = discoveryengine_v1.CompletionServiceAsyncClient()
+
+                # Initialize request argument(s)
+                inline_source = discoveryengine_v1.InlineSource()
+                inline_source.entries.block_phrase = "block_phrase_value"
+                inline_source.entries.match_operator = "CONTAINS"
+
+                request = discoveryengine_v1.ImportSuggestionDenyListEntriesRequest(
+                    inline_source=inline_source,
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.import_suggestion_deny_list_entries(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1.types.ImportSuggestionDenyListEntriesRequest, dict]]):
+                The request object. Request message for
+                [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries]
+                method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.ImportSuggestionDenyListEntriesResponse` Response message for
+                   [CompletionService.ImportSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.ImportSuggestionDenyListEntries]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = import_config.ImportSuggestionDenyListEntriesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.import_suggestion_deny_list_entries,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            import_config.ImportSuggestionDenyListEntriesResponse,
+            metadata_type=import_config.ImportSuggestionDenyListEntriesMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def purge_suggestion_deny_list_entries(
+        self,
+        request: Optional[
+            Union[purge_config.PurgeSuggestionDenyListEntriesRequest, dict]
+        ] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation_async.AsyncOperation:
+        r"""Permanently deletes all
+        [SuggestionDenyListEntry][google.cloud.discoveryengine.v1.SuggestionDenyListEntry]
+        for a DataStore.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1
+
+            async def sample_purge_suggestion_deny_list_entries():
+                # Create a client
+                client = discoveryengine_v1.CompletionServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1.PurgeSuggestionDenyListEntriesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                operation = client.purge_suggestion_deny_list_entries(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1.types.PurgeSuggestionDenyListEntriesRequest, dict]]):
+                The request object. Request message for
+                [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries]
+                method.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1.types.PurgeSuggestionDenyListEntriesResponse` Response message for
+                   [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries]
+                   method.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = purge_config.PurgeSuggestionDenyListEntriesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.purge_suggestion_deny_list_entries,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            purge_config.PurgeSuggestionDenyListEntriesResponse,
+            metadata_type=purge_config.PurgeSuggestionDenyListEntriesMetadata,
         )
 
         # Done; return the response.
