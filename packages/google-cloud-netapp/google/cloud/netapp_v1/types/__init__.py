@@ -50,6 +50,7 @@ from .backup_vault import (
     UpdateBackupVaultRequest,
 )
 from .cloud_netapp_service import OperationMetadata
+from .common import EncryptionType, ServiceLevel
 from .kms import (
     CreateKmsConfigRequest,
     DeleteKmsConfigRequest,
