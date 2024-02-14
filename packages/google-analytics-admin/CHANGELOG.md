@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.22.6](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.5...google-analytics-admin-v0.22.6) (2024-02-14)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12280](https://github.com/googleapis/google-cloud-python/issues/12280)) ([2d75d0e](https://github.com/googleapis/google-cloud-python/commit/2d75d0e67ca4cccddc688bd37c14ac80564a2e65))
+
 ## [0.22.5](https://github.com/googleapis/google-cloud-python/compare/google-analytics-admin-v0.22.4...google-analytics-admin-v0.22.5) (2024-02-06)
 
 

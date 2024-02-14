@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.11.1...google-cloud-appengine-admin-v1.11.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12280](https://github.com/googleapis/google-cloud-python/issues/12280)) ([2d75d0e](https://github.com/googleapis/google-cloud-python/commit/2d75d0e67ca4cccddc688bd37c14ac80564a2e65))
+
 ## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.11.0...google-cloud-appengine-admin-v1.11.1) (2024-02-06)
 
 
