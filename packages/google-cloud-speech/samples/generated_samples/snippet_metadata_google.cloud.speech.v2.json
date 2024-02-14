@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-speech",
-    "version": "0.1.0"
+    "version": "2.24.2"
   },
   "snippets": [
     {
