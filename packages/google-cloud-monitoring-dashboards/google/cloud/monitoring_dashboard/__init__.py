@@ -43,6 +43,10 @@ from google.cloud.monitoring_dashboard_v1.types.dashboards_service import (
     ListDashboardsResponse,
     UpdateDashboardRequest,
 )
+from google.cloud.monitoring_dashboard_v1.types.error_reporting_panel import (
+    ErrorReportingPanel,
+)
+from google.cloud.monitoring_dashboard_v1.types.incident_list import IncidentList
 from google.cloud.monitoring_dashboard_v1.types.layouts import (
     ColumnLayout,
     GridLayout,
@@ -57,7 +61,10 @@ from google.cloud.monitoring_dashboard_v1.types.metrics import (
     TimeSeriesFilterRatio,
     TimeSeriesQuery,
 )
+from google.cloud.monitoring_dashboard_v1.types.piechart import PieChart
 from google.cloud.monitoring_dashboard_v1.types.scorecard import Scorecard
+from google.cloud.monitoring_dashboard_v1.types.section_header import SectionHeader
+from google.cloud.monitoring_dashboard_v1.types.single_view_group import SingleViewGroup
 from google.cloud.monitoring_dashboard_v1.types.table import TimeSeriesTable
 from google.cloud.monitoring_dashboard_v1.types.table_display_options import (
     TableDisplayOptions,
@@ -82,6 +89,8 @@ __all__ = (
     "ListDashboardsRequest",
     "ListDashboardsResponse",
     "UpdateDashboardRequest",
+    "ErrorReportingPanel",
+    "IncidentList",
     "ColumnLayout",
     "GridLayout",
     "MosaicLayout",
@@ -92,7 +101,10 @@ __all__ = (
     "TimeSeriesFilterRatio",
     "TimeSeriesQuery",
     "SparkChartType",
+    "PieChart",
     "Scorecard",
+    "SectionHeader",
+    "SingleViewGroup",
     "TimeSeriesTable",
     "TableDisplayOptions",
     "Text",

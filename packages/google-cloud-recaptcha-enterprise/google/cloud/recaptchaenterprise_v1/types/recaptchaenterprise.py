@@ -55,6 +55,8 @@ __protobuf__ = proto.module(
         "GetFirewallPolicyRequest",
         "UpdateFirewallPolicyRequest",
         "DeleteFirewallPolicyRequest",
+        "ReorderFirewallPoliciesRequest",
+        "ReorderFirewallPoliciesResponse",
         "MigrateKeyRequest",
         "GetMetricsRequest",
         "Metrics",
@@ -1905,6 +1907,33 @@ class DeleteFirewallPolicyRequest(proto.Message):
         proto.STRING,
         number=1,
     )
+
+
+class ReorderFirewallPoliciesRequest(proto.Message):
+    r"""The reorder firewall policies request message.
+
+    Attributes:
+        parent (str):
+            Required. The name of the project to list the policies for,
+            in the format ``projects/{project}``.
+        names (MutableSequence[str]):
+            Required. A list containing all policy names, in the new
+            order. Each name is in the format
+            ``projects/{project}/firewallpolicies/{firewallpolicy}``.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ReorderFirewallPoliciesResponse(proto.Message):
+    r"""The reorder firewall policies response message."""
 
 
 class MigrateKeyRequest(proto.Message):

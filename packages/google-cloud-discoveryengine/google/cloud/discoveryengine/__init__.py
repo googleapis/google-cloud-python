@@ -30,11 +30,23 @@ from google.cloud.discoveryengine_v1beta.services.conversational_search_service.
 from google.cloud.discoveryengine_v1beta.services.conversational_search_service.client import (
     ConversationalSearchServiceClient,
 )
+from google.cloud.discoveryengine_v1beta.services.data_store_service.async_client import (
+    DataStoreServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.data_store_service.client import (
+    DataStoreServiceClient,
+)
 from google.cloud.discoveryengine_v1beta.services.document_service.async_client import (
     DocumentServiceAsyncClient,
 )
 from google.cloud.discoveryengine_v1beta.services.document_service.client import (
     DocumentServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.services.engine_service.async_client import (
+    EngineServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.engine_service.client import (
+    EngineServiceClient,
 )
 from google.cloud.discoveryengine_v1beta.services.recommendation_service.async_client import (
     RecommendationServiceAsyncClient,
@@ -54,6 +66,18 @@ from google.cloud.discoveryengine_v1beta.services.search_service.async_client im
 from google.cloud.discoveryengine_v1beta.services.search_service.client import (
     SearchServiceClient,
 )
+from google.cloud.discoveryengine_v1beta.services.serving_config_service.async_client import (
+    ServingConfigServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.serving_config_service.client import (
+    ServingConfigServiceClient,
+)
+from google.cloud.discoveryengine_v1beta.services.site_search_engine_service.async_client import (
+    SiteSearchEngineServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.site_search_engine_service.client import (
+    SiteSearchEngineServiceClient,
+)
 from google.cloud.discoveryengine_v1beta.services.user_event_service.async_client import (
     UserEventServiceAsyncClient,
 )
@@ -63,9 +87,15 @@ from google.cloud.discoveryengine_v1beta.services.user_event_service.client impo
 from google.cloud.discoveryengine_v1beta.types.common import (
     CustomAttribute,
     DoubleList,
+    EmbeddingConfig,
+    IndustryVertical,
     Interval,
+    SearchAddOn,
+    SearchTier,
+    SolutionType,
     UserInfo,
 )
+from google.cloud.discoveryengine_v1beta.types.completion import SuggestionDenyListEntry
 from google.cloud.discoveryengine_v1beta.types.completion_service import (
     CompleteQueryRequest,
     CompleteQueryResponse,
@@ -87,6 +117,17 @@ from google.cloud.discoveryengine_v1beta.types.conversational_search_service imp
     ListConversationsResponse,
     UpdateConversationRequest,
 )
+from google.cloud.discoveryengine_v1beta.types.data_store import DataStore
+from google.cloud.discoveryengine_v1beta.types.data_store_service import (
+    CreateDataStoreMetadata,
+    CreateDataStoreRequest,
+    DeleteDataStoreMetadata,
+    DeleteDataStoreRequest,
+    GetDataStoreRequest,
+    ListDataStoresRequest,
+    ListDataStoresResponse,
+    UpdateDataStoreRequest,
+)
 from google.cloud.discoveryengine_v1beta.types.document import Document
 from google.cloud.discoveryengine_v1beta.types.document_service import (
     CreateDocumentRequest,
@@ -96,6 +137,17 @@ from google.cloud.discoveryengine_v1beta.types.document_service import (
     ListDocumentsResponse,
     UpdateDocumentRequest,
 )
+from google.cloud.discoveryengine_v1beta.types.engine import Engine
+from google.cloud.discoveryengine_v1beta.types.engine_service import (
+    CreateEngineMetadata,
+    CreateEngineRequest,
+    DeleteEngineMetadata,
+    DeleteEngineRequest,
+    GetEngineRequest,
+    ListEnginesRequest,
+    ListEnginesResponse,
+    UpdateEngineRequest,
+)
 from google.cloud.discoveryengine_v1beta.types.import_config import (
     BigQuerySource,
     GcsSource,
@@ -103,6 +155,9 @@ from google.cloud.discoveryengine_v1beta.types.import_config import (
     ImportDocumentsRequest,
     ImportDocumentsResponse,
     ImportErrorConfig,
+    ImportSuggestionDenyListEntriesMetadata,
+    ImportSuggestionDenyListEntriesRequest,
+    ImportSuggestionDenyListEntriesResponse,
     ImportUserEventsMetadata,
     ImportUserEventsRequest,
     ImportUserEventsResponse,
@@ -111,6 +166,9 @@ from google.cloud.discoveryengine_v1beta.types.purge_config import (
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
     PurgeDocumentsResponse,
+    PurgeSuggestionDenyListEntriesMetadata,
+    PurgeSuggestionDenyListEntriesRequest,
+    PurgeSuggestionDenyListEntriesResponse,
 )
 from google.cloud.discoveryengine_v1beta.types.recommendation_service import (
     RecommendRequest,
@@ -132,6 +190,47 @@ from google.cloud.discoveryengine_v1beta.types.search_service import (
     SearchRequest,
     SearchResponse,
 )
+from google.cloud.discoveryengine_v1beta.types.serving_config import ServingConfig
+from google.cloud.discoveryengine_v1beta.types.serving_config_service import (
+    GetServingConfigRequest,
+    ListServingConfigsRequest,
+    ListServingConfigsResponse,
+    UpdateServingConfigRequest,
+)
+from google.cloud.discoveryengine_v1beta.types.site_search_engine import (
+    SiteSearchEngine,
+    SiteVerificationInfo,
+    TargetSite,
+)
+from google.cloud.discoveryengine_v1beta.types.site_search_engine_service import (
+    BatchCreateTargetSiteMetadata,
+    BatchCreateTargetSitesRequest,
+    BatchCreateTargetSitesResponse,
+    BatchVerifyTargetSitesMetadata,
+    BatchVerifyTargetSitesRequest,
+    BatchVerifyTargetSitesResponse,
+    CreateTargetSiteMetadata,
+    CreateTargetSiteRequest,
+    DeleteTargetSiteMetadata,
+    DeleteTargetSiteRequest,
+    DisableAdvancedSiteSearchMetadata,
+    DisableAdvancedSiteSearchRequest,
+    DisableAdvancedSiteSearchResponse,
+    EnableAdvancedSiteSearchMetadata,
+    EnableAdvancedSiteSearchRequest,
+    EnableAdvancedSiteSearchResponse,
+    FetchDomainVerificationStatusRequest,
+    FetchDomainVerificationStatusResponse,
+    GetSiteSearchEngineRequest,
+    GetTargetSiteRequest,
+    ListTargetSitesRequest,
+    ListTargetSitesResponse,
+    RecrawlUrisMetadata,
+    RecrawlUrisRequest,
+    RecrawlUrisResponse,
+    UpdateTargetSiteMetadata,
+    UpdateTargetSiteRequest,
+)
 from google.cloud.discoveryengine_v1beta.types.user_event import (
     CompletionInfo,
     DocumentInfo,
@@ -152,20 +251,34 @@ __all__ = (
     "CompletionServiceAsyncClient",
     "ConversationalSearchServiceClient",
     "ConversationalSearchServiceAsyncClient",
+    "DataStoreServiceClient",
+    "DataStoreServiceAsyncClient",
     "DocumentServiceClient",
     "DocumentServiceAsyncClient",
+    "EngineServiceClient",
+    "EngineServiceAsyncClient",
     "RecommendationServiceClient",
     "RecommendationServiceAsyncClient",
     "SchemaServiceClient",
     "SchemaServiceAsyncClient",
     "SearchServiceClient",
     "SearchServiceAsyncClient",
+    "ServingConfigServiceClient",
+    "ServingConfigServiceAsyncClient",
+    "SiteSearchEngineServiceClient",
+    "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceClient",
     "UserEventServiceAsyncClient",
     "CustomAttribute",
     "DoubleList",
+    "EmbeddingConfig",
     "Interval",
     "UserInfo",
+    "IndustryVertical",
+    "SearchAddOn",
+    "SearchTier",
+    "SolutionType",
+    "SuggestionDenyListEntry",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
     "Conversation",
@@ -181,6 +294,15 @@ __all__ = (
     "ListConversationsRequest",
     "ListConversationsResponse",
     "UpdateConversationRequest",
+    "DataStore",
+    "CreateDataStoreMetadata",
+    "CreateDataStoreRequest",
+    "DeleteDataStoreMetadata",
+    "DeleteDataStoreRequest",
+    "GetDataStoreRequest",
+    "ListDataStoresRequest",
+    "ListDataStoresResponse",
+    "UpdateDataStoreRequest",
     "Document",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
@@ -188,18 +310,33 @@ __all__ = (
     "ListDocumentsRequest",
     "ListDocumentsResponse",
     "UpdateDocumentRequest",
+    "Engine",
+    "CreateEngineMetadata",
+    "CreateEngineRequest",
+    "DeleteEngineMetadata",
+    "DeleteEngineRequest",
+    "GetEngineRequest",
+    "ListEnginesRequest",
+    "ListEnginesResponse",
+    "UpdateEngineRequest",
     "BigQuerySource",
     "GcsSource",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
     "ImportErrorConfig",
+    "ImportSuggestionDenyListEntriesMetadata",
+    "ImportSuggestionDenyListEntriesRequest",
+    "ImportSuggestionDenyListEntriesResponse",
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
+    "PurgeSuggestionDenyListEntriesMetadata",
+    "PurgeSuggestionDenyListEntriesRequest",
+    "PurgeSuggestionDenyListEntriesResponse",
     "RecommendRequest",
     "RecommendResponse",
     "Schema",
@@ -214,6 +351,41 @@ __all__ = (
     "UpdateSchemaRequest",
     "SearchRequest",
     "SearchResponse",
+    "ServingConfig",
+    "GetServingConfigRequest",
+    "ListServingConfigsRequest",
+    "ListServingConfigsResponse",
+    "UpdateServingConfigRequest",
+    "SiteSearchEngine",
+    "SiteVerificationInfo",
+    "TargetSite",
+    "BatchCreateTargetSiteMetadata",
+    "BatchCreateTargetSitesRequest",
+    "BatchCreateTargetSitesResponse",
+    "BatchVerifyTargetSitesMetadata",
+    "BatchVerifyTargetSitesRequest",
+    "BatchVerifyTargetSitesResponse",
+    "CreateTargetSiteMetadata",
+    "CreateTargetSiteRequest",
+    "DeleteTargetSiteMetadata",
+    "DeleteTargetSiteRequest",
+    "DisableAdvancedSiteSearchMetadata",
+    "DisableAdvancedSiteSearchRequest",
+    "DisableAdvancedSiteSearchResponse",
+    "EnableAdvancedSiteSearchMetadata",
+    "EnableAdvancedSiteSearchRequest",
+    "EnableAdvancedSiteSearchResponse",
+    "FetchDomainVerificationStatusRequest",
+    "FetchDomainVerificationStatusResponse",
+    "GetSiteSearchEngineRequest",
+    "GetTargetSiteRequest",
+    "ListTargetSitesRequest",
+    "ListTargetSitesResponse",
+    "RecrawlUrisMetadata",
+    "RecrawlUrisRequest",
+    "RecrawlUrisResponse",
+    "UpdateTargetSiteMetadata",
+    "UpdateTargetSiteRequest",
     "CompletionInfo",
     "DocumentInfo",
     "MediaInfo",

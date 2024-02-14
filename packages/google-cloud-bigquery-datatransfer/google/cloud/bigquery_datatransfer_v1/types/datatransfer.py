@@ -52,6 +52,7 @@ __protobuf__ = proto.module(
         "StartManualTransferRunsRequest",
         "StartManualTransferRunsResponse",
         "EnrollDataSourcesRequest",
+        "UnenrollDataSourcesRequest",
     },
 )
 
@@ -1156,6 +1157,29 @@ class EnrollDataSourcesRequest(proto.Message):
             ``projects/{project_id}``
         data_source_ids (MutableSequence[str]):
             Data sources that are enrolled. It is
+            required to provide at least one data source id.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data_source_ids: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UnenrollDataSourcesRequest(proto.Message):
+    r"""A request to unenroll a set of data sources so they are no longer
+    visible in the BigQuery UI's ``Transfer`` tab.
+
+    Attributes:
+        name (str):
+            The name of the project resource in the form:
+            ``projects/{project_id}``
+        data_source_ids (MutableSequence[str]):
+            Data sources that are unenrolled. It is
             required to provide at least one data source id.
     """
 

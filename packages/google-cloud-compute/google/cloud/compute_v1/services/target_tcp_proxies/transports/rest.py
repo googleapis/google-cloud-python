@@ -524,6 +524,8 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -612,12 +614,12 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
                 ~.compute.TargetTcpProxy:
                     Represents a Target TCP Proxy
                 resource. A target TCP proxy is a
-                component of a TCP Proxy load balancer.
-                Global forwarding rules reference target
-                TCP proxy, and the target proxy then
-                references an external backend service.
-                For more information, read TCP Proxy
-                Load Balancing overview.
+                component of a Proxy Network Load
+                Balancer. The forwarding rule references
+                the target TCP proxy, and the target
+                proxy then references a backend service.
+                For more information, read Proxy Network
+                Load Balancer overview.
 
             """
 
@@ -719,6 +721,8 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -917,6 +921,8 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -1029,6 +1035,8 @@ class TargetTcpProxiesRestTransport(TargetTcpProxiesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 

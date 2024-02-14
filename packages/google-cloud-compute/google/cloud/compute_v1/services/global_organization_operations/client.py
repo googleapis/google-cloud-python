@@ -835,7 +835,9 @@ class GlobalOrganizationOperationsClient(
                 resource. - For regional operations, use the
                 regionOperations resource. - For zonal operations, use
                 the zoneOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+                Global, Regional, and Zonal Resources. Note that
+                completed Operation resources have a limited retention
+                period.
 
         """
         # Create or coerce a protobuf request object.

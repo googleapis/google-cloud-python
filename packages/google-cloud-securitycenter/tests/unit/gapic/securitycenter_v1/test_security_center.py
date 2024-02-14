@@ -69,6 +69,7 @@ from google.cloud.securitycenter_v1.services.security_center import (
 )
 from google.cloud.securitycenter_v1.types import (
     access,
+    application,
     bigquery_export,
     cloud_dlp_data_profile,
     cloud_dlp_inspection,
@@ -402,8 +403,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     # TODO: This is needed to cater for older versions of google-auth
     # Make this test unconditional once the minimum supported version of
     # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor, _ = [
-        int(part) for part in google.auth.__version__.split(".")
+    google_auth_major, google_auth_minor = [
+        int(part) for part in google.auth.__version__.split(".")[0:2]
     ]
     if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials = ga_credentials.AnonymousCredentials()
@@ -421,8 +422,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         #
         # TODO: Make this test unconditional once the minimum supported version of
         # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor, _ = [
-            int(part) for part in api_core_version.__version__.split(".")
+        api_core_major, api_core_minor = [
+            int(part) for part in api_core_version.__version__.split(".")[0:2]
         ]
         if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
             client = client_class(
@@ -16405,6 +16406,7 @@ def test_create_finding_rest(request_type):
             "unexpected_interrupt_handler": True,
             "unexpected_processes_in_runqueue": True,
         },
+        "application": {"base_uri": "base_uri_value", "full_uri": "full_uri_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -26431,6 +26433,7 @@ def test_update_finding_rest(request_type):
             "unexpected_interrupt_handler": True,
             "unexpected_processes_in_runqueue": True,
         },
+        "application": {"base_uri": "base_uri_value", "full_uri": "full_uri_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

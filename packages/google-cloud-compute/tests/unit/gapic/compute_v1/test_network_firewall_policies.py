@@ -354,8 +354,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     # TODO: This is needed to cater for older versions of google-auth
     # Make this test unconditional once the minimum supported version of
     # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor, _ = [
-        int(part) for part in google.auth.__version__.split(".")
+    google_auth_major, google_auth_minor = [
+        int(part) for part in google.auth.__version__.split(".")[0:2]
     ]
     if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials = ga_credentials.AnonymousCredentials()
@@ -373,8 +373,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         #
         # TODO: Make this test unconditional once the minimum supported version of
         # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor, _ = [
-            int(part) for part in api_core_version.__version__.split(".")
+        api_core_major, api_core_minor = [
+            int(part) for part in api_core_version.__version__.split(".")[0:2]
         ]
         if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
             client = client_class(
@@ -1904,12 +1904,14 @@ def test_add_rule_rest(request_type):
         "priority": 898,
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
+        "security_profile_group": "security_profile_group_value",
         "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value1",
             "target_service_accounts_value2",
         ],
+        "tls_inspect": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -2377,12 +2379,14 @@ def test_add_rule_unary_rest(request_type):
         "priority": 898,
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
+        "security_profile_group": "security_profile_group_value",
         "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value1",
             "target_service_accounts_value2",
         ],
+        "tls_inspect": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4976,8 +4980,10 @@ def test_get_rule_rest(request_type):
             priority=898,
             rule_name="rule_name_value",
             rule_tuple_count=1737,
+            security_profile_group="security_profile_group_value",
             target_resources=["target_resources_value"],
             target_service_accounts=["target_service_accounts_value"],
+            tls_inspect=True,
         )
 
         # Wrap the value into a proper Response obj
@@ -5002,8 +5008,10 @@ def test_get_rule_rest(request_type):
     assert response.priority == 898
     assert response.rule_name == "rule_name_value"
     assert response.rule_tuple_count == 1737
+    assert response.security_profile_group == "security_profile_group_value"
     assert response.target_resources == ["target_resources_value"]
     assert response.target_service_accounts == ["target_service_accounts_value"]
+    assert response.tls_inspect is True
 
 
 def test_get_rule_rest_required_fields(
@@ -5339,6 +5347,7 @@ def test_insert_rest(request_type):
                 "priority": 898,
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
+                "security_profile_group": "security_profile_group_value",
                 "target_resources": [
                     "target_resources_value1",
                     "target_resources_value2",
@@ -5348,6 +5357,7 @@ def test_insert_rest(request_type):
                     "target_service_accounts_value1",
                     "target_service_accounts_value2",
                 ],
+                "tls_inspect": True,
             }
         ],
         "self_link": "self_link_value",
@@ -5832,6 +5842,7 @@ def test_insert_unary_rest(request_type):
                 "priority": 898,
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
+                "security_profile_group": "security_profile_group_value",
                 "target_resources": [
                     "target_resources_value1",
                     "target_resources_value2",
@@ -5841,6 +5852,7 @@ def test_insert_unary_rest(request_type):
                     "target_service_accounts_value1",
                     "target_service_accounts_value2",
                 ],
+                "tls_inspect": True,
             }
         ],
         "self_link": "self_link_value",
@@ -6654,6 +6666,7 @@ def test_patch_rest(request_type):
                 "priority": 898,
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
+                "security_profile_group": "security_profile_group_value",
                 "target_resources": [
                     "target_resources_value1",
                     "target_resources_value2",
@@ -6663,6 +6676,7 @@ def test_patch_rest(request_type):
                     "target_service_accounts_value1",
                     "target_service_accounts_value2",
                 ],
+                "tls_inspect": True,
             }
         ],
         "self_link": "self_link_value",
@@ -7154,6 +7168,7 @@ def test_patch_unary_rest(request_type):
                 "priority": 898,
                 "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
+                "security_profile_group": "security_profile_group_value",
                 "target_resources": [
                     "target_resources_value1",
                     "target_resources_value2",
@@ -7163,6 +7178,7 @@ def test_patch_unary_rest(request_type):
                     "target_service_accounts_value1",
                     "target_service_accounts_value2",
                 ],
+                "tls_inspect": True,
             }
         ],
         "self_link": "self_link_value",
@@ -7605,12 +7621,14 @@ def test_patch_rule_rest(request_type):
         "priority": 898,
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
+        "security_profile_group": "security_profile_group_value",
         "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value1",
             "target_service_accounts_value2",
         ],
+        "tls_inspect": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8076,12 +8094,14 @@ def test_patch_rule_unary_rest(request_type):
         "priority": 898,
         "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
+        "security_profile_group": "security_profile_group_value",
         "target_resources": ["target_resources_value1", "target_resources_value2"],
         "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value1",
             "target_service_accounts_value2",
         ],
+        "tls_inspect": True,
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

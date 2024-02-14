@@ -403,6 +403,8 @@ class RegionSslPoliciesRestTransport(RegionSslPoliciesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -490,11 +492,12 @@ class RegionSslPoliciesRestTransport(RegionSslPoliciesTransport):
             Returns:
                 ~.compute.SslPolicy:
                     Represents an SSL Policy resource.
-                Use SSL policies to control the SSL
+                Use SSL policies to control SSL
                 features, such as versions and cipher
-                suites, offered by an HTTPS or SSL Proxy
-                load balancer. For more information,
-                read SSL Policy Concepts.
+                suites, that are offered by Application
+                Load Balancers and proxy Network Load
+                Balancers. For more information, read
+                SSL policies overview.
 
             """
 
@@ -596,6 +599,8 @@ class RegionSslPoliciesRestTransport(RegionSslPoliciesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -882,6 +887,8 @@ class RegionSslPoliciesRestTransport(RegionSslPoliciesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 

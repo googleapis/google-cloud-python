@@ -354,8 +354,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     # TODO: This is needed to cater for older versions of google-auth
     # Make this test unconditional once the minimum supported version of
     # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor, _ = [
-        int(part) for part in google.auth.__version__.split(".")
+    google_auth_major, google_auth_minor = [
+        int(part) for part in google.auth.__version__.split(".")[0:2]
     ]
     if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials = ga_credentials.AnonymousCredentials()
@@ -373,8 +373,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         #
         # TODO: Make this test unconditional once the minimum supported version of
         # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor, _ = [
-            int(part) for part in api_core_version.__version__.split(".")
+        api_core_major, api_core_minor = [
+            int(part) for part in api_core_version.__version__.split(".")[0:2]
         ]
         if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
             client = client_class(
@@ -1048,6 +1048,18 @@ def test_add_rule_rest(request_type):
                 "location": "location_value",
                 "title": "title_value",
             },
+            "expr_options": {
+                "recaptcha_options": {
+                    "action_token_site_keys": [
+                        "action_token_site_keys_value1",
+                        "action_token_site_keys_value2",
+                    ],
+                    "session_token_site_keys": [
+                        "session_token_site_keys_value1",
+                        "session_token_site_keys_value2",
+                    ],
+                }
+            },
             "versioned_expr": "versioned_expr_value",
         },
         "network_match": {
@@ -1552,6 +1564,18 @@ def test_add_rule_unary_rest(request_type):
                 "expression": "expression_value",
                 "location": "location_value",
                 "title": "title_value",
+            },
+            "expr_options": {
+                "recaptcha_options": {
+                    "action_token_site_keys": [
+                        "action_token_site_keys_value1",
+                        "action_token_site_keys_value2",
+                    ],
+                    "session_token_site_keys": [
+                        "session_token_site_keys_value1",
+                        "session_token_site_keys_value2",
+                    ],
+                }
             },
             "versioned_expr": "versioned_expr_value",
         },
@@ -3378,6 +3402,18 @@ def test_insert_rest(request_type):
                         "location": "location_value",
                         "title": "title_value",
                     },
+                    "expr_options": {
+                        "recaptcha_options": {
+                            "action_token_site_keys": [
+                                "action_token_site_keys_value1",
+                                "action_token_site_keys_value2",
+                            ],
+                            "session_token_site_keys": [
+                                "session_token_site_keys_value1",
+                                "session_token_site_keys_value2",
+                            ],
+                        }
+                    },
                     "versioned_expr": "versioned_expr_value",
                 },
                 "network_match": {
@@ -3941,6 +3977,18 @@ def test_insert_unary_rest(request_type):
                         "expression": "expression_value",
                         "location": "location_value",
                         "title": "title_value",
+                    },
+                    "expr_options": {
+                        "recaptcha_options": {
+                            "action_token_site_keys": [
+                                "action_token_site_keys_value1",
+                                "action_token_site_keys_value2",
+                            ],
+                            "session_token_site_keys": [
+                                "session_token_site_keys_value1",
+                                "session_token_site_keys_value2",
+                            ],
+                        }
                     },
                     "versioned_expr": "versioned_expr_value",
                 },
@@ -4850,6 +4898,18 @@ def test_patch_rest(request_type):
                         "location": "location_value",
                         "title": "title_value",
                     },
+                    "expr_options": {
+                        "recaptcha_options": {
+                            "action_token_site_keys": [
+                                "action_token_site_keys_value1",
+                                "action_token_site_keys_value2",
+                            ],
+                            "session_token_site_keys": [
+                                "session_token_site_keys_value1",
+                                "session_token_site_keys_value2",
+                            ],
+                        }
+                    },
                     "versioned_expr": "versioned_expr_value",
                 },
                 "network_match": {
@@ -5433,6 +5493,18 @@ def test_patch_unary_rest(request_type):
                         "location": "location_value",
                         "title": "title_value",
                     },
+                    "expr_options": {
+                        "recaptcha_options": {
+                            "action_token_site_keys": [
+                                "action_token_site_keys_value1",
+                                "action_token_site_keys_value2",
+                            ],
+                            "session_token_site_keys": [
+                                "session_token_site_keys_value1",
+                                "session_token_site_keys_value2",
+                            ],
+                        }
+                    },
                     "versioned_expr": "versioned_expr_value",
                 },
                 "network_match": {
@@ -5952,6 +6024,18 @@ def test_patch_rule_rest(request_type):
                 "location": "location_value",
                 "title": "title_value",
             },
+            "expr_options": {
+                "recaptcha_options": {
+                    "action_token_site_keys": [
+                        "action_token_site_keys_value1",
+                        "action_token_site_keys_value2",
+                    ],
+                    "session_token_site_keys": [
+                        "session_token_site_keys_value1",
+                        "session_token_site_keys_value2",
+                    ],
+                }
+            },
             "versioned_expr": "versioned_expr_value",
         },
         "network_match": {
@@ -6468,6 +6552,18 @@ def test_patch_rule_unary_rest(request_type):
                 "expression": "expression_value",
                 "location": "location_value",
                 "title": "title_value",
+            },
+            "expr_options": {
+                "recaptcha_options": {
+                    "action_token_site_keys": [
+                        "action_token_site_keys_value1",
+                        "action_token_site_keys_value2",
+                    ],
+                    "session_token_site_keys": [
+                        "session_token_site_keys_value1",
+                        "session_token_site_keys_value2",
+                    ],
+                }
             },
             "versioned_expr": "versioned_expr_value",
         },

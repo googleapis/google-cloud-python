@@ -692,7 +692,7 @@ class ConversationalSearchServiceAsyncClient:
                 [Conversation][google.cloud.discoveryengine.v1beta.Conversation]
                 to update. The following are NOT supported:
 
-                -  [conversation.name][]
+                -  [Conversation.name][google.cloud.discoveryengine.v1beta.Conversation.name]
 
                 If not set or empty, all supported fields are updated.
 

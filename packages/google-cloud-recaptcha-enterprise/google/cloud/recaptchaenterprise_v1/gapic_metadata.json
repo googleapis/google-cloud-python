@@ -80,6 +80,11 @@
                 "migrate_key"
               ]
             },
+            "ReorderFirewallPolicies": {
+              "methods": [
+                "reorder_firewall_policies"
+              ]
+            },
             "RetrieveLegacySecretKey": {
               "methods": [
                 "retrieve_legacy_secret_key"
@@ -173,6 +178,11 @@
             "MigrateKey": {
               "methods": [
                 "migrate_key"
+              ]
+            },
+            "ReorderFirewallPolicies": {
+              "methods": [
+                "reorder_firewall_policies"
               ]
             },
             "RetrieveLegacySecretKey": {

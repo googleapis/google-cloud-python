@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-biglake-v0.4.4...google-cloud-bigquery-biglake-v0.4.5) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([8465244](https://github.com/googleapis/google-cloud-python/commit/8465244deff230202eebab526092c780c6b60f4e))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([8465244](https://github.com/googleapis/google-cloud-python/commit/8465244deff230202eebab526092c780c6b60f4e))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([8465244](https://github.com/googleapis/google-cloud-python/commit/8465244deff230202eebab526092c780c6b60f4e))
+
 ## [0.4.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-biglake-v0.4.3...google-cloud-bigquery-biglake-v0.4.4) (2024-02-01)
 
 

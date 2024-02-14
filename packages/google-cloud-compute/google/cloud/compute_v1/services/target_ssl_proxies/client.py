@@ -975,12 +975,12 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
             google.cloud.compute_v1.types.TargetSslProxy:
                 Represents a Target SSL Proxy
                 resource. A target SSL proxy is a
-                component of a SSL Proxy load balancer.
-                Global forwarding rules reference a
-                target SSL proxy, and the target proxy
-                then references an external backend
-                service. For more information, read
-                Using Target Proxies.
+                component of a Proxy Network Load
+                Balancer. The forwarding rule references
+                the target SSL proxy, and the target
+                proxy then references a backend service.
+                For more information, read Proxy Network
+                Load Balancer overview.
 
         """
         # Create or coerce a protobuf request object.
@@ -2643,8 +2643,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         r"""Sets the SSL policy for TargetSslProxy. The SSL
         policy specifies the server-side support for SSL
         features. This affects connections between clients and
-        the SSL proxy load balancer. They do not affect the
-        connection between the load balancer and the backends.
+        the load balancer. They do not affect the connection
+        between the load balancer and the backends.
 
         .. code-block:: python
 
@@ -2781,8 +2781,8 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         r"""Sets the SSL policy for TargetSslProxy. The SSL
         policy specifies the server-side support for SSL
         features. This affects connections between clients and
-        the SSL proxy load balancer. They do not affect the
-        connection between the load balancer and the backends.
+        the load balancer. They do not affect the connection
+        between the load balancer and the backends.
 
         .. code-block:: python
 

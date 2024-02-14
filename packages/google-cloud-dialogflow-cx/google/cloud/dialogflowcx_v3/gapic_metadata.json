@@ -302,9 +302,19 @@
                 "delete_entity_type"
               ]
             },
+            "ExportEntityTypes": {
+              "methods": [
+                "export_entity_types"
+              ]
+            },
             "GetEntityType": {
               "methods": [
                 "get_entity_type"
+              ]
+            },
+            "ImportEntityTypes": {
+              "methods": [
+                "import_entity_types"
               ]
             },
             "ListEntityTypes": {
@@ -332,9 +342,19 @@
                 "delete_entity_type"
               ]
             },
+            "ExportEntityTypes": {
+              "methods": [
+                "export_entity_types"
+              ]
+            },
             "GetEntityType": {
               "methods": [
                 "get_entity_type"
+              ]
+            },
+            "ImportEntityTypes": {
+              "methods": [
+                "import_entity_types"
               ]
             },
             "ListEntityTypes": {
@@ -362,9 +382,19 @@
                 "delete_entity_type"
               ]
             },
+            "ExportEntityTypes": {
+              "methods": [
+                "export_entity_types"
+              ]
+            },
             "GetEntityType": {
               "methods": [
                 "get_entity_type"
+              ]
+            },
+            "ImportEntityTypes": {
+              "methods": [
+                "import_entity_types"
               ]
             },
             "ListEntityTypes": {
@@ -1348,6 +1378,11 @@
                 "match_intent"
               ]
             },
+            "ServerStreamingDetectIntent": {
+              "methods": [
+                "server_streaming_detect_intent"
+              ]
+            },
             "StreamingDetectIntent": {
               "methods": [
                 "streaming_detect_intent"
@@ -1378,6 +1413,11 @@
                 "match_intent"
               ]
             },
+            "ServerStreamingDetectIntent": {
+              "methods": [
+                "server_streaming_detect_intent"
+              ]
+            },
             "StreamingDetectIntent": {
               "methods": [
                 "streaming_detect_intent"
@@ -1406,6 +1446,11 @@
             "MatchIntent": {
               "methods": [
                 "match_intent"
+              ]
+            },
+            "ServerStreamingDetectIntent": {
+              "methods": [
+                "server_streaming_detect_intent"
               ]
             },
             "StreamingDetectIntent": {

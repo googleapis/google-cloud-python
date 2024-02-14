@@ -680,6 +680,38 @@ class DataTransferServiceGrpcAsyncIOTransport(DataTransferServiceTransport):
             )
         return self._stubs["enroll_data_sources"]
 
+    @property
+    def unenroll_data_sources(
+        self,
+    ) -> Callable[
+        [datatransfer.UnenrollDataSourcesRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the unenroll data sources method over gRPC.
+
+        Unenroll data sources in a user project. This allows users to
+        remove transfer configurations for these data sources. They will
+        no longer appear in the ListDataSources RPC and will also no
+        longer appear in the `BigQuery
+        UI <https://console.cloud.google.com/bigquery>`__.
+
+        Returns:
+            Callable[[~.UnenrollDataSourcesRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "unenroll_data_sources" not in self._stubs:
+            self._stubs["unenroll_data_sources"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/UnenrollDataSources",
+                request_serializer=datatransfer.UnenrollDataSourcesRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["unenroll_data_sources"]
+
     def close(self):
         return self.grpc_channel.close()
 

@@ -18,6 +18,10 @@ from google.cloud.retail_v2 import gapic_version as package_version
 __version__ = package_version.__version__
 
 
+from .services.analytics_service import (
+    AnalyticsServiceAsyncClient,
+    AnalyticsServiceClient,
+)
 from .services.catalog_service import CatalogServiceAsyncClient, CatalogServiceClient
 from .services.completion_service import (
     CompletionServiceAsyncClient,
@@ -88,6 +92,16 @@ from .types.control_service import (
     ListControlsRequest,
     ListControlsResponse,
     UpdateControlRequest,
+)
+from .types.export_config import (
+    BigQueryOutputResult,
+    ExportAnalyticsMetricsRequest,
+    ExportAnalyticsMetricsResponse,
+    ExportErrorsConfig,
+    ExportMetadata,
+    GcsOutputResult,
+    OutputConfig,
+    OutputResult,
 )
 from .types.import_config import (
     BigQuerySource,
@@ -180,6 +194,7 @@ from .types.user_event_service import (
 )
 
 __all__ = (
+    "AnalyticsServiceAsyncClient",
     "CatalogServiceAsyncClient",
     "CompletionServiceAsyncClient",
     "ControlServiceAsyncClient",
@@ -197,9 +212,11 @@ __all__ = (
     "AddLocalInventoriesMetadata",
     "AddLocalInventoriesRequest",
     "AddLocalInventoriesResponse",
+    "AnalyticsServiceClient",
     "AttributeConfigLevel",
     "AttributesConfig",
     "Audience",
+    "BigQueryOutputResult",
     "BigQuerySource",
     "Catalog",
     "CatalogAttribute",
@@ -226,7 +243,12 @@ __all__ = (
     "DeleteProductRequest",
     "DeleteServingConfigRequest",
     "ExperimentInfo",
+    "ExportAnalyticsMetricsRequest",
+    "ExportAnalyticsMetricsResponse",
+    "ExportErrorsConfig",
+    "ExportMetadata",
     "FulfillmentInfo",
+    "GcsOutputResult",
     "GcsSource",
     "GetAttributesConfigRequest",
     "GetCompletionConfigRequest",
@@ -259,6 +281,8 @@ __all__ = (
     "LocalInventory",
     "Model",
     "ModelServiceClient",
+    "OutputConfig",
+    "OutputResult",
     "PauseModelRequest",
     "PredictRequest",
     "PredictResponse",

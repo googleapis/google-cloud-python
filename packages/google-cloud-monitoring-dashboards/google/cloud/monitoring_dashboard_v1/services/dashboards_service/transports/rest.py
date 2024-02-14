@@ -38,7 +38,9 @@ except AttributeError:  # pragma: NO COVER
 
 from google.protobuf import empty_pb2  # type: ignore
 
-from google.cloud.monitoring_dashboard_v1.types import dashboard, dashboards_service
+from google.cloud.monitoring_dashboard_v1.types import dashboard as gmd_dashboard
+from google.cloud.monitoring_dashboard_v1.types import dashboard
+from google.cloud.monitoring_dashboard_v1.types import dashboards_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
 from .base import DashboardsServiceTransport
@@ -120,8 +122,8 @@ class DashboardsServiceRestInterceptor:
         return request, metadata
 
     def post_create_dashboard(
-        self, response: dashboard.Dashboard
-    ) -> dashboard.Dashboard:
+        self, response: gmd_dashboard.Dashboard
+    ) -> gmd_dashboard.Dashboard:
         """Post-rpc interceptor for create_dashboard
 
         Override in a subclass to manipulate the response
@@ -328,7 +330,7 @@ class DashboardsServiceRestTransport(DashboardsServiceTransport):
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> dashboard.Dashboard:
+        ) -> gmd_dashboard.Dashboard:
             r"""Call the create dashboard method over HTTP.
 
             Args:
@@ -341,7 +343,7 @@ class DashboardsServiceRestTransport(DashboardsServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.dashboard.Dashboard:
+                ~.gmd_dashboard.Dashboard:
                     A Google Stackdriver dashboard.
                 Dashboards define the content and layout
                 of pages in the Stackdriver web
@@ -401,8 +403,8 @@ class DashboardsServiceRestTransport(DashboardsServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = dashboard.Dashboard()
-            pb_resp = dashboard.Dashboard.pb(resp)
+            resp = gmd_dashboard.Dashboard()
+            pb_resp = gmd_dashboard.Dashboard.pb(resp)
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_create_dashboard(resp)
@@ -764,7 +766,7 @@ class DashboardsServiceRestTransport(DashboardsServiceTransport):
     @property
     def create_dashboard(
         self,
-    ) -> Callable[[dashboards_service.CreateDashboardRequest], dashboard.Dashboard]:
+    ) -> Callable[[dashboards_service.CreateDashboardRequest], gmd_dashboard.Dashboard]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateDashboard(self._session, self._host, self._interceptor)  # type: ignore

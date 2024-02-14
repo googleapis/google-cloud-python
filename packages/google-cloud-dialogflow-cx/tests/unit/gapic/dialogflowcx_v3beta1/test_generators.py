@@ -51,6 +51,7 @@ from google.cloud.dialogflowcx_v3beta1.services.generators import (
     pagers,
     transports,
 )
+from google.cloud.dialogflowcx_v3beta1.types import generative_settings
 from google.cloud.dialogflowcx_v3beta1.types import generator
 from google.cloud.dialogflowcx_v3beta1.types import generator as gcdc_generator
 
@@ -314,8 +315,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     # TODO: This is needed to cater for older versions of google-auth
     # Make this test unconditional once the minimum supported version of
     # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor, _ = [
-        int(part) for part in google.auth.__version__.split(".")
+    google_auth_major, google_auth_minor = [
+        int(part) for part in google.auth.__version__.split(".")[0:2]
     ]
     if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials = ga_credentials.AnonymousCredentials()
@@ -333,8 +334,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         #
         # TODO: Make this test unconditional once the minimum supported version of
         # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor, _ = [
-            int(part) for part in api_core_version.__version__.split(".")
+        api_core_major, api_core_minor = [
+            int(part) for part in api_core_version.__version__.split(".")[0:2]
         ]
         if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
             client = client_class(
@@ -3086,6 +3087,10 @@ def test_create_generator_rest(request_type):
         "display_name": "display_name_value",
         "prompt_text": {"text": "text_value"},
         "placeholders": [{"id": "id_value", "name": "name_value"}],
+        "llm_model_settings": {
+            "model": "model_value",
+            "prompt_text": "prompt_text_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3449,6 +3454,10 @@ def test_update_generator_rest(request_type):
         "display_name": "display_name_value",
         "prompt_text": {"text": "text_value"},
         "placeholders": [{"id": "id_value", "name": "name_value"}],
+        "llm_model_settings": {
+            "model": "model_value",
+            "prompt_text": "prompt_text_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

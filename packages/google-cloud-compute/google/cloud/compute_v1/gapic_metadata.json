@@ -1272,6 +1272,11 @@
                 "list_referrers"
               ]
             },
+            "PerformMaintenance": {
+              "methods": [
+                "perform_maintenance"
+              ]
+            },
             "RemoveResourcePolicies": {
               "methods": [
                 "remove_resource_policies"
@@ -3308,6 +3313,20 @@
             "Validate": {
               "methods": [
                 "validate"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "RegionZones": {
+      "clients": {
+        "rest": {
+          "libraryClient": "RegionZonesClient",
+          "rpcs": {
+            "List": {
+              "methods": [
+                "list"
               ]
             }
           }

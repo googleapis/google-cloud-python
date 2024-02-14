@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -26,6 +27,9 @@ __protobuf__ = proto.module(
         "PurgeDocumentsRequest",
         "PurgeDocumentsResponse",
         "PurgeDocumentsMetadata",
+        "PurgeSuggestionDenyListEntriesRequest",
+        "PurgeSuggestionDenyListEntriesResponse",
+        "PurgeSuggestionDenyListEntriesMetadata",
     },
 )
 
@@ -125,6 +129,74 @@ class PurgeDocumentsMetadata(proto.Message):
     failure_count: int = proto.Field(
         proto.INT64,
         number=4,
+    )
+
+
+class PurgeSuggestionDenyListEntriesRequest(proto.Message):
+    r"""Request message for
+    [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries]
+    method.
+
+    Attributes:
+        parent (str):
+            Required. The parent data store resource name for which to
+            import denylist entries. Follows pattern
+            projects/\ */locations/*/collections/*/dataStores/*.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PurgeSuggestionDenyListEntriesResponse(proto.Message):
+    r"""Response message for
+    [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1.CompletionService.PurgeSuggestionDenyListEntries]
+    method.
+
+    Attributes:
+        purge_count (int):
+            Number of suggestion deny list entries
+            purged.
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
+            A sample of errors encountered while
+            processing the request.
+    """
+
+    purge_count: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+
+
+class PurgeSuggestionDenyListEntriesMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    PurgeSuggestionDenyListEntries operation. This is returned by
+    the google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
 
 

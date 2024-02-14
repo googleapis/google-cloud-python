@@ -1095,12 +1095,12 @@ class TargetTcpProxiesClient(metaclass=TargetTcpProxiesClientMeta):
             google.cloud.compute_v1.types.TargetTcpProxy:
                 Represents a Target TCP Proxy
                 resource. A target TCP proxy is a
-                component of a TCP Proxy load balancer.
-                Global forwarding rules reference target
-                TCP proxy, and the target proxy then
-                references an external backend service.
-                For more information, read TCP Proxy
-                Load Balancing overview.
+                component of a Proxy Network Load
+                Balancer. The forwarding rule references
+                the target TCP proxy, and the target
+                proxy then references a backend service.
+                For more information, read Proxy Network
+                Load Balancer overview.
 
         """
         # Create or coerce a protobuf request object.

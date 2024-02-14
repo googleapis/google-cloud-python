@@ -41,6 +41,8 @@ class Conversation(proto.Message):
         name (str):
             Immutable. Fully qualified name
             ``project/*/locations/global/collections/{collection}/dataStore/*/conversations/*``
+            or
+            ``project/*/locations/global/collections/{collection}/engines/*/conversations/*``.
         state (google.cloud.discoveryengine_v1beta.types.Conversation.State):
             The state of the Conversation.
         user_pseudo_id (str):

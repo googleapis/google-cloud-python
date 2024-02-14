@@ -314,8 +314,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     # TODO: This is needed to cater for older versions of google-auth
     # Make this test unconditional once the minimum supported version of
     # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor, _ = [
-        int(part) for part in google.auth.__version__.split(".")
+    google_auth_major, google_auth_minor = [
+        int(part) for part in google.auth.__version__.split(".")[0:2]
     ]
     if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials = ga_credentials.AnonymousCredentials()
@@ -333,8 +333,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         #
         # TODO: Make this test unconditional once the minimum supported version of
         # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor, _ = [
-            int(part) for part in api_core_version.__version__.split(".")
+        api_core_major, api_core_minor = [
+            int(part) for part in api_core_version.__version__.split(".")[0:2]
         ]
         if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
             client = client_class(
@@ -2838,6 +2838,7 @@ def test_get_rest(request_type):
             private_ipv6_google_access="private_ipv6_google_access_value",
             purpose="purpose_value",
             region="region_value",
+            reserved_internal_range="reserved_internal_range_value",
             role="role_value",
             self_link="self_link_value",
             stack_type="stack_type_value",
@@ -2875,6 +2876,7 @@ def test_get_rest(request_type):
     assert response.private_ipv6_google_access == "private_ipv6_google_access_value"
     assert response.purpose == "purpose_value"
     assert response.region == "region_value"
+    assert response.reserved_internal_range == "reserved_internal_range_value"
     assert response.role == "role_value"
     assert response.self_link == "self_link_value"
     assert response.stack_type == "stack_type_value"
@@ -3473,9 +3475,14 @@ def test_insert_rest(request_type):
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "purpose": "purpose_value",
         "region": "region_value",
+        "reserved_internal_range": "reserved_internal_range_value",
         "role": "role_value",
         "secondary_ip_ranges": [
-            {"ip_cidr_range": "ip_cidr_range_value", "range_name": "range_name_value"}
+            {
+                "ip_cidr_range": "ip_cidr_range_value",
+                "range_name": "range_name_value",
+                "reserved_internal_range": "reserved_internal_range_value",
+            }
         ],
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
@@ -3908,9 +3915,14 @@ def test_insert_unary_rest(request_type):
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "purpose": "purpose_value",
         "region": "region_value",
+        "reserved_internal_range": "reserved_internal_range_value",
         "role": "role_value",
         "secondary_ip_ranges": [
-            {"ip_cidr_range": "ip_cidr_range_value", "range_name": "range_name_value"}
+            {
+                "ip_cidr_range": "ip_cidr_range_value",
+                "range_name": "range_name_value",
+                "reserved_internal_range": "reserved_internal_range_value",
+            }
         ],
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
@@ -5038,9 +5050,14 @@ def test_patch_rest(request_type):
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "purpose": "purpose_value",
         "region": "region_value",
+        "reserved_internal_range": "reserved_internal_range_value",
         "role": "role_value",
         "secondary_ip_ranges": [
-            {"ip_cidr_range": "ip_cidr_range_value", "range_name": "range_name_value"}
+            {
+                "ip_cidr_range": "ip_cidr_range_value",
+                "range_name": "range_name_value",
+                "reserved_internal_range": "reserved_internal_range_value",
+            }
         ],
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",
@@ -5492,9 +5509,14 @@ def test_patch_unary_rest(request_type):
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "purpose": "purpose_value",
         "region": "region_value",
+        "reserved_internal_range": "reserved_internal_range_value",
         "role": "role_value",
         "secondary_ip_ranges": [
-            {"ip_cidr_range": "ip_cidr_range_value", "range_name": "range_name_value"}
+            {
+                "ip_cidr_range": "ip_cidr_range_value",
+                "range_name": "range_name_value",
+                "reserved_internal_range": "reserved_internal_range_value",
+            }
         ],
         "self_link": "self_link_value",
         "stack_type": "stack_type_value",

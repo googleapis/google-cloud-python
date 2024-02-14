@@ -20,6 +20,7 @@ __version__ = package_version.__version__
 
 from .services.security_center import SecurityCenterAsyncClient, SecurityCenterClient
 from .types.access import Access, Geolocation, ServiceAccountDelegationInfo
+from .types.application import Application
 from .types.asset import Asset
 from .types.bigquery_export import BigQueryExport
 from .types.cloud_dlp_data_profile import CloudDlpDataProfile
@@ -119,6 +120,7 @@ from .types.vulnerability import Cve, Cvssv3, Reference, Vulnerability
 __all__ = (
     "SecurityCenterAsyncClient",
     "Access",
+    "Application",
     "Asset",
     "BigQueryExport",
     "BulkMuteFindingsRequest",

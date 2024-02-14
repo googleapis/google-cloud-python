@@ -41,6 +41,8 @@ class SearchRequest(proto.Message):
         serving_config (str):
             Required. The resource name of the Search serving config,
             such as
+            ``projects/*/locations/global/collections/default_collection/engines/*/servingConfigs/default_serving_config``,
+            or
             ``projects/*/locations/global/collections/default_collection/dataStores/default_data_store/servingConfigs/default_serving_config``.
             This field is used to identify the serving configuration
             name, set of models used to make the search.
@@ -91,12 +93,39 @@ class SearchRequest(proto.Message):
 
             If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
             returned.
+
+            Filtering in Vertex AI Search is done by mapping the LHS
+            filter key to a key property defined in the Vertex AI Search
+            backend -- this mapping is defined by the customer in their
+            schema. For example a media customer might have a field
+            'name' in their schema. In this case the filter would look
+            like this: filter --> name:'ANY("king kong")'
+
+            For more information about filtering including syntax and
+            filter operators, see
+            `Filter <https://cloud.google.com/generative-ai-app-builder/docs/filter-search-metadata>`__
+        canonical_filter (str):
+            The default filter that is applied when a user performs a
+            search without checking any filters on the search page.
+
+            The filter applied to every search request when quality
+            improvement such as query expansion is needed. In the case a
+            query does not have a sufficient amount of results this
+            filter will be used to determine whether or not to enable
+            the query expansion flow. The original filter will still be
+            used for the query expanded search. This field is strongly
+            recommended to achieve high search quality.
+
+            For more information about filter syntax, see
+            [SearchRequest.filter][google.cloud.discoveryengine.v1beta.SearchRequest.filter].
         order_by (str):
             The order in which documents are returned. Documents can be
             ordered by a field in an
             [Document][google.cloud.discoveryengine.v1beta.Document]
             object. Leave it unset if ordered by relevance. ``order_by``
-            expression is case-sensitive.
+            expression is case-sensitive. For more information on
+            ordering, see
+            `Ordering <https://cloud.google.com/retail/docs/filter-and-order#order>`__
 
             If this field is unrecognizable, an ``INVALID_ARGUMENT`` is
             returned.
@@ -112,8 +141,9 @@ class SearchRequest(proto.Message):
             A maximum of 100 values are allowed. Otherwise, an
             ``INVALID_ARGUMENT`` error is returned.
         boost_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.BoostSpec):
-            Boost specification to boost certain
-            documents.
+            Boost specification to boost certain documents. For more
+            information on boosting, see
+            `Boosting <https://cloud.google.com/retail/docs/boosting#boost>`__
         params (MutableMapping[str, google.protobuf.struct_pb2.Value]):
             Additional search parameters.
 
@@ -121,11 +151,15 @@ class SearchRequest(proto.Message):
 
             -  ``user_country_code``: string. Default empty. If set to
                non-empty, results are restricted or boosted based on the
-               location provided.
+               location provided. Example: user_country_code: "au"
+
+               For available codes see `Country
+               Codes <https://developers.google.com/custom-search/docs/json_api_reference#countryCodes>`__
+
             -  ``search_type``: double. Default empty. Enables
                non-webpage searching depending on the value. The only
                valid non-default value is 1, which enables image
-               searching.
+               searching. Example: search_type: 1
         query_expansion_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.QueryExpansionSpec):
             The query expansion specification that
             specifies the conditions under which query
@@ -159,20 +193,20 @@ class SearchRequest(proto.Message):
             Uses the provided embedding to do additional semantic
             document retrieval. The retrieval is based on the dot
             product of
-            [SearchRequest.embedding_spec.embedding_vectors.vector][]
+            [SearchRequest.EmbeddingSpec.EmbeddingVector.vector][google.cloud.discoveryengine.v1beta.SearchRequest.EmbeddingSpec.EmbeddingVector.vector]
             and the document embedding that is provided in
-            [SearchRequest.embedding_spec.embedding_vectors.field_path][].
+            [SearchRequest.EmbeddingSpec.EmbeddingVector.field_path][google.cloud.discoveryengine.v1beta.SearchRequest.EmbeddingSpec.EmbeddingVector.field_path].
 
             If
-            [SearchRequest.embedding_spec.embedding_vectors.field_path][]
+            [SearchRequest.EmbeddingSpec.EmbeddingVector.field_path][google.cloud.discoveryengine.v1beta.SearchRequest.EmbeddingSpec.EmbeddingVector.field_path]
             is not provided, it will use
-            [ServingConfig.embedding_config.field_paths][].
+            [ServingConfig.EmbeddingConfig.field_path][].
         ranking_expression (str):
             The ranking expression controls the customized ranking on
             retrieval documents. This overrides
-            [ServingConfig.ranking_expression][]. The ranking expression
-            is a single function or multiple functions that are joint by
-            "+".
+            [ServingConfig.ranking_expression][google.cloud.discoveryengine.v1beta.ServingConfig.ranking_expression].
+            The ranking expression is a single function or multiple
+            functions that are joint by "+".
 
             -  ranking_expression = function, { " + ", function };
                Supported functions:
@@ -686,10 +720,54 @@ class SearchRequest(proto.Message):
                     navigational queries. If this field is set to ``true``, we
                     skip generating summaries for non-summary seeking queries
                     and return fallback messages instead.
+                model_prompt_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec):
+                    If specified, the spec will be used to modify
+                    the prompt provided to the LLM.
                 language_code (str):
                     Language code for Summary. Use language tags defined by
-                    [BCP47][https://www.rfc-editor.org/rfc/bcp/bcp47.txt].
+                    `BCP47 <https://www.rfc-editor.org/rfc/bcp/bcp47.txt>`__.
+                    Note: This is an experimental feature.
+                model_spec (google.cloud.discoveryengine_v1beta.types.SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec):
+                    If specified, the spec will be used to modify
+                    the model specification provided to the LLM.
             """
+
+            class ModelPromptSpec(proto.Message):
+                r"""Specification of the prompt to use with the model.
+
+                Attributes:
+                    preamble (str):
+                        Text at the beginning of the prompt that
+                        instructs the assistant. Examples are available
+                        in the user guide.
+                """
+
+                preamble: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
+
+            class ModelSpec(proto.Message):
+                r"""Specification of the model.
+
+                Attributes:
+                    version (str):
+                        The model version used to generate the summary.
+
+                        Supported values are:
+
+                        -  ``stable``: string. Default value when no value is
+                           specified. Uses a generally available, fine-tuned version
+                           of the text-bison@001 model.
+                        -  ``preview``: string. (Public preview) Uses a fine-tuned
+                           version of the text-bison@002 model. This model works
+                           only for summaries in English.
+                """
+
+                version: str = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
 
             summary_result_count: int = proto.Field(
                 proto.INT32,
@@ -707,9 +785,21 @@ class SearchRequest(proto.Message):
                 proto.BOOL,
                 number=4,
             )
+            model_prompt_spec: "SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec" = proto.Field(
+                proto.MESSAGE,
+                number=5,
+                message="SearchRequest.ContentSearchSpec.SummarySpec.ModelPromptSpec",
+            )
             language_code: str = proto.Field(
                 proto.STRING,
                 number=6,
+            )
+            model_spec: "SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=7,
+                    message="SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec",
+                )
             )
 
         class ExtractiveContentSpec(proto.Message):
@@ -729,7 +819,7 @@ class SearchRequest(proto.Message):
                     ``max_extractive_answer_count``, return all of the answers.
                     Otherwise, return the ``max_extractive_answer_count``.
 
-                    At most one answer is returned for each
+                    At most five answers are returned for each
                     [SearchResult][google.cloud.discoveryengine.v1beta.SearchResponse.SearchResult].
                 max_extractive_segment_count (int):
                     The max number of extractive segments returned in each
@@ -756,6 +846,10 @@ class SearchRequest(proto.Message):
                     Specifies whether to return the confidence score from the
                     extractive segments in each search result. The default value
                     is ``false``.
+
+                    Note: this is a priavte preview feature and only works for
+                    allowlisted users, please reach out to Cloud Support team if
+                    you want to use it.
                 num_previous_segments (int):
                     Specifies whether to also include the adjacent from each
                     selected segments. Return at most ``num_previous_segments``
@@ -871,6 +965,10 @@ class SearchRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+    canonical_filter: str = proto.Field(
+        proto.STRING,
+        number=29,
     )
     order_by: str = proto.Field(
         proto.STRING,
@@ -1153,6 +1251,8 @@ class SearchResponse(proto.Message):
             safety_attributes (google.cloud.discoveryengine_v1beta.types.SearchResponse.Summary.SafetyAttributes):
                 A collection of Safety Attribute categories
                 and their associated confidence scores.
+            summary_with_metadata (google.cloud.discoveryengine_v1beta.types.SearchResponse.Summary.SummaryWithMetadata):
+                Summary with metadata information.
         """
 
         class SummarySkippedReason(proto.Enum):
@@ -1225,6 +1325,125 @@ class SearchResponse(proto.Message):
                 number=2,
             )
 
+        class CitationMetadata(proto.Message):
+            r"""Citation metadata.
+
+            Attributes:
+                citations (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchResponse.Summary.Citation]):
+                    Citations for segments.
+            """
+
+            citations: MutableSequence[
+                "SearchResponse.Summary.Citation"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message="SearchResponse.Summary.Citation",
+            )
+
+        class Citation(proto.Message):
+            r"""Citation info for a segment.
+
+            Attributes:
+                start_index (int):
+                    Index indicates the start of the segment,
+                    measured in bytes/unicode.
+                end_index (int):
+                    End of the attributed segment, exclusive.
+                sources (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchResponse.Summary.CitationSource]):
+                    Citation sources for the attributed segment.
+            """
+
+            start_index: int = proto.Field(
+                proto.INT64,
+                number=1,
+            )
+            end_index: int = proto.Field(
+                proto.INT64,
+                number=2,
+            )
+            sources: MutableSequence[
+                "SearchResponse.Summary.CitationSource"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="SearchResponse.Summary.CitationSource",
+            )
+
+        class CitationSource(proto.Message):
+            r"""Citation source.
+
+            Attributes:
+                reference_index (int):
+                    Document reference index from
+                    SummaryWithMetadata.references. It is 0-indexed and the
+                    value will be zero if the reference_index is not set
+                    explicitly.
+            """
+
+            reference_index: int = proto.Field(
+                proto.INT64,
+                number=4,
+            )
+
+        class Reference(proto.Message):
+            r"""Document reference.
+
+            Attributes:
+                title (str):
+                    Title of the document.
+                document (str):
+                    Required.
+                    [Document.name][google.cloud.discoveryengine.v1beta.Document.name]
+                    of the document. Full resource name of the referenced
+                    document, in the format
+                    ``projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*``.
+                uri (str):
+                    Cloud Storage or HTTP uri for the document.
+            """
+
+            title: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            document: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            uri: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+
+        class SummaryWithMetadata(proto.Message):
+            r"""Summary with metadata information.
+
+            Attributes:
+                summary (str):
+                    Summary text with no citation information.
+                citation_metadata (google.cloud.discoveryengine_v1beta.types.SearchResponse.Summary.CitationMetadata):
+                    Citation metadata for given summary.
+                references (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchResponse.Summary.Reference]):
+                    Document References.
+            """
+
+            summary: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            citation_metadata: "SearchResponse.Summary.CitationMetadata" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="SearchResponse.Summary.CitationMetadata",
+            )
+            references: MutableSequence[
+                "SearchResponse.Summary.Reference"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=3,
+                message="SearchResponse.Summary.Reference",
+            )
+
         summary_text: str = proto.Field(
             proto.STRING,
             number=1,
@@ -1240,6 +1459,13 @@ class SearchResponse(proto.Message):
             proto.MESSAGE,
             number=3,
             message="SearchResponse.Summary.SafetyAttributes",
+        )
+        summary_with_metadata: "SearchResponse.Summary.SummaryWithMetadata" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=4,
+                message="SearchResponse.Summary.SummaryWithMetadata",
+            )
         )
 
     class QueryExpansionInfo(proto.Message):

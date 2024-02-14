@@ -35,6 +35,8 @@ from .types.dashboards_service import (
     ListDashboardsResponse,
     UpdateDashboardRequest,
 )
+from .types.error_reporting_panel import ErrorReportingPanel
+from .types.incident_list import IncidentList
 from .types.layouts import ColumnLayout, GridLayout, MosaicLayout, RowLayout
 from .types.logs_panel import LogsPanel
 from .types.metrics import (
@@ -44,7 +46,10 @@ from .types.metrics import (
     TimeSeriesFilterRatio,
     TimeSeriesQuery,
 )
+from .types.piechart import PieChart
 from .types.scorecard import Scorecard
+from .types.section_header import SectionHeader
+from .types.single_view_group import SingleViewGroup
 from .types.table import TimeSeriesTable
 from .types.table_display_options import TableDisplayOptions
 from .types.text import Text
@@ -63,15 +68,20 @@ __all__ = (
     "DashboardFilter",
     "DashboardsServiceClient",
     "DeleteDashboardRequest",
+    "ErrorReportingPanel",
     "GetDashboardRequest",
     "GridLayout",
+    "IncidentList",
     "ListDashboardsRequest",
     "ListDashboardsResponse",
     "LogsPanel",
     "MosaicLayout",
     "PickTimeSeriesFilter",
+    "PieChart",
     "RowLayout",
     "Scorecard",
+    "SectionHeader",
+    "SingleViewGroup",
     "SparkChartType",
     "StatisticalTimeSeriesFilter",
     "TableDisplayOptions",

@@ -145,6 +145,11 @@ class SessionsTransport(abc.ABC):
                 default_timeout=220.0,
                 client_info=client_info,
             ),
+            self.server_streaming_detect_intent: gapic_v1.method.wrap_method(
+                self.server_streaming_detect_intent,
+                default_timeout=220.0,
+                client_info=client_info,
+            ),
             self.streaming_detect_intent: gapic_v1.method.wrap_method(
                 self.streaming_detect_intent,
                 default_timeout=220.0,
@@ -178,6 +183,15 @@ class SessionsTransport(abc.ABC):
 
     @property
     def detect_intent(
+        self,
+    ) -> Callable[
+        [session.DetectIntentRequest],
+        Union[session.DetectIntentResponse, Awaitable[session.DetectIntentResponse]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def server_streaming_detect_intent(
         self,
     ) -> Callable[
         [session.DetectIntentRequest],

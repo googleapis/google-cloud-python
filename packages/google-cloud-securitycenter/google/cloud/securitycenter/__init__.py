@@ -29,6 +29,7 @@ from google.cloud.securitycenter_v1.types.access import (
     Geolocation,
     ServiceAccountDelegationInfo,
 )
+from google.cloud.securitycenter_v1.types.application import Application
 from google.cloud.securitycenter_v1.types.asset import Asset
 from google.cloud.securitycenter_v1.types.bigquery_export import BigQueryExport
 from google.cloud.securitycenter_v1.types.cloud_dlp_data_profile import (
@@ -149,6 +150,7 @@ __all__ = (
     "Access",
     "Geolocation",
     "ServiceAccountDelegationInfo",
+    "Application",
     "Asset",
     "BigQueryExport",
     "CloudDlpDataProfile",

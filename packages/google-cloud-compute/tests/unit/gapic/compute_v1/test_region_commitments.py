@@ -342,8 +342,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     # TODO: This is needed to cater for older versions of google-auth
     # Make this test unconditional once the minimum supported version of
     # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor, _ = [
-        int(part) for part in google.auth.__version__.split(".")
+    google_auth_major, google_auth_minor = [
+        int(part) for part in google.auth.__version__.split(".")[0:2]
     ]
     if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials = ga_credentials.AnonymousCredentials()
@@ -361,8 +361,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         #
         # TODO: Make this test unconditional once the minimum supported version of
         # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor, _ = [
-            int(part) for part in api_core_version.__version__.split(".")
+        api_core_major, api_core_minor = [
+            int(part) for part in api_core_version.__version__.split(".")[0:2]
         ]
         if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
             client = client_class(
@@ -1382,6 +1382,7 @@ def test_get_rest(request_type):
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             end_timestamp="end_timestamp_value",
+            existing_reservations=["existing_reservations_value"],
             id=205,
             kind="kind_value",
             merge_source_commitments=["merge_source_commitments_value"],
@@ -1414,6 +1415,7 @@ def test_get_rest(request_type):
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.end_timestamp == "end_timestamp_value"
+    assert response.existing_reservations == ["existing_reservations_value"]
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.merge_source_commitments == ["merge_source_commitments_value"]
@@ -1701,6 +1703,10 @@ def test_insert_rest(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "end_timestamp": "end_timestamp_value",
+        "existing_reservations": [
+            "existing_reservations_value1",
+            "existing_reservations_value2",
+        ],
         "id": 205,
         "kind": "kind_value",
         "license_resource": {
@@ -1717,6 +1723,19 @@ def test_insert_rest(request_type):
         "region": "region_value",
         "reservations": [
             {
+                "aggregate_reservation": {
+                    "in_use_resources": [
+                        {
+                            "accelerator": {
+                                "accelerator_count": 1805,
+                                "accelerator_type": "accelerator_type_value",
+                            }
+                        }
+                    ],
+                    "reserved_resources": {},
+                    "vm_family": "vm_family_value",
+                    "workload_type": "workload_type_value",
+                },
                 "commitment": "commitment_value",
                 "creation_timestamp": "creation_timestamp_value",
                 "description": "description_value",
@@ -2177,6 +2196,10 @@ def test_insert_unary_rest(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "end_timestamp": "end_timestamp_value",
+        "existing_reservations": [
+            "existing_reservations_value1",
+            "existing_reservations_value2",
+        ],
         "id": 205,
         "kind": "kind_value",
         "license_resource": {
@@ -2193,6 +2216,19 @@ def test_insert_unary_rest(request_type):
         "region": "region_value",
         "reservations": [
             {
+                "aggregate_reservation": {
+                    "in_use_resources": [
+                        {
+                            "accelerator": {
+                                "accelerator_count": 1805,
+                                "accelerator_type": "accelerator_type_value",
+                            }
+                        }
+                    ],
+                    "reserved_resources": {},
+                    "vm_family": "vm_family_value",
+                    "workload_type": "workload_type_value",
+                },
                 "commitment": "commitment_value",
                 "creation_timestamp": "creation_timestamp_value",
                 "description": "description_value",
@@ -2993,6 +3029,10 @@ def test_update_rest(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "end_timestamp": "end_timestamp_value",
+        "existing_reservations": [
+            "existing_reservations_value1",
+            "existing_reservations_value2",
+        ],
         "id": 205,
         "kind": "kind_value",
         "license_resource": {
@@ -3009,6 +3049,19 @@ def test_update_rest(request_type):
         "region": "region_value",
         "reservations": [
             {
+                "aggregate_reservation": {
+                    "in_use_resources": [
+                        {
+                            "accelerator": {
+                                "accelerator_count": 1805,
+                                "accelerator_type": "accelerator_type_value",
+                            }
+                        }
+                    ],
+                    "reserved_resources": {},
+                    "vm_family": "vm_family_value",
+                    "workload_type": "workload_type_value",
+                },
                 "commitment": "commitment_value",
                 "creation_timestamp": "creation_timestamp_value",
                 "description": "description_value",
@@ -3492,6 +3545,10 @@ def test_update_unary_rest(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "end_timestamp": "end_timestamp_value",
+        "existing_reservations": [
+            "existing_reservations_value1",
+            "existing_reservations_value2",
+        ],
         "id": 205,
         "kind": "kind_value",
         "license_resource": {
@@ -3508,6 +3565,19 @@ def test_update_unary_rest(request_type):
         "region": "region_value",
         "reservations": [
             {
+                "aggregate_reservation": {
+                    "in_use_resources": [
+                        {
+                            "accelerator": {
+                                "accelerator_count": 1805,
+                                "accelerator_type": "accelerator_type_value",
+                            }
+                        }
+                    ],
+                    "reserved_resources": {},
+                    "vm_family": "vm_family_value",
+                    "workload_type": "workload_type_value",
+                },
                 "commitment": "commitment_value",
                 "creation_timestamp": "creation_timestamp_value",
                 "description": "description_value",

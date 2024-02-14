@@ -298,6 +298,11 @@ class SearchServiceRestTransport(SearchServiceTransport):
                     "uri": "/v1beta/{serving_config=projects/*/locations/*/collections/*/dataStores/*/servingConfigs/*}:search",
                     "body": "*",
                 },
+                {
+                    "method": "post",
+                    "uri": "/v1beta/{serving_config=projects/*/locations/*/collections/*/engines/*/servingConfigs/*}:search",
+                    "body": "*",
+                },
             ]
             request, metadata = self._interceptor.pre_search(request, metadata)
             pb_request = search_service.SearchRequest.pb(request)
@@ -386,6 +391,10 @@ class SearchServiceRestTransport(SearchServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                },
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
@@ -500,6 +509,10 @@ class SearchServiceRestTransport(SearchServiceTransport):
             """
 
             http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                },
                 {
                     "method": "get",
                     "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",

@@ -2407,6 +2407,81 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
             metadata=metadata,
         )
 
+    def unenroll_data_sources(
+        self,
+        request: Optional[Union[datatransfer.UnenrollDataSourcesRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Unenroll data sources in a user project. This allows users to
+        remove transfer configurations for these data sources. They will
+        no longer appear in the ListDataSources RPC and will also no
+        longer appear in the `BigQuery
+        UI <https://console.cloud.google.com/bigquery>`__.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import bigquery_datatransfer_v1
+
+            def sample_unenroll_data_sources():
+                # Create a client
+                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_datatransfer_v1.UnenrollDataSourcesRequest(
+                )
+
+                # Make the request
+                client.unenroll_data_sources(request=request)
+
+        Args:
+            request (Union[google.cloud.bigquery_datatransfer_v1.types.UnenrollDataSourcesRequest, dict]):
+                The request object. A request to unenroll a set of data sources so they are
+                no longer visible in the BigQuery UI's ``Transfer`` tab.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a datatransfer.UnenrollDataSourcesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, datatransfer.UnenrollDataSourcesRequest):
+            request = datatransfer.UnenrollDataSourcesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.unenroll_data_sources]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
     def __enter__(self) -> "DataTransferServiceClient":
         return self
 

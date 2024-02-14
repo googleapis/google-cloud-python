@@ -26,6 +26,8 @@ from .dashboards_service import (
     ListDashboardsResponse,
     UpdateDashboardRequest,
 )
+from .error_reporting_panel import ErrorReportingPanel
+from .incident_list import IncidentList
 from .layouts import ColumnLayout, GridLayout, MosaicLayout, RowLayout
 from .logs_panel import LogsPanel
 from .metrics import (
@@ -35,7 +37,10 @@ from .metrics import (
     TimeSeriesFilterRatio,
     TimeSeriesQuery,
 )
+from .piechart import PieChart
 from .scorecard import Scorecard
+from .section_header import SectionHeader
+from .single_view_group import SingleViewGroup
 from .table import TimeSeriesTable
 from .table_display_options import TableDisplayOptions
 from .text import Text
@@ -56,6 +61,8 @@ __all__ = (
     "ListDashboardsRequest",
     "ListDashboardsResponse",
     "UpdateDashboardRequest",
+    "ErrorReportingPanel",
+    "IncidentList",
     "ColumnLayout",
     "GridLayout",
     "MosaicLayout",
@@ -66,7 +73,10 @@ __all__ = (
     "TimeSeriesFilterRatio",
     "TimeSeriesQuery",
     "SparkChartType",
+    "PieChart",
     "Scorecard",
+    "SectionHeader",
+    "SingleViewGroup",
     "TimeSeriesTable",
     "TableDisplayOptions",
     "Text",

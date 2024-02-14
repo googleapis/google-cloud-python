@@ -380,6 +380,98 @@ class SessionsAsyncClient:
         # Done; return the response.
         return response
 
+    def server_streaming_detect_intent(
+        self,
+        request: Optional[Union[session.DetectIntentRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> Awaitable[AsyncIterable[session.DetectIntentResponse]]:
+        r"""Processes a natural language query and returns structured,
+        actionable data as a result through server-side streaming.
+        Server-side streaming allows Dialogflow to send `partial
+        responses <https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response>`__
+        earlier in a single request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3
+
+            async def sample_server_streaming_detect_intent():
+                # Create a client
+                client = dialogflowcx_v3.SessionsAsyncClient()
+
+                # Initialize request argument(s)
+                query_input = dialogflowcx_v3.QueryInput()
+                query_input.text.text = "text_value"
+                query_input.language_code = "language_code_value"
+
+                request = dialogflowcx_v3.DetectIntentRequest(
+                    session="session_value",
+                    query_input=query_input,
+                )
+
+                # Make the request
+                stream = await client.server_streaming_detect_intent(request=request)
+
+                # Handle the response
+                async for response in stream:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dialogflowcx_v3.types.DetectIntentRequest, dict]]):
+                The request object. The request to detect user's intent.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            AsyncIterable[google.cloud.dialogflowcx_v3.types.DetectIntentResponse]:
+                The message returned from the
+                DetectIntent method.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = session.DetectIntentRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.server_streaming_detect_intent,
+            default_timeout=220.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def streaming_detect_intent(
         self,
         requests: Optional[AsyncIterator[session.StreamingDetectIntentRequest]] = None,

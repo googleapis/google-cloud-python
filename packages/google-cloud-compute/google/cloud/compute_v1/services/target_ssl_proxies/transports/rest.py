@@ -500,6 +500,8 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -588,12 +590,12 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 ~.compute.TargetSslProxy:
                     Represents a Target SSL Proxy
                 resource. A target SSL proxy is a
-                component of a SSL Proxy load balancer.
-                Global forwarding rules reference a
-                target SSL proxy, and the target proxy
-                then references an external backend
-                service. For more information, read
-                Using Target Proxies.
+                component of a Proxy Network Load
+                Balancer. The forwarding rule references
+                the target SSL proxy, and the target
+                proxy then references a backend service.
+                For more information, read Proxy Network
+                Load Balancer overview.
 
             """
 
@@ -695,6 +697,8 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -893,6 +897,8 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -1005,6 +1011,8 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -1117,6 +1125,8 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -1229,6 +1239,8 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -1341,6 +1353,8 @@ class TargetSslProxiesRestTransport(TargetSslProxiesTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 

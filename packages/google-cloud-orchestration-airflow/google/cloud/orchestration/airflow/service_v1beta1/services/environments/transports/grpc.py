@@ -21,6 +21,7 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
 from google.cloud.orchestration.airflow.service_v1beta1.types import environments
@@ -517,6 +518,366 @@ class EnvironmentsGrpcTransport(EnvironmentsTransport):
                 response_deserializer=environments.PollAirflowCommandResponse.deserialize,
             )
         return self._stubs["poll_airflow_command"]
+
+    @property
+    def list_workloads(
+        self,
+    ) -> Callable[
+        [environments.ListWorkloadsRequest], environments.ListWorkloadsResponse
+    ]:
+        r"""Return a callable for the list workloads method over gRPC.
+
+        Lists workloads in a Cloud Composer environment. Workload is a
+        unit that runs a single Composer component.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        Returns:
+            Callable[[~.ListWorkloadsRequest],
+                    ~.ListWorkloadsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_workloads" not in self._stubs:
+            self._stubs["list_workloads"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/ListWorkloads",
+                request_serializer=environments.ListWorkloadsRequest.serialize,
+                response_deserializer=environments.ListWorkloadsResponse.deserialize,
+            )
+        return self._stubs["list_workloads"]
+
+    @property
+    def create_user_workloads_secret(
+        self,
+    ) -> Callable[
+        [environments.CreateUserWorkloadsSecretRequest],
+        environments.UserWorkloadsSecret,
+    ]:
+        r"""Return a callable for the create user workloads secret method over gRPC.
+
+        Creates a user workloads Secret.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        Returns:
+            Callable[[~.CreateUserWorkloadsSecretRequest],
+                    ~.UserWorkloadsSecret]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_user_workloads_secret" not in self._stubs:
+            self._stubs["create_user_workloads_secret"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/CreateUserWorkloadsSecret",
+                request_serializer=environments.CreateUserWorkloadsSecretRequest.serialize,
+                response_deserializer=environments.UserWorkloadsSecret.deserialize,
+            )
+        return self._stubs["create_user_workloads_secret"]
+
+    @property
+    def get_user_workloads_secret(
+        self,
+    ) -> Callable[
+        [environments.GetUserWorkloadsSecretRequest], environments.UserWorkloadsSecret
+    ]:
+        r"""Return a callable for the get user workloads secret method over gRPC.
+
+        Gets an existing user workloads Secret. Values of the "data"
+        field in the response are cleared.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        Returns:
+            Callable[[~.GetUserWorkloadsSecretRequest],
+                    ~.UserWorkloadsSecret]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_user_workloads_secret" not in self._stubs:
+            self._stubs["get_user_workloads_secret"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/GetUserWorkloadsSecret",
+                request_serializer=environments.GetUserWorkloadsSecretRequest.serialize,
+                response_deserializer=environments.UserWorkloadsSecret.deserialize,
+            )
+        return self._stubs["get_user_workloads_secret"]
+
+    @property
+    def list_user_workloads_secrets(
+        self,
+    ) -> Callable[
+        [environments.ListUserWorkloadsSecretsRequest],
+        environments.ListUserWorkloadsSecretsResponse,
+    ]:
+        r"""Return a callable for the list user workloads secrets method over gRPC.
+
+        Lists user workloads Secrets.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        Returns:
+            Callable[[~.ListUserWorkloadsSecretsRequest],
+                    ~.ListUserWorkloadsSecretsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_user_workloads_secrets" not in self._stubs:
+            self._stubs["list_user_workloads_secrets"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/ListUserWorkloadsSecrets",
+                request_serializer=environments.ListUserWorkloadsSecretsRequest.serialize,
+                response_deserializer=environments.ListUserWorkloadsSecretsResponse.deserialize,
+            )
+        return self._stubs["list_user_workloads_secrets"]
+
+    @property
+    def update_user_workloads_secret(
+        self,
+    ) -> Callable[
+        [environments.UpdateUserWorkloadsSecretRequest],
+        environments.UserWorkloadsSecret,
+    ]:
+        r"""Return a callable for the update user workloads secret method over gRPC.
+
+        Updates a user workloads Secret.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        Returns:
+            Callable[[~.UpdateUserWorkloadsSecretRequest],
+                    ~.UserWorkloadsSecret]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_user_workloads_secret" not in self._stubs:
+            self._stubs["update_user_workloads_secret"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/UpdateUserWorkloadsSecret",
+                request_serializer=environments.UpdateUserWorkloadsSecretRequest.serialize,
+                response_deserializer=environments.UserWorkloadsSecret.deserialize,
+            )
+        return self._stubs["update_user_workloads_secret"]
+
+    @property
+    def delete_user_workloads_secret(
+        self,
+    ) -> Callable[[environments.DeleteUserWorkloadsSecretRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete user workloads secret method over gRPC.
+
+        Deletes a user workloads Secret.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        Returns:
+            Callable[[~.DeleteUserWorkloadsSecretRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_user_workloads_secret" not in self._stubs:
+            self._stubs["delete_user_workloads_secret"] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/DeleteUserWorkloadsSecret",
+                request_serializer=environments.DeleteUserWorkloadsSecretRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_user_workloads_secret"]
+
+    @property
+    def create_user_workloads_config_map(
+        self,
+    ) -> Callable[
+        [environments.CreateUserWorkloadsConfigMapRequest],
+        environments.UserWorkloadsConfigMap,
+    ]:
+        r"""Return a callable for the create user workloads config
+        map method over gRPC.
+
+        Creates a user workloads ConfigMap.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        Returns:
+            Callable[[~.CreateUserWorkloadsConfigMapRequest],
+                    ~.UserWorkloadsConfigMap]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_user_workloads_config_map" not in self._stubs:
+            self._stubs[
+                "create_user_workloads_config_map"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/CreateUserWorkloadsConfigMap",
+                request_serializer=environments.CreateUserWorkloadsConfigMapRequest.serialize,
+                response_deserializer=environments.UserWorkloadsConfigMap.deserialize,
+            )
+        return self._stubs["create_user_workloads_config_map"]
+
+    @property
+    def get_user_workloads_config_map(
+        self,
+    ) -> Callable[
+        [environments.GetUserWorkloadsConfigMapRequest],
+        environments.UserWorkloadsConfigMap,
+    ]:
+        r"""Return a callable for the get user workloads config map method over gRPC.
+
+        Gets an existing user workloads ConfigMap.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        Returns:
+            Callable[[~.GetUserWorkloadsConfigMapRequest],
+                    ~.UserWorkloadsConfigMap]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_user_workloads_config_map" not in self._stubs:
+            self._stubs[
+                "get_user_workloads_config_map"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/GetUserWorkloadsConfigMap",
+                request_serializer=environments.GetUserWorkloadsConfigMapRequest.serialize,
+                response_deserializer=environments.UserWorkloadsConfigMap.deserialize,
+            )
+        return self._stubs["get_user_workloads_config_map"]
+
+    @property
+    def list_user_workloads_config_maps(
+        self,
+    ) -> Callable[
+        [environments.ListUserWorkloadsConfigMapsRequest],
+        environments.ListUserWorkloadsConfigMapsResponse,
+    ]:
+        r"""Return a callable for the list user workloads config
+        maps method over gRPC.
+
+        Lists user workloads ConfigMaps.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        Returns:
+            Callable[[~.ListUserWorkloadsConfigMapsRequest],
+                    ~.ListUserWorkloadsConfigMapsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_user_workloads_config_maps" not in self._stubs:
+            self._stubs[
+                "list_user_workloads_config_maps"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/ListUserWorkloadsConfigMaps",
+                request_serializer=environments.ListUserWorkloadsConfigMapsRequest.serialize,
+                response_deserializer=environments.ListUserWorkloadsConfigMapsResponse.deserialize,
+            )
+        return self._stubs["list_user_workloads_config_maps"]
+
+    @property
+    def update_user_workloads_config_map(
+        self,
+    ) -> Callable[
+        [environments.UpdateUserWorkloadsConfigMapRequest],
+        environments.UserWorkloadsConfigMap,
+    ]:
+        r"""Return a callable for the update user workloads config
+        map method over gRPC.
+
+        Updates a user workloads ConfigMap.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        Returns:
+            Callable[[~.UpdateUserWorkloadsConfigMapRequest],
+                    ~.UserWorkloadsConfigMap]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_user_workloads_config_map" not in self._stubs:
+            self._stubs[
+                "update_user_workloads_config_map"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/UpdateUserWorkloadsConfigMap",
+                request_serializer=environments.UpdateUserWorkloadsConfigMapRequest.serialize,
+                response_deserializer=environments.UserWorkloadsConfigMap.deserialize,
+            )
+        return self._stubs["update_user_workloads_config_map"]
+
+    @property
+    def delete_user_workloads_config_map(
+        self,
+    ) -> Callable[[environments.DeleteUserWorkloadsConfigMapRequest], empty_pb2.Empty]:
+        r"""Return a callable for the delete user workloads config
+        map method over gRPC.
+
+        Deletes a user workloads ConfigMap.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        Returns:
+            Callable[[~.DeleteUserWorkloadsConfigMapRequest],
+                    ~.Empty]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_user_workloads_config_map" not in self._stubs:
+            self._stubs[
+                "delete_user_workloads_config_map"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.orchestration.airflow.service.v1beta1.Environments/DeleteUserWorkloadsConfigMap",
+                request_serializer=environments.DeleteUserWorkloadsConfigMapRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_user_workloads_config_map"]
 
     @property
     def save_snapshot(

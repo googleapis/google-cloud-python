@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.4...google-cloud-advisorynotifications-v0.3.5) (2024-02-06)
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([780c5f1](https://github.com/googleapis/google-cloud-python/commit/780c5f15d4099da6b5c3b966267bc7d7c63d6303))
+* Add staticmethod decorator to _get_client_cert_source and _get_api_endpoint ([780c5f1](https://github.com/googleapis/google-cloud-python/commit/780c5f15d4099da6b5c3b966267bc7d7c63d6303))
+* Resolve AttributeError 'Credentials' object has no attribute 'universe_domain' ([780c5f1](https://github.com/googleapis/google-cloud-python/commit/780c5f15d4099da6b5c3b966267bc7d7c63d6303))
+
 ## [0.3.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-advisorynotifications-v0.3.3...google-cloud-advisorynotifications-v0.3.4) (2024-02-01)
 
 

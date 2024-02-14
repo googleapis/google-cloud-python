@@ -16,7 +16,7 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
@@ -24,7 +24,11 @@ from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.discoveryengine_v1.types import completion_service
+from google.cloud.discoveryengine_v1.types import (
+    completion_service,
+    import_config,
+    purge_config,
+)
 
 from .base import DEFAULT_CLIENT_INFO, CompletionServiceTransport
 from .grpc import CompletionServiceGrpcTransport
@@ -158,6 +162,7 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -234,6 +239,22 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
         return self._grpc_channel
 
     @property
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsAsyncClient(
+                self.grpc_channel
+            )
+
+        # Return the client from cache.
+        return self._operations_client
+
+    @property
     def complete_query(
         self,
     ) -> Callable[
@@ -262,6 +283,74 @@ class CompletionServiceGrpcAsyncIOTransport(CompletionServiceTransport):
                 response_deserializer=completion_service.CompleteQueryResponse.deserialize,
             )
         return self._stubs["complete_query"]
+
+    @property
+    def import_suggestion_deny_list_entries(
+        self,
+    ) -> Callable[
+        [import_config.ImportSuggestionDenyListEntriesRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the import suggestion deny list
+        entries method over gRPC.
+
+        Imports all
+        [SuggestionDenyListEntry][google.cloud.discoveryengine.v1.SuggestionDenyListEntry]
+        for a DataStore.
+
+        Returns:
+            Callable[[~.ImportSuggestionDenyListEntriesRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_suggestion_deny_list_entries" not in self._stubs:
+            self._stubs[
+                "import_suggestion_deny_list_entries"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.CompletionService/ImportSuggestionDenyListEntries",
+                request_serializer=import_config.ImportSuggestionDenyListEntriesRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["import_suggestion_deny_list_entries"]
+
+    @property
+    def purge_suggestion_deny_list_entries(
+        self,
+    ) -> Callable[
+        [purge_config.PurgeSuggestionDenyListEntriesRequest],
+        Awaitable[operations_pb2.Operation],
+    ]:
+        r"""Return a callable for the purge suggestion deny list
+        entries method over gRPC.
+
+        Permanently deletes all
+        [SuggestionDenyListEntry][google.cloud.discoveryengine.v1.SuggestionDenyListEntry]
+        for a DataStore.
+
+        Returns:
+            Callable[[~.PurgeSuggestionDenyListEntriesRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "purge_suggestion_deny_list_entries" not in self._stubs:
+            self._stubs[
+                "purge_suggestion_deny_list_entries"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1.CompletionService/PurgeSuggestionDenyListEntries",
+                request_serializer=purge_config.PurgeSuggestionDenyListEntriesRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["purge_suggestion_deny_list_entries"]
 
     def close(self):
         return self.grpc_channel.close()

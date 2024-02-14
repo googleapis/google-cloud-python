@@ -36,6 +36,22 @@ __protobuf__ = proto.module(
         "StopAirflowCommandResponse",
         "PollAirflowCommandRequest",
         "PollAirflowCommandResponse",
+        "CreateUserWorkloadsSecretRequest",
+        "GetUserWorkloadsSecretRequest",
+        "ListUserWorkloadsSecretsRequest",
+        "UpdateUserWorkloadsSecretRequest",
+        "DeleteUserWorkloadsSecretRequest",
+        "CreateUserWorkloadsConfigMapRequest",
+        "GetUserWorkloadsConfigMapRequest",
+        "ListUserWorkloadsConfigMapsRequest",
+        "UpdateUserWorkloadsConfigMapRequest",
+        "DeleteUserWorkloadsConfigMapRequest",
+        "UserWorkloadsSecret",
+        "ListUserWorkloadsSecretsResponse",
+        "UserWorkloadsConfigMap",
+        "ListUserWorkloadsConfigMapsResponse",
+        "ListWorkloadsRequest",
+        "ListWorkloadsResponse",
         "SaveSnapshotRequest",
         "SaveSnapshotResponse",
         "LoadSnapshotRequest",
@@ -44,6 +60,7 @@ __protobuf__ = proto.module(
         "DatabaseFailoverResponse",
         "FetchDatabasePropertiesRequest",
         "FetchDatabasePropertiesResponse",
+        "StorageConfig",
         "EnvironmentConfig",
         "WebServerNetworkAccessControl",
         "DatabaseConfig",
@@ -60,8 +77,11 @@ __protobuf__ = proto.module(
         "RecoveryConfig",
         "ScheduledSnapshotsConfig",
         "MasterAuthorizedNetworksConfig",
+        "CloudDataLineageIntegration",
         "Environment",
         "CheckUpgradeResponse",
+        "DataRetentionConfig",
+        "TaskLogsRetentionConfig",
     },
 )
 
@@ -625,6 +645,507 @@ class PollAirflowCommandResponse(proto.Message):
     )
 
 
+class CreateUserWorkloadsSecretRequest(proto.Message):
+    r"""Create user workloads Secret request.
+
+    Attributes:
+        parent (str):
+            Required. The environment name to create a
+            Secret for, in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+        user_workloads_secret (google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsSecret):
+            Required. User workloads Secret to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    user_workloads_secret: "UserWorkloadsSecret" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="UserWorkloadsSecret",
+    )
+
+
+class GetUserWorkloadsSecretRequest(proto.Message):
+    r"""Get user workloads Secret request.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the Secret to
+            get, in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsSecrets/{userWorkloadsSecretId}".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListUserWorkloadsSecretsRequest(proto.Message):
+    r"""List user workloads Secrets request.
+
+    Attributes:
+        parent (str):
+            Required. List Secrets in the given
+            environment, in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+        page_size (int):
+            Optional. The maximum number of Secrets to
+            return.
+        page_token (str):
+            Optional. The next_page_token value returned from a previous
+            List request, if any.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateUserWorkloadsSecretRequest(proto.Message):
+    r"""Update user workloads Secret request.
+
+    Attributes:
+        user_workloads_secret (google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsSecret):
+            Optional. User workloads Secret to override.
+    """
+
+    user_workloads_secret: "UserWorkloadsSecret" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="UserWorkloadsSecret",
+    )
+
+
+class DeleteUserWorkloadsSecretRequest(proto.Message):
+    r"""Delete user workloads Secret request.
+
+    Attributes:
+        name (str):
+            Required. The Secret to delete, in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsSecrets/{userWorkloadsSecretId}".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class CreateUserWorkloadsConfigMapRequest(proto.Message):
+    r"""Create user workloads ConfigMap request.
+
+    Attributes:
+        parent (str):
+            Required. The environment name to create a
+            ConfigMap for, in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+        user_workloads_config_map (google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsConfigMap):
+            Required. User workloads ConfigMap to create.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    user_workloads_config_map: "UserWorkloadsConfigMap" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="UserWorkloadsConfigMap",
+    )
+
+
+class GetUserWorkloadsConfigMapRequest(proto.Message):
+    r"""Get user workloads ConfigMap request.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the ConfigMap
+            to get, in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsConfigMaps/{userWorkloadsConfigMapId}".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListUserWorkloadsConfigMapsRequest(proto.Message):
+    r"""List user workloads ConfigMaps request.
+
+    Attributes:
+        parent (str):
+            Required. List ConfigMaps in the given
+            environment, in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+        page_size (int):
+            Optional. The maximum number of ConfigMaps to
+            return.
+        page_token (str):
+            Optional. The next_page_token value returned from a previous
+            List request, if any.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateUserWorkloadsConfigMapRequest(proto.Message):
+    r"""Update user workloads ConfigMap request.
+
+    Attributes:
+        user_workloads_config_map (google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsConfigMap):
+            Optional. User workloads ConfigMap to
+            override.
+    """
+
+    user_workloads_config_map: "UserWorkloadsConfigMap" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="UserWorkloadsConfigMap",
+    )
+
+
+class DeleteUserWorkloadsConfigMapRequest(proto.Message):
+    r"""Delete user workloads ConfigMap request.
+
+    Attributes:
+        name (str):
+            Required. The ConfigMap to delete, in the
+            form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsConfigMaps/{userWorkloadsConfigMapId}".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UserWorkloadsSecret(proto.Message):
+    r"""User workloads Secret used by Airflow tasks that run with
+    Kubernetes executor or KubernetesPodOperator.
+
+    Attributes:
+        name (str):
+            Identifier. The resource name of the Secret,
+            in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsSecrets/{userWorkloadsSecretId}".
+        data (MutableMapping[str, str]):
+            Optional. The "data" field of Kubernetes
+            Secret, organized in key-value pairs, which can
+            contain sensitive values such as a password, a
+            token, or a key. The values for all keys have to
+            be base64-encoded strings. For details see:
+            https://kubernetes.io/docs/concepts/configuration/secret/
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListUserWorkloadsSecretsResponse(proto.Message):
+    r"""The user workloads Secrets for a given environment.
+
+    Attributes:
+        user_workloads_secrets (MutableSequence[google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsSecret]):
+            The list of Secrets returned by a
+            ListUserWorkloadsSecretsRequest.
+        next_page_token (str):
+            The page token used to query for the next
+            page if one exists.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    user_workloads_secrets: MutableSequence[
+        "UserWorkloadsSecret"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="UserWorkloadsSecret",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class UserWorkloadsConfigMap(proto.Message):
+    r"""User workloads ConfigMap used by Airflow tasks that run with
+    Kubernetes executor or KubernetesPodOperator.
+
+    Attributes:
+        name (str):
+            Identifier. The resource name of the
+            ConfigMap, in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsConfigMaps/{userWorkloadsConfigMapId}".
+        data (MutableMapping[str, str]):
+            Optional. The "data" field of Kubernetes
+            ConfigMap, organized in key-value pairs. For
+            details see:
+
+            https://kubernetes.io/docs/concepts/configuration/configmap/
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListUserWorkloadsConfigMapsResponse(proto.Message):
+    r"""The user workloads ConfigMaps for a given environment.
+
+    Attributes:
+        user_workloads_config_maps (MutableSequence[google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsConfigMap]):
+            The list of ConfigMaps returned by a
+            ListUserWorkloadsConfigMapsRequest.
+        next_page_token (str):
+            The page token used to query for the next
+            page if one exists.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    user_workloads_config_maps: MutableSequence[
+        "UserWorkloadsConfigMap"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="UserWorkloadsConfigMap",
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class ListWorkloadsRequest(proto.Message):
+    r"""Request for listing workloads in a Cloud Composer
+    environment.
+
+    Attributes:
+        parent (str):
+            Required. The environment name to get
+            workloads for, in the form:
+            "projects/{projectId}/locations/{locationId}/environments/{environmentId}".
+        page_size (int):
+            Optional. The maximum number of environments
+            to return.
+        page_token (str):
+            Optional. The next_page_token value returned from a previous
+            List request, if any.
+        filter (str):
+            Optional. The list filter. Currently only supports equality
+            on the type field. The value of a field specified in the
+            filter expression must be one ComposerWorkloadType enum
+            option. It's possible to get multiple types using "OR"
+            operator, e.g.: "type=SCHEDULER OR type=CELERY_WORKER". If
+            not specified, all items are returned.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListWorkloadsResponse(proto.Message):
+    r"""Response to ListWorkloadsRequest.
+
+    Attributes:
+        workloads (MutableSequence[google.cloud.orchestration.airflow.service_v1.types.ListWorkloadsResponse.ComposerWorkload]):
+            The list of environment workloads.
+        next_page_token (str):
+            The page token used to query for the next
+            page if one exists.
+    """
+
+    class ComposerWorkloadType(proto.Enum):
+        r"""Supported workload types.
+
+        Values:
+            COMPOSER_WORKLOAD_TYPE_UNSPECIFIED (0):
+                Not able to determine the type of the
+                workload.
+            CELERY_WORKER (1):
+                Celery worker.
+            KUBERNETES_WORKER (2):
+                Kubernetes worker.
+            KUBERNETES_OPERATOR_POD (3):
+                Workload created by Kubernetes Pod Operator.
+            SCHEDULER (4):
+                Airflow scheduler.
+            DAG_PROCESSOR (5):
+                Airflow Dag processor.
+            TRIGGERER (6):
+                Airflow triggerer.
+            WEB_SERVER (7):
+                Airflow web server UI.
+            REDIS (8):
+                Redis.
+        """
+        COMPOSER_WORKLOAD_TYPE_UNSPECIFIED = 0
+        CELERY_WORKER = 1
+        KUBERNETES_WORKER = 2
+        KUBERNETES_OPERATOR_POD = 3
+        SCHEDULER = 4
+        DAG_PROCESSOR = 5
+        TRIGGERER = 6
+        WEB_SERVER = 7
+        REDIS = 8
+
+    class ComposerWorkloadState(proto.Enum):
+        r"""Workload states.
+
+        Values:
+            COMPOSER_WORKLOAD_STATE_UNSPECIFIED (0):
+                Not able to determine the status of the
+                workload.
+            PENDING (1):
+                Workload is in pending state and has not yet
+                started.
+            OK (2):
+                Workload is running fine.
+            WARNING (3):
+                Workload is running but there are some
+                non-critical problems.
+            ERROR (4):
+                Workload is not running due to an error.
+            SUCCEEDED (5):
+                Workload has finished execution with success.
+            FAILED (6):
+                Workload has finished execution with failure.
+        """
+        COMPOSER_WORKLOAD_STATE_UNSPECIFIED = 0
+        PENDING = 1
+        OK = 2
+        WARNING = 3
+        ERROR = 4
+        SUCCEEDED = 5
+        FAILED = 6
+
+    class ComposerWorkload(proto.Message):
+        r"""Information about a single workload.
+
+        Attributes:
+            name (str):
+                Name of a workload.
+            type_ (google.cloud.orchestration.airflow.service_v1.types.ListWorkloadsResponse.ComposerWorkloadType):
+                Type of a workload.
+            status (google.cloud.orchestration.airflow.service_v1.types.ListWorkloadsResponse.ComposerWorkloadStatus):
+                Output only. Status of a workload.
+        """
+
+        name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        type_: "ListWorkloadsResponse.ComposerWorkloadType" = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="ListWorkloadsResponse.ComposerWorkloadType",
+        )
+        status: "ListWorkloadsResponse.ComposerWorkloadStatus" = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="ListWorkloadsResponse.ComposerWorkloadStatus",
+        )
+
+    class ComposerWorkloadStatus(proto.Message):
+        r"""Workload status.
+
+        Attributes:
+            state (google.cloud.orchestration.airflow.service_v1.types.ListWorkloadsResponse.ComposerWorkloadState):
+                Output only. Workload state.
+            status_message (str):
+                Output only. Text to provide more descriptive
+                status.
+            detailed_status_message (str):
+                Output only. Detailed message of the status.
+        """
+
+        state: "ListWorkloadsResponse.ComposerWorkloadState" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="ListWorkloadsResponse.ComposerWorkloadState",
+        )
+        status_message: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        detailed_status_message: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+
+    @property
+    def raw_page(self):
+        return self
+
+    workloads: MutableSequence[ComposerWorkload] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=ComposerWorkload,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
 class SaveSnapshotRequest(proto.Message):
     r"""Request to create a snapshot of a Cloud Composer environment.
 
@@ -792,6 +1313,21 @@ class FetchDatabasePropertiesResponse(proto.Message):
     )
 
 
+class StorageConfig(proto.Message):
+    r"""The configuration for data storage in the environment.
+
+    Attributes:
+        bucket (str):
+            Optional. The name of the Cloud Storage bucket used by the
+            environment. No ``gs://`` prefix.
+    """
+
+    bucket: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class EnvironmentConfig(proto.Message):
     r"""Configuration information for an environment.
 
@@ -901,6 +1437,9 @@ class EnvironmentConfig(proto.Message):
 
             This field is supported for Cloud Composer environments in
             versions composer-2.2.0-airflow-\ *.*.\* and newer.
+        data_retention_config (google.cloud.orchestration.airflow.service_v1.types.DataRetentionConfig):
+            Optional. The configuration setting for
+            Airflow database data retention mechanism.
     """
 
     class EnvironmentSize(proto.Enum):
@@ -1020,6 +1559,11 @@ class EnvironmentConfig(proto.Message):
         number=19,
         enum=ResilienceMode,
     )
+    data_retention_config: "DataRetentionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="DataRetentionConfig",
+    )
 
 
 class WebServerNetworkAccessControl(proto.Message):
@@ -1078,11 +1622,22 @@ class DatabaseConfig(proto.Message):
             db-n1-standard-8 or db-n1-standard-16. If not specified,
             db-n1-standard-2 will be used. Supported for Cloud Composer
             environments in versions composer-1.\ *.*-airflow-*.*.*.
+        zone (str):
+            Optional. The Compute Engine zone where the Airflow database
+            is created. If zone is provided, it must be in the region
+            selected for the environment. If zone is not provided, a
+            zone is automatically selected. The zone can only be set
+            during environment creation. Supported for Cloud Composer
+            environments in versions composer-2.\ *.*-airflow-*.*.*.
     """
 
     machine_type: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -1279,7 +1834,31 @@ class SoftwareConfig(proto.Message):
 
             This field is supported for Cloud Composer environments in
             versions composer-1.\ *.*-airflow-2.*.*.
+        cloud_data_lineage_integration (google.cloud.orchestration.airflow.service_v1.types.CloudDataLineageIntegration):
+            Optional. The configuration for Cloud Data
+            Lineage integration.
+        web_server_plugins_mode (google.cloud.orchestration.airflow.service_v1.types.SoftwareConfig.WebServerPluginsMode):
+            Optional. Whether or not the web server uses custom plugins.
+            If unspecified, the field defaults to ``PLUGINS_ENABLED``.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-3.\ *.*-airflow-*.*.\* and newer.
     """
+
+    class WebServerPluginsMode(proto.Enum):
+        r"""Web server plugins mode of the Cloud Composer environment.
+
+        Values:
+            WEB_SERVER_PLUGINS_MODE_UNSPECIFIED (0):
+                Default mode.
+            PLUGINS_DISABLED (1):
+                Web server plugins are not supported.
+            PLUGINS_ENABLED (2):
+                Web server plugins are supported.
+        """
+        WEB_SERVER_PLUGINS_MODE_UNSPECIFIED = 0
+        PLUGINS_DISABLED = 1
+        PLUGINS_ENABLED = 2
 
     image_version: str = proto.Field(
         proto.STRING,
@@ -1307,6 +1886,16 @@ class SoftwareConfig(proto.Message):
     scheduler_count: int = proto.Field(
         proto.INT32,
         number=7,
+    )
+    cloud_data_lineage_integration: "CloudDataLineageIntegration" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="CloudDataLineageIntegration",
+    )
+    web_server_plugins_mode: WebServerPluginsMode = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=WebServerPluginsMode,
     )
 
 
@@ -1533,6 +2122,30 @@ class NodeConfig(proto.Message):
             See:
 
             https://cloud.google.com/kubernetes-engine/docs/how-to/ip-masquerade-agent
+        composer_network_attachment (str):
+            Optional. Network Attachment that Cloud Composer environment
+            is connected to, which provides connectivity with a user's
+            VPC network. Takes precedence over network and subnetwork
+            settings. If not provided, but network and subnetwork are
+            defined during environment, it will be provisioned. If not
+            provided and network and subnetwork are also empty, then
+            connectivity to user's VPC network is disabled. Network
+            attachment must be provided in format
+            projects/{project}/regions/{region}/networkAttachments/{networkAttachment}.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-3.\ *.*-airflow-*.*.\* and newer.
+        composer_internal_ipv4_cidr_block (str):
+            Optional. The IP range in CIDR notation to use internally by
+            Cloud Composer. IP addresses are not reserved - and the same
+            range can be used by multiple Cloud Composer environments.
+            In case of overlap, IPs from this range will not be
+            accessible in the user's VPC network. Cannot be updated. If
+            not specified, the default value of '100.64.128.0/20' is
+            used.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-3.\ *.*-airflow-*.*.\* and newer.
     """
 
     location: str = proto.Field(
@@ -1575,6 +2188,14 @@ class NodeConfig(proto.Message):
     enable_ip_masq_agent: bool = proto.Field(
         proto.BOOL,
         number=11,
+    )
+    composer_network_attachment: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    composer_internal_ipv4_cidr_block: str = proto.Field(
+        proto.STRING,
+        number=13,
     )
 
 
@@ -1666,6 +2287,18 @@ class PrivateEnvironmentConfig(proto.Message):
             ``IPAllocationPolicy.use_ip_aliases`` must be set to true
             for Cloud Composer environments in versions
             composer-1.\ *.*-airflow-*.*.*.
+        enable_private_builds_only (bool):
+            Optional. If ``true``, builds performed during operations
+            that install Python packages have only private connectivity
+            to Google services (including Artifact Registry) and VPC
+            network (if either ``NodeConfig.network`` and
+            ``NodeConfig.subnetwork`` fields or
+            ``NodeConfig.composer_network_attachment`` field are
+            specified). If ``false``, the builds also have access to the
+            internet.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-3.\ *.*-airflow-*.*.\* and newer.
         private_cluster_config (google.cloud.orchestration.airflow.service_v1.types.PrivateClusterConfig):
             Optional. Configuration for the private GKE
             cluster for a Private IP Cloud Composer
@@ -1724,6 +2357,10 @@ class PrivateEnvironmentConfig(proto.Message):
         proto.BOOL,
         number=1,
     )
+    enable_private_builds_only: bool = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
     private_cluster_config: "PrivateClusterConfig" = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -1778,6 +2415,14 @@ class WorkloadsConfig(proto.Message):
             server.
         worker (google.cloud.orchestration.airflow.service_v1.types.WorkloadsConfig.WorkerResource):
             Optional. Resources used by Airflow workers.
+        triggerer (google.cloud.orchestration.airflow.service_v1.types.WorkloadsConfig.TriggererResource):
+            Optional. Resources used by Airflow
+            triggerers.
+        dag_processor (google.cloud.orchestration.airflow.service_v1.types.WorkloadsConfig.DagProcessorResource):
+            Optional. Resources used by Airflow DAG processors.
+
+            This field is supported for Cloud Composer environments in
+            versions composer-3.\ *.*-airflow-*.*.\* and newer.
     """
 
     class SchedulerResource(proto.Message):
@@ -1884,6 +2529,69 @@ class WorkloadsConfig(proto.Message):
             number=5,
         )
 
+    class TriggererResource(proto.Message):
+        r"""Configuration for resources used by Airflow triggerers.
+
+        Attributes:
+            count (int):
+                Optional. The number of triggerers.
+            cpu (float):
+                Optional. CPU request and limit for a single
+                Airflow triggerer replica.
+            memory_gb (float):
+                Optional. Memory (GB) request and limit for a
+                single Airflow triggerer replica.
+        """
+
+        count: int = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        cpu: float = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        memory_gb: float = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
+
+    class DagProcessorResource(proto.Message):
+        r"""Configuration for resources used by Airflow DAG processors.
+
+        Attributes:
+            cpu (float):
+                Optional. CPU request and limit for a single
+                Airflow DAG processor replica.
+            memory_gb (float):
+                Optional. Memory (GB) request and limit for a
+                single Airflow DAG processor replica.
+            storage_gb (float):
+                Optional. Storage (GB) request and limit for
+                a single Airflow DAG processor replica.
+            count (int):
+                Optional. The number of DAG processors. If
+                not provided or set to 0, a single DAG processor
+                instance will be created.
+        """
+
+        cpu: float = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        memory_gb: float = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        storage_gb: float = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
+        count: int = proto.Field(
+            proto.INT32,
+            number=4,
+        )
+
     scheduler: SchedulerResource = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -1898,6 +2606,16 @@ class WorkloadsConfig(proto.Message):
         proto.MESSAGE,
         number=3,
         message=WorkerResource,
+    )
+    triggerer: TriggererResource = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=TriggererResource,
+    )
+    dag_processor: DagProcessorResource = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=DagProcessorResource,
     )
 
 
@@ -2003,6 +2721,21 @@ class MasterAuthorizedNetworksConfig(proto.Message):
     )
 
 
+class CloudDataLineageIntegration(proto.Message):
+    r"""Configuration for Cloud Data Lineage integration.
+
+    Attributes:
+        enabled (bool):
+            Optional. Whether or not Cloud Data Lineage
+            integration is enabled.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
 class Environment(proto.Message):
     r"""An environment for running orchestration tasks.
 
@@ -2043,6 +2776,11 @@ class Environment(proto.Message):
                [\p{Ll}\p{Lo}\p{N}_-]{0,63}
             -  Both keys and values are additionally constrained to be
                <= 128 bytes in size.
+        satisfies_pzs (bool):
+            Output only. Reserved for future use.
+        storage_config (google.cloud.orchestration.airflow.service_v1.types.StorageConfig):
+            Optional. Storage configuration for this
+            environment.
     """
 
     class State(proto.Enum):
@@ -2108,6 +2846,15 @@ class Environment(proto.Message):
         proto.STRING,
         number=7,
     )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    storage_config: "StorageConfig" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="StorageConfig",
+    )
 
 
 class CheckUpgradeResponse(proto.Message):
@@ -2172,6 +2919,57 @@ class CheckUpgradeResponse(proto.Message):
         proto.STRING,
         proto.STRING,
         number=6,
+    )
+
+
+class DataRetentionConfig(proto.Message):
+    r"""The configuration setting for Airflow database data retention
+    mechanism.
+
+    Attributes:
+        task_logs_retention_config (google.cloud.orchestration.airflow.service_v1.types.TaskLogsRetentionConfig):
+            Optional. The configuration settings for task
+            logs retention
+    """
+
+    task_logs_retention_config: "TaskLogsRetentionConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TaskLogsRetentionConfig",
+    )
+
+
+class TaskLogsRetentionConfig(proto.Message):
+    r"""The configuration setting for Task Logs.
+
+    Attributes:
+        storage_mode (google.cloud.orchestration.airflow.service_v1.types.TaskLogsRetentionConfig.TaskLogsStorageMode):
+            Optional. The mode of storage for Airflow
+            workers task logs. For details, see
+            go/composer-store-task-logs-in-cloud-logging-only-design-doc
+    """
+
+    class TaskLogsStorageMode(proto.Enum):
+        r"""The definition of task_logs_storage_mode.
+
+        Values:
+            TASK_LOGS_STORAGE_MODE_UNSPECIFIED (0):
+                This configuration is not specified by the
+                user.
+            CLOUD_LOGGING_AND_CLOUD_STORAGE (1):
+                Store task logs in Cloud Logging and in the
+                environment's Cloud Storage bucket.
+            CLOUD_LOGGING_ONLY (2):
+                Store task logs in Cloud Logging only.
+        """
+        TASK_LOGS_STORAGE_MODE_UNSPECIFIED = 0
+        CLOUD_LOGGING_AND_CLOUD_STORAGE = 1
+        CLOUD_LOGGING_ONLY = 2
+
+    storage_mode: TaskLogsStorageMode = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=TaskLogsStorageMode,
     )
 
 

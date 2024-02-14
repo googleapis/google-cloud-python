@@ -714,8 +714,6 @@ class CloudBillingAsyncClient:
                 Optional. The parent to create a billing account from.
                 Format:
 
-                -  ``organizations/{organization_id}``, for example,
-                   ``organizations/12345678``
                 -  ``billingAccounts/{billing_account_id}``, for
                    example, ``billingAccounts/012345-567890-ABCDEF``
 

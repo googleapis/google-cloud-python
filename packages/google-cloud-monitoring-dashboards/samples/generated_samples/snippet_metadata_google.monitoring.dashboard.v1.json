@@ -34,6 +34,14 @@
             "type": "google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest"
           },
           {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "dashboard",
+            "type": "google.cloud.monitoring_dashboard_v1.types.Dashboard"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -108,6 +116,14 @@
           {
             "name": "request",
             "type": "google.cloud.monitoring_dashboard_v1.types.CreateDashboardRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "dashboard",
+            "type": "google.cloud.monitoring_dashboard_v1.types.Dashboard"
           },
           {
             "name": "retry",
@@ -187,6 +203,10 @@
             "type": "google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest"
           },
           {
+            "name": "name",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -258,6 +278,10 @@
           {
             "name": "request",
             "type": "google.cloud.monitoring_dashboard_v1.types.DeleteDashboardRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
           },
           {
             "name": "retry",
@@ -334,6 +358,10 @@
             "type": "google.cloud.monitoring_dashboard_v1.types.GetDashboardRequest"
           },
           {
+            "name": "name",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -408,6 +436,10 @@
           {
             "name": "request",
             "type": "google.cloud.monitoring_dashboard_v1.types.GetDashboardRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
           },
           {
             "name": "retry",
@@ -487,6 +519,10 @@
             "type": "google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest"
           },
           {
+            "name": "parent",
+            "type": "str"
+          },
+          {
             "name": "retry",
             "type": "google.api_core.retry.Retry"
           },
@@ -561,6 +597,10 @@
           {
             "name": "request",
             "type": "google.cloud.monitoring_dashboard_v1.types.ListDashboardsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
           },
           {
             "name": "retry",

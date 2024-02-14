@@ -49,11 +49,11 @@ class XyChart(proto.Message):
             Threshold lines drawn horizontally across the
             chart.
         x_axis (google.cloud.monitoring_dashboard_v1.types.XyChart.Axis):
-            The properties applied to the X axis.
+            The properties applied to the x-axis.
         y_axis (google.cloud.monitoring_dashboard_v1.types.XyChart.Axis):
-            The properties applied to the Y axis.
+            The properties applied to the y-axis.
         y2_axis (google.cloud.monitoring_dashboard_v1.types.XyChart.Axis):
-            The properties applied to the Y2 axis.
+            The properties applied to the y2-axis.
         chart_options (google.cloud.monitoring_dashboard_v1.types.ChartOptions):
             Display options for the chart.
     """
@@ -99,14 +99,14 @@ class XyChart(proto.Message):
                     (one area per series), with the areas stacked
                     vertically (the base of each area is the top of
                     its predecessor, and the base of the first area
-                    is the X axis). Since the areas do not overlap,
+                    is the x-axis). Since the areas do not overlap,
                     each is filled with a different opaque color.
                 STACKED_BAR (3):
                     The data is plotted as a set of rectangular
                     boxes (one box per series), with the boxes
                     stacked vertically (the base of each box is the
                     top of its predecessor, and the base of the
-                    first box is the X axis). Since the boxes do not
+                    first box is the x-axis). Since the boxes do not
                     overlap, each is filled with a different opaque
                     color.
                 HEATMAP (4):

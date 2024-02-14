@@ -1762,10 +1762,10 @@ class TargetPoolsClient(metaclass=TargetPoolsClientMeta):
         Returns:
             google.cloud.compute_v1.types.TargetPool:
                 Represents a Target Pool resource.
-                Target pools are used for network
-                TCP/UDP load balancing. A target pool
-                references member instances, an
-                associated legacy HttpHealthCheck
+                Target pools are used with external
+                passthrough Network Load Balancers. A
+                target pool references member instances,
+                an associated legacy HttpHealthCheck
                 resource, and, optionally, a backup
                 target pool. For more information, read
                 Using target pools.

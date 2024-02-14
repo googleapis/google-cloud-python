@@ -318,8 +318,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     # TODO: This is needed to cater for older versions of google-auth
     # Make this test unconditional once the minimum supported version of
     # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor, _ = [
-        int(part) for part in google.auth.__version__.split(".")
+    google_auth_major, google_auth_minor = [
+        int(part) for part in google.auth.__version__.split(".")[0:2]
     ]
     if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials = ga_credentials.AnonymousCredentials()
@@ -337,8 +337,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         #
         # TODO: Make this test unconditional once the minimum supported version of
         # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor, _ = [
-            int(part) for part in api_core_version.__version__.split(".")
+        api_core_major, api_core_minor = [
+            int(part) for part in api_core_version.__version__.split(".")[0:2]
         ]
         if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
             client = client_class(
@@ -2589,6 +2589,19 @@ def test_insert_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2"}
     request_init["reservation_resource"] = {
+        "aggregate_reservation": {
+            "in_use_resources": [
+                {
+                    "accelerator": {
+                        "accelerator_count": 1805,
+                        "accelerator_type": "accelerator_type_value",
+                    }
+                }
+            ],
+            "reserved_resources": {},
+            "vm_family": "vm_family_value",
+            "workload_type": "workload_type_value",
+        },
         "commitment": "commitment_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
@@ -2960,7 +2973,17 @@ def test_insert_rest_flattened():
         mock_args = dict(
             project="project_value",
             zone="zone_value",
-            reservation_resource=compute.Reservation(commitment="commitment_value"),
+            reservation_resource=compute.Reservation(
+                aggregate_reservation=compute.AllocationAggregateReservation(
+                    in_use_resources=[
+                        compute.AllocationAggregateReservationReservedResourceInfo(
+                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
+                                accelerator_count=1805
+                            )
+                        )
+                    ]
+                )
+            ),
         )
         mock_args.update(sample_request)
 
@@ -2999,7 +3022,17 @@ def test_insert_rest_flattened_error(transport: str = "rest"):
             compute.InsertReservationRequest(),
             project="project_value",
             zone="zone_value",
-            reservation_resource=compute.Reservation(commitment="commitment_value"),
+            reservation_resource=compute.Reservation(
+                aggregate_reservation=compute.AllocationAggregateReservation(
+                    in_use_resources=[
+                        compute.AllocationAggregateReservationReservedResourceInfo(
+                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
+                                accelerator_count=1805
+                            )
+                        )
+                    ]
+                )
+            ),
         )
 
 
@@ -3025,6 +3058,19 @@ def test_insert_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2"}
     request_init["reservation_resource"] = {
+        "aggregate_reservation": {
+            "in_use_resources": [
+                {
+                    "accelerator": {
+                        "accelerator_count": 1805,
+                        "accelerator_type": "accelerator_type_value",
+                    }
+                }
+            ],
+            "reserved_resources": {},
+            "vm_family": "vm_family_value",
+            "workload_type": "workload_type_value",
+        },
         "commitment": "commitment_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
@@ -3376,7 +3422,17 @@ def test_insert_unary_rest_flattened():
         mock_args = dict(
             project="project_value",
             zone="zone_value",
-            reservation_resource=compute.Reservation(commitment="commitment_value"),
+            reservation_resource=compute.Reservation(
+                aggregate_reservation=compute.AllocationAggregateReservation(
+                    in_use_resources=[
+                        compute.AllocationAggregateReservationReservedResourceInfo(
+                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
+                                accelerator_count=1805
+                            )
+                        )
+                    ]
+                )
+            ),
         )
         mock_args.update(sample_request)
 
@@ -3415,7 +3471,17 @@ def test_insert_unary_rest_flattened_error(transport: str = "rest"):
             compute.InsertReservationRequest(),
             project="project_value",
             zone="zone_value",
-            reservation_resource=compute.Reservation(commitment="commitment_value"),
+            reservation_resource=compute.Reservation(
+                aggregate_reservation=compute.AllocationAggregateReservation(
+                    in_use_resources=[
+                        compute.AllocationAggregateReservationReservedResourceInfo(
+                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
+                                accelerator_count=1805
+                            )
+                        )
+                    ]
+                )
+            ),
         )
 
 
@@ -5467,6 +5533,19 @@ def test_update_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "reservation": "sample3"}
     request_init["reservation_resource"] = {
+        "aggregate_reservation": {
+            "in_use_resources": [
+                {
+                    "accelerator": {
+                        "accelerator_count": 1805,
+                        "accelerator_type": "accelerator_type_value",
+                    }
+                }
+            ],
+            "reserved_resources": {},
+            "vm_family": "vm_family_value",
+            "workload_type": "workload_type_value",
+        },
         "commitment": "commitment_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
@@ -5860,7 +5939,17 @@ def test_update_rest_flattened():
             project="project_value",
             zone="zone_value",
             reservation="reservation_value",
-            reservation_resource=compute.Reservation(commitment="commitment_value"),
+            reservation_resource=compute.Reservation(
+                aggregate_reservation=compute.AllocationAggregateReservation(
+                    in_use_resources=[
+                        compute.AllocationAggregateReservationReservedResourceInfo(
+                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
+                                accelerator_count=1805
+                            )
+                        )
+                    ]
+                )
+            ),
         )
         mock_args.update(sample_request)
 
@@ -5900,7 +5989,17 @@ def test_update_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             zone="zone_value",
             reservation="reservation_value",
-            reservation_resource=compute.Reservation(commitment="commitment_value"),
+            reservation_resource=compute.Reservation(
+                aggregate_reservation=compute.AllocationAggregateReservation(
+                    in_use_resources=[
+                        compute.AllocationAggregateReservationReservedResourceInfo(
+                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
+                                accelerator_count=1805
+                            )
+                        )
+                    ]
+                )
+            ),
         )
 
 
@@ -5926,6 +6025,19 @@ def test_update_unary_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "zone": "sample2", "reservation": "sample3"}
     request_init["reservation_resource"] = {
+        "aggregate_reservation": {
+            "in_use_resources": [
+                {
+                    "accelerator": {
+                        "accelerator_count": 1805,
+                        "accelerator_type": "accelerator_type_value",
+                    }
+                }
+            ],
+            "reserved_resources": {},
+            "vm_family": "vm_family_value",
+            "workload_type": "workload_type_value",
+        },
         "commitment": "commitment_value",
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
@@ -6299,7 +6411,17 @@ def test_update_unary_rest_flattened():
             project="project_value",
             zone="zone_value",
             reservation="reservation_value",
-            reservation_resource=compute.Reservation(commitment="commitment_value"),
+            reservation_resource=compute.Reservation(
+                aggregate_reservation=compute.AllocationAggregateReservation(
+                    in_use_resources=[
+                        compute.AllocationAggregateReservationReservedResourceInfo(
+                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
+                                accelerator_count=1805
+                            )
+                        )
+                    ]
+                )
+            ),
         )
         mock_args.update(sample_request)
 
@@ -6339,7 +6461,17 @@ def test_update_unary_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             zone="zone_value",
             reservation="reservation_value",
-            reservation_resource=compute.Reservation(commitment="commitment_value"),
+            reservation_resource=compute.Reservation(
+                aggregate_reservation=compute.AllocationAggregateReservation(
+                    in_use_resources=[
+                        compute.AllocationAggregateReservationReservedResourceInfo(
+                            accelerator=compute.AllocationAggregateReservationReservedResourceInfoAccelerator(
+                                accelerator_count=1805
+                            )
+                        )
+                    ]
+                )
+            ),
         )
 
 
