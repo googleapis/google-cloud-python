@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gsuiteaddons-v0.3.6...google-cloud-gsuiteaddons-v0.3.7) (2024-02-14)
+
+
+### Bug Fixes
+
+* fix ValueError in test__validate_universe_domain ([dd749df](https://github.com/googleapis/google-cloud-python/commit/dd749dfb4caf2e33f1152dfd8c4b0ac5424c381c))
+
 ## [0.3.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gsuiteaddons-v0.3.5...google-cloud-gsuiteaddons-v0.3.6) (2024-02-06)
 
 

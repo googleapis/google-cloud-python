@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-kms/#history
 
+## [2.21.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.21.1...google-cloud-kms-v2.21.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* fix ValueError in test__validate_universe_domain ([dd749df](https://github.com/googleapis/google-cloud-python/commit/dd749dfb4caf2e33f1152dfd8c4b0ac5424c381c))
+
 ## [2.21.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-v2.21.0...google-cloud-kms-v2.21.1) (2024-02-06)
 
 

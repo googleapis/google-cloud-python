@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.4...google-cloud-kms-inventory-v0.2.5) (2024-02-14)
+
+
+### Bug Fixes
+
+* fix ValueError in test__validate_universe_domain ([dd749df](https://github.com/googleapis/google-cloud-python/commit/dd749dfb4caf2e33f1152dfd8c4b0ac5424c381c))
+
 ## [0.2.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-kms-inventory-v0.2.3...google-cloud-kms-inventory-v0.2.4) (2024-02-06)
 
 

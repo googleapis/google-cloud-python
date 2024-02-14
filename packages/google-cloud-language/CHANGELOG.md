@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-language/#history
 
+## [2.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v2.13.1...google-cloud-language-v2.13.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* fix ValueError in test__validate_universe_domain ([dd749df](https://github.com/googleapis/google-cloud-python/commit/dd749dfb4caf2e33f1152dfd8c4b0ac5424c381c))
+
 ## [2.13.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-language-v2.13.0...google-cloud-language-v2.13.1) (2024-02-06)
 
 
