@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-oslogin/#history
 
+## [2.14.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.14.1...google-cloud-os-login-v2.14.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12308](https://github.com/googleapis/google-cloud-python/issues/12308)) ([74dabeb](https://github.com/googleapis/google-cloud-python/commit/74dabebab206189e649ff6e00f3c7809d96c043b))
+* fix ValueError in test__validate_universe_domain ([7c2f2c2](https://github.com/googleapis/google-cloud-python/commit/7c2f2c29d74c9584efc42ddfe8bc098a594391a2))
+
 ## [2.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-os-login-v2.14.0...google-cloud-os-login-v2.14.1) (2024-02-06)
 
 
