@@ -90,6 +90,7 @@ from .provenance import (
     Source,
     SourceContext,
 )
+from .severity import Severity
 from .slsa_provenance import SlsaProvenance
 from .slsa_provenance_zero_two import SlsaProvenanceZeroTwo
 from .upgrade import UpgradeDistribution, UpgradeNote, UpgradeOccurrence, WindowsUpdate
