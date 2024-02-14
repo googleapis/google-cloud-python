@@ -162,6 +162,7 @@ from .cloud_deploy import (
 )
 from .deliverypipeline_notification_payload import DeliveryPipelineNotificationEvent
 from .jobrun_notification_payload import JobRunNotificationEvent
+from .log_enums import Type
 from .release_notification_payload import ReleaseNotificationEvent
 from .release_render_payload import ReleaseRenderEvent
 from .rollout_notification_payload import RolloutNotificationEvent
