@@ -214,6 +214,54 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def user_workloads_config_map_path(
+        project: str,
+        location: str,
+        environment: str,
+        user_workloads_config_map: str,
+    ) -> str:
+        """Returns a fully-qualified user_workloads_config_map string."""
+        return "projects/{project}/locations/{location}/environments/{environment}/userWorkloadsConfigMaps/{user_workloads_config_map}".format(
+            project=project,
+            location=location,
+            environment=environment,
+            user_workloads_config_map=user_workloads_config_map,
+        )
+
+    @staticmethod
+    def parse_user_workloads_config_map_path(path: str) -> Dict[str, str]:
+        """Parses a user_workloads_config_map path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/environments/(?P<environment>.+?)/userWorkloadsConfigMaps/(?P<user_workloads_config_map>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def user_workloads_secret_path(
+        project: str,
+        location: str,
+        environment: str,
+        user_workloads_secret: str,
+    ) -> str:
+        """Returns a fully-qualified user_workloads_secret string."""
+        return "projects/{project}/locations/{location}/environments/{environment}/userWorkloadsSecrets/{user_workloads_secret}".format(
+            project=project,
+            location=location,
+            environment=environment,
+            user_workloads_secret=user_workloads_secret,
+        )
+
+    @staticmethod
+    def parse_user_workloads_secret_path(path: str) -> Dict[str, str]:
+        """Parses a user_workloads_secret path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/environments/(?P<environment>.+?)/userWorkloadsSecrets/(?P<user_workloads_secret>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
@@ -1714,6 +1762,1287 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         # Done; return the response.
         return response
+
+    def list_workloads(
+        self,
+        request: Optional[Union[environments.ListWorkloadsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListWorkloadsPager:
+        r"""Lists workloads in a Cloud Composer environment. Workload is a
+        unit that runs a single Composer component.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            def sample_list_workloads():
+                # Create a client
+                client = service_v1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1.ListWorkloadsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_workloads(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.ListWorkloadsRequest, dict]):
+                The request object. Request for listing workloads in a
+                Cloud Composer environment.
+            parent (str):
+                Required. The environment name to get
+                workloads for, in the form:
+                "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1.services.environments.pagers.ListWorkloadsPager:
+                Response to ListWorkloadsRequest.
+
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.ListWorkloadsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.ListWorkloadsRequest):
+            request = environments.ListWorkloadsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_workloads]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListWorkloadsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_user_workloads_secret(
+        self,
+        request: Optional[
+            Union[environments.CreateUserWorkloadsSecretRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        user_workloads_secret: Optional[environments.UserWorkloadsSecret] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environments.UserWorkloadsSecret:
+        r"""Creates a user workloads Secret.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            def sample_create_user_workloads_secret():
+                # Create a client
+                client = service_v1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1.CreateUserWorkloadsSecretRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_user_workloads_secret(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.CreateUserWorkloadsSecretRequest, dict]):
+                The request object. Create user workloads Secret request.
+            parent (str):
+                Required. The environment name to
+                create a Secret for, in the form:
+                "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            user_workloads_secret (google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsSecret):
+                Required. User workloads Secret to
+                create.
+
+                This corresponds to the ``user_workloads_secret`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsSecret:
+                User workloads Secret used by Airflow
+                tasks that run with Kubernetes executor
+                or KubernetesPodOperator.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, user_workloads_secret])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.CreateUserWorkloadsSecretRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.CreateUserWorkloadsSecretRequest):
+            request = environments.CreateUserWorkloadsSecretRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if user_workloads_secret is not None:
+                request.user_workloads_secret = user_workloads_secret
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_user_workloads_secret
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_user_workloads_secret(
+        self,
+        request: Optional[
+            Union[environments.GetUserWorkloadsSecretRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environments.UserWorkloadsSecret:
+        r"""Gets an existing user workloads Secret. Values of the "data"
+        field in the response are cleared.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            def sample_get_user_workloads_secret():
+                # Create a client
+                client = service_v1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1.GetUserWorkloadsSecretRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_user_workloads_secret(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.GetUserWorkloadsSecretRequest, dict]):
+                The request object. Get user workloads Secret request.
+            name (str):
+                Required. The resource name of the
+                Secret to get, in the form:
+                "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsSecrets/{userWorkloadsSecretId}"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsSecret:
+                User workloads Secret used by Airflow
+                tasks that run with Kubernetes executor
+                or KubernetesPodOperator.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.GetUserWorkloadsSecretRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.GetUserWorkloadsSecretRequest):
+            request = environments.GetUserWorkloadsSecretRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_user_workloads_secret
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_user_workloads_secrets(
+        self,
+        request: Optional[
+            Union[environments.ListUserWorkloadsSecretsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListUserWorkloadsSecretsPager:
+        r"""Lists user workloads Secrets.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            def sample_list_user_workloads_secrets():
+                # Create a client
+                client = service_v1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1.ListUserWorkloadsSecretsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_user_workloads_secrets(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.ListUserWorkloadsSecretsRequest, dict]):
+                The request object. List user workloads Secrets request.
+            parent (str):
+                Required. List Secrets in the given
+                environment, in the form:
+                "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1.services.environments.pagers.ListUserWorkloadsSecretsPager:
+                The user workloads Secrets for a
+                given environment.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.ListUserWorkloadsSecretsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.ListUserWorkloadsSecretsRequest):
+            request = environments.ListUserWorkloadsSecretsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_user_workloads_secrets
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListUserWorkloadsSecretsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_user_workloads_secret(
+        self,
+        request: Optional[
+            Union[environments.UpdateUserWorkloadsSecretRequest, dict]
+        ] = None,
+        *,
+        user_workloads_secret: Optional[environments.UserWorkloadsSecret] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environments.UserWorkloadsSecret:
+        r"""Updates a user workloads Secret.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            def sample_update_user_workloads_secret():
+                # Create a client
+                client = service_v1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1.UpdateUserWorkloadsSecretRequest(
+                )
+
+                # Make the request
+                response = client.update_user_workloads_secret(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.UpdateUserWorkloadsSecretRequest, dict]):
+                The request object. Update user workloads Secret request.
+            user_workloads_secret (google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsSecret):
+                Optional. User workloads Secret to
+                override.
+
+                This corresponds to the ``user_workloads_secret`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsSecret:
+                User workloads Secret used by Airflow
+                tasks that run with Kubernetes executor
+                or KubernetesPodOperator.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([user_workloads_secret])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.UpdateUserWorkloadsSecretRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.UpdateUserWorkloadsSecretRequest):
+            request = environments.UpdateUserWorkloadsSecretRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if user_workloads_secret is not None:
+                request.user_workloads_secret = user_workloads_secret
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_user_workloads_secret
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("user_workloads_secret.name", request.user_workloads_secret.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_user_workloads_secret(
+        self,
+        request: Optional[
+            Union[environments.DeleteUserWorkloadsSecretRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a user workloads Secret.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            def sample_delete_user_workloads_secret():
+                # Create a client
+                client = service_v1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1.DeleteUserWorkloadsSecretRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_user_workloads_secret(request=request)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.DeleteUserWorkloadsSecretRequest, dict]):
+                The request object. Delete user workloads Secret request.
+            name (str):
+                Required. The Secret to delete, in
+                the form:
+                "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsSecrets/{userWorkloadsSecretId}"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.DeleteUserWorkloadsSecretRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.DeleteUserWorkloadsSecretRequest):
+            request = environments.DeleteUserWorkloadsSecretRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_user_workloads_secret
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    def create_user_workloads_config_map(
+        self,
+        request: Optional[
+            Union[environments.CreateUserWorkloadsConfigMapRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        user_workloads_config_map: Optional[environments.UserWorkloadsConfigMap] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environments.UserWorkloadsConfigMap:
+        r"""Creates a user workloads ConfigMap.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            def sample_create_user_workloads_config_map():
+                # Create a client
+                client = service_v1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1.CreateUserWorkloadsConfigMapRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                response = client.create_user_workloads_config_map(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.CreateUserWorkloadsConfigMapRequest, dict]):
+                The request object. Create user workloads ConfigMap
+                request.
+            parent (str):
+                Required. The environment name to
+                create a ConfigMap for, in the form:
+                "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            user_workloads_config_map (google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsConfigMap):
+                Required. User workloads ConfigMap to
+                create.
+
+                This corresponds to the ``user_workloads_config_map`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsConfigMap:
+                User workloads ConfigMap used by
+                Airflow tasks that run with Kubernetes
+                executor or KubernetesPodOperator.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, user_workloads_config_map])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.CreateUserWorkloadsConfigMapRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.CreateUserWorkloadsConfigMapRequest):
+            request = environments.CreateUserWorkloadsConfigMapRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if user_workloads_config_map is not None:
+                request.user_workloads_config_map = user_workloads_config_map
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.create_user_workloads_config_map
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_user_workloads_config_map(
+        self,
+        request: Optional[
+            Union[environments.GetUserWorkloadsConfigMapRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environments.UserWorkloadsConfigMap:
+        r"""Gets an existing user workloads ConfigMap.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            def sample_get_user_workloads_config_map():
+                # Create a client
+                client = service_v1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1.GetUserWorkloadsConfigMapRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_user_workloads_config_map(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.GetUserWorkloadsConfigMapRequest, dict]):
+                The request object. Get user workloads ConfigMap request.
+            name (str):
+                Required. The resource name of the
+                ConfigMap to get, in the form:
+                "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsConfigMaps/{userWorkloadsConfigMapId}"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsConfigMap:
+                User workloads ConfigMap used by
+                Airflow tasks that run with Kubernetes
+                executor or KubernetesPodOperator.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.GetUserWorkloadsConfigMapRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.GetUserWorkloadsConfigMapRequest):
+            request = environments.GetUserWorkloadsConfigMapRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.get_user_workloads_config_map
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_user_workloads_config_maps(
+        self,
+        request: Optional[
+            Union[environments.ListUserWorkloadsConfigMapsRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListUserWorkloadsConfigMapsPager:
+        r"""Lists user workloads ConfigMaps.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            def sample_list_user_workloads_config_maps():
+                # Create a client
+                client = service_v1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1.ListUserWorkloadsConfigMapsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_user_workloads_config_maps(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.ListUserWorkloadsConfigMapsRequest, dict]):
+                The request object. List user workloads ConfigMaps
+                request.
+            parent (str):
+                Required. List ConfigMaps in the
+                given environment, in the form:
+                "projects/{projectId}/locations/{locationId}/environments/{environmentId}"
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1.services.environments.pagers.ListUserWorkloadsConfigMapsPager:
+                The user workloads ConfigMaps for a
+                given environment.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.ListUserWorkloadsConfigMapsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.ListUserWorkloadsConfigMapsRequest):
+            request = environments.ListUserWorkloadsConfigMapsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.list_user_workloads_config_maps
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListUserWorkloadsConfigMapsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_user_workloads_config_map(
+        self,
+        request: Optional[
+            Union[environments.UpdateUserWorkloadsConfigMapRequest, dict]
+        ] = None,
+        *,
+        user_workloads_config_map: Optional[environments.UserWorkloadsConfigMap] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> environments.UserWorkloadsConfigMap:
+        r"""Updates a user workloads ConfigMap.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            def sample_update_user_workloads_config_map():
+                # Create a client
+                client = service_v1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1.UpdateUserWorkloadsConfigMapRequest(
+                )
+
+                # Make the request
+                response = client.update_user_workloads_config_map(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.UpdateUserWorkloadsConfigMapRequest, dict]):
+                The request object. Update user workloads ConfigMap
+                request.
+            user_workloads_config_map (google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsConfigMap):
+                Optional. User workloads ConfigMap to
+                override.
+
+                This corresponds to the ``user_workloads_config_map`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.orchestration.airflow.service_v1.types.UserWorkloadsConfigMap:
+                User workloads ConfigMap used by
+                Airflow tasks that run with Kubernetes
+                executor or KubernetesPodOperator.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([user_workloads_config_map])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.UpdateUserWorkloadsConfigMapRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.UpdateUserWorkloadsConfigMapRequest):
+            request = environments.UpdateUserWorkloadsConfigMapRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if user_workloads_config_map is not None:
+                request.user_workloads_config_map = user_workloads_config_map
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_user_workloads_config_map
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "user_workloads_config_map.name",
+                        request.user_workloads_config_map.name,
+                    ),
+                )
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_user_workloads_config_map(
+        self,
+        request: Optional[
+            Union[environments.DeleteUserWorkloadsConfigMapRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes a user workloads ConfigMap.
+
+        This method is supported for Cloud Composer environments in
+        versions composer-3.\ *.*-airflow-*.*.\* and newer.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud.orchestration.airflow import service_v1
+
+            def sample_delete_user_workloads_config_map():
+                # Create a client
+                client = service_v1.EnvironmentsClient()
+
+                # Initialize request argument(s)
+                request = service_v1.DeleteUserWorkloadsConfigMapRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_user_workloads_config_map(request=request)
+
+        Args:
+            request (Union[google.cloud.orchestration.airflow.service_v1.types.DeleteUserWorkloadsConfigMapRequest, dict]):
+                The request object. Delete user workloads ConfigMap
+                request.
+            name (str):
+                Required. The ConfigMap to delete, in
+                the form:
+                "projects/{projectId}/locations/{locationId}/environments/{environmentId}/userWorkloadsConfigMaps/{userWorkloadsConfigMapId}"
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a environments.DeleteUserWorkloadsConfigMapRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, environments.DeleteUserWorkloadsConfigMapRequest):
+            request = environments.DeleteUserWorkloadsConfigMapRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_user_workloads_config_map
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     def save_snapshot(
         self,
