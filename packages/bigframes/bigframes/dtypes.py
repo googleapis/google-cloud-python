@@ -378,11 +378,29 @@ def literal_to_ibis_scalar(
         scalar_expr = ibis.literal(literal, ibis_dtypes.float64)
     elif scalar_expr.type().is_integer():
         scalar_expr = ibis.literal(literal, ibis_dtypes.int64)
+    elif scalar_expr.type().is_decimal():
+        precision = scalar_expr.type().precision
+        scale = scalar_expr.type().scale
+        if (not precision and not scale) or (
+            precision and scale and scale <= 9 and precision + (9 - scale) <= 38
+        ):
+            scalar_expr = ibis.literal(
+                literal, ibis_dtypes.decimal(precision=38, scale=9)
+            )
+        elif precision and scale and scale <= 38 and precision + (38 - scale) <= 76:
+            scalar_expr = ibis.literal(
+                literal, ibis_dtypes.decimal(precision=76, scale=38)
+            )
+        else:
+            raise TypeError(
+                "BigQuery's decimal data type supports a maximum precision of 76 and a maximum scale of 38."
+                f"Current precision: {precision}. Current scale: {scale}"
+            )
 
     # TODO(bmil): support other literals that can be coerced to compatible types
     if validate and (scalar_expr.type() not in BIGFRAMES_TO_IBIS.values()):
         raise ValueError(
-            f"Literal did not coerce to a supported data type: {literal}. {constants.FEEDBACK_LINK}"
+            f"Literal did not coerce to a supported data type: {scalar_expr.type()}. {constants.FEEDBACK_LINK}"
         )
 
     return scalar_expr
