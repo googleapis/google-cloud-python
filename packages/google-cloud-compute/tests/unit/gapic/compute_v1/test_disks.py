@@ -2919,6 +2919,7 @@ def test_create_snapshot_rest(request_type):
         "description": "description_value",
         "disk_size_gb": 1261,
         "download_bytes": 1502,
+        "enable_confidential_compute": True,
         "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
         "kind": "kind_value",
@@ -2928,6 +2929,7 @@ def test_create_snapshot_rest(request_type):
         "licenses": ["licenses_value1", "licenses_value2"],
         "location_hint": "location_hint_value",
         "name": "name_value",
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "snapshot_encryption_key": {
@@ -3371,6 +3373,7 @@ def test_create_snapshot_unary_rest(request_type):
         "description": "description_value",
         "disk_size_gb": 1261,
         "download_bytes": 1502,
+        "enable_confidential_compute": True,
         "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
         "kind": "kind_value",
@@ -3380,6 +3383,7 @@ def test_create_snapshot_unary_rest(request_type):
         "licenses": ["licenses_value1", "licenses_value2"],
         "location_hint": "location_hint_value",
         "name": "name_value",
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "snapshot_encryption_key": {
@@ -4435,6 +4439,7 @@ def test_get_rest(request_type):
             architecture="architecture_value",
             creation_timestamp="creation_timestamp_value",
             description="description_value",
+            enable_confidential_compute=True,
             id=205,
             kind="kind_value",
             label_fingerprint="label_fingerprint_value",
@@ -4451,6 +4456,7 @@ def test_get_rest(request_type):
             region="region_value",
             replica_zones=["replica_zones_value"],
             resource_policies=["resource_policies_value"],
+            satisfies_pzi=True,
             satisfies_pzs=True,
             self_link="self_link_value",
             size_gb=739,
@@ -4485,6 +4491,7 @@ def test_get_rest(request_type):
     assert response.architecture == "architecture_value"
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
+    assert response.enable_confidential_compute is True
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.label_fingerprint == "label_fingerprint_value"
@@ -4501,6 +4508,7 @@ def test_get_rest(request_type):
     assert response.region == "region_value"
     assert response.replica_zones == ["replica_zones_value"]
     assert response.resource_policies == ["resource_policies_value"]
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.size_gb == 739
@@ -5100,6 +5108,7 @@ def test_insert_rest(request_type):
             "rsa_encrypted_key": "rsa_encrypted_key_value",
             "sha256": "sha256_value",
         },
+        "enable_confidential_compute": True,
         "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
         "kind": "kind_value",
@@ -5123,6 +5132,7 @@ def test_insert_rest(request_type):
             "async_primary_disk": {"state": "state_value"},
             "async_secondary_disks": {},
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "size_gb": 739,
@@ -5562,6 +5572,7 @@ def test_insert_unary_rest(request_type):
             "rsa_encrypted_key": "rsa_encrypted_key_value",
             "sha256": "sha256_value",
         },
+        "enable_confidential_compute": True,
         "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
         "kind": "kind_value",
@@ -5585,6 +5596,7 @@ def test_insert_unary_rest(request_type):
             "async_primary_disk": {"state": "state_value"},
             "async_secondary_disks": {},
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "size_gb": 739,
@@ -11916,6 +11928,7 @@ def test_update_rest(request_type):
             "rsa_encrypted_key": "rsa_encrypted_key_value",
             "sha256": "sha256_value",
         },
+        "enable_confidential_compute": True,
         "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
         "kind": "kind_value",
@@ -11939,6 +11952,7 @@ def test_update_rest(request_type):
             "async_primary_disk": {"state": "state_value"},
             "async_secondary_disks": {},
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "size_gb": 739,
@@ -12387,6 +12401,7 @@ def test_update_unary_rest(request_type):
             "rsa_encrypted_key": "rsa_encrypted_key_value",
             "sha256": "sha256_value",
         },
+        "enable_confidential_compute": True,
         "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
         "kind": "kind_value",
@@ -12410,6 +12425,7 @@ def test_update_unary_rest(request_type):
             "async_primary_disk": {"state": "state_value"},
             "async_secondary_disks": {},
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "size_gb": 739,

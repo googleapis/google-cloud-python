@@ -2355,6 +2355,7 @@ def test_get_rest(request_type):
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             disk_size_gb=1261,
+            enable_confidential_compute=True,
             family="family_value",
             id=205,
             kind="kind_value",
@@ -2362,6 +2363,7 @@ def test_get_rest(request_type):
             license_codes=[1360],
             licenses=["licenses_value"],
             name="name_value",
+            satisfies_pzi=True,
             satisfies_pzs=True,
             self_link="self_link_value",
             source_disk="source_disk_value",
@@ -2393,6 +2395,7 @@ def test_get_rest(request_type):
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.disk_size_gb == 1261
+    assert response.enable_confidential_compute is True
     assert response.family == "family_value"
     assert response.id == 205
     assert response.kind == "kind_value"
@@ -2400,6 +2403,7 @@ def test_get_rest(request_type):
     assert response.license_codes == [1360]
     assert response.licenses == ["licenses_value"]
     assert response.name == "name_value"
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.source_disk == "source_disk_value"
@@ -2676,6 +2680,7 @@ def test_get_from_family_rest(request_type):
             creation_timestamp="creation_timestamp_value",
             description="description_value",
             disk_size_gb=1261,
+            enable_confidential_compute=True,
             family="family_value",
             id=205,
             kind="kind_value",
@@ -2683,6 +2688,7 @@ def test_get_from_family_rest(request_type):
             license_codes=[1360],
             licenses=["licenses_value"],
             name="name_value",
+            satisfies_pzi=True,
             satisfies_pzs=True,
             self_link="self_link_value",
             source_disk="source_disk_value",
@@ -2714,6 +2720,7 @@ def test_get_from_family_rest(request_type):
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
     assert response.disk_size_gb == 1261
+    assert response.enable_confidential_compute is True
     assert response.family == "family_value"
     assert response.id == 205
     assert response.kind == "kind_value"
@@ -2721,6 +2728,7 @@ def test_get_from_family_rest(request_type):
     assert response.license_codes == [1360]
     assert response.licenses == ["licenses_value"]
     assert response.name == "name_value"
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.source_disk == "source_disk_value"
@@ -3290,6 +3298,7 @@ def test_insert_rest(request_type):
         },
         "description": "description_value",
         "disk_size_gb": 1261,
+        "enable_confidential_compute": True,
         "family": "family_value",
         "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
@@ -3311,6 +3320,7 @@ def test_insert_rest(request_type):
             "sha1_checksum": "sha1_checksum_value",
             "source": "source_value",
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "shielded_instance_initial_state": {
@@ -3739,6 +3749,7 @@ def test_insert_unary_rest(request_type):
         },
         "description": "description_value",
         "disk_size_gb": 1261,
+        "enable_confidential_compute": True,
         "family": "family_value",
         "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
@@ -3760,6 +3771,7 @@ def test_insert_unary_rest(request_type):
             "sha1_checksum": "sha1_checksum_value",
             "source": "source_value",
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "shielded_instance_initial_state": {
@@ -4510,6 +4522,7 @@ def test_patch_rest(request_type):
         },
         "description": "description_value",
         "disk_size_gb": 1261,
+        "enable_confidential_compute": True,
         "family": "family_value",
         "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
@@ -4531,6 +4544,7 @@ def test_patch_rest(request_type):
             "sha1_checksum": "sha1_checksum_value",
             "source": "source_value",
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "shielded_instance_initial_state": {
@@ -4957,6 +4971,7 @@ def test_patch_unary_rest(request_type):
         },
         "description": "description_value",
         "disk_size_gb": 1261,
+        "enable_confidential_compute": True,
         "family": "family_value",
         "guest_os_features": [{"type_": "type__value"}],
         "id": 205,
@@ -4978,6 +4993,7 @@ def test_patch_unary_rest(request_type):
             "sha1_checksum": "sha1_checksum_value",
             "source": "source_value",
         },
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "self_link": "self_link_value",
         "shielded_instance_initial_state": {

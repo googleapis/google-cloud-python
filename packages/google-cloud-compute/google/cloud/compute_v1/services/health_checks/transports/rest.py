@@ -516,6 +516,8 @@ class HealthChecksRestTransport(HealthChecksTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -609,23 +611,16 @@ class HealthChecksRestTransport(HealthChecksTransport):
                 `Global </compute/docs/reference/rest/v1/healthChecks>`__
                 These health check resources can be used for load
                 balancing and for autohealing VMs in a managed instance
-                group (MIG). **Load balancing** The following load
-                balancer can use either regional or global health check:
-                \* Internal TCP/UDP load balancer The following load
-                balancers require regional health check: \* Internal
-                HTTP(S) load balancer \* Backend service-based network
-                load balancer Traffic Director and the following load
-                balancers require global health check: \* External
-                HTTP(S) load balancer \* TCP proxy load balancer \* SSL
-                proxy load balancer The following load balancer require
-                `legacy HTTP health
-                checks </compute/docs/reference/rest/v1/httpHealthChecks>`__:
-                \* Target pool-based network load balancer **Autohealing
-                in MIGs** The health checks that you use for autohealing
-                VMs in a MIG can be either regional or global. For more
-                information, see Set up an application health check and
-                autohealing. For more information, see Health checks
-                overview.
+                group (MIG). **Load balancing** Health check
+                requirements vary depending on the type of load
+                balancer. For details about the type of health check
+                supported for each load balancer and corresponding
+                backend type, see Health checks overview: Load balancer
+                guide. **Autohealing in MIGs** The health checks that
+                you use for autohealing VMs in a MIG can be either
+                regional or global. For more information, see Set up an
+                application health check and autohealing. For more
+                information, see Health checks overview.
 
             """
 
@@ -727,6 +722,8 @@ class HealthChecksRestTransport(HealthChecksTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -925,6 +922,8 @@ class HealthChecksRestTransport(HealthChecksTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 
@@ -1035,6 +1034,8 @@ class HealthChecksRestTransport(HealthChecksTransport):
                 ``regionOperations`` resource. - For zonal operations,
                 use the ``zoneOperations`` resource. For more
                 information, read Global, Regional, and Zonal Resources.
+                Note that completed Operation resources have a limited
+                retention period.
 
             """
 

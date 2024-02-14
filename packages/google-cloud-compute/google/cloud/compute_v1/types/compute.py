@@ -99,6 +99,9 @@ __protobuf__ = proto.module(
         "AggregatedListVpnGatewaysRequest",
         "AggregatedListVpnTunnelsRequest",
         "AliasIpRange",
+        "AllocationAggregateReservation",
+        "AllocationAggregateReservationReservedResourceInfo",
+        "AllocationAggregateReservationReservedResourceInfoAccelerator",
         "AllocationResourceStatus",
         "AllocationResourceStatusSpecificSKUAllocation",
         "AllocationSpecificSKUAllocationAllocatedInstancePropertiesReservedDisk",
@@ -605,10 +608,12 @@ __protobuf__ = proto.module(
         "InstanceGroupManager",
         "InstanceGroupManagerActionsSummary",
         "InstanceGroupManagerAggregatedList",
+        "InstanceGroupManagerAllInstancesConfig",
         "InstanceGroupManagerAutoHealingPolicy",
         "InstanceGroupManagerInstanceLifecyclePolicy",
         "InstanceGroupManagerList",
         "InstanceGroupManagerStatus",
+        "InstanceGroupManagerStatusAllInstancesConfig",
         "InstanceGroupManagerStatusStateful",
         "InstanceGroupManagerStatusStatefulPerInstanceConfigs",
         "InstanceGroupManagerStatusVersionTarget",
@@ -642,6 +647,7 @@ __protobuf__ = proto.module(
         "InstanceMoveRequest",
         "InstanceParams",
         "InstanceProperties",
+        "InstancePropertiesPatch",
         "InstanceReference",
         "InstanceTemplate",
         "InstanceTemplateAggregatedList",
@@ -782,6 +788,7 @@ __protobuf__ = proto.module(
         "ListRegionTargetHttpsProxiesRequest",
         "ListRegionTargetTcpProxiesRequest",
         "ListRegionUrlMapsRequest",
+        "ListRegionZonesRequest",
         "ListRegionsRequest",
         "ListReservationsRequest",
         "ListResourcePoliciesRequest",
@@ -967,6 +974,7 @@ __protobuf__ = proto.module(
         "PathMatcher",
         "PathRule",
         "PerInstanceConfig",
+        "PerformMaintenanceInstanceRequest",
         "Policy",
         "PreconfiguredWafSet",
         "PreservedState",
@@ -1132,6 +1140,8 @@ __protobuf__ = proto.module(
         "SecurityPolicyRuleHttpHeaderActionHttpHeaderOption",
         "SecurityPolicyRuleMatcher",
         "SecurityPolicyRuleMatcherConfig",
+        "SecurityPolicyRuleMatcherExprOptions",
+        "SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions",
         "SecurityPolicyRuleNetworkMatcher",
         "SecurityPolicyRuleNetworkMatcherUserDefinedFieldMatch",
         "SecurityPolicyRulePreconfiguredWafConfig",
@@ -4156,6 +4166,9 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -4303,6 +4316,9 @@ class AggregatedListAddressesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -4450,6 +4466,9 @@ class AggregatedListAutoscalersRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -4597,6 +4616,9 @@ class AggregatedListBackendServicesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -4744,6 +4766,9 @@ class AggregatedListDiskTypesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -4891,6 +4916,9 @@ class AggregatedListDisksRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -5038,6 +5066,9 @@ class AggregatedListForwardingRulesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -5185,6 +5216,9 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -5332,6 +5366,9 @@ class AggregatedListHealthChecksRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -5479,6 +5516,9 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -5626,6 +5666,9 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -5773,6 +5816,9 @@ class AggregatedListInstanceTemplatesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -5920,6 +5966,9 @@ class AggregatedListInstancesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -6067,6 +6116,9 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -6214,6 +6266,9 @@ class AggregatedListMachineTypesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -6361,6 +6416,9 @@ class AggregatedListNetworkAttachmentsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -6509,6 +6567,9 @@ class AggregatedListNetworkEdgeSecurityServicesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -6656,6 +6717,9 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -6803,6 +6867,9 @@ class AggregatedListNodeGroupsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -6950,6 +7017,9 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -7097,6 +7167,9 @@ class AggregatedListNodeTypesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -7244,6 +7317,9 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -7391,6 +7467,9 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -7538,6 +7617,9 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -7685,6 +7767,9 @@ class AggregatedListReservationsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -7832,6 +7917,9 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -7979,6 +8067,9 @@ class AggregatedListRoutersRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -8126,6 +8217,9 @@ class AggregatedListSecurityPoliciesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -8273,6 +8367,9 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -8420,6 +8517,9 @@ class AggregatedListSslCertificatesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -8567,6 +8667,9 @@ class AggregatedListSslPoliciesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -8714,6 +8817,9 @@ class AggregatedListSubnetworksRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -8861,6 +8967,9 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -9008,6 +9117,9 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -9155,6 +9267,9 @@ class AggregatedListTargetInstancesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -9302,6 +9417,9 @@ class AggregatedListTargetPoolsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -9449,6 +9567,9 @@ class AggregatedListTargetTcpProxiesRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -9596,6 +9717,9 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -9743,6 +9867,9 @@ class AggregatedListUrlMapsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -9890,6 +10017,9 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -10037,6 +10167,9 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
 
             This field is a member of `oneof`_ ``_service_project_number``.
     """
@@ -10118,6 +10251,156 @@ class AliasIpRange(proto.Message):
     subnetwork_range_name: str = proto.Field(
         proto.STRING,
         number=387995966,
+        optional=True,
+    )
+
+
+class AllocationAggregateReservation(proto.Message):
+    r"""This reservation type is specified by total resource amounts
+    (e.g. total count of CPUs) and can account for multiple instance
+    SKUs. In other words, one can create instances of varying shapes
+    against this reservation.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        in_use_resources (MutableSequence[google.cloud.compute_v1.types.AllocationAggregateReservationReservedResourceInfo]):
+            [Output only] List of resources currently in use.
+        reserved_resources (MutableSequence[google.cloud.compute_v1.types.AllocationAggregateReservationReservedResourceInfo]):
+            List of reserved resources (CPUs, memory,
+            accelerators).
+        vm_family (str):
+            The VM family that all instances scheduled
+            against this reservation must belong to. Check
+            the VmFamily enum for the list of possible
+            values.
+
+            This field is a member of `oneof`_ ``_vm_family``.
+        workload_type (str):
+            The workload type of the instances that will
+            target this reservation. Check the WorkloadType
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_workload_type``.
+    """
+
+    class VmFamily(proto.Enum):
+        r"""The VM family that all instances scheduled against this
+        reservation must belong to.
+
+        Values:
+            UNDEFINED_VM_FAMILY (0):
+                A value indicating that the enum field is not
+                set.
+            VM_FAMILY_CLOUD_TPU_LITE_DEVICE_CT5L (108020067):
+                No description available.
+            VM_FAMILY_CLOUD_TPU_LITE_POD_SLICE_CT5LP (18705267):
+                No description available.
+            VM_FAMILY_CLOUD_TPU_POD_SLICE_CT4P (517384407):
+                No description available.
+        """
+        UNDEFINED_VM_FAMILY = 0
+        VM_FAMILY_CLOUD_TPU_LITE_DEVICE_CT5L = 108020067
+        VM_FAMILY_CLOUD_TPU_LITE_POD_SLICE_CT5LP = 18705267
+        VM_FAMILY_CLOUD_TPU_POD_SLICE_CT4P = 517384407
+
+    class WorkloadType(proto.Enum):
+        r"""The workload type of the instances that will target this
+        reservation.
+
+        Values:
+            UNDEFINED_WORKLOAD_TYPE (0):
+                A value indicating that the enum field is not
+                set.
+            BATCH (62971674):
+                Reserved resources will be optimized for
+                BATCH workloads, such as ML training.
+            SERVING (17781740):
+                Reserved resources will be optimized for
+                SERVING workloads, such as ML inference.
+            UNSPECIFIED (526786327):
+                No description available.
+        """
+        UNDEFINED_WORKLOAD_TYPE = 0
+        BATCH = 62971674
+        SERVING = 17781740
+        UNSPECIFIED = 526786327
+
+    in_use_resources: MutableSequence[
+        "AllocationAggregateReservationReservedResourceInfo"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=409009107,
+        message="AllocationAggregateReservationReservedResourceInfo",
+    )
+    reserved_resources: MutableSequence[
+        "AllocationAggregateReservationReservedResourceInfo"
+    ] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=213217742,
+        message="AllocationAggregateReservationReservedResourceInfo",
+    )
+    vm_family: str = proto.Field(
+        proto.STRING,
+        number=125017580,
+        optional=True,
+    )
+    workload_type: str = proto.Field(
+        proto.STRING,
+        number=273432322,
+        optional=True,
+    )
+
+
+class AllocationAggregateReservationReservedResourceInfo(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        accelerator (google.cloud.compute_v1.types.AllocationAggregateReservationReservedResourceInfoAccelerator):
+            Properties of accelerator resources in this
+            reservation.
+
+            This field is a member of `oneof`_ ``_accelerator``.
+    """
+
+    accelerator: "AllocationAggregateReservationReservedResourceInfoAccelerator" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=424338027,
+            optional=True,
+            message="AllocationAggregateReservationReservedResourceInfoAccelerator",
+        )
+    )
+
+
+class AllocationAggregateReservationReservedResourceInfoAccelerator(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        accelerator_count (int):
+            Number of accelerators of specified type.
+
+            This field is a member of `oneof`_ ``_accelerator_count``.
+        accelerator_type (str):
+            Full or partial URL to accelerator type. e.g.
+            "projects/{PROJECT}/zones/{ZONE}/acceleratorTypes/ct4l".
+
+            This field is a member of `oneof`_ ``_accelerator_type``.
+    """
+
+    accelerator_count: int = proto.Field(
+        proto.INT32,
+        number=504879675,
+        optional=True,
+    )
+    accelerator_type: str = proto.Field(
+        proto.STRING,
+        number=138031246,
         optional=True,
     )
 
@@ -11230,6 +11513,11 @@ class AttachedDiskInitializeParams(proto.Message):
             pd-standard.
 
             This field is a member of `oneof`_ ``_disk_type``.
+        enable_confidential_compute (bool):
+            Whether this disk is using confidential
+            compute mode.
+
+            This field is a member of `oneof`_ ``_enable_confidential_compute``.
         labels (MutableMapping[str, str]):
             Labels to apply to this disk. These can be
             later modified by the disks.setLabels method.
@@ -11401,6 +11689,11 @@ class AttachedDiskInitializeParams(proto.Message):
     disk_type: str = proto.Field(
         proto.STRING,
         number=93009052,
+        optional=True,
+    )
+    enable_confidential_compute: bool = proto.Field(
+        proto.BOOL,
+        number=102135228,
         optional=True,
     )
     labels: MutableMapping[str, str] = proto.MapField(
@@ -13580,14 +13873,14 @@ class BackendService(proto.Message):
     Attributes:
         affinity_cookie_ttl_sec (int):
             Lifetime of cookies in seconds. This setting is applicable
-            to external and internal HTTP(S) load balancers and Traffic
-            Director and requires GENERATED_COOKIE or HTTP_COOKIE
-            session affinity. If set to 0, the cookie is non-persistent
-            and lasts only until the end of the browser session (or
-            equivalent). The maximum allowed value is two weeks
-            (1,209,600). Not supported when the backend service is
-            referenced by a URL map that is bound to target gRPC proxy
-            that has validateForProxyless field set to true.
+            to Application Load Balancers and Traffic Director and
+            requires GENERATED_COOKIE or HTTP_COOKIE session affinity.
+            If set to 0, the cookie is non-persistent and lasts only
+            until the end of the browser session (or equivalent). The
+            maximum allowed value is two weeks (1,209,600). Not
+            supported when the backend service is referenced by a URL
+            map that is bound to target gRPC proxy that has
+            validateForProxyless field set to true.
 
             This field is a member of `oneof`_ ``_affinity_cookie_ttl_sec``.
         backends (MutableSequence[google.cloud.compute_v1.types.Backend]):
@@ -13616,8 +13909,9 @@ class BackendService(proto.Message):
         connection_tracking_policy (google.cloud.compute_v1.types.BackendServiceConnectionTrackingPolicy):
             Connection Tracking configuration for this
             BackendService. Connection tracking policy
-            settings are only available for Network Load
-            Balancing and Internal TCP/UDP Load Balancing.
+            settings are only available for external
+            passthrough Network Load Balancers and internal
+            passthrough Network Load Balancers.
 
             This field is a member of `oneof`_ ``_connection_tracking_policy``.
         consistent_hash (google.cloud.compute_v1.types.ConsistentHashLoadBalancerSettings):
@@ -13661,16 +13955,17 @@ class BackendService(proto.Message):
             This field is a member of `oneof`_ ``_edge_security_policy``.
         enable_c_d_n (bool):
             If true, enables Cloud CDN for the backend
-            service of an external HTTP(S) load balancer.
+            service of a global external Application Load
+            Balancer.
 
             This field is a member of `oneof`_ ``_enable_c_d_n``.
         failover_policy (google.cloud.compute_v1.types.BackendServiceFailoverPolicy):
             Requires at least one backend instance group to be defined
             as a backup (failover) backend. For load balancers that have
-            configurable failover: `Internal TCP/UDP Load
-            Balancing <https://cloud.google.com/load-balancing/docs/internal/failover-overview>`__
-            and `external TCP/UDP Load
-            Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>`__.
+            configurable failover: `Internal passthrough Network Load
+            Balancers <https://cloud.google.com/load-balancing/docs/internal/failover-overview>`__
+            and `external passthrough Network Load
+            Balancers <https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>`__.
 
             This field is a member of `oneof`_ ``_failover_policy``.
         fingerprint (str):
@@ -13700,9 +13995,9 @@ class BackendService(proto.Message):
             backends must not have a health check.
         iap (google.cloud.compute_v1.types.BackendServiceIAP):
             The configurations for Identity-Aware Proxy
-            on this resource. Not available for Internal
-            TCP/UDP Load Balancing and Network Load
-            Balancing.
+            on this resource. Not available for internal
+            passthrough Network Load Balancers and external
+            passthrough Network Load Balancers.
 
             This field is a member of `oneof`_ ``_iap``.
         id (int):
@@ -13849,8 +14144,9 @@ class BackendService(proto.Message):
         port (int):
             Deprecated in favor of portName. The TCP port
             to connect on the backend. The default value is
-            80. For Internal TCP/UDP Load Balancing and
-            Network Load Balancing, omit port.
+            80. For internal passthrough Network Load
+            Balancers and external passthrough Network Load
+            Balancers, omit port.
 
             This field is a member of `oneof`_ ``_port``.
         port_name (str):
@@ -13859,8 +14155,8 @@ class BackendService(proto.Message):
             named port must be `defined on each backend instance
             group <https://cloud.google.com/load-balancing/docs/backend-service#named_ports>`__.
             This parameter has no meaning if the backends are NEGs. For
-            Internal TCP/UDP Load Balancing and Network Load Balancing,
-            omit port_name.
+            internal passthrough Network Load Balancers and external
+            passthrough Network Load Balancers, omit port_name.
 
             This field is a member of `oneof`_ ``_port_name``.
         protocol (str):
@@ -13969,18 +14265,21 @@ class BackendService(proto.Message):
                 A value indicating that the enum field is not
                 set.
             EXTERNAL (35607499):
-                Signifies that this will be used for external
-                HTTP(S), SSL Proxy, TCP Proxy, or Network Load
-                Balancing
+                Signifies that this will be used for classic
+                Application Load Balancers, global external
+                proxy Network Load Balancers, or external
+                passthrough Network Load Balancers.
             EXTERNAL_MANAGED (512006923):
-                Signifies that this will be used for External
-                Managed HTTP(S) Load Balancing.
+                Signifies that this will be used for global
+                external Application Load Balancers, regional
+                external Application Load Balancers, or regional
+                external proxy Network Load Balancers.
             INTERNAL (279295677):
-                Signifies that this will be used for Internal
-                TCP/UDP Load Balancing.
+                Signifies that this will be used for internal
+                passthrough Network Load Balancers.
             INTERNAL_MANAGED (37350397):
-                Signifies that this will be used for Internal
-                HTTP(S) Load Balancing.
+                Signifies that this will be used for internal
+                Application Load Balancers.
             INTERNAL_SELF_MANAGED (236211150):
                 Signifies that this will be used by Traffic
                 Director.
@@ -14849,21 +15148,21 @@ class BackendServiceConnectionTrackingPolicy(proto.Message):
 
             This field is a member of `oneof`_ ``_connection_persistence_on_unhealthy_backends``.
         enable_strong_affinity (bool):
-            Enable Strong Session Affinity for Network
-            Load Balancing. This option is not available
-            publicly.
+            Enable Strong Session Affinity for external
+            passthrough Network Load Balancers. This option
+            is not available publicly.
 
             This field is a member of `oneof`_ ``_enable_strong_affinity``.
         idle_timeout_sec (int):
             Specifies how long to keep a Connection Tracking entry while
-            there is no matching traffic (in seconds). For Internal
-            TCP/UDP Load Balancing: - The minimum (default) is 10
-            minutes and the maximum is 16 hours. - It can be set only if
-            Connection Tracking is less than 5-tuple (i.e. Session
-            Affinity is CLIENT_IP_NO_DESTINATION, CLIENT_IP or
+            there is no matching traffic (in seconds). For internal
+            passthrough Network Load Balancers: - The minimum (default)
+            is 10 minutes and the maximum is 16 hours. - It can be set
+            only if Connection Tracking is less than 5-tuple (i.e.
+            Session Affinity is CLIENT_IP_NO_DESTINATION, CLIENT_IP or
             CLIENT_IP_PROTO, and Tracking Mode is PER_SESSION). For
-            Network Load Balancer the default is 60 seconds. This option
-            is not available publicly.
+            external passthrough Network Load Balancers the default is
+            60 seconds. This option is not available publicly.
 
             This field is a member of `oneof`_ ``_idle_timeout_sec``.
         tracking_mode (str):
@@ -14971,10 +15270,10 @@ class BackendServiceConnectionTrackingPolicy(proto.Message):
 
 class BackendServiceFailoverPolicy(proto.Message):
     r"""For load balancers that have configurable failover: `Internal
-    TCP/UDP Load
-    Balancing <https://cloud.google.com/load-balancing/docs/internal/failover-overview>`__
-    and `external TCP/UDP Load
-    Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>`__.
+    passthrough Network Load
+    Balancers <https://cloud.google.com/load-balancing/docs/internal/failover-overview>`__
+    and `external passthrough Network Load
+    Balancers <https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>`__.
     On failover or failback, this field indicates whether connection
     draining will be honored. Google Cloud has a fixed connection
     draining timeout of 10 minutes. A setting of true terminates
@@ -14999,10 +15298,10 @@ class BackendServiceFailoverPolicy(proto.Message):
             set to false, connections are distributed among all primary
             VMs when all primary and all backup backend VMs are
             unhealthy. For load balancers that have configurable
-            failover: `Internal TCP/UDP Load
-            Balancing <https://cloud.google.com/load-balancing/docs/internal/failover-overview>`__
-            and `external TCP/UDP Load
-            Balancing <https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>`__.
+            failover: `Internal passthrough Network Load
+            Balancers <https://cloud.google.com/load-balancing/docs/internal/failover-overview>`__
+            and `external passthrough Network Load
+            Balancers <https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>`__.
             The default is false.
 
             This field is a member of `oneof`_ ``_drop_traffic_if_unhealthy``.
@@ -16169,6 +16468,23 @@ class Binding(proto.Message):
             ``domain:{domain}``: The G Suite domain (primary) that
             represents all the users of that domain. For example,
             ``google.com`` or ``example.com``. \*
+            ``principal://iam.googleapis.com/locations/global/workforcePools/{pool_id}/subject/{subject_attribute_value}``:
+            A single identity in a workforce identity pool. \*
+            ``principalSet://iam.googleapis.com/locations/global/workforcePools/{pool_id}/group/{group_id}``:
+            All workforce identities in a group. \*
+            ``principalSet://iam.googleapis.com/locations/global/workforcePools/{pool_id}/attribute.{attribute_name}/{attribute_value}``:
+            All workforce identities with a specific attribute value. \*
+            ``principalSet://iam.googleapis.com/locations/global/workforcePools/{pool_id}/*``:
+            All identities in a workforce identity pool. \*
+            ``principal://iam.googleapis.com/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/subject/{subject_attribute_value}``:
+            A single identity in a workload identity pool. \*
+            ``principalSet://iam.googleapis.com/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/group/{group_id}``:
+            A workload identity pool group. \*
+            ``principalSet://iam.googleapis.com/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/attribute.{attribute_name}/{attribute_value}``:
+            All identities in a workload identity pool with a certain
+            attribute. \*
+            ``principalSet://iam.googleapis.com/projects/{project_number}/locations/global/workloadIdentityPools/{pool_id}/*``:
+            All identities in a workload identity pool. \*
             ``deleted:user:{emailid}?uid={uniqueid}``: An email address
             (plus unique identifier) representing a user that has been
             recently deleted. For example,
@@ -16188,11 +16504,19 @@ class Binding(proto.Message):
             ``admins@example.com?uid=123456789012345678901``. If the
             group is recovered, this value reverts to
             ``group:{emailid}`` and the recovered group retains the role
-            in the binding.
+            in the binding. \*
+            ``deleted:principal://iam.googleapis.com/locations/global/workforcePools/{pool_id}/subject/{subject_attribute_value}``:
+            Deleted single identity in a workforce identity pool. For
+            example,
+            ``deleted:principal://iam.googleapis.com/locations/global/workforcePools/my-pool-id/subject/my-subject-attribute-value``.
         role (str):
             Role that is assigned to the list of ``members``, or
             principals. For example, ``roles/viewer``, ``roles/editor``,
-            or ``roles/owner``.
+            or ``roles/owner``. For an overview of the IAM roles and
+            permissions, see the `IAM
+            documentation <https://cloud.google.com/iam/docs/roles-overview>`__.
+            For a list of the available pre-defined roles, see
+            `here <https://cloud.google.com/iam/docs/understanding-roles>`__.
 
             This field is a member of `oneof`_ ``_role``.
     """
@@ -17098,6 +17422,15 @@ class Commitment(proto.Message):
             [Output Only] Commitment end time in RFC3339 text format.
 
             This field is a member of `oneof`_ ``_end_timestamp``.
+        existing_reservations (MutableSequence[str]):
+            Specifies the already existing reservations
+            to attach to the Commitment. This field is
+            optional, and it can be a full or partial URL.
+            For example, the following are valid URLs to an
+            reservation: -
+            https://www.googleapis.com/compute/v1/projects/project/zones/zone
+            /reservations/reservation -
+            projects/project/zones/zone/reservations/reservation
         id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
@@ -17140,7 +17473,7 @@ class Commitment(proto.Message):
 
             This field is a member of `oneof`_ ``_region``.
         reservations (MutableSequence[google.cloud.compute_v1.types.Reservation]):
-            List of create-on-create reseravtions for
+            List of create-on-create reservations for
             this commitment.
         resources (MutableSequence[google.cloud.compute_v1.types.ResourceCommitment]):
             A list of commitment amounts for particular
@@ -17298,6 +17631,8 @@ class Commitment(proto.Message):
                 No description available.
             MEMORY_OPTIMIZED_M3 (276301372):
                 No description available.
+            STORAGE_OPTIMIZED_Z3 (316796085):
+                No description available.
             TYPE_UNSPECIFIED (437714322):
                 No description available.
         """
@@ -17317,6 +17652,7 @@ class Commitment(proto.Message):
         GRAPHICS_OPTIMIZED = 68500563
         MEMORY_OPTIMIZED = 281753417
         MEMORY_OPTIMIZED_M3 = 276301372
+        STORAGE_OPTIMIZED_Z3 = 316796085
         TYPE_UNSPECIFIED = 437714322
 
     auto_renew: bool = proto.Field(
@@ -17343,6 +17679,10 @@ class Commitment(proto.Message):
         proto.STRING,
         number=468096690,
         optional=True,
+    )
+    existing_reservations: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=493028443,
     )
     id: int = proto.Field(
         proto.UINT64,
@@ -23180,6 +23520,11 @@ class Disk(proto.Message):
             later.
 
             This field is a member of `oneof`_ ``_disk_encryption_key``.
+        enable_confidential_compute (bool):
+            Whether this disk is using confidential
+            compute mode.
+
+            This field is a member of `oneof`_ ``_enable_confidential_compute``.
         guest_os_features (MutableSequence[google.cloud.compute_v1.types.GuestOsFeature]):
             A list of features to enable on the guest
             operating system. Applicable only for bootable
@@ -23295,6 +23640,10 @@ class Disk(proto.Message):
             [Output Only] Status information for the disk resource.
 
             This field is a member of `oneof`_ ``_resource_status``.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
         satisfies_pzs (bool):
             [Output Only] Reserved for future use.
 
@@ -23539,6 +23888,11 @@ class Disk(proto.Message):
         optional=True,
         message="CustomerEncryptionKey",
     )
+    enable_confidential_compute: bool = proto.Field(
+        proto.BOOL,
+        number=102135228,
+        optional=True,
+    )
     guest_os_features: MutableSequence["GuestOsFeature"] = proto.RepeatedField(
         proto.MESSAGE,
         number=79294545,
@@ -23636,6 +23990,11 @@ class Disk(proto.Message):
         number=249429315,
         optional=True,
         message="DiskResourceStatus",
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=480964257,
+        optional=True,
     )
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
@@ -26585,6 +26944,14 @@ class FirewallPolicyRule(proto.Message):
             firewall policy rule.
 
             This field is a member of `oneof`_ ``_rule_tuple_count``.
+        security_profile_group (str):
+            A fully-qualified URL of a SecurityProfile resource
+            instance. Example:
+            https://networksecurity.googleapis.com/v1/projects/{project}/locations/{location}/securityProfileGroups/my-security-profile-group
+            Must be specified if action = 'apply_security_profile_group'
+            and cannot be specified for other actions.
+
+            This field is a member of `oneof`_ ``_security_profile_group``.
         target_resources (MutableSequence[str]):
             A list of network resource URLs to which this
             rule applies. This field allows you to control
@@ -26606,6 +26973,13 @@ class FirewallPolicyRule(proto.Message):
             A list of service accounts indicating the
             sets of instances that are applied with this
             rule.
+        tls_inspect (bool):
+            Boolean flag indicating if the traffic should be TLS
+            decrypted. Can be set only if action =
+            'apply_security_profile_group' and cannot be set for other
+            actions.
+
+            This field is a member of `oneof`_ ``_tls_inspect``.
     """
 
     class Direction(proto.Enum):
@@ -26675,6 +27049,11 @@ class FirewallPolicyRule(proto.Message):
         number=388342037,
         optional=True,
     )
+    security_profile_group: str = proto.Field(
+        proto.STRING,
+        number=207411626,
+        optional=True,
+    )
     target_resources: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=528230647,
@@ -26689,6 +27068,11 @@ class FirewallPolicyRule(proto.Message):
     target_service_accounts: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=457639710,
+    )
+    tls_inspect: bool = proto.Field(
+        proto.BOOL,
+        number=43425488,
+        optional=True,
     )
 
 
@@ -26950,10 +27334,10 @@ class ForwardingRule(proto.Message):
     \*
     `Regional <https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules>`__
     A forwarding rule and its corresponding IP address represent the
-    frontend configuration of a Google Cloud Platform load balancer.
-    Forwarding rules can also reference target instances and Cloud VPN
-    Classic gateways (targetVpnGateway). For more information, read
-    Forwarding rule concepts and Using protocol forwarding.
+    frontend configuration of a Google Cloud load balancer. Forwarding
+    rules can also reference target instances and Cloud VPN Classic
+    gateways (targetVpnGateway). For more information, read Forwarding
+    rule concepts and Using protocol forwarding.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -27020,15 +27404,13 @@ class ForwardingRule(proto.Message):
 
             This field is a member of `oneof`_ ``_all_ports``.
         allow_global_access (bool):
-            This field is used along with the backend_service field for
-            internal load balancing or with the target field for
-            internal TargetInstance. If set to true, clients can access
-            the Internal TCP/UDP Load Balancer, Internal HTTP(S) and TCP
-            Proxy Load Balancer from all regions. If false, only allows
-            access from the local region the load balancer is located
-            at. Note that for INTERNAL_MANAGED forwarding rules, this
-            field cannot be changed after the forwarding rule is
-            created.
+            If set to true, clients can access the internal passthrough
+            Network Load Balancers, the regional internal Application
+            Load Balancer, and the regional internal proxy Network Load
+            Balancer from all regions. If false, only allows access from
+            the local region the load balancer is located at. Note that
+            for INTERNAL_MANAGED forwarding rules, this field cannot be
+            changed after the forwarding rule is created.
 
             This field is a member of `oneof`_ ``_allow_global_access``.
         allow_psc_global_access (bool):
@@ -27040,17 +27422,17 @@ class ForwardingRule(proto.Message):
         backend_service (str):
             Identifies the backend service to which the
             forwarding rule sends traffic. Required for
-            Internal TCP/UDP Load Balancing and Network Load
-            Balancing; must be omitted for all other load
+            internal and external passthrough Network Load
+            Balancers; must be omitted for all other load
             balancer types.
 
             This field is a member of `oneof`_ ``_backend_service``.
         base_forwarding_rule (str):
-            [Output Only] The URL for the corresponding base Forwarding
-            Rule. By base Forwarding Rule, we mean the Forwarding Rule
+            [Output Only] The URL for the corresponding base forwarding
+            rule. By base forwarding rule, we mean the forwarding rule
             that has the same IP address, protocol, and port settings
-            with the current Forwarding Rule, but without sourceIPRanges
-            specified. Always empty if the current Forwarding Rule does
+            with the current forwarding rule, but without sourceIPRanges
+            specified. Always empty if the current forwarding rule does
             not have sourceIPRanges specified.
 
             This field is a member of `oneof`_ ``_base_forwarding_rule``.
@@ -27101,7 +27483,7 @@ class ForwardingRule(proto.Message):
             This field is a member of `oneof`_ ``_is_mirroring_collector``.
         kind (str):
             [Output Only] Type of the resource. Always
-            compute#forwardingRule for Forwarding Rule resources.
+            compute#forwardingRule for forwarding rule resources.
 
             This field is a member of `oneof`_ ``_kind``.
         label_fingerprint (str):
@@ -27168,12 +27550,12 @@ class ForwardingRule(proto.Message):
             This field is a member of `oneof`_ ``_name``.
         network (str):
             This field is not used for global external
-            load balancing. For Internal TCP/UDP Load
-            Balancing, this field identifies the network
-            that the load balanced IP should belong to for
-            this Forwarding Rule. If the subnetwork is
-            specified, the network of the subnetwork will be
-            used. If neither subnetwork nor this field is
+            load balancing. For internal passthrough Network
+            Load Balancers, this field identifies the
+            network that the load balanced IP should belong
+            to for this forwarding rule. If the subnetwork
+            is specified, the network of the subnetwork will
+            be used. If neither subnetwork nor this field is
             specified, the default network will be used. For
             Private Service Connect forwarding rules that
             forward traffic to Google APIs, a network must
@@ -27243,8 +27625,8 @@ class ForwardingRule(proto.Message):
             pair if they share at least one port number. @pattern:
             \\d+(?:-\d+)?
         psc_connection_id (int):
-            [Output Only] The PSC connection id of the PSC Forwarding
-            Rule.
+            [Output Only] The PSC connection id of the PSC forwarding
+            rule.
 
             This field is a member of `oneof`_ ``_psc_connection_id``.
         psc_connection_status (str):
@@ -27269,8 +27651,8 @@ class ForwardingRule(proto.Message):
             forwarding rule with. Currently, only supports a
             single Service Directory resource.
         service_label (str):
-            An optional prefix to the service name for this Forwarding
-            Rule. If specified, the prefix is the first label of the
+            An optional prefix to the service name for this forwarding
+            rule. If specified, the prefix is the first label of the
             fully qualified service name. The label must be 1-63
             characters long, and comply with RFC1035. Specifically, the
             label must be 1-63 characters long and match the regular
@@ -27283,29 +27665,29 @@ class ForwardingRule(proto.Message):
             This field is a member of `oneof`_ ``_service_label``.
         service_name (str):
             [Output Only] The internal fully qualified service name for
-            this Forwarding Rule. This field is only used for internal
+            this forwarding rule. This field is only used for internal
             load balancing.
 
             This field is a member of `oneof`_ ``_service_name``.
         source_ip_ranges (MutableSequence[str]):
-            If not empty, this Forwarding Rule will only forward the
+            If not empty, this forwarding rule will only forward the
             traffic when the source IP address matches one of the IP
-            addresses or CIDR ranges set here. Note that a Forwarding
-            Rule can only have up to 64 source IP ranges, and this field
-            can only be used with a regional Forwarding Rule whose
+            addresses or CIDR ranges set here. Note that a forwarding
+            rule can only have up to 64 source IP ranges, and this field
+            can only be used with a regional forwarding rule whose
             scheme is EXTERNAL. Each source_ip_range entry should be
             either an IP address (for example, 1.2.3.4) or a CIDR range
             (for example, 1.2.3.0/24).
         subnetwork (str):
             This field identifies the subnetwork that the
             load balanced IP should belong to for this
-            Forwarding Rule, used in internal load balancing
-            and network load balancing with IPv6. If the
-            network specified is in auto subnet mode, this
-            field is optional. However, a subnetwork must be
-            specified if the network is in custom subnet
-            mode or when creating external forwarding rule
-            with IPv6.
+            forwarding rule, used with internal load
+            balancers and external passthrough Network Load
+            Balancers with IPv6. If the network specified is
+            in auto subnet mode, this field is optional.
+            However, a subnetwork must be specified if the
+            network is in custom subnet mode or when
+            creating external forwarding rule with IPv6.
 
             This field is a member of `oneof`_ ``_subnetwork``.
         target (str):
@@ -27827,10 +28209,10 @@ class ForwardingRuleReference(proto.Message):
 
 
 class ForwardingRuleServiceDirectoryRegistration(proto.Message):
-    r"""Describes the auto-registration of the Forwarding Rule to
+    r"""Describes the auto-registration of the forwarding rule to
     Service Directory. The region and project of the Service
     Directory resource generated from this registration will be the
-    same as this Forwarding Rule.
+    same as this forwarding rule.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -27849,8 +28231,8 @@ class ForwardingRuleServiceDirectoryRegistration(proto.Message):
         service_directory_region (str):
             [Optional] Service Directory region to register this global
             forwarding rule under. Default to "us-central1". Only used
-            for PSC for Google APIs. All PSC for Google APIs Forwarding
-            Rules on the same network should use the same Service
+            for PSC for Google APIs. All PSC for Google APIs forwarding
+            rules on the same network should use the same Service
             Directory region.
 
             This field is a member of `oneof`_ ``_service_directory_region``.
@@ -27932,7 +28314,7 @@ class GRPCHealthCheck(proto.Message):
             Specifies how a port is selected for health checking. Can be
             one of the following values: USE_FIXED_PORT: Specifies a
             port number explicitly using the port field in the health
-            check. Supported by backend services for pass-through load
+            check. Supported by backend services for passthrough load
             balancers and backend services for proxy load balancers. Not
             supported by target pools. The health check supports all
             backends supported by the backend service provided the
@@ -27943,7 +28325,7 @@ class GRPCHealthCheck(proto.Message):
             specifying the health check port by referring to the backend
             service. Only supported by backend services for proxy load
             balancers. Not supported by target pools. Not supported by
-            backend services for pass-through load balancers. Supports
+            backend services for passthrough load balancers. Supports
             all backends that can be health checked; for example,
             GCE_VM_IP_PORT network endpoint groups and instance group
             backends. For GCE_VM_IP_PORT network endpoint group
@@ -27961,24 +28343,24 @@ class GRPCHealthCheck(proto.Message):
         r"""Specifies how a port is selected for health checking. Can be one of
         the following values: USE_FIXED_PORT: Specifies a port number
         explicitly using the port field in the health check. Supported by
-        backend services for pass-through load balancers and backend
-        services for proxy load balancers. Not supported by target pools.
-        The health check supports all backends supported by the backend
-        service provided the backend can be health checked. For example,
-        GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint
-        groups, and instance group backends. USE_NAMED_PORT: Not supported.
+        backend services for passthrough load balancers and backend services
+        for proxy load balancers. Not supported by target pools. The health
+        check supports all backends supported by the backend service
+        provided the backend can be health checked. For example, GCE_VM_IP
+        network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and
+        instance group backends. USE_NAMED_PORT: Not supported.
         USE_SERVING_PORT: Provides an indirect method of specifying the
         health check port by referring to the backend service. Only
         supported by backend services for proxy load balancers. Not
         supported by target pools. Not supported by backend services for
-        pass-through load balancers. Supports all backends that can be
-        health checked; for example, GCE_VM_IP_PORT network endpoint groups
-        and instance group backends. For GCE_VM_IP_PORT network endpoint
-        group backends, the health check uses the port number specified for
-        each endpoint in the network endpoint group. For instance group
-        backends, the health check uses the port number determined by
-        looking up the backend service's named port in the instance group's
-        list of named ports.
+        passthrough load balancers. Supports all backends that can be health
+        checked; for example, GCE_VM_IP_PORT network endpoint groups and
+        instance group backends. For GCE_VM_IP_PORT network endpoint group
+        backends, the health check uses the port number specified for each
+        endpoint in the network endpoint group. For instance group backends,
+        the health check uses the port number determined by looking up the
+        backend service's named port in the instance group's list of named
+        ports.
 
         Values:
             UNDEFINED_PORT_SPECIFICATION (0):
@@ -32428,9 +32810,9 @@ class GuestOsFeature(proto.Message):
             following values: - VIRTIO_SCSI_MULTIQUEUE - WINDOWS -
             MULTI_IP_SUBNET - UEFI_COMPATIBLE - GVNIC - SEV_CAPABLE -
             SUSPEND_RESUME_COMPATIBLE - SEV_LIVE_MIGRATABLE -
-            SEV_SNP_CAPABLE For more information, see Enabling guest
-            operating system features. Check the Type enum for the list
-            of possible values.
+            SEV_SNP_CAPABLE - TDX_CAPABLE - IDPF For more information,
+            see Enabling guest operating system features. Check the Type
+            enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_type``.
     """
@@ -32440,8 +32822,8 @@ class GuestOsFeature(proto.Message):
         separate values. Set to one or more of the following values: -
         VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE
         - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE -
-        SEV_LIVE_MIGRATABLE - SEV_SNP_CAPABLE For more information, see
-        Enabling guest operating system features.
+        SEV_LIVE_MIGRATABLE - SEV_SNP_CAPABLE - TDX_CAPABLE - IDPF For more
+        information, see Enabling guest operating system features.
 
         Values:
             UNDEFINED_TYPE (0):
@@ -32450,6 +32832,8 @@ class GuestOsFeature(proto.Message):
             FEATURE_TYPE_UNSPECIFIED (531767259):
                 No description available.
             GVNIC (68209305):
+                No description available.
+            IDPF (2242641):
                 No description available.
             MULTI_IP_SUBNET (151776719):
                 No description available.
@@ -32473,6 +32857,7 @@ class GuestOsFeature(proto.Message):
         UNDEFINED_TYPE = 0
         FEATURE_TYPE_UNSPECIFIED = 531767259
         GVNIC = 68209305
+        IDPF = 2242641
         MULTI_IP_SUBNET = 151776719
         SECURE_BOOT = 376811194
         SEV_CAPABLE = 87083793
@@ -32521,7 +32906,7 @@ class HTTP2HealthCheck(proto.Message):
             Specifies how a port is selected for health checking. Can be
             one of the following values: USE_FIXED_PORT: Specifies a
             port number explicitly using the port field in the health
-            check. Supported by backend services for pass-through load
+            check. Supported by backend services for passthrough load
             balancers and backend services for proxy load balancers. Not
             supported by target pools. The health check supports all
             backends supported by the backend service provided the
@@ -32532,7 +32917,7 @@ class HTTP2HealthCheck(proto.Message):
             specifying the health check port by referring to the backend
             service. Only supported by backend services for proxy load
             balancers. Not supported by target pools. Not supported by
-            backend services for pass-through load balancers. Supports
+            backend services for passthrough load balancers. Supports
             all backends that can be health checked; for example,
             GCE_VM_IP_PORT network endpoint groups and instance group
             backends. For GCE_VM_IP_PORT network endpoint group
@@ -32572,24 +32957,24 @@ class HTTP2HealthCheck(proto.Message):
         r"""Specifies how a port is selected for health checking. Can be one of
         the following values: USE_FIXED_PORT: Specifies a port number
         explicitly using the port field in the health check. Supported by
-        backend services for pass-through load balancers and backend
-        services for proxy load balancers. Not supported by target pools.
-        The health check supports all backends supported by the backend
-        service provided the backend can be health checked. For example,
-        GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint
-        groups, and instance group backends. USE_NAMED_PORT: Not supported.
+        backend services for passthrough load balancers and backend services
+        for proxy load balancers. Not supported by target pools. The health
+        check supports all backends supported by the backend service
+        provided the backend can be health checked. For example, GCE_VM_IP
+        network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and
+        instance group backends. USE_NAMED_PORT: Not supported.
         USE_SERVING_PORT: Provides an indirect method of specifying the
         health check port by referring to the backend service. Only
         supported by backend services for proxy load balancers. Not
         supported by target pools. Not supported by backend services for
-        pass-through load balancers. Supports all backends that can be
-        health checked; for example, GCE_VM_IP_PORT network endpoint groups
-        and instance group backends. For GCE_VM_IP_PORT network endpoint
-        group backends, the health check uses the port number specified for
-        each endpoint in the network endpoint group. For instance group
-        backends, the health check uses the port number determined by
-        looking up the backend service's named port in the instance group's
-        list of named ports.
+        passthrough load balancers. Supports all backends that can be health
+        checked; for example, GCE_VM_IP_PORT network endpoint groups and
+        instance group backends. For GCE_VM_IP_PORT network endpoint group
+        backends, the health check uses the port number specified for each
+        endpoint in the network endpoint group. For instance group backends,
+        the health check uses the port number determined by looking up the
+        backend service's named port in the instance group's list of named
+        ports.
 
         Values:
             UNDEFINED_PORT_SPECIFICATION (0):
@@ -32700,7 +33085,7 @@ class HTTPHealthCheck(proto.Message):
             Specifies how a port is selected for health checking. Can be
             one of the following values: USE_FIXED_PORT: Specifies a
             port number explicitly using the port field in the health
-            check. Supported by backend services for pass-through load
+            check. Supported by backend services for passthrough load
             balancers and backend services for proxy load balancers.
             Also supported in legacy HTTP health checks for target
             pools. The health check supports all backends supported by
@@ -32752,11 +33137,11 @@ class HTTPHealthCheck(proto.Message):
         r"""Specifies how a port is selected for health checking. Can be one of
         the following values: USE_FIXED_PORT: Specifies a port number
         explicitly using the port field in the health check. Supported by
-        backend services for pass-through load balancers and backend
-        services for proxy load balancers. Also supported in legacy HTTP
-        health checks for target pools. The health check supports all
-        backends supported by the backend service provided the backend can
-        be health checked. For example, GCE_VM_IP network endpoint groups,
+        backend services for passthrough load balancers and backend services
+        for proxy load balancers. Also supported in legacy HTTP health
+        checks for target pools. The health check supports all backends
+        supported by the backend service provided the backend can be health
+        checked. For example, GCE_VM_IP network endpoint groups,
         GCE_VM_IP_PORT network endpoint groups, and instance group backends.
         USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an
         indirect method of specifying the health check port by referring to
@@ -32880,7 +33265,7 @@ class HTTPSHealthCheck(proto.Message):
             Specifies how a port is selected for health checking. Can be
             one of the following values: USE_FIXED_PORT: Specifies a
             port number explicitly using the port field in the health
-            check. Supported by backend services for pass-through load
+            check. Supported by backend services for passthrough load
             balancers and backend services for proxy load balancers. Not
             supported by target pools. The health check supports all
             backends supported by the backend service provided the
@@ -32891,7 +33276,7 @@ class HTTPSHealthCheck(proto.Message):
             specifying the health check port by referring to the backend
             service. Only supported by backend services for proxy load
             balancers. Not supported by target pools. Not supported by
-            backend services for pass-through load balancers. Supports
+            backend services for passthrough load balancers. Supports
             all backends that can be health checked; for example,
             GCE_VM_IP_PORT network endpoint groups and instance group
             backends. For GCE_VM_IP_PORT network endpoint group
@@ -32931,24 +33316,24 @@ class HTTPSHealthCheck(proto.Message):
         r"""Specifies how a port is selected for health checking. Can be one of
         the following values: USE_FIXED_PORT: Specifies a port number
         explicitly using the port field in the health check. Supported by
-        backend services for pass-through load balancers and backend
-        services for proxy load balancers. Not supported by target pools.
-        The health check supports all backends supported by the backend
-        service provided the backend can be health checked. For example,
-        GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint
-        groups, and instance group backends. USE_NAMED_PORT: Not supported.
+        backend services for passthrough load balancers and backend services
+        for proxy load balancers. Not supported by target pools. The health
+        check supports all backends supported by the backend service
+        provided the backend can be health checked. For example, GCE_VM_IP
+        network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and
+        instance group backends. USE_NAMED_PORT: Not supported.
         USE_SERVING_PORT: Provides an indirect method of specifying the
         health check port by referring to the backend service. Only
         supported by backend services for proxy load balancers. Not
         supported by target pools. Not supported by backend services for
-        pass-through load balancers. Supports all backends that can be
-        health checked; for example, GCE_VM_IP_PORT network endpoint groups
-        and instance group backends. For GCE_VM_IP_PORT network endpoint
-        group backends, the health check uses the port number specified for
-        each endpoint in the network endpoint group. For instance group
-        backends, the health check uses the port number determined by
-        looking up the backend service's named port in the instance group's
-        list of named ports.
+        passthrough load balancers. Supports all backends that can be health
+        checked; for example, GCE_VM_IP_PORT network endpoint groups and
+        instance group backends. For GCE_VM_IP_PORT network endpoint group
+        backends, the health check uses the port number specified for each
+        endpoint in the network endpoint group. For instance group backends,
+        the health check uses the port number determined by looking up the
+        backend service's named port in the instance group's list of named
+        ports.
 
         Values:
             UNDEFINED_PORT_SPECIFICATION (0):
@@ -33035,16 +33420,10 @@ class HealthCheck(proto.Message):
     `Global </compute/docs/reference/rest/v1/healthChecks>`__ These
     health check resources can be used for load balancing and for
     autohealing VMs in a managed instance group (MIG). **Load
-    balancing** The following load balancer can use either regional or
-    global health check: \* Internal TCP/UDP load balancer The following
-    load balancers require regional health check: \* Internal HTTP(S)
-    load balancer \* Backend service-based network load balancer Traffic
-    Director and the following load balancers require global health
-    check: \* External HTTP(S) load balancer \* TCP proxy load balancer
-    \* SSL proxy load balancer The following load balancer require
-    `legacy HTTP health
-    checks </compute/docs/reference/rest/v1/httpHealthChecks>`__: \*
-    Target pool-based network load balancer **Autohealing in MIGs** The
+    balancing** Health check requirements vary depending on the type of
+    load balancer. For details about the type of health check supported
+    for each load balancer and corresponding backend type, see Health
+    checks overview: Load balancer guide. **Autohealing in MIGs** The
     health checks that you use for autohealing VMs in a MIG can be
     either regional or global. For more information, see Set up an
     application health check and autohealing. For more information, see
@@ -35215,6 +35594,12 @@ class Image(proto.Message):
             persistent disk (in GB).
 
             This field is a member of `oneof`_ ``_disk_size_gb``.
+        enable_confidential_compute (bool):
+            Whether this image is created from a confidential compute
+            mode disk. [Output Only]: This field is not set by user, but
+            from source disk.
+
+            This field is a member of `oneof`_ ``_enable_confidential_compute``.
         family (str):
             The name of the image family to which this
             image belongs. The image family name can be from
@@ -35295,6 +35680,10 @@ class Image(proto.Message):
             The parameters of the raw disk image.
 
             This field is a member of `oneof`_ ``_raw_disk``.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
         satisfies_pzs (bool):
             [Output Only] Reserved for future use.
 
@@ -35496,6 +35885,11 @@ class Image(proto.Message):
         number=316263735,
         optional=True,
     )
+    enable_confidential_compute: bool = proto.Field(
+        proto.BOOL,
+        number=102135228,
+        optional=True,
+    )
     family: str = proto.Field(
         proto.STRING,
         number=328751972,
@@ -35550,6 +35944,11 @@ class Image(proto.Message):
         number=503113556,
         optional=True,
         message="RawDisk",
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=480964257,
+        optional=True,
     )
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
@@ -39808,6 +40207,10 @@ class Instance(proto.Message):
             corresponding input only field.
 
             This field is a member of `oneof`_ ``_resource_status``.
+        satisfies_pzi (bool):
+            [Output Only] Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
         satisfies_pzs (bool):
             [Output Only] Reserved for future use.
 
@@ -40149,6 +40552,11 @@ class Instance(proto.Message):
         number=249429315,
         optional=True,
         message="ResourceStatus",
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=480964257,
+        optional=True,
     )
     satisfies_pzs: bool = proto.Field(
         proto.BOOL,
@@ -40713,6 +41121,11 @@ class InstanceGroupManager(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        all_instances_config (google.cloud.compute_v1.types.InstanceGroupManagerAllInstancesConfig):
+            Specifies configuration that overrides the
+            instance template configuration for the group.
+
+            This field is a member of `oneof`_ ``_all_instances_config``.
         auto_healing_policies (MutableSequence[google.cloud.compute_v1.types.InstanceGroupManagerAutoHealingPolicy]):
             The autohealing policy for this managed
             instance group. You can specify only one value.
@@ -40886,6 +41299,12 @@ class InstanceGroupManager(proto.Message):
         PAGELESS = 32183464
         PAGINATED = 40190637
 
+    all_instances_config: "InstanceGroupManagerAllInstancesConfig" = proto.Field(
+        proto.MESSAGE,
+        number=112596737,
+        optional=True,
+        message="InstanceGroupManagerAllInstancesConfig",
+    )
     auto_healing_policies: MutableSequence[
         "InstanceGroupManagerAutoHealingPolicy"
     ] = proto.RepeatedField(
@@ -41265,6 +41684,35 @@ class InstanceGroupManagerAggregatedList(proto.Message):
     )
 
 
+class InstanceGroupManagerAllInstancesConfig(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        properties (google.cloud.compute_v1.types.InstancePropertiesPatch):
+            Properties to set on all instances in the
+            group. You can add or modify properties using
+            the instanceGroupManagers.patch or
+            regionInstanceGroupManagers.patch. After setting
+            allInstancesConfig on the group, you must update
+            the group's instances to apply the
+            configuration. To apply the configuration, set
+            the group's updatePolicy.type field to use
+            proactive updates or use the
+            applyUpdatesToInstances method.
+
+            This field is a member of `oneof`_ ``_properties``.
+    """
+
+    properties: "InstancePropertiesPatch" = proto.Field(
+        proto.MESSAGE,
+        number=147688755,
+        optional=True,
+        message="InstancePropertiesPatch",
+    )
+
+
 class InstanceGroupManagerAutoHealingPolicy(proto.Message):
     r"""
 
@@ -41437,6 +41885,11 @@ class InstanceGroupManagerStatus(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        all_instances_config (google.cloud.compute_v1.types.InstanceGroupManagerStatusAllInstancesConfig):
+            [Output only] Status of all-instances configuration on the
+            group.
+
+            This field is a member of `oneof`_ ``_all_instances_config``.
         autoscaler (str):
             [Output Only] The URL of the Autoscaler that targets this
             instance group manager.
@@ -41465,6 +41918,12 @@ class InstanceGroupManagerStatus(proto.Message):
             This field is a member of `oneof`_ ``_version_target``.
     """
 
+    all_instances_config: "InstanceGroupManagerStatusAllInstancesConfig" = proto.Field(
+        proto.MESSAGE,
+        number=112596737,
+        optional=True,
+        message="InstanceGroupManagerStatusAllInstancesConfig",
+    )
     autoscaler: str = proto.Field(
         proto.STRING,
         number=517258967,
@@ -41486,6 +41945,36 @@ class InstanceGroupManagerStatus(proto.Message):
         number=289386200,
         optional=True,
         message="InstanceGroupManagerStatusVersionTarget",
+    )
+
+
+class InstanceGroupManagerStatusAllInstancesConfig(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        current_revision (str):
+            [Output Only] Current all-instances configuration revision.
+            This value is in RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_current_revision``.
+        effective (bool):
+            [Output Only] A bit indicating whether this configuration
+            has been applied to all managed instances in the group.
+
+            This field is a member of `oneof`_ ``_effective``.
+    """
+
+    current_revision: str = proto.Field(
+        proto.STRING,
+        number=38355937,
+        optional=True,
+    )
+    effective: bool = proto.Field(
+        proto.BOOL,
+        number=141961639,
+        optional=True,
     )
 
 
@@ -43277,6 +43766,32 @@ class InstanceProperties(proto.Message):
         number=3552281,
         optional=True,
         message="Tags",
+    )
+
+
+class InstancePropertiesPatch(proto.Message):
+    r"""Represents the change that you want to make to the instance
+    properties.
+
+    Attributes:
+        labels (MutableMapping[str, str]):
+            The label key-value pairs that you want to
+            patch onto the instance.
+        metadata (MutableMapping[str, str]):
+            The metadata key-value pairs that you want to
+            patch onto the instance. For more information,
+            see Project and instance metadata.
+    """
+
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=500195327,
+    )
+    metadata: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=86866735,
     )
 
 
@@ -58189,6 +58704,133 @@ class ListRegionUrlMapsRequest(proto.Message):
     )
 
 
+class ListRegionZonesRequest(proto.Message):
+    r"""A request message for RegionZones.List. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            Region for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+
+
 class ListRegionsRequest(proto.Message):
     r"""A request message for Regions.List. See the method
     description for details.
@@ -62154,6 +62796,10 @@ class MachineImage(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
         satisfies_pzs (bool):
             [Output Only] Reserved for future use.
 
@@ -62271,6 +62917,11 @@ class MachineImage(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=3373707,
+        optional=True,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=480964257,
         optional=True,
     )
     satisfies_pzs: bool = proto.Field(
@@ -64704,27 +65355,37 @@ class NetworkEndpoint(proto.Message):
 
             This field is a member of `oneof`_ ``_fqdn``.
         instance (str):
-            The name for a specific VM instance that the IP address
-            belongs to. This is required for network endpoints of type
-            GCE_VM_IP_PORT. The instance must be in the same zone of
-            network endpoint group. The name must be 1-63 characters
-            long, and comply with RFC1035.
+            The name or a URL of VM instance of this network endpoint.
+            This field is required for network endpoints of type
+            GCE_VM_IP and GCE_VM_IP_PORT. The instance must be in the
+            same zone of network endpoint group (for zonal NEGs) or in
+            the zone within the region of the NEG (for regional NEGs).
+            If the ipAddress is specified, it must belongs to the VM
+            instance. The name must be 1-63 characters long, and comply
+            with RFC1035 or be a valid URL pointing to an existing
+            instance.
 
             This field is a member of `oneof`_ ``_instance``.
         ip_address (str):
-            Optional IPv4 address of network endpoint.
-            The IP address must belong to a VM in Compute
-            Engine (either the primary IP or as part of an
-            aliased IP range). If the IP address is not
-            specified, then the primary IP address for the
-            VM instance in the network that the network
-            endpoint group belongs to will be used.
+            Optional IPv4 address of network endpoint. The IP address
+            must belong to a VM in Compute Engine (either the primary IP
+            or as part of an aliased IP range). If the IP address is not
+            specified, then the primary IP address for the VM instance
+            in the network that the network endpoint group belongs to
+            will be used. This field is redundant and need not be set
+            for network endpoints of type GCE_VM_IP. If set, it must be
+            set to the primary internal IP address of the attached VM
+            instance that matches the subnetwork of the NEG. The primary
+            internal IP address from any NIC of a multi-NIC VM instance
+            can be added to a NEG as long as it matches the NEG
+            subnetwork.
 
             This field is a member of `oneof`_ ``_ip_address``.
         port (int):
-            Optional port number of network endpoint. If
-            not specified, the defaultPort for the network
-            endpoint group will be used.
+            Optional port number of network endpoint. If not specified,
+            the defaultPort for the network endpoint group will be used.
+            This field can not be set for network endpoints of type
+            GCE_VM_IP.
 
             This field is a member of `oneof`_ ``_port``.
     """
@@ -64772,19 +65433,19 @@ class NetworkEndpointGroup(proto.Message):
             network endpoint group.
         app_engine (google.cloud.compute_v1.types.NetworkEndpointGroupAppEngine):
             Only valid when networkEndpointType is
-            "SERVERLESS". Only one of cloudRun, appEngine or
+            SERVERLESS. Only one of cloudRun, appEngine or
             cloudFunction may be set.
 
             This field is a member of `oneof`_ ``_app_engine``.
         cloud_function (google.cloud.compute_v1.types.NetworkEndpointGroupCloudFunction):
             Only valid when networkEndpointType is
-            "SERVERLESS". Only one of cloudRun, appEngine or
+            SERVERLESS. Only one of cloudRun, appEngine or
             cloudFunction may be set.
 
             This field is a member of `oneof`_ ``_cloud_function``.
         cloud_run (google.cloud.compute_v1.types.NetworkEndpointGroupCloudRun):
             Only valid when networkEndpointType is
-            "SERVERLESS". Only one of cloudRun, appEngine or
+            SERVERLESS. Only one of cloudRun, appEngine or
             cloudFunction may be set.
 
             This field is a member of `oneof`_ ``_cloud_run``.
@@ -64793,8 +65454,10 @@ class NetworkEndpointGroup(proto.Message):
 
             This field is a member of `oneof`_ ``_creation_timestamp``.
         default_port (int):
-            The default port used if the port number is
-            not specified in the network endpoint.
+            The default port used if the port number is not specified in
+            the network endpoint. If the network endpoint type is either
+            GCE_VM_IP, SERVERLESS or PRIVATE_SERVICE_CONNECT, this field
+            must not be specified.
 
             This field is a member of `oneof`_ ``_default_port``.
         description (str):
@@ -64826,7 +65489,7 @@ class NetworkEndpointGroup(proto.Message):
             This field is a member of `oneof`_ ``_name``.
         network (str):
             The URL of the network to which all network
-            endpoints in the NEG belong. Uses "default"
+            endpoints in the NEG belong. Uses default
             project network if unspecified.
 
             This field is a member of `oneof`_ ``_network``.
@@ -64846,7 +65509,7 @@ class NetworkEndpointGroup(proto.Message):
             The target service url used to set up private
             service connection to a Google API or a PSC
             Producer Service Attachment. An example value
-            is: "asia-northeast3-cloudkms.googleapis.com".
+            is: asia-northeast3-cloudkms.googleapis.com
 
             This field is a member of `oneof`_ ``_psc_target_service``.
         region (str):
@@ -65118,28 +65781,30 @@ class NetworkEndpointGroupAppEngine(proto.Message):
         service (str):
             Optional serving service. The service name is
             case-sensitive and must be 1-63 characters long.
-            Example value: "default", "my-service".
+            Example value: default, my-service.
 
             This field is a member of `oneof`_ ``_service``.
         url_mask (str):
-            A template to parse service and version
-            fields from a request URL. URL mask allows for
-            routing to multiple App Engine services without
-            having to create multiple Network Endpoint
-            Groups and backend services. For example, the
-            request URLs "foo1-dot-appname.appspot.com/v1"
-            and "foo1-dot-appname.appspot.com/v2" can be
-            backed by the same Serverless NEG with URL mask
-            "<service>-dot-appname.appspot.com/<version>".
-            The URL mask will parse them to { service =
-            "foo1", version = "v1" } and { service = "foo1",
-            version = "v2" } respectively.
+            An URL mask is one of the main components of
+            the Cloud Function. A template to parse service
+            and version fields from a request URL. URL mask
+            allows for routing to multiple App Engine
+            services without having to create multiple
+            Network Endpoint Groups and backend services.
+            For example, the request URLs
+            foo1-dot-appname.appspot.com/v1 and
+            foo1-dot-appname.appspot.com/v2 can be backed by
+            the same Serverless NEG with URL mask
+            <service>-dot-appname.appspot.com/<version>. The
+            URL mask will parse them to { service = "foo1",
+            version = "v1" } and { service = "foo1", version
+            = "v2" } respectively.
 
             This field is a member of `oneof`_ ``_url_mask``.
         version (str):
             Optional serving version. The version name is
             case-sensitive and must be 1-100 characters
-            long. Example value: "v1", "v2".
+            long. Example value: v1, v2.
 
             This field is a member of `oneof`_ ``_version``.
     """
@@ -65174,19 +65839,20 @@ class NetworkEndpointGroupCloudFunction(proto.Message):
         function (str):
             A user-defined name of the Cloud Function.
             The function name is case-sensitive and must be
-            1-63 characters long. Example value: "func1".
+            1-63 characters long. Example value: func1.
 
             This field is a member of `oneof`_ ``_function``.
         url_mask (str):
-            A template to parse function field from a
-            request URL. URL mask allows for routing to
-            multiple Cloud Functions without having to
-            create multiple Network Endpoint Groups and
-            backend services. For example, request URLs "
-            mydomain.com/function1" and
-            "mydomain.com/function2" can be backed by the
-            same Serverless NEG with URL mask "/<function>".
-            The URL mask will parse them to { function =
+            An URL mask is one of the main components of
+            the Cloud Function. A template to parse function
+            field from a request URL. URL mask allows for
+            routing to multiple Cloud Functions without
+            having to create multiple Network Endpoint
+            Groups and backend services. For example,
+            request URLs mydomain.com/function1 and
+            mydomain.com/function2 can be backed by the same
+            Serverless NEG with URL mask /<function>. The
+            URL mask will parse them to { function =
             "function1" } and { function = "function2" }
             respectively.
 
@@ -65232,17 +65898,18 @@ class NetworkEndpointGroupCloudRun(proto.Message):
 
             This field is a member of `oneof`_ ``_tag``.
         url_mask (str):
-            A template to parse <service> and <tag>
-            fields from a request URL. URL mask allows for
-            routing to multiple Run services without having
-            to create multiple network endpoint groups and
-            backend services. For example, request URLs
-            "foo1.domain.com/bar1" and
-            "foo1.domain.com/bar2" can be backed by the same
-            Serverless Network Endpoint Group (NEG) with URL
-            mask "<tag>.domain.com/<service>". The URL mask
-            will parse them to { service="bar1", tag="foo1"
-            } and { service="bar2", tag="foo2" }
+            An URL mask is one of the main components of
+            the Cloud Function. A template to parse
+            <service> and <tag> fields from a request URL.
+            URL mask allows for routing to multiple Run
+            services without having to create multiple
+            network endpoint groups and backend services.
+            For example, request URLs foo1.domain.com/bar1
+            and foo1.domain.com/bar2 can be backed by the
+            same Serverless Network Endpoint Group (NEG)
+            with URL mask <tag>.domain.com/<service>. The
+            URL mask will parse them to { service="bar1",
+            tag="foo1" } and { service="bar2", tag="foo2" }
             respectively.
 
             This field is a member of `oneof`_ ``_url_mask``.
@@ -68337,7 +69004,8 @@ class Operation(proto.Message):
     ``globalOperations`` resource. - For regional operations, use the
     ``regionOperations`` resource. - For zonal operations, use the
     ``zoneOperations`` resource. For more information, read Global,
-    Regional, and Zonal Resources.
+    Regional, and Zonal Resources. Note that completed Operation
+    resources have a limited retention period.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -69405,16 +70073,19 @@ class PacketMirroringFilter(proto.Message):
             traffic. If no protocols are specified, all
             traffic that matches the specified CIDR ranges
             is mirrored. If neither cidrRanges nor
-            IPProtocols is specified, all traffic is
+            IPProtocols is specified, all IPv4 traffic is
             mirrored.
         cidr_ranges (MutableSequence[str]):
-            IP CIDR ranges that apply as filter on the
-            source (ingress) or destination (egress) IP in
-            the IP header. Only IPv4 is supported. If no
-            ranges are specified, all traffic that matches
-            the specified IPProtocols is mirrored. If
-            neither cidrRanges nor IPProtocols is specified,
-            all traffic is mirrored.
+            One or more IPv4 or IPv6 CIDR ranges that
+            apply as filter on the source (ingress) or
+            destination (egress) IP in the IP header. If no
+            ranges are specified, all IPv4 traffic that
+            matches the specified IPProtocols is mirrored.
+            If neither cidrRanges nor IPProtocols is
+            specified, all IPv4 traffic is mirrored. To
+            mirror all IPv4 and IPv6 traffic, use
+            "0.0.0.0/0,::/0". Note: Support for IPv6 traffic
+            is in preview.
         direction (str):
             Direction of traffic to mirror, either
             INGRESS, EGRESS, or BOTH. The default is BOTH.
@@ -72984,6 +73655,59 @@ class PerInstanceConfig(proto.Message):
     )
 
 
+class PerformMaintenanceInstanceRequest(proto.Message):
+    r"""A request message for Instances.PerformMaintenance. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instance (str):
+            Name of the instance scoping this request.
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    instance: str = proto.Field(
+        proto.STRING,
+        number=18257045,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class Policy(proto.Message):
     r"""An Identity and Access Management (IAM) policy, which specifies
     access controls for Google Cloud resources. A ``Policy`` is a
@@ -74788,6 +75512,8 @@ class Quota(proto.Message):
                 No description available.
             COMMITTED_NVIDIA_A100_GPUS (375799445):
                 No description available.
+            COMMITTED_NVIDIA_H100_GPUS (71649180):
+                No description available.
             COMMITTED_NVIDIA_K80_GPUS (3857188):
                 No description available.
             COMMITTED_NVIDIA_L4_GPUS (19163645):
@@ -74803,6 +75529,8 @@ class Quota(proto.Message):
             COMMITTED_T2A_CPUS (296378986):
                 No description available.
             COMMITTED_T2D_CPUS (382266439):
+                No description available.
+            COMMITTED_Z3_CPUS (263844686):
                 No description available.
             CPUS (2075595):
                 Guest CPUs
@@ -74938,6 +75666,8 @@ class Quota(proto.Message):
                 No description available.
             PREEMPTIBLE_NVIDIA_A100_GPUS (68832784):
                 No description available.
+            PREEMPTIBLE_NVIDIA_H100_GPUS (301553431):
+                No description available.
             PREEMPTIBLE_NVIDIA_K80_GPUS (374960201):
                 No description available.
             PREEMPTIBLE_NVIDIA_L4_GPUS (100408376):
@@ -74955,6 +75685,12 @@ class Quota(proto.Message):
             PREEMPTIBLE_NVIDIA_T4_VWS_GPUS (44497965):
                 No description available.
             PREEMPTIBLE_NVIDIA_V100_GPUS (230123813):
+                No description available.
+            PREEMPTIBLE_TPU_LITE_DEVICE_V5 (174262523):
+                No description available.
+            PREEMPTIBLE_TPU_LITE_PODSLICE_V5 (112281796):
+                No description available.
+            PREEMPTIBLE_TPU_PODSLICE_V4 (425541132):
                 No description available.
             PSC_ILB_CONSUMER_FORWARDING_RULES_PER_PRODUCER_NETWORK (231164291):
                 No description available.
@@ -75031,6 +75767,12 @@ class Quota(proto.Message):
                 No description available.
             TARGET_VPN_GATEWAYS (75029928):
                 No description available.
+            TPU_LITE_DEVICE_V5 (449577597):
+                No description available.
+            TPU_LITE_PODSLICE_V5 (12708294):
+                No description available.
+            TPU_PODSLICE_V4 (214467530):
+                No description available.
             URL_MAPS (378660743):
                 No description available.
             VPN_GATEWAYS (35620282):
@@ -75065,6 +75807,7 @@ class Quota(proto.Message):
         COMMITTED_N2_CPUS = 322589603
         COMMITTED_NVIDIA_A100_80GB_GPUS = 464326565
         COMMITTED_NVIDIA_A100_GPUS = 375799445
+        COMMITTED_NVIDIA_H100_GPUS = 71649180
         COMMITTED_NVIDIA_K80_GPUS = 3857188
         COMMITTED_NVIDIA_L4_GPUS = 19163645
         COMMITTED_NVIDIA_P100_GPUS = 107528100
@@ -75073,6 +75816,7 @@ class Quota(proto.Message):
         COMMITTED_NVIDIA_V100_GPUS = 219562
         COMMITTED_T2A_CPUS = 296378986
         COMMITTED_T2D_CPUS = 382266439
+        COMMITTED_Z3_CPUS = 263844686
         CPUS = 2075595
         CPUS_ALL_REGIONS = 470911149
         DISKS_TOTAL_GB = 353520543
@@ -75140,6 +75884,7 @@ class Quota(proto.Message):
         PREEMPTIBLE_LOCAL_SSD_GB = 260819336
         PREEMPTIBLE_NVIDIA_A100_80GB_GPUS = 151942410
         PREEMPTIBLE_NVIDIA_A100_GPUS = 68832784
+        PREEMPTIBLE_NVIDIA_H100_GPUS = 301553431
         PREEMPTIBLE_NVIDIA_K80_GPUS = 374960201
         PREEMPTIBLE_NVIDIA_L4_GPUS = 100408376
         PREEMPTIBLE_NVIDIA_P100_GPUS = 337432351
@@ -75149,6 +75894,9 @@ class Quota(proto.Message):
         PREEMPTIBLE_NVIDIA_T4_GPUS = 221115968
         PREEMPTIBLE_NVIDIA_T4_VWS_GPUS = 44497965
         PREEMPTIBLE_NVIDIA_V100_GPUS = 230123813
+        PREEMPTIBLE_TPU_LITE_DEVICE_V5 = 174262523
+        PREEMPTIBLE_TPU_LITE_PODSLICE_V5 = 112281796
+        PREEMPTIBLE_TPU_PODSLICE_V4 = 425541132
         PSC_ILB_CONSUMER_FORWARDING_RULES_PER_PRODUCER_NETWORK = 231164291
         PSC_INTERNAL_LB_FORWARDING_RULES = 169005435
         PUBLIC_ADVERTISED_PREFIXES = 471371980
@@ -75186,6 +75934,9 @@ class Quota(proto.Message):
         TARGET_SSL_PROXIES = 159216235
         TARGET_TCP_PROXIES = 182243136
         TARGET_VPN_GATEWAYS = 75029928
+        TPU_LITE_DEVICE_V5 = 449577597
+        TPU_LITE_PODSLICE_V5 = 12708294
+        TPU_PODSLICE_V4 = 214467530
         URL_MAPS = 378660743
         VPN_GATEWAYS = 35620282
         VPN_TUNNELS = 104327296
@@ -77849,6 +78600,11 @@ class Reservation(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        aggregate_reservation (google.cloud.compute_v1.types.AllocationAggregateReservation):
+            Reservation for aggregated resources,
+            providing shape flexibility.
+
+            This field is a member of `oneof`_ ``_aggregate_reservation``.
         commitment (str):
             [Output Only] Full or partial URL to a parent commitment.
             This field displays for reservations that are tied to a
@@ -77964,6 +78720,12 @@ class Reservation(proto.Message):
         READY = 77848963
         UPDATING = 494614342
 
+    aggregate_reservation: "AllocationAggregateReservation" = proto.Field(
+        proto.MESSAGE,
+        number=291567948,
+        optional=True,
+        message="AllocationAggregateReservation",
+    )
     commitment: str = proto.Field(
         proto.STRING,
         number=482134805,
@@ -82574,7 +83336,7 @@ class SSLHealthCheck(proto.Message):
             Specifies how a port is selected for health checking. Can be
             one of the following values: USE_FIXED_PORT: Specifies a
             port number explicitly using the port field in the health
-            check. Supported by backend services for pass-through load
+            check. Supported by backend services for passthrough load
             balancers and backend services for proxy load balancers. Not
             supported by target pools. The health check supports all
             backends supported by the backend service provided the
@@ -82585,7 +83347,7 @@ class SSLHealthCheck(proto.Message):
             specifying the health check port by referring to the backend
             service. Only supported by backend services for proxy load
             balancers. Not supported by target pools. Not supported by
-            backend services for pass-through load balancers. Supports
+            backend services for passthrough load balancers. Supports
             all backends that can be health checked; for example,
             GCE_VM_IP_PORT network endpoint groups and instance group
             backends. For GCE_VM_IP_PORT network endpoint group
@@ -82627,24 +83389,24 @@ class SSLHealthCheck(proto.Message):
         r"""Specifies how a port is selected for health checking. Can be one of
         the following values: USE_FIXED_PORT: Specifies a port number
         explicitly using the port field in the health check. Supported by
-        backend services for pass-through load balancers and backend
-        services for proxy load balancers. Not supported by target pools.
-        The health check supports all backends supported by the backend
-        service provided the backend can be health checked. For example,
-        GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint
-        groups, and instance group backends. USE_NAMED_PORT: Not supported.
+        backend services for passthrough load balancers and backend services
+        for proxy load balancers. Not supported by target pools. The health
+        check supports all backends supported by the backend service
+        provided the backend can be health checked. For example, GCE_VM_IP
+        network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and
+        instance group backends. USE_NAMED_PORT: Not supported.
         USE_SERVING_PORT: Provides an indirect method of specifying the
         health check port by referring to the backend service. Only
         supported by backend services for proxy load balancers. Not
         supported by target pools. Not supported by backend services for
-        pass-through load balancers. Supports all backends that can be
-        health checked; for example, GCE_VM_IP_PORT network endpoint groups
-        and instance group backends. For GCE_VM_IP_PORT network endpoint
-        group backends, the health check uses the port number specified for
-        each endpoint in the network endpoint group. For instance group
-        backends, the health check uses the port number determined by
-        looking up the backend service's named port in the instance group's
-        list of named ports.
+        passthrough load balancers. Supports all backends that can be health
+        checked; for example, GCE_VM_IP_PORT network endpoint groups and
+        instance group backends. For GCE_VM_IP_PORT network endpoint group
+        backends, the health check uses the port number specified for each
+        endpoint in the network endpoint group. For instance group backends,
+        the health check uses the port number determined by looking up the
+        backend service's named port in the instance group's list of named
+        ports.
 
         Values:
             UNDEFINED_PORT_SPECIFICATION (0):
@@ -84517,6 +85279,12 @@ class SecurityPolicyRuleMatcher(proto.Message):
             supported in Global Security Policies.
 
             This field is a member of `oneof`_ ``_expr``.
+        expr_options (google.cloud.compute_v1.types.SecurityPolicyRuleMatcherExprOptions):
+            The configuration options available when
+            specifying a user defined CEVAL expression
+            (i.e., 'expr').
+
+            This field is a member of `oneof`_ ``_expr_options``.
         versioned_expr (str):
             Preconfigured versioned expression. If this field is
             specified, config must also be specified. Available
@@ -84557,6 +85325,12 @@ class SecurityPolicyRuleMatcher(proto.Message):
         optional=True,
         message="Expr",
     )
+    expr_options: "SecurityPolicyRuleMatcherExprOptions" = proto.Field(
+        proto.MESSAGE,
+        number=486220372,
+        optional=True,
+        message="SecurityPolicyRuleMatcherExprOptions",
+    )
     versioned_expr: str = proto.Field(
         proto.STRING,
         number=322286013,
@@ -84576,6 +85350,58 @@ class SecurityPolicyRuleMatcherConfig(proto.Message):
     src_ip_ranges: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=432128083,
+    )
+
+
+class SecurityPolicyRuleMatcherExprOptions(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        recaptcha_options (google.cloud.compute_v1.types.SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions):
+            reCAPTCHA configuration options to be applied
+            for the rule. If the rule does not evaluate
+            reCAPTCHA tokens, this field has no effect.
+
+            This field is a member of `oneof`_ ``_recaptcha_options``.
+    """
+
+    recaptcha_options: "SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions" = (
+        proto.Field(
+            proto.MESSAGE,
+            number=389151558,
+            optional=True,
+            message="SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions",
+        )
+    )
+
+
+class SecurityPolicyRuleMatcherExprOptionsRecaptchaOptions(proto.Message):
+    r"""
+
+    Attributes:
+        action_token_site_keys (MutableSequence[str]):
+            A list of site keys to be used during the
+            validation of reCAPTCHA action-tokens. The
+            provided site keys need to be created from
+            reCAPTCHA API under the same project where the
+            security policy is created.
+        session_token_site_keys (MutableSequence[str]):
+            A list of site keys to be used during the
+            validation of reCAPTCHA session-tokens. The
+            provided site keys need to be created from
+            reCAPTCHA API under the same project where the
+            security policy is created.
+    """
+
+    action_token_site_keys: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=59929885,
+    )
+    session_token_site_keys: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=333363581,
     )
 
 
@@ -84890,8 +85716,15 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
             TLS session of the HTTPS request. The key value is truncated
             to the first 128 bytes. The key type defaults to ALL on a
             HTTP session. - REGION_CODE: The country/region from which
-            the request originates. Check the EnforceOnKey enum for the
-            list of possible values.
+            the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL
+            fingerprint if the client connects using HTTPS, HTTP/2 or
+            HTTP/3. If not available, the key type defaults to ALL. -
+            USER_IP: The IP address of the originating client, which is
+            resolved based on "userIpRequestHeaders" configured with the
+            security policy. If there is no "userIpRequestHeaders"
+            configuration or an IP address cannot be resolved from it,
+            the key type defaults to IP. Check the EnforceOnKey enum for
+            the list of possible values.
 
             This field is a member of `oneof`_ ``_enforce_on_key``.
         enforce_on_key_configs (MutableSequence[google.cloud.compute_v1.types.SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig]):
@@ -84955,7 +85788,14 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
         - SNI: Server name indication in the TLS session of the HTTPS
         request. The key value is truncated to the first 128 bytes. The key
         type defaults to ALL on a HTTP session. - REGION_CODE: The
-        country/region from which the request originates.
+        country/region from which the request originates. -
+        TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects
+        using HTTPS, HTTP/2 or HTTP/3. If not available, the key type
+        defaults to ALL. - USER_IP: The IP address of the originating
+        client, which is resolved based on "userIpRequestHeaders" configured
+        with the security policy. If there is no "userIpRequestHeaders"
+        configuration or an IP address cannot be resolved from it, the key
+        type defaults to IP.
 
         Values:
             UNDEFINED_ENFORCE_ON_KEY (0):
@@ -84975,6 +85815,10 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
                 No description available.
             SNI (82254):
                 No description available.
+            TLS_JA3_FINGERPRINT (327127933):
+                No description available.
+            USER_IP (34009627):
+                No description available.
             XFF_IP (438707118):
                 No description available.
         """
@@ -84986,6 +85830,8 @@ class SecurityPolicyRuleRateLimitOptions(proto.Message):
         IP = 2343
         REGION_CODE = 79559768
         SNI = 82254
+        TLS_JA3_FINGERPRINT = 327127933
+        USER_IP = 34009627
         XFF_IP = 438707118
 
     ban_duration_sec: int = proto.Field(
@@ -85078,8 +85924,15 @@ class SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig(proto.Message):
             TLS session of the HTTPS request. The key value is truncated
             to the first 128 bytes. The key type defaults to ALL on a
             HTTP session. - REGION_CODE: The country/region from which
-            the request originates. Check the EnforceOnKeyType enum for
-            the list of possible values.
+            the request originates. - TLS_JA3_FINGERPRINT: JA3 TLS/SSL
+            fingerprint if the client connects using HTTPS, HTTP/2 or
+            HTTP/3. If not available, the key type defaults to ALL. -
+            USER_IP: The IP address of the originating client, which is
+            resolved based on "userIpRequestHeaders" configured with the
+            security policy. If there is no "userIpRequestHeaders"
+            configuration or an IP address cannot be resolved from it,
+            the key type defaults to IP. Check the EnforceOnKeyType enum
+            for the list of possible values.
 
             This field is a member of `oneof`_ ``_enforce_on_key_type``.
     """
@@ -85106,7 +85959,14 @@ class SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig(proto.Message):
         - SNI: Server name indication in the TLS session of the HTTPS
         request. The key value is truncated to the first 128 bytes. The key
         type defaults to ALL on a HTTP session. - REGION_CODE: The
-        country/region from which the request originates.
+        country/region from which the request originates. -
+        TLS_JA3_FINGERPRINT: JA3 TLS/SSL fingerprint if the client connects
+        using HTTPS, HTTP/2 or HTTP/3. If not available, the key type
+        defaults to ALL. - USER_IP: The IP address of the originating
+        client, which is resolved based on "userIpRequestHeaders" configured
+        with the security policy. If there is no "userIpRequestHeaders"
+        configuration or an IP address cannot be resolved from it, the key
+        type defaults to IP.
 
         Values:
             UNDEFINED_ENFORCE_ON_KEY_TYPE (0):
@@ -85126,6 +85986,10 @@ class SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig(proto.Message):
                 No description available.
             SNI (82254):
                 No description available.
+            TLS_JA3_FINGERPRINT (327127933):
+                No description available.
+            USER_IP (34009627):
+                No description available.
             XFF_IP (438707118):
                 No description available.
         """
@@ -85137,6 +86001,8 @@ class SecurityPolicyRuleRateLimitOptionsEnforceOnKeyConfig(proto.Message):
         IP = 2343
         REGION_CODE = 79559768
         SNI = 82254
+        TLS_JA3_FINGERPRINT = 327127933
+        USER_IP = 34009627
         XFF_IP = 438707118
 
     enforce_on_key_name: str = proto.Field(
@@ -86746,7 +87612,7 @@ class SetEdgeSecurityPolicyBackendBucketRequest(proto.Message):
 
     Attributes:
         backend_bucket (str):
-            Name of the BackendService resource to which
+            Name of the BackendBucket resource to which
             the security policy should be set. The name
             should conform to RFC1035.
         project (str):
@@ -90706,6 +91572,12 @@ class SimulateMaintenanceEventInstanceRequest(proto.Message):
             00000000-0000-0000-0000-000000000000).
 
             This field is a member of `oneof`_ ``_request_id``.
+        with_extended_notifications (bool):
+            Determines whether the customers receive
+            notifications before migration. Only applicable
+            to SF vms.
+
+            This field is a member of `oneof`_ ``_with_extended_notifications``.
         zone (str):
             The name of the zone for this request.
     """
@@ -90721,6 +91593,11 @@ class SimulateMaintenanceEventInstanceRequest(proto.Message):
     request_id: str = proto.Field(
         proto.STRING,
         number=37109963,
+        optional=True,
+    )
+    with_extended_notifications: bool = proto.Field(
+        proto.BOOL,
+        number=405957627,
         optional=True,
     )
     zone: str = proto.Field(
@@ -90846,6 +91723,12 @@ class Snapshot(proto.Message):
             snapshot to a disk.
 
             This field is a member of `oneof`_ ``_download_bytes``.
+        enable_confidential_compute (bool):
+            Whether this snapshot is created from a confidential compute
+            mode disk. [Output Only]: This field is not set by user, but
+            from source disk.
+
+            This field is a member of `oneof`_ ``_enable_confidential_compute``.
         guest_os_features (MutableSequence[google.cloud.compute_v1.types.GuestOsFeature]):
             [Output Only] A list of features to enable on the guest
             operating system. Applicable only for bootable images. Read
@@ -90904,6 +91787,10 @@ class Snapshot(proto.Message):
             except the last character, which cannot be a dash.
 
             This field is a member of `oneof`_ ``_name``.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
         satisfies_pzs (bool):
             [Output Only] Reserved for future use.
 
@@ -91117,6 +92004,11 @@ class Snapshot(proto.Message):
         number=435054068,
         optional=True,
     )
+    enable_confidential_compute: bool = proto.Field(
+        proto.BOOL,
+        number=102135228,
+        optional=True,
+    )
     guest_os_features: MutableSequence["GuestOsFeature"] = proto.RepeatedField(
         proto.MESSAGE,
         number=79294545,
@@ -91158,6 +92050,11 @@ class Snapshot(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=3373707,
+        optional=True,
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=480964257,
         optional=True,
     )
     satisfies_pzs: bool = proto.Field(
@@ -92369,9 +93266,9 @@ class SslPoliciesScopedList(proto.Message):
 
 class SslPolicy(proto.Message):
     r"""Represents an SSL Policy resource. Use SSL policies to
-    control the SSL features, such as versions and cipher suites,
-    offered by an HTTPS or SSL Proxy load balancer. For more
-    information, read SSL Policy Concepts.
+    control SSL features, such as versions and cipher suites, that
+    are offered by Application Load Balancers and proxy Network Load
+    Balancers. For more information, read SSL policies overview.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -93270,8 +94167,11 @@ class StopInstanceRequest(proto.Message):
 
     Attributes:
         discard_local_ssd (bool):
-            If true, discard the contents of any attached
-            localSSD partitions. Default value is false.
+            This property is required if the instance has
+            any attached Local SSD disks. If false, Local
+            SSD data will be preserved when the instance is
+            suspended. If true, the contents of any attached
+            Local SSD disks will be discarded.
 
             This field is a member of `oneof`_ ``_discard_local_ssd``.
         instance (str):
@@ -93459,22 +94359,19 @@ class Subnetwork(proto.Message):
             This field is a member of `oneof`_ ``_private_ipv6_google_access``.
         purpose (str):
             The purpose of the resource. This field can be either
-            PRIVATE, REGIONAL_MANAGED_PROXY, PRIVATE_SERVICE_CONNECT, or
-            INTERNAL_HTTPS_LOAD_BALANCER. PRIVATE is the default purpose
+            PRIVATE, GLOBAL_MANAGED_PROXY, REGIONAL_MANAGED_PROXY,
+            PRIVATE_SERVICE_CONNECT, or PRIVATE is the default purpose
             for user-created subnets or subnets that are automatically
-            created in auto mode networks. A subnet with purpose set to
-            REGIONAL_MANAGED_PROXY is a user-created subnetwork that is
-            reserved for regional Envoy-based load balancers. A subnet
-            with purpose set to PRIVATE_SERVICE_CONNECT is used to
-            publish services using Private Service Connect. A subnet
-            with purpose set to INTERNAL_HTTPS_LOAD_BALANCER is a
-            proxy-only subnet that can be used only by regional internal
-            HTTP(S) load balancers. Note that REGIONAL_MANAGED_PROXY is
-            the preferred setting for all regional Envoy load balancers.
-            If unspecified, the subnet purpose defaults to PRIVATE. The
-            enableFlowLogs field isn't supported if the subnet purpose
-            field is set to REGIONAL_MANAGED_PROXY. Check the Purpose
-            enum for the list of possible values.
+            created in auto mode networks. Subnets with purpose set to
+            GLOBAL_MANAGED_PROXY or REGIONAL_MANAGED_PROXY are
+            user-created subnetworks that are reserved for Envoy-based
+            load balancers. A subnet with purpose set to
+            PRIVATE_SERVICE_CONNECT is used to publish services using
+            Private Service Connect. If unspecified, the subnet purpose
+            defaults to PRIVATE. The enableFlowLogs field isn't
+            supported if the subnet purpose field is set to
+            GLOBAL_MANAGED_PROXY or REGIONAL_MANAGED_PROXY. Check the
+            Purpose enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_purpose``.
         region (str):
@@ -93483,15 +94380,20 @@ class Subnetwork(proto.Message):
             creation time.
 
             This field is a member of `oneof`_ ``_region``.
+        reserved_internal_range (str):
+            The URL of the reserved internal range.
+
+            This field is a member of `oneof`_ ``_reserved_internal_range``.
         role (str):
             The role of subnetwork. Currently, this field is only used
-            when purpose = REGIONAL_MANAGED_PROXY. The value can be set
-            to ACTIVE or BACKUP. An ACTIVE subnetwork is one that is
-            currently being used for Envoy-based load balancers in a
-            region. A BACKUP subnetwork is one that is ready to be
-            promoted to ACTIVE or is currently draining. This field can
-            be updated with a patch request. Check the Role enum for the
-            list of possible values.
+            when purpose is set to GLOBAL_MANAGED_PROXY or
+            REGIONAL_MANAGED_PROXY. The value can be set to ACTIVE or
+            BACKUP. An ACTIVE subnetwork is one that is currently being
+            used for Envoy-based load balancers in a region. A BACKUP
+            subnetwork is one that is ready to be promoted to ACTIVE or
+            is currently draining. This field can be updated with a
+            patch request. Check the Role enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_role``.
         secondary_ip_ranges (MutableSequence[google.cloud.compute_v1.types.SubnetworkSecondaryRange]):
@@ -93579,20 +94481,17 @@ class Subnetwork(proto.Message):
 
     class Purpose(proto.Enum):
         r"""The purpose of the resource. This field can be either PRIVATE,
-        REGIONAL_MANAGED_PROXY, PRIVATE_SERVICE_CONNECT, or
-        INTERNAL_HTTPS_LOAD_BALANCER. PRIVATE is the default purpose for
+        GLOBAL_MANAGED_PROXY, REGIONAL_MANAGED_PROXY,
+        PRIVATE_SERVICE_CONNECT, or PRIVATE is the default purpose for
         user-created subnets or subnets that are automatically created in
-        auto mode networks. A subnet with purpose set to
-        REGIONAL_MANAGED_PROXY is a user-created subnetwork that is reserved
-        for regional Envoy-based load balancers. A subnet with purpose set
+        auto mode networks. Subnets with purpose set to GLOBAL_MANAGED_PROXY
+        or REGIONAL_MANAGED_PROXY are user-created subnetworks that are
+        reserved for Envoy-based load balancers. A subnet with purpose set
         to PRIVATE_SERVICE_CONNECT is used to publish services using Private
-        Service Connect. A subnet with purpose set to
-        INTERNAL_HTTPS_LOAD_BALANCER is a proxy-only subnet that can be used
-        only by regional internal HTTP(S) load balancers. Note that
-        REGIONAL_MANAGED_PROXY is the preferred setting for all regional
-        Envoy load balancers. If unspecified, the subnet purpose defaults to
+        Service Connect. If unspecified, the subnet purpose defaults to
         PRIVATE. The enableFlowLogs field isn't supported if the subnet
-        purpose field is set to REGIONAL_MANAGED_PROXY.
+        purpose field is set to GLOBAL_MANAGED_PROXY or
+        REGIONAL_MANAGED_PROXY.
 
         Values:
             UNDEFINED_PURPOSE (0):
@@ -93602,8 +94501,8 @@ class Subnetwork(proto.Message):
                 Subnet reserved for Global Envoy-based Load
                 Balancing.
             INTERNAL_HTTPS_LOAD_BALANCER (248748889):
-                Subnet reserved for Internal HTTP(S) Load
-                Balancing.
+                Subnet reserved for Internal HTTP(S) Load Balancing. This is
+                a legacy purpose, please use REGIONAL_MANAGED_PROXY instead.
             PRIVATE (403485027):
                 Regular user created or automatically created
                 subnet.
@@ -93631,11 +94530,12 @@ class Subnetwork(proto.Message):
 
     class Role(proto.Enum):
         r"""The role of subnetwork. Currently, this field is only used when
-        purpose = REGIONAL_MANAGED_PROXY. The value can be set to ACTIVE or
-        BACKUP. An ACTIVE subnetwork is one that is currently being used for
-        Envoy-based load balancers in a region. A BACKUP subnetwork is one
-        that is ready to be promoted to ACTIVE or is currently draining.
-        This field can be updated with a patch request.
+        purpose is set to GLOBAL_MANAGED_PROXY or REGIONAL_MANAGED_PROXY.
+        The value can be set to ACTIVE or BACKUP. An ACTIVE subnetwork is
+        one that is currently being used for Envoy-based load balancers in a
+        region. A BACKUP subnetwork is one that is ready to be promoted to
+        ACTIVE or is currently draining. This field can be updated with a
+        patch request.
 
         Values:
             UNDEFINED_ROLE (0):
@@ -93791,6 +94691,11 @@ class Subnetwork(proto.Message):
     region: str = proto.Field(
         proto.STRING,
         number=138946292,
+        optional=True,
+    )
+    reserved_internal_range: str = proto.Field(
+        proto.STRING,
+        number=286248754,
         optional=True,
     )
     role: str = proto.Field(
@@ -94143,6 +95048,10 @@ class SubnetworkSecondaryRange(proto.Message):
             name must be unique within the subnetwork.
 
             This field is a member of `oneof`_ ``_range_name``.
+        reserved_internal_range (str):
+            The URL of the reserved internal range.
+
+            This field is a member of `oneof`_ ``_reserved_internal_range``.
     """
 
     ip_cidr_range: str = proto.Field(
@@ -94153,6 +95062,11 @@ class SubnetworkSecondaryRange(proto.Message):
     range_name: str = proto.Field(
         proto.STRING,
         number=332216397,
+        optional=True,
+    )
+    reserved_internal_range: str = proto.Field(
+        proto.STRING,
+        number=286248754,
         optional=True,
     )
 
@@ -94291,8 +95205,11 @@ class SuspendInstanceRequest(proto.Message):
 
     Attributes:
         discard_local_ssd (bool):
-            If true, discard the contents of any attached
-            localSSD partitions. Default value is false.
+            This property is required if the instance has
+            any attached Local SSD disks. If false, Local
+            SSD data will be preserved when the instance is
+            suspended. If true, the contents of any attached
+            Local SSD disks will be discarded.
 
             This field is a member of `oneof`_ ``_discard_local_ssd``.
         instance (str):
@@ -94412,7 +95329,7 @@ class TCPHealthCheck(proto.Message):
             Specifies how a port is selected for health checking. Can be
             one of the following values: USE_FIXED_PORT: Specifies a
             port number explicitly using the port field in the health
-            check. Supported by backend services for pass-through load
+            check. Supported by backend services for passthrough load
             balancers and backend services for proxy load balancers. Not
             supported by target pools. The health check supports all
             backends supported by the backend service provided the
@@ -94423,7 +95340,7 @@ class TCPHealthCheck(proto.Message):
             specifying the health check port by referring to the backend
             service. Only supported by backend services for proxy load
             balancers. Not supported by target pools. Not supported by
-            backend services for pass-through load balancers. Supports
+            backend services for passthrough load balancers. Supports
             all backends that can be health checked; for example,
             GCE_VM_IP_PORT network endpoint groups and instance group
             backends. For GCE_VM_IP_PORT network endpoint group
@@ -94464,24 +95381,24 @@ class TCPHealthCheck(proto.Message):
         r"""Specifies how a port is selected for health checking. Can be one of
         the following values: USE_FIXED_PORT: Specifies a port number
         explicitly using the port field in the health check. Supported by
-        backend services for pass-through load balancers and backend
-        services for proxy load balancers. Not supported by target pools.
-        The health check supports all backends supported by the backend
-        service provided the backend can be health checked. For example,
-        GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint
-        groups, and instance group backends. USE_NAMED_PORT: Not supported.
+        backend services for passthrough load balancers and backend services
+        for proxy load balancers. Not supported by target pools. The health
+        check supports all backends supported by the backend service
+        provided the backend can be health checked. For example, GCE_VM_IP
+        network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and
+        instance group backends. USE_NAMED_PORT: Not supported.
         USE_SERVING_PORT: Provides an indirect method of specifying the
         health check port by referring to the backend service. Only
         supported by backend services for proxy load balancers. Not
         supported by target pools. Not supported by backend services for
-        pass-through load balancers. Supports all backends that can be
-        health checked; for example, GCE_VM_IP_PORT network endpoint groups
-        and instance group backends. For GCE_VM_IP_PORT network endpoint
-        group backends, the health check uses the port number specified for
-        each endpoint in the network endpoint group. For instance group
-        backends, the health check uses the port number determined by
-        looking up the backend service's named port in the instance group's
-        list of named ports.
+        passthrough load balancers. Supports all backends that can be health
+        checked; for example, GCE_VM_IP_PORT network endpoint groups and
+        instance group backends. For GCE_VM_IP_PORT network endpoint group
+        backends, the health check uses the port number specified for each
+        endpoint in the network endpoint group. For instance group backends,
+        the health check uses the port number determined by looking up the
+        backend service's named port in the instance group's list of named
+        ports.
 
         Values:
             UNDEFINED_PORT_SPECIFICATION (0):
@@ -96052,11 +96969,11 @@ class TargetInstancesScopedList(proto.Message):
 
 
 class TargetPool(proto.Message):
-    r"""Represents a Target Pool resource. Target pools are used for
-    network TCP/UDP load balancing. A target pool references member
-    instances, an associated legacy HttpHealthCheck resource, and,
-    optionally, a backup target pool. For more information, read
-    Using target pools.
+    r"""Represents a Target Pool resource. Target pools are used with
+    external passthrough Network Load Balancers. A target pool
+    references member instances, an associated legacy
+    HttpHealthCheck resource, and, optionally, a backup target pool.
+    For more information, read Using target pools.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -96705,10 +97622,10 @@ class TargetSslProxiesSetSslCertificatesRequest(proto.Message):
 
 class TargetSslProxy(proto.Message):
     r"""Represents a Target SSL Proxy resource. A target SSL proxy is
-    a component of a SSL Proxy load balancer. Global forwarding
-    rules reference a target SSL proxy, and the target proxy then
-    references an external backend service. For more information,
-    read Using Target Proxies.
+    a component of a Proxy Network Load Balancer. The forwarding
+    rule references the target SSL proxy, and the target proxy then
+    references a backend service. For more information, read Proxy
+    Network Load Balancer overview.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -97020,10 +97937,10 @@ class TargetTcpProxiesSetProxyHeaderRequest(proto.Message):
 
 class TargetTcpProxy(proto.Message):
     r"""Represents a Target TCP Proxy resource. A target TCP proxy is
-    a component of a TCP Proxy load balancer. Global forwarding
-    rules reference target TCP proxy, and the target proxy then
-    references an external backend service. For more information,
-    read TCP Proxy Load Balancing overview.
+    a component of a Proxy Network Load Balancer. The forwarding
+    rule references the target TCP proxy, and the target proxy then
+    references a backend service. For more information, read Proxy
+    Network Load Balancer overview.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -101058,33 +101975,31 @@ class UsableSubnetwork(proto.Message):
             This field is a member of `oneof`_ ``_network``.
         purpose (str):
             The purpose of the resource. This field can be either
-            PRIVATE, REGIONAL_MANAGED_PROXY, PRIVATE_SERVICE_CONNECT, or
-            INTERNAL_HTTPS_LOAD_BALANCER. PRIVATE is the default purpose
+            PRIVATE, GLOBAL_MANAGED_PROXY, REGIONAL_MANAGED_PROXY,
+            PRIVATE_SERVICE_CONNECT, or PRIVATE is the default purpose
             for user-created subnets or subnets that are automatically
-            created in auto mode networks. A subnet with purpose set to
-            REGIONAL_MANAGED_PROXY is a user-created subnetwork that is
-            reserved for regional Envoy-based load balancers. A subnet
-            with purpose set to PRIVATE_SERVICE_CONNECT is used to
-            publish services using Private Service Connect. A subnet
-            with purpose set to INTERNAL_HTTPS_LOAD_BALANCER is a
-            proxy-only subnet that can be used only by regional internal
-            HTTP(S) load balancers. Note that REGIONAL_MANAGED_PROXY is
-            the preferred setting for all regional Envoy load balancers.
-            If unspecified, the subnet purpose defaults to PRIVATE. The
-            enableFlowLogs field isn't supported if the subnet purpose
-            field is set to REGIONAL_MANAGED_PROXY. Check the Purpose
-            enum for the list of possible values.
+            created in auto mode networks. Subnets with purpose set to
+            GLOBAL_MANAGED_PROXY or REGIONAL_MANAGED_PROXY are
+            user-created subnetworks that are reserved for Envoy-based
+            load balancers. A subnet with purpose set to
+            PRIVATE_SERVICE_CONNECT is used to publish services using
+            Private Service Connect. If unspecified, the subnet purpose
+            defaults to PRIVATE. The enableFlowLogs field isn't
+            supported if the subnet purpose field is set to
+            GLOBAL_MANAGED_PROXY or REGIONAL_MANAGED_PROXY. Check the
+            Purpose enum for the list of possible values.
 
             This field is a member of `oneof`_ ``_purpose``.
         role (str):
             The role of subnetwork. Currently, this field is only used
-            when purpose = REGIONAL_MANAGED_PROXY. The value can be set
-            to ACTIVE or BACKUP. An ACTIVE subnetwork is one that is
-            currently being used for Envoy-based load balancers in a
-            region. A BACKUP subnetwork is one that is ready to be
-            promoted to ACTIVE or is currently draining. This field can
-            be updated with a patch request. Check the Role enum for the
-            list of possible values.
+            when purpose is set to GLOBAL_MANAGED_PROXY or
+            REGIONAL_MANAGED_PROXY. The value can be set to ACTIVE or
+            BACKUP. An ACTIVE subnetwork is one that is currently being
+            used for Envoy-based load balancers in a region. A BACKUP
+            subnetwork is one that is ready to be promoted to ACTIVE or
+            is currently draining. This field can be updated with a
+            patch request. Check the Role enum for the list of possible
+            values.
 
             This field is a member of `oneof`_ ``_role``.
         secondary_ip_ranges (MutableSequence[google.cloud.compute_v1.types.UsableSubnetworkSecondaryRange]):
@@ -101129,20 +102044,17 @@ class UsableSubnetwork(proto.Message):
 
     class Purpose(proto.Enum):
         r"""The purpose of the resource. This field can be either PRIVATE,
-        REGIONAL_MANAGED_PROXY, PRIVATE_SERVICE_CONNECT, or
-        INTERNAL_HTTPS_LOAD_BALANCER. PRIVATE is the default purpose for
+        GLOBAL_MANAGED_PROXY, REGIONAL_MANAGED_PROXY,
+        PRIVATE_SERVICE_CONNECT, or PRIVATE is the default purpose for
         user-created subnets or subnets that are automatically created in
-        auto mode networks. A subnet with purpose set to
-        REGIONAL_MANAGED_PROXY is a user-created subnetwork that is reserved
-        for regional Envoy-based load balancers. A subnet with purpose set
+        auto mode networks. Subnets with purpose set to GLOBAL_MANAGED_PROXY
+        or REGIONAL_MANAGED_PROXY are user-created subnetworks that are
+        reserved for Envoy-based load balancers. A subnet with purpose set
         to PRIVATE_SERVICE_CONNECT is used to publish services using Private
-        Service Connect. A subnet with purpose set to
-        INTERNAL_HTTPS_LOAD_BALANCER is a proxy-only subnet that can be used
-        only by regional internal HTTP(S) load balancers. Note that
-        REGIONAL_MANAGED_PROXY is the preferred setting for all regional
-        Envoy load balancers. If unspecified, the subnet purpose defaults to
+        Service Connect. If unspecified, the subnet purpose defaults to
         PRIVATE. The enableFlowLogs field isn't supported if the subnet
-        purpose field is set to REGIONAL_MANAGED_PROXY.
+        purpose field is set to GLOBAL_MANAGED_PROXY or
+        REGIONAL_MANAGED_PROXY.
 
         Values:
             UNDEFINED_PURPOSE (0):
@@ -101152,8 +102064,8 @@ class UsableSubnetwork(proto.Message):
                 Subnet reserved for Global Envoy-based Load
                 Balancing.
             INTERNAL_HTTPS_LOAD_BALANCER (248748889):
-                Subnet reserved for Internal HTTP(S) Load
-                Balancing.
+                Subnet reserved for Internal HTTP(S) Load Balancing. This is
+                a legacy purpose, please use REGIONAL_MANAGED_PROXY instead.
             PRIVATE (403485027):
                 Regular user created or automatically created
                 subnet.
@@ -101181,11 +102093,12 @@ class UsableSubnetwork(proto.Message):
 
     class Role(proto.Enum):
         r"""The role of subnetwork. Currently, this field is only used when
-        purpose = REGIONAL_MANAGED_PROXY. The value can be set to ACTIVE or
-        BACKUP. An ACTIVE subnetwork is one that is currently being used for
-        Envoy-based load balancers in a region. A BACKUP subnetwork is one
-        that is ready to be promoted to ACTIVE or is currently draining.
-        This field can be updated with a patch request.
+        purpose is set to GLOBAL_MANAGED_PROXY or REGIONAL_MANAGED_PROXY.
+        The value can be set to ACTIVE or BACKUP. An ACTIVE subnetwork is
+        one that is currently being used for Envoy-based load balancers in a
+        region. A BACKUP subnetwork is one that is ready to be promoted to
+        ACTIVE or is currently draining. This field can be updated with a
+        patch request.
 
         Values:
             UNDEFINED_ROLE (0):

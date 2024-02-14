@@ -3585,9 +3585,8 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         instance, the currentAction is CREATING. If a previous action
         failed, the list displays the errors for that failed action. The
         orderBy query parameter is not supported. The ``pageToken``
-        query parameter is supported only in the alpha and beta API and
-        only if the group's ``listManagedInstancesResults`` field is set
-        to ``PAGINATED``.
+        query parameter is supported only if the group's
+        ``listManagedInstancesResults`` field is set to ``PAGINATED``.
 
         .. code-block:: python
 

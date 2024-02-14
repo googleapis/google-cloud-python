@@ -2469,9 +2469,9 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             backend_bucket (str):
-                Name of the BackendService resource
-                to which the security policy should be
-                set. The name should conform to RFC1035.
+                Name of the BackendBucket resource to
+                which the security policy should be set.
+                The name should conform to RFC1035.
 
                 This corresponds to the ``backend_bucket`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -2607,9 +2607,9 @@ class BackendBucketsClient(metaclass=BackendBucketsClientMeta):
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             backend_bucket (str):
-                Name of the BackendService resource
-                to which the security policy should be
-                set. The name should conform to RFC1035.
+                Name of the BackendBucket resource to
+                which the security policy should be set.
+                The name should conform to RFC1035.
 
                 This corresponds to the ``backend_bucket`` field
                 on the ``request`` instance; if ``request`` is provided, this

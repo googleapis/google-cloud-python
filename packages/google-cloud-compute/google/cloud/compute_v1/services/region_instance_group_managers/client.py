@@ -3498,9 +3498,8 @@ class RegionInstanceGroupManagersClient(
         that are scheduled to be created. The list includes any current
         actions that the group has scheduled for its instances. The
         orderBy query parameter is not supported. The ``pageToken``
-        query parameter is supported only in the alpha and beta API and
-        only if the group's ``listManagedInstancesResults`` field is set
-        to ``PAGINATED``.
+        query parameter is supported only if the group's
+        ``listManagedInstancesResults`` field is set to ``PAGINATED``.
 
         .. code-block:: python
 

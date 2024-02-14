@@ -1132,9 +1132,9 @@ class ForwardingRulesClient(metaclass=ForwardingRulesClientMeta):
                 [Regional](https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules)
                 A forwarding rule and its corresponding IP address
                 represent the frontend configuration of a Google Cloud
-                Platform load balancer. Forwarding rules can also
-                reference target instances and Cloud VPN Classic
-                gateways (targetVpnGateway). For more information, read
+                load balancer. Forwarding rules can also reference
+                target instances and Cloud VPN Classic gateways
+                (targetVpnGateway). For more information, read
                 Forwarding rule concepts and Using protocol forwarding.
 
         """

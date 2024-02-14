@@ -1610,6 +1610,7 @@ def test_get_rest(request_type):
             id=205,
             kind="kind_value",
             name="name_value",
+            satisfies_pzi=True,
             satisfies_pzs=True,
             self_link="self_link_value",
             source_instance="source_instance_value",
@@ -1637,6 +1638,7 @@ def test_get_rest(request_type):
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.satisfies_pzi is True
     assert response.satisfies_pzs is True
     assert response.self_link == "self_link_value"
     assert response.source_instance == "source_instance_value"
@@ -2226,6 +2228,7 @@ def test_insert_rest(request_type):
                         "disk_name": "disk_name_value",
                         "disk_size_gb": 1261,
                         "disk_type": "disk_type_value",
+                        "enable_confidential_compute": True,
                         "labels": {},
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
@@ -2362,6 +2365,7 @@ def test_insert_rest(request_type):
         "kind": "kind_value",
         "machine_image_encryption_key": {},
         "name": "name_value",
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "saved_disks": [
             {
@@ -2859,6 +2863,7 @@ def test_insert_unary_rest(request_type):
                         "disk_name": "disk_name_value",
                         "disk_size_gb": 1261,
                         "disk_type": "disk_type_value",
+                        "enable_confidential_compute": True,
                         "labels": {},
                         "licenses": ["licenses_value1", "licenses_value2"],
                         "on_update_action": "on_update_action_value",
@@ -2995,6 +3000,7 @@ def test_insert_unary_rest(request_type):
         "kind": "kind_value",
         "machine_image_encryption_key": {},
         "name": "name_value",
+        "satisfies_pzi": True,
         "satisfies_pzs": True,
         "saved_disks": [
             {
