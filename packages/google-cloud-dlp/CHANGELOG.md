@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.15.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.15.1...google-cloud-dlp-v3.15.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* fix ValueError in test__validate_universe_domain ([dd749df](https://github.com/googleapis/google-cloud-python/commit/dd749dfb4caf2e33f1152dfd8c4b0ac5424c381c))
+
 ## [3.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.15.0...google-cloud-dlp-v3.15.1) (2024-02-06)
 
 

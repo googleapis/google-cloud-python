@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.7...google-cloud-eventarc-publishing-v0.6.8) (2024-02-14)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12283](https://github.com/googleapis/google-cloud-python/issues/12283)) ([f20b41a](https://github.com/googleapis/google-cloud-python/commit/f20b41ac35b02a40135b83edfe819ff7a355ab21))
+
 ## [0.6.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-eventarc-publishing-v0.6.6...google-cloud-eventarc-publishing-v0.6.7) (2024-02-06)
 
 

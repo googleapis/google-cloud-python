@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-domains-v1.7.1...google-cloud-domains-v1.7.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12283](https://github.com/googleapis/google-cloud-python/issues/12283)) ([f20b41a](https://github.com/googleapis/google-cloud-python/commit/f20b41ac35b02a40135b83edfe819ff7a355ab21))
+
 ## [1.7.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-domains-v1.7.0...google-cloud-domains-v1.7.1) (2024-02-06)
 
 
