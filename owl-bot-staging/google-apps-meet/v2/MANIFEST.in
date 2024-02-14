@@ -1,0 +1,2 @@
+recursive-include google/apps/meet *.py
+recursive-include google/apps/meet_v2 *.py
