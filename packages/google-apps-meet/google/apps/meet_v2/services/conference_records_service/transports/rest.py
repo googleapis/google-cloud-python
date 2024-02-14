@@ -589,7 +589,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -677,7 +676,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -774,7 +772,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -863,7 +860,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -953,7 +949,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1044,7 +1039,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1125,7 +1119,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1213,7 +1206,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1303,7 +1295,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1389,7 +1380,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1480,7 +1470,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1568,7 +1557,6 @@ class ConferenceRecordsServiceRestTransport(ConferenceRecordsServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
