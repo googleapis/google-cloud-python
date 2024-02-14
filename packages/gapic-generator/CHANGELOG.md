@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [1.14.3](https://github.com/googleapis/gapic-generator-python/compare/v1.14.2...v1.14.3) (2024-02-14)
+
+
+### Bug Fixes
+
+* Fix TypeError: MessageToJson() got an unexpected keyword argument 'including_default_value_fields' ([#1936](https://github.com/googleapis/gapic-generator-python/issues/1936)) ([12734ff](https://github.com/googleapis/gapic-generator-python/commit/12734ffb37ab005d556f7b7a23219701d404487d))
+* Require google-api-core 1.34.1 ([#1942](https://github.com/googleapis/gapic-generator-python/issues/1942)) ([6c176a3](https://github.com/googleapis/gapic-generator-python/commit/6c176a3277c935bf5b02ce2d1a8b1ef7503c338a))
+* Resolve issue with missing import for certain enums in **/types/… ([#1944](https://github.com/googleapis/gapic-generator-python/issues/1944)) ([97a4eed](https://github.com/googleapis/gapic-generator-python/commit/97a4eedeee196568008ce6612abbce566d9ad5a0))
+
 ## [1.14.2](https://github.com/googleapis/gapic-generator-python/compare/v1.14.1...v1.14.2) (2024-02-06)
 
 
