@@ -302,9 +302,19 @@
                 "delete_entity_type"
               ]
             },
+            "ExportEntityTypes": {
+              "methods": [
+                "export_entity_types"
+              ]
+            },
             "GetEntityType": {
               "methods": [
                 "get_entity_type"
+              ]
+            },
+            "ImportEntityTypes": {
+              "methods": [
+                "import_entity_types"
               ]
             },
             "ListEntityTypes": {
@@ -332,9 +342,19 @@
                 "delete_entity_type"
               ]
             },
+            "ExportEntityTypes": {
+              "methods": [
+                "export_entity_types"
+              ]
+            },
             "GetEntityType": {
               "methods": [
                 "get_entity_type"
+              ]
+            },
+            "ImportEntityTypes": {
+              "methods": [
+                "import_entity_types"
               ]
             },
             "ListEntityTypes": {
@@ -362,9 +382,19 @@
                 "delete_entity_type"
               ]
             },
+            "ExportEntityTypes": {
+              "methods": [
+                "export_entity_types"
+              ]
+            },
             "GetEntityType": {
               "methods": [
                 "get_entity_type"
+              ]
+            },
+            "ImportEntityTypes": {
+              "methods": [
+                "import_entity_types"
               ]
             },
             "ListEntityTypes": {
@@ -529,6 +559,100 @@
             "UpdateEnvironment": {
               "methods": [
                 "update_environment"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "Examples": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ExamplesClient",
+          "rpcs": {
+            "CreateExample": {
+              "methods": [
+                "create_example"
+              ]
+            },
+            "DeleteExample": {
+              "methods": [
+                "delete_example"
+              ]
+            },
+            "GetExample": {
+              "methods": [
+                "get_example"
+              ]
+            },
+            "ListExamples": {
+              "methods": [
+                "list_examples"
+              ]
+            },
+            "UpdateExample": {
+              "methods": [
+                "update_example"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ExamplesAsyncClient",
+          "rpcs": {
+            "CreateExample": {
+              "methods": [
+                "create_example"
+              ]
+            },
+            "DeleteExample": {
+              "methods": [
+                "delete_example"
+              ]
+            },
+            "GetExample": {
+              "methods": [
+                "get_example"
+              ]
+            },
+            "ListExamples": {
+              "methods": [
+                "list_examples"
+              ]
+            },
+            "UpdateExample": {
+              "methods": [
+                "update_example"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ExamplesClient",
+          "rpcs": {
+            "CreateExample": {
+              "methods": [
+                "create_example"
+              ]
+            },
+            "DeleteExample": {
+              "methods": [
+                "delete_example"
+              ]
+            },
+            "GetExample": {
+              "methods": [
+                "get_example"
+              ]
+            },
+            "ListExamples": {
+              "methods": [
+                "list_examples"
+              ]
+            },
+            "UpdateExample": {
+              "methods": [
+                "update_example"
               ]
             }
           }
@@ -1140,6 +1264,160 @@
         }
       }
     },
+    "Playbooks": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "PlaybooksClient",
+          "rpcs": {
+            "CreatePlaybook": {
+              "methods": [
+                "create_playbook"
+              ]
+            },
+            "CreatePlaybookVersion": {
+              "methods": [
+                "create_playbook_version"
+              ]
+            },
+            "DeletePlaybook": {
+              "methods": [
+                "delete_playbook"
+              ]
+            },
+            "DeletePlaybookVersion": {
+              "methods": [
+                "delete_playbook_version"
+              ]
+            },
+            "GetPlaybook": {
+              "methods": [
+                "get_playbook"
+              ]
+            },
+            "GetPlaybookVersion": {
+              "methods": [
+                "get_playbook_version"
+              ]
+            },
+            "ListPlaybookVersions": {
+              "methods": [
+                "list_playbook_versions"
+              ]
+            },
+            "ListPlaybooks": {
+              "methods": [
+                "list_playbooks"
+              ]
+            },
+            "UpdatePlaybook": {
+              "methods": [
+                "update_playbook"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "PlaybooksAsyncClient",
+          "rpcs": {
+            "CreatePlaybook": {
+              "methods": [
+                "create_playbook"
+              ]
+            },
+            "CreatePlaybookVersion": {
+              "methods": [
+                "create_playbook_version"
+              ]
+            },
+            "DeletePlaybook": {
+              "methods": [
+                "delete_playbook"
+              ]
+            },
+            "DeletePlaybookVersion": {
+              "methods": [
+                "delete_playbook_version"
+              ]
+            },
+            "GetPlaybook": {
+              "methods": [
+                "get_playbook"
+              ]
+            },
+            "GetPlaybookVersion": {
+              "methods": [
+                "get_playbook_version"
+              ]
+            },
+            "ListPlaybookVersions": {
+              "methods": [
+                "list_playbook_versions"
+              ]
+            },
+            "ListPlaybooks": {
+              "methods": [
+                "list_playbooks"
+              ]
+            },
+            "UpdatePlaybook": {
+              "methods": [
+                "update_playbook"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "PlaybooksClient",
+          "rpcs": {
+            "CreatePlaybook": {
+              "methods": [
+                "create_playbook"
+              ]
+            },
+            "CreatePlaybookVersion": {
+              "methods": [
+                "create_playbook_version"
+              ]
+            },
+            "DeletePlaybook": {
+              "methods": [
+                "delete_playbook"
+              ]
+            },
+            "DeletePlaybookVersion": {
+              "methods": [
+                "delete_playbook_version"
+              ]
+            },
+            "GetPlaybook": {
+              "methods": [
+                "get_playbook"
+              ]
+            },
+            "GetPlaybookVersion": {
+              "methods": [
+                "get_playbook_version"
+              ]
+            },
+            "ListPlaybookVersions": {
+              "methods": [
+                "list_playbook_versions"
+              ]
+            },
+            "ListPlaybooks": {
+              "methods": [
+                "list_playbooks"
+              ]
+            },
+            "UpdatePlaybook": {
+              "methods": [
+                "update_playbook"
+              ]
+            }
+          }
+        }
+      }
+    },
     "SecuritySettingsService": {
       "clients": {
         "grpc": {
@@ -1348,6 +1626,11 @@
                 "match_intent"
               ]
             },
+            "ServerStreamingDetectIntent": {
+              "methods": [
+                "server_streaming_detect_intent"
+              ]
+            },
             "StreamingDetectIntent": {
               "methods": [
                 "streaming_detect_intent"
@@ -1378,6 +1661,11 @@
                 "match_intent"
               ]
             },
+            "ServerStreamingDetectIntent": {
+              "methods": [
+                "server_streaming_detect_intent"
+              ]
+            },
             "StreamingDetectIntent": {
               "methods": [
                 "streaming_detect_intent"
@@ -1406,6 +1694,11 @@
             "MatchIntent": {
               "methods": [
                 "match_intent"
+              ]
+            },
+            "ServerStreamingDetectIntent": {
+              "methods": [
+                "server_streaming_detect_intent"
               ]
             },
             "StreamingDetectIntent": {
@@ -1615,6 +1908,115 @@
             "UpdateTestCase": {
               "methods": [
                 "update_test_case"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "Tools": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ToolsClient",
+          "rpcs": {
+            "CreateTool": {
+              "methods": [
+                "create_tool"
+              ]
+            },
+            "DeleteTool": {
+              "methods": [
+                "delete_tool"
+              ]
+            },
+            "ExportTools": {
+              "methods": [
+                "export_tools"
+              ]
+            },
+            "GetTool": {
+              "methods": [
+                "get_tool"
+              ]
+            },
+            "ListTools": {
+              "methods": [
+                "list_tools"
+              ]
+            },
+            "UpdateTool": {
+              "methods": [
+                "update_tool"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ToolsAsyncClient",
+          "rpcs": {
+            "CreateTool": {
+              "methods": [
+                "create_tool"
+              ]
+            },
+            "DeleteTool": {
+              "methods": [
+                "delete_tool"
+              ]
+            },
+            "ExportTools": {
+              "methods": [
+                "export_tools"
+              ]
+            },
+            "GetTool": {
+              "methods": [
+                "get_tool"
+              ]
+            },
+            "ListTools": {
+              "methods": [
+                "list_tools"
+              ]
+            },
+            "UpdateTool": {
+              "methods": [
+                "update_tool"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ToolsClient",
+          "rpcs": {
+            "CreateTool": {
+              "methods": [
+                "create_tool"
+              ]
+            },
+            "DeleteTool": {
+              "methods": [
+                "delete_tool"
+              ]
+            },
+            "ExportTools": {
+              "methods": [
+                "export_tools"
+              ]
+            },
+            "GetTool": {
+              "methods": [
+                "get_tool"
+              ]
+            },
+            "ListTools": {
+              "methods": [
+                "list_tools"
+              ]
+            },
+            "UpdateTool": {
+              "methods": [
+                "update_tool"
               ]
             }
           }

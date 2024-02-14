@@ -91,6 +91,8 @@ class TestCasesAsyncClient:
     parse_test_case_result_path = staticmethod(
         TestCasesClient.parse_test_case_result_path
     )
+    tool_path = staticmethod(TestCasesClient.tool_path)
+    parse_tool_path = staticmethod(TestCasesClient.parse_tool_path)
     transition_route_group_path = staticmethod(
         TestCasesClient.transition_route_group_path
     )

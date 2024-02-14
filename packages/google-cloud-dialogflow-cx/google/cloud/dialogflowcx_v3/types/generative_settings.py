@@ -125,6 +125,11 @@ class GenerativeSettings(proto.Message):
                 Agent scope, e.g. "Example company website",
                 "internal Example company website for
                 employees", "manual of car owner".
+            disable_data_store_fallback (bool):
+                Whether to disable fallback to Data Store
+                search results (in case the LLM couldn't pick a
+                proper answer). Per default the feature is
+                enabled.
         """
 
         business: str = proto.Field(
@@ -146,6 +151,10 @@ class GenerativeSettings(proto.Message):
         agent_scope: str = proto.Field(
             proto.STRING,
             number=5,
+        )
+        disable_data_store_fallback: bool = proto.Field(
+            proto.BOOL,
+            number=8,
         )
 
     name: str = proto.Field(

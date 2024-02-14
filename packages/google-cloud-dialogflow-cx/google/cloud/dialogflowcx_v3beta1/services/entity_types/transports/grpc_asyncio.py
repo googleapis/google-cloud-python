@@ -16,7 +16,7 @@
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers_async
+from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
@@ -161,6 +161,7 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsAsyncClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -235,6 +236,22 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
         """
         # Return the channel from cache.
         return self._grpc_channel
+
+    @property
+    def operations_client(self) -> operations_v1.OperationsAsyncClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsAsyncClient(
+                self.grpc_channel
+            )
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
     def get_entity_type(
@@ -385,6 +402,62 @@ class EntityTypesGrpcAsyncIOTransport(EntityTypesTransport):
                 response_deserializer=entity_type.ListEntityTypesResponse.deserialize,
             )
         return self._stubs["list_entity_types"]
+
+    @property
+    def export_entity_types(
+        self,
+    ) -> Callable[
+        [entity_type.ExportEntityTypesRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the export entity types method over gRPC.
+
+        Exports the selected entity types.
+
+        Returns:
+            Callable[[~.ExportEntityTypesRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "export_entity_types" not in self._stubs:
+            self._stubs["export_entity_types"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.EntityTypes/ExportEntityTypes",
+                request_serializer=entity_type.ExportEntityTypesRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["export_entity_types"]
+
+    @property
+    def import_entity_types(
+        self,
+    ) -> Callable[
+        [entity_type.ImportEntityTypesRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the import entity types method over gRPC.
+
+        Imports the specified entitytypes into the agent.
+
+        Returns:
+            Callable[[~.ImportEntityTypesRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "import_entity_types" not in self._stubs:
+            self._stubs["import_entity_types"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dialogflow.cx.v3beta1.EntityTypes/ImportEntityTypes",
+                request_serializer=entity_type.ImportEntityTypesRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["import_entity_types"]
 
     def close(self):
         return self.grpc_channel.close()

@@ -2760,6 +2760,159 @@
           "fullName": "google.cloud.dialogflowcx_v3beta1.EntityTypesAsyncClient",
           "shortName": "EntityTypesAsyncClient"
         },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.EntityTypesAsyncClient.export_entity_types",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.EntityTypes.ExportEntityTypes",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.EntityTypes",
+            "shortName": "EntityTypes"
+          },
+          "shortName": "ExportEntityTypes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ExportEntityTypesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "export_entity_types"
+      },
+      "description": "Sample for ExportEntityTypes",
+      "file": "dialogflow_v3beta1_generated_entity_types_export_entity_types_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_EntityTypes_ExportEntityTypes_async",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_entity_types_export_entity_types_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.EntityTypesClient",
+          "shortName": "EntityTypesClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.EntityTypesClient.export_entity_types",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.EntityTypes.ExportEntityTypes",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.EntityTypes",
+            "shortName": "EntityTypes"
+          },
+          "shortName": "ExportEntityTypes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ExportEntityTypesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "export_entity_types"
+      },
+      "description": "Sample for ExportEntityTypes",
+      "file": "dialogflow_v3beta1_generated_entity_types_export_entity_types_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_EntityTypes_ExportEntityTypes_sync",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_entity_types_export_entity_types_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.EntityTypesAsyncClient",
+          "shortName": "EntityTypesAsyncClient"
+        },
         "fullName": "google.cloud.dialogflowcx_v3beta1.EntityTypesAsyncClient.get_entity_type",
         "method": {
           "fullName": "google.cloud.dialogflow.cx.v3beta1.EntityTypes.GetEntityType",
@@ -2912,6 +3065,159 @@
         }
       ],
       "title": "dialogflow_v3beta1_generated_entity_types_get_entity_type_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.EntityTypesAsyncClient",
+          "shortName": "EntityTypesAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.EntityTypesAsyncClient.import_entity_types",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.EntityTypes.ImportEntityTypes",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.EntityTypes",
+            "shortName": "EntityTypes"
+          },
+          "shortName": "ImportEntityTypes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ImportEntityTypesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "import_entity_types"
+      },
+      "description": "Sample for ImportEntityTypes",
+      "file": "dialogflow_v3beta1_generated_entity_types_import_entity_types_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_EntityTypes_ImportEntityTypes_async",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_entity_types_import_entity_types_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.EntityTypesClient",
+          "shortName": "EntityTypesClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.EntityTypesClient.import_entity_types",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.EntityTypes.ImportEntityTypes",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.EntityTypes",
+            "shortName": "EntityTypes"
+          },
+          "shortName": "ImportEntityTypes"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ImportEntityTypesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "import_entity_types"
+      },
+      "description": "Sample for ImportEntityTypes",
+      "file": "dialogflow_v3beta1_generated_entity_types_import_entity_types_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_EntityTypes_ImportEntityTypes_sync",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_entity_types_import_entity_types_sync.py"
     },
     {
       "canonical": true,
@@ -4685,6 +4991,821 @@
         }
       ],
       "title": "dialogflow_v3beta1_generated_environments_update_environment_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesAsyncClient",
+          "shortName": "ExamplesAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesAsyncClient.create_example",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples.CreateExample",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples",
+            "shortName": "Examples"
+          },
+          "shortName": "CreateExample"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.CreateExampleRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "example",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.Example"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Example",
+        "shortName": "create_example"
+      },
+      "description": "Sample for CreateExample",
+      "file": "dialogflow_v3beta1_generated_examples_create_example_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Examples_CreateExample_async",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_examples_create_example_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesClient",
+          "shortName": "ExamplesClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesClient.create_example",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples.CreateExample",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples",
+            "shortName": "Examples"
+          },
+          "shortName": "CreateExample"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.CreateExampleRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "example",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.Example"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Example",
+        "shortName": "create_example"
+      },
+      "description": "Sample for CreateExample",
+      "file": "dialogflow_v3beta1_generated_examples_create_example_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Examples_CreateExample_sync",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_examples_create_example_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesAsyncClient",
+          "shortName": "ExamplesAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesAsyncClient.delete_example",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples.DeleteExample",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples",
+            "shortName": "Examples"
+          },
+          "shortName": "DeleteExample"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.DeleteExampleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_example"
+      },
+      "description": "Sample for DeleteExample",
+      "file": "dialogflow_v3beta1_generated_examples_delete_example_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Examples_DeleteExample_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_examples_delete_example_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesClient",
+          "shortName": "ExamplesClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesClient.delete_example",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples.DeleteExample",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples",
+            "shortName": "Examples"
+          },
+          "shortName": "DeleteExample"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.DeleteExampleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_example"
+      },
+      "description": "Sample for DeleteExample",
+      "file": "dialogflow_v3beta1_generated_examples_delete_example_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Examples_DeleteExample_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_examples_delete_example_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesAsyncClient",
+          "shortName": "ExamplesAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesAsyncClient.get_example",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples.GetExample",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples",
+            "shortName": "Examples"
+          },
+          "shortName": "GetExample"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.GetExampleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Example",
+        "shortName": "get_example"
+      },
+      "description": "Sample for GetExample",
+      "file": "dialogflow_v3beta1_generated_examples_get_example_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Examples_GetExample_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_examples_get_example_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesClient",
+          "shortName": "ExamplesClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesClient.get_example",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples.GetExample",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples",
+            "shortName": "Examples"
+          },
+          "shortName": "GetExample"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.GetExampleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Example",
+        "shortName": "get_example"
+      },
+      "description": "Sample for GetExample",
+      "file": "dialogflow_v3beta1_generated_examples_get_example_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Examples_GetExample_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_examples_get_example_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesAsyncClient",
+          "shortName": "ExamplesAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesAsyncClient.list_examples",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples.ListExamples",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples",
+            "shortName": "Examples"
+          },
+          "shortName": "ListExamples"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ListExamplesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.services.examples.pagers.ListExamplesAsyncPager",
+        "shortName": "list_examples"
+      },
+      "description": "Sample for ListExamples",
+      "file": "dialogflow_v3beta1_generated_examples_list_examples_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Examples_ListExamples_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_examples_list_examples_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesClient",
+          "shortName": "ExamplesClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesClient.list_examples",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples.ListExamples",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples",
+            "shortName": "Examples"
+          },
+          "shortName": "ListExamples"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ListExamplesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.services.examples.pagers.ListExamplesPager",
+        "shortName": "list_examples"
+      },
+      "description": "Sample for ListExamples",
+      "file": "dialogflow_v3beta1_generated_examples_list_examples_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Examples_ListExamples_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_examples_list_examples_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesAsyncClient",
+          "shortName": "ExamplesAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesAsyncClient.update_example",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples.UpdateExample",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples",
+            "shortName": "Examples"
+          },
+          "shortName": "UpdateExample"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.UpdateExampleRequest"
+          },
+          {
+            "name": "example",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.Example"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Example",
+        "shortName": "update_example"
+      },
+      "description": "Sample for UpdateExample",
+      "file": "dialogflow_v3beta1_generated_examples_update_example_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Examples_UpdateExample_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_examples_update_example_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesClient",
+          "shortName": "ExamplesClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ExamplesClient.update_example",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples.UpdateExample",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Examples",
+            "shortName": "Examples"
+          },
+          "shortName": "UpdateExample"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.UpdateExampleRequest"
+          },
+          {
+            "name": "example",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.Example"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Example",
+        "shortName": "update_example"
+      },
+      "description": "Sample for UpdateExample",
+      "file": "dialogflow_v3beta1_generated_examples_update_example_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Examples_UpdateExample_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_examples_update_example_sync.py"
     },
     {
       "canonical": true,
@@ -10175,6 +11296,1467 @@
       "clientMethod": {
         "async": true,
         "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient",
+          "shortName": "PlaybooksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient.create_playbook_version",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.CreatePlaybookVersion",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "CreatePlaybookVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.CreatePlaybookVersionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "playbook_version",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.PlaybookVersion"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.PlaybookVersion",
+        "shortName": "create_playbook_version"
+      },
+      "description": "Sample for CreatePlaybookVersion",
+      "file": "dialogflow_v3beta1_generated_playbooks_create_playbook_version_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_CreatePlaybookVersion_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_create_playbook_version_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient",
+          "shortName": "PlaybooksClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient.create_playbook_version",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.CreatePlaybookVersion",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "CreatePlaybookVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.CreatePlaybookVersionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "playbook_version",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.PlaybookVersion"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.PlaybookVersion",
+        "shortName": "create_playbook_version"
+      },
+      "description": "Sample for CreatePlaybookVersion",
+      "file": "dialogflow_v3beta1_generated_playbooks_create_playbook_version_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_CreatePlaybookVersion_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_create_playbook_version_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient",
+          "shortName": "PlaybooksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient.create_playbook",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.CreatePlaybook",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "CreatePlaybook"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.CreatePlaybookRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "playbook",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.Playbook"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Playbook",
+        "shortName": "create_playbook"
+      },
+      "description": "Sample for CreatePlaybook",
+      "file": "dialogflow_v3beta1_generated_playbooks_create_playbook_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_CreatePlaybook_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_create_playbook_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient",
+          "shortName": "PlaybooksClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient.create_playbook",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.CreatePlaybook",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "CreatePlaybook"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.CreatePlaybookRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "playbook",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.Playbook"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Playbook",
+        "shortName": "create_playbook"
+      },
+      "description": "Sample for CreatePlaybook",
+      "file": "dialogflow_v3beta1_generated_playbooks_create_playbook_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_CreatePlaybook_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_create_playbook_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient",
+          "shortName": "PlaybooksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient.delete_playbook_version",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.DeletePlaybookVersion",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "DeletePlaybookVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.DeletePlaybookVersionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_playbook_version"
+      },
+      "description": "Sample for DeletePlaybookVersion",
+      "file": "dialogflow_v3beta1_generated_playbooks_delete_playbook_version_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_DeletePlaybookVersion_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_delete_playbook_version_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient",
+          "shortName": "PlaybooksClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient.delete_playbook_version",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.DeletePlaybookVersion",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "DeletePlaybookVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.DeletePlaybookVersionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_playbook_version"
+      },
+      "description": "Sample for DeletePlaybookVersion",
+      "file": "dialogflow_v3beta1_generated_playbooks_delete_playbook_version_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_DeletePlaybookVersion_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_delete_playbook_version_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient",
+          "shortName": "PlaybooksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient.delete_playbook",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.DeletePlaybook",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "DeletePlaybook"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.DeletePlaybookRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_playbook"
+      },
+      "description": "Sample for DeletePlaybook",
+      "file": "dialogflow_v3beta1_generated_playbooks_delete_playbook_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_DeletePlaybook_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_delete_playbook_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient",
+          "shortName": "PlaybooksClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient.delete_playbook",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.DeletePlaybook",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "DeletePlaybook"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.DeletePlaybookRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_playbook"
+      },
+      "description": "Sample for DeletePlaybook",
+      "file": "dialogflow_v3beta1_generated_playbooks_delete_playbook_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_DeletePlaybook_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_delete_playbook_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient",
+          "shortName": "PlaybooksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient.get_playbook_version",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.GetPlaybookVersion",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "GetPlaybookVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.GetPlaybookVersionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.PlaybookVersion",
+        "shortName": "get_playbook_version"
+      },
+      "description": "Sample for GetPlaybookVersion",
+      "file": "dialogflow_v3beta1_generated_playbooks_get_playbook_version_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_GetPlaybookVersion_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_get_playbook_version_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient",
+          "shortName": "PlaybooksClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient.get_playbook_version",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.GetPlaybookVersion",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "GetPlaybookVersion"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.GetPlaybookVersionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.PlaybookVersion",
+        "shortName": "get_playbook_version"
+      },
+      "description": "Sample for GetPlaybookVersion",
+      "file": "dialogflow_v3beta1_generated_playbooks_get_playbook_version_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_GetPlaybookVersion_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_get_playbook_version_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient",
+          "shortName": "PlaybooksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient.get_playbook",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.GetPlaybook",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "GetPlaybook"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.GetPlaybookRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Playbook",
+        "shortName": "get_playbook"
+      },
+      "description": "Sample for GetPlaybook",
+      "file": "dialogflow_v3beta1_generated_playbooks_get_playbook_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_GetPlaybook_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_get_playbook_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient",
+          "shortName": "PlaybooksClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient.get_playbook",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.GetPlaybook",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "GetPlaybook"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.GetPlaybookRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Playbook",
+        "shortName": "get_playbook"
+      },
+      "description": "Sample for GetPlaybook",
+      "file": "dialogflow_v3beta1_generated_playbooks_get_playbook_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_GetPlaybook_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_get_playbook_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient",
+          "shortName": "PlaybooksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient.list_playbook_versions",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.ListPlaybookVersions",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "ListPlaybookVersions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ListPlaybookVersionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.services.playbooks.pagers.ListPlaybookVersionsAsyncPager",
+        "shortName": "list_playbook_versions"
+      },
+      "description": "Sample for ListPlaybookVersions",
+      "file": "dialogflow_v3beta1_generated_playbooks_list_playbook_versions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_ListPlaybookVersions_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_list_playbook_versions_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient",
+          "shortName": "PlaybooksClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient.list_playbook_versions",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.ListPlaybookVersions",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "ListPlaybookVersions"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ListPlaybookVersionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.services.playbooks.pagers.ListPlaybookVersionsPager",
+        "shortName": "list_playbook_versions"
+      },
+      "description": "Sample for ListPlaybookVersions",
+      "file": "dialogflow_v3beta1_generated_playbooks_list_playbook_versions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_ListPlaybookVersions_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_list_playbook_versions_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient",
+          "shortName": "PlaybooksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient.list_playbooks",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.ListPlaybooks",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "ListPlaybooks"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ListPlaybooksRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.services.playbooks.pagers.ListPlaybooksAsyncPager",
+        "shortName": "list_playbooks"
+      },
+      "description": "Sample for ListPlaybooks",
+      "file": "dialogflow_v3beta1_generated_playbooks_list_playbooks_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_ListPlaybooks_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_list_playbooks_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient",
+          "shortName": "PlaybooksClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient.list_playbooks",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.ListPlaybooks",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "ListPlaybooks"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ListPlaybooksRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.services.playbooks.pagers.ListPlaybooksPager",
+        "shortName": "list_playbooks"
+      },
+      "description": "Sample for ListPlaybooks",
+      "file": "dialogflow_v3beta1_generated_playbooks_list_playbooks_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_ListPlaybooks_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_list_playbooks_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient",
+          "shortName": "PlaybooksAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksAsyncClient.update_playbook",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.UpdatePlaybook",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "UpdatePlaybook"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.UpdatePlaybookRequest"
+          },
+          {
+            "name": "playbook",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.Playbook"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Playbook",
+        "shortName": "update_playbook"
+      },
+      "description": "Sample for UpdatePlaybook",
+      "file": "dialogflow_v3beta1_generated_playbooks_update_playbook_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_UpdatePlaybook_async",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_update_playbook_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient",
+          "shortName": "PlaybooksClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.PlaybooksClient.update_playbook",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks.UpdatePlaybook",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Playbooks",
+            "shortName": "Playbooks"
+          },
+          "shortName": "UpdatePlaybook"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.UpdatePlaybookRequest"
+          },
+          {
+            "name": "playbook",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.Playbook"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Playbook",
+        "shortName": "update_playbook"
+      },
+      "description": "Sample for UpdatePlaybook",
+      "file": "dialogflow_v3beta1_generated_playbooks_update_playbook_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Playbooks_UpdatePlaybook_sync",
+      "segments": [
+        {
+          "end": 55,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 55,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 49,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 52,
+          "start": 50,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 56,
+          "start": 53,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_playbooks_update_playbook_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
           "fullName": "google.cloud.dialogflowcx_v3beta1.SecuritySettingsServiceAsyncClient",
           "shortName": "SecuritySettingsServiceAsyncClient"
         },
@@ -12258,6 +14840,159 @@
         }
       ],
       "title": "dialogflow_v3beta1_generated_sessions_match_intent_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.SessionsAsyncClient",
+          "shortName": "SessionsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.SessionsAsyncClient.server_streaming_detect_intent",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Sessions.ServerStreamingDetectIntent",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Sessions",
+            "shortName": "Sessions"
+          },
+          "shortName": "ServerStreamingDetectIntent"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.DetectIntentRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.dialogflowcx_v3beta1.types.DetectIntentResponse]",
+        "shortName": "server_streaming_detect_intent"
+      },
+      "description": "Sample for ServerStreamingDetectIntent",
+      "file": "dialogflow_v3beta1_generated_sessions_server_streaming_detect_intent_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Sessions_ServerStreamingDetectIntent_async",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_sessions_server_streaming_detect_intent_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.SessionsClient",
+          "shortName": "SessionsClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.SessionsClient.server_streaming_detect_intent",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Sessions.ServerStreamingDetectIntent",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Sessions",
+            "shortName": "Sessions"
+          },
+          "shortName": "ServerStreamingDetectIntent"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.DetectIntentRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.dialogflowcx_v3beta1.types.DetectIntentResponse]",
+        "shortName": "server_streaming_detect_intent"
+      },
+      "description": "Sample for ServerStreamingDetectIntent",
+      "file": "dialogflow_v3beta1_generated_sessions_server_streaming_detect_intent_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Sessions_ServerStreamingDetectIntent_sync",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_sessions_server_streaming_detect_intent_sync.py"
     },
     {
       "canonical": true,
@@ -14466,6 +17201,974 @@
         }
       ],
       "title": "dialogflow_v3beta1_generated_test_cases_update_test_case_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsAsyncClient",
+          "shortName": "ToolsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsAsyncClient.create_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools.CreateTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "CreateTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.CreateToolRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "tool",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.Tool"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Tool",
+        "shortName": "create_tool"
+      },
+      "description": "Sample for CreateTool",
+      "file": "dialogflow_v3beta1_generated_tools_create_tool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Tools_CreateTool_async",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_tools_create_tool_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsClient",
+          "shortName": "ToolsClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsClient.create_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools.CreateTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "CreateTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.CreateToolRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "tool",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.Tool"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Tool",
+        "shortName": "create_tool"
+      },
+      "description": "Sample for CreateTool",
+      "file": "dialogflow_v3beta1_generated_tools_create_tool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Tools_CreateTool_sync",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 51,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 52,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_tools_create_tool_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsAsyncClient",
+          "shortName": "ToolsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsAsyncClient.delete_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools.DeleteTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "DeleteTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.DeleteToolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_tool"
+      },
+      "description": "Sample for DeleteTool",
+      "file": "dialogflow_v3beta1_generated_tools_delete_tool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Tools_DeleteTool_async",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_tools_delete_tool_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsClient",
+          "shortName": "ToolsClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsClient.delete_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools.DeleteTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "DeleteTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.DeleteToolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_tool"
+      },
+      "description": "Sample for DeleteTool",
+      "file": "dialogflow_v3beta1_generated_tools_delete_tool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Tools_DeleteTool_sync",
+      "segments": [
+        {
+          "end": 49,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 49,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 50,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_tools_delete_tool_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsAsyncClient",
+          "shortName": "ToolsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsAsyncClient.export_tools",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools.ExportTools",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "ExportTools"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ExportToolsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "export_tools"
+      },
+      "description": "Sample for ExportTools",
+      "file": "dialogflow_v3beta1_generated_tools_export_tools_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Tools_ExportTools_async",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_tools_export_tools_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsClient",
+          "shortName": "ToolsClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsClient.export_tools",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools.ExportTools",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "ExportTools"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ExportToolsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "export_tools"
+      },
+      "description": "Sample for ExportTools",
+      "file": "dialogflow_v3beta1_generated_tools_export_tools_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Tools_ExportTools_sync",
+      "segments": [
+        {
+          "end": 57,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 57,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 47,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 54,
+          "start": 48,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 58,
+          "start": 55,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_tools_export_tools_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsAsyncClient",
+          "shortName": "ToolsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsAsyncClient.get_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools.GetTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "GetTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.GetToolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Tool",
+        "shortName": "get_tool"
+      },
+      "description": "Sample for GetTool",
+      "file": "dialogflow_v3beta1_generated_tools_get_tool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Tools_GetTool_async",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_tools_get_tool_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsClient",
+          "shortName": "ToolsClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsClient.get_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools.GetTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "GetTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.GetToolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Tool",
+        "shortName": "get_tool"
+      },
+      "description": "Sample for GetTool",
+      "file": "dialogflow_v3beta1_generated_tools_get_tool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Tools_GetTool_sync",
+      "segments": [
+        {
+          "end": 51,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 51,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 52,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_tools_get_tool_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsAsyncClient",
+          "shortName": "ToolsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsAsyncClient.list_tools",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools.ListTools",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "ListTools"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ListToolsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.services.tools.pagers.ListToolsAsyncPager",
+        "shortName": "list_tools"
+      },
+      "description": "Sample for ListTools",
+      "file": "dialogflow_v3beta1_generated_tools_list_tools_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Tools_ListTools_async",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_tools_list_tools_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsClient",
+          "shortName": "ToolsClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsClient.list_tools",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools.ListTools",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "ListTools"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.ListToolsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.services.tools.pagers.ListToolsPager",
+        "shortName": "list_tools"
+      },
+      "description": "Sample for ListTools",
+      "file": "dialogflow_v3beta1_generated_tools_list_tools_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Tools_ListTools_sync",
+      "segments": [
+        {
+          "end": 52,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 52,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 48,
+          "start": 46,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 53,
+          "start": 49,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_tools_list_tools_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsAsyncClient",
+          "shortName": "ToolsAsyncClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsAsyncClient.update_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools.UpdateTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "UpdateTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.UpdateToolRequest"
+          },
+          {
+            "name": "tool",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.Tool"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Tool",
+        "shortName": "update_tool"
+      },
+      "description": "Sample for UpdateTool",
+      "file": "dialogflow_v3beta1_generated_tools_update_tool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Tools_UpdateTool_async",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_tools_update_tool_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsClient",
+          "shortName": "ToolsClient"
+        },
+        "fullName": "google.cloud.dialogflowcx_v3beta1.ToolsClient.update_tool",
+        "method": {
+          "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools.UpdateTool",
+          "service": {
+            "fullName": "google.cloud.dialogflow.cx.v3beta1.Tools",
+            "shortName": "Tools"
+          },
+          "shortName": "UpdateTool"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.UpdateToolRequest"
+          },
+          {
+            "name": "tool",
+            "type": "google.cloud.dialogflowcx_v3beta1.types.Tool"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dialogflowcx_v3beta1.types.Tool",
+        "shortName": "update_tool"
+      },
+      "description": "Sample for UpdateTool",
+      "file": "dialogflow_v3beta1_generated_tools_update_tool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "dialogflow_v3beta1_generated_Tools_UpdateTool_sync",
+      "segments": [
+        {
+          "end": 56,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 56,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 50,
+          "start": 41,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 53,
+          "start": 51,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 57,
+          "start": 54,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "dialogflow_v3beta1_generated_tools_update_tool_sync.py"
     },
     {
       "canonical": true,

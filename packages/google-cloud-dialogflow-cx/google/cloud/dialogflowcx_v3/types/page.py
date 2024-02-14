@@ -76,6 +76,9 @@ class Page(proto.Message):
         display_name (str):
             Required. The human-readable name of the
             page, unique within the flow.
+        description (str):
+            The description of the page. The maximum
+            length is 500 characters.
         entry_fulfillment (google.cloud.dialogflowcx_v3.types.Fulfillment):
             The fulfillment to call when the session is
             entering the page.
@@ -146,6 +149,10 @@ class Page(proto.Message):
     display_name: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=19,
     )
     entry_fulfillment: fulfillment.Fulfillment = proto.Field(
         proto.MESSAGE,

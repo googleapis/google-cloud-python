@@ -235,6 +235,32 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def example_path(
+        project: str,
+        location: str,
+        agent: str,
+        playbook: str,
+        example: str,
+    ) -> str:
+        """Returns a fully-qualified example string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}/examples/{example}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            playbook=playbook,
+            example=example,
+        )
+
+    @staticmethod
+    def parse_example_path(path: str) -> Dict[str, str]:
+        """Parses a example path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/playbooks/(?P<playbook>.+?)/examples/(?P<example>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def flow_path(
         project: str,
         location: str,
@@ -309,6 +335,30 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def playbook_path(
+        project: str,
+        location: str,
+        agent: str,
+        playbook: str,
+    ) -> str:
+        """Returns a fully-qualified playbook string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            playbook=playbook,
+        )
+
+    @staticmethod
+    def parse_playbook_path(path: str) -> Dict[str, str]:
+        """Parses a playbook path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/playbooks/(?P<playbook>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def session_path(
         project: str,
         location: str,
@@ -354,6 +404,30 @@ class SessionsClient(metaclass=SessionsClientMeta):
         """Parses a session_entity_type path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/sessions/(?P<session>.+?)/entityTypes/(?P<entity_type>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def tool_path(
+        project: str,
+        location: str,
+        agent: str,
+        tool: str,
+    ) -> str:
+        """Returns a fully-qualified tool string."""
+        return "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            tool=tool,
+        )
+
+    @staticmethod
+    def parse_tool_path(path: str) -> Dict[str, str]:
+        """Parses a tool path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/agents/(?P<agent>.+?)/tools/(?P<tool>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -966,6 +1040,101 @@ class SessionsClient(metaclass=SessionsClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.detect_intent]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("session", request.session),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def server_streaming_detect_intent(
+        self,
+        request: Optional[Union[session.DetectIntentRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> Iterable[session.DetectIntentResponse]:
+        r"""Processes a natural language query and returns structured,
+        actionable data as a result through server-side streaming.
+        Server-side streaming allows Dialogflow to send `partial
+        responses <https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response>`__
+        earlier in a single request.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dialogflowcx_v3beta1
+
+            def sample_server_streaming_detect_intent():
+                # Create a client
+                client = dialogflowcx_v3beta1.SessionsClient()
+
+                # Initialize request argument(s)
+                query_input = dialogflowcx_v3beta1.QueryInput()
+                query_input.text.text = "text_value"
+                query_input.language_code = "language_code_value"
+
+                request = dialogflowcx_v3beta1.DetectIntentRequest(
+                    session="session_value",
+                    query_input=query_input,
+                )
+
+                # Make the request
+                stream = client.server_streaming_detect_intent(request=request)
+
+                # Handle the response
+                for response in stream:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.dialogflowcx_v3beta1.types.DetectIntentRequest, dict]):
+                The request object. The request to detect user's intent.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            Iterable[google.cloud.dialogflowcx_v3beta1.types.DetectIntentResponse]:
+                The message returned from the
+                DetectIntent method.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a session.DetectIntentRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, session.DetectIntentRequest):
+            request = session.DetectIntentRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.server_streaming_detect_intent
+        ]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

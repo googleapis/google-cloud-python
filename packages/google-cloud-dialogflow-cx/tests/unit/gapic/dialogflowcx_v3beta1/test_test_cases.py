@@ -78,6 +78,7 @@ from google.cloud.dialogflowcx_v3beta1.types import (
 )
 from google.cloud.dialogflowcx_v3beta1.types import test_case
 from google.cloud.dialogflowcx_v3beta1.types import test_case as gcdc_test_case
+from google.cloud.dialogflowcx_v3beta1.types import tool_call
 
 
 def client_cert_source_callback():
@@ -337,8 +338,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     # TODO: This is needed to cater for older versions of google-auth
     # Make this test unconditional once the minimum supported version of
     # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor, _ = [
-        int(part) for part in google.auth.__version__.split(".")
+    google_auth_major, google_auth_minor = [
+        int(part) for part in google.auth.__version__.split(".")[0:2]
     ]
     if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials = ga_credentials.AnonymousCredentials()
@@ -356,8 +357,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         #
         # TODO: Make this test unconditional once the minimum supported version of
         # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor, _ = [
-            int(part) for part in api_core_version.__version__.split(".")
+        api_core_major, api_core_minor = [
+            int(part) for part in api_core_version.__version__.split(".")[0:2]
         ]
         if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
             client = client_class(
@@ -4904,6 +4905,7 @@ def test_create_test_case_rest(request_type):
                                     },
                                     "total_duration": {},
                                 },
+                                "opt_out_conformer_model_migration": True,
                             },
                             "audio": b"audio_blob",
                         },
@@ -4912,9 +4914,15 @@ def test_create_test_case_rest(request_type):
                             "digits": "digits_value",
                             "finish_digit": "finish_digit_value",
                         },
+                        "tool_call_result": {
+                            "tool": "tool_value",
+                            "action": "action_value",
+                            "error": {"message": "message_value"},
+                            "output_parameters": {"fields": {}},
+                        },
                         "language_code": "language_code_value",
                     },
-                    "injected_parameters": {"fields": {}},
+                    "injected_parameters": {},
                     "is_webhook_enabled": True,
                     "enable_sentiment_analysis": True,
                 },
@@ -4953,6 +4961,7 @@ def test_create_test_case_rest(request_type):
                     "current_page": {
                         "name": "name_value",
                         "display_name": "display_name_value",
+                        "description": "description_value",
                         "entry_fulfillment": {
                             "messages": [
                                 {
@@ -5501,6 +5510,7 @@ def test_update_test_case_rest(request_type):
                                     },
                                     "total_duration": {},
                                 },
+                                "opt_out_conformer_model_migration": True,
                             },
                             "audio": b"audio_blob",
                         },
@@ -5509,9 +5519,15 @@ def test_update_test_case_rest(request_type):
                             "digits": "digits_value",
                             "finish_digit": "finish_digit_value",
                         },
+                        "tool_call_result": {
+                            "tool": "tool_value",
+                            "action": "action_value",
+                            "error": {"message": "message_value"},
+                            "output_parameters": {"fields": {}},
+                        },
                         "language_code": "language_code_value",
                     },
-                    "injected_parameters": {"fields": {}},
+                    "injected_parameters": {},
                     "is_webhook_enabled": True,
                     "enable_sentiment_analysis": True,
                 },
@@ -5550,6 +5566,7 @@ def test_update_test_case_rest(request_type):
                     "current_page": {
                         "name": "name_value",
                         "display_name": "display_name_value",
+                        "description": "description_value",
                         "entry_fulfillment": {
                             "messages": [
                                 {
@@ -8612,12 +8629,43 @@ def test_parse_test_case_result_path():
     assert expected == actual
 
 
-def test_transition_route_group_path():
+def test_tool_path():
     project = "cuttlefish"
     location = "mussel"
     agent = "winkle"
-    flow = "nautilus"
-    transition_route_group = "scallop"
+    tool = "nautilus"
+    expected = (
+        "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            tool=tool,
+        )
+    )
+    actual = TestCasesClient.tool_path(project, location, agent, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "agent": "squid",
+        "tool": "clam",
+    }
+    path = TestCasesClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = TestCasesClient.parse_tool_path(path)
+    assert expected == actual
+
+
+def test_transition_route_group_path():
+    project = "whelk"
+    location = "octopus"
+    agent = "oyster"
+    flow = "nudibranch"
+    transition_route_group = "cuttlefish"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
         project=project,
         location=location,
@@ -8633,11 +8681,11 @@ def test_transition_route_group_path():
 
 def test_parse_transition_route_group_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "agent": "clam",
-        "flow": "whelk",
-        "transition_route_group": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "agent": "nautilus",
+        "flow": "scallop",
+        "transition_route_group": "abalone",
     }
     path = TestCasesClient.transition_route_group_path(**expected)
 
@@ -8647,10 +8695,10 @@ def test_parse_transition_route_group_path():
 
 
 def test_webhook_path():
-    project = "oyster"
-    location = "nudibranch"
-    agent = "cuttlefish"
-    webhook = "mussel"
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    webhook = "octopus"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project,
         location=location,
@@ -8663,10 +8711,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "agent": "scallop",
-        "webhook": "abalone",
+        "project": "oyster",
+        "location": "nudibranch",
+        "agent": "cuttlefish",
+        "webhook": "mussel",
     }
     path = TestCasesClient.webhook_path(**expected)
 
@@ -8676,7 +8724,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -8686,7 +8734,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nautilus",
     }
     path = TestCasesClient.common_billing_account_path(**expected)
 
@@ -8696,7 +8744,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -8706,7 +8754,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "abalone",
     }
     path = TestCasesClient.common_folder_path(**expected)
 
@@ -8716,7 +8764,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -8726,7 +8774,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "clam",
     }
     path = TestCasesClient.common_organization_path(**expected)
 
@@ -8736,7 +8784,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -8746,7 +8794,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "octopus",
     }
     path = TestCasesClient.common_project_path(**expected)
 
@@ -8756,8 +8804,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -8768,8 +8816,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = TestCasesClient.common_location_path(**expected)
 

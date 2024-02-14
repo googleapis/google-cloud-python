@@ -102,6 +102,8 @@ class AgentsAsyncClient:
     parse_flow_validation_result_path = staticmethod(
         AgentsClient.parse_flow_validation_result_path
     )
+    playbook_path = staticmethod(AgentsClient.playbook_path)
+    parse_playbook_path = staticmethod(AgentsClient.parse_playbook_path)
     security_settings_path = staticmethod(AgentsClient.security_settings_path)
     parse_security_settings_path = staticmethod(
         AgentsClient.parse_security_settings_path

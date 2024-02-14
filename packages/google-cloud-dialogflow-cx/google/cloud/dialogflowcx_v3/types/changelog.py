@@ -149,6 +149,8 @@ class Changelog(proto.Message):
             The affected resource name of the change.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             The timestamp of the change.
+        language_code (str):
+            The affected language code of the change.
     """
 
     name: str = proto.Field(
@@ -179,6 +181,10 @@ class Changelog(proto.Message):
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=14,
     )
 
 

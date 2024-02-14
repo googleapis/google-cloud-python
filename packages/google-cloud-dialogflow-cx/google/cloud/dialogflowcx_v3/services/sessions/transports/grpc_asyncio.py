@@ -272,6 +272,40 @@ class SessionsGrpcAsyncIOTransport(SessionsTransport):
         return self._stubs["detect_intent"]
 
     @property
+    def server_streaming_detect_intent(
+        self,
+    ) -> Callable[
+        [session.DetectIntentRequest], Awaitable[session.DetectIntentResponse]
+    ]:
+        r"""Return a callable for the server streaming detect intent method over gRPC.
+
+        Processes a natural language query and returns structured,
+        actionable data as a result through server-side streaming.
+        Server-side streaming allows Dialogflow to send `partial
+        responses <https://cloud.google.com/dialogflow/cx/docs/concept/fulfillment#partial-response>`__
+        earlier in a single request.
+
+        Returns:
+            Callable[[~.DetectIntentRequest],
+                    Awaitable[~.DetectIntentResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "server_streaming_detect_intent" not in self._stubs:
+            self._stubs[
+                "server_streaming_detect_intent"
+            ] = self.grpc_channel.unary_stream(
+                "/google.cloud.dialogflow.cx.v3.Sessions/ServerStreamingDetectIntent",
+                request_serializer=session.DetectIntentRequest.serialize,
+                response_deserializer=session.DetectIntentResponse.deserialize,
+            )
+        return self._stubs["server_streaming_detect_intent"]
+
+    @property
     def streaming_detect_intent(
         self,
     ) -> Callable[

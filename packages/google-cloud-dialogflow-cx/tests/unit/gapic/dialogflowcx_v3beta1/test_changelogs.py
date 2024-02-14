@@ -313,8 +313,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     # TODO: This is needed to cater for older versions of google-auth
     # Make this test unconditional once the minimum supported version of
     # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor, _ = [
-        int(part) for part in google.auth.__version__.split(".")
+    google_auth_major, google_auth_minor = [
+        int(part) for part in google.auth.__version__.split(".")[0:2]
     ]
     if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials = ga_credentials.AnonymousCredentials()
@@ -332,8 +332,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         #
         # TODO: Make this test unconditional once the minimum supported version of
         # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor, _ = [
-            int(part) for part in api_core_version.__version__.split(".")
+        api_core_major, api_core_minor = [
+            int(part) for part in api_core_version.__version__.split(".")[0:2]
         ]
         if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
             client = client_class(
@@ -1530,6 +1530,7 @@ def test_get_changelog(request_type, transport: str = "grpc"):
             action="action_value",
             type_="type__value",
             resource="resource_value",
+            language_code="language_code_value",
         )
         response = client.get_changelog(request)
 
@@ -1546,6 +1547,7 @@ def test_get_changelog(request_type, transport: str = "grpc"):
     assert response.action == "action_value"
     assert response.type_ == "type__value"
     assert response.resource == "resource_value"
+    assert response.language_code == "language_code_value"
 
 
 def test_get_changelog_empty_call():
@@ -1588,6 +1590,7 @@ async def test_get_changelog_async(
                 action="action_value",
                 type_="type__value",
                 resource="resource_value",
+                language_code="language_code_value",
             )
         )
         response = await client.get_changelog(request)
@@ -1605,6 +1608,7 @@ async def test_get_changelog_async(
     assert response.action == "action_value"
     assert response.type_ == "type__value"
     assert response.resource == "resource_value"
+    assert response.language_code == "language_code_value"
 
 
 @pytest.mark.asyncio
@@ -2123,6 +2127,7 @@ def test_get_changelog_rest(request_type):
             action="action_value",
             type_="type__value",
             resource="resource_value",
+            language_code="language_code_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2144,6 +2149,7 @@ def test_get_changelog_rest(request_type):
     assert response.action == "action_value"
     assert response.type_ == "type__value"
     assert response.resource == "resource_value"
+    assert response.language_code == "language_code_value"
 
 
 def test_get_changelog_rest_required_fields(request_type=changelog.GetChangelogRequest):

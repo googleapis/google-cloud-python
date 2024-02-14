@@ -56,10 +56,12 @@ from google.cloud.dialogflowcx_v3beta1.services.sessions import (
 from google.cloud.dialogflowcx_v3beta1.types import (
     audio_config,
     entity_type,
+    generative_settings,
     intent,
     page,
     session,
     session_entity_type,
+    tool_call,
 )
 
 
@@ -317,8 +319,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     # TODO: This is needed to cater for older versions of google-auth
     # Make this test unconditional once the minimum supported version of
     # google-auth becomes 2.23.0 or higher.
-    google_auth_major, google_auth_minor, _ = [
-        int(part) for part in google.auth.__version__.split(".")
+    google_auth_major, google_auth_minor = [
+        int(part) for part in google.auth.__version__.split(".")[0:2]
     ]
     if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials = ga_credentials.AnonymousCredentials()
@@ -336,8 +338,8 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
         #
         # TODO: Make this test unconditional once the minimum supported version of
         # google-api-core becomes 2.15.0 or higher.
-        api_core_major, api_core_minor, _ = [
-            int(part) for part in api_core_version.__version__.split(".")
+        api_core_major, api_core_minor = [
+            int(part) for part in api_core_version.__version__.split(".")[0:2]
         ]
         if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
             client = client_class(
@@ -1240,6 +1242,164 @@ async def test_detect_intent_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        session.DetectIntentRequest,
+        dict,
+    ],
+)
+def test_server_streaming_detect_intent(request_type, transport: str = "grpc"):
+    client = SessionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.server_streaming_detect_intent), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = iter([session.DetectIntentResponse()])
+        response = client.server_streaming_detect_intent(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session.DetectIntentRequest()
+
+    # Establish that the response is the type that we expect.
+    for message in response:
+        assert isinstance(message, session.DetectIntentResponse)
+
+
+def test_server_streaming_detect_intent_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SessionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.server_streaming_detect_intent), "__call__"
+    ) as call:
+        client.server_streaming_detect_intent()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session.DetectIntentRequest()
+
+
+@pytest.mark.asyncio
+async def test_server_streaming_detect_intent_async(
+    transport: str = "grpc_asyncio", request_type=session.DetectIntentRequest
+):
+    client = SessionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.server_streaming_detect_intent), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[session.DetectIntentResponse()]
+        )
+        response = await client.server_streaming_detect_intent(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session.DetectIntentRequest()
+
+    # Establish that the response is the type that we expect.
+    message = await response.read()
+    assert isinstance(message, session.DetectIntentResponse)
+
+
+@pytest.mark.asyncio
+async def test_server_streaming_detect_intent_async_from_dict():
+    await test_server_streaming_detect_intent_async(request_type=dict)
+
+
+def test_server_streaming_detect_intent_field_headers():
+    client = SessionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = session.DetectIntentRequest()
+
+    request.session = "session_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.server_streaming_detect_intent), "__call__"
+    ) as call:
+        call.return_value = iter([session.DetectIntentResponse()])
+        client.server_streaming_detect_intent(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "session=session_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_server_streaming_detect_intent_field_headers_async():
+    client = SessionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = session.DetectIntentRequest()
+
+    request.session = "session_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.server_streaming_detect_intent), "__call__"
+    ) as call:
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[session.DetectIntentResponse()]
+        )
+        await client.server_streaming_detect_intent(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "session=session_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         session.StreamingDetectIntentRequest,
         dict,
     ],
@@ -2004,6 +2164,248 @@ def test_detect_intent_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session.DetectIntentRequest,
+        dict,
+    ],
+)
+def test_server_streaming_detect_intent_rest(request_type):
+    client = SessionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/locations/sample2/agents/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = session.DetectIntentResponse(
+            response_id="response_id_value",
+            output_audio=b"output_audio_blob",
+            response_type=session.DetectIntentResponse.ResponseType.PARTIAL,
+            allow_cancellation=True,
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = session.DetectIntentResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        json_return_value = "[{}]".format(json_return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        with mock.patch.object(response_value, "iter_content") as iter_content:
+            iter_content.return_value = iter(json_return_value)
+            response = client.server_streaming_detect_intent(request)
+
+    assert isinstance(response, Iterable)
+    response = next(response)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, session.DetectIntentResponse)
+    assert response.response_id == "response_id_value"
+    assert response.output_audio == b"output_audio_blob"
+    assert response.response_type == session.DetectIntentResponse.ResponseType.PARTIAL
+    assert response.allow_cancellation is True
+
+
+def test_server_streaming_detect_intent_rest_required_fields(
+    request_type=session.DetectIntentRequest,
+):
+    transport_class = transports.SessionsRestTransport
+
+    request_init = {}
+    request_init["session"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(
+            pb_request,
+            including_default_value_fields=False,
+            use_integers_for_enums=False,
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).server_streaming_detect_intent._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["session"] = "session_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).server_streaming_detect_intent._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "session" in jsonified_request
+    assert jsonified_request["session"] == "session_value"
+
+    client = SessionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = session.DetectIntentResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = session.DetectIntentResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+            json_return_value = "[{}]".format(json_return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            with mock.patch.object(response_value, "iter_content") as iter_content:
+                iter_content.return_value = iter(json_return_value)
+                response = client.server_streaming_detect_intent(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_server_streaming_detect_intent_rest_unset_required_fields():
+    transport = transports.SessionsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.server_streaming_detect_intent._get_unset_required_fields(
+        {}
+    )
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "session",
+                "queryInput",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_server_streaming_detect_intent_rest_interceptors(null_interceptor):
+    transport = transports.SessionsRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.SessionsRestInterceptor(),
+    )
+    client = SessionsClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SessionsRestInterceptor, "post_server_streaming_detect_intent"
+    ) as post, mock.patch.object(
+        transports.SessionsRestInterceptor, "pre_server_streaming_detect_intent"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = session.DetectIntentRequest.pb(session.DetectIntentRequest())
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = session.DetectIntentResponse.to_json(
+            session.DetectIntentResponse()
+        )
+        req.return_value._content = "[{}]".format(req.return_value._content)
+
+        request = session.DetectIntentRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = session.DetectIntentResponse()
+
+        client.server_streaming_detect_intent(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_server_streaming_detect_intent_rest_bad_request(
+    transport: str = "rest", request_type=session.DetectIntentRequest
+):
+    client = SessionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {
+        "session": "projects/sample1/locations/sample2/agents/sample3/sessions/sample4"
+    }
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.server_streaming_detect_intent(request)
+
+
+def test_server_streaming_detect_intent_rest_error():
+    client = SessionsClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_streaming_detect_intent_rest_no_http_options():
     client = SessionsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2753,6 +3155,7 @@ def test_sessions_base_transport():
     # raise NotImplementedError.
     methods = (
         "detect_intent",
+        "server_streaming_detect_intent",
         "streaming_detect_intent",
         "match_intent",
         "fulfill_intent",
@@ -3032,6 +3435,9 @@ def test_sessions_client_transport_session_collision(transport_name):
     session1 = client1.transport.detect_intent._session
     session2 = client2.transport.detect_intent._session
     assert session1 != session2
+    session1 = client1.transport.server_streaming_detect_intent._session
+    session2 = client2.transport.server_streaming_detect_intent._session
+    assert session1 != session2
     session1 = client1.transport.streaming_detect_intent._session
     session2 = client2.transport.streaming_detect_intent._session
     assert session1 != session2
@@ -3219,11 +3625,43 @@ def test_parse_entity_type_path():
     assert expected == actual
 
 
-def test_flow_path():
+def test_example_path():
     project = "whelk"
     location = "octopus"
     agent = "oyster"
-    flow = "nudibranch"
+    playbook = "nudibranch"
+    example = "cuttlefish"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}/examples/{example}".format(
+        project=project,
+        location=location,
+        agent=agent,
+        playbook=playbook,
+        example=example,
+    )
+    actual = SessionsClient.example_path(project, location, agent, playbook, example)
+    assert expected == actual
+
+
+def test_parse_example_path():
+    expected = {
+        "project": "mussel",
+        "location": "winkle",
+        "agent": "nautilus",
+        "playbook": "scallop",
+        "example": "abalone",
+    }
+    path = SessionsClient.example_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SessionsClient.parse_example_path(path)
+    assert expected == actual
+
+
+def test_flow_path():
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    flow = "octopus"
     expected = (
         "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
             project=project,
@@ -3238,10 +3676,10 @@ def test_flow_path():
 
 def test_parse_flow_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
-        "agent": "winkle",
-        "flow": "nautilus",
+        "project": "oyster",
+        "location": "nudibranch",
+        "agent": "cuttlefish",
+        "flow": "mussel",
     }
     path = SessionsClient.flow_path(**expected)
 
@@ -3251,10 +3689,10 @@ def test_parse_flow_path():
 
 
 def test_intent_path():
-    project = "scallop"
-    location = "abalone"
-    agent = "squid"
-    intent = "clam"
+    project = "winkle"
+    location = "nautilus"
+    agent = "scallop"
+    intent = "abalone"
     expected = "projects/{project}/locations/{location}/agents/{agent}/intents/{intent}".format(
         project=project,
         location=location,
@@ -3267,10 +3705,10 @@ def test_intent_path():
 
 def test_parse_intent_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
-        "agent": "oyster",
-        "intent": "nudibranch",
+        "project": "squid",
+        "location": "clam",
+        "agent": "whelk",
+        "intent": "octopus",
     }
     path = SessionsClient.intent_path(**expected)
 
@@ -3280,11 +3718,11 @@ def test_parse_intent_path():
 
 
 def test_page_path():
-    project = "cuttlefish"
-    location = "mussel"
-    agent = "winkle"
-    flow = "nautilus"
-    page = "scallop"
+    project = "oyster"
+    location = "nudibranch"
+    agent = "cuttlefish"
+    flow = "mussel"
+    page = "winkle"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}".format(
         project=project,
         location=location,
@@ -3298,11 +3736,11 @@ def test_page_path():
 
 def test_parse_page_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "agent": "clam",
-        "flow": "whelk",
-        "page": "octopus",
+        "project": "nautilus",
+        "location": "scallop",
+        "agent": "abalone",
+        "flow": "squid",
+        "page": "clam",
     }
     path = SessionsClient.page_path(**expected)
 
@@ -3311,11 +3749,40 @@ def test_parse_page_path():
     assert expected == actual
 
 
+def test_playbook_path():
+    project = "whelk"
+    location = "octopus"
+    agent = "oyster"
+    playbook = "nudibranch"
+    expected = "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}".format(
+        project=project,
+        location=location,
+        agent=agent,
+        playbook=playbook,
+    )
+    actual = SessionsClient.playbook_path(project, location, agent, playbook)
+    assert expected == actual
+
+
+def test_parse_playbook_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "agent": "winkle",
+        "playbook": "nautilus",
+    }
+    path = SessionsClient.playbook_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SessionsClient.parse_playbook_path(path)
+    assert expected == actual
+
+
 def test_session_path():
-    project = "oyster"
-    location = "nudibranch"
-    agent = "cuttlefish"
-    session = "mussel"
+    project = "scallop"
+    location = "abalone"
+    agent = "squid"
+    session = "clam"
     expected = "projects/{project}/locations/{location}/agents/{agent}/sessions/{session}".format(
         project=project,
         location=location,
@@ -3328,10 +3795,10 @@ def test_session_path():
 
 def test_parse_session_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
-        "agent": "scallop",
-        "session": "abalone",
+        "project": "whelk",
+        "location": "octopus",
+        "agent": "oyster",
+        "session": "nudibranch",
     }
     path = SessionsClient.session_path(**expected)
 
@@ -3341,11 +3808,11 @@ def test_parse_session_path():
 
 
 def test_session_entity_type_path():
-    project = "squid"
-    location = "clam"
-    agent = "whelk"
-    session = "octopus"
-    entity_type = "oyster"
+    project = "cuttlefish"
+    location = "mussel"
+    agent = "winkle"
+    session = "nautilus"
+    entity_type = "scallop"
     expected = "projects/{project}/locations/{location}/agents/{agent}/sessions/{session}/entityTypes/{entity_type}".format(
         project=project,
         location=location,
@@ -3361,11 +3828,11 @@ def test_session_entity_type_path():
 
 def test_parse_session_entity_type_path():
     expected = {
-        "project": "nudibranch",
-        "location": "cuttlefish",
-        "agent": "mussel",
-        "session": "winkle",
-        "entity_type": "nautilus",
+        "project": "abalone",
+        "location": "squid",
+        "agent": "clam",
+        "session": "whelk",
+        "entity_type": "octopus",
     }
     path = SessionsClient.session_entity_type_path(**expected)
 
@@ -3374,12 +3841,43 @@ def test_parse_session_entity_type_path():
     assert expected == actual
 
 
+def test_tool_path():
+    project = "oyster"
+    location = "nudibranch"
+    agent = "cuttlefish"
+    tool = "mussel"
+    expected = (
+        "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            tool=tool,
+        )
+    )
+    actual = SessionsClient.tool_path(project, location, agent, tool)
+    assert expected == actual
+
+
+def test_parse_tool_path():
+    expected = {
+        "project": "winkle",
+        "location": "nautilus",
+        "agent": "scallop",
+        "tool": "abalone",
+    }
+    path = SessionsClient.tool_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SessionsClient.parse_tool_path(path)
+    assert expected == actual
+
+
 def test_transition_route_group_path():
-    project = "scallop"
-    location = "abalone"
-    agent = "squid"
-    flow = "clam"
-    transition_route_group = "whelk"
+    project = "squid"
+    location = "clam"
+    agent = "whelk"
+    flow = "octopus"
+    transition_route_group = "oyster"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
         project=project,
         location=location,
@@ -3395,11 +3893,11 @@ def test_transition_route_group_path():
 
 def test_parse_transition_route_group_path():
     expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "agent": "nudibranch",
-        "flow": "cuttlefish",
-        "transition_route_group": "mussel",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "agent": "mussel",
+        "flow": "winkle",
+        "transition_route_group": "nautilus",
     }
     path = SessionsClient.transition_route_group_path(**expected)
 
@@ -3409,11 +3907,11 @@ def test_parse_transition_route_group_path():
 
 
 def test_version_path():
-    project = "winkle"
-    location = "nautilus"
-    agent = "scallop"
-    flow = "abalone"
-    version = "squid"
+    project = "scallop"
+    location = "abalone"
+    agent = "squid"
+    flow = "clam"
+    version = "whelk"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/versions/{version}".format(
         project=project,
         location=location,
@@ -3427,11 +3925,11 @@ def test_version_path():
 
 def test_parse_version_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "agent": "octopus",
-        "flow": "oyster",
-        "version": "nudibranch",
+        "project": "octopus",
+        "location": "oyster",
+        "agent": "nudibranch",
+        "flow": "cuttlefish",
+        "version": "mussel",
     }
     path = SessionsClient.version_path(**expected)
 
@@ -3441,10 +3939,10 @@ def test_parse_version_path():
 
 
 def test_webhook_path():
-    project = "cuttlefish"
-    location = "mussel"
-    agent = "winkle"
-    webhook = "nautilus"
+    project = "winkle"
+    location = "nautilus"
+    agent = "scallop"
+    webhook = "abalone"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
         project=project,
         location=location,
@@ -3457,10 +3955,10 @@ def test_webhook_path():
 
 def test_parse_webhook_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "agent": "squid",
-        "webhook": "clam",
+        "project": "squid",
+        "location": "clam",
+        "agent": "whelk",
+        "webhook": "octopus",
     }
     path = SessionsClient.webhook_path(**expected)
 
@@ -3470,7 +3968,7 @@ def test_parse_webhook_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3480,7 +3978,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nudibranch",
     }
     path = SessionsClient.common_billing_account_path(**expected)
 
@@ -3490,7 +3988,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -3500,7 +3998,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "mussel",
     }
     path = SessionsClient.common_folder_path(**expected)
 
@@ -3510,7 +4008,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -3520,7 +4018,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "nautilus",
     }
     path = SessionsClient.common_organization_path(**expected)
 
@@ -3530,7 +4028,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -3540,7 +4038,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "abalone",
     }
     path = SessionsClient.common_project_path(**expected)
 
@@ -3550,8 +4048,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -3562,8 +4060,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = SessionsClient.common_location_path(**expected)
 
