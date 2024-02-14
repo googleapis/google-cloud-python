@@ -319,7 +319,6 @@ class MachineTypesRestTransport(MachineTypesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
@@ -410,7 +409,6 @@ class MachineTypesRestTransport(MachineTypesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
@@ -496,7 +494,6 @@ class MachineTypesRestTransport(MachineTypesTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=False,
                 )
             )
