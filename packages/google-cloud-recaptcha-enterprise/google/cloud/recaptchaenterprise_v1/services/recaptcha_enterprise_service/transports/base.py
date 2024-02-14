@@ -202,6 +202,11 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.reorder_firewall_policies: gapic_v1.method.wrap_method(
+                self.reorder_firewall_policies,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.list_related_account_groups: gapic_v1.method.wrap_method(
                 self.list_related_account_groups,
                 default_timeout=None,
@@ -383,6 +388,18 @@ class RecaptchaEnterpriseServiceTransport(abc.ABC):
     ) -> Callable[
         [recaptchaenterprise.DeleteFirewallPolicyRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def reorder_firewall_policies(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.ReorderFirewallPoliciesRequest],
+        Union[
+            recaptchaenterprise.ReorderFirewallPoliciesResponse,
+            Awaitable[recaptchaenterprise.ReorderFirewallPoliciesResponse],
+        ],
     ]:
         raise NotImplementedError()
 

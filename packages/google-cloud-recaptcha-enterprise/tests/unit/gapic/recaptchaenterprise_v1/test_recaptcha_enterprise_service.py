@@ -5145,6 +5145,257 @@ async def test_delete_firewall_policy_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        recaptchaenterprise.ReorderFirewallPoliciesRequest,
+        dict,
+    ],
+)
+def test_reorder_firewall_policies(request_type, transport: str = "grpc"):
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reorder_firewall_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.ReorderFirewallPoliciesResponse()
+        response = client.reorder_firewall_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.ReorderFirewallPoliciesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.ReorderFirewallPoliciesResponse)
+
+
+def test_reorder_firewall_policies_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reorder_firewall_policies), "__call__"
+    ) as call:
+        client.reorder_firewall_policies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.ReorderFirewallPoliciesRequest()
+
+
+@pytest.mark.asyncio
+async def test_reorder_firewall_policies_async(
+    transport: str = "grpc_asyncio",
+    request_type=recaptchaenterprise.ReorderFirewallPoliciesRequest,
+):
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reorder_firewall_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ReorderFirewallPoliciesResponse()
+        )
+        response = await client.reorder_firewall_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == recaptchaenterprise.ReorderFirewallPoliciesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, recaptchaenterprise.ReorderFirewallPoliciesResponse)
+
+
+@pytest.mark.asyncio
+async def test_reorder_firewall_policies_async_from_dict():
+    await test_reorder_firewall_policies_async(request_type=dict)
+
+
+def test_reorder_firewall_policies_field_headers():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.ReorderFirewallPoliciesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reorder_firewall_policies), "__call__"
+    ) as call:
+        call.return_value = recaptchaenterprise.ReorderFirewallPoliciesResponse()
+        client.reorder_firewall_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_reorder_firewall_policies_field_headers_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = recaptchaenterprise.ReorderFirewallPoliciesRequest()
+
+    request.parent = "parent_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reorder_firewall_policies), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ReorderFirewallPoliciesResponse()
+        )
+        await client.reorder_firewall_policies(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent_value",
+    ) in kw["metadata"]
+
+
+def test_reorder_firewall_policies_flattened():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reorder_firewall_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.ReorderFirewallPoliciesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.reorder_firewall_policies(
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].names
+        mock_val = ["names_value"]
+        assert arg == mock_val
+
+
+def test_reorder_firewall_policies_flattened_error():
+    client = RecaptchaEnterpriseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.reorder_firewall_policies(
+            recaptchaenterprise.ReorderFirewallPoliciesRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
+@pytest.mark.asyncio
+async def test_reorder_firewall_policies_flattened_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reorder_firewall_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = recaptchaenterprise.ReorderFirewallPoliciesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            recaptchaenterprise.ReorderFirewallPoliciesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.reorder_firewall_policies(
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].names
+        mock_val = ["names_value"]
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_reorder_firewall_policies_flattened_error_async():
+    client = RecaptchaEnterpriseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.reorder_firewall_policies(
+            recaptchaenterprise.ReorderFirewallPoliciesRequest(),
+            parent="parent_value",
+            names=["names_value"],
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         recaptchaenterprise.ListRelatedAccountGroupsRequest,
         dict,
     ],
@@ -6685,6 +6936,7 @@ def test_recaptcha_enterprise_service_base_transport():
         "get_firewall_policy",
         "update_firewall_policy",
         "delete_firewall_policy",
+        "reorder_firewall_policies",
         "list_related_account_groups",
         "list_related_account_group_memberships",
         "search_related_account_group_memberships",
