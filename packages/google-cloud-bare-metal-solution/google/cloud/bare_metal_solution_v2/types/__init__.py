@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .baremetalsolution import OperationMetadata, ResetInstanceResponse
+from .common import VolumePerformanceTier, WorkloadProfile
 from .instance import (
     DetachLunRequest,
     DisableInteractiveSerialConsoleRequest,
