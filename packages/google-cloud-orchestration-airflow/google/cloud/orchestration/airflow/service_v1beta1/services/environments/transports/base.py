@@ -24,6 +24,7 @@ import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.orchestration.airflow.service_v1beta1 import (
     gapic_version as package_version,
@@ -179,6 +180,61 @@ class EnvironmentsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.list_workloads: gapic_v1.method.wrap_method(
+                self.list_workloads,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_user_workloads_secret: gapic_v1.method.wrap_method(
+                self.create_user_workloads_secret,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_user_workloads_secret: gapic_v1.method.wrap_method(
+                self.get_user_workloads_secret,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_user_workloads_secrets: gapic_v1.method.wrap_method(
+                self.list_user_workloads_secrets,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_user_workloads_secret: gapic_v1.method.wrap_method(
+                self.update_user_workloads_secret,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_user_workloads_secret: gapic_v1.method.wrap_method(
+                self.delete_user_workloads_secret,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_user_workloads_config_map: gapic_v1.method.wrap_method(
+                self.create_user_workloads_config_map,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_user_workloads_config_map: gapic_v1.method.wrap_method(
+                self.get_user_workloads_config_map,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_user_workloads_config_maps: gapic_v1.method.wrap_method(
+                self.list_user_workloads_config_maps,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_user_workloads_config_map: gapic_v1.method.wrap_method(
+                self.update_user_workloads_config_map,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_user_workloads_config_map: gapic_v1.method.wrap_method(
+                self.delete_user_workloads_config_map,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.save_snapshot: gapic_v1.method.wrap_method(
                 self.save_snapshot,
                 default_timeout=None,
@@ -314,6 +370,132 @@ class EnvironmentsTransport(abc.ABC):
             environments.PollAirflowCommandResponse,
             Awaitable[environments.PollAirflowCommandResponse],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_workloads(
+        self,
+    ) -> Callable[
+        [environments.ListWorkloadsRequest],
+        Union[
+            environments.ListWorkloadsResponse,
+            Awaitable[environments.ListWorkloadsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_user_workloads_secret(
+        self,
+    ) -> Callable[
+        [environments.CreateUserWorkloadsSecretRequest],
+        Union[
+            environments.UserWorkloadsSecret,
+            Awaitable[environments.UserWorkloadsSecret],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_user_workloads_secret(
+        self,
+    ) -> Callable[
+        [environments.GetUserWorkloadsSecretRequest],
+        Union[
+            environments.UserWorkloadsSecret,
+            Awaitable[environments.UserWorkloadsSecret],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_user_workloads_secrets(
+        self,
+    ) -> Callable[
+        [environments.ListUserWorkloadsSecretsRequest],
+        Union[
+            environments.ListUserWorkloadsSecretsResponse,
+            Awaitable[environments.ListUserWorkloadsSecretsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_user_workloads_secret(
+        self,
+    ) -> Callable[
+        [environments.UpdateUserWorkloadsSecretRequest],
+        Union[
+            environments.UserWorkloadsSecret,
+            Awaitable[environments.UserWorkloadsSecret],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_user_workloads_secret(
+        self,
+    ) -> Callable[
+        [environments.DeleteUserWorkloadsSecretRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_user_workloads_config_map(
+        self,
+    ) -> Callable[
+        [environments.CreateUserWorkloadsConfigMapRequest],
+        Union[
+            environments.UserWorkloadsConfigMap,
+            Awaitable[environments.UserWorkloadsConfigMap],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_user_workloads_config_map(
+        self,
+    ) -> Callable[
+        [environments.GetUserWorkloadsConfigMapRequest],
+        Union[
+            environments.UserWorkloadsConfigMap,
+            Awaitable[environments.UserWorkloadsConfigMap],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_user_workloads_config_maps(
+        self,
+    ) -> Callable[
+        [environments.ListUserWorkloadsConfigMapsRequest],
+        Union[
+            environments.ListUserWorkloadsConfigMapsResponse,
+            Awaitable[environments.ListUserWorkloadsConfigMapsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_user_workloads_config_map(
+        self,
+    ) -> Callable[
+        [environments.UpdateUserWorkloadsConfigMapRequest],
+        Union[
+            environments.UserWorkloadsConfigMap,
+            Awaitable[environments.UserWorkloadsConfigMap],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_user_workloads_config_map(
+        self,
+    ) -> Callable[
+        [environments.DeleteUserWorkloadsConfigMapRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

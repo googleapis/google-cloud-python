@@ -43,6 +43,7 @@ except AttributeError:  # pragma: NO COVER
 
 
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
 
 from google.cloud.orchestration.airflow.service_v1.types import environments
 
@@ -79,6 +80,22 @@ class EnvironmentsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_create_user_workloads_config_map(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_user_workloads_config_map(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_create_user_workloads_secret(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_create_user_workloads_secret(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_database_failover(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -94,6 +111,14 @@ class EnvironmentsRestInterceptor:
             def post_delete_environment(self, response):
                 logging.log(f"Received response: {response}")
                 return response
+
+            def pre_delete_user_workloads_config_map(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def pre_delete_user_workloads_secret(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
 
             def pre_execute_airflow_command(self, request, metadata):
                 logging.log(f"Received request: {request}")
@@ -119,11 +144,51 @@ class EnvironmentsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_user_workloads_config_map(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_user_workloads_config_map(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_user_workloads_secret(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_user_workloads_secret(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_environments(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_environments(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_user_workloads_config_maps(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_user_workloads_config_maps(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_user_workloads_secrets(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_user_workloads_secrets(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_workloads(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_workloads(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -167,6 +232,22 @@ class EnvironmentsRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_update_user_workloads_config_map(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_user_workloads_config_map(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_user_workloads_secret(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_user_workloads_secret(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
         transport = EnvironmentsRestTransport(interceptor=MyCustomEnvironmentsInterceptor())
         client = EnvironmentsClient(transport=transport)
 
@@ -189,6 +270,56 @@ class EnvironmentsRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for create_environment
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_user_workloads_config_map(
+        self,
+        request: environments.CreateUserWorkloadsConfigMapRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        environments.CreateUserWorkloadsConfigMapRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_user_workloads_config_map
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_create_user_workloads_config_map(
+        self, response: environments.UserWorkloadsConfigMap
+    ) -> environments.UserWorkloadsConfigMap:
+        """Post-rpc interceptor for create_user_workloads_config_map
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_create_user_workloads_secret(
+        self,
+        request: environments.CreateUserWorkloadsSecretRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        environments.CreateUserWorkloadsSecretRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for create_user_workloads_secret
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_create_user_workloads_secret(
+        self, response: environments.UserWorkloadsSecret
+    ) -> environments.UserWorkloadsSecret:
+        """Post-rpc interceptor for create_user_workloads_secret
 
         Override in a subclass to manipulate the response
         after it is returned by the Environments server but before
@@ -241,6 +372,34 @@ class EnvironmentsRestInterceptor:
         it is returned to user code.
         """
         return response
+
+    def pre_delete_user_workloads_config_map(
+        self,
+        request: environments.DeleteUserWorkloadsConfigMapRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        environments.DeleteUserWorkloadsConfigMapRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_user_workloads_config_map
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def pre_delete_user_workloads_secret(
+        self,
+        request: environments.DeleteUserWorkloadsSecretRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        environments.DeleteUserWorkloadsSecretRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for delete_user_workloads_secret
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
 
     def pre_execute_airflow_command(
         self,
@@ -311,6 +470,54 @@ class EnvironmentsRestInterceptor:
         """
         return response
 
+    def pre_get_user_workloads_config_map(
+        self,
+        request: environments.GetUserWorkloadsConfigMapRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        environments.GetUserWorkloadsConfigMapRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_user_workloads_config_map
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_get_user_workloads_config_map(
+        self, response: environments.UserWorkloadsConfigMap
+    ) -> environments.UserWorkloadsConfigMap:
+        """Post-rpc interceptor for get_user_workloads_config_map
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_user_workloads_secret(
+        self,
+        request: environments.GetUserWorkloadsSecretRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[environments.GetUserWorkloadsSecretRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_user_workloads_secret
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_get_user_workloads_secret(
+        self, response: environments.UserWorkloadsSecret
+    ) -> environments.UserWorkloadsSecret:
+        """Post-rpc interceptor for get_user_workloads_secret
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_environments(
         self,
         request: environments.ListEnvironmentsRequest,
@@ -327,6 +534,77 @@ class EnvironmentsRestInterceptor:
         self, response: environments.ListEnvironmentsResponse
     ) -> environments.ListEnvironmentsResponse:
         """Post-rpc interceptor for list_environments
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_user_workloads_config_maps(
+        self,
+        request: environments.ListUserWorkloadsConfigMapsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        environments.ListUserWorkloadsConfigMapsRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for list_user_workloads_config_maps
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_list_user_workloads_config_maps(
+        self, response: environments.ListUserWorkloadsConfigMapsResponse
+    ) -> environments.ListUserWorkloadsConfigMapsResponse:
+        """Post-rpc interceptor for list_user_workloads_config_maps
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_user_workloads_secrets(
+        self,
+        request: environments.ListUserWorkloadsSecretsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[environments.ListUserWorkloadsSecretsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_user_workloads_secrets
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_list_user_workloads_secrets(
+        self, response: environments.ListUserWorkloadsSecretsResponse
+    ) -> environments.ListUserWorkloadsSecretsResponse:
+        """Post-rpc interceptor for list_user_workloads_secrets
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_workloads(
+        self,
+        request: environments.ListWorkloadsRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[environments.ListWorkloadsRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_workloads
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_list_workloads(
+        self, response: environments.ListWorkloadsResponse
+    ) -> environments.ListWorkloadsResponse:
+        """Post-rpc interceptor for list_workloads
 
         Override in a subclass to manipulate the response
         after it is returned by the Environments server but before
@@ -442,6 +720,56 @@ class EnvironmentsRestInterceptor:
         self, response: operations_pb2.Operation
     ) -> operations_pb2.Operation:
         """Post-rpc interceptor for update_environment
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_user_workloads_config_map(
+        self,
+        request: environments.UpdateUserWorkloadsConfigMapRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        environments.UpdateUserWorkloadsConfigMapRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_user_workloads_config_map
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_update_user_workloads_config_map(
+        self, response: environments.UserWorkloadsConfigMap
+    ) -> environments.UserWorkloadsConfigMap:
+        """Post-rpc interceptor for update_user_workloads_config_map
+
+        Override in a subclass to manipulate the response
+        after it is returned by the Environments server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_user_workloads_secret(
+        self,
+        request: environments.UpdateUserWorkloadsSecretRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        environments.UpdateUserWorkloadsSecretRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for update_user_workloads_secret
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the Environments server.
+        """
+        return request, metadata
+
+    def post_update_user_workloads_secret(
+        self, response: environments.UserWorkloadsSecret
+    ) -> environments.UserWorkloadsSecret:
+        """Post-rpc interceptor for update_user_workloads_secret
 
         Override in a subclass to manipulate the response
         after it is returned by the Environments server but before
@@ -747,6 +1075,209 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
             resp = self._interceptor.post_create_environment(resp)
             return resp
 
+    class _CreateUserWorkloadsConfigMap(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("CreateUserWorkloadsConfigMap")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: environments.CreateUserWorkloadsConfigMapRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.UserWorkloadsConfigMap:
+            r"""Call the create user workloads
+            config map method over HTTP.
+
+                Args:
+                    request (~.environments.CreateUserWorkloadsConfigMapRequest):
+                        The request object. Create user workloads ConfigMap
+                    request.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.environments.UserWorkloadsConfigMap:
+                        User workloads ConfigMap used by
+                    Airflow tasks that run with Kubernetes
+                    executor or KubernetesPodOperator.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/environments/*}/userWorkloadsConfigMaps",
+                    "body": "user_workloads_config_map",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_user_workloads_config_map(
+                request, metadata
+            )
+            pb_request = environments.CreateUserWorkloadsConfigMapRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.UserWorkloadsConfigMap()
+            pb_resp = environments.UserWorkloadsConfigMap.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_user_workloads_config_map(resp)
+            return resp
+
+    class _CreateUserWorkloadsSecret(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("CreateUserWorkloadsSecret")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: environments.CreateUserWorkloadsSecretRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.UserWorkloadsSecret:
+            r"""Call the create user workloads
+            secret method over HTTP.
+
+                Args:
+                    request (~.environments.CreateUserWorkloadsSecretRequest):
+                        The request object. Create user workloads Secret request.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.environments.UserWorkloadsSecret:
+                        User workloads Secret used by Airflow
+                    tasks that run with Kubernetes executor
+                    or KubernetesPodOperator.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "post",
+                    "uri": "/v1/{parent=projects/*/locations/*/environments/*}/userWorkloadsSecrets",
+                    "body": "user_workloads_secret",
+                },
+            ]
+            request, metadata = self._interceptor.pre_create_user_workloads_secret(
+                request, metadata
+            )
+            pb_request = environments.CreateUserWorkloadsSecretRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.UserWorkloadsSecret()
+            pb_resp = environments.UserWorkloadsSecret.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_create_user_workloads_secret(resp)
+            return resp
+
     class _DatabaseFailover(EnvironmentsRestStub):
         def __hash__(self):
             return hash("DatabaseFailover")
@@ -913,6 +1444,161 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
             json_format.Parse(response.content, resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_delete_environment(resp)
             return resp
+
+    class _DeleteUserWorkloadsConfigMap(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("DeleteUserWorkloadsConfigMap")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: environments.DeleteUserWorkloadsConfigMapRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete user workloads
+            config map method over HTTP.
+
+                Args:
+                    request (~.environments.DeleteUserWorkloadsConfigMapRequest):
+                        The request object. Delete user workloads ConfigMap
+                    request.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/environments/*/userWorkloadsConfigMaps/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_user_workloads_config_map(
+                request, metadata
+            )
+            pb_request = environments.DeleteUserWorkloadsConfigMapRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+    class _DeleteUserWorkloadsSecret(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("DeleteUserWorkloadsSecret")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: environments.DeleteUserWorkloadsSecretRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ):
+            r"""Call the delete user workloads
+            secret method over HTTP.
+
+                Args:
+                    request (~.environments.DeleteUserWorkloadsSecretRequest):
+                        The request object. Delete user workloads Secret request.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "delete",
+                    "uri": "/v1/{name=projects/*/locations/*/environments/*/userWorkloadsSecrets/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_delete_user_workloads_secret(
+                request, metadata
+            )
+            pb_request = environments.DeleteUserWorkloadsSecretRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
 
     class _ExecuteAirflowCommand(EnvironmentsRestStub):
         def __hash__(self):
@@ -1170,6 +1856,189 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
             resp = self._interceptor.post_get_environment(resp)
             return resp
 
+    class _GetUserWorkloadsConfigMap(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("GetUserWorkloadsConfigMap")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: environments.GetUserWorkloadsConfigMapRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.UserWorkloadsConfigMap:
+            r"""Call the get user workloads config
+            map method over HTTP.
+
+                Args:
+                    request (~.environments.GetUserWorkloadsConfigMapRequest):
+                        The request object. Get user workloads ConfigMap request.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.environments.UserWorkloadsConfigMap:
+                        User workloads ConfigMap used by
+                    Airflow tasks that run with Kubernetes
+                    executor or KubernetesPodOperator.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/environments/*/userWorkloadsConfigMaps/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_user_workloads_config_map(
+                request, metadata
+            )
+            pb_request = environments.GetUserWorkloadsConfigMapRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.UserWorkloadsConfigMap()
+            pb_resp = environments.UserWorkloadsConfigMap.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_user_workloads_config_map(resp)
+            return resp
+
+    class _GetUserWorkloadsSecret(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("GetUserWorkloadsSecret")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: environments.GetUserWorkloadsSecretRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.UserWorkloadsSecret:
+            r"""Call the get user workloads secret method over HTTP.
+
+            Args:
+                request (~.environments.GetUserWorkloadsSecretRequest):
+                    The request object. Get user workloads Secret request.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.environments.UserWorkloadsSecret:
+                    User workloads Secret used by Airflow
+                tasks that run with Kubernetes executor
+                or KubernetesPodOperator.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/environments/*/userWorkloadsSecrets/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_user_workloads_secret(
+                request, metadata
+            )
+            pb_request = environments.GetUserWorkloadsSecretRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.UserWorkloadsSecret()
+            pb_resp = environments.UserWorkloadsSecret.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_user_workloads_secret(resp)
+            return resp
+
     class _ListEnvironments(EnvironmentsRestStub):
         def __hash__(self):
             return hash("ListEnvironments")
@@ -1248,6 +2117,276 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_environments(resp)
+            return resp
+
+    class _ListUserWorkloadsConfigMaps(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("ListUserWorkloadsConfigMaps")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: environments.ListUserWorkloadsConfigMapsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.ListUserWorkloadsConfigMapsResponse:
+            r"""Call the list user workloads
+            config maps method over HTTP.
+
+                Args:
+                    request (~.environments.ListUserWorkloadsConfigMapsRequest):
+                        The request object. List user workloads ConfigMaps
+                    request.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.environments.ListUserWorkloadsConfigMapsResponse:
+                        The user workloads ConfigMaps for a
+                    given environment.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/environments/*}/userWorkloadsConfigMaps",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_user_workloads_config_maps(
+                request, metadata
+            )
+            pb_request = environments.ListUserWorkloadsConfigMapsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.ListUserWorkloadsConfigMapsResponse()
+            pb_resp = environments.ListUserWorkloadsConfigMapsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_user_workloads_config_maps(resp)
+            return resp
+
+    class _ListUserWorkloadsSecrets(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("ListUserWorkloadsSecrets")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: environments.ListUserWorkloadsSecretsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.ListUserWorkloadsSecretsResponse:
+            r"""Call the list user workloads
+            secrets method over HTTP.
+
+                Args:
+                    request (~.environments.ListUserWorkloadsSecretsRequest):
+                        The request object. List user workloads Secrets request.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.environments.ListUserWorkloadsSecretsResponse:
+                        The user workloads Secrets for a
+                    given environment.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/environments/*}/userWorkloadsSecrets",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_user_workloads_secrets(
+                request, metadata
+            )
+            pb_request = environments.ListUserWorkloadsSecretsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.ListUserWorkloadsSecretsResponse()
+            pb_resp = environments.ListUserWorkloadsSecretsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_user_workloads_secrets(resp)
+            return resp
+
+    class _ListWorkloads(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("ListWorkloads")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: environments.ListWorkloadsRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.ListWorkloadsResponse:
+            r"""Call the list workloads method over HTTP.
+
+            Args:
+                request (~.environments.ListWorkloadsRequest):
+                    The request object. Request for listing workloads in a
+                Cloud Composer environment.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.environments.ListWorkloadsResponse:
+                    Response to ListWorkloadsRequest.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*/environments/*}/workloads",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_workloads(request, metadata)
+            pb_request = environments.ListWorkloadsRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.ListWorkloadsResponse()
+            pb_resp = environments.ListWorkloadsResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_workloads(resp)
             return resp
 
     class _LoadSnapshot(EnvironmentsRestStub):
@@ -1685,6 +2824,187 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
             resp = self._interceptor.post_update_environment(resp)
             return resp
 
+    class _UpdateUserWorkloadsConfigMap(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("UpdateUserWorkloadsConfigMap")
+
+        def __call__(
+            self,
+            request: environments.UpdateUserWorkloadsConfigMapRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.UserWorkloadsConfigMap:
+            r"""Call the update user workloads
+            config map method over HTTP.
+
+                Args:
+                    request (~.environments.UpdateUserWorkloadsConfigMapRequest):
+                        The request object. Update user workloads ConfigMap
+                    request.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.environments.UserWorkloadsConfigMap:
+                        User workloads ConfigMap used by
+                    Airflow tasks that run with Kubernetes
+                    executor or KubernetesPodOperator.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "put",
+                    "uri": "/v1/{user_workloads_config_map.name=projects/*/locations/*/environments/*/userWorkloadsConfigMaps/*}",
+                    "body": "user_workloads_config_map",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_user_workloads_config_map(
+                request, metadata
+            )
+            pb_request = environments.UpdateUserWorkloadsConfigMapRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.UserWorkloadsConfigMap()
+            pb_resp = environments.UserWorkloadsConfigMap.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_user_workloads_config_map(resp)
+            return resp
+
+    class _UpdateUserWorkloadsSecret(EnvironmentsRestStub):
+        def __hash__(self):
+            return hash("UpdateUserWorkloadsSecret")
+
+        def __call__(
+            self,
+            request: environments.UpdateUserWorkloadsSecretRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> environments.UserWorkloadsSecret:
+            r"""Call the update user workloads
+            secret method over HTTP.
+
+                Args:
+                    request (~.environments.UpdateUserWorkloadsSecretRequest):
+                        The request object. Update user workloads Secret request.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.environments.UserWorkloadsSecret:
+                        User workloads Secret used by Airflow
+                    tasks that run with Kubernetes executor
+                    or KubernetesPodOperator.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "put",
+                    "uri": "/v1/{user_workloads_secret.name=projects/*/locations/*/environments/*/userWorkloadsSecrets/*}",
+                    "body": "user_workloads_secret",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_user_workloads_secret(
+                request, metadata
+            )
+            pb_request = environments.UpdateUserWorkloadsSecretRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"],
+                including_default_value_fields=False,
+                use_integers_for_enums=True,
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    including_default_value_fields=False,
+                    use_integers_for_enums=True,
+                )
+            )
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = environments.UserWorkloadsSecret()
+            pb_resp = environments.UserWorkloadsSecret.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_user_workloads_secret(resp)
+            return resp
+
     @property
     def create_environment(
         self,
@@ -1692,6 +3012,28 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._CreateEnvironment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_user_workloads_config_map(
+        self,
+    ) -> Callable[
+        [environments.CreateUserWorkloadsConfigMapRequest],
+        environments.UserWorkloadsConfigMap,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateUserWorkloadsConfigMap(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def create_user_workloads_secret(
+        self,
+    ) -> Callable[
+        [environments.CreateUserWorkloadsSecretRequest],
+        environments.UserWorkloadsSecret,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._CreateUserWorkloadsSecret(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def database_failover(
@@ -1708,6 +3050,22 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._DeleteEnvironment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_user_workloads_config_map(
+        self,
+    ) -> Callable[[environments.DeleteUserWorkloadsConfigMapRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteUserWorkloadsConfigMap(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def delete_user_workloads_secret(
+        self,
+    ) -> Callable[[environments.DeleteUserWorkloadsSecretRequest], empty_pb2.Empty]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._DeleteUserWorkloadsSecret(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def execute_airflow_command(
@@ -1740,6 +3098,27 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
         return self._GetEnvironment(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_user_workloads_config_map(
+        self,
+    ) -> Callable[
+        [environments.GetUserWorkloadsConfigMapRequest],
+        environments.UserWorkloadsConfigMap,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetUserWorkloadsConfigMap(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_user_workloads_secret(
+        self,
+    ) -> Callable[
+        [environments.GetUserWorkloadsSecretRequest], environments.UserWorkloadsSecret
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetUserWorkloadsSecret(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_environments(
         self,
     ) -> Callable[
@@ -1748,6 +3127,38 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListEnvironments(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_user_workloads_config_maps(
+        self,
+    ) -> Callable[
+        [environments.ListUserWorkloadsConfigMapsRequest],
+        environments.ListUserWorkloadsConfigMapsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListUserWorkloadsConfigMaps(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_user_workloads_secrets(
+        self,
+    ) -> Callable[
+        [environments.ListUserWorkloadsSecretsRequest],
+        environments.ListUserWorkloadsSecretsResponse,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListUserWorkloadsSecrets(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_workloads(
+        self,
+    ) -> Callable[
+        [environments.ListWorkloadsRequest], environments.ListWorkloadsResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListWorkloads(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def load_snapshot(
@@ -1794,6 +3205,28 @@ class EnvironmentsRestTransport(EnvironmentsTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateEnvironment(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_user_workloads_config_map(
+        self,
+    ) -> Callable[
+        [environments.UpdateUserWorkloadsConfigMapRequest],
+        environments.UserWorkloadsConfigMap,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateUserWorkloadsConfigMap(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_user_workloads_secret(
+        self,
+    ) -> Callable[
+        [environments.UpdateUserWorkloadsSecretRequest],
+        environments.UserWorkloadsSecret,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateUserWorkloadsSecret(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def delete_operation(self):
