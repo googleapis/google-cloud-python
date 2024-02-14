@@ -1956,6 +1956,125 @@ class RecaptchaEnterpriseServiceAsyncClient:
             metadata=metadata,
         )
 
+    async def reorder_firewall_policies(
+        self,
+        request: Optional[
+            Union[recaptchaenterprise.ReorderFirewallPoliciesRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        names: Optional[MutableSequence[str]] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> recaptchaenterprise.ReorderFirewallPoliciesResponse:
+        r"""Reorders all firewall policies.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import recaptchaenterprise_v1
+
+            async def sample_reorder_firewall_policies():
+                # Create a client
+                client = recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = recaptchaenterprise_v1.ReorderFirewallPoliciesRequest(
+                    parent="parent_value",
+                    names=['names_value1', 'names_value2'],
+                )
+
+                # Make the request
+                response = await client.reorder_firewall_policies(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.recaptchaenterprise_v1.types.ReorderFirewallPoliciesRequest, dict]]):
+                The request object. The reorder firewall policies request
+                message.
+            parent (:class:`str`):
+                Required. The name of the project to list the policies
+                for, in the format ``projects/{project}``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            names (:class:`MutableSequence[str]`):
+                Required. A list containing all policy names, in the new
+                order. Each name is in the format
+                ``projects/{project}/firewallpolicies/{firewallpolicy}``.
+
+                This corresponds to the ``names`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.recaptchaenterprise_v1.types.ReorderFirewallPoliciesResponse:
+                The reorder firewall policies
+                response message.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, names])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = recaptchaenterprise.ReorderFirewallPoliciesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if names:
+            request.names.extend(names)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.reorder_firewall_policies,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def list_related_account_groups(
         self,
         request: Optional[

@@ -658,6 +658,35 @@ class RecaptchaEnterpriseServiceGrpcTransport(RecaptchaEnterpriseServiceTranspor
         return self._stubs["delete_firewall_policy"]
 
     @property
+    def reorder_firewall_policies(
+        self,
+    ) -> Callable[
+        [recaptchaenterprise.ReorderFirewallPoliciesRequest],
+        recaptchaenterprise.ReorderFirewallPoliciesResponse,
+    ]:
+        r"""Return a callable for the reorder firewall policies method over gRPC.
+
+        Reorders all firewall policies.
+
+        Returns:
+            Callable[[~.ReorderFirewallPoliciesRequest],
+                    ~.ReorderFirewallPoliciesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "reorder_firewall_policies" not in self._stubs:
+            self._stubs["reorder_firewall_policies"] = self.grpc_channel.unary_unary(
+                "/google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/ReorderFirewallPolicies",
+                request_serializer=recaptchaenterprise.ReorderFirewallPoliciesRequest.serialize,
+                response_deserializer=recaptchaenterprise.ReorderFirewallPoliciesResponse.deserialize,
+            )
+        return self._stubs["reorder_firewall_policies"]
+
+    @property
     def list_related_account_groups(
         self,
     ) -> Callable[
