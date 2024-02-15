@@ -213,13 +213,20 @@ class Event(proto.Message):
                 updates will be published to the parent only. The
                 ``parent_event`` field contains the name of the parent.
             AUTO_CLOSED (9):
-                The incident was automatically closed because
-                the issues couldn’t be confirmed or is no longer
-                impacting Google Cloud Products and/or
-                Locations.
+                The incident was automatically closed because of the
+                following reasons:
+
+                -  The impact of the incident could not be confirmed.
+                -  The incident was intermittent or resolved itself.
+
+                The incident does not have a resolution because no action or
+                investigation happened. If it is intermittent, the incident
+                may reopen.
             FALSE_POSITIVE (10):
-                The incident was verified as non-impactful.
-                No further action required.
+                Upon investigation, Google engineers
+                concluded that the incident is not affecting a
+                Google Cloud product. This state can change if
+                the incident is reviewed again.
         """
         DETAILED_STATE_UNSPECIFIED = 0
         EMERGING = 1
@@ -467,13 +474,20 @@ class OrganizationEvent(proto.Message):
                 updates will be published to the parent only. The
                 ``parent_event`` contains the name of the parent.
             AUTO_CLOSED (9):
-                The incident was automatically closed because
-                the issues couldn’t be confirmed or is no longer
-                impacting Google Cloud Products and/or
-                Locations.
+                The incident was automatically closed because of the
+                following reasons:
+
+                -  The impact of the incident could not be confirmed.
+                -  The incident was intermittent or resolved itself.
+
+                The incident does not have a resolution because no action or
+                investigation happened. If it is intermittent, the incident
+                may reopen.
             FALSE_POSITIVE (10):
-                The incident was verified as non-impactful.
-                No further action required.
+                Upon investigation, Google engineers
+                concluded that the incident is not affecting a
+                Google Cloud product. This state can change if
+                the incident is reviewed again.
         """
         DETAILED_STATE_UNSPECIFIED = 0
         EMERGING = 1
