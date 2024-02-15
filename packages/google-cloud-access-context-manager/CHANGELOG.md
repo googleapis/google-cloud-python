@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.2.0](https://github.com/googleapis/python-access-context-manager/compare/v0.1.16...v0.2.0) (2024-02-15)
+
+
+### Features
+
+* Add `egress_policies` and `ingress_policies` fields to `ServicePerimeter` [f31ec7d](https://github.com/googleapis/googleapis/commit/f31ec7d4d1f27fd76594165ae41a344465e9f228) ([eabf473](https://github.com/googleapis/python-access-context-manager/commit/eabf4737124074f8107a0dac716cb68134edf721))
+* Add `google/identity/accesscontextmanager/v1/access_context_manager_pb2.py` [0b261de](https://github.com/googleapis/googleapis/commit/0b261def1cb4c61a9ddbb8bf14b103ce6add1bce) ([eabf473](https://github.com/googleapis/python-access-context-manager/commit/eabf4737124074f8107a0dac716cb68134edf721))
+* Add support for Python 3.12 ([#188](https://github.com/googleapis/python-access-context-manager/issues/188)) ([c379c57](https://github.com/googleapis/python-access-context-manager/commit/c379c573573207ef6e6f355aa569e19149ef2824))
+* Introduce compatibility with native namespace packages ([#187](https://github.com/googleapis/python-access-context-manager/issues/187)) ([8ffdcd3](https://github.com/googleapis/python-access-context-manager/commit/8ffdcd31ecc4a4b8e18b8534257ff02c391339f7))
+
+
+### Bug Fixes
+
+* **deps:** Require google-api-core &gt;= 1.34.1 ([eabf473](https://github.com/googleapis/python-access-context-manager/commit/eabf4737124074f8107a0dac716cb68134edf721))
+* Migrate to native namespace packages ([#193](https://github.com/googleapis/python-access-context-manager/issues/193)) ([5840132](https://github.com/googleapis/python-access-context-manager/commit/58401328a92f418cb43492459971a7f2b7d712f2))
+
 ## [0.1.16](https://github.com/googleapis/python-access-context-manager/compare/v0.1.15...v0.1.16) (2023-02-27)
 
 
