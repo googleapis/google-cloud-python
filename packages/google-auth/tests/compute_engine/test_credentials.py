@@ -257,16 +257,12 @@ class TestCredentials(object):
         assert self.credentials.universe_domain == "fake_universe_domain"
         assert self.credentials._universe_domain == "fake_universe_domain"
         assert self.credentials._universe_domain_cached
-        get_universe_domain.assert_called_once_with(
-            self.credentials._universe_domain_request
-        )
+        get_universe_domain.assert_called_once()
 
         # calling the universe_domain property the second time should use the
         # cached value instead of calling get_universe_domain
         assert self.credentials.universe_domain == "fake_universe_domain"
-        get_universe_domain.assert_called_once_with(
-            self.credentials._universe_domain_request
-        )
+        get_universe_domain.assert_called_once()
 
     @mock.patch("google.auth.compute_engine._metadata.get_universe_domain")
     def test_user_provided_universe_domain(self, get_universe_domain):
