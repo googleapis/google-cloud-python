@@ -16,8 +16,7 @@ from __future__ import absolute_import
 
 import datetime
 import unittest
-
-import mock
+from unittest import mock
 
 from google.cloud import monitoring_v3 as monitoring_v3
 from google.cloud.monitoring_v3 import MetricServiceClient
