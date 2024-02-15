@@ -71,17 +71,17 @@ class DatasetSplitType(proto.Enum):
 
 
 class DocumentLabelingState(proto.Enum):
-    r"""Describes the labelling status of a document.
+    r"""Describes the labeling status of a document.
 
     Values:
         DOCUMENT_LABELING_STATE_UNSPECIFIED (0):
             Default value if the enum is not set.
         DOCUMENT_LABELED (1):
-            Document has been labelled.
+            Document has been labeled.
         DOCUMENT_UNLABELED (2):
-            Document has not been labelled.
+            Document has not been labeled.
         DOCUMENT_AUTO_LABELED (3):
-            Document has been auto-labelled.
+            Document has been auto-labeled.
     """
     DOCUMENT_LABELING_STATE_UNSPECIFIED = 0
     DOCUMENT_LABELED = 1
@@ -417,9 +417,9 @@ class ListDocumentsRequest(proto.Message):
             -  String match is case sensitive (for filter
                ``DisplayName`` & ``EntityType``).
         return_total_size (bool):
-            Optional. Controls if the ListDocuments request requires a
-            total size of matched documents. See
-            ListDocumentsResponse.total_size.
+            Optional. Controls if the request requires a total size of
+            matched documents. See
+            [ListDocumentsResponse.total_size][google.cloud.documentai.v1beta3.ListDocumentsResponse.total_size].
 
             Enabling this flag may adversely impact performance.
 
@@ -428,11 +428,13 @@ class ListDocumentsRequest(proto.Message):
             Optional. Number of results to skip beginning from the
             ``page_token`` if provided.
             https://google.aip.dev/158#skipping-results. It must be a
-            non-negative integer. Negative values wil be rejected. Note
+            non-negative integer. Negative values will be rejected. Note
             that this is not the number of pages to skip. If this value
             causes the cursor to move past the end of results,
-            ``ListDocumentsResponse.document_metadata`` and
-            ``ListDocumentsResponse.next_page_token`` will be empty.
+            [ListDocumentsResponse.document_metadata][google.cloud.documentai.v1beta3.ListDocumentsResponse.document_metadata]
+            and
+            [ListDocumentsResponse.next_page_token][google.cloud.documentai.v1beta3.ListDocumentsResponse.next_page_token]
+            will be empty.
     """
 
     dataset: str = proto.Field(
@@ -469,9 +471,10 @@ class ListDocumentsResponse(proto.Message):
             Document metadata corresponding to the listed
             documents.
         next_page_token (str):
-            A token, which can be sent as ``page_token`` to retrieve the
-            next page. If this field is omitted, there are no subsequent
-            pages.
+            A token, which can be sent as
+            [ListDocumentsRequest.page_token][google.cloud.documentai.v1beta3.ListDocumentsRequest.page_token]
+            to retrieve the next page. If this field is omitted, there
+            are no subsequent pages.
         total_size (int):
             Total count of documents queried.
     """
@@ -671,7 +674,7 @@ class DocumentMetadata(proto.Message):
             Type of the dataset split to which the
             document belongs.
         labeling_state (google.cloud.documentai_v1beta3.types.DocumentLabelingState):
-            Labelling state of the document.
+            Labeling state of the document.
         display_name (str):
             The display name of the document.
     """

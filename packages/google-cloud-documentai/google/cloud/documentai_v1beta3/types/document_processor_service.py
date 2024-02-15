@@ -116,8 +116,9 @@ class ProcessOptions(proto.Message):
 
             This field is a member of `oneof`_ ``page_range``.
         ocr_config (google.cloud.documentai_v1beta3.types.OcrConfig):
-            Only applicable to ``OCR_PROCESSOR``. Returns error if set
-            on other processor types.
+            Only applicable to ``OCR_PROCESSOR`` and
+            ``FORM_PARSER_PROCESSOR``. Returns error if set on other
+            processor types.
         schema_override (google.cloud.documentai_v1beta3.types.DocumentSchema):
             Optional. Override the schema of the
             [ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion].
@@ -223,6 +224,15 @@ class ProcessRequest(proto.Message):
             ``pages.{page_field_name}``.
         process_options (google.cloud.documentai_v1beta3.types.ProcessOptions):
             Inference-time options for the process API
+        labels (MutableMapping[str, str]):
+            Optional. The labels with user-defined
+            metadata for the request.
+            Label keys and values can be no longer than 63
+            characters (Unicode codepoints) and can only
+            contain lowercase letters, numeric characters,
+            underscores, and dashes. International
+            characters are allowed. Label values are
+            optional. Label keys must start with a letter.
     """
 
     inline_document: gcd_document.Document = proto.Field(
@@ -265,6 +275,11 @@ class ProcessRequest(proto.Message):
         proto.MESSAGE,
         number=7,
         message="ProcessOptions",
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=10,
     )
 
 
@@ -398,6 +413,15 @@ class BatchProcessRequest(proto.Message):
             Default to ``false``.
         process_options (google.cloud.documentai_v1beta3.types.ProcessOptions):
             Inference-time options for the process API
+        labels (MutableMapping[str, str]):
+            Optional. The labels with user-defined
+            metadata for the request.
+            Label keys and values can be no longer than 63
+            characters (Unicode codepoints) and can only
+            contain lowercase letters, numeric characters,
+            underscores, and dashes. International
+            characters are allowed. Label values are
+            optional. Label keys must start with a letter.
     """
 
     class BatchInputConfig(proto.Message):
@@ -475,6 +499,11 @@ class BatchProcessRequest(proto.Message):
         proto.MESSAGE,
         number=7,
         message="ProcessOptions",
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=9,
     )
 
 
@@ -1022,7 +1051,9 @@ class CreateProcessorRequest(proto.Message):
         processor (google.cloud.documentai_v1beta3.types.Processor):
             Required. The processor to be created, requires
             [Processor.type][google.cloud.documentai.v1beta3.Processor.type]
-            and [Processor.display_name]][] to be set. Also, the
+            and
+            [Processor.display_name][google.cloud.documentai.v1beta3.Processor.display_name]
+            to be set. Also, the
             [Processor.kms_key_name][google.cloud.documentai.v1beta3.Processor.kms_key_name]
             field must be set if the processor is under CMEK.
     """
@@ -1217,6 +1248,10 @@ class TrainProcessorVersionRequest(proto.Message):
     [TrainProcessorVersion][google.cloud.documentai.v1beta3.DocumentProcessorService.TrainProcessorVersion]
     method.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
@@ -1224,6 +1259,11 @@ class TrainProcessorVersionRequest(proto.Message):
         custom_document_extraction_options (google.cloud.documentai_v1beta3.types.TrainProcessorVersionRequest.CustomDocumentExtractionOptions):
             Options to control Custom Document Extraction
             (CDE) Processor.
+
+            This field is a member of `oneof`_ ``processor_flags``.
+        foundation_model_tuning_options (google.cloud.documentai_v1beta3.types.TrainProcessorVersionRequest.FoundationModelTuningOptions):
+            Options to control foundation model tuning of
+            a processor.
 
             This field is a member of `oneof`_ ``processor_flags``.
         parent (str):
@@ -1301,11 +1341,42 @@ class TrainProcessorVersionRequest(proto.Message):
             enum="TrainProcessorVersionRequest.CustomDocumentExtractionOptions.TrainingMethod",
         )
 
+    class FoundationModelTuningOptions(proto.Message):
+        r"""Options to control foundation model tuning of the processor.
+
+        Attributes:
+            train_steps (int):
+                Optional. The number of steps to run for
+                model tuning. Valid values are between 1 and
+                400. If not provided, recommended steps will be
+                used.
+            learning_rate_multiplier (float):
+                Optional. The multiplier to apply to the
+                recommended learning rate. Valid values are
+                between 0.1 and 10. If not provided, recommended
+                learning rate will be used.
+        """
+
+        train_steps: int = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        learning_rate_multiplier: float = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
+
     custom_document_extraction_options: CustomDocumentExtractionOptions = proto.Field(
         proto.MESSAGE,
         number=5,
         oneof="processor_flags",
         message=CustomDocumentExtractionOptions,
+    )
+    foundation_model_tuning_options: FoundationModelTuningOptions = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        oneof="processor_flags",
+        message=FoundationModelTuningOptions,
     )
     parent: str = proto.Field(
         proto.STRING,
