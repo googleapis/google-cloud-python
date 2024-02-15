@@ -113,8 +113,16 @@ class ProcessOptions(proto.Message):
 
             This field is a member of `oneof`_ ``page_range``.
         ocr_config (google.cloud.documentai_v1.types.OcrConfig):
-            Only applicable to ``OCR_PROCESSOR``. Returns error if set
-            on other processor types.
+            Only applicable to ``OCR_PROCESSOR`` and
+            ``FORM_PARSER_PROCESSOR``. Returns error if set on other
+            processor types.
+        schema_override (google.cloud.documentai_v1.types.DocumentSchema):
+            Optional. Override the schema of the
+            [ProcessorVersion][google.cloud.documentai.v1.ProcessorVersion].
+            Will return an Invalid Argument error if this field is set
+            when the underlying
+            [ProcessorVersion][google.cloud.documentai.v1.ProcessorVersion]
+            doesn't support schema override.
     """
 
     class IndividualPageSelector(proto.Message):
@@ -151,6 +159,11 @@ class ProcessOptions(proto.Message):
         proto.MESSAGE,
         number=1,
         message=document_io.OcrConfig,
+    )
+    schema_override: gcd_document_schema.DocumentSchema = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=gcd_document_schema.DocumentSchema,
     )
 
 
@@ -202,6 +215,15 @@ class ProcessRequest(proto.Message):
             ``pages.{page_field_name}``.
         process_options (google.cloud.documentai_v1.types.ProcessOptions):
             Inference-time options for the process API
+        labels (MutableMapping[str, str]):
+            Optional. The labels with user-defined
+            metadata for the request.
+            Label keys and values can be no longer than 63
+            characters (Unicode codepoints) and can only
+            contain lowercase letters, numeric characters,
+            underscores, and dashes. International
+            characters are allowed. Label values are
+            optional. Label keys must start with a letter.
     """
 
     inline_document: gcd_document.Document = proto.Field(
@@ -239,6 +261,11 @@ class ProcessRequest(proto.Message):
         proto.MESSAGE,
         number=7,
         message="ProcessOptions",
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=10,
     )
 
 
@@ -357,6 +384,15 @@ class BatchProcessRequest(proto.Message):
             Default to ``false``.
         process_options (google.cloud.documentai_v1.types.ProcessOptions):
             Inference-time options for the process API
+        labels (MutableMapping[str, str]):
+            Optional. The labels with user-defined
+            metadata for the request.
+            Label keys and values can be no longer than 63
+            characters (Unicode codepoints) and can only
+            contain lowercase letters, numeric characters,
+            underscores, and dashes. International
+            characters are allowed. Label values are
+            optional. Label keys must start with a letter.
     """
 
     name: str = proto.Field(
@@ -381,6 +417,11 @@ class BatchProcessRequest(proto.Message):
         proto.MESSAGE,
         number=7,
         message="ProcessOptions",
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=9,
     )
 
 
@@ -917,7 +958,9 @@ class CreateProcessorRequest(proto.Message):
         processor (google.cloud.documentai_v1.types.Processor):
             Required. The processor to be created, requires
             [Processor.type][google.cloud.documentai.v1.Processor.type]
-            and [Processor.display_name]][] to be set. Also, the
+            and
+            [Processor.display_name][google.cloud.documentai.v1.Processor.display_name]
+            to be set. Also, the
             [Processor.kms_key_name][google.cloud.documentai.v1.Processor.kms_key_name]
             field must be set if the processor is under CMEK.
     """
