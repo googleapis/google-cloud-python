@@ -16,6 +16,7 @@ import io
 import os
 
 import setuptools
+from setuptools import find_namespace_packages
 
 # Package metadata.
 
@@ -38,12 +39,6 @@ package_root = os.path.abspath(os.path.dirname(__file__))
 readme_filename = os.path.join(package_root, "README.md")
 with io.open(readme_filename, encoding="utf-8") as readme_file:
     readme = readme_file.read()
-
-# Only include packages under the 'google' namespace. Do not include tests,
-# benchmarks, etc.
-packages = [
-    package for package in setuptools.find_packages() if package.startswith("google")
-]
 
 setuptools.setup(
     name=name,
@@ -70,7 +65,7 @@ setuptools.setup(
         "Topic :: Internet",
     ],
     platforms="Posix; MacOS X; Windows",
-    packages=packages,
+    packages=find_namespace_packages(exclude=("tests*", "testing*")),
     install_requires=dependencies,
     python_requires=">=3.7",
     include_package_data=True,
