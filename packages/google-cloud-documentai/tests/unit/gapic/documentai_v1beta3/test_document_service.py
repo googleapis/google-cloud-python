@@ -4897,6 +4897,7 @@ def test_update_dataset_schema_rest(request_type):
                     "properties": [
                         {
                             "name": "name_value",
+                            "display_name": "display_name_value",
                             "value_type": "value_type_value",
                             "occurrence_type": 1,
                             "property_metadata": {

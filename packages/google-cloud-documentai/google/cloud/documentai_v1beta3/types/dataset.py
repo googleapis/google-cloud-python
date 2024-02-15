@@ -54,8 +54,8 @@ class Dataset(proto.Message):
 
             This field is a member of `oneof`_ ``storage_source``.
         document_warehouse_config (google.cloud.documentai_v1beta3.types.Dataset.DocumentWarehouseConfig):
-            Optional. Document AI Warehouse-based dataset
-            configuration.
+            Optional. Deprecated. Warehouse-based dataset
+            configuration is not supported.
 
             This field is a member of `oneof`_ ``storage_source``.
         unmanaged_dataset_config (google.cloud.documentai_v1beta3.types.Dataset.UnmanagedDatasetConfig):
