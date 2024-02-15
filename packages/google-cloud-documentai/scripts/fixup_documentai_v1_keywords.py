@@ -39,7 +39,7 @@ def partition(
 class documentaiCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
-        'batch_process_documents': ('name', 'input_documents', 'document_output_config', 'skip_human_review', 'process_options', ),
+        'batch_process_documents': ('name', 'input_documents', 'document_output_config', 'skip_human_review', 'process_options', 'labels', ),
         'create_processor': ('parent', 'processor', ),
         'delete_processor': ('name', ),
         'delete_processor_version': ('name', ),
@@ -56,7 +56,7 @@ class documentaiCallTransformer(cst.CSTTransformer):
         'list_processors': ('parent', 'page_size', 'page_token', ),
         'list_processor_types': ('parent', 'page_size', 'page_token', ),
         'list_processor_versions': ('parent', 'page_size', 'page_token', ),
-        'process_document': ('name', 'inline_document', 'raw_document', 'gcs_document', 'skip_human_review', 'field_mask', 'process_options', ),
+        'process_document': ('name', 'inline_document', 'raw_document', 'gcs_document', 'skip_human_review', 'field_mask', 'process_options', 'labels', ),
         'review_document': ('human_review_config', 'inline_document', 'enable_schema_validation', 'priority', 'document_schema', ),
         'set_default_processor_version': ('processor', 'default_processor_version', ),
         'train_processor_version': ('parent', 'processor_version', 'custom_document_extraction_options', 'document_schema', 'input_data', 'base_processor_version', ),
