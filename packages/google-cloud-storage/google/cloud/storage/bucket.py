@@ -2619,6 +2619,21 @@ class Bucket(_PropertyMixin):
             return _rfc3339_nanos_to_datetime(value)
 
     @property
+    def updated(self):
+        """Retrieve the timestamp at which the bucket was last updated.
+
+        See https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns: Datetime object parsed from RFC3339 valid timestamp, or
+                  ``None`` if the bucket's resource has not been loaded
+                  from the server.
+        """
+        value = self._properties.get("updated")
+        if value is not None:
+            return _rfc3339_nanos_to_datetime(value)
+
+    @property
     def versioning_enabled(self):
         """Is versioning enabled for this bucket?
 
