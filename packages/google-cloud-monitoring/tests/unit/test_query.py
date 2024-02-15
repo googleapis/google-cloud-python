@@ -16,13 +16,7 @@ from __future__ import absolute_import
 
 import datetime
 import unittest
-
-# try/except added for compatibility with python < 3.8
-try:
-    from unittest import mock
-    from unittest.mock import AsyncMock  # pragma: NO COVER
-except ImportError:  # pragma: NO COVER
-    import mock
+from unittest import mock
 
 from google.cloud import monitoring_v3 as monitoring_v3
 from google.cloud.monitoring_v3 import MetricServiceClient
