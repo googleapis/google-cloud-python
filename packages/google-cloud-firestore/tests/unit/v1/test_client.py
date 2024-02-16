@@ -18,7 +18,10 @@ import types
 import mock
 import pytest
 
-from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
+from google.cloud.firestore_v1.base_client import (
+    DEFAULT_DATABASE,
+    _DEFAULT_EMULATOR_PROJECT,
+)
 
 PROJECT = "my-prahjekt"
 
@@ -98,6 +101,32 @@ def test_client_constructor_explicit(database, expected):
     assert client._database == expected
     assert client._client_info is client_info
     assert client._client_options is client_options
+
+
+@pytest.mark.parametrize(
+    "extra_env,project_expected",
+    [
+        ({}, _DEFAULT_EMULATOR_PROJECT),
+        ({"GCLOUD_PROJECT": "gcloud"}, "gcloud"),
+        ({"GOOGLE_CLOUD_PROJECT": "google"}, "google"),
+        ({"GCLOUD_PROJECT": "gcloud", "GOOGLE_CLOUD_PROJECT": "google"}, "google"),
+    ],
+)
+def test_client_constructor_emulator(extra_env, project_expected):
+    """
+    Ensure client can be configured with FIRESOTRE_EMULATOR_HOST environment variable
+
+    If project is not set, should be detected from GCLOUD_PROJECT or GOOGLE_CLOUD_PROJECT
+    """
+    expected_host = "localhost:8080"
+    environment = {"FIRESTORE_EMULATOR_HOST": expected_host}
+    if extra_env:
+        environment.update(extra_env)
+
+    with mock.patch("os.environ", environment):
+        client = _make_client()
+        assert client._emulator_host == expected_host
+        assert client.project == project_expected
 
 
 @pytest.mark.parametrize("database", [None, DEFAULT_DATABASE, "somedb"])
