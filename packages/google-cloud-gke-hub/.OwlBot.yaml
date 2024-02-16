@@ -24,6 +24,8 @@ deep-preserve-regex:
 deep-copy-regex:
   - source: /google/cloud/gkehub/(v1)/gkehub-v1-py
     dest: /owl-bot-staging/google-cloud-gke-hub/$1
+  - source: /google/cloud/gkehub/(v1beta1)/gkehub-v1beta1-py
+    dest: /owl-bot-staging/google-cloud-gke-hub/$1
   - source: /google/cloud/gkehub/v1/multiclusteringress/multiclusteringress-v1-py/google/cloud/gkehub/(multiclusteringress_v1)
     dest: /owl-bot-staging/google-cloud-gke-hub/v1/google/cloud/gkehub_v1/$1
   - source: /google/cloud/gkehub/v1/configmanagement/configmanagement-v1-py/google/cloud/gkehub/(configmanagement_v1)
