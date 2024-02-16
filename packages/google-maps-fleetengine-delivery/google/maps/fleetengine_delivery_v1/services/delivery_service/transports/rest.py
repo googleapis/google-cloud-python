@@ -757,8 +757,8 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
                 Note: gRPC and REST APIs use different field naming
                 conventions. For example, the
                 ``Task.journey_sharing_info`` field in the gRPC API and
-                the ``DeliveryVehicle.journeySharingInfo`` field in the
-                REST API refer to the same field.
+                the ``Task.journeySharingInfo`` field in the REST API
+                refer to the same field.
 
             """
 
@@ -964,8 +964,8 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
                 Note: gRPC and REST APIs use different field naming
                 conventions. For example, the
                 ``Task.journey_sharing_info`` field in the gRPC API and
-                the ``DeliveryVehicle.journeySharingInfo`` field in the
-                REST API refer to the same field.
+                the ``Task.journeySharingInfo`` field in the REST API
+                refer to the same field.
 
             """
 
@@ -1533,8 +1533,8 @@ class DeliveryServiceRestTransport(DeliveryServiceTransport):
                 Note: gRPC and REST APIs use different field naming
                 conventions. For example, the
                 ``Task.journey_sharing_info`` field in the gRPC API and
-                the ``DeliveryVehicle.journeySharingInfo`` field in the
-                REST API refer to the same field.
+                the ``Task.journeySharingInfo`` field in the REST API
+                refer to the same field.
 
             """
 
