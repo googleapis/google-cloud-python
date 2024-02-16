@@ -1414,6 +1414,11 @@
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.gkehub.v1.json",
                     "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.gkehub.v1beta1.json",
+                    "type": "json"
                 }
             ],
             "release-type": "python"
