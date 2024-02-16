@@ -40,9 +40,9 @@ import grpc  # type: ignore
 from requests import __version__ as requests_version
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
 from google.longrunning import operations_pb2  # type: ignore
@@ -578,7 +578,7 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'gkehub.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -749,9 +749,7 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -760,7 +758,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -851,7 +848,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -942,7 +938,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1035,7 +1030,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1124,7 +1118,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1215,7 +1208,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1306,9 +1298,7 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1317,7 +1307,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1410,7 +1399,6 @@ class GkeHubMembershipServiceRestTransport(GkeHubMembershipServiceTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
