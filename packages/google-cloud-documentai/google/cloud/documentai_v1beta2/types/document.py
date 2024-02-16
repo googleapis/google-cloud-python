@@ -1538,8 +1538,10 @@ class Document(proto.Message):
                     [PageRef.bounding_poly][google.cloud.documentai.v1beta2.Document.PageAnchor.PageRef.bounding_poly]
                     instead.
                 bounding_poly (google.cloud.documentai_v1beta2.types.BoundingPoly):
-                    Optional. Identifies the bounding polygon of
-                    a layout element on the page.
+                    Optional. Identifies the bounding polygon of a layout
+                    element on the page. If ``layout_type`` is set, the bounding
+                    polygon must be exactly the same to the layout element it's
+                    referring to.
                 confidence (float):
                     Optional. Confidence of detected page element, if
                     applicable. Range ``[0, 1]``.
