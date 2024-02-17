@@ -154,7 +154,9 @@ RE_WITH = re.compile(r"^\s*(WITH)", re.IGNORECASE)
 
 # DDL statements follow
 # https://cloud.google.com/spanner/docs/data-definition-language
-RE_DDL = re.compile(r"^\s*(CREATE|ALTER|DROP|GRANT|REVOKE)", re.IGNORECASE | re.DOTALL)
+RE_DDL = re.compile(
+    r"^\s*(CREATE|ALTER|DROP|GRANT|REVOKE|RENAME)", re.IGNORECASE | re.DOTALL
+)
 
 RE_IS_INSERT = re.compile(r"^\s*(INSERT)", re.IGNORECASE | re.DOTALL)
 
