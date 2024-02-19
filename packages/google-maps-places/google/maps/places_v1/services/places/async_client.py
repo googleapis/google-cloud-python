@@ -533,7 +533,8 @@ class PlacesAsyncClient:
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> place.Place:
-        r"""Get place details with a place id (in a name) string.
+        r"""Get the details of a place based on its resource name, which is
+        a string in the ``places/{place_id}`` format.
 
         .. code-block:: python
 
@@ -563,12 +564,11 @@ class PlacesAsyncClient:
 
         Args:
             request (Optional[Union[google.maps.places_v1.types.GetPlaceRequest, dict]]):
-                The request object. Request for fetching a Place with a
-                place id (in a name) string.
+                The request object. Request for fetching a Place based on its resource name,
+                which is a string in the ``places/{place_id}`` format.
             name (:class:`str`):
-                Required. A place ID returned in a Place (with "places/"
-                prefix), or equivalently the name in the same Place.
-                Format: ``places/{place_id}``.
+                Required. The resource name of a place, in the
+                ``places/{place_id}`` format.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -614,6 +614,82 @@ class PlacesAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def autocomplete_places(
+        self,
+        request: Optional[Union[places_service.AutocompletePlacesRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> places_service.AutocompletePlacesResponse:
+        r"""Returns predictions for the given input.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.maps import places_v1
+
+            async def sample_autocomplete_places():
+                # Create a client
+                client = places_v1.PlacesAsyncClient()
+
+                # Initialize request argument(s)
+                request = places_v1.AutocompletePlacesRequest(
+                    input="input_value",
+                )
+
+                # Make the request
+                response = await client.autocomplete_places(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.maps.places_v1.types.AutocompletePlacesRequest, dict]]):
+                The request object. Request proto for AutocompletePlaces.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.maps.places_v1.types.AutocompletePlacesResponse:
+                Response proto for
+                AutocompletePlaces.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = places_service.AutocompletePlacesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.autocomplete_places,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
         )
 
         # Validate the universe domain.

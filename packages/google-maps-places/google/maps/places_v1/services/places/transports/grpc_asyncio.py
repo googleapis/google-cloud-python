@@ -326,7 +326,8 @@ class PlacesGrpcAsyncIOTransport(PlacesTransport):
     ) -> Callable[[places_service.GetPlaceRequest], Awaitable[place.Place]]:
         r"""Return a callable for the get place method over gRPC.
 
-        Get place details with a place id (in a name) string.
+        Get the details of a place based on its resource name, which is
+        a string in the ``places/{place_id}`` format.
 
         Returns:
             Callable[[~.GetPlaceRequest],
@@ -345,6 +346,35 @@ class PlacesGrpcAsyncIOTransport(PlacesTransport):
                 response_deserializer=place.Place.deserialize,
             )
         return self._stubs["get_place"]
+
+    @property
+    def autocomplete_places(
+        self,
+    ) -> Callable[
+        [places_service.AutocompletePlacesRequest],
+        Awaitable[places_service.AutocompletePlacesResponse],
+    ]:
+        r"""Return a callable for the autocomplete places method over gRPC.
+
+        Returns predictions for the given input.
+
+        Returns:
+            Callable[[~.AutocompletePlacesRequest],
+                    Awaitable[~.AutocompletePlacesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "autocomplete_places" not in self._stubs:
+            self._stubs["autocomplete_places"] = self.grpc_channel.unary_unary(
+                "/google.maps.places.v1.Places/AutocompletePlaces",
+                request_serializer=places_service.AutocompletePlacesRequest.serialize,
+                response_deserializer=places_service.AutocompletePlacesResponse.deserialize,
+            )
+        return self._stubs["autocomplete_places"]
 
     def close(self):
         return self.grpc_channel.close()
