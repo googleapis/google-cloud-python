@@ -26,6 +26,7 @@ from google.cloud.spanner_dbapi.exceptions import (
     OperationalError,
     RetryAborted,
 )
+from google.cloud.spanner_dbapi.parsed_statement import AutocommitDmlMode
 from google.cloud.spanner_v1 import JsonObject
 from google.cloud.spanner_v1 import gapic_version as package_version
 from google.api_core.datetime_helpers import DatetimeWithNanoseconds
@@ -668,6 +669,27 @@ class TestDbApi:
         rows = self._cursor.fetchall()
         assert len(rows) == 10
         self._conn.commit()
+
+    def test_partitioned_dml_query(self):
+        """Test partitioned_dml query works in autocommit mode."""
+        self._cursor.execute("start batch dml")
+        for i in range(1, 11):
+            self._insert_row(i)
+        self._cursor.execute("run batch")
+        self._conn.commit()
+
+        self._conn.autocommit = True
+        self._cursor.execute("set autocommit_dml_mode = PARTITIONED_NON_ATOMIC")
+        self._cursor.execute("DELETE FROM contacts WHERE contact_id > 3")
+        assert self._cursor.rowcount == 7
+
+        self._cursor.execute("set autocommit_dml_mode = TRANSACTIONAL")
+        assert self._conn.autocommit_dml_mode == AutocommitDmlMode.TRANSACTIONAL
+
+        self._conn.autocommit = False
+        # Test changing autocommit_dml_mode is not allowed when connection is in autocommit mode
+        with pytest.raises(ProgrammingError):
+            self._cursor.execute("set autocommit_dml_mode = PARTITIONED_NON_ATOMIC")
 
     def _insert_row(self, i):
         self._cursor.execute(

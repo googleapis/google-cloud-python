@@ -115,6 +115,20 @@ class TestParseUtils(unittest.TestCase):
             ),
         )
 
+    def test_set_autocommit_dml_mode_stmt(self):
+        parsed_statement = classify_statement(
+            "  set autocommit_dml_mode = PARTITIONED_NON_ATOMIC  "
+        )
+        self.assertEqual(
+            parsed_statement,
+            ParsedStatement(
+                StatementType.CLIENT_SIDE,
+                Statement("set autocommit_dml_mode = PARTITIONED_NON_ATOMIC"),
+                ClientSideStatementType.SET_AUTOCOMMIT_DML_MODE,
+                ["PARTITIONED_NON_ATOMIC"],
+            ),
+        )
+
     @unittest.skipIf(skip_condition, skip_message)
     def test_sql_pyformat_args_to_spanner(self):
         from google.cloud.spanner_dbapi.parse_utils import sql_pyformat_args_to_spanner

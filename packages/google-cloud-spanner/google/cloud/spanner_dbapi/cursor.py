@@ -45,6 +45,7 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     StatementType,
     Statement,
     ParsedStatement,
+    AutocommitDmlMode,
 )
 from google.cloud.spanner_dbapi.transaction_helper import CursorStatementType
 from google.cloud.spanner_dbapi.utils import PeekIterator
@@ -272,6 +273,17 @@ class Cursor(object):
                 self._batch_DDLs(sql)
                 if not self.connection._client_transaction_started:
                     self.connection.run_prior_DDL_statements()
+            elif (
+                self.connection.autocommit_dml_mode
+                is AutocommitDmlMode.PARTITIONED_NON_ATOMIC
+            ):
+                self._row_count = self.connection.database.execute_partitioned_dml(
+                    sql,
+                    params=args,
+                    param_types=self._parsed_statement.statement.param_types,
+                    request_options=self.connection.request_options,
+                )
+                self._result_set = None
             else:
                 self._execute_in_rw_transaction()
 

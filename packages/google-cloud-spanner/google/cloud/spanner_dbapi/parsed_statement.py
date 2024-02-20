@@ -36,6 +36,12 @@ class ClientSideStatementType(Enum):
     PARTITION_QUERY = 9
     RUN_PARTITION = 10
     RUN_PARTITIONED_QUERY = 11
+    SET_AUTOCOMMIT_DML_MODE = 12
+
+
+class AutocommitDmlMode(Enum):
+    TRANSACTIONAL = 1
+    PARTITIONED_NON_ATOMIC = 2
 
 
 @dataclass

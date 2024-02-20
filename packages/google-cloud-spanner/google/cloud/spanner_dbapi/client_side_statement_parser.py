@@ -38,6 +38,9 @@ RE_RUN_PARTITION = re.compile(r"^\s*(RUN)\s+(PARTITION)\s+(.+)", re.IGNORECASE)
 RE_RUN_PARTITIONED_QUERY = re.compile(
     r"^\s*(RUN)\s+(PARTITIONED)\s+(QUERY)\s+(.+)", re.IGNORECASE
 )
+RE_SET_AUTOCOMMIT_DML_MODE = re.compile(
+    r"^\s*(SET)\s+(AUTOCOMMIT_DML_MODE)\s+(=)\s+(.+)", re.IGNORECASE
+)
 
 
 def parse_stmt(query):
@@ -82,6 +85,10 @@ def parse_stmt(query):
         match = re.search(RE_RUN_PARTITION, query)
         client_side_statement_params.append(match.group(3))
         client_side_statement_type = ClientSideStatementType.RUN_PARTITION
+    elif RE_SET_AUTOCOMMIT_DML_MODE.match(query):
+        match = re.search(RE_SET_AUTOCOMMIT_DML_MODE, query)
+        client_side_statement_params.append(match.group(4))
+        client_side_statement_type = ClientSideStatementType.SET_AUTOCOMMIT_DML_MODE
     if client_side_statement_type is not None:
         return ParsedStatement(
             StatementType.CLIENT_SIDE,

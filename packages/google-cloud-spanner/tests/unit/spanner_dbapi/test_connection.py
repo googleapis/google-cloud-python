@@ -33,6 +33,8 @@ from google.cloud.spanner_dbapi.parsed_statement import (
     ParsedStatement,
     StatementType,
     Statement,
+    ClientSideStatementType,
+    AutocommitDmlMode,
 )
 
 PROJECT = "test-project"
@@ -432,6 +434,62 @@ class TestConnection(unittest.TestCase):
 
         self.assertEqual(self._under_test._batch_mode, BatchMode.NONE)
         self.assertEqual(self._under_test._batch_dml_executor, None)
+
+    def test_set_autocommit_dml_mode_with_autocommit_false(self):
+        self._under_test.autocommit = False
+        parsed_statement = ParsedStatement(
+            StatementType.CLIENT_SIDE,
+            Statement("sql"),
+            ClientSideStatementType.SET_AUTOCOMMIT_DML_MODE,
+            ["PARTITIONED_NON_ATOMIC"],
+        )
+
+        with self.assertRaises(ProgrammingError):
+            self._under_test._set_autocommit_dml_mode(parsed_statement)
+
+    def test_set_autocommit_dml_mode_with_readonly(self):
+        self._under_test.autocommit = True
+        self._under_test.read_only = True
+        parsed_statement = ParsedStatement(
+            StatementType.CLIENT_SIDE,
+            Statement("sql"),
+            ClientSideStatementType.SET_AUTOCOMMIT_DML_MODE,
+            ["PARTITIONED_NON_ATOMIC"],
+        )
+
+        with self.assertRaises(ProgrammingError):
+            self._under_test._set_autocommit_dml_mode(parsed_statement)
+
+    def test_set_autocommit_dml_mode_with_batch_mode(self):
+        self._under_test.autocommit = True
+        parsed_statement = ParsedStatement(
+            StatementType.CLIENT_SIDE,
+            Statement("sql"),
+            ClientSideStatementType.SET_AUTOCOMMIT_DML_MODE,
+            ["PARTITIONED_NON_ATOMIC"],
+        )
+
+        self._under_test._set_autocommit_dml_mode(parsed_statement)
+
+        assert (
+            self._under_test.autocommit_dml_mode
+            == AutocommitDmlMode.PARTITIONED_NON_ATOMIC
+        )
+
+    def test_set_autocommit_dml_mode(self):
+        self._under_test.autocommit = True
+        parsed_statement = ParsedStatement(
+            StatementType.CLIENT_SIDE,
+            Statement("sql"),
+            ClientSideStatementType.SET_AUTOCOMMIT_DML_MODE,
+            ["PARTITIONED_NON_ATOMIC"],
+        )
+
+        self._under_test._set_autocommit_dml_mode(parsed_statement)
+        assert (
+            self._under_test.autocommit_dml_mode
+            == AutocommitDmlMode.PARTITIONED_NON_ATOMIC
+        )
 
     @mock.patch("google.cloud.spanner_v1.database.Database", autospec=True)
     def test_run_prior_DDL_statements(self, mock_database):

@@ -105,6 +105,8 @@ def execute(cursor: "Cursor", parsed_statement: ParsedStatement):
         )
     if statement_type == ClientSideStatementType.RUN_PARTITIONED_QUERY:
         return connection.run_partitioned_query(parsed_statement)
+    if statement_type == ClientSideStatementType.SET_AUTOCOMMIT_DML_MODE:
+        return connection._set_autocommit_dml_mode(parsed_statement)
 
 
 def _get_streamed_result_set(column_name, type_code, column_values):
