@@ -126,6 +126,15 @@ class TableFieldSchema(proto.Message):
             Optional. A SQL expression to specify the [default value]
             (https://cloud.google.com/bigquery/docs/default-values) for
             this field.
+        range_element_type (google.cloud.bigquery_storage_v1.types.TableFieldSchema.FieldElementType):
+            Optional. The subtype of the RANGE, if the type of this
+            field is RANGE. If the type is RANGE, this field is
+            required. Possible values for the field element type of a
+            RANGE include:
+
+            -  DATE
+            -  DATETIME
+            -  TIMESTAMP
     """
 
     class Type(proto.Enum):
@@ -165,6 +174,8 @@ class TableFieldSchema(proto.Message):
                 Interval
             JSON (15):
                 JSON, String
+            RANGE (16):
+                RANGE
         """
         TYPE_UNSPECIFIED = 0
         STRING = 1
@@ -182,6 +193,7 @@ class TableFieldSchema(proto.Message):
         BIGNUMERIC = 13
         INTERVAL = 14
         JSON = 15
+        RANGE = 16
 
     class Mode(proto.Enum):
         r"""
@@ -200,6 +212,20 @@ class TableFieldSchema(proto.Message):
         NULLABLE = 1
         REQUIRED = 2
         REPEATED = 3
+
+    class FieldElementType(proto.Message):
+        r"""Represents the type of a field element.
+
+        Attributes:
+            type_ (google.cloud.bigquery_storage_v1.types.TableFieldSchema.Type):
+                Required. The type of a field element.
+        """
+
+        type_: "TableFieldSchema.Type" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="TableFieldSchema.Type",
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -239,6 +265,11 @@ class TableFieldSchema(proto.Message):
     default_value_expression: str = proto.Field(
         proto.STRING,
         number=10,
+    )
+    range_element_type: FieldElementType = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=FieldElementType,
     )
 
 
