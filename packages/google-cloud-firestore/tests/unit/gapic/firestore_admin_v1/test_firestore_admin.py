@@ -29,6 +29,7 @@ from google.protobuf import json_format
 import json
 import math
 import pytest
+from google.api_core import api_core_version
 from proto.marshal.rules.dates import DurationRule, TimestampRule
 from proto.marshal.rules import wrappers
 from requests import Response
@@ -89,6 +90,17 @@ def modify_default_endpoint(client):
     )
 
 
+# If default endpoint template is localhost, then default mtls endpoint will be the same.
+# This method modifies the default endpoint template so the client can produce a different
+# mtls endpoint for endpoint testing purposes.
+def modify_default_endpoint_template(client):
+    return (
+        "test.{UNIVERSE_DOMAIN}"
+        if ("localhost" in client._DEFAULT_ENDPOINT_TEMPLATE)
+        else client._DEFAULT_ENDPOINT_TEMPLATE
+    )
+
+
 def test__get_default_mtls_endpoint():
     api_endpoint = "example.googleapis.com"
     api_mtls_endpoint = "example.mtls.googleapis.com"
@@ -116,6 +128,276 @@ def test__get_default_mtls_endpoint():
     assert (
         FirestoreAdminClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
     )
+
+
+def test__read_environment_variables():
+    assert FirestoreAdminClient._read_environment_variables() == (False, "auto", None)
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        assert FirestoreAdminClient._read_environment_variables() == (
+            True,
+            "auto",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "false"}):
+        assert FirestoreAdminClient._read_environment_variables() == (
+            False,
+            "auto",
+            None,
+        )
+
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError) as excinfo:
+            FirestoreAdminClient._read_environment_variables()
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+    )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        assert FirestoreAdminClient._read_environment_variables() == (
+            False,
+            "never",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        assert FirestoreAdminClient._read_environment_variables() == (
+            False,
+            "always",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"}):
+        assert FirestoreAdminClient._read_environment_variables() == (
+            False,
+            "auto",
+            None,
+        )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            FirestoreAdminClient._read_environment_variables()
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+    )
+
+    with mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"}):
+        assert FirestoreAdminClient._read_environment_variables() == (
+            False,
+            "auto",
+            "foo.com",
+        )
+
+
+def test__get_client_cert_source():
+    mock_provided_cert_source = mock.Mock()
+    mock_default_cert_source = mock.Mock()
+
+    assert FirestoreAdminClient._get_client_cert_source(None, False) is None
+    assert (
+        FirestoreAdminClient._get_client_cert_source(mock_provided_cert_source, False)
+        is None
+    )
+    assert (
+        FirestoreAdminClient._get_client_cert_source(mock_provided_cert_source, True)
+        == mock_provided_cert_source
+    )
+
+    with mock.patch(
+        "google.auth.transport.mtls.has_default_client_cert_source", return_value=True
+    ):
+        with mock.patch(
+            "google.auth.transport.mtls.default_client_cert_source",
+            return_value=mock_default_cert_source,
+        ):
+            assert (
+                FirestoreAdminClient._get_client_cert_source(None, True)
+                is mock_default_cert_source
+            )
+            assert (
+                FirestoreAdminClient._get_client_cert_source(
+                    mock_provided_cert_source, "true"
+                )
+                is mock_provided_cert_source
+            )
+
+
+@mock.patch.object(
+    FirestoreAdminClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(FirestoreAdminClient),
+)
+@mock.patch.object(
+    FirestoreAdminAsyncClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(FirestoreAdminAsyncClient),
+)
+def test__get_api_endpoint():
+    api_override = "foo.com"
+    mock_client_cert_source = mock.Mock()
+    default_universe = FirestoreAdminClient._DEFAULT_UNIVERSE
+    default_endpoint = FirestoreAdminClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=default_universe
+    )
+    mock_universe = "bar.com"
+    mock_endpoint = FirestoreAdminClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=mock_universe
+    )
+
+    assert (
+        FirestoreAdminClient._get_api_endpoint(
+            api_override, mock_client_cert_source, default_universe, "always"
+        )
+        == api_override
+    )
+    assert (
+        FirestoreAdminClient._get_api_endpoint(
+            None, mock_client_cert_source, default_universe, "auto"
+        )
+        == FirestoreAdminClient.DEFAULT_MTLS_ENDPOINT
+    )
+    assert (
+        FirestoreAdminClient._get_api_endpoint(None, None, default_universe, "auto")
+        == default_endpoint
+    )
+    assert (
+        FirestoreAdminClient._get_api_endpoint(None, None, default_universe, "always")
+        == FirestoreAdminClient.DEFAULT_MTLS_ENDPOINT
+    )
+    assert (
+        FirestoreAdminClient._get_api_endpoint(
+            None, mock_client_cert_source, default_universe, "always"
+        )
+        == FirestoreAdminClient.DEFAULT_MTLS_ENDPOINT
+    )
+    assert (
+        FirestoreAdminClient._get_api_endpoint(None, None, mock_universe, "never")
+        == mock_endpoint
+    )
+    assert (
+        FirestoreAdminClient._get_api_endpoint(None, None, default_universe, "never")
+        == default_endpoint
+    )
+
+    with pytest.raises(MutualTLSChannelError) as excinfo:
+        FirestoreAdminClient._get_api_endpoint(
+            None, mock_client_cert_source, mock_universe, "auto"
+        )
+    assert (
+        str(excinfo.value)
+        == "mTLS is not supported in any universe other than googleapis.com."
+    )
+
+
+def test__get_universe_domain():
+    client_universe_domain = "foo.com"
+    universe_domain_env = "bar.com"
+
+    assert (
+        FirestoreAdminClient._get_universe_domain(
+            client_universe_domain, universe_domain_env
+        )
+        == client_universe_domain
+    )
+    assert (
+        FirestoreAdminClient._get_universe_domain(None, universe_domain_env)
+        == universe_domain_env
+    )
+    assert (
+        FirestoreAdminClient._get_universe_domain(None, None)
+        == FirestoreAdminClient._DEFAULT_UNIVERSE
+    )
+
+    with pytest.raises(ValueError) as excinfo:
+        FirestoreAdminClient._get_universe_domain("", None)
+    assert str(excinfo.value) == "Universe Domain cannot be an empty string."
+
+
+@pytest.mark.parametrize(
+    "client_class,transport_class,transport_name",
+    [
+        (FirestoreAdminClient, transports.FirestoreAdminGrpcTransport, "grpc"),
+        (FirestoreAdminClient, transports.FirestoreAdminRestTransport, "rest"),
+    ],
+)
+def test__validate_universe_domain(client_class, transport_class, transport_name):
+    client = client_class(
+        transport=transport_class(credentials=ga_credentials.AnonymousCredentials())
+    )
+    assert client._validate_universe_domain() == True
+
+    # Test the case when universe is already validated.
+    assert client._validate_universe_domain() == True
+
+    if transport_name == "grpc":
+        # Test the case where credentials are provided by the
+        # `local_channel_credentials`. The default universes in both match.
+        channel = grpc.secure_channel(
+            "http://localhost/", grpc.local_channel_credentials()
+        )
+        client = client_class(transport=transport_class(channel=channel))
+        assert client._validate_universe_domain() == True
+
+        # Test the case where credentials do not exist: e.g. a transport is provided
+        # with no credentials. Validation should still succeed because there is no
+        # mismatch with non-existent credentials.
+        channel = grpc.secure_channel(
+            "http://localhost/", grpc.local_channel_credentials()
+        )
+        transport = transport_class(channel=channel)
+        transport._credentials = None
+        client = client_class(transport=transport)
+        assert client._validate_universe_domain() == True
+
+    # TODO: This is needed to cater for older versions of google-auth
+    # Make this test unconditional once the minimum supported version of
+    # google-auth becomes 2.23.0 or higher.
+    google_auth_major, google_auth_minor = [
+        int(part) for part in google.auth.__version__.split(".")[0:2]
+    ]
+    if google_auth_major > 2 or (
+        google_auth_major == 2 and google_auth_minor >= 23
+    ):  # pragma: NO COVER
+        credentials = ga_credentials.AnonymousCredentials()
+        credentials._universe_domain = "foo.com"
+        # Test the case when there is a universe mismatch from the credentials.
+        client = client_class(transport=transport_class(credentials=credentials))
+        with pytest.raises(ValueError) as excinfo:
+            client._validate_universe_domain()
+        assert (
+            str(excinfo.value)
+            == "The configured universe domain (googleapis.com) does not match the universe domain found in the credentials (foo.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+        )
+
+        # Test the case when there is a universe mismatch from the client.
+        #
+        # TODO: Make this test unconditional once the minimum supported version of
+        # google-api-core becomes 2.15.0 or higher.
+        api_core_major, api_core_minor = [
+            int(part) for part in api_core_version.__version__.split(".")[0:2]
+        ]
+        if api_core_major > 2 or (api_core_major == 2 and api_core_minor >= 15):
+            client = client_class(
+                client_options={"universe_domain": "bar.com"},
+                transport=transport_class(
+                    credentials=ga_credentials.AnonymousCredentials(),
+                ),
+            )
+            with pytest.raises(ValueError) as excinfo:
+                client._validate_universe_domain()
+            assert (
+                str(excinfo.value)
+                == "The configured universe domain (bar.com) does not match the universe domain found in the credentials (googleapis.com). If you haven't configured the universe domain explicitly, `googleapis.com` is the default."
+            )
+
+    # Test that ValueError is raised if universe_domain is provided via client options and credentials is None
+    with pytest.raises(ValueError):
+        client._compare_universes("foo.bar", None)
 
 
 @pytest.mark.parametrize(
@@ -229,13 +511,13 @@ def test_firestore_admin_client_get_transport_class():
 )
 @mock.patch.object(
     FirestoreAdminClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(FirestoreAdminClient),
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(FirestoreAdminClient),
 )
 @mock.patch.object(
     FirestoreAdminAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(FirestoreAdminAsyncClient),
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(FirestoreAdminAsyncClient),
 )
 def test_firestore_admin_client_client_options(
     client_class, transport_class, transport_name
@@ -277,7 +559,9 @@ def test_firestore_admin_client_client_options(
             patched.assert_called_once_with(
                 credentials=None,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                ),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,
@@ -307,15 +591,23 @@ def test_firestore_admin_client_client_options(
     # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
     # unsupported value.
     with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
-        with pytest.raises(MutualTLSChannelError):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
             client = client_class(transport=transport_name)
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+    )
 
     # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
     with mock.patch.dict(
         os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
     ):
-        with pytest.raises(ValueError):
+        with pytest.raises(ValueError) as excinfo:
             client = client_class(transport=transport_name)
+    assert (
+        str(excinfo.value)
+        == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+    )
 
     # Check the case quota_project_id is provided
     options = client_options.ClientOptions(quota_project_id="octopus")
@@ -325,7 +617,9 @@ def test_firestore_admin_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id="octopus",
@@ -343,7 +637,9 @@ def test_firestore_admin_client_client_options(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -376,13 +672,13 @@ def test_firestore_admin_client_client_options(
 )
 @mock.patch.object(
     FirestoreAdminClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(FirestoreAdminClient),
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(FirestoreAdminClient),
 )
 @mock.patch.object(
     FirestoreAdminAsyncClient,
-    "DEFAULT_ENDPOINT",
-    modify_default_endpoint(FirestoreAdminAsyncClient),
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(FirestoreAdminAsyncClient),
 )
 @mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "auto"})
 def test_firestore_admin_client_mtls_env_auto(
@@ -405,7 +701,9 @@ def test_firestore_admin_client_mtls_env_auto(
 
             if use_client_cert_env == "false":
                 expected_client_cert_source = None
-                expected_host = client.DEFAULT_ENDPOINT
+                expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                )
             else:
                 expected_client_cert_source = client_cert_source_callback
                 expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -437,7 +735,9 @@ def test_firestore_admin_client_mtls_env_auto(
                     return_value=client_cert_source_callback,
                 ):
                     if use_client_cert_env == "false":
-                        expected_host = client.DEFAULT_ENDPOINT
+                        expected_host = client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                            UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                        )
                         expected_client_cert_source = None
                     else:
                         expected_host = client.DEFAULT_MTLS_ENDPOINT
@@ -471,7 +771,9 @@ def test_firestore_admin_client_mtls_env_auto(
                 patched.assert_called_once_with(
                     credentials=None,
                     credentials_file=None,
-                    host=client.DEFAULT_ENDPOINT,
+                    host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                        UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                    ),
                     scopes=None,
                     client_cert_source_for_mtls=None,
                     quota_project_id=None,
@@ -561,6 +863,115 @@ def test_firestore_admin_client_get_mtls_endpoint_and_cert_source(client_class):
                 assert api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
                 assert cert_source == mock_client_cert_source
 
+    # Check the case api_endpoint is not provided and GOOGLE_API_USE_MTLS_ENDPOINT has
+    # unsupported value.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "Unsupported"}):
+        with pytest.raises(MutualTLSChannelError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert (
+            str(excinfo.value)
+            == "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
+        )
+
+    # Check the case GOOGLE_API_USE_CLIENT_CERTIFICATE has unsupported value.
+    with mock.patch.dict(
+        os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "Unsupported"}
+    ):
+        with pytest.raises(ValueError) as excinfo:
+            client_class.get_mtls_endpoint_and_cert_source()
+
+        assert (
+            str(excinfo.value)
+            == "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
+        )
+
+
+@pytest.mark.parametrize(
+    "client_class", [FirestoreAdminClient, FirestoreAdminAsyncClient]
+)
+@mock.patch.object(
+    FirestoreAdminClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(FirestoreAdminClient),
+)
+@mock.patch.object(
+    FirestoreAdminAsyncClient,
+    "_DEFAULT_ENDPOINT_TEMPLATE",
+    modify_default_endpoint_template(FirestoreAdminAsyncClient),
+)
+def test_firestore_admin_client_client_api_endpoint(client_class):
+    mock_client_cert_source = client_cert_source_callback
+    api_override = "foo.com"
+    default_universe = FirestoreAdminClient._DEFAULT_UNIVERSE
+    default_endpoint = FirestoreAdminClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=default_universe
+    )
+    mock_universe = "bar.com"
+    mock_endpoint = FirestoreAdminClient._DEFAULT_ENDPOINT_TEMPLATE.format(
+        UNIVERSE_DOMAIN=mock_universe
+    )
+
+    # If ClientOptions.api_endpoint is set and GOOGLE_API_USE_CLIENT_CERTIFICATE="true",
+    # use ClientOptions.api_endpoint as the api endpoint regardless.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_CLIENT_CERTIFICATE": "true"}):
+        with mock.patch(
+            "google.auth.transport.requests.AuthorizedSession.configure_mtls_channel"
+        ):
+            options = client_options.ClientOptions(
+                client_cert_source=mock_client_cert_source, api_endpoint=api_override
+            )
+            client = client_class(
+                client_options=options,
+                credentials=ga_credentials.AnonymousCredentials(),
+            )
+            assert client.api_endpoint == api_override
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == default_endpoint
+
+    # If ClientOptions.api_endpoint is not set and GOOGLE_API_USE_MTLS_ENDPOINT="always",
+    # use the DEFAULT_MTLS_ENDPOINT as the api endpoint.
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "always"}):
+        client = client_class(credentials=ga_credentials.AnonymousCredentials())
+        assert client.api_endpoint == client_class.DEFAULT_MTLS_ENDPOINT
+
+    # If ClientOptions.api_endpoint is not set, GOOGLE_API_USE_MTLS_ENDPOINT="auto" (default),
+    # GOOGLE_API_USE_CLIENT_CERTIFICATE="false" (default), default cert source doesn't exist,
+    # and ClientOptions.universe_domain="bar.com",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with universe domain as the api endpoint.
+    options = client_options.ClientOptions()
+    universe_exists = hasattr(options, "universe_domain")
+    if universe_exists:
+        options = client_options.ClientOptions(universe_domain=mock_universe)
+        client = client_class(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+    else:
+        client = client_class(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+    assert client.api_endpoint == (
+        mock_endpoint if universe_exists else default_endpoint
+    )
+    assert client.universe_domain == (
+        mock_universe if universe_exists else default_universe
+    )
+
+    # If ClientOptions does not have a universe domain attribute and GOOGLE_API_USE_MTLS_ENDPOINT="never",
+    # use the _DEFAULT_ENDPOINT_TEMPLATE populated with GDU as the api endpoint.
+    options = client_options.ClientOptions()
+    if hasattr(options, "universe_domain"):
+        delattr(options, "universe_domain")
+    with mock.patch.dict(os.environ, {"GOOGLE_API_USE_MTLS_ENDPOINT": "never"}):
+        client = client_class(
+            client_options=options, credentials=ga_credentials.AnonymousCredentials()
+        )
+        assert client.api_endpoint == default_endpoint
+
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
@@ -587,7 +998,9 @@ def test_firestore_admin_client_client_options_scopes(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file=None,
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=["1", "2"],
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -627,7 +1040,9 @@ def test_firestore_admin_client_client_options_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -687,7 +1102,9 @@ def test_firestore_admin_client_create_channel_credentials_file(
         patched.assert_called_once_with(
             credentials=None,
             credentials_file="credentials.json",
-            host=client.DEFAULT_ENDPOINT,
+            host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+            ),
             scopes=None,
             client_cert_source_for_mtls=None,
             quota_project_id=None,
@@ -1198,7 +1615,7 @@ async def test_list_indexes_flattened_error_async():
 
 def test_list_indexes_pager(transport_name: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1248,7 +1665,7 @@ def test_list_indexes_pager(transport_name: str = "grpc"):
 
 def test_list_indexes_pages(transport_name: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -1290,7 +1707,7 @@ def test_list_indexes_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_indexes_async_pager():
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1340,7 +1757,7 @@ async def test_list_indexes_async_pager():
 @pytest.mark.asyncio
 async def test_list_indexes_async_pages():
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2534,7 +2951,7 @@ async def test_list_fields_flattened_error_async():
 
 def test_list_fields_pager(transport_name: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2584,7 +3001,7 @@ def test_list_fields_pager(transport_name: str = "grpc"):
 
 def test_list_fields_pages(transport_name: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
         transport=transport_name,
     )
 
@@ -2626,7 +3043,7 @@ def test_list_fields_pages(transport_name: str = "grpc"):
 @pytest.mark.asyncio
 async def test_list_fields_async_pager():
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2676,7 +3093,7 @@ async def test_list_fields_async_pager():
 @pytest.mark.asyncio
 async def test_list_fields_async_pages():
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials,
+        credentials=ga_credentials.AnonymousCredentials(),
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3442,12 +3859,14 @@ def test_get_database(request_type, transport: str = "grpc"):
         # Designate an appropriate return value for the call.
         call.return_value = database.Database(
             name="name_value",
+            uid="uid_value",
             location_id="location_id_value",
             type_=database.Database.DatabaseType.FIRESTORE_NATIVE,
             concurrency_mode=database.Database.ConcurrencyMode.OPTIMISTIC,
             point_in_time_recovery_enablement=database.Database.PointInTimeRecoveryEnablement.POINT_IN_TIME_RECOVERY_ENABLED,
             app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
             key_prefix="key_prefix_value",
+            delete_protection_state=database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED,
             etag="etag_value",
         )
         response = client.get_database(request)
@@ -3460,6 +3879,7 @@ def test_get_database(request_type, transport: str = "grpc"):
     # Establish that the response is the type that we expect.
     assert isinstance(response, database.Database)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
     assert response.location_id == "location_id_value"
     assert response.type_ == database.Database.DatabaseType.FIRESTORE_NATIVE
     assert response.concurrency_mode == database.Database.ConcurrencyMode.OPTIMISTIC
@@ -3472,6 +3892,10 @@ def test_get_database(request_type, transport: str = "grpc"):
         == database.Database.AppEngineIntegrationMode.ENABLED
     )
     assert response.key_prefix == "key_prefix_value"
+    assert (
+        response.delete_protection_state
+        == database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED
+    )
     assert response.etag == "etag_value"
 
 
@@ -3510,12 +3934,14 @@ async def test_get_database_async(
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             database.Database(
                 name="name_value",
+                uid="uid_value",
                 location_id="location_id_value",
                 type_=database.Database.DatabaseType.FIRESTORE_NATIVE,
                 concurrency_mode=database.Database.ConcurrencyMode.OPTIMISTIC,
                 point_in_time_recovery_enablement=database.Database.PointInTimeRecoveryEnablement.POINT_IN_TIME_RECOVERY_ENABLED,
                 app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
                 key_prefix="key_prefix_value",
+                delete_protection_state=database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED,
                 etag="etag_value",
             )
         )
@@ -3529,6 +3955,7 @@ async def test_get_database_async(
     # Establish that the response is the type that we expect.
     assert isinstance(response, database.Database)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
     assert response.location_id == "location_id_value"
     assert response.type_ == database.Database.DatabaseType.FIRESTORE_NATIVE
     assert response.concurrency_mode == database.Database.ConcurrencyMode.OPTIMISTIC
@@ -3541,6 +3968,10 @@ async def test_get_database_async(
         == database.Database.AppEngineIntegrationMode.ENABLED
     )
     assert response.key_prefix == "key_prefix_value"
+    assert (
+        response.delete_protection_state
+        == database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED
+    )
     assert response.etag == "etag_value"
 
 
@@ -3708,7 +4139,9 @@ def test_list_databases(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = firestore_admin.ListDatabasesResponse()
+        call.return_value = firestore_admin.ListDatabasesResponse(
+            unreachable=["unreachable_value"],
+        )
         response = client.list_databases(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3718,6 +4151,7 @@ def test_list_databases(request_type, transport: str = "grpc"):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore_admin.ListDatabasesResponse)
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_databases_empty_call():
@@ -3753,7 +4187,9 @@ async def test_list_databases_async(
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            firestore_admin.ListDatabasesResponse()
+            firestore_admin.ListDatabasesResponse(
+                unreachable=["unreachable_value"],
+            )
         )
         response = await client.list_databases(request)
 
@@ -3764,6 +4200,7 @@ async def test_list_databases_async(
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore_admin.ListDatabasesResponse)
+    assert response.unreachable == ["unreachable_value"]
 
 
 @pytest.mark.asyncio
@@ -4153,6 +4590,232 @@ async def test_update_database_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        firestore_admin.DeleteDatabaseRequest,
+        dict,
+    ],
+)
+def test_delete_database(request_type, transport: str = "grpc"):
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/spam")
+        response = client.delete_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.DeleteDatabaseRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+def test_delete_database_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
+        client.delete_database()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.DeleteDatabaseRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_database_async(
+    transport: str = "grpc_asyncio", request_type=firestore_admin.DeleteDatabaseRequest
+):
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == firestore_admin.DeleteDatabaseRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, future.Future)
+
+
+@pytest.mark.asyncio
+async def test_delete_database_async_from_dict():
+    await test_delete_database_async(request_type=dict)
+
+
+def test_delete_database_field_headers():
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = firestore_admin.DeleteDatabaseRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        client.delete_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_database_field_headers_async():
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = firestore_admin.DeleteDatabaseRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/op")
+        )
+        await client.delete_database(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_delete_database_flattened():
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_database(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_database_flattened_error():
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_database(
+            firestore_admin.DeleteDatabaseRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_database_flattened_async():
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_database), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = operations_pb2.Operation(name="operations/op")
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_database(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_database_flattened_error_async():
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_database(
+            firestore_admin.DeleteDatabaseRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         firestore_admin.CreateIndexRequest,
         dict,
     ],
@@ -4271,11 +4934,7 @@ def test_create_index_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -4556,11 +5215,7 @@ def test_list_indexes_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -4913,11 +5568,7 @@ def test_get_index_rest_required_fields(request_type=firestore_admin.GetIndexReq
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -5183,11 +5834,7 @@ def test_delete_index_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -5445,11 +6092,7 @@ def test_get_field_rest_required_fields(request_type=firestore_admin.GetFieldReq
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -5807,11 +6450,7 @@ def test_update_field_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -6084,11 +6723,7 @@ def test_list_fields_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -6430,11 +7065,7 @@ def test_export_documents_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -6694,11 +7325,7 @@ def test_import_documents_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -6930,14 +7557,18 @@ def test_create_database_rest(request_type):
     request_init = {"parent": "projects/sample1"}
     request_init["database"] = {
         "name": "name_value",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
         "location_id": "location_id_value",
         "type_": 1,
         "concurrency_mode": 1,
         "version_retention_period": {"seconds": 751, "nanos": 543},
-        "earliest_version_time": {"seconds": 751, "nanos": 543},
+        "earliest_version_time": {},
         "point_in_time_recovery_enablement": 1,
         "app_engine_integration_mode": 1,
         "key_prefix": "key_prefix_value",
+        "delete_protection_state": 1,
         "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7038,11 +7669,7 @@ def test_create_database_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -7304,12 +7931,14 @@ def test_get_database_rest(request_type):
         # Designate an appropriate value for the returned response.
         return_value = database.Database(
             name="name_value",
+            uid="uid_value",
             location_id="location_id_value",
             type_=database.Database.DatabaseType.FIRESTORE_NATIVE,
             concurrency_mode=database.Database.ConcurrencyMode.OPTIMISTIC,
             point_in_time_recovery_enablement=database.Database.PointInTimeRecoveryEnablement.POINT_IN_TIME_RECOVERY_ENABLED,
             app_engine_integration_mode=database.Database.AppEngineIntegrationMode.ENABLED,
             key_prefix="key_prefix_value",
+            delete_protection_state=database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED,
             etag="etag_value",
         )
 
@@ -7327,6 +7956,7 @@ def test_get_database_rest(request_type):
     # Establish that the response is the type that we expect.
     assert isinstance(response, database.Database)
     assert response.name == "name_value"
+    assert response.uid == "uid_value"
     assert response.location_id == "location_id_value"
     assert response.type_ == database.Database.DatabaseType.FIRESTORE_NATIVE
     assert response.concurrency_mode == database.Database.ConcurrencyMode.OPTIMISTIC
@@ -7339,6 +7969,10 @@ def test_get_database_rest(request_type):
         == database.Database.AppEngineIntegrationMode.ENABLED
     )
     assert response.key_prefix == "key_prefix_value"
+    assert (
+        response.delete_protection_state
+        == database.Database.DeleteProtectionState.DELETE_PROTECTION_DISABLED
+    )
     assert response.etag == "etag_value"
 
 
@@ -7352,11 +7986,7 @@ def test_get_database_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -7589,7 +8219,9 @@ def test_list_databases_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = firestore_admin.ListDatabasesResponse()
+        return_value = firestore_admin.ListDatabasesResponse(
+            unreachable=["unreachable_value"],
+        )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -7604,6 +8236,7 @@ def test_list_databases_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, firestore_admin.ListDatabasesResponse)
+    assert response.unreachable == ["unreachable_value"]
 
 
 def test_list_databases_rest_required_fields(
@@ -7616,11 +8249,7 @@ def test_list_databases_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -7852,14 +8481,18 @@ def test_update_database_rest(request_type):
     request_init = {"database": {"name": "projects/sample1/databases/sample2"}}
     request_init["database"] = {
         "name": "projects/sample1/databases/sample2",
+        "uid": "uid_value",
+        "create_time": {"seconds": 751, "nanos": 543},
+        "update_time": {},
         "location_id": "location_id_value",
         "type_": 1,
         "concurrency_mode": 1,
         "version_retention_period": {"seconds": 751, "nanos": 543},
-        "earliest_version_time": {"seconds": 751, "nanos": 543},
+        "earliest_version_time": {},
         "point_in_time_recovery_enablement": 1,
         "app_engine_integration_mode": 1,
         "key_prefix": "key_prefix_value",
+        "delete_protection_state": 1,
         "etag": "etag_value",
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
@@ -7958,11 +8591,7 @@ def test_update_database_rest_required_fields(
     request = request_type(**request_init)
     pb_request = request_type.pb(request)
     jsonified_request = json.loads(
-        json_format.MessageToJson(
-            pb_request,
-            including_default_value_fields=False,
-            use_integers_for_enums=False,
-        )
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
     )
 
     # verify fields with default values are dropped
@@ -8176,6 +8805,265 @@ def test_update_database_rest_error():
     )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore_admin.DeleteDatabaseRequest,
+        dict,
+    ],
+)
+def test_delete_database_rest(request_type):
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/databases/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete_database(request)
+
+    # Establish that the response is the type that we expect.
+    assert response.operation.name == "operations/spam"
+
+
+def test_delete_database_rest_required_fields(
+    request_type=firestore_admin.DeleteDatabaseRequest,
+):
+    transport_class = transports.FirestoreAdminRestTransport
+
+    request_init = {}
+    request_init["name"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_database._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["name"] = "name_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete_database._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("etag",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "name" in jsonified_request
+    assert jsonified_request["name"] == "name_value"
+
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = operations_pb2.Operation(name="operations/spam")
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": pb_request,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete_database(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_database_rest_unset_required_fields():
+    transport = transports.FirestoreAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete_database._get_unset_required_fields({})
+    assert set(unset_fields) == (set(("etag",)) & set(("name",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_database_rest_interceptors(null_interceptor):
+    transport = transports.FirestoreAdminRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.FirestoreAdminRestInterceptor(),
+    )
+    client = FirestoreAdminClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        operation.Operation, "_set_result_from_operation"
+    ), mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "post_delete_database"
+    ) as post, mock.patch.object(
+        transports.FirestoreAdminRestInterceptor, "pre_delete_database"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = firestore_admin.DeleteDatabaseRequest.pb(
+            firestore_admin.DeleteDatabaseRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = json_format.MessageToJson(
+            operations_pb2.Operation()
+        )
+
+        request = firestore_admin.DeleteDatabaseRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = operations_pb2.Operation()
+
+        client.delete_database(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_database_rest_bad_request(
+    transport: str = "rest", request_type=firestore_admin.DeleteDatabaseRequest
+):
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"name": "projects/sample1/databases/sample2"}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete_database(request)
+
+
+def test_delete_database_rest_flattened():
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = operations_pb2.Operation(name="operations/spam")
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"name": "projects/sample1/databases/sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            name="name_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = json_format.MessageToJson(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete_database(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/v1/{name=projects/*/databases/*}" % client.transport._host, args[1]
+        )
+
+
+def test_delete_database_rest_flattened_error(transport: str = "rest"):
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_database(
+            firestore_admin.DeleteDatabaseRequest(),
+            name="name_value",
+        )
+
+
+def test_delete_database_rest_error():
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.FirestoreAdminGrpcTransport(
@@ -8210,7 +9098,7 @@ def test_credentials_transport_error():
         )
 
     # It is an error to provide an api_key and a credential.
-    options = mock.Mock()
+    options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = FirestoreAdminClient(
@@ -8328,6 +9216,7 @@ def test_firestore_admin_base_transport():
         "get_database",
         "list_databases",
         "update_database",
+        "delete_database",
         "get_operation",
         "cancel_operation",
         "delete_operation",
@@ -8662,6 +9551,9 @@ def test_firestore_admin_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.update_database._session
     session2 = client2.transport.update_database._session
+    assert session1 != session2
+    session1 = client1.transport.delete_database._session
+    session2 = client2.transport.delete_database._session
     assert session1 != session2
 
 
@@ -9930,7 +10822,9 @@ def test_api_key_credentials(client_class, transport_class):
             patched.assert_called_once_with(
                 credentials=mock_cred,
                 credentials_file=None,
-                host=client.DEFAULT_ENDPOINT,
+                host=client._DEFAULT_ENDPOINT_TEMPLATE.format(
+                    UNIVERSE_DOMAIN=client._DEFAULT_UNIVERSE
+                ),
                 scopes=None,
                 client_cert_source_for_mtls=None,
                 quota_project_id=None,

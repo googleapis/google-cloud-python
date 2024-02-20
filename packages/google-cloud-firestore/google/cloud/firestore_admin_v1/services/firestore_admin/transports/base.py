@@ -67,7 +67,7 @@ class FirestoreAdminTransport(abc.ABC):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'firestore.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -129,6 +129,10 @@ class FirestoreAdminTransport(abc.ABC):
         if ":" not in host:
             host += ":443"
         self._host = host
+
+    @property
+    def host(self):
+        return self._host
 
     def _prep_wrapped_messages(self, client_info):
         # Precompute the wrapped methods.
@@ -250,6 +254,11 @@ class FirestoreAdminTransport(abc.ABC):
             ),
             self.update_database: gapic_v1.method.wrap_method(
                 self.update_database,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_database: gapic_v1.method.wrap_method(
+                self.delete_database,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -389,6 +398,15 @@ class FirestoreAdminTransport(abc.ABC):
         self,
     ) -> Callable[
         [firestore_admin.UpdateDatabaseRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_database(
+        self,
+    ) -> Callable[
+        [firestore_admin.DeleteDatabaseRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

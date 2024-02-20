@@ -146,7 +146,7 @@ class FirestoreAdminGrpcAsyncIOTransport(FirestoreAdminTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'firestore.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -485,7 +485,7 @@ class FirestoreAdminGrpcAsyncIOTransport(FirestoreAdminTransport):
         overridden. To issue this query, call
         [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields]
         with the filter set to ``indexConfig.usesAncestorConfig:false``
-        .
+        or ``ttlConfig:*``.
 
         Returns:
             Callable[[~.ListFieldsRequest],
@@ -691,6 +691,34 @@ class FirestoreAdminGrpcAsyncIOTransport(FirestoreAdminTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["update_database"]
+
+    @property
+    def delete_database(
+        self,
+    ) -> Callable[
+        [firestore_admin.DeleteDatabaseRequest], Awaitable[operations_pb2.Operation]
+    ]:
+        r"""Return a callable for the delete database method over gRPC.
+
+        Deletes a database.
+
+        Returns:
+            Callable[[~.DeleteDatabaseRequest],
+                    Awaitable[~.Operation]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_database" not in self._stubs:
+            self._stubs["delete_database"] = self.grpc_channel.unary_unary(
+                "/google.firestore.admin.v1.FirestoreAdmin/DeleteDatabase",
+                request_serializer=firestore_admin.DeleteDatabaseRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_database"]
 
     def close(self):
         return self.grpc_channel.close()
