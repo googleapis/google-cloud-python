@@ -54,6 +54,10 @@ __protobuf__ = proto.module(
         "BatchRecognizeRequest",
         "GcsOutputConfig",
         "InlineOutputConfig",
+        "NativeOutputFileFormatConfig",
+        "VttOutputFileFormatConfig",
+        "SrtOutputFileFormatConfig",
+        "OutputFormatConfig",
         "RecognitionOutputConfig",
         "BatchRecognizeResponse",
         "BatchRecognizeResults",
@@ -581,7 +585,8 @@ class Recognizer(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the Recognizer. Format:
+            Output only. Identifier. The resource name of the
+            Recognizer. Format:
             ``projects/{project}/locations/{location}/recognizers/{recognizer}``.
         uid (str):
             Output only. System-assigned unique
@@ -1801,6 +1806,64 @@ class InlineOutputConfig(proto.Message):
     r"""Output configurations for inline response."""
 
 
+class NativeOutputFileFormatConfig(proto.Message):
+    r"""Output configurations for serialized ``BatchRecognizeResults``
+    protos.
+
+    """
+
+
+class VttOutputFileFormatConfig(proto.Message):
+    r"""Output configurations for
+    `WebVTT <https://www.w3.org/TR/webvtt1/>`__ formatted subtitle file.
+
+    """
+
+
+class SrtOutputFileFormatConfig(proto.Message):
+    r"""Output configurations `SubRip
+    Text <https://www.matroska.org/technical/subtitles.html#srt-subtitles>`__
+    formatted subtitle file.
+
+    """
+
+
+class OutputFormatConfig(proto.Message):
+    r"""Configuration for the format of the results stored to ``output``.
+
+    Attributes:
+        native (google.cloud.speech_v2.types.NativeOutputFileFormatConfig):
+            Configuration for the native output format.
+            If this field is set or if no other output
+            format field is set then transcripts will be
+            written to the sink in the native format.
+        vtt (google.cloud.speech_v2.types.VttOutputFileFormatConfig):
+            Configuration for the vtt output format. If
+            this field is set then transcripts will be
+            written to the sink in the vtt format.
+        srt (google.cloud.speech_v2.types.SrtOutputFileFormatConfig):
+            Configuration for the srt output format. If
+            this field is set then transcripts will be
+            written to the sink in the srt format.
+    """
+
+    native: "NativeOutputFileFormatConfig" = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="NativeOutputFileFormatConfig",
+    )
+    vtt: "VttOutputFileFormatConfig" = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="VttOutputFileFormatConfig",
+    )
+    srt: "SrtOutputFileFormatConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="SrtOutputFileFormatConfig",
+    )
+
+
 class RecognitionOutputConfig(proto.Message):
     r"""Configuration options for the output(s) of recognition.
 
@@ -1828,6 +1891,10 @@ class RecognitionOutputConfig(proto.Message):
             with just one audio file.
 
             This field is a member of `oneof`_ ``output``.
+        output_format_config (google.cloud.speech_v2.types.OutputFormatConfig):
+            Optional. Configuration for the format of the results stored
+            to ``output``. If unspecified transcripts will be written in
+            the ``NATIVE`` format only.
     """
 
     gcs_output_config: "GcsOutputConfig" = proto.Field(
@@ -1841,6 +1908,11 @@ class RecognitionOutputConfig(proto.Message):
         number=2,
         oneof="output",
         message="InlineOutputConfig",
+    )
+    output_format_config: "OutputFormatConfig" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="OutputFormatConfig",
     )
 
 
@@ -1905,11 +1977,27 @@ class CloudStorageResult(proto.Message):
         uri (str):
             The Cloud Storage URI to which recognition
             results were written.
+        vtt_format_uri (str):
+            The Cloud Storage URI to which recognition results were
+            written as VTT formatted captions. This is populated only
+            when ``VTT`` output is requested.
+        srt_format_uri (str):
+            The Cloud Storage URI to which recognition results were
+            written as SRT formatted captions. This is populated only
+            when ``SRT`` output is requested.
     """
 
     uri: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    vtt_format_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    srt_format_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1919,12 +2007,26 @@ class InlineResult(proto.Message):
     Attributes:
         transcript (google.cloud.speech_v2.types.BatchRecognizeResults):
             The transcript for the audio file.
+        vtt_captions (str):
+            The transcript for the audio file as VTT formatted captions.
+            This is populated only when ``VTT`` output is requested.
+        srt_captions (str):
+            The transcript for the audio file as SRT formatted captions.
+            This is populated only when ``SRT`` output is requested.
     """
 
     transcript: "BatchRecognizeResults" = proto.Field(
         proto.MESSAGE,
         number=1,
         message="BatchRecognizeResults",
+    )
+    vtt_captions: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    srt_captions: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -2308,9 +2410,9 @@ class Config(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The name of the config resource. There is
-            exactly one config resource per project per location. The
-            expected format is
+            Output only. Identifier. The name of the config resource.
+            There is exactly one config resource per project per
+            location. The expected format is
             ``projects/{project}/locations/{location}/config``.
         kms_key_name (str):
             Optional. An optional `KMS key
@@ -2393,14 +2495,16 @@ class CustomClass(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the CustomClass. Format:
+            Output only. Identifier. The resource name of the
+            CustomClass. Format:
             ``projects/{project}/locations/{location}/customClasses/{custom_class}``.
         uid (str):
             Output only. System-assigned unique
             identifier for the CustomClass.
         display_name (str):
-            User-settable, human-readable name for the
-            CustomClass. Must be 63 characters or less.
+            Optional. User-settable, human-readable name
+            for the CustomClass. Must be 63 characters or
+            less.
         items (MutableSequence[google.cloud.speech_v2.types.CustomClass.ClassItem]):
             A collection of class items.
         state (google.cloud.speech_v2.types.CustomClass.State):
@@ -2417,9 +2521,9 @@ class CustomClass(proto.Message):
             Output only. The time at which this resource
             will be purged.
         annotations (MutableMapping[str, str]):
-            Allows users to store small amounts of
-            arbitrary data. Both the key and the value must
-            be 63 characters or less each. At most 100
+            Optional. Allows users to store small amounts
+            of arbitrary data. Both the key and the value
+            must be 63 characters or less each. At most 100
             annotations.
         etag (str):
             Output only. This checksum is computed by the
@@ -2545,7 +2649,8 @@ class PhraseSet(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the PhraseSet. Format:
+            Output only. Identifier. The resource name of the PhraseSet.
+            Format:
             ``projects/{project}/locations/{location}/phraseSets/{phrase_set}``.
         uid (str):
             Output only. System-assigned unique
