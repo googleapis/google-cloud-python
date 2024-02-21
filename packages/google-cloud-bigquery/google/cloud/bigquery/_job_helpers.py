@@ -54,7 +54,7 @@ if TYPE_CHECKING:  # pragma: NO COVER
 
 
 # The purpose of _TIMEOUT_BUFFER_MILLIS is to allow the server-side timeout to
-# happen before the client-side timeout. This is not strictly neccessary, as the
+# happen before the client-side timeout. This is not strictly necessary, as the
 # client retries client-side timeouts, but the hope by making the server-side
 # timeout slightly shorter is that it can save the server from some unncessary
 # processing time.

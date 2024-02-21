@@ -711,7 +711,7 @@ def test_query_and_wait_caches_completed_query_results_one_page():
             {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
             {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
         ],
-        # Even though totalRows > len(rows), we should use the presense of a
+        # Even though totalRows > len(rows), we should use the presence of a
         # next page token to decide if there are any more pages.
         "totalRows": 8,
     }
@@ -828,7 +828,7 @@ def test_query_and_wait_caches_completed_query_results_more_pages():
                 {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
                 {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
             ],
-            # Even though totalRows <= len(rows), we should use the presense of a
+            # Even though totalRows <= len(rows), we should use the presence of a
             # next page token to decide if there are any more pages.
             "totalRows": 2,
             "pageToken": "page-2",
@@ -981,7 +981,7 @@ def test_query_and_wait_incomplete_query():
                 {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
                 {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
             ],
-            # Even though totalRows <= len(rows), we should use the presense of a
+            # Even though totalRows <= len(rows), we should use the presence of a
             # next page token to decide if there are any more pages.
             "totalRows": 2,
             "pageToken": "page-2",

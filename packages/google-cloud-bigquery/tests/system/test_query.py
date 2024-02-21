@@ -477,7 +477,7 @@ def test_query_error_w_api_method_default(bigquery_client: bigquery.Client):
     """Test that an exception is not thrown until fetching the results.
 
     For backwards compatibility, jobs.insert is the default API method. With
-    jobs.insert, a failed query job is "sucessfully" created. An exception is
+    jobs.insert, a failed query job is "successfully" created. An exception is
     thrown when fetching the results.
     """
 

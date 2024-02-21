@@ -90,7 +90,7 @@ def _get_final_span_attributes(attributes=None, client=None, job_ref=None):
     """Compiles attributes from: client, job_ref, user-provided attributes.
 
     Attributes from all of these sources are merged together. Note the
-    attributes are added sequentially based on perceived order of precendence:
+    attributes are added sequentially based on perceived order of precedence:
     i.e. attributes added last may overwrite attributes added earlier.
 
     Args:
