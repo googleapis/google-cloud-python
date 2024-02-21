@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.28.1](https://github.com/googleapis/google-auth-library-python/compare/v2.28.0...v2.28.1) (2024-02-21)
+
+
+### Bug Fixes
+
+* Typo when setting the state for the pickle deserializer. ([#1479](https://github.com/googleapis/google-auth-library-python/issues/1479)) ([08b5cc3](https://github.com/googleapis/google-auth-library-python/commit/08b5cc38d09d388a5a7c11942b7992870ee012b7))
+
 ## [2.28.0](https://github.com/googleapis/google-auth-library-python/compare/v2.27.0...v2.28.0) (2024-02-15)
 
 
