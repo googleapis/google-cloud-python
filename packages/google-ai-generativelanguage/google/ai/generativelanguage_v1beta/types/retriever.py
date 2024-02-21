@@ -88,7 +88,7 @@ class Document(proto.Message):
     Attributes:
         name (str):
             Immutable. Identifier. The ``Document`` resource name. The
-            ID (name excluding the "corpora/*/documents/" prefix) can
+            ID (name excluding the `corpora/*/documents/` prefix) can
             contain up to 40 characters that are lowercase alphanumeric
             or dashes (-). The ID cannot start or end with a dash. If
             the name is empty on create, a unique name will be derived
@@ -315,7 +315,7 @@ class Chunk(proto.Message):
     Attributes:
         name (str):
             Immutable. Identifier. The ``Chunk`` resource name. The ID
-            (name excluding the "corpora/*/documents/*/chunks/" prefix)
+            (name excluding the `corpora/*/documents/*/chunks/` prefix)
             can contain up to 40 characters that are lowercase
             alphanumeric or dashes (-). The ID cannot start or end with
             a dash. If the name is empty on create, a random
