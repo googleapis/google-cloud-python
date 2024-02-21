@@ -15,10 +15,12 @@
 import re
 import tempfile
 
+import numpy as np
 import pandas as pd
 
 import bigframes as bf
 import bigframes.formatting_helpers as formatting_helpers
+from bigframes.session import MAX_INLINE_DF_SIZE
 
 job_load_message_regex = r"\w+ job [\w-]+ is \w+\."
 
@@ -66,10 +68,15 @@ def test_progress_bar_extract_jobs(
 def test_progress_bar_load_jobs(
     session: bf.Session, penguins_pandas_df_default_index: pd.DataFrame, capsys
 ):
+    # repeat the DF to be big enough to trigger the load job.
+    df = penguins_pandas_df_default_index
+    while len(df) < MAX_INLINE_DF_SIZE:
+        df = pd.DataFrame(np.repeat(df.values, 2, axis=0))
+
     bf.options.display.progress_bar = "terminal"
     with tempfile.TemporaryDirectory() as dir:
         path = dir + "/test_read_csv_progress_bar*.csv"
-        penguins_pandas_df_default_index.to_csv(path, index=False)
+        df.to_csv(path, index=False)
         capsys.readouterr()  # clear output
         session.read_csv(path)
 

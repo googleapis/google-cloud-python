@@ -108,6 +108,10 @@ _VALID_ENCODINGS = {
     "UTF-32LE",
 }
 
+# BigQuery has 1 MB query size limit, 5000 items shouldn't take more than 10% of this depending on data type.
+# TODO(tbergeron): Convert to bytes-based limit
+MAX_INLINE_DF_SIZE = 5000
+
 logger = logging.getLogger(__name__)
 
 
@@ -883,6 +887,29 @@ class Session(
     def _read_pandas(
         self, pandas_dataframe: pandas.DataFrame, api_name: str
     ) -> dataframe.DataFrame:
+        if (
+            pandas_dataframe.size < MAX_INLINE_DF_SIZE
+            # TODO(swast): Workaround data types limitation in inline data.
+            and not any(
+                (
+                    isinstance(s.dtype, pandas.ArrowDtype)
+                    or (len(s) > 0 and pandas.api.types.is_list_like(s.iloc[0]))
+                    or pandas.api.types.is_datetime64_any_dtype(s)
+                )
+                for _, s in pandas_dataframe.items()
+            )
+        ):
+            return self._read_pandas_inline(pandas_dataframe)
+        return self._read_pandas_load_job(pandas_dataframe, api_name)
+
+    def _read_pandas_inline(
+        self, pandas_dataframe: pandas.DataFrame
+    ) -> dataframe.DataFrame:
+        return dataframe.DataFrame(blocks.Block.from_local(pandas_dataframe))
+
+    def _read_pandas_load_job(
+        self, pandas_dataframe: pandas.DataFrame, api_name: str
+    ) -> dataframe.DataFrame:
         col_labels, idx_labels = (
             pandas_dataframe.columns.to_list(),
             pandas_dataframe.index.names,
@@ -1079,7 +1106,7 @@ class Session(
                 encoding=encoding,
                 **kwargs,
             )
-            return self.read_pandas(pandas_df)  # type: ignore
+            return self._read_pandas(pandas_df, "read_csv")  # type: ignore
 
     def read_pickle(
         self,
@@ -1096,7 +1123,7 @@ class Session(
         if isinstance(pandas_obj, pandas.Series):
             if pandas_obj.name is None:
                 pandas_obj.name = "0"
-            bigframes_df = self.read_pandas(pandas_obj.to_frame())
+            bigframes_df = self._read_pandas(pandas_obj.to_frame(), "read_pickle")
             return bigframes_df[bigframes_df.columns[0]]
         return self._read_pandas(pandas_obj, "read_pickle")
 
@@ -1196,7 +1223,7 @@ class Session(
                     engine=engine,
                     **kwargs,
                 )
-            return self.read_pandas(pandas_df)
+            return self._read_pandas(pandas_df, "read_json")
 
     def _check_file_size(self, filepath: str):
         max_size = 1024 * 1024 * 1024  # 1 GB in bytes

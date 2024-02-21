@@ -69,10 +69,6 @@ if typing.TYPE_CHECKING:
     import bigframes.session
 
 
-# BigQuery has 1 MB query size limit, 5000 items shouldn't take more than 10% of this depending on data type.
-# TODO(tbergeron): Convert to bytes-based limit
-MAX_INLINE_DF_SIZE = 5000
-
 LevelType = typing.Hashable
 LevelsType = typing.Union[LevelType, typing.Sequence[LevelType]]
 SingleItemValue = Union[bigframes.series.Series, int, float, Callable]
@@ -170,17 +166,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 columns=columns,  # type:ignore
                 dtype=dtype,  # type:ignore
             )
-            if (
-                pd_dataframe.size < MAX_INLINE_DF_SIZE
-                # TODO(swast): Workaround data types limitation in inline data.
-                and not any(
-                    dt.pyarrow_dtype
-                    for dt in pd_dataframe.dtypes
-                    if isinstance(dt, pandas.ArrowDtype)
-                )
-            ):
-                self._block = blocks.Block.from_local(pd_dataframe)
-            elif session:
+            if session:
                 self._block = session.read_pandas(pd_dataframe)._get_block()
             else:
                 self._block = bigframes.pandas.read_pandas(pd_dataframe)._get_block()

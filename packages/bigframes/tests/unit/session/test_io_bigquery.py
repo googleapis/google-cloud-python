@@ -23,6 +23,7 @@ import bigframes
 from bigframes.core import log_adapter
 import bigframes.pandas as bpd
 import bigframes.session._io.bigquery as io_bq
+from tests.unit import resources
 
 
 def test_create_job_configs_labels_is_none():
@@ -64,7 +65,9 @@ def test_create_job_configs_labels_log_adaptor_call_method_under_length_limit():
         "bigframes-api": "read_pandas",
         "source": "bigquery-dataframes-temp",
     }
-    df = bpd.DataFrame({"col1": [1, 2], "col2": [3, 4]})
+    df = bpd.DataFrame(
+        {"col1": [1, 2], "col2": [3, 4]}, session=resources.create_bigquery_session()
+    )
     # Test running two methods
     df.head()
     df.max()
@@ -81,15 +84,16 @@ def test_create_job_configs_labels_log_adaptor_call_method_under_length_limit():
         "recent-bigframes-api-2": "dataframe-__init__",
         "recent-bigframes-api-3": "dataframe-head",
         "recent-bigframes-api-4": "dataframe-__init__",
+        "recent-bigframes-api-5": "dataframe-__init__",
     }
-    assert labels is not None
-    assert len(labels) == 7
     assert labels == expected_dict
 
 
 def test_create_job_configs_labels_length_limit_met_and_labels_is_none():
     log_adapter.get_and_reset_api_methods()
-    df = bpd.DataFrame({"col1": [1, 2], "col2": [3, 4]})
+    df = bpd.DataFrame(
+        {"col1": [1, 2], "col2": [3, 4]}, session=resources.create_bigquery_session()
+    )
     # Test running methods more than the labels' length limit
     for i in range(66):
         df.head()
@@ -114,7 +118,9 @@ def test_create_job_configs_labels_length_limit_met():
         value = f"test{i}"
         cur_labels[key] = value
     # If cur_labels length is 62, we can only add one label from api_methods
-    df = bpd.DataFrame({"col1": [1, 2], "col2": [3, 4]})
+    df = bpd.DataFrame(
+        {"col1": [1, 2], "col2": [3, 4]}, session=resources.create_bigquery_session()
+    )
     # Test running two methods
     df.head()
     df.max()
