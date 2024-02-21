@@ -146,6 +146,11 @@ class PlacesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.autocomplete_places: gapic_v1.method.wrap_method(
+                self.autocomplete_places,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -195,6 +200,18 @@ class PlacesTransport(abc.ABC):
         self,
     ) -> Callable[
         [places_service.GetPlaceRequest], Union[place.Place, Awaitable[place.Place]]
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def autocomplete_places(
+        self,
+    ) -> Callable[
+        [places_service.AutocompletePlacesRequest],
+        Union[
+            places_service.AutocompletePlacesResponse,
+            Awaitable[places_service.AutocompletePlacesResponse],
+        ],
     ]:
         raise NotImplementedError()
 

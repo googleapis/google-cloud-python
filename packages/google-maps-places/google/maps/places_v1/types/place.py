@@ -68,9 +68,8 @@ class Place(proto.Message):
 
     Attributes:
         name (str):
-            An ID representing this place which may be used to look up
-            this place again (a.k.a. the API "resource" name:
-            places/place_id).
+            This Place's resource name, in ``places/{place_id}`` format.
+            Can be used to look up the Place.
         id (str):
             The unique identifier of a place.
         display_name (google.type.localized_text_pb2.LocalizedText):

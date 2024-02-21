@@ -18,9 +18,11 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.geo.type.types import viewport
+from google.type import latlng_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.maps.places_v1.types import geometry, place
+from google.maps.places_v1.types import ev_charging, geometry
+from google.maps.places_v1.types import place as gmp_place
 
 __protobuf__ = proto.module(
     package="google.maps.places.v1",
@@ -32,6 +34,8 @@ __protobuf__ = proto.module(
         "GetPhotoMediaRequest",
         "PhotoMedia",
         "GetPlaceRequest",
+        "AutocompletePlacesRequest",
+        "AutocompletePlacesResponse",
     },
 )
 
@@ -246,10 +250,10 @@ class SearchNearbyResponse(proto.Message):
             and specific location restriction.
     """
 
-    places: MutableSequence[place.Place] = proto.RepeatedField(
+    places: MutableSequence[gmp_place.Place] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message=place.Place,
+        message=gmp_place.Place,
     )
 
 
@@ -320,6 +324,9 @@ class SearchTextRequest(proto.Message):
             The region to search. This location serves as a restriction
             which means results outside given location will not be
             returned. Cannot be set along with location_bias.
+        ev_options (google.maps.places_v1.types.SearchTextRequest.EVOptions):
+            Optional. Set the searchable EV options of a
+            place search request.
     """
 
     class RankPreference(proto.Enum):
@@ -409,6 +416,33 @@ class SearchTextRequest(proto.Message):
             message=viewport.Viewport,
         )
 
+    class EVOptions(proto.Message):
+        r"""Searchable EV options of a place search request.
+
+        Attributes:
+            minimum_charging_rate_kw (float):
+                Optional. Filtering places by minimum
+                charging rate. Any places with charging a rate
+                less than the minimum charging rate are filtered
+                out.
+            connector_types (MutableSequence[google.maps.places_v1.types.EVConnectorType]):
+                Optional. The list of preferred EV connector
+                types. A place that does not support any of the
+                listed connector types are filter out.
+        """
+
+        minimum_charging_rate_kw: float = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
+        connector_types: MutableSequence[
+            ev_charging.EVConnectorType
+        ] = proto.RepeatedField(
+            proto.ENUM,
+            number=2,
+            enum=ev_charging.EVConnectorType,
+        )
+
     text_query: str = proto.Field(
         proto.STRING,
         number=1,
@@ -442,10 +476,10 @@ class SearchTextRequest(proto.Message):
         proto.INT32,
         number=10,
     )
-    price_levels: MutableSequence[place.PriceLevel] = proto.RepeatedField(
+    price_levels: MutableSequence[gmp_place.PriceLevel] = proto.RepeatedField(
         proto.ENUM,
         number=11,
-        enum=place.PriceLevel,
+        enum=gmp_place.PriceLevel,
     )
     strict_type_filtering: bool = proto.Field(
         proto.BOOL,
@@ -461,6 +495,11 @@ class SearchTextRequest(proto.Message):
         number=14,
         message=LocationRestriction,
     )
+    ev_options: EVOptions = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=EVOptions,
+    )
 
 
 class SearchTextResponse(proto.Message):
@@ -472,10 +511,10 @@ class SearchTextResponse(proto.Message):
             search criteria.
     """
 
-    places: MutableSequence[place.Place] = proto.RepeatedField(
+    places: MutableSequence[gmp_place.Place] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message=place.Place,
+        message=gmp_place.Place,
     )
 
 
@@ -571,14 +610,13 @@ class PhotoMedia(proto.Message):
 
 
 class GetPlaceRequest(proto.Message):
-    r"""Request for fetching a Place with a place id (in a name)
-    string.
+    r"""Request for fetching a Place based on its resource name, which is a
+    string in the ``places/{place_id}`` format.
 
     Attributes:
         name (str):
-            Required. A place ID returned in a Place (with "places/"
-            prefix), or equivalently the name in the same Place. Format:
-            ``places/{place_id}``.
+            Required. The resource name of a place, in the
+            ``places/{place_id}`` format.
         language_code (str):
             Optional. Place details will be displayed
             with the preferred language if available.
@@ -595,6 +633,36 @@ class GetPlaceRequest(proto.Message):
             https://www.unicode.org/cldr/charts/latest/supplemental/territory_language_information.html.
 
             Note that 3-digit region codes are not currently supported.
+        session_token (str):
+            Optional. An arbitrary string which identifies an
+            autocomplete session for billing purposes. Must be at most
+            36 characters in length. Otherwise an INVALID_ARGUMENT error
+            is returned.
+
+            The session begins when the user starts typing a query, and
+            concludes when they select a place and a call to Place
+            Details or Address Validation is made. Each session can have
+            multiple queries, followed by one Place selection. The
+            credentials used for each request within a session must
+            belong to the same Google Cloud Console project. Once a
+            session has concluded, the token is no longer valid; your
+            app must generate a fresh token for each session. If the
+            ``session_token`` parameter is omitted, or if you reuse a
+            session token, the session is charged as if no session token
+            was provided (each request is billed separately).
+
+            We recommend the following guidelines:
+
+            -  Use session tokens for all Place Autocomplete calls.
+            -  Generate a fresh token for each session. Using a version
+               4 UUID is recommended.
+            -  Ensure that the credentials used for all Place
+               Autocomplete, Place Details, and Address Validation
+               requests within a session belong to the same Cloud
+               Console project.
+            -  Be sure to pass a unique session token for each new
+               session. Using the same token for more than one session
+               will result in each request being billed individually.
     """
 
     name: str = proto.Field(
@@ -608,6 +676,499 @@ class GetPlaceRequest(proto.Message):
     region_code: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+    session_token: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class AutocompletePlacesRequest(proto.Message):
+    r"""Request proto for AutocompletePlaces.
+
+    Attributes:
+        input (str):
+            Required. The text string on which to search.
+        location_bias (google.maps.places_v1.types.AutocompletePlacesRequest.LocationBias):
+            Optional. Bias results to a specified location.
+
+            At most one of ``location_bias`` or ``location_restriction``
+            should be set. If neither are set, the results will be
+            biased by IP address, meaning the IP address will be mapped
+            to an imprecise location and used as a biasing signal.
+        location_restriction (google.maps.places_v1.types.AutocompletePlacesRequest.LocationRestriction):
+            Optional. Restrict results to a specified location.
+
+            At most one of ``location_bias`` or ``location_restriction``
+            should be set. If neither are set, the results will be
+            biased by IP address, meaning the IP address will be mapped
+            to an imprecise location and used as a biasing signal.
+        included_primary_types (MutableSequence[str]):
+            Optional. Included primary Place type (e.g. "restaurant" or
+            "gas_station") from
+            https://developers.google.com/maps/documentation/places/web-service/place-types.
+            A Place is only returned if its primary type is included in
+            this list. Up to 5 values can be specified. If no types are
+            specified, all Place types are returned.
+        included_region_codes (MutableSequence[str]):
+            Optional. Only include results in the specified regions,
+            specified as up to 15 CLDR two-character region codes. An
+            empty set will not restrict the results. If both
+            ``location_restriction`` and ``included_region_codes`` are
+            set, the results will be located in the area of
+            intersection.
+        language_code (str):
+            Optional. The language in which to return results. Defaults
+            to en-US. The results may be in mixed languages if the
+            language used in ``input`` is different from
+            ``language_code`` or if the returned Place does not have a
+            translation from the local language to ``language_code``.
+        region_code (str):
+            Optional. The region code, specified as a CLDR two-character
+            region code. This affects address formatting, result
+            ranking, and may influence what results are returned. This
+            does not restrict results to the specified region. To
+            restrict results to a region, use
+            ``region_code_restriction``.
+        origin (google.type.latlng_pb2.LatLng):
+            Optional. The origin point from which to calculate geodesic
+            distance to the destination (returned as
+            ``distance_meters``). If this value is omitted, geodesic
+            distance will not be returned.
+        input_offset (int):
+            Optional. A zero-based Unicode character offset of ``input``
+            indicating the cursor position in ``input``. The cursor
+            position may influence what predictions are returned.
+
+            If empty, defaults to the length of ``input``.
+        include_query_predictions (bool):
+            Optional. If true, the response will include
+            both Place and query predictions. Otherwise the
+            response will only return Place predictions.
+        session_token (str):
+            Optional. An arbitrary string which identifies an
+            autocomplete session for billing purposes. Must be at most
+            36 characters in length. Otherwise an INVALID_ARGUMENT error
+            is returned.
+
+            The session begins when the user starts typing a query, and
+            concludes when they select a place and a call to Place
+            Details or Address Validation is made. Each session can have
+            multiple queries, followed by one Place selection. The
+            credentials used for each request within a session must
+            belong to the same Google Cloud Console project. Once a
+            session has concluded, the token is no longer valid; your
+            app must generate a fresh token for each session. If the
+            ``session_token`` parameter is omitted, or if you reuse a
+            session token, the session is charged as if no session token
+            was provided (each request is billed separately).
+
+            We recommend the following guidelines:
+
+            -  Use session tokens for all Place Autocomplete calls.
+            -  Generate a fresh token for each session. Using a version
+               4 UUID is recommended.
+            -  Ensure that the credentials used for all Place
+               Autocomplete, Place Details, and Address Validation
+               requests within a session belong to the same Cloud
+               Console project.
+            -  Be sure to pass a unique session token for each new
+               session. Using the same token for more than one session
+               will result in each request being billed individually.
+    """
+
+    class LocationBias(proto.Message):
+        r"""The region to search. The results may be biased around the
+        specified region.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            rectangle (google.geo.type.types.Viewport):
+                A viewport defined by a northeast and a
+                southwest corner.
+
+                This field is a member of `oneof`_ ``type``.
+            circle (google.maps.places_v1.types.Circle):
+                A circle defined by a center point and
+                radius.
+
+                This field is a member of `oneof`_ ``type``.
+        """
+
+        rectangle: viewport.Viewport = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="type",
+            message=viewport.Viewport,
+        )
+        circle: geometry.Circle = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="type",
+            message=geometry.Circle,
+        )
+
+    class LocationRestriction(proto.Message):
+        r"""The region to search. The results will be restricted to the
+        specified region.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            rectangle (google.geo.type.types.Viewport):
+                A viewport defined by a northeast and a
+                southwest corner.
+
+                This field is a member of `oneof`_ ``type``.
+            circle (google.maps.places_v1.types.Circle):
+                A circle defined by a center point and
+                radius.
+
+                This field is a member of `oneof`_ ``type``.
+        """
+
+        rectangle: viewport.Viewport = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="type",
+            message=viewport.Viewport,
+        )
+        circle: geometry.Circle = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="type",
+            message=geometry.Circle,
+        )
+
+    input: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    location_bias: LocationBias = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=LocationBias,
+    )
+    location_restriction: LocationRestriction = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=LocationRestriction,
+    )
+    included_primary_types: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    included_region_codes: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    language_code: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    region_code: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    origin: latlng_pb2.LatLng = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=latlng_pb2.LatLng,
+    )
+    input_offset: int = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    include_query_predictions: bool = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    session_token: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+
+
+class AutocompletePlacesResponse(proto.Message):
+    r"""Response proto for AutocompletePlaces.
+
+    Attributes:
+        suggestions (MutableSequence[google.maps.places_v1.types.AutocompletePlacesResponse.Suggestion]):
+            Contains a list of suggestions, ordered in
+            descending order of relevance.
+    """
+
+    class Suggestion(proto.Message):
+        r"""An Autocomplete suggestion result.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            place_prediction (google.maps.places_v1.types.AutocompletePlacesResponse.Suggestion.PlacePrediction):
+                A prediction for a Place.
+
+                This field is a member of `oneof`_ ``kind``.
+            query_prediction (google.maps.places_v1.types.AutocompletePlacesResponse.Suggestion.QueryPrediction):
+                A prediction for a query.
+
+                This field is a member of `oneof`_ ``kind``.
+        """
+
+        class StringRange(proto.Message):
+            r"""Identifies a substring within a given text.
+
+            Attributes:
+                start_offset (int):
+                    Zero-based offset of the first Unicode
+                    character of the string (inclusive).
+                end_offset (int):
+                    Zero-based offset of the last Unicode
+                    character (exclusive).
+            """
+
+            start_offset: int = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            end_offset: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+
+        class FormattableText(proto.Message):
+            r"""Text representing a Place or query prediction. The text may
+            be used as is or formatted.
+
+            Attributes:
+                text (str):
+                    Text that may be used as is or formatted with ``matches``.
+                matches (MutableSequence[google.maps.places_v1.types.AutocompletePlacesResponse.Suggestion.StringRange]):
+                    A list of string ranges identifying where the input request
+                    matched in ``text``. The ranges can be used to format
+                    specific parts of ``text``. The substrings may not be exact
+                    matches of ``input`` if the matching was determined by
+                    criteria other than string matching (e.g. spell corrections
+                    or transliterations).
+
+                    These values are Unicode character offsets of ``text``. The
+                    ranges are guaranteed to be ordered in increasing offset
+                    values.
+            """
+
+            text: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            matches: MutableSequence[
+                "AutocompletePlacesResponse.Suggestion.StringRange"
+            ] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="AutocompletePlacesResponse.Suggestion.StringRange",
+            )
+
+        class StructuredFormat(proto.Message):
+            r"""Contains a breakdown of a Place or query prediction into main
+            text and secondary text.
+
+            For Place predictions, the main text contains the specific name
+            of the Place. For query predictions, the main text contains the
+            query.
+
+            The secondary text contains additional disambiguating features
+            (such as a city or region) to further identify the Place or
+            refine the query.
+
+            Attributes:
+                main_text (google.maps.places_v1.types.AutocompletePlacesResponse.Suggestion.FormattableText):
+                    Represents the name of the Place or query.
+                secondary_text (google.maps.places_v1.types.AutocompletePlacesResponse.Suggestion.FormattableText):
+                    Represents additional disambiguating features
+                    (such as a city or region) to further identify
+                    the Place or refine the query.
+            """
+
+            main_text: "AutocompletePlacesResponse.Suggestion.FormattableText" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=1,
+                    message="AutocompletePlacesResponse.Suggestion.FormattableText",
+                )
+            )
+            secondary_text: "AutocompletePlacesResponse.Suggestion.FormattableText" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=2,
+                    message="AutocompletePlacesResponse.Suggestion.FormattableText",
+                )
+            )
+
+        class PlacePrediction(proto.Message):
+            r"""Prediction results for a Place Autocomplete prediction.
+
+            Attributes:
+                place (str):
+                    The resource name of the suggested Place.
+                    This name can be used in other APIs that accept
+                    Place names.
+                place_id (str):
+                    The unique identifier of the suggested Place.
+                    This identifier can be used in other APIs that
+                    accept Place IDs.
+                text (google.maps.places_v1.types.AutocompletePlacesResponse.Suggestion.FormattableText):
+                    Contains the human-readable name for the returned result.
+                    For establishment results, this is usually the business name
+                    and address.
+
+                    ``text`` is recommended for developers who wish to show a
+                    single UI element. Developers who wish to show two separate,
+                    but related, UI elements may want to use
+                    ``structured_format`` instead. They are two different ways
+                    to represent a Place prediction. Users should not try to
+                    parse ``structured_format`` into ``text`` or vice versa.
+
+                    This text may be different from the ``display_name``
+                    returned by GetPlace.
+
+                    May be in mixed languages if the request ``input`` and
+                    ``language_code`` are in different languages or if the Place
+                    does not have a translation from the local language to
+                    ``language_code``.
+                structured_format (google.maps.places_v1.types.AutocompletePlacesResponse.Suggestion.StructuredFormat):
+                    A breakdown of the Place prediction into main text
+                    containing the name of the Place and secondary text
+                    containing additional disambiguating features (such as a
+                    city or region).
+
+                    ``structured_format`` is recommended for developers who wish
+                    to show two separate, but related, UI elements. Developers
+                    who wish to show a single UI element may want to use
+                    ``text`` instead. They are two different ways to represent a
+                    Place prediction. Users should not try to parse
+                    ``structured_format`` into ``text`` or vice versa.
+                types (MutableSequence[str]):
+                    List of types that apply to this Place from
+                    Table A or Table B in
+                    https://developers.google.com/maps/documentation/places/web-service/place-types.
+
+                    A type is a categorization of a Place. Places
+                    with shared types will share similar
+                    characteristics.
+                distance_meters (int):
+                    The length of the geodesic in meters from ``origin`` if
+                    ``origin`` is specified. Certain predictions such as routes
+                    may not populate this field.
+            """
+
+            place: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            place_id: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            text: "AutocompletePlacesResponse.Suggestion.FormattableText" = proto.Field(
+                proto.MESSAGE,
+                number=3,
+                message="AutocompletePlacesResponse.Suggestion.FormattableText",
+            )
+            structured_format: "AutocompletePlacesResponse.Suggestion.StructuredFormat" = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                message="AutocompletePlacesResponse.Suggestion.StructuredFormat",
+            )
+            types: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=5,
+            )
+            distance_meters: int = proto.Field(
+                proto.INT32,
+                number=6,
+            )
+
+        class QueryPrediction(proto.Message):
+            r"""Prediction results for a Query Autocomplete prediction.
+
+            Attributes:
+                text (google.maps.places_v1.types.AutocompletePlacesResponse.Suggestion.FormattableText):
+                    The predicted text. This text does not represent a Place,
+                    but rather a text query that could be used in a search
+                    endpoint (e.g. TextSearch).
+
+                    ``text`` is recommended for developers who wish to show a
+                    single UI element. Developers who wish to show two separate,
+                    but related, UI elements may want to use
+                    ``structured_format`` instead. They are two different ways
+                    to represent a query prediction. Users should not try to
+                    parse ``structured_format`` into ``text`` or vice versa.
+
+                    May be in mixed languages if the request ``input`` and
+                    ``language_code`` are in different languages or if part of
+                    the query does not have a translation from the local
+                    language to ``language_code``.
+                structured_format (google.maps.places_v1.types.AutocompletePlacesResponse.Suggestion.StructuredFormat):
+                    A breakdown of the query prediction into main text
+                    containing the query and secondary text containing
+                    additional disambiguating features (such as a city or
+                    region).
+
+                    ``structured_format`` is recommended for developers who wish
+                    to show two separate, but related, UI elements. Developers
+                    who wish to show a single UI element may want to use
+                    ``text`` instead. They are two different ways to represent a
+                    query prediction. Users should not try to parse
+                    ``structured_format`` into ``text`` or vice versa.
+            """
+
+            text: "AutocompletePlacesResponse.Suggestion.FormattableText" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="AutocompletePlacesResponse.Suggestion.FormattableText",
+            )
+            structured_format: "AutocompletePlacesResponse.Suggestion.StructuredFormat" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="AutocompletePlacesResponse.Suggestion.StructuredFormat",
+            )
+
+        place_prediction: "AutocompletePlacesResponse.Suggestion.PlacePrediction" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=1,
+                oneof="kind",
+                message="AutocompletePlacesResponse.Suggestion.PlacePrediction",
+            )
+        )
+        query_prediction: "AutocompletePlacesResponse.Suggestion.QueryPrediction" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=2,
+                oneof="kind",
+                message="AutocompletePlacesResponse.Suggestion.QueryPrediction",
+            )
+        )
+
+    suggestions: MutableSequence[Suggestion] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Suggestion,
     )
 
 
