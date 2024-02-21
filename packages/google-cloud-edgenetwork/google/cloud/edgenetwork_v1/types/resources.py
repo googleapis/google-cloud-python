@@ -972,7 +972,7 @@ class RouterStatus(proto.Message):
                 Time this session has been up.
                 Format:
 
-                 14 years, 51 weeks, 6 days, 23 hours, 59
+                14 years, 51 weeks, 6 days, 23 hours, 59
                 minutes, 59 seconds
             uptime_seconds (int):
                 Time this session has been up, in seconds.
