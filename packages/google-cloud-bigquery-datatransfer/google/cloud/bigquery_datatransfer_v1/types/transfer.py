@@ -117,14 +117,14 @@ class ScheduleOptions(proto.Message):
             after the start time according to a recurrence
             pattern defined in the schedule string. The
             start time can be changed at any moment. The
-            time when a data transfer can be trigerred
+            time when a data transfer can be triggered
             manually is not limited by this option.
         end_time (google.protobuf.timestamp_pb2.Timestamp):
             Defines time to stop scheduling transfer
             runs. A transfer run cannot be scheduled at or
             after the end time. The end time can be changed
             at any moment. The time when a data transfer can
-            be trigerred manually is not limited by this
+            be triggered manually is not limited by this
             option.
     """
 
@@ -231,7 +231,7 @@ class TransferConfig(proto.Message):
             value to 0 to use the default value.
         disabled (bool):
             Is this config disabled. When set to true, no
-            runs are scheduled for a given transfer.
+            runs will be scheduled for this transfer config.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Data transfer modification time.
             Ignored by server on input.
@@ -252,7 +252,7 @@ class TransferConfig(proto.Message):
             transfer runs associated with this transfer config finish.
 
             The format for specifying a pubsub topic is:
-            ``projects/{project}/topics/{topic}``
+            ``projects/{project_id}/topics/{topic_id}``
         email_preferences (google.cloud.bigquery_datatransfer_v1.types.EmailPreferences):
             Email notifications will be sent according to
             these preferences to the email address of the
@@ -437,7 +437,7 @@ class TransferRun(proto.Message):
             after this transfer run finishes.
 
             The format for specifying a pubsub topic is:
-            ``projects/{project}/topics/{topic}``
+            ``projects/{project_id}/topics/{topic_id}``
         email_preferences (google.cloud.bigquery_datatransfer_v1.types.EmailPreferences):
             Output only. Email notifications will be sent
             according to these preferences to the email
