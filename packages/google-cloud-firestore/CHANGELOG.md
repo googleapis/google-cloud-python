@@ -5,6 +5,25 @@
 [1]: https://pypi.org/project/google-cloud-firestore/#history
 
 
+## [2.15.0](https://github.com/googleapis/python-firestore/compare/v2.14.0...v2.15.0) (2024-02-20)
+
+
+### Features
+
+* Add DeleteDatabase API and delete protection ([18f61c2](https://github.com/googleapis/python-firestore/commit/18f61c2ffd15cfd065fcfdb0caa1bcca8eb4c6c6))
+
+
+### Bug Fixes
+
+* Find emulator project id from environment variable ([afd16e1](https://github.com/googleapis/python-firestore/commit/afd16e109a875df6ef51b3fa760235b9b454c9be))
+
+
+### Documentation
+
+* Fix formatting due to unclosed backtick ([18f61c2](https://github.com/googleapis/python-firestore/commit/18f61c2ffd15cfd065fcfdb0caa1bcca8eb4c6c6))
+* Improve the documentation on Document.fields ([#831](https://github.com/googleapis/python-firestore/issues/831)) ([19a55bd](https://github.com/googleapis/python-firestore/commit/19a55bda7b5f5e26ff334ae79f0a33b2bb9472e3))
+* Update Database API description ([18f61c2](https://github.com/googleapis/python-firestore/commit/18f61c2ffd15cfd065fcfdb0caa1bcca8eb4c6c6))
+
 ## [2.14.0](https://github.com/googleapis/python-firestore/compare/v2.13.1...v2.14.0) (2023-12-13)
 
 
