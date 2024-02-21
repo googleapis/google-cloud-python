@@ -127,6 +127,10 @@ class Predictor(BaseEstimator):
         self._bqml_model.register(vertex_ai_model_id)
         return self
 
+    @abc.abstractmethod
+    def to_gbq(self, model_name, replace):
+        pass
+
 
 class TrainablePredictor(Predictor):
     """A BigQuery DataFrames ML Model base class that can be used to fit and predict outputs.
@@ -139,11 +143,6 @@ class TrainablePredictor(Predictor):
 
     @abc.abstractmethod
     def score(self, X, y):
-        pass
-
-    # TODO(b/291812029): move to Predictor after implement in LLM and imported models
-    @abc.abstractmethod
-    def to_gbq(self, model_name, replace):
         pass
 
 
@@ -165,7 +164,7 @@ class SupervisedTrainablePredictor(TrainablePredictor):
 class UnsupervisedTrainablePredictor(TrainablePredictor):
     """A BigQuery DataFrames ML Unsupervised Model base class that can be used to fit and predict outputs.
 
-    Only need to provide both X (y is optional and ignored) in unsupervised tasks."""
+    Only need to provide X (y is optional and ignored) in unsupervised tasks."""
 
     _T = TypeVar("_T", bound="UnsupervisedTrainablePredictor")
 

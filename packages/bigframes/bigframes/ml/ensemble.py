@@ -58,6 +58,7 @@ class XGBRegressor(
     def __init__(
         self,
         num_parallel_tree: int = 1,
+        *,
         booster: Literal["gbtree", "dart"] = "gbtree",
         dart_normalized_type: Literal["tree", "forest"] = "tree",
         tree_method: Literal["auto", "exact", "approx", "hist"] = "auto",
@@ -215,6 +216,7 @@ class XGBClassifier(
     def __init__(
         self,
         num_parallel_tree: int = 1,
+        *,
         booster: Literal["gbtree", "dart"] = "gbtree",
         dart_normalized_type: Literal["tree", "forest"] = "tree",
         tree_method: Literal["auto", "exact", "approx", "hist"] = "auto",
@@ -372,6 +374,7 @@ class RandomForestRegressor(
     def __init__(
         self,
         num_parallel_tree: int = 100,
+        *,
         tree_method: Literal["auto", "exact", "approx", "hist"] = "auto",
         min_tree_child_weight: int = 1,
         colsample_bytree=1.0,
@@ -538,6 +541,7 @@ class RandomForestClassifier(
     def __init__(
         self,
         num_parallel_tree: int = 100,
+        *,
         tree_method: Literal["auto", "exact", "approx", "hist"] = "auto",
         min_tree_child_weight: int = 1,
         colsample_bytree: float = 1.0,

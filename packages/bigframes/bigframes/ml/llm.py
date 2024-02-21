@@ -66,6 +66,7 @@ class PaLM2TextGenerator(base.Predictor):
 
     def __init__(
         self,
+        *,
         model_name: Literal["text-bison", "text-bison-32k"] = "text-bison",
         session: Optional[bigframes.Session] = None,
         connection_name: Optional[str] = None,
@@ -140,6 +141,7 @@ class PaLM2TextGenerator(base.Predictor):
     def predict(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
+        *,
         temperature: float = 0.0,
         max_output_tokens: int = 128,
         top_k: int = 40,
@@ -273,6 +275,7 @@ class PaLM2TextEmbeddingGenerator(base.Predictor):
 
     def __init__(
         self,
+        *,
         model_name: Literal[
             "textembedding-gecko", "textembedding-gecko-multilingual"
         ] = "textembedding-gecko",
@@ -415,6 +418,7 @@ class GeminiTextGenerator(base.Predictor):
 
     def __init__(
         self,
+        *,
         session: Optional[bigframes.Session] = None,
         connection_name: Optional[str] = None,
     ):
@@ -475,6 +479,7 @@ class GeminiTextGenerator(base.Predictor):
     def predict(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
+        *,
         temperature: float = 0.9,
         max_output_tokens: int = 8192,
         top_k: int = 40,

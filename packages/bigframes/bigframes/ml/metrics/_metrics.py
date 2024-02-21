@@ -34,6 +34,7 @@ import third_party.bigframes_vendored.sklearn.metrics._regression as vendored_me
 def r2_score(
     y_true: Union[bpd.DataFrame, bpd.Series],
     y_pred: Union[bpd.DataFrame, bpd.Series],
+    *,
     force_finite=True,
 ) -> float:
     y_true_series, y_pred_series = utils.convert_to_series(y_true, y_pred)
@@ -61,6 +62,7 @@ r2_score.__doc__ = inspect.getdoc(vendored_metrics_regression.r2_score)
 def accuracy_score(
     y_true: Union[bpd.DataFrame, bpd.Series],
     y_pred: Union[bpd.DataFrame, bpd.Series],
+    *,
     normalize=True,
 ) -> float:
     # TODO(ashleyxu): support sample_weight as the parameter
@@ -83,6 +85,7 @@ accuracy_score.__doc__ = inspect.getdoc(vendored_mertics_classification.accuracy
 def roc_curve(
     y_true: Union[bpd.DataFrame, bpd.Series],
     y_score: Union[bpd.DataFrame, bpd.Series],
+    *,
     drop_intermediate: bool = True,
 ) -> Tuple[bpd.Series, bpd.Series, bpd.Series]:
     # TODO(bmil): Add multi-class support
@@ -227,6 +230,7 @@ confusion_matrix.__doc__ = inspect.getdoc(
 def recall_score(
     y_true: Union[bpd.DataFrame, bpd.Series],
     y_pred: Union[bpd.DataFrame, bpd.Series],
+    *,
     average: str = "binary",
 ) -> pd.Series:
     # TODO(ashleyxu): support more average type, default to "binary"
@@ -263,6 +267,7 @@ recall_score.__doc__ = inspect.getdoc(vendored_mertics_classification.recall_sco
 def precision_score(
     y_true: Union[bpd.DataFrame, bpd.Series],
     y_pred: Union[bpd.DataFrame, bpd.Series],
+    *,
     average: str = "binary",
 ) -> pd.Series:
     # TODO(ashleyxu): support more average type, default to "binary"
@@ -301,6 +306,7 @@ precision_score.__doc__ = inspect.getdoc(
 def f1_score(
     y_true: Union[bpd.DataFrame, bpd.Series],
     y_pred: Union[bpd.DataFrame, bpd.Series],
+    *,
     average: str = "binary",
 ) -> pd.Series:
     # TODO(ashleyxu): support more average type, default to "binary"

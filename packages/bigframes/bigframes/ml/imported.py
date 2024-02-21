@@ -32,15 +32,17 @@ class TensorFlowModel(base.Predictor):
     """Imported TensorFlow model.
 
     Args:
+        model_path (str):
+            GCS path that holds the model files.
         session (BigQuery Session):
             BQ session to create the model
-        model_path (str):
-            GCS path that holds the model files."""
+    """
 
     def __init__(
         self,
+        model_path: str,
+        *,
         session: Optional[bigframes.Session] = None,
-        model_path: Optional[str] = None,
     ):
         self.session = session or bpd.get_global_session()
         self.model_path = model_path
@@ -59,7 +61,7 @@ class TensorFlowModel(base.Predictor):
     ) -> TensorFlowModel:
         assert model.model_type == "TENSORFLOW"
 
-        tf_model = cls(session=session, model_path=None)
+        tf_model = cls(session=session, model_path="")
         tf_model._bqml_model = core.BqmlModel(session, model)
         return tf_model
 
@@ -109,15 +111,17 @@ class ONNXModel(base.Predictor):
     """Imported Open Neural Network Exchange (ONNX) model.
 
     Args:
+        model_path (str):
+            Cloud Storage path that holds the model files.
         session (BigQuery Session):
             BQ session to create the model
-        model_path (str):
-            Cloud Storage path that holds the model files."""
+    """
 
     def __init__(
         self,
+        model_path: str,
+        *,
         session: Optional[bigframes.Session] = None,
-        model_path: Optional[str] = None,
     ):
         self.session = session or bpd.get_global_session()
         self.model_path = model_path
@@ -134,7 +138,7 @@ class ONNXModel(base.Predictor):
     def _from_bq(cls, session: bigframes.Session, model: bigquery.Model) -> ONNXModel:
         assert model.model_type == "ONNX"
 
-        onnx_model = cls(session=session, model_path=None)
+        onnx_model = cls(session=session, model_path="")
         onnx_model._bqml_model = core.BqmlModel(session, model)
         return onnx_model
 
@@ -189,8 +193,8 @@ class XGBoostModel(base.Predictor):
         https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-create-xgboost#limitations
 
     Args:
-        session (BigQuery Session):
-            BQ session to create the model
+        model_path (str):
+            Cloud Storage path that holds the model files.
         input (Dict, default None):
             Specify the model input schema information when you
             create the XGBoost model. The input should be the format of
@@ -203,15 +207,17 @@ class XGBoostModel(base.Predictor):
             {field_name: field_type}. Output is optional only if feature_names
             and feature_types are both specified in the model file. Supported types
             are "bool", "string", "int64", "float64", "array<bool>", "array<string>", "array<int64>", "array<float64>".
-        model_path (str):
-            Cloud Storage path that holds the model files."""
+        session (BigQuery Session):
+            BQ session to create the model
+    """
 
     def __init__(
         self,
-        session: Optional[bigframes.Session] = None,
+        model_path: str,
+        *,
         input: Mapping[str, str] = {},
         output: Mapping[str, str] = {},
-        model_path: Optional[str] = None,
+        session: Optional[bigframes.Session] = None,
     ):
         self.session = session or bpd.get_global_session()
         self.model_path = model_path
@@ -248,7 +254,7 @@ class XGBoostModel(base.Predictor):
     ) -> XGBoostModel:
         assert model.model_type == "XGBOOST"
 
-        xgboost_model = cls(session=session, model_path=None)
+        xgboost_model = cls(session=session, model_path="")
         xgboost_model._bqml_model = core.BqmlModel(session, model)
         return xgboost_model
 

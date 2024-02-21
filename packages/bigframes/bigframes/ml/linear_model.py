@@ -58,6 +58,7 @@ class LinearRegression(
 
     def __init__(
         self,
+        *,
         optimize_strategy: Literal[
             "auto_strategy", "batch_gradient_descent", "normal_equation"
         ] = "normal_equation",
@@ -192,6 +193,7 @@ class LogisticRegression(
     # TODO(ashleyxu) support class_weights in the constructor.
     def __init__(
         self,
+        *,
         fit_intercept: bool = True,
         class_weights: Optional[Union[Literal["balanced"], Dict[str, float]]] = None,
     ):

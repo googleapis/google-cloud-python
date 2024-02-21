@@ -54,6 +54,7 @@ class VertexAIModel(base.BaseEstimator):
         endpoint: str,
         input: Mapping[str, str],
         output: Mapping[str, str],
+        *,
         session: Optional[bigframes.Session] = None,
         connection_name: Optional[str] = None,
     ):
