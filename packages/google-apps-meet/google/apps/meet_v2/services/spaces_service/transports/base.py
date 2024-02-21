@@ -36,7 +36,10 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 class SpacesServiceTransport(abc.ABC):
     """Abstract transport class for SpacesService."""
 
-    AUTH_SCOPES = ()
+    AUTH_SCOPES = (
+        "https://www.googleapis.com/auth/meetings.space.created",
+        "https://www.googleapis.com/auth/meetings.space.readonly",
+    )
 
     DEFAULT_HOST: str = "meet.googleapis.com"
 

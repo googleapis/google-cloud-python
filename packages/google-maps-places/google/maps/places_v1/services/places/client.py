@@ -993,7 +993,8 @@ class PlacesClient(metaclass=PlacesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> place.Place:
-        r"""Get place details with a place id (in a name) string.
+        r"""Get the details of a place based on its resource name, which is
+        a string in the ``places/{place_id}`` format.
 
         .. code-block:: python
 
@@ -1023,12 +1024,11 @@ class PlacesClient(metaclass=PlacesClientMeta):
 
         Args:
             request (Union[google.maps.places_v1.types.GetPlaceRequest, dict]):
-                The request object. Request for fetching a Place with a
-                place id (in a name) string.
+                The request object. Request for fetching a Place based on its resource name,
+                which is a string in the ``places/{place_id}`` format.
             name (str):
-                Required. A place ID returned in a Place (with "places/"
-                prefix), or equivalently the name in the same Place.
-                Format: ``places/{place_id}``.
+                Required. The resource name of a place, in the
+                ``places/{place_id}`` format.
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1075,6 +1075,83 @@ class PlacesClient(metaclass=PlacesClientMeta):
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
         )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def autocomplete_places(
+        self,
+        request: Optional[Union[places_service.AutocompletePlacesRequest, dict]] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> places_service.AutocompletePlacesResponse:
+        r"""Returns predictions for the given input.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.maps import places_v1
+
+            def sample_autocomplete_places():
+                # Create a client
+                client = places_v1.PlacesClient()
+
+                # Initialize request argument(s)
+                request = places_v1.AutocompletePlacesRequest(
+                    input="input_value",
+                )
+
+                # Make the request
+                response = client.autocomplete_places(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.maps.places_v1.types.AutocompletePlacesRequest, dict]):
+                The request object. Request proto for AutocompletePlaces.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.maps.places_v1.types.AutocompletePlacesResponse:
+                Response proto for
+                AutocompletePlaces.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a places_service.AutocompletePlacesRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, places_service.AutocompletePlacesRequest):
+            request = places_service.AutocompletePlacesRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.autocomplete_places]
 
         # Validate the universe domain.
         self._validate_universe_domain()
