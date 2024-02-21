@@ -40,7 +40,7 @@ class addressvalidationCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'provide_validation_feedback': ('conclusion', 'response_id', ),
-        'validate_address': ('address', 'previous_response_id', 'enable_usps_cass', ),
+        'validate_address': ('address', 'previous_response_id', 'enable_usps_cass', 'session_token', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
