@@ -840,7 +840,7 @@ class Series(NDFrame):  # type: ignore[misc]
             float:  Will return NaN if there are fewer than two numeric pairs, either series has a
                 variance or covariance of zero, or any input value is infinite.
         """
-        raise NotImplementedError("abstract method")
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     def cov(
         self,

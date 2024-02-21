@@ -880,6 +880,27 @@ def test_column_multi_index_w_na_stack(scalars_df_index, scalars_pandas_df_index
     pandas.testing.assert_frame_equal(bf_result, pd_result, check_dtype=False)
 
 
+def test_corr_w_multi_index(scalars_df_index, scalars_pandas_df_index):
+    columns = ["int64_too", "float64_col", "int64_col"]
+    multi_columns = pandas.MultiIndex.from_tuples(zip(["a", "b", "b"], [1, 2, 2]))
+
+    bf = scalars_df_index[columns].copy()
+    bf.columns = multi_columns
+
+    pd_df = scalars_pandas_df_index[columns].copy()
+    pd_df.columns = multi_columns
+
+    bf_result = bf.corr(numeric_only=True).to_pandas()
+    pd_result = pd_df.corr(numeric_only=True)
+
+    # BigFrames and Pandas differ in their data type handling:
+    # - Column types: BigFrames uses Float64, Pandas uses float64.
+    # - Index types: BigFrames uses strign, Pandas uses object.
+    pandas.testing.assert_frame_equal(
+        bf_result, pd_result, check_dtype=False, check_index_type=False
+    )
+
+
 @pytest.mark.parametrize(
     ("index_names",),
     [
