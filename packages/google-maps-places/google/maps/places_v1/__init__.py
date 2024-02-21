@@ -26,6 +26,8 @@ from .types.geometry import Circle
 from .types.photo import Photo
 from .types.place import Place, PriceLevel
 from .types.places_service import (
+    AutocompletePlacesRequest,
+    AutocompletePlacesResponse,
     GetPhotoMediaRequest,
     GetPlaceRequest,
     PhotoMedia,
@@ -39,6 +41,8 @@ from .types.review import Review
 __all__ = (
     "PlacesAsyncClient",
     "AuthorAttribution",
+    "AutocompletePlacesRequest",
+    "AutocompletePlacesResponse",
     "Circle",
     "EVChargeOptions",
     "EVConnectorType",

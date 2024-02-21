@@ -10,6 +10,11 @@
         "grpc": {
           "libraryClient": "PlacesClient",
           "rpcs": {
+            "AutocompletePlaces": {
+              "methods": [
+                "autocomplete_places"
+              ]
+            },
             "GetPhotoMedia": {
               "methods": [
                 "get_photo_media"
@@ -35,6 +40,11 @@
         "grpc-async": {
           "libraryClient": "PlacesAsyncClient",
           "rpcs": {
+            "AutocompletePlaces": {
+              "methods": [
+                "autocomplete_places"
+              ]
+            },
             "GetPhotoMedia": {
               "methods": [
                 "get_photo_media"
@@ -60,6 +70,11 @@
         "rest": {
           "libraryClient": "PlacesClient",
           "rpcs": {
+            "AutocompletePlaces": {
+              "methods": [
+                "autocomplete_places"
+              ]
+            },
             "GetPhotoMedia": {
               "methods": [
                 "get_photo_media"

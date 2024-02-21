@@ -138,10 +138,13 @@ class AddressComponent(proto.Message):
             location and believe it should be provided for a
             complete address.
         spell_corrected (bool):
-            Indicates the spelling of the component name
-            was corrected in a minor way, for example by
-            switching two characters that appeared in the
-            wrong order. This indicates a cosmetic change.
+            Indicates a correction to a misspelling in
+            the component name.  The API does not always
+            flag changes from one spelling variant to
+            another, such as when changing "centre" to
+            "center". It also does not always flag common
+            misspellings, such as when changing
+            "Amphitheater Pkwy" to "Amphitheatre Pkwy".
         replaced (bool):
             Indicates the name of the component was
             replaced with a completely different one, for
