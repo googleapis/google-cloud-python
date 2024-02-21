@@ -108,6 +108,12 @@ class CheckResponse(proto.Message):
                 performance and allow better aggregation.
             consumer_info (google.cloud.servicecontrol_v1.types.CheckResponse.ConsumerInfo):
                 Consumer info of this check.
+            api_key_uid (str):
+                The unique id of the api key in the format of
+                "apikey:<UID>". This field will be populated
+                when the consumer passed to Service Control is
+                an API key and all the API key related
+                validations are successful.
         """
 
         unused_arguments: MutableSequence[str] = proto.RepeatedField(
@@ -119,6 +125,10 @@ class CheckResponse(proto.Message):
             number=2,
             message="CheckResponse.ConsumerInfo",
         )
+        api_key_uid: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
 
     class ConsumerInfo(proto.Message):
         r"""``ConsumerInfo`` provides information about the consumer.
@@ -127,7 +137,7 @@ class CheckResponse(proto.Message):
             project_number (int):
                 The Google cloud project number, e.g.
                 1234567890. A value of 0 indicates no project
-                    number is found.
+                number is found.
 
                 NOTE: This field is deprecated after we support
                 flexible consumer id. New code should not depend

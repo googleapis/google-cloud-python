@@ -2355,7 +2355,7 @@ class SkaffoldModules(proto.Message):
         Attributes:
             source (str):
                 Required. Cloud Storage source paths to copy recursively.
-                For example, providing "gs://my-bucket/dir/configs/*" will
+                For example, providing `gs://my-bucket/dir/configs/*` will
                 result in Skaffold copying all files within the
                 "dir/configs" directory in the bucket "my-bucket".
             path (str):
