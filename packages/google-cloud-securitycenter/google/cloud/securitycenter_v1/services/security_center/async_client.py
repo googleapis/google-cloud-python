@@ -56,6 +56,7 @@ from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.types import (
     access,
     application,
+    backup_disaster_recovery,
     bigquery_export,
     cloud_dlp_data_profile,
     cloud_dlp_inspection,

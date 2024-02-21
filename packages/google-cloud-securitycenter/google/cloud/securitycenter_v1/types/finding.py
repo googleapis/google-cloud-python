@@ -29,6 +29,9 @@ from google.cloud.securitycenter_v1.types import (
 )
 from google.cloud.securitycenter_v1.types import external_system, file, iam_binding
 from google.cloud.securitycenter_v1.types import (
+    backup_disaster_recovery as gcs_backup_disaster_recovery,
+)
+from google.cloud.securitycenter_v1.types import (
     cloud_dlp_data_profile as gcs_cloud_dlp_data_profile,
 )
 from google.cloud.securitycenter_v1.types import (
@@ -242,6 +245,8 @@ class Finding(proto.Message):
         application (google.cloud.securitycenter_v1.types.Application):
             Represents an application associated with the
             finding.
+        backup_disaster_recovery (google.cloud.securitycenter_v1.types.BackupDisasterRecovery):
+            Fields related to Backup and DR findings.
     """
 
     class State(proto.Enum):
@@ -588,6 +593,13 @@ class Finding(proto.Message):
         proto.MESSAGE,
         number=53,
         message=gcs_application.Application,
+    )
+    backup_disaster_recovery: gcs_backup_disaster_recovery.BackupDisasterRecovery = (
+        proto.Field(
+            proto.MESSAGE,
+            number=55,
+            message=gcs_backup_disaster_recovery.BackupDisasterRecovery,
+        )
     )
 
 

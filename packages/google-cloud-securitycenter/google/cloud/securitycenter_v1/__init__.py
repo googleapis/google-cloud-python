@@ -22,6 +22,7 @@ from .services.security_center import SecurityCenterAsyncClient, SecurityCenterC
 from .types.access import Access, Geolocation, ServiceAccountDelegationInfo
 from .types.application import Application
 from .types.asset import Asset
+from .types.backup_disaster_recovery import BackupDisasterRecovery
 from .types.bigquery_export import BigQueryExport
 from .types.cloud_dlp_data_profile import CloudDlpDataProfile
 from .types.cloud_dlp_inspection import CloudDlpInspection
@@ -122,6 +123,7 @@ __all__ = (
     "Access",
     "Application",
     "Asset",
+    "BackupDisasterRecovery",
     "BigQueryExport",
     "BulkMuteFindingsRequest",
     "BulkMuteFindingsResponse",
