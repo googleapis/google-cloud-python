@@ -70,6 +70,7 @@ from google.cloud.securitycenter_v1.services.security_center import (
 from google.cloud.securitycenter_v1.types import (
     access,
     application,
+    backup_disaster_recovery,
     bigquery_export,
     cloud_dlp_data_profile,
     cloud_dlp_inspection,
@@ -16395,6 +16396,18 @@ def test_create_finding_rest(request_type):
             "unexpected_processes_in_runqueue": True,
         },
         "application": {"base_uri": "base_uri_value", "full_uri": "full_uri_value"},
+        "backup_disaster_recovery": {
+            "backup_template": "backup_template_value",
+            "policies": ["policies_value1", "policies_value2"],
+            "host": "host_value",
+            "applications": ["applications_value1", "applications_value2"],
+            "storage_pool": "storage_pool_value",
+            "policy_options": ["policy_options_value1", "policy_options_value2"],
+            "profile": "profile_value",
+            "appliance": "appliance_value",
+            "backup_type": "backup_type_value",
+            "backup_create_time": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -26298,6 +26311,18 @@ def test_update_finding_rest(request_type):
             "unexpected_processes_in_runqueue": True,
         },
         "application": {"base_uri": "base_uri_value", "full_uri": "full_uri_value"},
+        "backup_disaster_recovery": {
+            "backup_template": "backup_template_value",
+            "policies": ["policies_value1", "policies_value2"],
+            "host": "host_value",
+            "applications": ["applications_value1", "applications_value2"],
+            "storage_pool": "storage_pool_value",
+            "policy_options": ["policy_options_value1", "policy_options_value2"],
+            "profile": "profile_value",
+            "appliance": "appliance_value",
+            "backup_type": "backup_type_value",
+            "backup_create_time": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

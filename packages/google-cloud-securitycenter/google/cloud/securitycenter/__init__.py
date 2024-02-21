@@ -31,6 +31,9 @@ from google.cloud.securitycenter_v1.types.access import (
 )
 from google.cloud.securitycenter_v1.types.application import Application
 from google.cloud.securitycenter_v1.types.asset import Asset
+from google.cloud.securitycenter_v1.types.backup_disaster_recovery import (
+    BackupDisasterRecovery,
+)
 from google.cloud.securitycenter_v1.types.bigquery_export import BigQueryExport
 from google.cloud.securitycenter_v1.types.cloud_dlp_data_profile import (
     CloudDlpDataProfile,
@@ -152,6 +155,7 @@ __all__ = (
     "ServiceAccountDelegationInfo",
     "Application",
     "Asset",
+    "BackupDisasterRecovery",
     "BigQueryExport",
     "CloudDlpDataProfile",
     "CloudDlpInspection",
