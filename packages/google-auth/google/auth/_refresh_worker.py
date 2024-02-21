@@ -75,7 +75,7 @@ class RefreshThreadManager:
 
     def __setstate__(self, state):
         """Pickle helper that deserializes the _lock attribute."""
-        state["_key"] = threading.Lock()
+        state["_lock"] = threading.Lock()
         self.__dict__.update(state)
 
 
