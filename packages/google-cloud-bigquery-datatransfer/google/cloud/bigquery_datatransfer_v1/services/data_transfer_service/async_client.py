@@ -2073,7 +2073,9 @@ class DataTransferServiceAsyncClient:
         remove transfer configurations for these data sources. They will
         no longer appear in the ListDataSources RPC and will also no
         longer appear in the `BigQuery
-        UI <https://console.cloud.google.com/bigquery>`__.
+        UI <https://console.cloud.google.com/bigquery>`__. Data
+        transfers configurations of unenrolled data sources will not be
+        scheduled.
 
         .. code-block:: python
 
