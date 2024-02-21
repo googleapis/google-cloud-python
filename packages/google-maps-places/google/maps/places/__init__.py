@@ -27,6 +27,8 @@ from google.maps.places_v1.types.geometry import Circle
 from google.maps.places_v1.types.photo import Photo
 from google.maps.places_v1.types.place import Place, PriceLevel
 from google.maps.places_v1.types.places_service import (
+    AutocompletePlacesRequest,
+    AutocompletePlacesResponse,
     GetPhotoMediaRequest,
     GetPlaceRequest,
     PhotoMedia,
@@ -48,6 +50,8 @@ __all__ = (
     "Photo",
     "Place",
     "PriceLevel",
+    "AutocompletePlacesRequest",
+    "AutocompletePlacesResponse",
     "GetPhotoMediaRequest",
     "GetPlaceRequest",
     "PhotoMedia",

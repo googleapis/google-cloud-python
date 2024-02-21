@@ -1851,6 +1851,96 @@ async def test_get_place_flattened_error_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        places_service.AutocompletePlacesRequest,
+        dict,
+    ],
+)
+def test_autocomplete_places(request_type, transport: str = "grpc"):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.autocomplete_places), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = places_service.AutocompletePlacesResponse()
+        response = client.autocomplete_places(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.AutocompletePlacesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, places_service.AutocompletePlacesResponse)
+
+
+def test_autocomplete_places_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.autocomplete_places), "__call__"
+    ) as call:
+        client.autocomplete_places()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.AutocompletePlacesRequest()
+
+
+@pytest.mark.asyncio
+async def test_autocomplete_places_async(
+    transport: str = "grpc_asyncio",
+    request_type=places_service.AutocompletePlacesRequest,
+):
+    client = PlacesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.autocomplete_places), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            places_service.AutocompletePlacesResponse()
+        )
+        response = await client.autocomplete_places(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == places_service.AutocompletePlacesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, places_service.AutocompletePlacesResponse)
+
+
+@pytest.mark.asyncio
+async def test_autocomplete_places_async_from_dict():
+    await test_autocomplete_places_async(request_type=dict)
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         places_service.SearchNearbyRequest,
         dict,
     ],
@@ -2687,6 +2777,7 @@ def test_get_place_rest_required_fields(request_type=places_service.GetPlaceRequ
         (
             "language_code",
             "region_code",
+            "session_token",
         )
     )
     jsonified_request.update(unset_fields)
@@ -2747,6 +2838,7 @@ def test_get_place_rest_unset_required_fields():
             (
                 "languageCode",
                 "regionCode",
+                "sessionToken",
             )
         )
         & set(("name",))
@@ -2884,6 +2976,212 @@ def test_get_place_rest_flattened_error(transport: str = "rest"):
 
 
 def test_get_place_rest_error():
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        places_service.AutocompletePlacesRequest,
+        dict,
+    ],
+)
+def test_autocomplete_places_rest(request_type):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = places_service.AutocompletePlacesResponse()
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        # Convert return value to protobuf type
+        return_value = places_service.AutocompletePlacesResponse.pb(return_value)
+        json_return_value = json_format.MessageToJson(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.autocomplete_places(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, places_service.AutocompletePlacesResponse)
+
+
+def test_autocomplete_places_rest_required_fields(
+    request_type=places_service.AutocompletePlacesRequest,
+):
+    transport_class = transports.PlacesRestTransport
+
+    request_init = {}
+    request_init["input"] = ""
+    request = request_type(**request_init)
+    pb_request = request_type.pb(request)
+    jsonified_request = json.loads(
+        json_format.MessageToJson(pb_request, use_integers_for_enums=False)
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).autocomplete_places._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["input"] = "input_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).autocomplete_places._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "input" in jsonified_request
+    assert jsonified_request["input"] == "input_value"
+
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(**request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = places_service.AutocompletePlacesResponse()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            pb_request = request_type.pb(request)
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": pb_request,
+            }
+            transcode_result["body"] = pb_request
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+
+            # Convert return value to protobuf type
+            return_value = places_service.AutocompletePlacesResponse.pb(return_value)
+            json_return_value = json_format.MessageToJson(return_value)
+
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.autocomplete_places(request)
+
+            expected_params = [("$alt", "json;enum-encoding=int")]
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_autocomplete_places_rest_unset_required_fields():
+    transport = transports.PlacesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.autocomplete_places._get_unset_required_fields({})
+    assert set(unset_fields) == (set(()) & set(("input",)))
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_autocomplete_places_rest_interceptors(null_interceptor):
+    transport = transports.PlacesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.PlacesRestInterceptor(),
+    )
+    client = PlacesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.PlacesRestInterceptor, "post_autocomplete_places"
+    ) as post, mock.patch.object(
+        transports.PlacesRestInterceptor, "pre_autocomplete_places"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+        pb_message = places_service.AutocompletePlacesRequest.pb(
+            places_service.AutocompletePlacesRequest()
+        )
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": pb_message,
+            "query_params": pb_message,
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = places_service.AutocompletePlacesResponse.to_json(
+            places_service.AutocompletePlacesResponse()
+        )
+
+        request = places_service.AutocompletePlacesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = places_service.AutocompletePlacesResponse()
+
+        client.autocomplete_places(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_autocomplete_places_rest_bad_request(
+    transport: str = "rest", request_type=places_service.AutocompletePlacesRequest
+):
+    client = PlacesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {}
+    request = request_type(**request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.autocomplete_places(request)
+
+
+def test_autocomplete_places_rest_error():
     client = PlacesClient(
         credentials=ga_credentials.AnonymousCredentials(), transport="rest"
     )
@@ -3032,6 +3330,7 @@ def test_places_base_transport():
         "search_text",
         "get_photo_media",
         "get_place",
+        "autocomplete_places",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -3298,6 +3597,9 @@ def test_places_client_transport_session_collision(transport_name):
     assert session1 != session2
     session1 = client1.transport.get_place._session
     session2 = client2.transport.get_place._session
+    assert session1 != session2
+    session1 = client1.transport.autocomplete_places._session
+    session2 = client2.transport.autocomplete_places._session
     assert session1 != session2
 
 
