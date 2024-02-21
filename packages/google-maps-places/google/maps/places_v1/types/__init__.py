@@ -20,6 +20,8 @@ from .geometry import Circle
 from .photo import Photo
 from .place import Place, PriceLevel
 from .places_service import (
+    AutocompletePlacesRequest,
+    AutocompletePlacesResponse,
     GetPhotoMediaRequest,
     GetPlaceRequest,
     PhotoMedia,
@@ -39,6 +41,8 @@ __all__ = (
     "Photo",
     "Place",
     "PriceLevel",
+    "AutocompletePlacesRequest",
+    "AutocompletePlacesResponse",
     "GetPhotoMediaRequest",
     "GetPlaceRequest",
     "PhotoMedia",
