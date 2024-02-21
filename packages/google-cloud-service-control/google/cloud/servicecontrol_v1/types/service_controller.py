@@ -108,6 +108,12 @@ class CheckResponse(proto.Message):
                 performance and allow better aggregation.
             consumer_info (google.cloud.servicecontrol_v1.types.CheckResponse.ConsumerInfo):
                 Consumer info of this check.
+            api_key_uid (str):
+                The unique id of the api key in the format of
+                "apikey:<UID>". This field will be populated
+                when the consumer passed to Service Control is
+                an API key and all the API key related
+                validations are successful.
         """
 
         unused_arguments: MutableSequence[str] = proto.RepeatedField(
@@ -118,6 +124,10 @@ class CheckResponse(proto.Message):
             proto.MESSAGE,
             number=2,
             message="CheckResponse.ConsumerInfo",
+        )
+        api_key_uid: str = proto.Field(
+            proto.STRING,
+            number=5,
         )
 
     class ConsumerInfo(proto.Message):
