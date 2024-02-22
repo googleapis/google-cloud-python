@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managed-identities-v1.9.1...google-cloud-managed-identities-v1.9.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12307](https://github.com/googleapis/google-cloud-python/issues/12307)) ([be87bc4](https://github.com/googleapis/google-cloud-python/commit/be87bc4a33fe32a512448a42246c9873da88269f))
+* fix ValueError in test__validate_universe_domain ([7c2f2c2](https://github.com/googleapis/google-cloud-python/commit/7c2f2c29d74c9584efc42ddfe8bc098a594391a2))
+
 ## [1.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-managed-identities-v1.9.0...google-cloud-managed-identities-v1.9.1) (2024-02-06)
 
 

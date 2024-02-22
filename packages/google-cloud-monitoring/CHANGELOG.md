@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-monitoring/#history
 
+## [2.19.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.19.1...google-cloud-monitoring-v2.19.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12307](https://github.com/googleapis/google-cloud-python/issues/12307)) ([be87bc4](https://github.com/googleapis/google-cloud-python/commit/be87bc4a33fe32a512448a42246c9873da88269f))
+* fix ValueError in test__validate_universe_domain ([7c2f2c2](https://github.com/googleapis/google-cloud-python/commit/7c2f2c29d74c9584efc42ddfe8bc098a594391a2))
+* make google-cloud-monitoring tests work without `mock` ([#12317](https://github.com/googleapis/google-cloud-python/issues/12317)) ([1988e0d](https://github.com/googleapis/google-cloud-python/commit/1988e0d753f4b15d6fadb310fb342ece0d7b0edd))
+
 ## [2.19.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-monitoring-v2.19.0...google-cloud-monitoring-v2.19.1) (2024-02-06)
 
 
