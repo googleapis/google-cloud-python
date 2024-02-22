@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.23.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.23.1...google-cloud-build-v3.23.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12304](https://github.com/googleapis/google-cloud-python/issues/12304)) ([c52e0cd](https://github.com/googleapis/google-cloud-python/commit/c52e0cdbddf44c96f642d8d596c5413c4006ba82))
+* fix ValueError in test__validate_universe_domain ([dd749df](https://github.com/googleapis/google-cloud-python/commit/dd749dfb4caf2e33f1152dfd8c4b0ac5424c381c))
+
 ## [3.23.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.23.0...google-cloud-build-v3.23.1) (2024-02-06)
 
 

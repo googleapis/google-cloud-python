@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.18.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.18.1...google-cloud-channel-v1.18.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12281](https://github.com/googleapis/google-cloud-python/issues/12281)) ([62cf934](https://github.com/googleapis/google-cloud-python/commit/62cf934b140173d7b39e6c9ffa66e218b98260d4))
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12305](https://github.com/googleapis/google-cloud-python/issues/12305)) ([2aa7f17](https://github.com/googleapis/google-cloud-python/commit/2aa7f17a5fd4f2249260225db91fb0414d06eaa7))
+
 ## [1.18.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-channel-v1.18.0...google-cloud-channel-v1.18.1) (2024-02-06)
 
 
