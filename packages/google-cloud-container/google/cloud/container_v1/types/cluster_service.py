@@ -715,6 +715,8 @@ class NodeConfig(proto.Message):
         resource_manager_tags (google.cloud.container_v1.types.ResourceManagerTags):
             A map of resource manager tag keys and values
             to be attached to the nodes.
+        enable_confidential_storage (bool):
+            Optional. Reserved for future use.
     """
 
     machine_type: str = proto.Field(
@@ -879,6 +881,10 @@ class NodeConfig(proto.Message):
         proto.MESSAGE,
         number=45,
         message="ResourceManagerTags",
+    )
+    enable_confidential_storage: bool = proto.Field(
+        proto.BOOL,
+        number=46,
     )
 
 
@@ -4415,6 +4421,9 @@ class UpdateNodePoolRequest(proto.Message):
             Engine firewalls using Network Firewall
             Policies. Existing tags will be replaced with
             new values.
+        queued_provisioning (google.cloud.container_v1.types.NodePool.QueuedProvisioning):
+            Specifies the configuration of queued
+            provisioning.
     """
 
     project_id: str = proto.Field(
@@ -4544,6 +4553,11 @@ class UpdateNodePoolRequest(proto.Message):
         proto.MESSAGE,
         number=39,
         message="ResourceManagerTags",
+    )
+    queued_provisioning: "NodePool.QueuedProvisioning" = proto.Field(
+        proto.MESSAGE,
+        number=42,
+        message="NodePool.QueuedProvisioning",
     )
 
 
