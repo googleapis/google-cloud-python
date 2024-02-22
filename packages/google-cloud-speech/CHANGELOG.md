@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-speech/#history
 
+## [2.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.24.1...google-cloud-speech-v2.25.0) (2024-02-22)
+
+
+### Features
+
+* add API for writing BatchRecognize transcripts in SRT and VTT formats ([b76625a](https://github.com/googleapis/google-cloud-python/commit/b76625a7f00947681dba065e447a04e5626cef71))
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12309](https://github.com/googleapis/google-cloud-python/issues/12309)) ([c23398a](https://github.com/googleapis/google-cloud-python/commit/c23398a48d23d48e7f96971dd504ff184841666b))
+* fix ValueError in test__validate_universe_domain ([2451e88](https://github.com/googleapis/google-cloud-python/commit/2451e88f302bc582b3f6d01a6ec6aceba7646252))
+
+
+### Documentation
+
+* update field documentation based on field behavior updates ([b76625a](https://github.com/googleapis/google-cloud-python/commit/b76625a7f00947681dba065e447a04e5626cef71))
+
 ## [2.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-speech-v2.24.0...google-cloud-speech-v2.24.1) (2024-02-06)
 
 
