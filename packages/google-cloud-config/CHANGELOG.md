@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.5...google-cloud-config-v0.1.6) (2024-02-22)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12282](https://github.com/googleapis/google-cloud-python/issues/12282)) ([b985096](https://github.com/googleapis/google-cloud-python/commit/b985096d43add8214172ff993e00293e6c8757cb))
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12305](https://github.com/googleapis/google-cloud-python/issues/12305)) ([2aa7f17](https://github.com/googleapis/google-cloud-python/commit/2aa7f17a5fd4f2249260225db91fb0414d06eaa7))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-config-v0.1.4...google-cloud-config-v0.1.5) (2024-02-06)
 
 

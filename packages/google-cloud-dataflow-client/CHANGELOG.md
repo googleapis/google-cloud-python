@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.8.8...google-cloud-dataflow-client-v0.8.9) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12305](https://github.com/googleapis/google-cloud-python/issues/12305)) ([2aa7f17](https://github.com/googleapis/google-cloud-python/commit/2aa7f17a5fd4f2249260225db91fb0414d06eaa7))
+* fix ValueError in test__validate_universe_domain ([dd749df](https://github.com/googleapis/google-cloud-python/commit/dd749dfb4caf2e33f1152dfd8c4b0ac5424c381c))
+
 ## [0.8.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.8.7...google-cloud-dataflow-client-v0.8.8) (2024-02-06)
 
 

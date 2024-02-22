@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-common-v1.3.1...google-cloud-common-v1.3.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12305](https://github.com/googleapis/google-cloud-python/issues/12305)) ([2aa7f17](https://github.com/googleapis/google-cloud-python/commit/2aa7f17a5fd4f2249260225db91fb0414d06eaa7))
+
 ## [1.3.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-common-v1.3.0...google-cloud-common-v1.3.1) (2024-02-06)
 
 
