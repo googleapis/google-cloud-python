@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-translate/#history
 
+## [3.15.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.15.1...google-cloud-translate-v3.15.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12310](https://github.com/googleapis/google-cloud-python/issues/12310)) ([41821da](https://github.com/googleapis/google-cloud-python/commit/41821da1fe08cc2aeeefc8c8f516023e4b0d0700))
+* fix ValueError in test__validate_universe_domain ([2451e88](https://github.com/googleapis/google-cloud-python/commit/2451e88f302bc582b3f6d01a6ec6aceba7646252))
+
 ## [3.15.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-translate-v3.15.0...google-cloud-translate-v3.15.1) (2024-02-06)
 
 
