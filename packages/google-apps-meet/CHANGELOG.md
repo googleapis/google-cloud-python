@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.4...google-apps-meet-v0.1.5) (2024-02-22)
+
+
+### Features
+
+* Add outh_scope values to services ([7c4dc23](https://github.com/googleapis/google-cloud-python/commit/7c4dc2318ae2c946967cb6f36490f4b3fff63d4e))
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12280](https://github.com/googleapis/google-cloud-python/issues/12280)) ([2d75d0e](https://github.com/googleapis/google-cloud-python/commit/2d75d0e67ca4cccddc688bd37c14ac80564a2e65))
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12303](https://github.com/googleapis/google-cloud-python/issues/12303)) ([fbb80c3](https://github.com/googleapis/google-cloud-python/commit/fbb80c32f7db91e25bd1cc30966f630728ff6d6a))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-apps-meet-v0.1.3...google-apps-meet-v0.1.4) (2024-02-06)
 
 
