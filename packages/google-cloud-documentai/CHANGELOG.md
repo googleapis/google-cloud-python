@@ -1,5 +1,32 @@
 # Changelog
 
+## [2.24.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.23.0...google-cloud-documentai-v2.24.0) (2024-02-22)
+
+
+### Features
+
+* A new field `display_name` is added to message `DocumentSchema` ([38dde99](https://github.com/googleapis/google-cloud-python/commit/38dde996c05fe751643ff92ceb5aed7dc6e0e315))
+* A new field `display_name` is added to message `DocumentSchema` ([aae7bf5](https://github.com/googleapis/google-cloud-python/commit/aae7bf53622e4fd56fdc767d327a5d5f978718f4))
+* A new field `labels` is added to messages `ProcessRequest` and `BatchProcessRequest` ([38dde99](https://github.com/googleapis/google-cloud-python/commit/38dde996c05fe751643ff92ceb5aed7dc6e0e315))
+* A new field `labels` is added to messages `ProcessRequest` and `BatchProcessRequest` ([aae7bf5](https://github.com/googleapis/google-cloud-python/commit/aae7bf53622e4fd56fdc767d327a5d5f978718f4))
+* A new field `schema_override` is added to message `ProcessOptions` ([aae7bf5](https://github.com/googleapis/google-cloud-python/commit/aae7bf53622e4fd56fdc767d327a5d5f978718f4))
+* A new field foundation_model_tuning_options is added to message TrainProcessorVersionRequest ([38dde99](https://github.com/googleapis/google-cloud-python/commit/38dde996c05fe751643ff92ceb5aed7dc6e0e315))
+* A new message FoundationModelTuningOptions is added ([38dde99](https://github.com/googleapis/google-cloud-python/commit/38dde996c05fe751643ff92ceb5aed7dc6e0e315))
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12283](https://github.com/googleapis/google-cloud-python/issues/12283)) ([f20b41a](https://github.com/googleapis/google-cloud-python/commit/f20b41ac35b02a40135b83edfe819ff7a355ab21))
+* deprecate `Dataset.document_warehouse_config` ([38dde99](https://github.com/googleapis/google-cloud-python/commit/38dde996c05fe751643ff92ceb5aed7dc6e0e315))
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12306](https://github.com/googleapis/google-cloud-python/issues/12306)) ([1e787f2](https://github.com/googleapis/google-cloud-python/commit/1e787f2079ac41ce634c7b90f02a6597cecb64be))
+
+
+### Documentation
+
+* [google-cloud-documentai] updated comments ([#12321](https://github.com/googleapis/google-cloud-python/issues/12321)) ([20cd51c](https://github.com/googleapis/google-cloud-python/commit/20cd51c8e0069efcb819ccbc54c3eef7e0960a34))
+* updated comments ([38dde99](https://github.com/googleapis/google-cloud-python/commit/38dde996c05fe751643ff92ceb5aed7dc6e0e315))
+* updated comments ([aae7bf5](https://github.com/googleapis/google-cloud-python/commit/aae7bf53622e4fd56fdc767d327a5d5f978718f4))
+
 ## [2.23.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-documentai-v2.22.0...google-cloud-documentai-v2.23.0) (2024-02-06)
 
 
