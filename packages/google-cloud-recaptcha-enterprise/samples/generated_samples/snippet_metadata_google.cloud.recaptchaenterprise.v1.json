@@ -8,7 +8,7 @@
     ],
     "language": "PYTHON",
     "name": "google-cloud-recaptcha-enterprise",
-    "version": "0.1.0"
+    "version": "1.18.0"
   },
   "snippets": [
     {

@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-public-ca-v0.3.7...google-cloud-public-ca-v0.3.8) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12308](https://github.com/googleapis/google-cloud-python/issues/12308)) ([74dabeb](https://github.com/googleapis/google-cloud-python/commit/74dabebab206189e649ff6e00f3c7809d96c043b))
+* fix ValueError in test__validate_universe_domain ([89c1b05](https://github.com/googleapis/google-cloud-python/commit/89c1b054f321b90ab4eed0139a3a2a79c369730d))
+
 ## [0.3.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-public-ca-v0.3.6...google-cloud-public-ca-v0.3.7) (2024-02-06)
 
 
