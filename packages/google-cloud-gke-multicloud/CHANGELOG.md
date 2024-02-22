@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.7...google-cloud-gke-multicloud-v0.6.8) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12307](https://github.com/googleapis/google-cloud-python/issues/12307)) ([be87bc4](https://github.com/googleapis/google-cloud-python/commit/be87bc4a33fe32a512448a42246c9873da88269f))
+* fix ValueError in test__validate_universe_domain ([dd749df](https://github.com/googleapis/google-cloud-python/commit/dd749dfb4caf2e33f1152dfd8c4b0ac5424c381c))
+
 ## [0.6.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-multicloud-v0.6.6...google-cloud-gke-multicloud-v0.6.7) (2024-02-06)
 
 
