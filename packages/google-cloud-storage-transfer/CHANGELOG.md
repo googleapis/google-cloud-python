@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.11.1...google-cloud-storage-transfer-v1.11.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12309](https://github.com/googleapis/google-cloud-python/issues/12309)) ([c23398a](https://github.com/googleapis/google-cloud-python/commit/c23398a48d23d48e7f96971dd504ff184841666b))
+* fix ValueError in test__validate_universe_domain ([2451e88](https://github.com/googleapis/google-cloud-python/commit/2451e88f302bc582b3f6d01a6ec6aceba7646252))
+
 ## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storage-transfer-v1.11.0...google-cloud-storage-transfer-v1.11.1) (2024-02-06)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.14.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.14.1...google-cloud-containeranalysis-v2.14.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12305](https://github.com/googleapis/google-cloud-python/issues/12305)) ([2aa7f17](https://github.com/googleapis/google-cloud-python/commit/2aa7f17a5fd4f2249260225db91fb0414d06eaa7))
+* fix ValueError in test__validate_universe_domain ([dd749df](https://github.com/googleapis/google-cloud-python/commit/dd749dfb4caf2e33f1152dfd8c4b0ac5424c381c))
+
 ## [2.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-containeranalysis-v2.14.0...google-cloud-containeranalysis-v2.14.1) (2024-02-06)
 
 

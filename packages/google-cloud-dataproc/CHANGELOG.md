@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-dataproc/#history
 
+## [5.9.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.9.1...google-cloud-dataproc-v5.9.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12282](https://github.com/googleapis/google-cloud-python/issues/12282)) ([b985096](https://github.com/googleapis/google-cloud-python/commit/b985096d43add8214172ff993e00293e6c8757cb))
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12306](https://github.com/googleapis/google-cloud-python/issues/12306)) ([1e787f2](https://github.com/googleapis/google-cloud-python/commit/1e787f2079ac41ce634c7b90f02a6597cecb64be))
+
 ## [5.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataproc-v5.9.0...google-cloud-dataproc-v5.9.1) (2024-02-06)
 
 

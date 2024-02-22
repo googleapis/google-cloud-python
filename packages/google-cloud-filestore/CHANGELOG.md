@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-filestore-v1.9.1...google-cloud-filestore-v1.9.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12283](https://github.com/googleapis/google-cloud-python/issues/12283)) ([f20b41a](https://github.com/googleapis/google-cloud-python/commit/f20b41ac35b02a40135b83edfe819ff7a355ab21))
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12306](https://github.com/googleapis/google-cloud-python/issues/12306)) ([1e787f2](https://github.com/googleapis/google-cloud-python/commit/1e787f2079ac41ce634c7b90f02a6597cecb64be))
+
 ## [1.9.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-filestore-v1.9.0...google-cloud-filestore-v1.9.1) (2024-02-06)
 
 

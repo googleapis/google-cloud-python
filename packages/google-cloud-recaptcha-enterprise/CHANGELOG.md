@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.17.1...google-cloud-recaptcha-enterprise-v1.18.0) (2024-02-22)
+
+
+### Features
+
+* [google-cloud-recaptcha-enterprise] Add an API method for reordering firewall policies ([#12302](https://github.com/googleapis/google-cloud-python/issues/12302)) ([c48819c](https://github.com/googleapis/google-cloud-python/commit/c48819c7166f418fe450ec6f5abfc9c899c5bef8))
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12308](https://github.com/googleapis/google-cloud-python/issues/12308)) ([74dabeb](https://github.com/googleapis/google-cloud-python/commit/74dabebab206189e649ff6e00f3c7809d96c043b))
+* fix ValueError in test__validate_universe_domain ([89c1b05](https://github.com/googleapis/google-cloud-python/commit/89c1b054f321b90ab4eed0139a3a2a79c369730d))
+
 ## [1.17.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recaptcha-enterprise-v1.17.0...google-cloud-recaptcha-enterprise-v1.17.1) (2024-02-06)
 
 

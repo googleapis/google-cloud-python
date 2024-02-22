@@ -4,6 +4,21 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.40.0...google-cloud-container-v2.41.0) (2024-02-22)
+
+
+### Features
+
+* [google-cloud-container] added configuration for the StatefulHA addon to the AddonsConfig ([38daeac](https://github.com/googleapis/google-cloud-python/commit/38daeace2bf4a8fdf6662799b7350b516013aff4))
+* add API to enable Provisioning Request API on existing nodepools ([d652877](https://github.com/googleapis/google-cloud-python/commit/d652877364426929dddc0060243fca75bca89839))
+* Promoted enable_confidential_storage to GA (behind allowlist) ([d652877](https://github.com/googleapis/google-cloud-python/commit/d652877364426929dddc0060243fca75bca89839))
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12305](https://github.com/googleapis/google-cloud-python/issues/12305)) ([2aa7f17](https://github.com/googleapis/google-cloud-python/commit/2aa7f17a5fd4f2249260225db91fb0414d06eaa7))
+* fix ValueError in test__validate_universe_domain ([38daeac](https://github.com/googleapis/google-cloud-python/commit/38daeace2bf4a8fdf6662799b7350b516013aff4))
+
 ## [2.40.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.39.0...google-cloud-container-v2.40.0) (2024-02-06)
 
 

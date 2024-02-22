@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.4...google-cloud-edgenetwork-v0.1.5) (2024-02-22)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12283](https://github.com/googleapis/google-cloud-python/issues/12283)) ([f20b41a](https://github.com/googleapis/google-cloud-python/commit/f20b41ac35b02a40135b83edfe819ff7a355ab21))
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12306](https://github.com/googleapis/google-cloud-python/issues/12306)) ([1e787f2](https://github.com/googleapis/google-cloud-python/commit/1e787f2079ac41ce634c7b90f02a6597cecb64be))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-edgenetwork-v0.1.3...google-cloud-edgenetwork-v0.1.4) (2024-02-06)
 
 

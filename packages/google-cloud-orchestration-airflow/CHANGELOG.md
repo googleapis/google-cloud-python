@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.12.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.11.1...google-cloud-orchestration-airflow-v1.12.0) (2024-02-22)
+
+
+### Features
+
+* Added field data_retention_config to EnvironmentConfig ([0268729](https://github.com/googleapis/google-cloud-python/commit/02687292d82cd4243d774ed26b5d072fe7e6c3ea))
+* Added field storage_config to Environment ([0268729](https://github.com/googleapis/google-cloud-python/commit/02687292d82cd4243d774ed26b5d072fe7e6c3ea))
+* Added field web_server_plugins_mode to SoftwareConfig ([0268729](https://github.com/googleapis/google-cloud-python/commit/02687292d82cd4243d774ed26b5d072fe7e6c3ea))
+* Added ListWorkloads RPC ([0268729](https://github.com/googleapis/google-cloud-python/commit/02687292d82cd4243d774ed26b5d072fe7e6c3ea))
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12308](https://github.com/googleapis/google-cloud-python/issues/12308)) ([74dabeb](https://github.com/googleapis/google-cloud-python/commit/74dabebab206189e649ff6e00f3c7809d96c043b))
+* fix ValueError in test__validate_universe_domain ([7c2f2c2](https://github.com/googleapis/google-cloud-python/commit/7c2f2c29d74c9584efc42ddfe8bc098a594391a2))
+
 ## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-orchestration-airflow-v1.11.0...google-cloud-orchestration-airflow-v1.11.1) (2024-02-06)
 
 

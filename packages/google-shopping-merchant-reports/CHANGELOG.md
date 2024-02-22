@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.3...google-shopping-merchant-reports-v0.1.4) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12311](https://github.com/googleapis/google-cloud-python/issues/12311)) ([e4c864b](https://github.com/googleapis/google-cloud-python/commit/e4c864b3e67c7f7f33dfb0d2107fa138492ad338))
+* fix ValueError in test__validate_universe_domain ([f3974d4](https://github.com/googleapis/google-cloud-python/commit/f3974d46a9ba9f549e31251ebc2daeb6b9b4745a))
+
 ## [0.1.3](https://github.com/googleapis/google-cloud-python/compare/google-shopping-merchant-reports-v0.1.2...google-shopping-merchant-reports-v0.1.3) (2024-02-06)
 
 

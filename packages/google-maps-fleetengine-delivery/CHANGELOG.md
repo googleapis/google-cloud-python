@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.1.5...google-maps-fleetengine-delivery-v0.1.6) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12311](https://github.com/googleapis/google-cloud-python/issues/12311)) ([e4c864b](https://github.com/googleapis/google-cloud-python/commit/e4c864b3e67c7f7f33dfb0d2107fa138492ad338))
+* fix ValueError in test__validate_universe_domain ([f3974d4](https://github.com/googleapis/google-cloud-python/commit/f3974d46a9ba9f549e31251ebc2daeb6b9b4745a))
+
+
+### Documentation
+
+* [google-maps-fleetengine-delivery] updated incorrect reference to `Task.journeySharingInfo` ([#12322](https://github.com/googleapis/google-cloud-python/issues/12322)) ([ef9152e](https://github.com/googleapis/google-cloud-python/commit/ef9152e4bb385976d8af743566ea02ed224901d0))
+
 ## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.1.4...google-maps-fleetengine-delivery-v0.1.5) (2024-02-06)
 
 

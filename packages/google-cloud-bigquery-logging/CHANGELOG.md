@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-logging-v1.4.1...google-cloud-bigquery-logging-v1.4.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12304](https://github.com/googleapis/google-cloud-python/issues/12304)) ([c52e0cd](https://github.com/googleapis/google-cloud-python/commit/c52e0cdbddf44c96f642d8d596c5413c4006ba82))
+
 ## [1.4.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-logging-v1.4.0...google-cloud-bigquery-logging-v1.4.1) (2024-02-06)
 
 

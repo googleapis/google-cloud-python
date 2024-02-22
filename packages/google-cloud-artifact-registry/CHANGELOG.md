@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.11.1...google-cloud-artifact-registry-v1.11.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12303](https://github.com/googleapis/google-cloud-python/issues/12303)) ([fbb80c3](https://github.com/googleapis/google-cloud-python/commit/fbb80c32f7db91e25bd1cc30966f630728ff6d6a))
+* fix ValueError in test__validate_universe_domain ([dd749df](https://github.com/googleapis/google-cloud-python/commit/dd749dfb4caf2e33f1152dfd8c4b0ac5424c381c))
+
 ## [1.11.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-artifact-registry-v1.11.0...google-cloud-artifact-registry-v1.11.1) (2024-02-06)
 
 

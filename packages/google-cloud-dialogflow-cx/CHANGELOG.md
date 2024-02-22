@@ -1,5 +1,57 @@
 # Changelog
 
+## [1.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.31.1...google-cloud-dialogflow-cx-v1.32.0) (2024-02-22)
+
+
+### Features
+
+* A new field `current_flow` is added to message `.google.cloud.dialogflow.cx.v3.QueryResult` ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new field `description` is added to message `.google.cloud.dialogflow.cx.v3.Page` ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new field `disable_data_store_fallback` is added to message `.google.cloud.dialogflow.cx.v3.GenerativeSettings` ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new field `language_code` is added to message `Changelog` ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new field `opt_out_conformer_model_migration` is added to message `InputAudioConfig` ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new field `webhook_display_names` is added to message `.google.cloud.dialogflow.cx.v3.QueryResult` ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new field `webhook_ids` is added to message `.google.cloud.dialogflow.cx.v3.QueryResult` ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new field `webhook_latencies` is added to message `.google.cloud.dialogflow.cx.v3.QueryResult` ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new field `webhook_tags` is added to message `.google.cloud.dialogflow.cx.v3.QueryResult` ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new message `ExportEntityTypesMetadata` is added ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new message `ExportEntityTypesRequest` is added ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new message `ExportEntityTypesResponse` is added ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new message `ImportEntityTypesMetadata` is added ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new message `ImportEntityTypesRequest` is added ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new message `ImportEntityTypesResponse` is added ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new method `ExportEntityTypes` is added to service `EntityTypes` ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new method `ImportEntityTypes` is added to service `EntityTypes` ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A new method `ServerStreamingDetectIntent` is added to service `Sessions` ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* Public preview the  Dialogflow LLM based agent ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12306](https://github.com/googleapis/google-cloud-python/issues/12306)) ([1e787f2](https://github.com/googleapis/google-cloud-python/commit/1e787f2079ac41ce634c7b90f02a6597cecb64be))
+* fix ValueError in test__validate_universe_domain ([dd749df](https://github.com/googleapis/google-cloud-python/commit/dd749dfb4caf2e33f1152dfd8c4b0ac5424c381c))
+* Require google-api-core&gt;=1.34.1 ([#12313](https://github.com/googleapis/google-cloud-python/issues/12313)) ([b099445](https://github.com/googleapis/google-cloud-python/commit/b0994458dd4c7d8a7e7d93ebce10b4b08e811bf5))
+
+
+### Documentation
+
+* A comment for enum value `END_OF_SINGLE_UTTERANCE` in enum `MessageType` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for enum value `END_OF_SINGLE_UTTERANCE` in enum `MessageType` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for enum value `USE_BEST_AVAILABLE` in enum `SpeechModelVariant` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for enum value `USE_BEST_AVAILABLE` in enum `SpeechModelVariant` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for enum value `USE_ENHANCED` in enum `SpeechModelVariant` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for enum value `USE_ENHANCED` in enum `SpeechModelVariant` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for field `model` in message `.google.cloud.dialogflow.cx.v3.InputAudioConfig` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for field `model` in message `.google.cloud.dialogflow.cx.v3beta1.InputAudioConfig` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for field `session_ttl` in message `.google.cloud.dialogflow.cx.v3.QueryParameters` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for field `session_ttl` in message `.google.cloud.dialogflow.cx.v3beta1.QueryParameters` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for field `start_flow` in message `.google.cloud.dialogflow.cx.v3.Agent` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for field `start_flow` in message `.google.cloud.dialogflow.cx.v3beta1.Agent` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for field `text` in message `.google.cloud.dialogflow.cx.v3.TextInput` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for field `text` in message `.google.cloud.dialogflow.cx.v3beta1.TextInput` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for message `QueryInput` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+* A comment for message `QueryInput` is changed ([e1dbb80](https://github.com/googleapis/google-cloud-python/commit/e1dbb8098ca8d4f8b19695c1b2b11e06e7c84e01))
+
 ## [1.31.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.31.0...google-cloud-dialogflow-cx-v1.31.1) (2024-02-06)
 
 

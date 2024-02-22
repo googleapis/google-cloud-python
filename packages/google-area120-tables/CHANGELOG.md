@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.11.8](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.7...google-area120-tables-v0.11.8) (2024-02-22)
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12280](https://github.com/googleapis/google-cloud-python/issues/12280)) ([2d75d0e](https://github.com/googleapis/google-cloud-python/commit/2d75d0e67ca4cccddc688bd37c14ac80564a2e65))
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12303](https://github.com/googleapis/google-cloud-python/issues/12303)) ([fbb80c3](https://github.com/googleapis/google-cloud-python/commit/fbb80c32f7db91e25bd1cc30966f630728ff6d6a))
+
 ## [0.11.7](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.6...google-area120-tables-v0.11.7) (2024-02-06)
 
 

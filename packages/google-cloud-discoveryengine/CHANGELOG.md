@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.11.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.7...google-cloud-discoveryengine-v0.11.8) (2024-02-22)
+
+
+### Features
+
+* Add data store, engine, serving config and site search engine services  ([00cf69e](https://github.com/googleapis/google-cloud-python/commit/00cf69ee2536bda6a2ccc086343d4be2744e7303))
+* Add engine support for multi-turn search and search APIs ([00cf69e](https://github.com/googleapis/google-cloud-python/commit/00cf69ee2536bda6a2ccc086343d4be2744e7303))
+* Add suggestion deny list import/purge APIs ([00cf69e](https://github.com/googleapis/google-cloud-python/commit/00cf69ee2536bda6a2ccc086343d4be2744e7303))
+* Support search summarization with citations and references ([00cf69e](https://github.com/googleapis/google-cloud-python/commit/00cf69ee2536bda6a2ccc086343d4be2744e7303))
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12282](https://github.com/googleapis/google-cloud-python/issues/12282)) ([b985096](https://github.com/googleapis/google-cloud-python/commit/b985096d43add8214172ff993e00293e6c8757cb))
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12306](https://github.com/googleapis/google-cloud-python/issues/12306)) ([1e787f2](https://github.com/googleapis/google-cloud-python/commit/1e787f2079ac41ce634c7b90f02a6597cecb64be))
+
+
+### Documentation
+
+* Keep the API doc up-to-date with recent changes ([00cf69e](https://github.com/googleapis/google-cloud-python/commit/00cf69ee2536bda6a2ccc086343d4be2744e7303))
+
 ## [0.11.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.6...google-cloud-discoveryengine-v0.11.7) (2024-02-06)
 
 

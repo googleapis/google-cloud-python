@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-datatransfer/#history
 
+## [3.15.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.14.1...google-cloud-bigquery-datatransfer-v3.15.0) (2024-02-22)
+
+
+### Features
+
+* [google-cloud-bigquery-datatransfer] Add UnenrollDataSources API which gives users a programmatic way to unenroll data sources ([#12296](https://github.com/googleapis/google-cloud-python/issues/12296)) ([dd9c9fc](https://github.com/googleapis/google-cloud-python/commit/dd9c9fcfbc8aacfa659d52b8e81ded1d3bf5d8b0))
+
+
+### Bug Fixes
+
+* [Many APIs] fix `ValueError` in `test__validate_universe_domain` ([#12281](https://github.com/googleapis/google-cloud-python/issues/12281)) ([62cf934](https://github.com/googleapis/google-cloud-python/commit/62cf934b140173d7b39e6c9ffa66e218b98260d4))
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12304](https://github.com/googleapis/google-cloud-python/issues/12304)) ([c52e0cd](https://github.com/googleapis/google-cloud-python/commit/c52e0cdbddf44c96f642d8d596c5413c4006ba82))
+
+
+### Documentation
+
+* update unenrollDataSources API documentation ([8ff0f9e](https://github.com/googleapis/google-cloud-python/commit/8ff0f9e9d1767fe6401bab58c3521160470045e3))
+
 ## [3.14.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bigquery-datatransfer-v3.14.0...google-cloud-bigquery-datatransfer-v3.14.1) (2024-02-06)
 
 
