@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.3.10](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.9...google-maps-addressvalidation-v0.3.10) (2024-02-22)
+
+
+### Features
+
+* add new fields to USPS data ([a7231e0](https://github.com/googleapis/google-cloud-python/commit/a7231e09b16cafdc84482c11a4ca25d0a1df05ca))
+* add session token support for Autocomplete (New) sessions that end with a call to Address Validation ([a7231e0](https://github.com/googleapis/google-cloud-python/commit/a7231e09b16cafdc84482c11a4ca25d0a1df05ca))
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12311](https://github.com/googleapis/google-cloud-python/issues/12311)) ([e4c864b](https://github.com/googleapis/google-cloud-python/commit/e4c864b3e67c7f7f33dfb0d2107fa138492ad338))
+* fix ValueError in test__validate_universe_domain ([f3974d4](https://github.com/googleapis/google-cloud-python/commit/f3974d46a9ba9f549e31251ebc2daeb6b9b4745a))
+
+
+### Documentation
+
+* update proto field descriptions ([a7231e0](https://github.com/googleapis/google-cloud-python/commit/a7231e09b16cafdc84482c11a4ca25d0a1df05ca))
+
 ## [0.3.9](https://github.com/googleapis/google-cloud-python/compare/google-maps-addressvalidation-v0.3.8...google-maps-addressvalidation-v0.3.9) (2024-02-06)
 
 
