@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.24.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.24.1...google-cloud-asset-v3.24.2) (2024-02-22)
+
+
+### Bug Fixes
+
+* **deps:** [Many APIs] Require `google-api-core&gt;=1.34.1` ([#12303](https://github.com/googleapis/google-cloud-python/issues/12303)) ([fbb80c3](https://github.com/googleapis/google-cloud-python/commit/fbb80c32f7db91e25bd1cc30966f630728ff6d6a))
+* fix ValueError in test__validate_universe_domain ([e6cd222](https://github.com/googleapis/google-cloud-python/commit/e6cd22212a6f62907c855cf889ee6055c1969eb0))
+
+
+### Documentation
+
+* [google-cloud-asset] updated comments ([e6cd222](https://github.com/googleapis/google-cloud-python/commit/e6cd22212a6f62907c855cf889ee6055c1969eb0))
+
 ## [3.24.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.24.0...google-cloud-asset-v3.24.1) (2024-02-06)
 
 
