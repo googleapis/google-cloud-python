@@ -38,10 +38,13 @@ from .indicator import Indicator
 from .kernel_rootkit import KernelRootkit
 from .kubernetes import Kubernetes
 from .label import Label
+from .load_balancer import LoadBalancer
+from .log_entry import CloudLoggingEntry, LogEntry
 from .mitre_attack import MitreAttack
 from .mute_config import MuteConfig
 from .notification_config import NotificationConfig
 from .notification_message import NotificationMessage
+from .org_policy import OrgPolicy
 from .organization_settings import OrganizationSettings
 from .process import EnvironmentVariable, Process
 from .resource import Resource
@@ -138,10 +141,14 @@ __all__ = (
     "KernelRootkit",
     "Kubernetes",
     "Label",
+    "LoadBalancer",
+    "CloudLoggingEntry",
+    "LogEntry",
     "MitreAttack",
     "MuteConfig",
     "NotificationConfig",
     "NotificationMessage",
+    "OrgPolicy",
     "OrganizationSettings",
     "EnvironmentVariable",
     "Process",

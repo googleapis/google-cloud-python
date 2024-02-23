@@ -59,6 +59,8 @@ class Kubernetes(proto.Message):
             Provides information on any Kubernetes access
             reviews (privilege checks) relevant to the
             finding.
+        objects (MutableSequence[google.cloud.securitycenter_v1.types.Kubernetes.Object]):
+            Kubernetes objects related to the finding.
     """
 
     class Pod(proto.Message):
@@ -310,6 +312,52 @@ class Kubernetes(proto.Message):
             number=7,
         )
 
+    class Object(proto.Message):
+        r"""Kubernetes object related to the finding, uniquely identified
+        by GKNN. Used if the object Kind is not one of Pod, Node,
+        NodePool, Binding, or AccessReview.
+
+        Attributes:
+            group (str):
+                Kubernetes object group, such as
+                "policy.k8s.io/v1".
+            kind (str):
+                Kubernetes object kind, such as "Namespace".
+            ns (str):
+                Kubernetes object namespace. Must be a valid
+                DNS label. Named "ns" to avoid collision with
+                C++ namespace keyword. For details see
+                https://kubernetes.io/docs/tasks/administer-cluster/namespaces/.
+            name (str):
+                Kubernetes object name. For details see
+                https://kubernetes.io/docs/concepts/overview/working-with-objects/names/.
+            containers (MutableSequence[google.cloud.securitycenter_v1.types.Container]):
+                Pod containers associated with this finding,
+                if any.
+        """
+
+        group: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        kind: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        ns: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        name: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        containers: MutableSequence[container.Container] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=5,
+            message=container.Container,
+        )
+
     pods: MutableSequence[Pod] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
@@ -339,6 +387,11 @@ class Kubernetes(proto.Message):
         proto.MESSAGE,
         number=6,
         message=AccessReview,
+    )
+    objects: MutableSequence[Object] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=Object,
     )
 
 
