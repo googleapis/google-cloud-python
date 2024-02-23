@@ -32,11 +32,12 @@ description = (
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 3 - Alpha"
 dependencies = [
+    # please keep these in sync with the minimum versions in testing/constraints-3.9.txt
     "cloudpickle >= 2.0.0",
     "fsspec >=2023.3.0",
     "gcsfs >=2023.3.0",
     "geopandas >=0.12.2",
-    "google-auth >2.14.1,<3.0dev",
+    "google-auth >=2.15.0,<3.0dev",
     "google-cloud-bigquery[bqstorage,pandas] >=3.10.0",
     "google-cloud-functions >=1.10.1",
     "google-cloud-bigquery-connection >=1.12.0",
@@ -51,6 +52,10 @@ dependencies = [
     "requests >=2.27.1",
     "scikit-learn >=1.2.2",
     "sqlalchemy >=1.4,<3.0dev",
+    # Keep sqlglot versions in sync with ibis-framework. This avoids problems
+    # where the incorrect version of sqlglot is installed, such as
+    # https://github.com/googleapis/python-bigquery-dataframes/issues/315
+    "sqlglot >=19.9.0,<20",
     "tabulate >= 0.9",
     "ipywidgets >=7.7.1",
     "humanize >= 4.6.0",
