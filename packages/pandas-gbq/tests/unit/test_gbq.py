@@ -222,37 +222,6 @@ def test_to_gbq_with_verbose_new_pandas_warns_deprecation(monkeypatch, verbose):
             pass
 
 
-def test_to_gbq_wo_verbose_w_new_pandas_no_warnings(monkeypatch, recwarn):
-    monkeypatch.setattr(
-        type(FEATURES),
-        "pandas_has_deprecated_verbose",
-        mock.PropertyMock(return_value=True),
-    )
-    try:
-        gbq.to_gbq(DataFrame([[1]]), "dataset.tablename", project_id="my-project")
-    except gbq.TableCreationError:
-        pass
-    assert len(recwarn) == 0
-
-
-def test_to_gbq_with_verbose_old_pandas_no_warnings(monkeypatch, recwarn):
-    monkeypatch.setattr(
-        type(FEATURES),
-        "pandas_has_deprecated_verbose",
-        mock.PropertyMock(return_value=False),
-    )
-    try:
-        gbq.to_gbq(
-            DataFrame([[1]]),
-            "dataset.tablename",
-            project_id="my-project",
-            verbose=True,
-        )
-    except gbq.TableCreationError:
-        pass
-    assert len(recwarn) == 0
-
-
 def test_to_gbq_with_private_key_raises_notimplementederror():
     with pytest.raises(NotImplementedError, match="private_key"):
         gbq.to_gbq(

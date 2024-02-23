@@ -46,6 +46,7 @@ UNIT_TEST_EXTERNAL_DEPENDENCIES = [
 UNIT_TEST_LOCAL_DEPENDENCIES = []
 UNIT_TEST_DEPENDENCIES = []
 UNIT_TEST_EXTRAS = [
+    "bqstorage",
     "tqdm",
 ]
 UNIT_TEST_EXTRAS_BY_PYTHON = {
@@ -176,6 +177,8 @@ def default(session):
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
     install_unittest_dependencies(session, "-c", constraints_path)
+
+    session.run("python", "-m", "pip", "freeze")
 
     # Run py.test against the unit tests.
     session.run(

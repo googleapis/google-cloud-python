@@ -37,10 +37,12 @@ dependencies = [
     # Please also update the minimum version in pandas_gbq/features.py to
     # allow pandas-gbq to detect invalid package versions at runtime.
     "google-cloud-bigquery >=3.3.5,<4.0.0dev",
-    "google-cloud-bigquery-storage >=2.16.2,<3.0.0dev",
     "packaging >=20.0.0",
 ]
 extras = {
+    "bqstorage": [
+        "google-cloud-bigquery-storage >=2.16.2, <3.0.0dev",
+    ],
     "tqdm": "tqdm>=4.23.0",
 }
 
