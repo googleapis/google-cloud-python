@@ -551,7 +551,11 @@ def prerelease(session: nox.sessions.Session, tests_path):
         # https://github.com/googleapis/python-bigquery-dataframes/issues/341
         # https://github.com/googleapis/python-bigquery-dataframes/issues/337
         # are resolved
-        "pandas!=2.1.4, !=2.2.0rc0, !=2.2.0",
+        #
+        # We exclude each version individually so that we can continue to test
+        # some prerelease packages. See:
+        # https://github.com/googleapis/python-bigquery-dataframes/pull/268#discussion_r1423205172
+        "pandas!=2.1.4, !=2.2.0rc0, !=2.2.0, !=2.2.1",
     )
     already_installed.add("pandas")
 
