@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.19.6](https://github.com/googleapis/python-pubsub/compare/v2.19.5...v2.19.6) (2024-02-23)
+
+
+### Bug Fixes
+
+* Remove LOGGER.exception() line ([#1087](https://github.com/googleapis/python-pubsub/issues/1087)) ([a395d26](https://github.com/googleapis/python-pubsub/commit/a395d26ed0fffaee8662f988da97dd35c480af4f))
+
 ## [2.19.5](https://github.com/googleapis/python-pubsub/compare/v2.19.4...v2.19.5) (2024-02-22)
 
 
