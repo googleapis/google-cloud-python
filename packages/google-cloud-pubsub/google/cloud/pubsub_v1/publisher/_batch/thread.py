@@ -290,7 +290,6 @@ class Batch(base.Batch):
                 # Failed to publish batch.
                 self._batch_done_callback(batch_transport_succeeded)
 
-            _LOGGER.exception("Failed to publish %s messages.", len(self._futures))
             return
 
         end = time.time()
