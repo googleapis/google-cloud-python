@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.19.5](https://github.com/googleapis/python-pubsub/compare/v2.19.4...v2.19.5) (2024-02-22)
+
+
+### Bug Fixes
+
+* Update system_test_python_versions ([#1096](https://github.com/googleapis/python-pubsub/issues/1096)) ([c659ac7](https://github.com/googleapis/python-pubsub/commit/c659ac777f177e54d7272a8de93fa9f554b15d46))
+
 ## [2.19.4](https://github.com/googleapis/python-pubsub/compare/v2.19.3...v2.19.4) (2024-02-09)
 
 
