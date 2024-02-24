@@ -125,9 +125,8 @@ class BigQueryOptions:
         """Flag to connect to regional API endpoints.
 
         .. deprecated:: 0.13.0
-            BigQuery regional endpoints is a feature in preview and
-            available only to selected projects.
-            Enable it only if your project has regional endpoints access.
+            Use of regional endpoints is a feature in preview and
+            available only in selected regions and projects.
 
         Requires ``location`` to also be set. For example, set
         ``location='asia-northeast1'`` and ``use_regional_endpoints=True`` to
@@ -144,9 +143,8 @@ class BigQueryOptions:
 
         if value:
             warnings.warn(
-                "BigQuery regional endpoints is a feature in preview and "
-                "available only to selected projects. "
-                "Enable it only if your project has regional endpoints access."
+                "Use of regional endpoints is a feature in preview and "
+                "available only in selected regions and projects. "
             )
 
         self._use_regional_endpoints = value

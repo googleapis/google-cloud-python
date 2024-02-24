@@ -152,7 +152,7 @@ class Session(
             context = bigquery_options.BigQueryOptions()
 
         # TODO(swast): Get location from the environment.
-        if context is None or context.location is None:
+        if context.location is None:
             self._location = "US"
             warnings.warn(
                 f"No explicit location is set, so using location {self._location} for the session.",
