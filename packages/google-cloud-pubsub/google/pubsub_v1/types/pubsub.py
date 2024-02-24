@@ -201,8 +201,8 @@ class IngestionDataSourceSettings(proto.Message):
         """
 
         class State(proto.Enum):
-            r"""Possible states for managed ingestion from Amazon Kinesis
-            Data Streams.
+            r"""Possible states for ingestion from Amazon Kinesis Data
+            Streams.
 
             Values:
                 STATE_UNSPECIFIED (0):
@@ -317,8 +317,8 @@ class Topic(proto.Message):
             Output only. An output-only field indicating
             the state of the topic.
         ingestion_data_source_settings (google.pubsub_v1.types.IngestionDataSourceSettings):
-            Optional. Settings for managed ingestion from
-            a data source into this topic.
+            Optional. Settings for ingestion from a data
+            source into this topic.
     """
 
     class State(proto.Enum):
