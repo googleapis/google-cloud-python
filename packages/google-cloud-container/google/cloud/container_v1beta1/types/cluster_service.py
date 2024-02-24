@@ -723,10 +723,7 @@ class NodeConfig(proto.Message):
             A map of resource manager tag keys and values
             to be attached to the nodes.
         enable_confidential_storage (bool):
-            Optional. Enable confidential storage on Hyperdisk.
-            boot_disk_kms_key is required when
-            enable_confidential_storage is true. This is only available
-            for private preview.
+            Optional. Reserved for future use.
     """
 
     machine_type: str = proto.Field(
@@ -5142,6 +5139,9 @@ class UpdateNodePoolRequest(proto.Message):
             Engine firewalls using Network Firewall
             Policies. Existing tags will be replaced with
             new values.
+        queued_provisioning (google.cloud.container_v1beta1.types.NodePool.QueuedProvisioning):
+            Specifies the configuration of queued
+            provisioning.
     """
 
     project_id: str = proto.Field(
@@ -5271,6 +5271,11 @@ class UpdateNodePoolRequest(proto.Message):
         proto.MESSAGE,
         number=39,
         message="ResourceManagerTags",
+    )
+    queued_provisioning: "NodePool.QueuedProvisioning" = proto.Field(
+        proto.MESSAGE,
+        number=42,
+        message="NodePool.QueuedProvisioning",
     )
 
 
