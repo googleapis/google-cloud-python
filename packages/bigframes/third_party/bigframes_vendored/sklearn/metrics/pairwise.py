@@ -11,13 +11,8 @@ from bigframes import constants
 import bigframes.pandas as bpd
 
 
-def cosine_similarity(X, Y) -> bpd.DataFrame:
-    """Compute cosine similarity between samples in X and Y.
-
-    Cosine similarity, or the cosine kernel, computes similarity as the
-    normalized dot product of X and Y:
-
-        K(X, Y) = <X, Y> / (||X||*||Y||)
+def paired_cosine_distances(X, Y) -> bpd.DataFrame:
+    """Compute the paired cosine distances between X and Y.
 
     Args:
         X (Series or single column DataFrame of array of numeric type):
@@ -26,6 +21,6 @@ def cosine_similarity(X, Y) -> bpd.DataFrame:
             Input data. X and Y are mapped by indexes, must have the same index.
 
     Returns:
-        bigframes.dataframe.DataFrame: DataFrame with columns of X, Y and cosine_similarity
+        bigframes.dataframe.DataFrame: DataFrame with columns of X, Y and cosine_distance
     """
     raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

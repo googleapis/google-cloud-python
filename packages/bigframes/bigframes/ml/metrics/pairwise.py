@@ -20,7 +20,7 @@ import bigframes.pandas as bpd
 import third_party.bigframes_vendored.sklearn.metrics.pairwise as vendored_metrics_pairwise
 
 
-def cosine_similarity(
+def paired_cosine_distances(
     X: Union[bpd.DataFrame, bpd.Series], Y: Union[bpd.DataFrame, bpd.Series]
 ) -> bpd.DataFrame:
     X, Y = utils.convert_to_dataframe(X, Y)
@@ -28,7 +28,9 @@ def cosine_similarity(
         raise ValueError("Inputs X and Y can only contain 1 column.")
 
     base_bqml = core.BaseBqml(session=X._session)
-    return base_bqml.distance(X, Y, type="COSINE", name="cosine_similarity")
+    return base_bqml.distance(X, Y, type="COSINE", name="cosine_distance")
 
 
-cosine_similarity.__doc__ = inspect.getdoc(vendored_metrics_pairwise.cosine_similarity)
+paired_cosine_distances.__doc__ = inspect.getdoc(
+    vendored_metrics_pairwise.paired_cosine_distances
+)

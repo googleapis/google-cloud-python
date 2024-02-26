@@ -19,15 +19,15 @@ from bigframes.ml import metrics
 import bigframes.pandas as bpd
 
 
-def test_cosine_similarity():
+def test_paired_cosine_distances():
     x_col = [np.array([4.1, 0.5, 1.0])]
     y_col = [np.array([3.0, 0.0, 2.5])]
     X = bpd.read_pandas(pd.DataFrame({"X": x_col}))
     Y = bpd.read_pandas(pd.DataFrame({"Y": y_col}))
 
-    result = metrics.pairwise.cosine_similarity(X, Y)
+    result = metrics.pairwise.paired_cosine_distances(X, Y)
     expected_pd_df = pd.DataFrame(
-        {"X": x_col, "Y": y_col, "cosine_similarity": [0.108199]}
+        {"X": x_col, "Y": y_col, "cosine_distance": [0.108199]}
     )
 
     pd.testing.assert_frame_equal(
