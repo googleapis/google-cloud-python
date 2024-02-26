@@ -22,8 +22,8 @@ For more information, see the README.rst under /spanner.
 import time
 
 from google.cloud import spanner
-from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 from google.cloud.spanner_admin_database_v1.types import spanner_database_admin
+from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
 
 OPERATION_TIMEOUT_SECONDS = 240
 
