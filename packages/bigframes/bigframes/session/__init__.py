@@ -959,8 +959,8 @@ class Session(
         )
         table_expression = self.ibis_client.table(  # type: ignore
             load_table_destination.table_id,
-            # TODO: use "dataset_id" as the "schema"
-            database=f"{load_table_destination.project}.{load_table_destination.dataset_id}",
+            schema=load_table_destination.dataset_id,
+            database=load_table_destination.project,
         )
 
         # b/297590178 Potentially a bug in bqclient.load_table_from_dataframe(), that only when the DF is empty, the index columns disappear in table_expression.
@@ -1542,7 +1542,9 @@ class Session(
             ibis_expr, cluster_cols=cluster_cols, api_name="cached"
         )
         table_expression = self.ibis_client.table(
-            f"{tmp_table.project}.{tmp_table.dataset_id}.{tmp_table.table_id}"
+            tmp_table.table_id,
+            schema=tmp_table.dataset_id,
+            database=tmp_table.project,
         )
         new_columns = [table_expression[column] for column in compiled_value.column_ids]
         new_hidden_columns = [
@@ -1571,7 +1573,9 @@ class Session(
             ibis_expr, cluster_cols=["bigframes_offsets"], api_name="cached"
         )
         table_expression = self.ibis_client.table(
-            f"{tmp_table.project}.{tmp_table.dataset_id}.{tmp_table.table_id}"
+            tmp_table.table_id,
+            schema=tmp_table.dataset_id,
+            database=tmp_table.project,
         )
         new_columns = [table_expression[column] for column in compiled_value.column_ids]
         new_hidden_columns = [table_expression["bigframes_offsets"]]
