@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.12.2-alpha...v0.13.0-alpha) (2024-02-26)
+
+
+### Features
+
+* Added `gcs_uri` parameter to `Document.from_gcs()` to allow importing of a single Document JSON ([#261](https://github.com/googleapis/python-documentai-toolbox/issues/261)) ([f654a5d](https://github.com/googleapis/python-documentai-toolbox/commit/f654a5dc13247ae4c5cd4505440c3ce3a8bbf71a))
+
 ## [0.12.2-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.12.1-alpha...v0.12.2-alpha) (2024-02-02)
 
 
