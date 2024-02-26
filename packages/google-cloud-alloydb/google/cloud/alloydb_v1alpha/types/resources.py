@@ -1139,6 +1139,10 @@ class Instance(proto.Message):
             Output only. The IP address for the Instance.
             This is the connection endpoint for an end-user
             application.
+        public_ip_address (str):
+            Output only. The public IP addresses for the Instance. This
+            is available ONLY when enable_public_ip is set. This is the
+            connection endpoint for an end-user application.
         reconciling (bool):
             Output only. Reconciling
             (https://google.aip.dev/128#reconciliation). Set
@@ -1340,7 +1344,7 @@ class Instance(proto.Message):
             query_string_length (int):
                 Query string length. The default value is
                 1024. Any integer between 256 and 4500 is
-                considered valid.
+                    considered valid.
             query_plans_per_minute (int):
                 Number of query execution plans captured by
                 Insights per minute for all queries combined.
@@ -1657,6 +1661,10 @@ class Instance(proto.Message):
         proto.STRING,
         number=15,
     )
+    public_ip_address: str = proto.Field(
+        proto.STRING,
+        number=27,
+    )
     reconciling: bool = proto.Field(
         proto.BOOL,
         number=16,
@@ -1725,6 +1733,9 @@ class ConnectionInfo(proto.Message):
             to RFC 5246.
         instance_uid (str):
             Output only. The unique ID of the Instance.
+        psc_dns_name (str):
+            Output only. The DNS name to use with PSC for
+            the Instance.
     """
 
     name: str = proto.Field(
@@ -1746,6 +1757,10 @@ class ConnectionInfo(proto.Message):
     instance_uid: str = proto.Field(
         proto.STRING,
         number=4,
+    )
+    psc_dns_name: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
