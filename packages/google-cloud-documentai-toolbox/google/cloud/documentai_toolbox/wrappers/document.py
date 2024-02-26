@@ -366,6 +366,7 @@ class Document:
     shards: List[documentai.Document] = dataclasses.field(repr=False)
     gcs_bucket_name: Optional[str] = dataclasses.field(default=None, repr=False)
     gcs_prefix: Optional[str] = dataclasses.field(default=None, repr=False)
+    gcs_uri: Optional[str] = dataclasses.field(default=None, repr=False)
     gcs_input_uri: Optional[str] = dataclasses.field(default=None, repr=False)
 
     _pages: Optional[List[Page]] = dataclasses.field(
@@ -463,7 +464,7 @@ class Document:
         gcs_prefix: str,
         gcs_input_uri: Optional[str] = None,
     ) -> "Document":
-        r"""Loads Document from Cloud Storage.
+        r"""Loads a Document from a Cloud Storage directory.
 
         Args:
             gcs_bucket_name (str):
@@ -487,6 +488,40 @@ class Document:
             shards=shards,
             gcs_bucket_name=gcs_bucket_name,
             gcs_prefix=gcs_prefix,
+            gcs_input_uri=gcs_input_uri,
+        )
+
+    @classmethod
+    def from_gcs_uri(
+        cls: Type["Document"],
+        gcs_uri: str,
+        gcs_input_uri: Optional[str] = None,
+    ) -> "Document":
+        r"""Loads a Document from a Cloud Storage uri.
+
+        Args:
+            gcs_uri (str):
+                Required. The full GCS uri to a Document JSON file.
+
+                Example: `gs://{bucket_name}/{optional_folder}/{target_file}.json`.
+            gcs_input_uri (str):
+                Optional. The gcs uri to the original input file.
+
+                Format: `gs://{bucket_name}/{optional_folder}/{target_folder}/{file_name}.pdf`
+        Returns:
+            Document:
+                A document from gcs.
+        """
+        blob = gcs_utilities.get_blob(gcs_uri=gcs_uri, module="get-document")
+        shards = [
+            documentai.Document.from_json(
+                blob.download_as_bytes(),
+                ignore_unknown_fields=True,
+            )
+        ]
+        return cls(
+            shards=shards,
+            gcs_uri=gcs_uri,
             gcs_input_uri=gcs_input_uri,
         )
 
