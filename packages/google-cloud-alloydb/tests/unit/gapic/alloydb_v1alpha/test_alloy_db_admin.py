@@ -3636,6 +3636,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
             availability_type=resources.Instance.AvailabilityType.ZONAL,
             gce_zone="gce_zone_value",
             ip_address="ip_address_value",
+            public_ip_address="public_ip_address_value",
             reconciling=True,
             etag="etag_value",
             satisfies_pzi=True,
@@ -3658,6 +3659,7 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.availability_type == resources.Instance.AvailabilityType.ZONAL
     assert response.gce_zone == "gce_zone_value"
     assert response.ip_address == "ip_address_value"
+    assert response.public_ip_address == "public_ip_address_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.satisfies_pzi is True
@@ -3706,6 +3708,7 @@ async def test_get_instance_async(
                 availability_type=resources.Instance.AvailabilityType.ZONAL,
                 gce_zone="gce_zone_value",
                 ip_address="ip_address_value",
+                public_ip_address="public_ip_address_value",
                 reconciling=True,
                 etag="etag_value",
                 satisfies_pzi=True,
@@ -3729,6 +3732,7 @@ async def test_get_instance_async(
     assert response.availability_type == resources.Instance.AvailabilityType.ZONAL
     assert response.gce_zone == "gce_zone_value"
     assert response.ip_address == "ip_address_value"
+    assert response.public_ip_address == "public_ip_address_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.satisfies_pzi is True
@@ -7845,6 +7849,7 @@ def test_get_connection_info(request_type, transport: str = "grpc"):
             public_ip_address="public_ip_address_value",
             pem_certificate_chain=["pem_certificate_chain_value"],
             instance_uid="instance_uid_value",
+            psc_dns_name="psc_dns_name_value",
         )
         response = client.get_connection_info(request)
 
@@ -7860,6 +7865,7 @@ def test_get_connection_info(request_type, transport: str = "grpc"):
     assert response.public_ip_address == "public_ip_address_value"
     assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
     assert response.instance_uid == "instance_uid_value"
+    assert response.psc_dns_name == "psc_dns_name_value"
 
 
 def test_get_connection_info_empty_call():
@@ -7905,6 +7911,7 @@ async def test_get_connection_info_async(
                 public_ip_address="public_ip_address_value",
                 pem_certificate_chain=["pem_certificate_chain_value"],
                 instance_uid="instance_uid_value",
+                psc_dns_name="psc_dns_name_value",
             )
         )
         response = await client.get_connection_info(request)
@@ -7921,6 +7928,7 @@ async def test_get_connection_info_async(
     assert response.public_ip_address == "public_ip_address_value"
     assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
     assert response.instance_uid == "instance_uid_value"
+    assert response.psc_dns_name == "psc_dns_name_value"
 
 
 @pytest.mark.asyncio
@@ -12950,6 +12958,7 @@ def test_get_instance_rest(request_type):
             availability_type=resources.Instance.AvailabilityType.ZONAL,
             gce_zone="gce_zone_value",
             ip_address="ip_address_value",
+            public_ip_address="public_ip_address_value",
             reconciling=True,
             etag="etag_value",
             satisfies_pzi=True,
@@ -12977,6 +12986,7 @@ def test_get_instance_rest(request_type):
     assert response.availability_type == resources.Instance.AvailabilityType.ZONAL
     assert response.gce_zone == "gce_zone_value"
     assert response.ip_address == "ip_address_value"
+    assert response.public_ip_address == "public_ip_address_value"
     assert response.reconciling is True
     assert response.etag == "etag_value"
     assert response.satisfies_pzi is True
@@ -13254,6 +13264,7 @@ def test_create_instance_rest(request_type):
         },
         "read_pool_config": {"node_count": 1070},
         "ip_address": "ip_address_value",
+        "public_ip_address": "public_ip_address_value",
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
@@ -13690,6 +13701,7 @@ def test_create_secondary_instance_rest(request_type):
         },
         "read_pool_config": {"node_count": 1070},
         "ip_address": "ip_address_value",
+        "public_ip_address": "public_ip_address_value",
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
@@ -14133,6 +14145,7 @@ def test_batch_create_instances_rest(request_type):
                     },
                     "read_pool_config": {"node_count": 1070},
                     "ip_address": "ip_address_value",
+                    "public_ip_address": "public_ip_address_value",
                     "reconciling": True,
                     "etag": "etag_value",
                     "annotations": {},
@@ -14495,6 +14508,7 @@ def test_update_instance_rest(request_type):
         },
         "read_pool_config": {"node_count": 1070},
         "ip_address": "ip_address_value",
+        "public_ip_address": "public_ip_address_value",
         "reconciling": True,
         "etag": "etag_value",
         "annotations": {},
@@ -18256,6 +18270,7 @@ def test_get_connection_info_rest(request_type):
             public_ip_address="public_ip_address_value",
             pem_certificate_chain=["pem_certificate_chain_value"],
             instance_uid="instance_uid_value",
+            psc_dns_name="psc_dns_name_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -18276,6 +18291,7 @@ def test_get_connection_info_rest(request_type):
     assert response.public_ip_address == "public_ip_address_value"
     assert response.pem_certificate_chain == ["pem_certificate_chain_value"]
     assert response.instance_uid == "instance_uid_value"
+    assert response.psc_dns_name == "psc_dns_name_value"
 
 
 def test_get_connection_info_rest_required_fields(
