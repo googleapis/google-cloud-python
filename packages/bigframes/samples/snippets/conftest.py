@@ -18,6 +18,8 @@ from google.cloud import bigquery
 import pytest
 import test_utils.prefixer
 
+import bigframes.pandas as bpd
+
 prefixer = test_utils.prefixer.Prefixer(
     "python-bigquery-dataframes", "samples/snippets"
 )
@@ -43,11 +45,32 @@ def project_id(bigquery_client: bigquery.Client) -> str:
     return bigquery_client.project
 
 
+@pytest.fixture(autouse=True)
+def reset_session():
+    """An autouse fixture ensuring each sample runs in a fresh session.
+
+    This allows us to have samples that query data in different locations.
+    """
+    bpd.reset_session()
+    bpd.options.bigquery.location = None
+
+
 @pytest.fixture(scope="session")
 def dataset_id(bigquery_client: bigquery.Client, project_id: str) -> Iterator[str]:
     dataset_id = prefixer.create_prefix()
     full_dataset_id = f"{project_id}.{dataset_id}"
     dataset = bigquery.Dataset(full_dataset_id)
+    bigquery_client.create_dataset(dataset)
+    yield dataset_id
+    bigquery_client.delete_dataset(dataset, delete_contents=True, not_found_ok=True)
+
+
+@pytest.fixture(scope="session")
+def dataset_id_eu(bigquery_client: bigquery.Client, project_id: str) -> Iterator[str]:
+    dataset_id = prefixer.create_prefix()
+    full_dataset_id = f"{project_id}.{dataset_id}"
+    dataset = bigquery.Dataset(full_dataset_id)
+    dataset.location = "EU"
     bigquery_client.create_dataset(dataset)
     yield dataset_id
     bigquery_client.delete_dataset(dataset, delete_contents=True, not_found_ok=True)
@@ -62,5 +85,19 @@ def random_model_id(
     """
     random_model_id = prefixer.create_prefix()
     full_model_id = f"{project_id}.{dataset_id}.{random_model_id}"
+    yield full_model_id
+    bigquery_client.delete_model(full_model_id, not_found_ok=True)
+
+
+@pytest.fixture
+def random_model_id_eu(
+    bigquery_client: bigquery.Client, project_id: str, dataset_id_eu: str
+) -> Iterator[str]:
+    """
+    Create a new table ID each time, so random_model_id_eu can be used
+    as a target for load jobs.
+    """
+    random_model_id_eu = prefixer.create_prefix()
+    full_model_id = f"{project_id}.{dataset_id_eu}.{random_model_id_eu}"
     yield full_model_id
     bigquery_client.delete_model(full_model_id, not_found_ok=True)
