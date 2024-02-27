@@ -1716,20 +1716,24 @@ class Client(ClientWithProject):
         :func:`~google.cloud.bigquery.client.Client.cancel_job` instead.
 
         Args:
-            job_id: Job or job identifier.
-
-        Keyword Arguments:
-            project:
+            job_id (Union[ \
+                str, \
+                LoadJob, \
+                CopyJob, \
+                ExtractJob, \
+                QueryJob \
+            ]): Job or job identifier.
+            project (Optional[str]):
                 ID of the project which owns the job (defaults to the client's project).
-            location:
+            location (Optional[str]):
                 Location where the job was run. Ignored if ``job_id`` is a job
                 object.
-            retry:
+            retry (Optional[google.api_core.retry.Retry]):
                 How to retry the RPC.
-            timeout:
+            timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
-            not_found_ok:
+            not_found_ok (Optional[bool]):
                 Defaults to ``False``. If ``True``, ignore "not found" errors
                 when deleting the job.
         """
@@ -1970,12 +1974,10 @@ class Client(ClientWithProject):
         timeout: TimeoutType = DEFAULT_TIMEOUT,
     ) -> Union[job.LoadJob, job.CopyJob, job.ExtractJob, job.QueryJob]:
         """Create a new job.
+
         Args:
             job_config (dict): configuration job representation returned from the API.
-
-        Keyword Arguments:
-            retry (Optional[google.api_core.retry.Retry]):
-                How to retry the RPC.
+            retry (Optional[google.api_core.retry.Retry]): How to retry the RPC.
             timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``.
@@ -2066,10 +2068,14 @@ class Client(ClientWithProject):
         https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/get
 
         Args:
-            job_id:
+            job_id (Union[ \
+                str, \
+                job.LoadJob, \
+                job.CopyJob, \
+                job.ExtractJob, \
+                job.QueryJob \
+            ]):
                 Job identifier.
-
-        Keyword Arguments:
             project (Optional[str]):
                 ID of the project which owns the job (defaults to the client's project).
             location (Optional[str]):
@@ -2137,8 +2143,6 @@ class Client(ClientWithProject):
                 google.cloud.bigquery.job.ExtractJob, \
                 google.cloud.bigquery.job.QueryJob \
             ]): Job identifier.
-
-        Keyword Arguments:
             project (Optional[str]):
                 ID of the project which owns the job (defaults to the client's project).
             location (Optional[str]):
@@ -2340,8 +2344,6 @@ class Client(ClientWithProject):
                 in, this method attempts to create a table reference from a
                 string using
                 :func:`google.cloud.bigquery.table.TableReference.from_string`.
-
-        Keyword Arguments:
             job_id (Optional[str]): Name of the job.
             job_id_prefix (Optional[str]):
                 The user-provided prefix for a randomly generated job ID.
@@ -2415,39 +2417,42 @@ class Client(ClientWithProject):
         returns a :class:`~google.cloud.bigquery.job.LoadJob`.
 
         Args:
-            file_obj:
+            file_obj (IO[bytes]):
                 A file handle opened in binary mode for reading.
-            destination:
+            destination (Union[Table, \
+                TableReference, \
+                TableListItem, \
+                str \
+            ]):
                 Table into which data is to be loaded. If a string is passed
                 in, this method attempts to create a table reference from a
                 string using
                 :func:`google.cloud.bigquery.table.TableReference.from_string`.
-
-        Keyword Arguments:
-            rewind:
+            rewind (Optional[bool]):
                 If True, seek to the beginning of the file handle before
-                reading the file.
-            size:
+                reading the file. Defaults to False.
+            size (Optional[int]):
                 The number of bytes to read from the file handle. If size is
                 ``None`` or large, resumable upload will be used. Otherwise,
                 multipart upload will be used.
-            num_retries: Number of upload retries. Defaults to 6.
-            job_id: Name of the job.
-            job_id_prefix:
+            num_retries (Optional[int]): Number of upload retries. Defaults to 6.
+            job_id (Optional[str]): Name of the job.
+            job_id_prefix (Optional[str]):
                 The user-provided prefix for a randomly generated job ID.
                 This parameter will be ignored if a ``job_id`` is also given.
-            location:
+            location (Optional[str]):
                 Location where to run the job. Must match the location of the
                 destination table.
-            project:
+            project (Optional[str]):
                 Project ID of the project of where to run the job. Defaults
                 to the client's project.
-            job_config:
+            job_config (Optional[LoadJobConfig]):
                 Extra configuration options for the job.
-            timeout:
+            timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``. Depending on the retry strategy, a request
                 may be repeated several times using the same timeout each time.
+                Defaults to None.
 
                 Can also be passed as a tuple (connect_timeout, read_timeout).
                 See :meth:`requests.Session.request` documentation for details.
@@ -2535,9 +2540,13 @@ class Client(ClientWithProject):
             https://github.com/googleapis/python-bigquery/issues/19
 
         Args:
-            dataframe:
+            dataframe (pandas.Dataframe):
                 A :class:`~pandas.DataFrame` containing the data to load.
-            destination:
+            destination (Union[ \
+                Table, \
+                TableReference, \
+                str \
+            ]):
                 The destination table to use for loading the data. If it is an
                 existing table, the schema of the :class:`~pandas.DataFrame`
                 must match the schema of the destination table. If the table
@@ -2547,21 +2556,19 @@ class Client(ClientWithProject):
                 If a string is passed in, this method attempts to create a
                 table reference from a string using
                 :func:`google.cloud.bigquery.table.TableReference.from_string`.
-
-        Keyword Arguments:
-            num_retries: Number of upload retries.
-            job_id: Name of the job.
-            job_id_prefix:
+            num_retries (Optional[int]): Number of upload retries. Defaults to 6.
+            job_id (Optional[str]): Name of the job.
+            job_id_prefix (Optional[str]):
                 The user-provided prefix for a randomly generated
                 job ID. This parameter will be ignored if a ``job_id`` is
                 also given.
-            location:
+            location (Optional[str]):
                 Location where to run the job. Must match the location of the
                 destination table.
-            project:
+            project (Optional[str]):
                 Project ID of the project of where to run the job. Defaults
                 to the client's project.
-            job_config:
+            job_config (Optional[LoadJobConfig]):
                 Extra configuration options for the job.
 
                 To override the default pandas data type conversions, supply
@@ -2578,9 +2585,10 @@ class Client(ClientWithProject):
                 :attr:`~google.cloud.bigquery.job.SourceFormat.CSV` and
                 :attr:`~google.cloud.bigquery.job.SourceFormat.PARQUET` are
                 supported.
-            parquet_compression:
+            parquet_compression (Optional[str]):
                 [Beta] The compression method to use if intermittently
                 serializing ``dataframe`` to a parquet file.
+                Defaults to "snappy".
 
                 The argument is directly passed as the ``compression``
                 argument to the underlying ``pyarrow.parquet.write_table()``
@@ -2591,10 +2599,11 @@ class Client(ClientWithProject):
                 passed as the ``compression`` argument to the underlying
                 ``DataFrame.to_parquet()`` method.
                 https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.to_parquet.html#pandas.DataFrame.to_parquet
-            timeout:
+            timeout (Optional[flaot]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``. Depending on the retry strategy, a request may
                 be repeated several times using the same timeout each time.
+                Defaults to None.
 
                 Can also be passed as a tuple (connect_timeout, read_timeout).
                 See :meth:`requests.Session.request` documentation for details.
@@ -2784,32 +2793,36 @@ class Client(ClientWithProject):
                         client = bigquery.Client()
                         client.load_table_from_file(data_as_file, ...)
 
-            destination:
+            destination (Union[ \
+                Table, \
+                TableReference, \
+                TableListItem, \
+                str \
+            ]):
                 Table into which data is to be loaded. If a string is passed
                 in, this method attempts to create a table reference from a
                 string using
                 :func:`google.cloud.bigquery.table.TableReference.from_string`.
-
-        Keyword Arguments:
-            num_retries: Number of upload retries.
-            job_id: Name of the job.
-            job_id_prefix:
+            num_retries (Optional[int]): Number of upload retries. Defaults to 6.
+            job_id (Optional[str]): Name of the job.
+            job_id_prefix (Optional[str]):
                 The user-provided prefix for a randomly generated job ID.
                 This parameter will be ignored if a ``job_id`` is also given.
-            location:
+            location (Optional[str]):
                 Location where to run the job. Must match the location of the
                 destination table.
-            project:
+            project (Optional[str]):
                 Project ID of the project of where to run the job. Defaults
                 to the client's project.
-            job_config:
+            job_config (Optional[LoadJobConfig]):
                 Extra configuration options for the job. The ``source_format``
                 setting is always set to
                 :attr:`~google.cloud.bigquery.job.SourceFormat.NEWLINE_DELIMITED_JSON`.
-            timeout:
+            timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``. Depending on the retry strategy, a request may
                 be repeated several times using the same timeout each time.
+                Defaults to None.
 
                 Can also be passed as a tuple (connect_timeout, read_timeout).
                 See :meth:`requests.Session.request` documentation for details.
@@ -2885,23 +2898,19 @@ class Client(ClientWithProject):
         """Perform a resumable upload.
 
         Args:
-            stream: A bytes IO object open for reading.
-
-            metadata: The metadata associated with the upload.
-
-            num_retries:
+            stream (IO[bytes]): A bytes IO object open for reading.
+            metadata (Mapping[str, str]): The metadata associated with the upload.
+            num_retries (int):
                 Number of upload retries. (Deprecated: This
                 argument will be removed in a future release.)
-
-            timeout:
+            timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``. Depending on the retry strategy, a request may
                 be repeated several times using the same timeout each time.
 
                 Can also be passed as a tuple (connect_timeout, read_timeout).
                 See :meth:`requests.Session.request` documentation for details.
-
-            project:
+            project (Optional[str]):
                 Project ID of the project of where to run the upload. Defaults
                 to the client's project.
 
@@ -2929,23 +2938,19 @@ class Client(ClientWithProject):
         """Initiate a resumable upload.
 
         Args:
-            stream: A bytes IO object open for reading.
-
-            metadata: The metadata associated with the upload.
-
-            num_retries:
+            stream (IO[bytes]): A bytes IO object open for reading.
+            metadata (Mapping[str, str]): The metadata associated with the upload.
+            num_retries (int):
                 Number of upload retries. (Deprecated: This
                 argument will be removed in a future release.)
-
-            timeout:
+            timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``. Depending on the retry strategy, a request may
                 be repeated several times using the same timeout each time.
 
                 Can also be passed as a tuple (connect_timeout, read_timeout).
                 See :meth:`requests.Session.request` documentation for details.
-
-            project:
+            project (Optional[str]):
                 Project ID of the project of where to run the upload. Defaults
                 to the client's project.
 
@@ -3005,28 +3010,23 @@ class Client(ClientWithProject):
         """Perform a multipart upload.
 
         Args:
-            stream: A bytes IO object open for reading.
-
-            metadata: The metadata associated with the upload.
-
-            size:
+            stream (IO[bytes]): A bytes IO object open for reading.
+            metadata (Mapping[str, str]): The metadata associated with the upload.
+            size (int):
                 The number of bytes to be uploaded (which will be read
                 from ``stream``). If not provided, the upload will be
                 concluded once ``stream`` is exhausted (or :data:`None`).
-
-            num_retries:
+            num_retries (int):
                 Number of upload retries. (Deprecated: This
                 argument will be removed in a future release.)
-
-            timeout:
+            timeout (Optional[float]):
                 The number of seconds to wait for the underlying HTTP transport
                 before using ``retry``. Depending on the retry strategy, a request may
                 be repeated several times using the same timeout each time.
 
                 Can also be passed as a tuple (connect_timeout, read_timeout).
                 See :meth:`requests.Session.request` documentation for details.
-
-            project:
+            project (Optional[str]):
                 Project ID of the project of where to run the upload. Defaults
                 to the client's project.
 
@@ -3118,8 +3118,6 @@ class Client(ClientWithProject):
                 str, \
             ]):
                 Table into which data is to be copied.
-
-        Keyword Arguments:
             job_id (Optional[str]): The ID of the job.
             job_id_prefix (Optional[str]):
                 The user-provided prefix for a randomly generated job ID.
@@ -3216,8 +3214,6 @@ class Client(ClientWithProject):
                 URIs of Cloud Storage file(s) into which table data is to be
                 extracted; in format
                 ``gs://<bucket_name>/<object_name_or_glob>``.
-
-        Keyword Arguments:
             job_id (Optional[str]): The ID of the job.
             job_id_prefix (Optional[str]):
                 The user-provided prefix for a randomly generated job ID.
@@ -3306,8 +3302,6 @@ class Client(ClientWithProject):
             query (str):
                 SQL query to be executed. Defaults to the standard SQL
                 dialect. Use the ``job_config`` parameter to change dialects.
-
-        Keyword Arguments:
             job_config (Optional[google.cloud.bigquery.job.QueryJobConfig]):
                 Extra configuration options for the job.
                 To override any options that were previously set in
