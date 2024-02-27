@@ -1742,11 +1742,9 @@ class Query(object):
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_consistency: If not in a transaction, defaults to
-                ``ndb.EVENTUAL`` for potentially faster query results without
-                having to wait for Datastore to apply pending changes to all
-                returned records. Otherwise consistency with current
-                transaction is maintained.
+            read_consistency: If set then passes the explicit read consistency to
+                the server.  May not be set to ``ndb.EVENTUAL`` when a transaction
+                is specified.
             read_policy: DEPRECATED: Synonym for ``read_consistency``.
             transaction (bytes): Transaction ID to use for query. Results will
                 be consistent with Datastore state for that transaction.
@@ -1795,11 +1793,9 @@ class Query(object):
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_consistency: If not in a transaction, defaults to
-                ``ndb.EVENTUAL`` for potentially faster query results without
-                having to wait for Datastore to apply pending changes to all
-                returned records. Otherwise consistency with current
-                transaction is maintained.
+            read_consistency: If set then passes the explicit read consistency to
+                the server.  May not be set to ``ndb.EVENTUAL`` when a transaction
+                is specified.
             read_policy: DEPRECATED: Synonym for ``read_consistency``.
             transaction (bytes): Transaction ID to use for query. Results will
                 be consistent with Datastore state for that transaction.
@@ -1897,11 +1893,9 @@ class Query(object):
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_consistency: If not in a transaction, defaults to
-                ``ndb.EVENTUAL`` for potentially faster query results without
-                having to wait for Datastore to apply pending changes to all
-                returned records. Otherwise consistency with current
-                transaction is maintained.
+            read_consistency: If set then passes the explicit read consistency to
+                the server.  May not be set to ``ndb.EVENTUAL`` when a transaction
+                is specified.
             read_policy: DEPRECATED: Synonym for ``read_consistency``.
             transaction (bytes): Transaction ID to use for query. Results will
                 be consistent with Datastore state for that transaction.
@@ -1960,11 +1954,9 @@ class Query(object):
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_consistency: If not in a transaction, defaults to
-                ``ndb.EVENTUAL`` for potentially faster query results without
-                having to wait for Datastore to apply pending changes to all
-                returned records. Otherwise consistency with current
-                transaction is maintained.
+            read_consistency: If set then passes the explicit read consistency to
+                the server.  May not be set to ``ndb.EVENTUAL`` when a transaction
+                is specified.
             read_policy: DEPRECATED: Synonym for ``read_consistency``.
             transaction (bytes): Transaction ID to use for query. Results will
                 be consistent with Datastore state for that transaction.
@@ -2073,11 +2065,9 @@ class Query(object):
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_consistency: If not in a transaction, defaults to
-                ``ndb.EVENTUAL`` for potentially faster query results without
-                having to wait for Datastore to apply pending changes to all
-                returned records. Otherwise consistency with current
-                transaction is maintained.
+            read_consistency: If set then passes the explicit read consistency to
+                the server.  May not be set to ``ndb.EVENTUAL`` when a transaction
+                is specified.
             read_policy: DEPRECATED: Synonym for ``read_consistency``.
             transaction (bytes): Transaction ID to use for query. Results will
                 be consistent with Datastore state for that transaction.
@@ -2178,11 +2168,9 @@ class Query(object):
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_consistency: If not in a transaction, defaults to
-                ``ndb.EVENTUAL`` for potentially faster query results without
-                having to wait for Datastore to apply pending changes to all
-                returned records. Otherwise consistency with current
-                transaction is maintained.
+            read_consistency: If set then passes the explicit read consistency to
+                the server.  May not be set to ``ndb.EVENTUAL`` when a transaction
+                is specified.
             read_policy: DEPRECATED: Synonym for ``read_consistency``.
             transaction (bytes): Transaction ID to use for query. Results will
                 be consistent with Datastore state for that transaction.
@@ -2272,11 +2260,9 @@ class Query(object):
             end_cursor: Endpoint point for search.
             timeout (Optional[int]): Override the gRPC timeout, in seconds.
             deadline (Optional[int]): DEPRECATED: Synonym for ``timeout``.
-            read_consistency: If not in a transaction, defaults to
-                ``ndb.EVENTUAL`` for potentially faster query results without
-                having to wait for Datastore to apply pending changes to all
-                returned records. Otherwise consistency with current
-                transaction is maintained.
+            read_consistency: If set then passes the explicit read consistency to
+                the server.  May not be set to ``ndb.EVENTUAL`` when a transaction
+                is specified.
             read_policy: DEPRECATED: Synonym for ``read_consistency``.
             transaction (bytes): Transaction ID to use for query. Results will
                 be consistent with Datastore state for that transaction.
