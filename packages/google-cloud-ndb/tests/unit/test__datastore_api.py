@@ -1253,7 +1253,9 @@ class Test_datastore_commit:
         )
 
         request = datastore_pb2.CommitRequest.return_value
-        assert api.commit.future.called_once_with(request)
+        api.commit.future.assert_called_once_with(
+            request, metadata=mock.ANY, timeout=mock.ANY
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1276,7 +1278,9 @@ class Test_datastore_commit:
         )
 
         request = datastore_pb2.CommitRequest.return_value
-        assert api.commit.future.called_once_with(request)
+        api.commit.future.assert_called_once_with(
+            request, metadata=mock.ANY, timeout=mock.ANY
+        )
 
 
 @pytest.mark.usefixtures("in_context")
@@ -1365,7 +1369,9 @@ def test__datastore_allocate_ids(stub, datastore_pb2):
     )
 
     request = datastore_pb2.AllocateIdsRequest.return_value
-    assert api.allocate_ids.future.called_once_with(request)
+    api.allocate_ids.future.assert_called_once_with(
+        request, metadata=mock.ANY, timeout=mock.ANY
+    )
 
 
 @pytest.mark.usefixtures("in_context")
@@ -1407,7 +1413,9 @@ class Test_datastore_begin_transaction:
         )
 
         request = datastore_pb2.BeginTransactionRequest.return_value
-        assert api.begin_transaction.future.called_once_with(request)
+        api.begin_transaction.future.assert_called_once_with(
+            request, metadata=mock.ANY, timeout=mock.ANY
+        )
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
@@ -1432,7 +1440,9 @@ class Test_datastore_begin_transaction:
         )
 
         request = datastore_pb2.BeginTransactionRequest.return_value
-        assert api.begin_transaction.future.called_once_with(request)
+        api.begin_transaction.future.assert_called_once_with(
+            request, metadata=mock.ANY, timeout=mock.ANY
+        )
 
 
 @pytest.mark.usefixtures("in_context")
@@ -1463,7 +1473,9 @@ def test__datastore_rollback(stub, datastore_pb2):
     )
 
     request = datastore_pb2.RollbackRequest.return_value
-    assert api.rollback.future.called_once_with(request)
+    api.rollback.future.assert_called_once_with(
+        request, metadata=mock.ANY, timeout=mock.ANY
+    )
 
 
 def test__complete():

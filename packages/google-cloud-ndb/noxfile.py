@@ -26,7 +26,7 @@ import nox
 LOCAL_DEPS = ("google-api-core", "google-cloud-core")
 NOX_DIR = os.path.abspath(os.path.dirname(__file__))
 DEFAULT_INTERPRETER = "3.8"
-ALL_INTERPRETERS = ("3.7", "3.8", "3.9", "3.10", "3.11")
+ALL_INTERPRETERS = ("3.7", "3.8", "3.9", "3.10", "3.11", "3.12")
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 BLACK_VERSION = "black==22.3.0"
