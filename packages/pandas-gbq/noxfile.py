@@ -32,7 +32,7 @@ LINT_PATHS = ["docs", "pandas_gbq", "tests", "noxfile.py", "setup.py"]
 DEFAULT_PYTHON_VERSION = "3.8"
 
 
-UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 UNIT_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "asyncmock",
@@ -58,7 +58,7 @@ CONDA_TEST_PYTHON_VERSIONS = [
     UNIT_TEST_PYTHON_VERSIONS[-1],
 ]
 
-SYSTEM_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+SYSTEM_TEST_PYTHON_VERSIONS = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 SYSTEM_TEST_STANDARD_DEPENDENCIES = [
     "mock",
     "pytest",
@@ -488,7 +488,7 @@ def prerelease_deps(session):
     session.install(*constraints_deps)
 
     prerel_deps = [
-        "protobuf",
+        # "protobuf",
         # dependency of grpc
         "six",
         "googleapis-common-protos",
