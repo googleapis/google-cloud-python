@@ -2263,6 +2263,11 @@ class QueryPlanEntry(object):
             for step in self._properties.get("steps", [])
         ]
 
+    @property
+    def slot_ms(self):
+        """Optional[int]: Slot-milliseconds used by the stage."""
+        return _helpers._int_or_none(self._properties.get("slotMs"))
+
 
 class TimelineEntry(object):
     """TimelineEntry represents progress of a query job at a particular

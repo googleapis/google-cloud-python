@@ -261,6 +261,7 @@ class TestQueryPlanEntry(_Base):
     STATUS = "STATUS"
     SHUFFLE_OUTPUT_BYTES = 1024
     SHUFFLE_OUTPUT_BYTES_SPILLED = 1
+    SLOT_MS = 25
 
     START_RFC3339_MICROS = "2018-04-01T00:00:00.000000Z"
     END_RFC3339_MICROS = "2018-04-01T00:00:04.000000Z"
@@ -305,6 +306,7 @@ class TestQueryPlanEntry(_Base):
         self.assertIsNone(entry.shuffle_output_bytes)
         self.assertIsNone(entry.shuffle_output_bytes_spilled)
         self.assertEqual(entry.steps, [])
+        self.assertIsNone(entry.slot_ms)
 
     def test_from_api_repr_normal(self):
         from google.cloud.bigquery.job import QueryPlanEntryStep
@@ -348,6 +350,7 @@ class TestQueryPlanEntry(_Base):
                     "substeps": TestQueryPlanEntryStep.SUBSTEPS,
                 }
             ],
+            "slotMs": self.SLOT_MS,
         }
         klass = self._get_target_class()
 
@@ -366,6 +369,7 @@ class TestQueryPlanEntry(_Base):
         self.assertEqual(entry.records_written, self.RECORDS_WRITTEN)
         self.assertEqual(entry.status, self.STATUS)
         self.assertEqual(entry.steps, steps)
+        self.assertEqual(entry.slot_ms, self.SLOT_MS)
 
     def test_start(self):
         from google.cloud._helpers import _RFC3339_MICROS
