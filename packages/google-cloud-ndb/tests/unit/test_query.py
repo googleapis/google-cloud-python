@@ -656,11 +656,14 @@ class TestFilterNode:
 
     @staticmethod
     def test_constructor_ne():
-        or_node = query_module.FilterNode("a", "!=", 2.5)
+        ne_node = query_module.FilterNode("a", "!=", 2.5)
 
         filter_node1 = query_module.FilterNode("a", "<", 2.5)
         filter_node2 = query_module.FilterNode("a", ">", 2.5)
-        assert or_node == query_module.DisjunctionNode(filter_node1, filter_node2)
+        assert ne_node != query_module.DisjunctionNode(filter_node1, filter_node2)
+        assert ne_node._value == 2.5
+        assert ne_node._opsymbol == "!="
+        assert ne_node._name == "a"
 
     @staticmethod
     def test_pickling():
@@ -694,9 +697,14 @@ class TestFilterNode:
         assert filter_node._to_filter(post=True) is None
 
     @staticmethod
+    def test__to_ne_filter_op():
+        filter_node = query_module.FilterNode("speed", "!=", 88)
+        assert filter_node._to_filter(post=True) is None
+
+    @staticmethod
     def test__to_filter_bad_op():
         filter_node = query_module.FilterNode("speed", ">=", 88)
-        filter_node._opsymbol = "!="
+        filter_node._opsymbol = "in"
         with pytest.raises(NotImplementedError):
             filter_node._to_filter()
 

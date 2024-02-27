@@ -604,8 +604,6 @@ class FilterNode(Node):
         The constructor for this type may not always return a
         :class:`FilterNode`. For example:
 
-        * The filter ``name != value`` is converted into
-          ``(name > value) OR (name < value)`` (a :class:`DisjunctionNode`)
         * The filter ``name in (value1, ..., valueN)`` is converted into
           ``(name = value1) OR ... OR (name = valueN)`` (also a
           :class:`DisjunctionNode`)
@@ -638,11 +636,6 @@ class FilterNode(Node):
 
         if isinstance(value, model.Key):
             value = value._key
-
-        if opsymbol == _NE_OP:
-            node1 = FilterNode(name, _LT_OP, value)
-            node2 = FilterNode(name, _GT_OP, value)
-            return DisjunctionNode(node1, node2)
 
         if opsymbol == _IN_OP:
             if not isinstance(value, (list, tuple, set, frozenset)):
@@ -704,17 +697,17 @@ class FilterNode(Node):
                 representation of the filter.
 
         Raises:
-            NotImplementedError: If the ``opsymbol`` is ``!=`` or ``in``, since
+            NotImplementedError: If the ``opsymbol`` is ``in``, since
                 they should correspond to a composite filter. This should
                 never occur since the constructor will create ``OR`` nodes for
-                ``!=`` and ``in``
+                ``in``
         """
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import _datastore_query
 
         if post:
             return None
-        if self._opsymbol in (_NE_OP, _IN_OP):
+        if self._opsymbol in (_IN_OP):
             raise NotImplementedError(
                 "Inequality filters are not single filter "
                 "expressions and therefore cannot be converted "

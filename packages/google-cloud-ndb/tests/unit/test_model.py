@@ -479,15 +479,12 @@ class TestProperty:
     def test___ne__():
         prop = model.Property("name", indexed=True)
         value = 7.0
-        expected = query_module.DisjunctionNode(
-            query_module.FilterNode("name", "<", value),
-            query_module.FilterNode("name", ">", value),
-        )
+        expected = query_module.FilterNode("name", "!=", value)
 
-        or_node_left = prop != value
-        assert or_node_left == expected
-        or_node_right = value != prop
-        assert or_node_right == expected
+        ne_node_left = prop != value
+        assert ne_node_left == expected
+        ne_node_right = value != prop
+        assert ne_node_right == expected
 
     @staticmethod
     def test___lt__():
