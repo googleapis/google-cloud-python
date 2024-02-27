@@ -2672,7 +2672,11 @@ class BlobProperty(Property):
         if self._name in ds_entity._meanings:
             meaning = ds_entity._meanings[self._name][0]
             if meaning == _MEANING_COMPRESSED and not self._compressed:
-                value.b_val = zlib.decompress(value.b_val)
+                if self._repeated:
+                    for sub_value in value:
+                        sub_value.b_val = zlib.decompress(sub_value.b_val)
+                else:
+                    value.b_val = zlib.decompress(value.b_val)
         return value
 
     def _db_set_compressed_meaning(self, p):

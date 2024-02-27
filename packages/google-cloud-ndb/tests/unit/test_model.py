@@ -1862,11 +1862,12 @@ class TestBlobProperty:
         compressed_value_one = zlib.compress(uncompressed_value_one)
         uncompressed_value_two = b"xyz" * 1000
         compressed_value_two = zlib.compress(uncompressed_value_two)
-        datastore_entity.update({"foo": [compressed_value_one, compressed_value_two]})
+        compressed_value = [compressed_value_one, compressed_value_two]
+        datastore_entity.update({"foo": compressed_value})
         meanings = {
             "foo": (
                 model._MEANING_COMPRESSED,
-                [compressed_value_one, compressed_value_two],
+                compressed_value,
             )
         }
         datastore_entity._meanings = meanings
@@ -1874,6 +1875,32 @@ class TestBlobProperty:
         entity = model._entity_from_protobuf(protobuf)
         ds_entity = model._entity_to_ds_entity(entity)
         assert ds_entity["foo"] == [compressed_value_one, compressed_value_two]
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test__from_datastore_compressed_repeated_to_uncompressed():
+        class ThisKind(model.Model):
+            foo = model.BlobProperty(compressed=False, repeated=True)
+
+        key = datastore.Key("ThisKind", 123, project="testing")
+        datastore_entity = datastore.Entity(key=key)
+        uncompressed_value_one = b"abc" * 1000
+        compressed_value_one = zlib.compress(uncompressed_value_one)
+        uncompressed_value_two = b"xyz" * 1000
+        compressed_value_two = zlib.compress(uncompressed_value_two)
+        compressed_value = [compressed_value_one, compressed_value_two]
+        datastore_entity.update({"foo": compressed_value})
+        meanings = {
+            "foo": (
+                model._MEANING_COMPRESSED,
+                compressed_value,
+            )
+        }
+        datastore_entity._meanings = meanings
+        protobuf = helpers.entity_to_protobuf(datastore_entity)
+        entity = model._entity_from_protobuf(protobuf)
+        ds_entity = model._entity_to_ds_entity(entity)
+        assert ds_entity["foo"] == [uncompressed_value_one, uncompressed_value_two]
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
