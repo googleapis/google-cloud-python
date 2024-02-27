@@ -24,3 +24,18 @@ def paired_cosine_distances(X, Y) -> bpd.DataFrame:
         bigframes.dataframe.DataFrame: DataFrame with columns of X, Y and cosine_distance
     """
     raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+
+def paired_manhattan_distance(X, Y) -> bpd.DataFrame:
+    """Compute the L1 distances between the vectors in X and Y.
+
+    Args:
+        X (Series or single column DataFrame of array of numeric type):
+            Input data.
+        Y (Series or single column DataFrame of array of numeric type):
+            Input data. X and Y are mapped by indexes, must have the same index.
+
+    Returns:
+        bigframes.dataframe.DataFrame: DataFrame with columns of X, Y and manhattan_distance
+    """
+    raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

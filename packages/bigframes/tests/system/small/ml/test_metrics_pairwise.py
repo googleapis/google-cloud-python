@@ -33,3 +33,17 @@ def test_paired_cosine_distances():
     pd.testing.assert_frame_equal(
         result.to_pandas(), expected_pd_df, check_dtype=False, check_index_type=False
     )
+
+
+def test_paired_manhattan_distance():
+    x_col = [np.array([4.1, 0.5, 1.0])]
+    y_col = [np.array([3.0, 0.0, 2.5])]
+    X = bpd.read_pandas(pd.DataFrame({"X": x_col}))
+    Y = bpd.read_pandas(pd.DataFrame({"Y": y_col}))
+
+    result = metrics.pairwise.paired_manhattan_distance(X, Y)
+    expected_pd_df = pd.DataFrame({"X": x_col, "Y": y_col, "manhattan_distance": [3.1]})
+
+    pd.testing.assert_frame_equal(
+        result.to_pandas(), expected_pd_df, check_dtype=False, check_index_type=False
+    )

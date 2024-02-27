@@ -34,3 +34,19 @@ def paired_cosine_distances(
 paired_cosine_distances.__doc__ = inspect.getdoc(
     vendored_metrics_pairwise.paired_cosine_distances
 )
+
+
+def paired_manhattan_distance(
+    X: Union[bpd.DataFrame, bpd.Series], Y: Union[bpd.DataFrame, bpd.Series]
+) -> bpd.DataFrame:
+    X, Y = utils.convert_to_dataframe(X, Y)
+    if len(X.columns) != 1 or len(Y.columns) != 1:
+        raise ValueError("Inputs X and Y can only contain 1 column.")
+
+    base_bqml = core.BaseBqml(session=X._session)
+    return base_bqml.distance(X, Y, type="MANHATTAN", name="manhattan_distance")
+
+
+paired_manhattan_distance.__doc__ = inspect.getdoc(
+    vendored_metrics_pairwise.paired_manhattan_distance
+)
