@@ -14,6 +14,18 @@ Older versions of this project were distributed as [pybigquery][0].
 [2]: https://pypi.org/project/pybigquery/#history
 
 
+## [1.10.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.9.0...v1.10.0) (2024-02-27)
+
+
+### Features
+
+* Allow to set clustering and time partitioning options at table creation ([#928](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/928)) ([c2c2958](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/c2c2958886cc3c8a51c4f5fc1a8c36b65921edd9))
+
+
+### Bug Fixes
+
+* Avoid implicit join when using join with unnest ([#924](https://github.com/googleapis/python-bigquery-sqlalchemy/issues/924)) ([ac74a34](https://github.com/googleapis/python-bigquery-sqlalchemy/commit/ac74a3434c437f60b6f215ac09dea224aa406f8a))
+
 ## [1.9.0](https://github.com/googleapis/python-bigquery-sqlalchemy/compare/v1.8.0...v1.9.0) (2023-12-10)
 
 
