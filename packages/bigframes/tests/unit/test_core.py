@@ -118,7 +118,7 @@ def test_arrayvalues_to_ibis_expr_with_concat():
         total_ordering_columns=["col1"],
     )
     expr = value.concat([value])
-    actual = expr._compile_ordered()._to_ibis_expr(ordering_mode="unordered")
+    actual = expr._compile_unordered()._to_ibis_expr()
     assert len(actual.columns) == 3
     # TODO(ashleyxu, b/299631930): test out the union expression
     assert actual.columns[0] == "column_0"

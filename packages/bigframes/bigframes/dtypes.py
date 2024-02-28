@@ -23,7 +23,6 @@ from typing import Any, Dict, Iterable, Literal, Tuple, Union
 import geopandas as gpd  # type: ignore
 import google.cloud.bigquery as bigquery
 import ibis
-from ibis.backends.bigquery.datatypes import BigQueryType
 import ibis.expr.datatypes as ibis_dtypes
 from ibis.expr.datatypes.core import dtype as python_type_to_bigquery_type
 import ibis.expr.types as ibis_types
@@ -33,6 +32,7 @@ import pyarrow as pa
 
 import bigframes.constants as constants
 import third_party.bigframes_vendored.google_cloud_bigquery._pandas_helpers as gcb3p_pandas_helpers
+import third_party.bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
 import third_party.bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 
 # Type hints for Pandas dtypes supported by BigQuery DataFrame
@@ -643,4 +643,4 @@ def ibis_type_from_python_type(t: type) -> ibis_dtypes.DataType:
 def ibis_type_from_type_kind(tk: bigquery.StandardSqlTypeNames) -> ibis_dtypes.DataType:
     if tk not in SUPPORTED_IO_BIGQUERY_TYPEKINDS:
         raise UnsupportedTypeError(tk, SUPPORTED_IO_BIGQUERY_TYPEKINDS)
-    return BigQueryType.to_ibis(tk)
+    return third_party_ibis_bqtypes.BigQueryType.to_ibis(tk)

@@ -331,7 +331,7 @@ def _(
     op: agg_ops.RankOp, column: ibis_types.Column, window=None
 ) -> ibis_types.IntegerValue:
     # Ibis produces 0-based ranks, while pandas creates 1-based ranks
-    return _apply_window_if_present(column.rank(), window) + 1
+    return _apply_window_if_present(ibis.rank(), window) + 1
 
 
 @compile_unary_agg.register

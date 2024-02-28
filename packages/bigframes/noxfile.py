@@ -565,12 +565,12 @@ def prerelease(session: nox.sessions.Session, tests_path):
     # session.install(
     #     "--upgrade",
     #     "-e",  # Use -e so that py.typed file is included.
-    #     "git+https://github.com/ibis-project/ibis.git@7.x.x#egg=ibis-framework",
+    #     "git+https://github.com/ibis-project/ibis.git#egg=ibis-framework",
     # )
     session.install(
         "--upgrade",
-        # "--pre",
-        "ibis-framework>=7.1.0,<7.2.0dev",
+        "--pre",
+        "ibis-framework>=8.0.0,<9.0.0dev",
     )
     already_installed.add("ibis-framework")
 

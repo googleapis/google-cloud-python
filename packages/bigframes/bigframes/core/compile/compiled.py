@@ -1099,17 +1099,14 @@ class OrderedIR(BaseIbisIR):
         if not columns:
             return ibis.memtable([])
 
+        # Make sure we don't have any unbound (deferred) columns.
+        table = self._table.select(columns)
+
         # Make sure all dtypes are the "canonical" ones for BigFrames. This is
         # important for operations like UNION where the schema must match.
-        table = self._table.select(
-            bigframes.dtypes.ibis_value_to_canonical_type(
-                column.resolve(self._table)
-                # TODO(https://github.com/ibis-project/ibis/issues/7613): use
-                # public API to refer to Deferred type.
-                if isinstance(column, ibis.common.deferred.Deferred)
-                else column
-            )
-            for column in columns
+        table = table.select(
+            bigframes.dtypes.ibis_value_to_canonical_type(table[column])
+            for column in table.columns
         )
         base_table = table
         if self._reduced_predicate is not None:

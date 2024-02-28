@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ibis.backends.bigquery import datatypes as bq_types
 from ibis.expr import datatypes as ibis_types
 
 import bigframes.dtypes
+import third_party.bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
 
 
 def test_supported_types_correspond():
@@ -24,7 +24,7 @@ def test_supported_types_correspond():
         ibis_types.dtype(t) for t in bigframes.dtypes.SUPPORTED_IO_PYTHON_TYPES
     }
     ibis_types_from_bigquery = {
-        bq_types.BigQueryType.to_ibis(tk)
+        third_party_ibis_bqtypes.BigQueryType.to_ibis(tk)
         for tk in bigframes.dtypes.SUPPORTED_IO_BIGQUERY_TYPEKINDS
     }
 

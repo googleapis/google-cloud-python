@@ -157,15 +157,13 @@ def test_tail_with_custom_column_labels(scalars_df_index, scalars_pandas_df_inde
     ],
 )
 def test_df_nlargest(scalars_df_index, scalars_pandas_df_index, keep):
-    bf_result = scalars_df_index.nlargest(
-        3, ["bool_col", "int64_too"], keep=keep
-    ).to_pandas()
+    bf_result = scalars_df_index.nlargest(3, ["bool_col", "int64_too"], keep=keep)
     pd_result = scalars_pandas_df_index.nlargest(
         3, ["bool_col", "int64_too"], keep=keep
     )
 
     pd.testing.assert_frame_equal(
-        bf_result,
+        bf_result.to_pandas(),
         pd_result,
     )
 
@@ -179,11 +177,11 @@ def test_df_nlargest(scalars_df_index, scalars_pandas_df_index, keep):
     ],
 )
 def test_df_nsmallest(scalars_df_index, scalars_pandas_df_index, keep):
-    bf_result = scalars_df_index.nsmallest(6, ["bool_col"], keep=keep).to_pandas()
+    bf_result = scalars_df_index.nsmallest(6, ["bool_col"], keep=keep)
     pd_result = scalars_pandas_df_index.nsmallest(6, ["bool_col"], keep=keep)
 
     pd.testing.assert_frame_equal(
-        bf_result,
+        bf_result.to_pandas(),
         pd_result,
     )
 
