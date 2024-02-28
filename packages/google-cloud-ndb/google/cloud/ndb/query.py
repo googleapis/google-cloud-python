@@ -619,6 +619,7 @@ class FilterNode(Node):
         opsymbol (str): The comparison operator. One of ``=``, ``!=``, ``<``,
             ``<=``, ``>``, ``>=`` or ``in``.
         value (Any): The value to filter on / relative to.
+        server_op (bool): Force the operator to use a server side filter.
 
     Raises:
         TypeError: If ``opsymbol`` is ``"in"`` but ``value`` is not a
@@ -630,7 +631,7 @@ class FilterNode(Node):
     _opsymbol = None
     _value = None
 
-    def __new__(cls, name, opsymbol, value):
+    def __new__(cls, name, opsymbol, value, server_op=False):
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import model
 
@@ -648,7 +649,8 @@ class FilterNode(Node):
                 return FalseNode()
             if len(nodes) == 1:
                 return nodes[0]
-            return DisjunctionNode(*nodes)
+            if not server_op:
+                return DisjunctionNode(*nodes)
 
         instance = super(FilterNode, cls).__new__(cls)
         instance._name = name
@@ -695,24 +697,12 @@ class FilterNode(Node):
             Optional[query_pb2.PropertyFilter]: Returns :data:`None`, if
                 this is a post-filter, otherwise returns the protocol buffer
                 representation of the filter.
-
-        Raises:
-            NotImplementedError: If the ``opsymbol`` is ``in``, since
-                they should correspond to a composite filter. This should
-                never occur since the constructor will create ``OR`` nodes for
-                ``in``
         """
         # Avoid circular import in Python 2.7
         from google.cloud.ndb import _datastore_query
 
         if post:
             return None
-        if self._opsymbol in (_IN_OP):
-            raise NotImplementedError(
-                "Inequality filters are not single filter "
-                "expressions and therefore cannot be converted "
-                "to a single filter ({!r})".format(self._opsymbol)
-            )
 
         return _datastore_query.make_filter(self._name, self._opsymbol, self._value)
 

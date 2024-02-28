@@ -866,6 +866,40 @@ def test_fetch_page(dispose_of):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_fetch_page_in_query(dispose_of):
+    page_size = 5
+    n_entities = page_size * 2
+
+    class SomeKind(ndb.Model):
+        foo = ndb.IntegerProperty()
+
+    @ndb.toplevel
+    def make_entities():
+        entities = [SomeKind(foo=n_entities) for i in range(n_entities)]
+        keys = yield [entity.put_async() for entity in entities]
+        raise ndb.Return(keys)
+
+    for key in make_entities():
+        dispose_of(key._key)
+
+    query = SomeKind.query().filter(SomeKind.foo.IN([1, 2, n_entities], server_op=True))
+    eventually(query.fetch, length_equals(n_entities))
+
+    results, cursor, more = query.fetch_page(page_size)
+    assert len(results) == page_size
+    assert more
+
+    safe_cursor = cursor.urlsafe()
+    next_cursor = ndb.Cursor(urlsafe=safe_cursor)
+    results, cursor, more = query.fetch_page(page_size, start_cursor=next_cursor)
+    assert len(results) == page_size
+
+    results, cursor, more = query.fetch_page(page_size, start_cursor=cursor)
+    assert not results
+    assert not more
+
+
+@pytest.mark.usefixtures("client_context")
 def test_polymodel_query(ds_entity):
     class Animal(ndb.PolyModel):
         foo = ndb.IntegerProperty()

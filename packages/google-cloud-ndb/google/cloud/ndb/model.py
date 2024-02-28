@@ -1258,7 +1258,7 @@ class Property(ModelAttribute):
         """FilterNode: Represents the ``>=`` comparison."""
         return self._comparison(">=", value)
 
-    def _IN(self, value):
+    def _IN(self, value, server_op=False):
         """For the ``in`` comparison operator.
 
         The ``in`` operator cannot be overloaded in the way we want
@@ -1315,7 +1315,7 @@ class Property(ModelAttribute):
                 sub_value = self._datastore_type(sub_value)
             values.append(sub_value)
 
-        return query.FilterNode(self._name, "in", values)
+        return query.FilterNode(self._name, "in", values, server_op=server_op)
 
     IN = _IN
     """Used to check if a property value is contained in a set of values.

@@ -702,13 +702,6 @@ class TestFilterNode:
         assert filter_node._to_filter(post=True) is None
 
     @staticmethod
-    def test__to_filter_bad_op():
-        filter_node = query_module.FilterNode("speed", ">=", 88)
-        filter_node._opsymbol = "in"
-        with pytest.raises(NotImplementedError):
-            filter_node._to_filter()
-
-    @staticmethod
     @mock.patch("google.cloud.ndb._datastore_query")
     def test__to_filter(_datastore_query):
         as_filter = _datastore_query.make_filter.return_value
