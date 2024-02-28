@@ -770,6 +770,10 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
                 system.
 
         """
+        warnings.warn(
+            "BigQueryWriteClient.create_write_stream is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
@@ -897,6 +901,9 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
             Iterable[google.cloud.bigquery_storage_v1beta2.types.AppendRowsResponse]:
                 Response message for AppendRows.
         """
+        warnings.warn(
+            "BigQueryWriteClient.append_rows is deprecated", DeprecationWarning
+        )
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -980,6 +987,10 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
                 system.
 
         """
+        warnings.warn(
+            "BigQueryWriteClient.get_write_stream is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
@@ -1083,6 +1094,11 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
             google.cloud.bigquery_storage_v1beta2.types.FinalizeWriteStreamResponse:
                 Response message for FinalizeWriteStream.
         """
+        warnings.warn(
+            "BigQueryWriteClient.finalize_write_stream is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
@@ -1191,6 +1207,11 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
             google.cloud.bigquery_storage_v1beta2.types.BatchCommitWriteStreamsResponse:
                 Response message for BatchCommitWriteStreams.
         """
+        warnings.warn(
+            "BigQueryWriteClient.batch_commit_write_streams is deprecated",
+            DeprecationWarning,
+        )
+
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
@@ -1300,6 +1321,10 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
             google.cloud.bigquery_storage_v1beta2.types.FlushRowsResponse:
                 Respond message for FlushRows.
         """
+        warnings.warn(
+            "BigQueryWriteClient.flush_rows is deprecated", DeprecationWarning
+        )
+
         # Create or coerce a protobuf request object.
         # Quick check: If we got a request object, we should *not* have
         # gotten any keyword arguments that map to the request.
