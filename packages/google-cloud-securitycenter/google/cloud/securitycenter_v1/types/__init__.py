@@ -111,7 +111,14 @@ from .securitycenter_service import (
     UpdateSourceRequest,
 )
 from .source import Source
-from .vulnerability import Cve, Cvssv3, Reference, Vulnerability
+from .vulnerability import (
+    Cve,
+    Cvssv3,
+    Package,
+    Reference,
+    SecurityBulletin,
+    Vulnerability,
+)
 
 __all__ = (
     "Access",
@@ -216,6 +223,8 @@ __all__ = (
     "Source",
     "Cve",
     "Cvssv3",
+    "Package",
     "Reference",
+    "SecurityBulletin",
     "Vulnerability",
 )

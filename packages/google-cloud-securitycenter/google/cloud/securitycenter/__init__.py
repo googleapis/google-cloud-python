@@ -146,7 +146,9 @@ from google.cloud.securitycenter_v1.types.source import Source
 from google.cloud.securitycenter_v1.types.vulnerability import (
     Cve,
     Cvssv3,
+    Package,
     Reference,
+    SecurityBulletin,
     Vulnerability,
 )
 
@@ -255,6 +257,8 @@ __all__ = (
     "Source",
     "Cve",
     "Cvssv3",
+    "Package",
     "Reference",
+    "SecurityBulletin",
     "Vulnerability",
 )

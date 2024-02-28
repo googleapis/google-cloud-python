@@ -119,7 +119,14 @@ from .types.securitycenter_service import (
     UpdateSourceRequest,
 )
 from .types.source import Source
-from .types.vulnerability import Cve, Cvssv3, Reference, Vulnerability
+from .types.vulnerability import (
+    Cve,
+    Cvssv3,
+    Package,
+    Reference,
+    SecurityBulletin,
+    Vulnerability,
+)
 
 __all__ = (
     "SecurityCenterAsyncClient",
@@ -204,11 +211,13 @@ __all__ = (
     "NotificationMessage",
     "OrgPolicy",
     "OrganizationSettings",
+    "Package",
     "Process",
     "Reference",
     "Resource",
     "RunAssetDiscoveryRequest",
     "RunAssetDiscoveryResponse",
+    "SecurityBulletin",
     "SecurityCenterClient",
     "SecurityHealthAnalyticsCustomModule",
     "SecurityMarks",

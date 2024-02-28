@@ -16253,7 +16253,23 @@ def test_create_finding_rest(request_type):
                     "availability_impact": 1,
                 },
                 "upstream_fix_available": True,
-            }
+                "impact": 1,
+                "exploitation_activity": 1,
+                "observed_in_the_wild": True,
+                "zero_day": True,
+            },
+            "offending_package": {
+                "package_name": "package_name_value",
+                "cpe_uri": "cpe_uri_value",
+                "package_type": "package_type_value",
+                "package_version": "package_version_value",
+            },
+            "fixed_package": {},
+            "security_bulletin": {
+                "bulletin_id": "bulletin_id_value",
+                "submission_time": {},
+                "suggested_upgrade_version": "suggested_upgrade_version_value",
+            },
         },
         "mute_update_time": {},
         "external_systems": {},
@@ -16346,6 +16362,7 @@ def test_create_finding_rest(request_type):
                 "uri": "uri_value",
                 "image_id": "image_id_value",
                 "labels": [{"name": "name_value", "value": "value_value"}],
+                "create_time": {},
             }
         ],
         "kubernetes": {
@@ -26196,7 +26213,23 @@ def test_update_finding_rest(request_type):
                     "availability_impact": 1,
                 },
                 "upstream_fix_available": True,
-            }
+                "impact": 1,
+                "exploitation_activity": 1,
+                "observed_in_the_wild": True,
+                "zero_day": True,
+            },
+            "offending_package": {
+                "package_name": "package_name_value",
+                "cpe_uri": "cpe_uri_value",
+                "package_type": "package_type_value",
+                "package_version": "package_version_value",
+            },
+            "fixed_package": {},
+            "security_bulletin": {
+                "bulletin_id": "bulletin_id_value",
+                "submission_time": {},
+                "suggested_upgrade_version": "suggested_upgrade_version_value",
+            },
         },
         "mute_update_time": {},
         "external_systems": {},
@@ -26289,6 +26322,7 @@ def test_update_finding_rest(request_type):
                 "uri": "uri_value",
                 "image_id": "image_id_value",
                 "labels": [{"name": "name_value", "value": "value_value"}],
+                "create_time": {},
             }
         ],
         "kubernetes": {
