@@ -1901,6 +1901,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-parallelstore": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-parallelstore",
+            "extra-files": [
+                "google/cloud/parallelstore/gapic_version.py",
+                "google/cloud/parallelstore_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.parallelstore.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-phishing-protection": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
