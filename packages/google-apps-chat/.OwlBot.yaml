@@ -14,5 +14,5 @@
 
 deep-copy-regex:
     - source: /google/chat/(v.*)/.*-py
-      dest: /owl-bot-staging/google-chat/$1
-api-name: google-chat
+      dest: /owl-bot-staging/google-apps-chat/$1
+api-name: google-apps-chat
