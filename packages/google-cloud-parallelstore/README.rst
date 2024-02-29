@@ -1,9 +1,9 @@
-Python Client for 
-==================
+Python Client for Parallelstore API
+===================================
 
 |preview| |pypi| |versions|
 
-``_: 
+`Parallelstore API`_: Parallelstore is based on Intel DAOS and delivers up to 6.3x greater read throughput performance compared to competitive Lustre scratch offerings.
 
 - `Client Library Documentation`_
 - `Product Documentation`_
@@ -14,9 +14,9 @@ Python Client for
    :target: https://pypi.org/project/google-cloud-parallelstore/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-parallelstore.svg
    :target: https://pypi.org/project/google-cloud-parallelstore/
-.. _: 
+.. _Parallelstore API: https://cloud.google.com/parallelstore
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/google-cloud-parallelstore/latest
-.. _Product Documentation:  
+.. _Product Documentation:  https://cloud.google.com/parallelstore
 
 Quick Start
 -----------
@@ -25,12 +25,12 @@ In order to use this library, you first need to go through the following steps:
 
 1. `Select or create a Cloud Platform project.`_
 2. `Enable billing for your project.`_
-3. `Enable the .`_
+3. `Enable the Parallelstore API.`_
 4. `Setup Authentication.`_
 
 .. _Select or create a Cloud Platform project.: https://console.cloud.google.com/project
 .. _Enable billing for your project.: https://cloud.google.com/billing/docs/how-to/modify-project#enable_billing_for_a_project
-.. _Enable the .:  
+.. _Enable the Parallelstore API.:  https://cloud.google.com/parallelstore
 .. _Setup Authentication.: https://googleapis.dev/python/google-api-core/latest/auth.html
 
 Installation
@@ -97,12 +97,12 @@ Windows
 Next Steps
 ~~~~~~~~~~
 
--  Read the `Client Library Documentation`_ for 
+-  Read the `Client Library Documentation`_ for Parallelstore API
    to see other available methods on the client.
--  Read the ` Product documentation`_ to learn
+-  Read the `Parallelstore API Product documentation`_ to learn
    more about the product and see How-to Guides.
 -  View this `README`_ to see the full list of Cloud
    APIs that we cover.
 
-.. _ Product documentation:  
+.. _Parallelstore API Product documentation:  https://cloud.google.com/parallelstore
 .. _README: https://github.com/googleapis/google-cloud-python/blob/main/README.rst

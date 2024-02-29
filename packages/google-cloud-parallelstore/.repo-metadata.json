@@ -1,8 +1,8 @@
 {
     "name": "google-cloud-parallelstore",
-    "name_pretty": "",
-    "api_description": "",
-    "product_documentation": "",
+    "name_pretty": "Parallelstore API",
+    "api_description": "Parallelstore is based on Intel DAOS and delivers up to 6.3x greater read throughput performance compared to competitive Lustre scratch offerings.",
+    "product_documentation": "https://cloud.google.com/parallelstore",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-parallelstore/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
