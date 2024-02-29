@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [1.14.4](https://github.com/googleapis/gapic-generator-python/compare/v1.14.3...v1.14.4) (2024-02-29)
+
+
+### Bug Fixes
+
+* Add `google-apps-card` dependency ([#1964](https://github.com/googleapis/gapic-generator-python/issues/1964)) ([d4d51d4](https://github.com/googleapis/gapic-generator-python/commit/d4d51d4e84342065f34ef584abbe4b99404de574))
+* Exclude google-auth 2.24.0 and 2.25.0 ([#1957](https://github.com/googleapis/gapic-generator-python/issues/1957)) ([abe8de3](https://github.com/googleapis/gapic-generator-python/commit/abe8de30086506f4694c5c5e4bae08fae8525e4b))
+
 ## [1.14.3](https://github.com/googleapis/gapic-generator-python/compare/v1.14.2...v1.14.3) (2024-02-14)
 
 
