@@ -21,7 +21,7 @@ import shutil
 import tempfile
 import textwrap
 
-from google.api_core.exceptions import NotFound, ResourceExhausted
+from google.api_core.exceptions import BadRequest, NotFound, ResourceExhausted
 from google.cloud import bigquery, functions_v2
 import pandas
 import pytest
@@ -1207,6 +1207,28 @@ def test_remote_function_default_connection(session, scalars_dfs, dataset_id):
         pd_result = pd_int64_col_filtered.to_frame().assign(result=pd_result_col)
 
         assert_pandas_df_equal(bf_result, pd_result)
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            session.bqclient, session.cloudfunctionsclient, square
+        )
+
+
+@pytest.mark.flaky(retries=2, delay=120)
+def test_remote_function_runtime_error(session, scalars_dfs, dataset_id):
+    try:
+
+        @session.remote_function([int], int, dataset=dataset_id)
+        def square(x):
+            return x * x
+
+        scalars_df, _ = scalars_dfs
+
+        with pytest.raises(
+            BadRequest, match="400.*errorMessage.*unsupported operand type"
+        ):
+            # int64_col has nulls which should cause error in square
+            scalars_df["int64_col"].apply(square).to_pandas()
     finally:
         # clean up the gcp assets created for the remote function
         cleanup_remote_function_assets(

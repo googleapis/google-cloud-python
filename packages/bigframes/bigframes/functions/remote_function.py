@@ -21,7 +21,6 @@ import os
 import random
 import shutil
 import string
-import subprocess
 import sys
 import tempfile
 import textwrap
@@ -85,19 +84,6 @@ def _get_hash(def_, package_requirements=None):
         for p in sorted(package_requirements):
             def_repr += p.encode()
     return hashlib.md5(def_repr).hexdigest()
-
-
-def _run_system_command(command):
-    program = subprocess.Popen(
-        [command], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True
-    )
-    stdout, stderr = program.communicate()
-    exit_code = program.wait()
-    if exit_code:
-        raise RuntimeError(
-            f"Command: {command}\nOutput: {stdout.decode()}\nError: {stderr.decode()}"
-            f"{constants.FEEDBACK_LINK}"
-        )
 
 
 def routine_ref_to_string_for_query(routine_ref: bigquery.RoutineReference) -> str:
@@ -281,6 +267,8 @@ class RemoteFunctionClient:
         code_template = textwrap.dedent(
             """\
         import cloudpickle
+        import functions_framework
+        from flask import jsonify
         import json
 
         # original udf code is in {udf_code_file}
@@ -289,14 +277,17 @@ class RemoteFunctionClient:
           udf = cloudpickle.load(f)
 
         def {handler_func_name}(request):
-          request_json = request.get_json(silent=True)
-          calls = request_json["calls"]
-          replies = []
-          for call in calls:
-            reply = udf(*call)
-            replies.append(reply)
-          return_json = json.dumps({{"replies" : replies}})
-          return return_json
+          try:
+            request_json = request.get_json(silent=True)
+            calls = request_json["calls"]
+            replies = []
+            for call in calls:
+              reply = udf(*call)
+              replies.append(reply)
+            return_json = json.dumps({{"replies" : replies}})
+            return return_json
+          except Exception as e:
+            return jsonify( {{ "errorMessage": str(e) }} ), 400
         """
         )
 
