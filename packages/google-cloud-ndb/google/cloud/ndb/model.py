@@ -2662,11 +2662,16 @@ class BlobProperty(Property):
                 value = compressed_value
                 data[key] = value
             if not self._repeated:
-                if value and not value.startswith(_ZLIB_COMPRESSION_MARKERS):
-                    value = zlib.compress(value)
-                    data[key] = value
+                values = [
+                    zlib.compress(v)
+                    if v and not v.startswith(_ZLIB_COMPRESSION_MARKERS)
+                    else v
+                    for v in (value if repeated else [value])
+                ]
+                value = values if repeated else values[0]
+                data[key] = value
 
-            if value:
+            if value and not repeated:
                 data.setdefault("_meanings", {})[key] = (
                     _MEANING_COMPRESSED,
                     value,

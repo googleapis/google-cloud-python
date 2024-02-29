@@ -1817,6 +1817,52 @@ class TestBlobProperty:
         ]
 
     @staticmethod
+    def test__to_datastore_legacy_compressed_repeated_in_parent(in_context):
+        class ThisKind(model.Model):
+            bar = model.BlobProperty(compressed=True, repeated=False)
+
+        class ParentKind(model.Model):
+            foo = model.StructuredProperty(ThisKind, repeated=True)
+
+        with in_context.new(legacy_data=True).use():
+            uncompressed_value_one = b"abc" * 1000
+            compressed_value_one = zlib.compress(uncompressed_value_one)
+            uncompressed_value_two = b"xyz" * 1000
+            compressed_value_two = zlib.compress(uncompressed_value_two)
+            entity = ParentKind(
+                foo=[
+                    ThisKind(bar=uncompressed_value_one),
+                    ThisKind(bar=uncompressed_value_two),
+                ]
+            )
+            ds_entity = model._entity_to_ds_entity(entity)
+            assert "foo.bar" not in ds_entity._meanings
+            assert "foo.bar" in ds_entity.keys()
+            assert ds_entity.get("foo.bar") == [
+                compressed_value_one,
+                compressed_value_two,
+            ]
+
+    @staticmethod
+    def test__to_datastore_legacy_compressed_repeated_in_parent_uninitialized(
+        in_context,
+    ):
+        class ThisKind(model.Model):
+            bar = model.BlobProperty(compressed=True, repeated=False)
+
+        class ParentKind(model.Model):
+            foo = model.StructuredProperty(ThisKind, repeated=True)
+
+        with in_context.new(legacy_data=True).use():
+            uncompressed_value = b"abc" * 1000
+            compressed_value = zlib.compress(uncompressed_value)
+            entity = ParentKind(foo=[ThisKind(), ThisKind(bar=uncompressed_value)])
+            ds_entity = model._entity_to_ds_entity(entity)
+            assert "foo.bar" not in ds_entity._meanings
+            assert "foo.bar" in ds_entity.keys()
+            assert ds_entity.get("foo.bar") == [None, compressed_value]
+
+    @staticmethod
     @pytest.mark.usefixtures("in_context")
     def test__to_datastore_compressed_uninitialized():
         class ThisKind(model.Model):
