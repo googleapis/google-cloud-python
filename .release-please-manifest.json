@@ -109,6 +109,7 @@
     "packages/google-cloud-orchestration-airflow": "1.12.0",
     "packages/google-cloud-os-config": "1.17.2",
     "packages/google-cloud-os-login": "2.14.2",
+    "packages/google-cloud-parallelstore": "0.0.0",
     "packages/google-cloud-phishing-protection": "1.11.2",
     "packages/google-cloud-policy-troubleshooter": "1.11.2",
     "packages/google-cloud-policysimulator": "0.1.5",
