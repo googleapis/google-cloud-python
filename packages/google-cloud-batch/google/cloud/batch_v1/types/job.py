@@ -46,8 +46,8 @@ class Job(proto.Message):
             For example:
             "projects/123456/locations/us-central1/jobs/job01".
         uid (str):
-            Output only. A system generated unique ID (in
-            UUID4 format) for the Job.
+            Output only. A system generated unique ID for
+            the Job.
         priority (int):
             Priority of the Job. The valid value range is [0, 100).
             Default value is 0. Higher value indicates higher priority.

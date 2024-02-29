@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,4 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-__version__ = "0.0.0"  # {x-release-please-version}
+
+from google.apps import card_v1
+
+# NOTE: These are dummy tests to reach 100% coverage
+# They simply check that the message can be created.
+
+
+def test_card():
+    card_v1.Card()

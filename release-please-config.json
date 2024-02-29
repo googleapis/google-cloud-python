@@ -70,6 +70,16 @@
             ],
             "release-type": "python"
         },
+        "packages/google-apps-card": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-apps-card",
+            "extra-files": [
+                "google/apps/card/gapic_version.py",
+                "google/apps/card_v1/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
         "packages/google-apps-meet": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
