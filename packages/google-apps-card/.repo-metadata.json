@@ -1,8 +1,8 @@
 {
     "name": "google-apps-card",
-    "name_pretty": "",
-    "api_description": "",
-    "product_documentation": "",
+    "name_pretty": "Google Apps Card Protos",
+    "api_description": "Google Apps Card Protos",
+    "product_documentation": "https://developers.google.com/chat",
     "client_documentation": "https://googleapis.dev/python/google-apps-card/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
