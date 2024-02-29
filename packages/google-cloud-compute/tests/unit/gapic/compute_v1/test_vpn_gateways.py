@@ -1970,6 +1970,7 @@ def test_get_rest(request_type):
         return_value = compute.VpnGateway(
             creation_timestamp="creation_timestamp_value",
             description="description_value",
+            gateway_ip_version="gateway_ip_version_value",
             id=205,
             kind="kind_value",
             label_fingerprint="label_fingerprint_value",
@@ -1995,6 +1996,7 @@ def test_get_rest(request_type):
     assert isinstance(response, compute.VpnGateway)
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
+    assert response.gateway_ip_version == "gateway_ip_version_value"
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.label_fingerprint == "label_fingerprint_value"
@@ -2558,6 +2560,7 @@ def test_insert_rest(request_type):
     request_init["vpn_gateway_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "gateway_ip_version": "gateway_ip_version_value",
         "id": 205,
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
@@ -2572,6 +2575,7 @@ def test_insert_rest(request_type):
                 "id": 205,
                 "interconnect_attachment": "interconnect_attachment_value",
                 "ip_address": "ip_address_value",
+                "ipv6_address": "ipv6_address_value",
             }
         ],
     }
@@ -2976,6 +2980,7 @@ def test_insert_unary_rest(request_type):
     request_init["vpn_gateway_resource"] = {
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "gateway_ip_version": "gateway_ip_version_value",
         "id": 205,
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
@@ -2990,6 +2995,7 @@ def test_insert_unary_rest(request_type):
                 "id": 205,
                 "interconnect_attachment": "interconnect_attachment_value",
                 "ip_address": "ip_address_value",
+                "ipv6_address": "ipv6_address_value",
             }
         ],
     }
