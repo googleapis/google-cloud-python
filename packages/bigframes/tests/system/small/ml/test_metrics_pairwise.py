@@ -47,3 +47,19 @@ def test_paired_manhattan_distance():
     pd.testing.assert_frame_equal(
         result.to_pandas(), expected_pd_df, check_dtype=False, check_index_type=False
     )
+
+
+def test_paired_euclidean_distances():
+    x_col = [np.array([4.1, 0.5, 1.0])]
+    y_col = [np.array([3.0, 0.0, 2.5])]
+    X = bpd.read_pandas(pd.DataFrame({"X": x_col}))
+    Y = bpd.read_pandas(pd.DataFrame({"Y": y_col}))
+
+    result = metrics.pairwise.paired_euclidean_distances(X, Y)
+    expected_pd_df = pd.DataFrame(
+        {"X": x_col, "Y": y_col, "euclidean_distance": [1.926136]}
+    )
+
+    pd.testing.assert_frame_equal(
+        result.to_pandas(), expected_pd_df, check_dtype=False, check_index_type=False
+    )
