@@ -194,6 +194,23 @@ def test_create_embedding_generator_model(
     assert reloaded_model.connection_name == bq_connection
 
 
+def test_create_embedding_generator_model_002(
+    palm2_embedding_generator_model_002, dataset_id, bq_connection
+):
+    # Model creation doesn't return error
+    assert palm2_embedding_generator_model_002 is not None
+    assert palm2_embedding_generator_model_002._bqml_model is not None
+
+    # save, load to ensure configuration was kept
+    reloaded_model = palm2_embedding_generator_model_002.to_gbq(
+        f"{dataset_id}.temp_embedding_model", replace=True
+    )
+    assert f"{dataset_id}.temp_embedding_model" == reloaded_model._bqml_model.model_name
+    assert reloaded_model.model_name == "textembedding-gecko"
+    assert reloaded_model.version == "002"
+    assert reloaded_model.connection_name == bq_connection
+
+
 def test_create_embedding_generator_multilingual_model(
     palm2_embedding_generator_multilingual_model,
     dataset_id,

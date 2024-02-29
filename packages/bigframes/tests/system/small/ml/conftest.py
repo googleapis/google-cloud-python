@@ -257,6 +257,15 @@ def palm2_embedding_generator_model(
 
 
 @pytest.fixture(scope="session")
+def palm2_embedding_generator_model_002(
+    session, bq_connection
+) -> llm.PaLM2TextEmbeddingGenerator:
+    return llm.PaLM2TextEmbeddingGenerator(
+        version="002", session=session, connection_name=bq_connection
+    )
+
+
+@pytest.fixture(scope="session")
 def palm2_embedding_generator_multilingual_model(
     session, bq_connection
 ) -> llm.PaLM2TextEmbeddingGenerator:

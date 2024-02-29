@@ -30,6 +30,7 @@ from bigframes.ml import (
     linear_model,
     llm,
     pipeline,
+    utils,
 )
 
 _BQML_MODEL_TYPE_MAPPING = MappingProxyType(
@@ -106,8 +107,10 @@ def _model_from_bq(session: bigframes.Session, bq_model: bigquery.Model):
     ):
         # Parse the remote model endpoint
         bqml_endpoint = bq_model._properties["remoteModelInfo"]["endpoint"]
-        endpoint_model = bqml_endpoint.split("/")[-1]
-        return _BQML_ENDPOINT_TYPE_MAPPING[endpoint_model]._from_bq(  # type: ignore
+        model_endpoint = bqml_endpoint.split("/")[-1]
+        model_name, _ = utils.parse_model_endpoint(model_endpoint)
+
+        return _BQML_ENDPOINT_TYPE_MAPPING[model_name]._from_bq(  # type: ignore
             session=session, model=bq_model
         )
 

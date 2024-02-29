@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import typing
-from typing import Iterable, Union
+from typing import Iterable, Optional, Union
 
 import bigframes.constants as constants
 from bigframes.core import blocks
@@ -56,3 +56,16 @@ def _convert_to_series(frame: ArrayType) -> bpd.Series:
     raise ValueError(
         f"Unsupported type {type(frame)} to convert to Series. {constants.FEEDBACK_LINK}"
     )
+
+
+def parse_model_endpoint(model_endpoint: str) -> tuple[str, Optional[str]]:
+    """Parse model endpoint string to model_name and version."""
+    model_name = model_endpoint
+    version = None
+
+    at_idx = model_endpoint.find("@")
+    if at_idx != -1:
+        version = model_endpoint[at_idx + 1 :]
+        model_name = model_endpoint[:at_idx]
+
+    return model_name, version
