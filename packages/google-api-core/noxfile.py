@@ -44,16 +44,6 @@ nox.options.sessions = [
 ]
 
 
-def _greater_or_equal_than_37(version_string):
-    tokens = version_string.split(".")
-    for i, token in enumerate(tokens):
-        try:
-            tokens[i] = int(token)
-        except ValueError:
-            pass
-    return tokens >= [3, 7]
-
-
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
     """Run linters.
@@ -129,16 +119,13 @@ def default(session, install_grpc=True):
         ),
     ]
 
-    # Inject AsyncIO content and proto-plus, if version >= 3.7.
-    # proto-plus is needed for a field mask test in test_protobuf_helpers.py
-    if _greater_or_equal_than_37(session.python):
-        session.install("asyncmock", "pytest-asyncio", "proto-plus")
+    session.install("asyncmock", "pytest-asyncio")
 
-        # Having positional arguments means the user wants to run specific tests.
-        # Best not to add additional tests to that list.
-        if not session.posargs:
-            pytest_args.append("--cov=tests.asyncio")
-            pytest_args.append(os.path.join("tests", "asyncio"))
+    # Having positional arguments means the user wants to run specific tests.
+    # Best not to add additional tests to that list.
+    if not session.posargs:
+        pytest_args.append("--cov=tests.asyncio")
+        pytest_args.append(os.path.join("tests", "asyncio"))
 
     session.run(*pytest_args)
 

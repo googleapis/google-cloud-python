@@ -13,3 +13,4 @@ packaging==14.3
 grpcio==1.33.2
 grpcio-status==1.33.2
 grpcio-gcp==0.2.2
+proto-plus==1.22.3
