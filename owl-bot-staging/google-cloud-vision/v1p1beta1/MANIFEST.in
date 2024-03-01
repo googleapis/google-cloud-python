@@ -1,0 +1,2 @@
+recursive-include google/cloud/vision *.py
+recursive-include google/cloud/vision_v1p1beta1 *.py
