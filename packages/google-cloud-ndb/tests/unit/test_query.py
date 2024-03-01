@@ -2408,3 +2408,17 @@ class TestGQL:
         query = query_module.gql(gql_query, *positional, **keywords)
         compat_rep = "'xxx'"
         assert query.__repr__() == rep.format(compat_rep)
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
+    def test_gql_with_bind_not_in():
+        class SomeKind(model.Model):
+            prop1 = model.StringProperty()
+
+        query = query_module.gql(
+            "SELECT * FROM SomeKind WHERE prop1 not in :1", ["a", "b", "c"]
+        )
+        assert (
+            query.__repr__()
+            == "Query(kind='SomeKind', filters=FilterNode('prop1', 'not_in', ['a', 'b', 'c']), order_by=[], offset=0)"
+        )

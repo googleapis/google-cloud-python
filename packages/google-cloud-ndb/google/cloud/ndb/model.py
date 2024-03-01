@@ -1258,6 +1258,36 @@ class Property(ModelAttribute):
         """FilterNode: Represents the ``>=`` comparison."""
         return self._comparison(">=", value)
 
+    def _validate_and_canonicalize_values(self, value):
+        if not self._indexed:
+            raise exceptions.BadFilterError(
+                "Cannot query for unindexed property {}".format(self._name)
+            )
+
+        if not isinstance(value, (list, tuple, set, frozenset)):
+            raise exceptions.BadArgumentError(
+                "For field {}, expected list, tuple or set, got {!r}".format(
+                    self._name, value
+                )
+            )
+
+        values = []
+        for sub_value in value:
+            if sub_value is not None:
+                sub_value = self._do_validate(sub_value)
+                sub_value = self._call_to_base_type(sub_value)
+                sub_value = self._datastore_type(sub_value)
+            values.append(sub_value)
+        return values
+
+    def _NOT_IN(self, value, server_op=False):
+        """.FilterNode: Represents the ``not_in`` filter."""
+        # Import late to avoid circular imports.
+        from google.cloud.ndb import query
+
+        values = self._validate_and_canonicalize_values(value)
+        return query.FilterNode(self._name, "not_in", values)
+
     def _IN(self, value, server_op=False):
         """For the ``in`` comparison operator.
 
@@ -1297,27 +1327,12 @@ class Property(ModelAttribute):
         # Import late to avoid circular imports.
         from google.cloud.ndb import query
 
-        if not self._indexed:
-            raise exceptions.BadFilterError(
-                "Cannot query for unindexed property {}".format(self._name)
-            )
-
-        if not isinstance(value, (list, tuple, set, frozenset)):
-            raise exceptions.BadArgumentError(
-                "Expected list, tuple or set, got {!r}".format(value)
-            )
-
-        values = []
-        for sub_value in value:
-            if sub_value is not None:
-                sub_value = self._do_validate(sub_value)
-                sub_value = self._call_to_base_type(sub_value)
-                sub_value = self._datastore_type(sub_value)
-            values.append(sub_value)
-
+        values = self._validate_and_canonicalize_values(value)
         return query.FilterNode(self._name, "in", values, server_op=server_op)
 
     IN = _IN
+    NOT_IN = _NOT_IN
+
     """Used to check if a property value is contained in a set of values.
 
     For example:

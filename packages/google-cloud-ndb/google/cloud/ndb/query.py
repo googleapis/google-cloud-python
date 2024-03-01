@@ -172,9 +172,10 @@ __all__ = [
 _EQ_OP = "="
 _NE_OP = "!="
 _IN_OP = "in"
+_NOT_IN_OP = "not_in"
 _LT_OP = "<"
 _GT_OP = ">"
-_OPS = frozenset([_EQ_OP, _NE_OP, _LT_OP, "<=", _GT_OP, ">=", _IN_OP])
+_OPS = frozenset([_EQ_OP, _NE_OP, _LT_OP, "<=", _GT_OP, ">=", _IN_OP, _NOT_IN_OP])
 
 _log = logging.getLogger(__name__)
 
@@ -589,6 +590,8 @@ class ParameterNode(Node):
         value = self._param.resolve(bindings, used)
         if self._op == _IN_OP:
             return self._prop._IN(value)
+        elif self._op == _NOT_IN_OP:
+            return self._prop._NOT_IN(value)
         else:
             return self._prop._comparison(self._op, value)
 

@@ -575,7 +575,7 @@ class TestProperty:
         assert or_node == prop.IN(["a", None, "xy"])
 
     @staticmethod
-    def test_server__IN():
+    def test__IN_server():
         prop = model.Property("name", indexed=True)
         in_node = prop._IN(["a", None, "xy"], server_op=True)
         assert in_node == prop.IN(["a", None, "xy"], server_op=True)
@@ -586,6 +586,15 @@ class TestProperty:
         )
         assert in_node == query_module.FilterNode(
             "name", "in", ["a", None, "xy"], server_op=True
+        )
+
+    @staticmethod
+    def test__NOT_IN():
+        prop = model.Property("name", indexed=True)
+        not_in_node = prop._NOT_IN(["a", None, "xy"])
+        assert not_in_node == prop.NOT_IN(["a", None, "xy"])
+        assert not_in_node == query_module.FilterNode(
+            "name", "not_in", ["a", None, "xy"]
         )
 
     @staticmethod
