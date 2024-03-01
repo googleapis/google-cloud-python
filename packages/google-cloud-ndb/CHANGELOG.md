@@ -4,6 +4,33 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.3.0](https://github.com/googleapis/python-ndb/compare/v2.2.2...v2.3.0) (2024-03-01)
+
+
+### Features
+
+* Add field information when raising validation errors. ([#956](https://github.com/googleapis/python-ndb/issues/956)) ([17caf0b](https://github.com/googleapis/python-ndb/commit/17caf0b5f7d0c4d18522f676c8af990b8ff8462d))
+* Add Python 3.12 ([#949](https://github.com/googleapis/python-ndb/issues/949)) ([b5c8477](https://github.com/googleapis/python-ndb/commit/b5c847783b80071c2dd9e9a3dbf899230c99e64a))
+* Add support for google.cloud.ndb.__version__ ([#929](https://github.com/googleapis/python-ndb/issues/929)) ([42b3f01](https://github.com/googleapis/python-ndb/commit/42b3f0137caed25ac3242435b571155d2d84c78e))
+* Add support for server side NOT_IN filter. ([#957](https://github.com/googleapis/python-ndb/issues/957)) ([f0b0724](https://github.com/googleapis/python-ndb/commit/f0b0724d7e364cc3f3574e77076465657089b09c))
+* Allow queries using server side IN. ([#954](https://github.com/googleapis/python-ndb/issues/954)) ([2646cef](https://github.com/googleapis/python-ndb/commit/2646cef3e2687461174a11c45f29de7b84d1fcdb))
+* Introduce compatibility with native namespace packages ([#933](https://github.com/googleapis/python-ndb/issues/933)) ([ccae387](https://github.com/googleapis/python-ndb/commit/ccae387720a28db2686e69dfe23a2599fc4908f0))
+* Use server side != for queries. ([#950](https://github.com/googleapis/python-ndb/issues/950)) ([106772f](https://github.com/googleapis/python-ndb/commit/106772f031f6c37500a0d463698e59008f9bf19a))
+
+
+### Bug Fixes
+
+* Compressed repeated to uncompressed property ([#772](https://github.com/googleapis/python-ndb/issues/772)) ([dab9edf](https://github.com/googleapis/python-ndb/commit/dab9edf0fc161051eb13c296cbe973b3a16b502d))
+* Repeated structured property containing blob property with legacy_data ([#817](https://github.com/googleapis/python-ndb/issues/817)) ([#946](https://github.com/googleapis/python-ndb/issues/946)) ([455f860](https://github.com/googleapis/python-ndb/commit/455f860343ff1b71232dad98cf91415492a899ca))
+
+
+### Documentation
+
+* **__init__:** Note that Firestore in Datastore Mode is supported ([#919](https://github.com/googleapis/python-ndb/issues/919)) ([0fa75e7](https://github.com/googleapis/python-ndb/commit/0fa75e71dfc6d56d2c0eaf214a48774b99bb959f))
+* Correct read_consistency docs. ([#948](https://github.com/googleapis/python-ndb/issues/948)) ([7e8481d](https://github.com/googleapis/python-ndb/commit/7e8481db84a6d0b96cf09c38e90f47d6b7847a0b))
+* Fix a mistaken ID description ([#943](https://github.com/googleapis/python-ndb/issues/943)) ([5103813](https://github.com/googleapis/python-ndb/commit/51038139e45807b3a14346ded702fbe202dcfdf2))
+* Show how to use named databases ([#932](https://github.com/googleapis/python-ndb/issues/932)) ([182fe4e](https://github.com/googleapis/python-ndb/commit/182fe4e2d295768aaf016f94cb43b6b1e5572ebd))
+
 ## [2.2.2](https://github.com/googleapis/python-ndb/compare/v2.2.1...v2.2.2) (2023-09-19)
 
 
