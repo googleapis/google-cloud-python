@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.15.0](https://github.com/googleapis/python-storage/compare/v2.14.0...v2.15.0) (2024-02-28)
+
+
+### Features
+
+* Support custom universe domains/TPC ([#1212](https://github.com/googleapis/python-storage/issues/1212)) ([f4cf041](https://github.com/googleapis/python-storage/commit/f4cf041a5f2075cecf5f4993f8b7afda0476a52b))
+
+
+### Bug Fixes
+
+* Add "updated" as property for Bucket ([#1220](https://github.com/googleapis/python-storage/issues/1220)) ([ae9a53b](https://github.com/googleapis/python-storage/commit/ae9a53b464e7d82c79a019a4111c49a4cdcc3ae0))
+* Remove utcnow usage ([#1215](https://github.com/googleapis/python-storage/issues/1215)) ([8d8a53a](https://github.com/googleapis/python-storage/commit/8d8a53a1368392ad7a1c4352f559c12932c5a9c9))
+
 ## [2.14.0](https://github.com/googleapis/python-storage/compare/v2.13.0...v2.14.0) (2023-12-10)
 
 
