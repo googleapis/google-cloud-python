@@ -3084,6 +3084,12 @@ def test_create_job_rest(request_type):
                             "instances": ["instances_value1", "instances_value2"]
                         },
                         "empty_dir": {"medium": 1, "size_limit": "size_limit_value"},
+                        "nfs": {
+                            "server": "server_value",
+                            "path": "path_value",
+                            "read_only": True,
+                        },
+                        "gcs": {"bucket": "bucket_value", "read_only": True},
                     }
                 ],
                 "max_retries": 1187,
@@ -4186,6 +4192,12 @@ def test_update_job_rest(request_type):
                             "instances": ["instances_value1", "instances_value2"]
                         },
                         "empty_dir": {"medium": 1, "size_limit": "size_limit_value"},
+                        "nfs": {
+                            "server": "server_value",
+                            "path": "path_value",
+                            "read_only": True,
+                        },
+                        "gcs": {"bucket": "bucket_value", "read_only": True},
                     }
                 ],
                 "max_retries": 1187,

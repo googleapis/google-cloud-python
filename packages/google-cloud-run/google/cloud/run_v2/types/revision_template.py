@@ -105,7 +105,10 @@ class RevisionTemplate(proto.Message):
             Sets the maximum number of requests that each
             serving instance can receive.
         session_affinity (bool):
-            Enable session affinity.
+            Optional. Enable session affinity.
+        health_check_disabled (bool):
+            Optional. Disables health checking containers
+            during deployment.
     """
 
     revision: str = proto.Field(
@@ -167,6 +170,10 @@ class RevisionTemplate(proto.Message):
     session_affinity: bool = proto.Field(
         proto.BOOL,
         number=19,
+    )
+    health_check_disabled: bool = proto.Field(
+        proto.BOOL,
+        number=20,
     )
 
 

@@ -41,9 +41,11 @@ from .k8s_min import (
     EmptyDirVolumeSource,
     EnvVar,
     EnvVarSource,
+    GCSVolumeSource,
     GRPCAction,
     HTTPGetAction,
     HTTPHeader,
+    NFSVolumeSource,
     Probe,
     ResourceRequirements,
     SecretKeySelector,
@@ -70,6 +72,7 @@ from .service import (
     Service,
     UpdateServiceRequest,
 )
+from .status import RevisionScalingStatus
 from .task import (
     GetTaskRequest,
     ListTasksRequest,
@@ -89,6 +92,7 @@ from .vendor_settings import (
     ExecutionEnvironment,
     IngressTraffic,
     RevisionScaling,
+    ServiceScaling,
     VpcAccess,
 )
 
@@ -116,9 +120,11 @@ __all__ = (
     "EmptyDirVolumeSource",
     "EnvVar",
     "EnvVarSource",
+    "GCSVolumeSource",
     "GRPCAction",
     "HTTPGetAction",
     "HTTPHeader",
+    "NFSVolumeSource",
     "Probe",
     "ResourceRequirements",
     "SecretKeySelector",
@@ -140,6 +146,7 @@ __all__ = (
     "ListServicesResponse",
     "Service",
     "UpdateServiceRequest",
+    "RevisionScalingStatus",
     "GetTaskRequest",
     "ListTasksRequest",
     "ListTasksResponse",
@@ -151,6 +158,7 @@ __all__ = (
     "TrafficTargetAllocationType",
     "BinaryAuthorization",
     "RevisionScaling",
+    "ServiceScaling",
     "VpcAccess",
     "EncryptionKeyRevocationAction",
     "ExecutionEnvironment",

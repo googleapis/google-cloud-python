@@ -19,11 +19,10 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
-    package='google.cloud.run.v2',
+    package="google.cloud.run.v2",
     manifest={
-        'RevisionScalingStatus',
+        "RevisionScalingStatus",
     },
 )
 

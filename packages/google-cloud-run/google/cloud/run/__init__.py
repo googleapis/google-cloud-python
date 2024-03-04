@@ -56,9 +56,11 @@ from google.cloud.run_v2.types.k8s_min import (
     EmptyDirVolumeSource,
     EnvVar,
     EnvVarSource,
+    GCSVolumeSource,
     GRPCAction,
     HTTPGetAction,
     HTTPHeader,
+    NFSVolumeSource,
     Probe,
     ResourceRequirements,
     SecretKeySelector,
@@ -85,6 +87,7 @@ from google.cloud.run_v2.types.service import (
     Service,
     UpdateServiceRequest,
 )
+from google.cloud.run_v2.types.status import RevisionScalingStatus
 from google.cloud.run_v2.types.task import (
     GetTaskRequest,
     ListTasksRequest,
@@ -104,6 +107,7 @@ from google.cloud.run_v2.types.vendor_settings import (
     ExecutionEnvironment,
     IngressTraffic,
     RevisionScaling,
+    ServiceScaling,
     VpcAccess,
 )
 
@@ -141,9 +145,11 @@ __all__ = (
     "EmptyDirVolumeSource",
     "EnvVar",
     "EnvVarSource",
+    "GCSVolumeSource",
     "GRPCAction",
     "HTTPGetAction",
     "HTTPHeader",
+    "NFSVolumeSource",
     "Probe",
     "ResourceRequirements",
     "SecretKeySelector",
@@ -165,6 +171,7 @@ __all__ = (
     "ListServicesResponse",
     "Service",
     "UpdateServiceRequest",
+    "RevisionScalingStatus",
     "GetTaskRequest",
     "ListTasksRequest",
     "ListTasksResponse",
@@ -176,6 +183,7 @@ __all__ = (
     "TrafficTargetAllocationType",
     "BinaryAuthorization",
     "RevisionScaling",
+    "ServiceScaling",
     "VpcAccess",
     "EncryptionKeyRevocationAction",
     "ExecutionEnvironment",
