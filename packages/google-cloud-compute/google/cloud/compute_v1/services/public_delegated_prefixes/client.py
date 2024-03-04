@@ -660,8 +660,9 @@ class PublicDelegatedPrefixesClient(metaclass=PublicDelegatedPrefixesClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Lists all PublicDelegatedPrefix resources owned by
-        the specific project across all scopes.
+        r"""Lists all PublicDelegatedPrefix resources owned by the specific
+        project across all scopes. To prevent failure, Google recommends
+        that you set the ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 

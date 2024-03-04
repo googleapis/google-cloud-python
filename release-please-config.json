@@ -80,21 +80,6 @@
             ],
             "release-type": "python"
         },
-        "packages/google-apps-events-subscriptions": {
-            "bump-minor-pre-major": true,
-            "bump-patch-for-minor-pre-major": true,
-            "component": "google-apps-events-subscriptions",
-            "extra-files": [
-                "google/apps/events_subscriptions/gapic_version.py",
-                "google/apps/events_subscriptions_v1/gapic_version.py",
-                {
-                    "jsonpath": "$.clientLibrary.version",
-                    "path": "samples/generated_samples/snippet_metadata_google.apps.events.subscriptions.v1.json",
-                    "type": "json"
-                }
-            ],
-            "release-type": "python"
-        },
         "packages/google-apps-meet": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -2288,6 +2273,7 @@
                 "google/cloud/securitycenter_v1/gapic_version.py",
                 "google/cloud/securitycenter_v1beta1/gapic_version.py",
                 "google/cloud/securitycenter_v1p1beta1/gapic_version.py",
+                "google/cloud/securitycenter_v2/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.securitycenter.v1.json",
@@ -2301,6 +2287,11 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.securitycenter.v1p1beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.securitycenter.v2.json",
                     "type": "json"
                 }
             ],

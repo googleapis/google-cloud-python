@@ -77,6 +77,8 @@ from google.cloud.securitycenter_v1.types import (
     indicator,
     kernel_rootkit,
     kubernetes,
+    load_balancer,
+    log_entry,
     mitre_attack,
 )
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
@@ -97,6 +99,7 @@ from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import mute_config
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import notification_config
+from google.cloud.securitycenter_v1.types import org_policy
 from google.cloud.securitycenter_v1.types import organization_settings
 from google.cloud.securitycenter_v1.types import security_marks
 from google.cloud.securitycenter_v1.types import securitycenter_service
@@ -155,6 +158,8 @@ class SecurityCenterAsyncClient:
     parse_organization_settings_path = staticmethod(
         SecurityCenterClient.parse_organization_settings_path
     )
+    policy_path = staticmethod(SecurityCenterClient.policy_path)
+    parse_policy_path = staticmethod(SecurityCenterClient.parse_policy_path)
     security_health_analytics_custom_module_path = staticmethod(
         SecurityCenterClient.security_health_analytics_custom_module_path
     )

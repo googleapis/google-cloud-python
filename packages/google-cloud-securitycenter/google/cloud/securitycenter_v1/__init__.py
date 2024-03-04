@@ -44,10 +44,13 @@ from .types.indicator import Indicator
 from .types.kernel_rootkit import KernelRootkit
 from .types.kubernetes import Kubernetes
 from .types.label import Label
+from .types.load_balancer import LoadBalancer
+from .types.log_entry import CloudLoggingEntry, LogEntry
 from .types.mitre_attack import MitreAttack
 from .types.mute_config import MuteConfig
 from .types.notification_config import NotificationConfig
 from .types.notification_message import NotificationMessage
+from .types.org_policy import OrgPolicy
 from .types.organization_settings import OrganizationSettings
 from .types.process import EnvironmentVariable, Process
 from .types.resource import Resource
@@ -116,7 +119,14 @@ from .types.securitycenter_service import (
     UpdateSourceRequest,
 )
 from .types.source import Source
-from .types.vulnerability import Cve, Cvssv3, Reference, Vulnerability
+from .types.vulnerability import (
+    Cve,
+    Cvssv3,
+    Package,
+    Reference,
+    SecurityBulletin,
+    Vulnerability,
+)
 
 __all__ = (
     "SecurityCenterAsyncClient",
@@ -129,6 +139,7 @@ __all__ = (
     "BulkMuteFindingsResponse",
     "CloudDlpDataProfile",
     "CloudDlpInspection",
+    "CloudLoggingEntry",
     "Compliance",
     "Connection",
     "Contact",
@@ -192,16 +203,21 @@ __all__ = (
     "ListSecurityHealthAnalyticsCustomModulesResponse",
     "ListSourcesRequest",
     "ListSourcesResponse",
+    "LoadBalancer",
+    "LogEntry",
     "MitreAttack",
     "MuteConfig",
     "NotificationConfig",
     "NotificationMessage",
+    "OrgPolicy",
     "OrganizationSettings",
+    "Package",
     "Process",
     "Reference",
     "Resource",
     "RunAssetDiscoveryRequest",
     "RunAssetDiscoveryResponse",
+    "SecurityBulletin",
     "SecurityCenterClient",
     "SecurityHealthAnalyticsCustomModule",
     "SecurityMarks",
