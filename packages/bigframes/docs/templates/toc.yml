@@ -4,6 +4,16 @@
   - href: changelog.md
     name: Changelog
   - items:
+    - href: summary_overview.yml
+      name: Overview
+    - href: summary_class.yml
+      name: Classes
+    - href: summary_method.yml
+      name: Methods
+    - href: summary_property.yml
+      name: Properties and Attributes
+    name: BigQuery DataFrames API
+  - items:
     - items:
       - name: Options
         uid: bigframes._config.Options
