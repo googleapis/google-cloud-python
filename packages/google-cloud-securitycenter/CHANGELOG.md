@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.27.0...google-cloud-securitycenter-v1.28.0) (2024-03-04)
+
+
+### Features
+
+* Add container.create_time, vulnerability.offending_package, vulnerability.fixed_package, vulnerability.security_bulletin, vulnerability.cve.impact, vulnerability.cve.exploitation_activity, vulnerability.cve.observed_in_the_wild, vulnerability.cve.zero_day to finding's list of attributes ([4450f4c](https://github.com/googleapis/google-cloud-python/commit/4450f4ce787d11cfa11934dbd2acfe194474ca32))
+* Add load balancer, log entry, org policy, database.version, exfiltration.total_exfiltrated_bytes, file.disk_path, indicator.signature_type, and kubernetes.objects to finding's list of attributes ([4450f4c](https://github.com/googleapis/google-cloud-python/commit/4450f4ce787d11cfa11934dbd2acfe194474ca32))
+* Added security center api V2 client library ([4450f4c](https://github.com/googleapis/google-cloud-python/commit/4450f4ce787d11cfa11934dbd2acfe194474ca32))
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([4450f4c](https://github.com/googleapis/google-cloud-python/commit/4450f4ce787d11cfa11934dbd2acfe194474ca32))
+
 ## [1.27.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.26.1...google-cloud-securitycenter-v1.27.0) (2024-02-22)
 
 
