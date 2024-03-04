@@ -93,6 +93,8 @@ from google.cloud.securitycenter_v1.types import (
     kernel_rootkit,
     kubernetes,
     label,
+    load_balancer,
+    log_entry,
     mitre_attack,
 )
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
@@ -114,6 +116,7 @@ from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import mute_config
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import notification_config
+from google.cloud.securitycenter_v1.types import org_policy
 from google.cloud.securitycenter_v1.types import organization_settings
 from google.cloud.securitycenter_v1.types import security_marks
 from google.cloud.securitycenter_v1.types import securitycenter_service
@@ -16229,6 +16232,7 @@ def test_create_finding_rest(request_type):
                         ],
                     },
                     "yara_rule_signature": {"yara_rule": "yara_rule_value"},
+                    "signature_type": 1,
                 }
             ],
             "uris": ["uris_value1", "uris_value2"],
@@ -16249,15 +16253,31 @@ def test_create_finding_rest(request_type):
                     "availability_impact": 1,
                 },
                 "upstream_fix_available": True,
-            }
+                "impact": 1,
+                "exploitation_activity": 1,
+                "observed_in_the_wild": True,
+                "zero_day": True,
+            },
+            "offending_package": {
+                "package_name": "package_name_value",
+                "cpe_uri": "cpe_uri_value",
+                "package_type": "package_type_value",
+                "package_version": "package_version_value",
+            },
+            "fixed_package": {},
+            "security_bulletin": {
+                "bulletin_id": "bulletin_id_value",
+                "submission_time": {},
+                "suggested_upgrade_version": "suggested_upgrade_version_value",
+            },
         },
         "mute_update_time": {},
         "external_systems": {},
         "mitre_attack": {
             "primary_tactic": 1,
-            "primary_techniques": [1],
+            "primary_techniques": [49],
             "additional_tactics": [1],
-            "additional_techniques": [1],
+            "additional_techniques": [49],
             "version": "version_value",
         },
         "access": {
@@ -16298,6 +16318,10 @@ def test_create_finding_rest(request_type):
                     "hashed_size": 1159,
                     "partially_hashed": True,
                     "contents": "contents_value",
+                    "disk_path": {
+                        "partition_uuid": "partition_uuid_value",
+                        "relative_path": "relative_path_value",
+                    },
                 },
                 "libraries": {},
                 "script": {},
@@ -16327,6 +16351,7 @@ def test_create_finding_rest(request_type):
                 }
             ],
             "targets": {},
+            "total_exfiltrated_bytes": 2469,
         },
         "iam_bindings": [{"action": 1, "role": "role_value", "member": "member_value"}],
         "next_steps": "next_steps_value",
@@ -16337,6 +16362,7 @@ def test_create_finding_rest(request_type):
                 "uri": "uri_value",
                 "image_id": "image_id_value",
                 "labels": [{"name": "name_value", "value": "value_value"}],
+                "create_time": {},
             }
         ],
         "kubernetes": {
@@ -16365,6 +16391,15 @@ def test_create_finding_rest(request_type):
                     "version": "version_value",
                 }
             ],
+            "objects": [
+                {
+                    "group": "group_value",
+                    "kind": "kind_value",
+                    "ns": "ns_value",
+                    "name": "name_value",
+                    "containers": {},
+                }
+            ],
         },
         "database": {
             "name": "name_value",
@@ -16372,6 +16407,7 @@ def test_create_finding_rest(request_type):
             "user_name": "user_name_value",
             "query": "query_value",
             "grantees": ["grantees_value1", "grantees_value2"],
+            "version": "version_value",
         },
         "files": {},
         "cloud_dlp_inspection": {
@@ -16395,6 +16431,7 @@ def test_create_finding_rest(request_type):
             "unexpected_interrupt_handler": True,
             "unexpected_processes_in_runqueue": True,
         },
+        "org_policies": [{"name": "name_value"}],
         "application": {"base_uri": "base_uri_value", "full_uri": "full_uri_value"},
         "backup_disaster_recovery": {
             "backup_template": "backup_template_value",
@@ -16408,6 +16445,17 @@ def test_create_finding_rest(request_type):
             "backup_type": "backup_type_value",
             "backup_create_time": {},
         },
+        "log_entries": [
+            {
+                "cloud_logging_entry": {
+                    "insert_id": "insert_id_value",
+                    "log_id": "log_id_value",
+                    "resource_container": "resource_container_value",
+                    "timestamp": {},
+                }
+            }
+        ],
+        "load_balancers": [{"name": "name_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -26144,6 +26192,7 @@ def test_update_finding_rest(request_type):
                         ],
                     },
                     "yara_rule_signature": {"yara_rule": "yara_rule_value"},
+                    "signature_type": 1,
                 }
             ],
             "uris": ["uris_value1", "uris_value2"],
@@ -26164,15 +26213,31 @@ def test_update_finding_rest(request_type):
                     "availability_impact": 1,
                 },
                 "upstream_fix_available": True,
-            }
+                "impact": 1,
+                "exploitation_activity": 1,
+                "observed_in_the_wild": True,
+                "zero_day": True,
+            },
+            "offending_package": {
+                "package_name": "package_name_value",
+                "cpe_uri": "cpe_uri_value",
+                "package_type": "package_type_value",
+                "package_version": "package_version_value",
+            },
+            "fixed_package": {},
+            "security_bulletin": {
+                "bulletin_id": "bulletin_id_value",
+                "submission_time": {},
+                "suggested_upgrade_version": "suggested_upgrade_version_value",
+            },
         },
         "mute_update_time": {},
         "external_systems": {},
         "mitre_attack": {
             "primary_tactic": 1,
-            "primary_techniques": [1],
+            "primary_techniques": [49],
             "additional_tactics": [1],
-            "additional_techniques": [1],
+            "additional_techniques": [49],
             "version": "version_value",
         },
         "access": {
@@ -26213,6 +26278,10 @@ def test_update_finding_rest(request_type):
                     "hashed_size": 1159,
                     "partially_hashed": True,
                     "contents": "contents_value",
+                    "disk_path": {
+                        "partition_uuid": "partition_uuid_value",
+                        "relative_path": "relative_path_value",
+                    },
                 },
                 "libraries": {},
                 "script": {},
@@ -26242,6 +26311,7 @@ def test_update_finding_rest(request_type):
                 }
             ],
             "targets": {},
+            "total_exfiltrated_bytes": 2469,
         },
         "iam_bindings": [{"action": 1, "role": "role_value", "member": "member_value"}],
         "next_steps": "next_steps_value",
@@ -26252,6 +26322,7 @@ def test_update_finding_rest(request_type):
                 "uri": "uri_value",
                 "image_id": "image_id_value",
                 "labels": [{"name": "name_value", "value": "value_value"}],
+                "create_time": {},
             }
         ],
         "kubernetes": {
@@ -26280,6 +26351,15 @@ def test_update_finding_rest(request_type):
                     "version": "version_value",
                 }
             ],
+            "objects": [
+                {
+                    "group": "group_value",
+                    "kind": "kind_value",
+                    "ns": "ns_value",
+                    "name": "name_value",
+                    "containers": {},
+                }
+            ],
         },
         "database": {
             "name": "name_value",
@@ -26287,6 +26367,7 @@ def test_update_finding_rest(request_type):
             "user_name": "user_name_value",
             "query": "query_value",
             "grantees": ["grantees_value1", "grantees_value2"],
+            "version": "version_value",
         },
         "files": {},
         "cloud_dlp_inspection": {
@@ -26310,6 +26391,7 @@ def test_update_finding_rest(request_type):
             "unexpected_interrupt_handler": True,
             "unexpected_processes_in_runqueue": True,
         },
+        "org_policies": [{"name": "name_value"}],
         "application": {"base_uri": "base_uri_value", "full_uri": "full_uri_value"},
         "backup_disaster_recovery": {
             "backup_template": "backup_template_value",
@@ -26323,6 +26405,17 @@ def test_update_finding_rest(request_type):
             "backup_type": "backup_type_value",
             "backup_create_time": {},
         },
+        "log_entries": [
+            {
+                "cloud_logging_entry": {
+                    "insert_id": "insert_id_value",
+                    "log_id": "log_id_value",
+                    "resource_container": "resource_container_value",
+                    "timestamp": {},
+                }
+            }
+        ],
+        "load_balancers": [{"name": "name_value"}],
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -31252,9 +31345,32 @@ def test_parse_organization_settings_path():
     assert expected == actual
 
 
-def test_security_health_analytics_custom_module_path():
+def test_policy_path():
     organization = "oyster"
-    custom_module = "nudibranch"
+    constraint_name = "nudibranch"
+    expected = "organizations/{organization}/policies/{constraint_name}".format(
+        organization=organization,
+        constraint_name=constraint_name,
+    )
+    actual = SecurityCenterClient.policy_path(organization, constraint_name)
+    assert expected == actual
+
+
+def test_parse_policy_path():
+    expected = {
+        "organization": "cuttlefish",
+        "constraint_name": "mussel",
+    }
+    path = SecurityCenterClient.policy_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = SecurityCenterClient.parse_policy_path(path)
+    assert expected == actual
+
+
+def test_security_health_analytics_custom_module_path():
+    organization = "winkle"
+    custom_module = "nautilus"
     expected = "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}".format(
         organization=organization,
         custom_module=custom_module,
@@ -31267,8 +31383,8 @@ def test_security_health_analytics_custom_module_path():
 
 def test_parse_security_health_analytics_custom_module_path():
     expected = {
-        "organization": "cuttlefish",
-        "custom_module": "mussel",
+        "organization": "scallop",
+        "custom_module": "abalone",
     }
     path = SecurityCenterClient.security_health_analytics_custom_module_path(**expected)
 
@@ -31280,8 +31396,8 @@ def test_parse_security_health_analytics_custom_module_path():
 
 
 def test_security_marks_path():
-    organization = "winkle"
-    asset = "nautilus"
+    organization = "squid"
+    asset = "clam"
     expected = "organizations/{organization}/assets/{asset}/securityMarks".format(
         organization=organization,
         asset=asset,
@@ -31292,8 +31408,8 @@ def test_security_marks_path():
 
 def test_parse_security_marks_path():
     expected = {
-        "organization": "scallop",
-        "asset": "abalone",
+        "organization": "whelk",
+        "asset": "octopus",
     }
     path = SecurityCenterClient.security_marks_path(**expected)
 
@@ -31303,8 +31419,8 @@ def test_parse_security_marks_path():
 
 
 def test_source_path():
-    organization = "squid"
-    source = "clam"
+    organization = "oyster"
+    source = "nudibranch"
     expected = "organizations/{organization}/sources/{source}".format(
         organization=organization,
         source=source,
@@ -31315,8 +31431,8 @@ def test_source_path():
 
 def test_parse_source_path():
     expected = {
-        "organization": "whelk",
-        "source": "octopus",
+        "organization": "cuttlefish",
+        "source": "mussel",
     }
     path = SecurityCenterClient.source_path(**expected)
 
@@ -31326,8 +31442,8 @@ def test_parse_source_path():
 
 
 def test_table_data_profile_path():
-    project = "oyster"
-    table_profile = "nudibranch"
+    project = "winkle"
+    table_profile = "nautilus"
     expected = "projects/{project}/tableProfiles/{table_profile}".format(
         project=project,
         table_profile=table_profile,
@@ -31338,8 +31454,8 @@ def test_table_data_profile_path():
 
 def test_parse_table_data_profile_path():
     expected = {
-        "project": "cuttlefish",
-        "table_profile": "mussel",
+        "project": "scallop",
+        "table_profile": "abalone",
     }
     path = SecurityCenterClient.table_data_profile_path(**expected)
 
@@ -31349,8 +31465,8 @@ def test_parse_table_data_profile_path():
 
 
 def test_topic_path():
-    project = "winkle"
-    topic = "nautilus"
+    project = "squid"
+    topic = "clam"
     expected = "projects/{project}/topics/{topic}".format(
         project=project,
         topic=topic,
@@ -31361,8 +31477,8 @@ def test_topic_path():
 
 def test_parse_topic_path():
     expected = {
-        "project": "scallop",
-        "topic": "abalone",
+        "project": "whelk",
+        "topic": "octopus",
     }
     path = SecurityCenterClient.topic_path(**expected)
 
@@ -31372,7 +31488,7 @@ def test_parse_topic_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -31382,7 +31498,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nudibranch",
     }
     path = SecurityCenterClient.common_billing_account_path(**expected)
 
@@ -31392,7 +31508,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -31402,7 +31518,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "mussel",
     }
     path = SecurityCenterClient.common_folder_path(**expected)
 
@@ -31412,7 +31528,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -31422,7 +31538,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "nautilus",
     }
     path = SecurityCenterClient.common_organization_path(**expected)
 
@@ -31432,7 +31548,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -31442,7 +31558,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "abalone",
     }
     path = SecurityCenterClient.common_project_path(**expected)
 
@@ -31452,8 +31568,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -31464,8 +31580,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = SecurityCenterClient.common_location_path(**expected)
 

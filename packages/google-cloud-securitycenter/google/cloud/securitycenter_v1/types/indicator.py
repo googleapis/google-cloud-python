@@ -70,7 +70,25 @@ class Indicator(proto.Message):
                 matched.
 
                 This field is a member of `oneof`_ ``signature``.
+            signature_type (google.cloud.securitycenter_v1.types.Indicator.ProcessSignature.SignatureType):
+                Describes the type of resource associated
+                with the signature.
         """
+
+        class SignatureType(proto.Enum):
+            r"""Possible resource types to be associated with a signature.
+
+            Values:
+                SIGNATURE_TYPE_UNSPECIFIED (0):
+                    The default signature type.
+                SIGNATURE_TYPE_PROCESS (1):
+                    Used for signatures concerning processes.
+                SIGNATURE_TYPE_FILE (2):
+                    Used for signatures concerning disks.
+            """
+            SIGNATURE_TYPE_UNSPECIFIED = 0
+            SIGNATURE_TYPE_PROCESS = 1
+            SIGNATURE_TYPE_FILE = 2
 
         class MemoryHashSignature(proto.Message):
             r"""A signature corresponding to memory page hashes.
@@ -145,6 +163,11 @@ class Indicator(proto.Message):
                 oneof="signature",
                 message="Indicator.ProcessSignature.YaraRuleSignature",
             )
+        )
+        signature_type: "Indicator.ProcessSignature.SignatureType" = proto.Field(
+            proto.ENUM,
+            number=8,
+            enum="Indicator.ProcessSignature.SignatureType",
         )
 
     ip_addresses: MutableSequence[str] = proto.RepeatedField(

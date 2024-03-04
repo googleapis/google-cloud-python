@@ -51,7 +51,32 @@ class File(proto.Message):
         contents (str):
             Prefix of the file contents as a JSON-encoded
             string.
+        disk_path (google.cloud.securitycenter_v1.types.File.DiskPath):
+            Path of the file in terms of underlying
+            disk/partition identifiers.
     """
+
+    class DiskPath(proto.Message):
+        r"""Path of the file in terms of underlying disk/partition
+        identifiers.
+
+        Attributes:
+            partition_uuid (str):
+                UUID of the partition (format
+                https://wiki.archlinux.org/title/persistent_block_device_naming#by-uuid)
+            relative_path (str):
+                Relative path of the file in the partition as a JSON encoded
+                string. Example: /home/user1/executable_file.sh
+        """
+
+        partition_uuid: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        relative_path: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     path: str = proto.Field(
         proto.STRING,
@@ -76,6 +101,11 @@ class File(proto.Message):
     contents: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    disk_path: DiskPath = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=DiskPath,
     )
 
 
