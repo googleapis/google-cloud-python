@@ -30,6 +30,14 @@ API Reference
     securitycenter_v1p1beta1/services_
     securitycenter_v1p1beta1/types_
 
+API Reference
+-------------
+.. toctree::
+    :maxdepth: 2
+
+    securitycenter_v2/services_
+    securitycenter_v2/types_
+
 
 Changelog
 ---------

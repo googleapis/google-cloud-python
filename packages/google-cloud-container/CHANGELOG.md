@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.42.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.41.0...google-cloud-container-v2.42.0) (2024-03-04)
+
+
+### Features
+
+* add API to enable Provisioning Request API on existing nodepools ([43e63be](https://github.com/googleapis/google-cloud-python/commit/43e63be479ab80d4d3be2c47c3be530db4d30993))
+* add secondary boot disks field to NodePool API ([43e63be](https://github.com/googleapis/google-cloud-python/commit/43e63be479ab80d4d3be2c47c3be530db4d30993))
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([43e63be](https://github.com/googleapis/google-cloud-python/commit/43e63be479ab80d4d3be2c47c3be530db4d30993))
+
+
+### Documentation
+
+* Update comment for field `enable_confidential_storage` in message `google.container.v1beta1.NodeConfig` ([43e63be](https://github.com/googleapis/google-cloud-python/commit/43e63be479ab80d4d3be2c47c3be530db4d30993))
+
 ## [2.41.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.40.0...google-cloud-container-v2.41.0) (2024-02-22)
 
 

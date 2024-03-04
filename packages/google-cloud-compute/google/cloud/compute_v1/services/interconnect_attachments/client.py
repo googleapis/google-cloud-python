@@ -660,8 +660,9 @@ class InterconnectAttachmentsClient(metaclass=InterconnectAttachmentsClientMeta)
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of interconnect
-        attachments.
+        r"""Retrieves an aggregated list of interconnect attachments. To
+        prevent failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 

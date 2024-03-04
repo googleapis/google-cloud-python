@@ -111,117 +111,187 @@ class MitreAttack(proto.Message):
     class Technique(proto.Enum):
         r"""MITRE ATT&CK techniques that can be referenced by SCC
         findings. See: https://attack.mitre.org/techniques/enterprise/
+        Next ID: 59
 
         Values:
             TECHNIQUE_UNSPECIFIED (0):
                 Unspecified value.
-            ACTIVE_SCANNING (1):
-                T1595
-            SCANNING_IP_BLOCKS (2):
-                T1595.001
-            INGRESS_TOOL_TRANSFER (3):
-                T1105
-            NATIVE_API (4):
-                T1106
-            SHARED_MODULES (5):
-                T1129
+            MASQUERADING (49):
+                T1036
+            MATCH_LEGITIMATE_NAME_OR_LOCATION (50):
+                T1036.005
+            BOOT_OR_LOGON_INITIALIZATION_SCRIPTS (37):
+                T1037
+            STARTUP_ITEMS (38):
+                T1037.005
+            NETWORK_SERVICE_DISCOVERY (32):
+                T1046
+            PROCESS_DISCOVERY (56):
+                T1057
             COMMAND_AND_SCRIPTING_INTERPRETER (6):
                 T1059
             UNIX_SHELL (7):
                 T1059.004
-            RESOURCE_HIJACKING (8):
-                T1496
+            PERMISSION_GROUPS_DISCOVERY (18):
+                T1069
+            CLOUD_GROUPS (19):
+                T1069.003
+            APPLICATION_LAYER_PROTOCOL (45):
+                T1071
+            DNS (46):
+                T1071.004
+            SOFTWARE_DEPLOYMENT_TOOLS (47):
+                T1072
+            VALID_ACCOUNTS (14):
+                T1078
+            DEFAULT_ACCOUNTS (35):
+                T1078.001
+            LOCAL_ACCOUNTS (15):
+                T1078.003
+            CLOUD_ACCOUNTS (16):
+                T1078.004
             PROXY (9):
                 T1090
             EXTERNAL_PROXY (10):
                 T1090.002
             MULTI_HOP_PROXY (11):
                 T1090.003
-            DYNAMIC_RESOLUTION (12):
-                T1568
-            UNSECURED_CREDENTIALS (13):
-                T1552
-            VALID_ACCOUNTS (14):
-                T1078
-            LOCAL_ACCOUNTS (15):
-                T1078.003
-            CLOUD_ACCOUNTS (16):
-                T1078.004
+            ACCOUNT_MANIPULATION (22):
+                T1098
+            ADDITIONAL_CLOUD_CREDENTIALS (40):
+                T1098.001
+            SSH_AUTHORIZED_KEYS (23):
+                T1098.004
+            ADDITIONAL_CONTAINER_CLUSTER_ROLES (58):
+                T1098.006
+            INGRESS_TOOL_TRANSFER (3):
+                T1105
+            NATIVE_API (4):
+                T1106
+            BRUTE_FORCE (44):
+                T1110
+            SHARED_MODULES (5):
+                T1129
+            ACCESS_TOKEN_MANIPULATION (33):
+                T1134
+            TOKEN_IMPERSONATION_OR_THEFT (39):
+                T1134.001
+            EXPLOIT_PUBLIC_FACING_APPLICATION (27):
+                T1190
+            DOMAIN_POLICY_MODIFICATION (30):
+                T1484
+            DATA_DESTRUCTION (29):
+                T1485
+            SERVICE_STOP (52):
+                T1489
+            INHIBIT_SYSTEM_RECOVERY (36):
+                T1490
+            RESOURCE_HIJACKING (8):
+                T1496
             NETWORK_DENIAL_OF_SERVICE (17):
                 T1498
-            PERMISSION_GROUPS_DISCOVERY (18):
-                T1069
-            CLOUD_GROUPS (19):
-                T1069.003
+            CLOUD_SERVICE_DISCOVERY (48):
+                T1526
+            STEAL_APPLICATION_ACCESS_TOKEN (42):
+                T1528
+            ACCOUNT_ACCESS_REMOVAL (51):
+                T1531
+            STEAL_WEB_SESSION_COOKIE (25):
+                T1539
+            CREATE_OR_MODIFY_SYSTEM_PROCESS (24):
+                T1543
+            ABUSE_ELEVATION_CONTROL_MECHANISM (34):
+                T1548
+            UNSECURED_CREDENTIALS (13):
+                T1552
+            MODIFY_AUTHENTICATION_PROCESS (28):
+                T1556
+            IMPAIR_DEFENSES (31):
+                T1562
+            DISABLE_OR_MODIFY_TOOLS (55):
+                T1562.001
             EXFILTRATION_OVER_WEB_SERVICE (20):
                 T1567
             EXFILTRATION_TO_CLOUD_STORAGE (21):
                 T1567.002
-            ACCOUNT_MANIPULATION (22):
-                T1098
-            SSH_AUTHORIZED_KEYS (23):
-                T1098.004
-            CREATE_OR_MODIFY_SYSTEM_PROCESS (24):
-                T1543
-            STEAL_WEB_SESSION_COOKIE (25):
-                T1539
+            DYNAMIC_RESOLUTION (12):
+                T1568
+            LATERAL_TOOL_TRANSFER (41):
+                T1570
             MODIFY_CLOUD_COMPUTE_INFRASTRUCTURE (26):
                 T1578
-            EXPLOIT_PUBLIC_FACING_APPLICATION (27):
-                T1190
-            MODIFY_AUTHENTICATION_PROCESS (28):
-                T1556
-            DATA_DESTRUCTION (29):
-                T1485
-            DOMAIN_POLICY_MODIFICATION (30):
-                T1484
-            IMPAIR_DEFENSES (31):
-                T1562
-            NETWORK_SERVICE_DISCOVERY (32):
-                T1046
-            ACCESS_TOKEN_MANIPULATION (33):
-                T1134
-            ABUSE_ELEVATION_CONTROL_MECHANISM (34):
-                T1548
-            DEFAULT_ACCOUNTS (35):
-                T1078.001
+            CREATE_SNAPSHOT (54):
+                T1578.001
+            CLOUD_INFRASTRUCTURE_DISCOVERY (53):
+                T1580
+            OBTAIN_CAPABILITIES (43):
+                T1588
+            ACTIVE_SCANNING (1):
+                T1595
+            SCANNING_IP_BLOCKS (2):
+                T1595.001
+            CONTAINER_AND_RESOURCE_DISCOVERY (57):
+                T1613
         """
         TECHNIQUE_UNSPECIFIED = 0
-        ACTIVE_SCANNING = 1
-        SCANNING_IP_BLOCKS = 2
-        INGRESS_TOOL_TRANSFER = 3
-        NATIVE_API = 4
-        SHARED_MODULES = 5
+        MASQUERADING = 49
+        MATCH_LEGITIMATE_NAME_OR_LOCATION = 50
+        BOOT_OR_LOGON_INITIALIZATION_SCRIPTS = 37
+        STARTUP_ITEMS = 38
+        NETWORK_SERVICE_DISCOVERY = 32
+        PROCESS_DISCOVERY = 56
         COMMAND_AND_SCRIPTING_INTERPRETER = 6
         UNIX_SHELL = 7
-        RESOURCE_HIJACKING = 8
+        PERMISSION_GROUPS_DISCOVERY = 18
+        CLOUD_GROUPS = 19
+        APPLICATION_LAYER_PROTOCOL = 45
+        DNS = 46
+        SOFTWARE_DEPLOYMENT_TOOLS = 47
+        VALID_ACCOUNTS = 14
+        DEFAULT_ACCOUNTS = 35
+        LOCAL_ACCOUNTS = 15
+        CLOUD_ACCOUNTS = 16
         PROXY = 9
         EXTERNAL_PROXY = 10
         MULTI_HOP_PROXY = 11
-        DYNAMIC_RESOLUTION = 12
-        UNSECURED_CREDENTIALS = 13
-        VALID_ACCOUNTS = 14
-        LOCAL_ACCOUNTS = 15
-        CLOUD_ACCOUNTS = 16
+        ACCOUNT_MANIPULATION = 22
+        ADDITIONAL_CLOUD_CREDENTIALS = 40
+        SSH_AUTHORIZED_KEYS = 23
+        ADDITIONAL_CONTAINER_CLUSTER_ROLES = 58
+        INGRESS_TOOL_TRANSFER = 3
+        NATIVE_API = 4
+        BRUTE_FORCE = 44
+        SHARED_MODULES = 5
+        ACCESS_TOKEN_MANIPULATION = 33
+        TOKEN_IMPERSONATION_OR_THEFT = 39
+        EXPLOIT_PUBLIC_FACING_APPLICATION = 27
+        DOMAIN_POLICY_MODIFICATION = 30
+        DATA_DESTRUCTION = 29
+        SERVICE_STOP = 52
+        INHIBIT_SYSTEM_RECOVERY = 36
+        RESOURCE_HIJACKING = 8
         NETWORK_DENIAL_OF_SERVICE = 17
-        PERMISSION_GROUPS_DISCOVERY = 18
-        CLOUD_GROUPS = 19
+        CLOUD_SERVICE_DISCOVERY = 48
+        STEAL_APPLICATION_ACCESS_TOKEN = 42
+        ACCOUNT_ACCESS_REMOVAL = 51
+        STEAL_WEB_SESSION_COOKIE = 25
+        CREATE_OR_MODIFY_SYSTEM_PROCESS = 24
+        ABUSE_ELEVATION_CONTROL_MECHANISM = 34
+        UNSECURED_CREDENTIALS = 13
+        MODIFY_AUTHENTICATION_PROCESS = 28
+        IMPAIR_DEFENSES = 31
+        DISABLE_OR_MODIFY_TOOLS = 55
         EXFILTRATION_OVER_WEB_SERVICE = 20
         EXFILTRATION_TO_CLOUD_STORAGE = 21
-        ACCOUNT_MANIPULATION = 22
-        SSH_AUTHORIZED_KEYS = 23
-        CREATE_OR_MODIFY_SYSTEM_PROCESS = 24
-        STEAL_WEB_SESSION_COOKIE = 25
+        DYNAMIC_RESOLUTION = 12
+        LATERAL_TOOL_TRANSFER = 41
         MODIFY_CLOUD_COMPUTE_INFRASTRUCTURE = 26
-        EXPLOIT_PUBLIC_FACING_APPLICATION = 27
-        MODIFY_AUTHENTICATION_PROCESS = 28
-        DATA_DESTRUCTION = 29
-        DOMAIN_POLICY_MODIFICATION = 30
-        IMPAIR_DEFENSES = 31
-        NETWORK_SERVICE_DISCOVERY = 32
-        ACCESS_TOKEN_MANIPULATION = 33
-        ABUSE_ELEVATION_CONTROL_MECHANISM = 34
-        DEFAULT_ACCOUNTS = 35
+        CREATE_SNAPSHOT = 54
+        CLOUD_INFRASTRUCTURE_DISCOVERY = 53
+        OBTAIN_CAPABILITIES = 43
+        ACTIVE_SCANNING = 1
+        SCANNING_IP_BLOCKS = 2
+        CONTAINER_AND_RESOURCE_DISCOVERY = 57
 
     primary_tactic: Tactic = proto.Field(
         proto.ENUM,

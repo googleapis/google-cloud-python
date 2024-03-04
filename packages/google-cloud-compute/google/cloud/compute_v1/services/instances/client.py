@@ -1299,11 +1299,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of all of the instances
-        in your project across all regions and zones. The
-        performance of this method degrades when a filter is
-        specified on a project that has a very large number of
-        instances.
+        r"""Retrieves an aggregated list of all of the instances in your
+        project across all regions and zones. The performance of this
+        method degrades when a filter is specified on a project that has
+        a very large number of instances. To prevent failure, Google
+        recommends that you set the ``returnPartialSuccess`` parameter
+        to ``true``.
 
         .. code-block:: python
 

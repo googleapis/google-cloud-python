@@ -1019,8 +1019,9 @@ class InstanceGroupManagersClient(metaclass=InstanceGroupManagersClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves the list of managed instance groups and
-        groups them by zone.
+        r"""Retrieves the list of managed instance groups and groups them by
+        zone. To prevent failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 

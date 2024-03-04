@@ -181,6 +181,11 @@ class ProjectsTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.set_cloud_armor_tier: gapic_v1.method.wrap_method(
+                self.set_cloud_armor_tier,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.set_common_instance_metadata: gapic_v1.method.wrap_method(
                 self.set_common_instance_metadata,
                 default_timeout=None,
@@ -294,6 +299,15 @@ class ProjectsTransport(abc.ABC):
         self,
     ) -> Callable[
         [compute.MoveInstanceProjectRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def set_cloud_armor_tier(
+        self,
+    ) -> Callable[
+        [compute.SetCloudArmorTierProjectRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()

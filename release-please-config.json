@@ -80,6 +80,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-apps-chat": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-apps-chat",
+            "extra-files": [
+                "google/apps/chat/gapic_version.py",
+                "google/apps/chat_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.chat.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-apps-meet": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -2273,6 +2288,7 @@
                 "google/cloud/securitycenter_v1/gapic_version.py",
                 "google/cloud/securitycenter_v1beta1/gapic_version.py",
                 "google/cloud/securitycenter_v1p1beta1/gapic_version.py",
+                "google/cloud/securitycenter_v2/gapic_version.py",
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.securitycenter.v1.json",
@@ -2286,6 +2302,11 @@
                 {
                     "jsonpath": "$.clientLibrary.version",
                     "path": "samples/generated_samples/snippet_metadata_google.cloud.securitycenter.v1p1beta1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.securitycenter.v2.json",
                     "type": "json"
                 }
             ],

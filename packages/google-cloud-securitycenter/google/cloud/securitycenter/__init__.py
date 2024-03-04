@@ -60,12 +60,15 @@ from google.cloud.securitycenter_v1.types.indicator import Indicator
 from google.cloud.securitycenter_v1.types.kernel_rootkit import KernelRootkit
 from google.cloud.securitycenter_v1.types.kubernetes import Kubernetes
 from google.cloud.securitycenter_v1.types.label import Label
+from google.cloud.securitycenter_v1.types.load_balancer import LoadBalancer
+from google.cloud.securitycenter_v1.types.log_entry import CloudLoggingEntry, LogEntry
 from google.cloud.securitycenter_v1.types.mitre_attack import MitreAttack
 from google.cloud.securitycenter_v1.types.mute_config import MuteConfig
 from google.cloud.securitycenter_v1.types.notification_config import NotificationConfig
 from google.cloud.securitycenter_v1.types.notification_message import (
     NotificationMessage,
 )
+from google.cloud.securitycenter_v1.types.org_policy import OrgPolicy
 from google.cloud.securitycenter_v1.types.organization_settings import (
     OrganizationSettings,
 )
@@ -143,7 +146,9 @@ from google.cloud.securitycenter_v1.types.source import Source
 from google.cloud.securitycenter_v1.types.vulnerability import (
     Cve,
     Cvssv3,
+    Package,
     Reference,
+    SecurityBulletin,
     Vulnerability,
 )
 
@@ -177,10 +182,14 @@ __all__ = (
     "KernelRootkit",
     "Kubernetes",
     "Label",
+    "LoadBalancer",
+    "CloudLoggingEntry",
+    "LogEntry",
     "MitreAttack",
     "MuteConfig",
     "NotificationConfig",
     "NotificationMessage",
+    "OrgPolicy",
     "OrganizationSettings",
     "EnvironmentVariable",
     "Process",
@@ -248,6 +257,8 @@ __all__ = (
     "Source",
     "Cve",
     "Cvssv3",
+    "Package",
     "Reference",
+    "SecurityBulletin",
     "Vulnerability",
 )

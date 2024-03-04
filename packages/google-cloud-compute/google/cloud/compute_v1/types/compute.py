@@ -70,6 +70,7 @@ __protobuf__ = proto.module(
         "AggregatedListInstanceGroupsRequest",
         "AggregatedListInstanceTemplatesRequest",
         "AggregatedListInstancesRequest",
+        "AggregatedListInstantSnapshotsRequest",
         "AggregatedListInterconnectAttachmentsRequest",
         "AggregatedListMachineTypesRequest",
         "AggregatedListNetworkAttachmentsRequest",
@@ -218,6 +219,7 @@ __protobuf__ = proto.module(
         "DeleteInstanceTemplateRequest",
         "DeleteInstancesInstanceGroupManagerRequest",
         "DeleteInstancesRegionInstanceGroupManagerRequest",
+        "DeleteInstantSnapshotRequest",
         "DeleteInterconnectAttachmentRequest",
         "DeleteInterconnectRequest",
         "DeleteLicenseRequest",
@@ -242,6 +244,7 @@ __protobuf__ = proto.module(
         "DeleteRegionHealthCheckServiceRequest",
         "DeleteRegionInstanceGroupManagerRequest",
         "DeleteRegionInstanceTemplateRequest",
+        "DeleteRegionInstantSnapshotRequest",
         "DeleteRegionNetworkEndpointGroupRequest",
         "DeleteRegionNetworkFirewallPolicyRequest",
         "DeleteRegionNotificationEndpointRequest",
@@ -382,6 +385,7 @@ __protobuf__ = proto.module(
         "GetIamPolicyImageRequest",
         "GetIamPolicyInstanceRequest",
         "GetIamPolicyInstanceTemplateRequest",
+        "GetIamPolicyInstantSnapshotRequest",
         "GetIamPolicyLicenseRequest",
         "GetIamPolicyMachineImageRequest",
         "GetIamPolicyNetworkAttachmentRequest",
@@ -390,6 +394,7 @@ __protobuf__ = proto.module(
         "GetIamPolicyNodeTemplateRequest",
         "GetIamPolicyRegionBackendServiceRequest",
         "GetIamPolicyRegionDiskRequest",
+        "GetIamPolicyRegionInstantSnapshotRequest",
         "GetIamPolicyRegionNetworkFirewallPolicyRequest",
         "GetIamPolicyReservationRequest",
         "GetIamPolicyResourcePolicyRequest",
@@ -402,6 +407,7 @@ __protobuf__ = proto.module(
         "GetInstanceGroupRequest",
         "GetInstanceRequest",
         "GetInstanceTemplateRequest",
+        "GetInstantSnapshotRequest",
         "GetInterconnectAttachmentRequest",
         "GetInterconnectLocationRequest",
         "GetInterconnectRemoteLocationRequest",
@@ -435,6 +441,7 @@ __protobuf__ = proto.module(
         "GetRegionInstanceGroupManagerRequest",
         "GetRegionInstanceGroupRequest",
         "GetRegionInstanceTemplateRequest",
+        "GetRegionInstantSnapshotRequest",
         "GetRegionNetworkEndpointGroupRequest",
         "GetRegionNetworkFirewallPolicyRequest",
         "GetRegionNotificationEndpointRequest",
@@ -545,6 +552,7 @@ __protobuf__ = proto.module(
         "InsertInstanceGroupRequest",
         "InsertInstanceRequest",
         "InsertInstanceTemplateRequest",
+        "InsertInstantSnapshotRequest",
         "InsertInterconnectAttachmentRequest",
         "InsertInterconnectRequest",
         "InsertLicenseRequest",
@@ -567,6 +575,7 @@ __protobuf__ = proto.module(
         "InsertRegionHealthCheckServiceRequest",
         "InsertRegionInstanceGroupManagerRequest",
         "InsertRegionInstanceTemplateRequest",
+        "InsertRegionInstantSnapshotRequest",
         "InsertRegionNetworkEndpointGroupRequest",
         "InsertRegionNetworkFirewallPolicyRequest",
         "InsertRegionNotificationEndpointRequest",
@@ -668,6 +677,11 @@ __protobuf__ = proto.module(
         "InstancesSetSecurityPolicyRequest",
         "InstancesSetServiceAccountRequest",
         "InstancesStartWithEncryptionKeyRequest",
+        "InstantSnapshot",
+        "InstantSnapshotAggregatedList",
+        "InstantSnapshotList",
+        "InstantSnapshotResourceStatus",
+        "InstantSnapshotsScopedList",
         "Int64RangeMatch",
         "Interconnect",
         "InterconnectAttachment",
@@ -739,6 +753,7 @@ __protobuf__ = proto.module(
         "ListInstancesInstanceGroupsRequest",
         "ListInstancesRegionInstanceGroupsRequest",
         "ListInstancesRequest",
+        "ListInstantSnapshotsRequest",
         "ListInterconnectAttachmentsRequest",
         "ListInterconnectLocationsRequest",
         "ListInterconnectRemoteLocationsRequest",
@@ -777,6 +792,7 @@ __protobuf__ = proto.module(
         "ListRegionInstanceGroupManagersRequest",
         "ListRegionInstanceGroupsRequest",
         "ListRegionInstanceTemplatesRequest",
+        "ListRegionInstantSnapshotsRequest",
         "ListRegionNetworkEndpointGroupsRequest",
         "ListRegionNetworkFirewallPoliciesRequest",
         "ListRegionNotificationEndpointsRequest",
@@ -987,6 +1003,7 @@ __protobuf__ = proto.module(
         "ProjectsEnableXpnResourceRequest",
         "ProjectsGetXpnResources",
         "ProjectsListXpnHostsRequest",
+        "ProjectsSetCloudArmorTierRequest",
         "ProjectsSetDefaultNetworkTierRequest",
         "PublicAdvertisedPrefix",
         "PublicAdvertisedPrefixList",
@@ -1169,6 +1186,7 @@ __protobuf__ = proto.module(
         "SetBackupTargetPoolRequest",
         "SetCertificateMapTargetHttpsProxyRequest",
         "SetCertificateMapTargetSslProxyRequest",
+        "SetCloudArmorTierProjectRequest",
         "SetCommonInstanceMetadataOperationMetadata",
         "SetCommonInstanceMetadataOperationMetadataPerLocationOperationInfo",
         "SetCommonInstanceMetadataProjectRequest",
@@ -1184,6 +1202,7 @@ __protobuf__ = proto.module(
         "SetIamPolicyImageRequest",
         "SetIamPolicyInstanceRequest",
         "SetIamPolicyInstanceTemplateRequest",
+        "SetIamPolicyInstantSnapshotRequest",
         "SetIamPolicyLicenseRequest",
         "SetIamPolicyMachineImageRequest",
         "SetIamPolicyNetworkAttachmentRequest",
@@ -1192,6 +1211,7 @@ __protobuf__ = proto.module(
         "SetIamPolicyNodeTemplateRequest",
         "SetIamPolicyRegionBackendServiceRequest",
         "SetIamPolicyRegionDiskRequest",
+        "SetIamPolicyRegionInstantSnapshotRequest",
         "SetIamPolicyRegionNetworkFirewallPolicyRequest",
         "SetIamPolicyReservationRequest",
         "SetIamPolicyResourcePolicyRequest",
@@ -1208,9 +1228,11 @@ __protobuf__ = proto.module(
         "SetLabelsGlobalForwardingRuleRequest",
         "SetLabelsImageRequest",
         "SetLabelsInstanceRequest",
+        "SetLabelsInstantSnapshotRequest",
         "SetLabelsInterconnectAttachmentRequest",
         "SetLabelsInterconnectRequest",
         "SetLabelsRegionDiskRequest",
+        "SetLabelsRegionInstantSnapshotRequest",
         "SetLabelsSecurityPolicyRequest",
         "SetLabelsSnapshotRequest",
         "SetLabelsTargetVpnGatewayRequest",
@@ -1359,6 +1381,7 @@ __protobuf__ = proto.module(
         "TestIamPermissionsImageRequest",
         "TestIamPermissionsInstanceRequest",
         "TestIamPermissionsInstanceTemplateRequest",
+        "TestIamPermissionsInstantSnapshotRequest",
         "TestIamPermissionsLicenseCodeRequest",
         "TestIamPermissionsLicenseRequest",
         "TestIamPermissionsMachineImageRequest",
@@ -1370,6 +1393,7 @@ __protobuf__ = proto.module(
         "TestIamPermissionsPacketMirroringRequest",
         "TestIamPermissionsRegionBackendServiceRequest",
         "TestIamPermissionsRegionDiskRequest",
+        "TestIamPermissionsRegionInstantSnapshotRequest",
         "TestIamPermissionsRegionNetworkFirewallPolicyRequest",
         "TestIamPermissionsReservationRequest",
         "TestIamPermissionsResourcePolicyRequest",
@@ -4162,7 +4186,11 @@ class AggregatedListAcceleratorTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -4312,7 +4340,11 @@ class AggregatedListAddressesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -4462,7 +4494,11 @@ class AggregatedListAutoscalersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -4612,7 +4648,11 @@ class AggregatedListBackendServicesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -4762,7 +4802,11 @@ class AggregatedListDiskTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -4912,7 +4956,11 @@ class AggregatedListDisksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -5062,7 +5110,11 @@ class AggregatedListForwardingRulesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -5212,7 +5264,11 @@ class AggregatedListGlobalOperationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -5362,7 +5418,11 @@ class AggregatedListHealthChecksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -5512,7 +5572,11 @@ class AggregatedListInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -5662,7 +5726,11 @@ class AggregatedListInstanceGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -5812,7 +5880,11 @@ class AggregatedListInstanceTemplatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -5962,7 +6034,165 @@ class AggregatedListInstancesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+        service_project_number (int):
+            The Shared VPC service project id or service
+            project number for which aggregated list request
+            is invoked for subnetworks list-usable api.
+
+            This field is a member of `oneof`_ ``_service_project_number``.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    include_all_scopes: bool = proto.Field(
+        proto.BOOL,
+        number=391327988,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+    service_project_number: int = proto.Field(
+        proto.INT64,
+        number=316757497,
+        optional=True,
+    )
+
+
+class AggregatedListInstantSnapshotsRequest(proto.Message):
+    r"""A request message for InstantSnapshots.AggregatedList. See
+    the method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        include_all_scopes (bool):
+            Indicates whether every visible scope for
+            each scope type (zone, region, global) should be
+            included in the response. For new resource types
+            added after this field, the flag has no effect
+            as new resource types will always include every
+            visible scope for each scope type in response.
+            For resource types which predate this field, if
+            this flag is omitted or false, only scopes of
+            the scope types where the resource type is
+            expected to be found will be included.
+
+            This field is a member of `oneof`_ ``_include_all_scopes``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -6112,7 +6342,11 @@ class AggregatedListInterconnectAttachmentsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -6262,7 +6496,11 @@ class AggregatedListMachineTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -6412,7 +6650,11 @@ class AggregatedListNetworkAttachmentsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -6563,7 +6805,11 @@ class AggregatedListNetworkEdgeSecurityServicesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -6713,7 +6959,11 @@ class AggregatedListNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -6863,7 +7113,11 @@ class AggregatedListNodeGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -7013,7 +7267,11 @@ class AggregatedListNodeTemplatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -7163,7 +7421,11 @@ class AggregatedListNodeTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -7313,7 +7575,11 @@ class AggregatedListPacketMirroringsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -7463,7 +7729,11 @@ class AggregatedListPublicDelegatedPrefixesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -7613,7 +7883,11 @@ class AggregatedListRegionCommitmentsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -7763,7 +8037,11 @@ class AggregatedListReservationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -7913,7 +8191,11 @@ class AggregatedListResourcePoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -8063,7 +8345,11 @@ class AggregatedListRoutersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -8213,7 +8499,11 @@ class AggregatedListSecurityPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -8363,7 +8653,11 @@ class AggregatedListServiceAttachmentsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -8513,7 +8807,11 @@ class AggregatedListSslCertificatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -8663,7 +8961,11 @@ class AggregatedListSslPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -8813,7 +9115,11 @@ class AggregatedListSubnetworksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -8963,7 +9269,11 @@ class AggregatedListTargetHttpProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -9113,7 +9423,11 @@ class AggregatedListTargetHttpsProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -9263,7 +9577,11 @@ class AggregatedListTargetInstancesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -9413,7 +9731,11 @@ class AggregatedListTargetPoolsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -9563,7 +9885,11 @@ class AggregatedListTargetTcpProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -9713,7 +10039,11 @@ class AggregatedListTargetVpnGatewaysRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -9863,7 +10193,11 @@ class AggregatedListUrlMapsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -10013,7 +10347,11 @@ class AggregatedListVpnGatewaysRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -10163,7 +10501,11 @@ class AggregatedListVpnTunnelsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         service_project_number (int):
@@ -11545,7 +11887,7 @@ class AttachedDiskInitializeParams(proto.Message):
             Indicates how much throughput to provision
             for the disk. This sets the number of throughput
             mb per second that the disk can handle. Values
-            must be between 1 and 7,124.
+            must greater than or equal to 1.
 
             This field is a member of `oneof`_ ``_provisioned_throughput``.
         replica_zones (MutableSequence[str]):
@@ -13177,6 +13519,21 @@ class Backend(proto.Message):
             For usage guidelines, see Utilization balancing mode.
 
             This field is a member of `oneof`_ ``_max_utilization``.
+        preference (str):
+            This field indicates whether this backend
+            should be fully utilized before sending traffic
+            to backends with default preference. The
+            possible values are: - PREFERRED: Backends with
+            this preference level will be filled up to their
+            capacity limits first, based on RTT. - DEFAULT:
+            If preferred backends don't have enough
+            capacity, backends in this layer would be used
+            and traffic would be assigned based on the load
+            balancing algorithm you use. This is the default
+            Check the Preference enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_preference``.
     """
 
     class BalancingMode(proto.Enum):
@@ -13208,6 +13565,33 @@ class Backend(proto.Message):
         CONNECTION = 246311646
         RATE = 2508000
         UTILIZATION = 157008386
+
+    class Preference(proto.Enum):
+        r"""This field indicates whether this backend should be fully
+        utilized before sending traffic to backends with default
+        preference. The possible values are: - PREFERRED: Backends with
+        this preference level will be filled up to their capacity limits
+        first, based on RTT. - DEFAULT: If preferred backends don't have
+        enough capacity, backends in this layer would be used and
+        traffic would be assigned based on the load balancing algorithm
+        you use. This is the default
+
+        Values:
+            UNDEFINED_PREFERENCE (0):
+                A value indicating that the enum field is not
+                set.
+            DEFAULT (115302945):
+                No preference.
+            PREFERENCE_UNSPECIFIED (496219571):
+                If preference is unspecified, we set it to
+                the DEFAULT value
+            PREFERRED (418847841):
+                Traffic will be sent to this backend first.
+        """
+        UNDEFINED_PREFERENCE = 0
+        DEFAULT = 115302945
+        PREFERENCE_UNSPECIFIED = 496219571
+        PREFERRED = 418847841
 
     balancing_mode: str = proto.Field(
         proto.STRING,
@@ -13267,6 +13651,11 @@ class Backend(proto.Message):
     max_utilization: float = proto.Field(
         proto.FLOAT,
         number=148192199,
+        optional=True,
+    )
+    preference: str = proto.Field(
+        proto.STRING,
+        number=150781147,
         optional=True,
     )
 
@@ -14201,6 +14590,13 @@ class BackendService(proto.Message):
             URLs of networkservices.ServiceBinding resources. Can only
             be set if load balancing scheme is INTERNAL_SELF_MANAGED. If
             set, lists of backends and health checks must be both empty.
+        service_lb_policy (str):
+            URL to networkservices.ServiceLbPolicy resource. Can only be
+            set if load balancing scheme is EXTERNAL, EXTERNAL_MANAGED,
+            INTERNAL_MANAGED or INTERNAL_SELF_MANAGED and the scope is
+            global.
+
+            This field is a member of `oneof`_ ``_service_lb_policy``.
         session_affinity (str):
             Type of session affinity to use. The default is NONE. Only
             NONE and HEADER_FIELD are supported when the backend service
@@ -14687,6 +15083,11 @@ class BackendService(proto.Message):
     service_bindings: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=133581016,
+    )
+    service_lb_policy: str = proto.Field(
+        proto.STRING,
+        number=94848785,
+        optional=True,
     )
     session_affinity: str = proto.Field(
         proto.STRING,
@@ -19937,6 +20338,60 @@ class DeleteInstancesRegionInstanceGroupManagerRequest(proto.Message):
     )
 
 
+class DeleteInstantSnapshotRequest(proto.Message):
+    r"""A request message for InstantSnapshots.Delete. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instant_snapshot (str):
+            Name of the InstantSnapshot resource to
+            delete.
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    instant_snapshot: str = proto.Field(
+        proto.STRING,
+        number=391638626,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class DeleteInterconnectAttachmentRequest(proto.Message):
     r"""A request message for InterconnectAttachments.Delete. See the
     method description for details.
@@ -21147,6 +21602,60 @@ class DeleteRegionInstanceTemplateRequest(proto.Message):
     instance_template: str = proto.Field(
         proto.STRING,
         number=309248228,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
+class DeleteRegionInstantSnapshotRequest(proto.Message):
+    r"""A request message for RegionInstantSnapshots.Delete. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instant_snapshot (str):
+            Name of the InstantSnapshot resource to
+            delete.
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    instant_snapshot: str = proto.Field(
+        proto.STRING,
+        number=391638626,
     )
     project: str = proto.Field(
         proto.STRING,
@@ -23619,7 +24128,7 @@ class Disk(proto.Message):
             Indicates how much throughput to provision
             for the disk. This sets the number of throughput
             mb per second that the disk can handle. Values
-            must be between 1 and 7,124.
+            must be greater than or equal to 1.
 
             This field is a member of `oneof`_ ``_provisioned_throughput``.
         region (str):
@@ -23735,6 +24244,27 @@ class Disk(proto.Message):
             identify the exact version of the image that was used.
 
             This field is a member of `oneof`_ ``_source_image_id``.
+        source_instant_snapshot (str):
+            The source instant snapshot used to create
+            this disk. You can provide this as a partial or
+            full URL to the resource. For example, the
+            following are valid values: -
+            https://www.googleapis.com/compute/v1/projects/project/zones/zone
+            /instantSnapshots/instantSnapshot -
+            projects/project/zones/zone/instantSnapshots/instantSnapshot
+            - zones/zone/instantSnapshots/instantSnapshot
+
+            This field is a member of `oneof`_ ``_source_instant_snapshot``.
+        source_instant_snapshot_id (str):
+            [Output Only] The unique ID of the instant snapshot used to
+            create this disk. This value identifies the exact instant
+            snapshot that was used to create this persistent disk. For
+            example, if you created the persistent disk from an instant
+            snapshot that was later deleted and recreated under the same
+            name, the source instant snapshot ID would identify the
+            exact version of the instant snapshot that was used.
+
+            This field is a member of `oneof`_ ``_source_instant_snapshot_id``.
         source_snapshot (str):
             The source snapshot used to create this disk.
             You can provide this as a partial or full URL to
@@ -24045,6 +24575,16 @@ class Disk(proto.Message):
     source_image_id: str = proto.Field(
         proto.STRING,
         number=55328291,
+        optional=True,
+    )
+    source_instant_snapshot: str = proto.Field(
+        proto.STRING,
+        number=219202054,
+        optional=True,
+    )
+    source_instant_snapshot_id: str = proto.Field(
+        proto.STRING,
+        number=287582708,
         optional=True,
     )
     source_snapshot: str = proto.Field(
@@ -25972,6 +26512,18 @@ class ExternalVpnGatewayInterface(proto.Message):
             Engine.
 
             This field is a member of `oneof`_ ``_ip_address``.
+        ipv6_address (str):
+            IPv6 address of the interface in the external
+            VPN gateway. This IPv6 address can be either
+            from your on-premise gateway or another Cloud
+            provider's VPN gateway, it cannot be an IP
+            address from Google Compute Engine. Must specify
+            an IPv6 address (not IPV4-mapped) using any
+            format described in RFC 4291 (e.g.
+            2001:db8:0:0:2d9:51:0:0). The output format is
+            RFC 5952 format (e.g. 2001:db8::2d9:51:0:0).
+
+            This field is a member of `oneof`_ ``_ipv6_address``.
     """
 
     id: int = proto.Field(
@@ -25982,6 +26534,11 @@ class ExternalVpnGatewayInterface(proto.Message):
     ip_address: str = proto.Field(
         proto.STRING,
         number=406272220,
+        optional=True,
+    )
+    ipv6_address: str = proto.Field(
+        proto.STRING,
+        number=341563804,
         optional=True,
     )
 
@@ -29446,6 +30003,45 @@ class GetIamPolicyInstanceTemplateRequest(proto.Message):
     )
 
 
+class GetIamPolicyInstantSnapshotRequest(proto.Message):
+    r"""A request message for InstantSnapshots.GetIamPolicy. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        options_requested_policy_version (int):
+            Requested IAM Policy version.
+
+            This field is a member of `oneof`_ ``_options_requested_policy_version``.
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    options_requested_policy_version: int = proto.Field(
+        proto.INT32,
+        number=499220029,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class GetIamPolicyLicenseRequest(proto.Message):
     r"""A request message for Licenses.GetIamPolicy. See the method
     description for details.
@@ -29704,6 +30300,45 @@ class GetIamPolicyRegionBackendServiceRequest(proto.Message):
 class GetIamPolicyRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.GetIamPolicy. See the
     method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        options_requested_policy_version (int):
+            Requested IAM Policy version.
+
+            This field is a member of `oneof`_ ``_options_requested_policy_version``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region for this request.
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    options_requested_policy_version: int = proto.Field(
+        proto.INT32,
+        number=499220029,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+
+
+class GetIamPolicyRegionInstantSnapshotRequest(proto.Message):
+    r"""A request message for RegionInstantSnapshots.GetIamPolicy.
+    See the method description for details.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -30121,6 +30756,34 @@ class GetInstanceTemplateRequest(proto.Message):
     )
 
 
+class GetInstantSnapshotRequest(proto.Message):
+    r"""A request message for InstantSnapshots.Get. See the method
+    description for details.
+
+    Attributes:
+        instant_snapshot (str):
+            Name of the InstantSnapshot resource to
+            return.
+        project (str):
+            Project ID for this request.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    instant_snapshot: str = proto.Field(
+        proto.STRING,
+        number=391638626,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class GetInterconnectAttachmentRequest(proto.Message):
     r"""A request message for InterconnectAttachments.Get. See the
     method description for details.
@@ -30463,7 +31126,11 @@ class GetNatMappingInfoRoutersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         router (str):
@@ -31081,6 +31748,34 @@ class GetRegionInstanceTemplateRequest(proto.Message):
     instance_template: str = proto.Field(
         proto.STRING,
         number=309248228,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+
+
+class GetRegionInstantSnapshotRequest(proto.Message):
+    r"""A request message for RegionInstantSnapshots.Get. See the
+    method description for details.
+
+    Attributes:
+        instant_snapshot (str):
+            Name of the InstantSnapshot resource to
+            return.
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region for this request.
+    """
+
+    instant_snapshot: str = proto.Field(
+        proto.STRING,
+        number=391638626,
     )
     project: str = proto.Field(
         proto.STRING,
@@ -32399,7 +33094,11 @@ class GetXpnResourcesProjectsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -37179,6 +37878,60 @@ class InsertInstanceTemplateRequest(proto.Message):
     )
 
 
+class InsertInstantSnapshotRequest(proto.Message):
+    r"""A request message for InstantSnapshots.Insert. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instant_snapshot_resource (google.cloud.compute_v1.types.InstantSnapshot):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        zone (str):
+            Name of the zone for this request.
+    """
+
+    instant_snapshot_resource: "InstantSnapshot" = proto.Field(
+        proto.MESSAGE,
+        number=383915339,
+        message="InstantSnapshot",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class InsertInterconnectAttachmentRequest(proto.Message):
     r"""A request message for InterconnectAttachments.Insert. See the
     method description for details.
@@ -38359,6 +39112,60 @@ class InsertRegionInstanceTemplateRequest(proto.Message):
         proto.MESSAGE,
         number=10679561,
         message="InstanceTemplate",
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
+class InsertRegionInstantSnapshotRequest(proto.Message):
+    r"""A request message for RegionInstantSnapshots.Insert. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instant_snapshot_resource (google.cloud.compute_v1.types.InstantSnapshot):
+            The body resource for this request
+        project (str):
+            Project ID for this request.
+        region (str):
+            Name of the region for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    instant_snapshot_resource: "InstantSnapshot" = proto.Field(
+        proto.MESSAGE,
+        number=383915339,
+        message="InstantSnapshot",
     )
     project: str = proto.Field(
         proto.STRING,
@@ -41759,6 +42566,17 @@ class InstanceGroupManagerInstanceLifecyclePolicy(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        default_action_on_failure (str):
+            The action that a MIG performs on a failed or an unhealthy
+            VM. A VM is marked as unhealthy when the application running
+            on that VM fails a health check. Valid values are - REPAIR
+            (default): MIG automatically repairs a failed or an
+            unhealthy VM by recreating it. For more information, see
+            About repairing VMs in a MIG. - DO_NOTHING: MIG does not
+            repair a failed or an unhealthy VM. Check the
+            DefaultActionOnFailure enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_default_action_on_failure``.
         force_update_on_repair (str):
             A bit indicating whether to forcefully apply
             the group's latest configuration when repairing
@@ -41774,6 +42592,30 @@ class InstanceGroupManagerInstanceLifecyclePolicy(proto.Message):
 
             This field is a member of `oneof`_ ``_force_update_on_repair``.
     """
+
+    class DefaultActionOnFailure(proto.Enum):
+        r"""The action that a MIG performs on a failed or an unhealthy VM. A VM
+        is marked as unhealthy when the application running on that VM fails
+        a health check. Valid values are - REPAIR (default): MIG
+        automatically repairs a failed or an unhealthy VM by recreating it.
+        For more information, see About repairing VMs in a MIG. -
+        DO_NOTHING: MIG does not repair a failed or an unhealthy VM.
+
+        Values:
+            UNDEFINED_DEFAULT_ACTION_ON_FAILURE (0):
+                A value indicating that the enum field is not
+                set.
+            DO_NOTHING (451307513):
+                MIG does not repair a failed or an unhealthy
+                VM.
+            REPAIR (266277773):
+                (Default) MIG automatically repairs a failed
+                or an unhealthy VM by recreating it. For more
+                information, see About repairing VMs in a MIG.
+        """
+        UNDEFINED_DEFAULT_ACTION_ON_FAILURE = 0
+        DO_NOTHING = 451307513
+        REPAIR = 266277773
 
     class ForceUpdateOnRepair(proto.Enum):
         r"""A bit indicating whether to forcefully apply the group's
@@ -41797,6 +42639,11 @@ class InstanceGroupManagerInstanceLifecyclePolicy(proto.Message):
         NO = 2497
         YES = 87751
 
+    default_action_on_failure: str = proto.Field(
+        proto.STRING,
+        number=61383253,
+        optional=True,
+    )
     force_update_on_repair: str = proto.Field(
         proto.STRING,
         number=356302027,
@@ -44586,6 +45433,489 @@ class InstancesStartWithEncryptionKeyRequest(proto.Message):
         proto.MESSAGE,
         number=95594102,
         message="CustomerEncryptionKeyProtectedDisk",
+    )
+
+
+class InstantSnapshot(proto.Message):
+    r"""Represents a InstantSnapshot resource. You can use instant
+    snapshots to create disk rollback points quickly..
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        architecture (str):
+            [Output Only] The architecture of the instant snapshot.
+            Valid values are ARM64 or X86_64. Check the Architecture
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_architecture``.
+        creation_timestamp (str):
+            [Output Only] Creation timestamp in RFC3339 text format.
+
+            This field is a member of `oneof`_ ``_creation_timestamp``.
+        description (str):
+            An optional description of this resource.
+            Provide this property when you create the
+            resource.
+
+            This field is a member of `oneof`_ ``_description``.
+        disk_size_gb (int):
+            [Output Only] Size of the source disk, specified in GB.
+
+            This field is a member of `oneof`_ ``_disk_size_gb``.
+        id (int):
+            [Output Only] The unique identifier for the resource. This
+            identifier is defined by the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        kind (str):
+            [Output Only] Type of the resource. Always
+            compute#instantSnapshot for InstantSnapshot resources.
+
+            This field is a member of `oneof`_ ``_kind``.
+        label_fingerprint (str):
+            A fingerprint for the labels being applied to
+            this InstantSnapshot, which is essentially a
+            hash of the labels set used for optimistic
+            locking. The fingerprint is initially generated
+            by Compute Engine and changes after every
+            request to modify or update labels. You must
+            always provide an up-to-date fingerprint hash in
+            order to update or change labels, otherwise the
+            request will fail with error 412
+            conditionNotMet. To see the latest fingerprint,
+            make a get() request to retrieve a
+            InstantSnapshot.
+
+            This field is a member of `oneof`_ ``_label_fingerprint``.
+        labels (MutableMapping[str, str]):
+            Labels to apply to this InstantSnapshot.
+            These can be later modified by the setLabels
+            method. Label values may be empty.
+        name (str):
+            Name of the resource; provided by the client when the
+            resource is created. The name must be 1-63 characters long,
+            and comply with RFC1035. Specifically, the name must be 1-63
+            characters long and match the regular expression
+            ``[a-z]([-a-z0-9]*[a-z0-9])?`` which means the first
+            character must be a lowercase letter, and all following
+            characters must be a dash, lowercase letter, or digit,
+            except the last character, which cannot be a dash.
+
+            This field is a member of `oneof`_ ``_name``.
+        region (str):
+            [Output Only] URL of the region where the instant snapshot
+            resides. You must specify this field as part of the HTTP
+            request URL. It is not settable as a field in the request
+            body.
+
+            This field is a member of `oneof`_ ``_region``.
+        resource_status (google.cloud.compute_v1.types.InstantSnapshotResourceStatus):
+            [Output Only] Status information for the instant snapshot
+            resource.
+
+            This field is a member of `oneof`_ ``_resource_status``.
+        satisfies_pzi (bool):
+            Output only. Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzi``.
+        satisfies_pzs (bool):
+            [Output Only] Reserved for future use.
+
+            This field is a member of `oneof`_ ``_satisfies_pzs``.
+        self_link (str):
+            [Output Only] Server-defined URL for the resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        self_link_with_id (str):
+            [Output Only] Server-defined URL for this resource's
+            resource id.
+
+            This field is a member of `oneof`_ ``_self_link_with_id``.
+        source_disk (str):
+            URL of the source disk used to create this
+            instant snapshot. Note that the source disk must
+            be in the same zone/region as the instant
+            snapshot to be created. This can be a full or
+            valid partial URL. For example, the following
+            are valid values: -
+            https://www.googleapis.com/compute/v1/projects/project/zones/zone
+            /disks/disk -
+            https://www.googleapis.com/compute/v1/projects/project/regions/region
+            /disks/disk -
+            projects/project/zones/zone/disks/disk -
+            projects/project/regions/region/disks/disk -
+            zones/zone/disks/disk -
+            regions/region/disks/disk
+
+            This field is a member of `oneof`_ ``_source_disk``.
+        source_disk_id (str):
+            [Output Only] The ID value of the disk used to create this
+            InstantSnapshot. This value may be used to determine whether
+            the InstantSnapshot was taken from the current or a previous
+            instance of a given disk name.
+
+            This field is a member of `oneof`_ ``_source_disk_id``.
+        status (str):
+            [Output Only] The status of the instantSnapshot. This can be
+            CREATING, DELETING, FAILED, or READY. Check the Status enum
+            for the list of possible values.
+
+            This field is a member of `oneof`_ ``_status``.
+        zone (str):
+            [Output Only] URL of the zone where the instant snapshot
+            resides. You must specify this field as part of the HTTP
+            request URL. It is not settable as a field in the request
+            body.
+
+            This field is a member of `oneof`_ ``_zone``.
+    """
+
+    class Architecture(proto.Enum):
+        r"""[Output Only] The architecture of the instant snapshot. Valid values
+        are ARM64 or X86_64.
+
+        Values:
+            UNDEFINED_ARCHITECTURE (0):
+                A value indicating that the enum field is not
+                set.
+            ARCHITECTURE_UNSPECIFIED (394750507):
+                Default value indicating Architecture is not
+                set.
+            ARM64 (62547450):
+                Machines with architecture ARM64
+            X86_64 (425300551):
+                Machines with architecture X86_64
+        """
+        UNDEFINED_ARCHITECTURE = 0
+        ARCHITECTURE_UNSPECIFIED = 394750507
+        ARM64 = 62547450
+        X86_64 = 425300551
+
+    class Status(proto.Enum):
+        r"""[Output Only] The status of the instantSnapshot. This can be
+        CREATING, DELETING, FAILED, or READY.
+
+        Values:
+            UNDEFINED_STATUS (0):
+                A value indicating that the enum field is not
+                set.
+            CREATING (455564985):
+                InstantSnapshot creation is in progress.
+            DELETING (528602024):
+                InstantSnapshot is currently being deleted.
+            FAILED (455706685):
+                InstantSnapshot creation failed.
+            READY (77848963):
+                InstantSnapshot has been created
+                successfully.
+        """
+        UNDEFINED_STATUS = 0
+        CREATING = 455564985
+        DELETING = 528602024
+        FAILED = 455706685
+        READY = 77848963
+
+    architecture: str = proto.Field(
+        proto.STRING,
+        number=302803283,
+        optional=True,
+    )
+    creation_timestamp: str = proto.Field(
+        proto.STRING,
+        number=30525366,
+        optional=True,
+    )
+    description: str = proto.Field(
+        proto.STRING,
+        number=422937596,
+        optional=True,
+    )
+    disk_size_gb: int = proto.Field(
+        proto.INT64,
+        number=316263735,
+        optional=True,
+    )
+    id: int = proto.Field(
+        proto.UINT64,
+        number=3355,
+        optional=True,
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    label_fingerprint: str = proto.Field(
+        proto.STRING,
+        number=178124825,
+        optional=True,
+    )
+    labels: MutableMapping[str, str] = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=500195327,
+    )
+    name: str = proto.Field(
+        proto.STRING,
+        number=3373707,
+        optional=True,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+        optional=True,
+    )
+    resource_status: "InstantSnapshotResourceStatus" = proto.Field(
+        proto.MESSAGE,
+        number=249429315,
+        optional=True,
+        message="InstantSnapshotResourceStatus",
+    )
+    satisfies_pzi: bool = proto.Field(
+        proto.BOOL,
+        number=480964257,
+        optional=True,
+    )
+    satisfies_pzs: bool = proto.Field(
+        proto.BOOL,
+        number=480964267,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    self_link_with_id: str = proto.Field(
+        proto.STRING,
+        number=44520962,
+        optional=True,
+    )
+    source_disk: str = proto.Field(
+        proto.STRING,
+        number=451753793,
+        optional=True,
+    )
+    source_disk_id: str = proto.Field(
+        proto.STRING,
+        number=454190809,
+        optional=True,
+    )
+    status: str = proto.Field(
+        proto.STRING,
+        number=181260274,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+        optional=True,
+    )
+
+
+class InstantSnapshotAggregatedList(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableMapping[str, google.cloud.compute_v1.types.InstantSnapshotsScopedList]):
+            A list of InstantSnapshotsScopedList
+            resources.
+        kind (str):
+            [Output Only] Type of resource. Always
+            compute#instantSnapshotAggregatedList for aggregated lists
+            of instantSnapshots.
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        unreachables (MutableSequence[str]):
+            [Output Only] Unreachable resources.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableMapping[str, "InstantSnapshotsScopedList"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=100526016,
+        message="InstantSnapshotsScopedList",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    unreachables: MutableSequence[str] = proto.RepeatedField(
+        proto.STRING,
+        number=243372063,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class InstantSnapshotList(proto.Message):
+    r"""Contains a list of InstantSnapshot resources.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        id (str):
+            [Output Only] Unique identifier for the resource; defined by
+            the server.
+
+            This field is a member of `oneof`_ ``_id``.
+        items (MutableSequence[google.cloud.compute_v1.types.InstantSnapshot]):
+            A list of InstantSnapshot resources.
+        kind (str):
+            Type of resource.
+
+            This field is a member of `oneof`_ ``_kind``.
+        next_page_token (str):
+            [Output Only] This token allows you to get the next page of
+            results for list requests. If the number of results is
+            larger than maxResults, use the nextPageToken as a value for
+            the query parameter pageToken in the next list request.
+            Subsequent list requests will have their own nextPageToken
+            to continue paging through the results.
+
+            This field is a member of `oneof`_ ``_next_page_token``.
+        self_link (str):
+            [Output Only] Server-defined URL for this resource.
+
+            This field is a member of `oneof`_ ``_self_link``.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning message.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    id: str = proto.Field(
+        proto.STRING,
+        number=3355,
+        optional=True,
+    )
+    items: MutableSequence["InstantSnapshot"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100526016,
+        message="InstantSnapshot",
+    )
+    kind: str = proto.Field(
+        proto.STRING,
+        number=3292052,
+        optional=True,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=79797525,
+        optional=True,
+    )
+    self_link: str = proto.Field(
+        proto.STRING,
+        number=456214797,
+        optional=True,
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
+    )
+
+
+class InstantSnapshotResourceStatus(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        storage_size_bytes (int):
+            [Output Only] The storage size of this instant snapshot.
+
+            This field is a member of `oneof`_ ``_storage_size_bytes``.
+    """
+
+    storage_size_bytes: int = proto.Field(
+        proto.INT64,
+        number=387548913,
+        optional=True,
+    )
+
+
+class InstantSnapshotsScopedList(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        instant_snapshots (MutableSequence[google.cloud.compute_v1.types.InstantSnapshot]):
+            [Output Only] A list of instantSnapshots contained in this
+            scope.
+        warning (google.cloud.compute_v1.types.Warning):
+            [Output Only] Informational warning which replaces the list
+            of instantSnapshots when the list is empty.
+
+            This field is a member of `oneof`_ ``_warning``.
+    """
+
+    instant_snapshots: MutableSequence["InstantSnapshot"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=329637457,
+        message="InstantSnapshot",
+    )
+    warning: "Warning" = proto.Field(
+        proto.MESSAGE,
+        number=50704284,
+        optional=True,
+        message="Warning",
     )
 
 
@@ -48806,7 +50136,11 @@ class ListAcceleratorTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -48935,7 +50269,11 @@ class ListAddressesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -49082,7 +50420,11 @@ class ListAutoscalersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -49212,7 +50554,11 @@ class ListAvailableFeaturesRegionSslPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -49337,7 +50683,11 @@ class ListAvailableFeaturesSslPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -49458,7 +50808,11 @@ class ListBackendBucketsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -49579,7 +50933,11 @@ class ListBackendServicesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -49700,7 +51058,11 @@ class ListDiskTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -49827,7 +51189,11 @@ class ListDisksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -49959,7 +51325,11 @@ class ListErrorsInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -50100,7 +51470,11 @@ class ListErrorsRegionInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -50229,7 +51603,11 @@ class ListExternalVpnGatewaysRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -50355,7 +51733,11 @@ class ListFirewallPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -50477,7 +51859,11 @@ class ListFirewallsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -50600,7 +51986,11 @@ class ListForwardingRulesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -50725,7 +52115,11 @@ class ListGlobalAddressesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -50846,7 +52240,11 @@ class ListGlobalForwardingRulesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -50967,7 +52365,11 @@ class ListGlobalNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -51088,7 +52490,11 @@ class ListGlobalOperationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -51211,7 +52617,11 @@ class ListGlobalOrganizationOperationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -51333,7 +52743,11 @@ class ListGlobalPublicDelegatedPrefixesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -51454,7 +52868,11 @@ class ListHealthChecksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -51575,7 +52993,11 @@ class ListImagesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -51696,7 +53118,11 @@ class ListInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -51824,7 +53250,11 @@ class ListInstanceGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -51952,7 +53382,11 @@ class ListInstanceTemplatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -52078,7 +53512,11 @@ class ListInstancesInstanceGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -52222,7 +53660,11 @@ class ListInstancesRegionInstanceGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -52356,7 +53798,142 @@ class ListInstancesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
+class ListInstantSnapshotsRequest(proto.Message):
+    r"""A request message for InstantSnapshots.List. See the method
+    description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -52485,7 +54062,11 @@ class ListInterconnectAttachmentsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -52610,7 +54191,11 @@ class ListInterconnectLocationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -52731,7 +54316,11 @@ class ListInterconnectRemoteLocationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -52852,7 +54441,11 @@ class ListInterconnectsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -52973,7 +54566,11 @@ class ListLicensesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -53094,7 +54691,11 @@ class ListMachineImagesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -53215,7 +54816,11 @@ class ListMachineTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -53345,7 +54950,11 @@ class ListManagedInstancesInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -53482,7 +55091,11 @@ class ListManagedInstancesRegionInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -53613,7 +55226,11 @@ class ListNetworkAttachmentsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -53738,7 +55355,11 @@ class ListNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -53873,7 +55494,11 @@ class ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -54006,7 +55631,11 @@ class ListNetworkEndpointsNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -54154,7 +55783,11 @@ class ListNetworkEndpointsRegionNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -54283,7 +55916,11 @@ class ListNetworkFirewallPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -54404,7 +56041,11 @@ class ListNetworksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -54525,7 +56166,11 @@ class ListNodeGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -54654,7 +56299,11 @@ class ListNodeTemplatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -54779,7 +56428,11 @@ class ListNodeTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -54909,7 +56562,11 @@ class ListNodesNodeGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -55042,7 +56699,11 @@ class ListPacketMirroringsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -55186,7 +56847,11 @@ class ListPeeringRoutesNetworksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -55346,7 +57011,11 @@ class ListPerInstanceConfigsInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -55486,7 +57155,11 @@ class ListPerInstanceConfigsRegionInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -55616,7 +57289,11 @@ class ListPreconfiguredExpressionSetsSecurityPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -55737,7 +57414,11 @@ class ListPublicAdvertisedPrefixesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -55860,7 +57541,11 @@ class ListPublicDelegatedPrefixesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -55989,7 +57674,11 @@ class ListReferrersInstancesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -56122,7 +57811,11 @@ class ListRegionAutoscalersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -56249,7 +57942,11 @@ class ListRegionBackendServicesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -56376,7 +58073,11 @@ class ListRegionCommitmentsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -56503,7 +58204,11 @@ class ListRegionDiskTypesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -56630,7 +58335,11 @@ class ListRegionDisksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -56757,7 +58466,11 @@ class ListRegionHealthCheckServicesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -56884,7 +58597,11 @@ class ListRegionHealthChecksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -57011,7 +58728,11 @@ class ListRegionInstanceGroupManagersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -57138,7 +58859,11 @@ class ListRegionInstanceGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -57265,7 +58990,142 @@ class ListRegionInstanceTemplatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
+
+            This field is a member of `oneof`_ ``_return_partial_success``.
+    """
+
+    filter: str = proto.Field(
+        proto.STRING,
+        number=336120696,
+        optional=True,
+    )
+    max_results: int = proto.Field(
+        proto.UINT32,
+        number=54715419,
+        optional=True,
+    )
+    order_by: str = proto.Field(
+        proto.STRING,
+        number=160562920,
+        optional=True,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=19994697,
+        optional=True,
+    )
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    return_partial_success: bool = proto.Field(
+        proto.BOOL,
+        number=517198390,
+        optional=True,
+    )
+
+
+class ListRegionInstantSnapshotsRequest(proto.Message):
+    r"""A request message for RegionInstantSnapshots.List. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        filter (str):
+            A filter expression that filters resources listed in the
+            response. Most Compute resources support two types of filter
+            expressions: expressions that support regular expressions
+            and expressions that follow API improvement proposal
+            AIP-160. These two types of filter expressions cannot be
+            mixed in one request. If you want to use AIP-160, your
+            expression must specify the field name, an operator, and the
+            value that you want to use for filtering. The value must be
+            a string, a number, or a boolean. The operator must be
+            either ``=``, ``!=``, ``>``, ``<``, ``<=``, ``>=`` or ``:``.
+            For example, if you are filtering Compute Engine instances,
+            you can exclude instances named ``example-instance`` by
+            specifying ``name != example-instance``. The ``:*``
+            comparison can be used to test whether a key has been
+            defined. For example, to find all objects with ``owner``
+            label use: ``labels.owner:*`` You can also filter nested
+            fields. For example, you could specify
+            ``scheduling.automaticRestart = false`` to include instances
+            only if they are not scheduled for automatic restarts. You
+            can use filtering on nested fields to filter based on
+            resource labels. To filter on multiple expressions, provide
+            each separate expression within parentheses. For example:
+            ``(scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake")``
+            By default, each expression is an ``AND`` expression.
+            However, you can include ``AND`` and ``OR`` expressions
+            explicitly. For example:
+            ``(cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true)``
+            If you want to use a regular expression, use the ``eq``
+            (equal) or ``ne`` (not equal) operator against a single
+            un-parenthesized expression with or without quotes or
+            against multiple parenthesized expressions. Examples:
+            ``fieldname eq unquoted literal``
+            ``fieldname eq 'single quoted literal'``
+            ``fieldname eq "double quoted literal"``
+            ``(fieldname1 eq literal) (fieldname2 ne "literal")`` The
+            literal value is interpreted as a regular expression using
+            Google RE2 library syntax. The literal value must match the
+            entire field. For example, to filter for instances that do
+            not end with name "instance", you would use
+            ``name ne .*instance``. You cannot combine constraints on
+            multiple fields using regular expressions.
+
+            This field is a member of `oneof`_ ``_filter``.
+        max_results (int):
+            The maximum number of results per page that should be
+            returned. If the number of available results is larger than
+            ``maxResults``, Compute Engine returns a ``nextPageToken``
+            that can be used to get the next page of results in
+            subsequent list requests. Acceptable values are ``0`` to
+            ``500``, inclusive. (Default: ``500``)
+
+            This field is a member of `oneof`_ ``_max_results``.
+        order_by (str):
+            Sorts list results by a certain order. By default, results
+            are returned in alphanumerical order based on the resource
+            name. You can also sort results in descending order based on
+            the creation timestamp using
+            ``orderBy="creationTimestamp desc"``. This sorts results
+            based on the ``creationTimestamp`` field in reverse
+            chronological order (newest result first). Use this to sort
+            resources like operations so that the newest operation is
+            returned first. Currently, only sorting by ``name`` or
+            ``creationTimestamp desc`` is supported.
+
+            This field is a member of `oneof`_ ``_order_by``.
+        page_token (str):
+            Specifies a page token to use. Set ``pageToken`` to the
+            ``nextPageToken`` returned by a previous list request to get
+            the next page of results.
+
+            This field is a member of `oneof`_ ``_page_token``.
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region for this request.
+        return_partial_success (bool):
+            Opt-in for partial success behavior which
+            provides partial results in case of failure. The
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -57394,7 +59254,11 @@ class ListRegionNetworkEndpointGroupsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -57521,7 +59385,11 @@ class ListRegionNetworkFirewallPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -57648,7 +59516,11 @@ class ListRegionNotificationEndpointsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -57775,7 +59647,11 @@ class ListRegionOperationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -57902,7 +59778,11 @@ class ListRegionSecurityPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -58029,7 +59909,11 @@ class ListRegionSslCertificatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -58156,7 +60040,11 @@ class ListRegionSslPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -58283,7 +60171,11 @@ class ListRegionTargetHttpProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -58410,7 +60302,11 @@ class ListRegionTargetHttpsProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -58537,7 +60433,11 @@ class ListRegionTargetTcpProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -58664,7 +60564,11 @@ class ListRegionUrlMapsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -58791,7 +60695,11 @@ class ListRegionZonesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -58916,7 +60824,11 @@ class ListRegionsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -59037,7 +60949,11 @@ class ListReservationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -59166,7 +61082,11 @@ class ListResourcePoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -59293,7 +61213,11 @@ class ListRoutersRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -59418,7 +61342,11 @@ class ListRoutesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -59539,7 +61467,11 @@ class ListSecurityPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -59662,7 +61594,11 @@ class ListServiceAttachmentsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -59787,7 +61723,11 @@ class ListSnapshotsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -59908,7 +61848,11 @@ class ListSslCertificatesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -60029,7 +61973,11 @@ class ListSslPoliciesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -60152,7 +62100,11 @@ class ListSubnetworksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -60277,7 +62229,11 @@ class ListTargetGrpcProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -60398,7 +62354,11 @@ class ListTargetHttpProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -60519,7 +62479,11 @@ class ListTargetHttpsProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -60640,7 +62604,11 @@ class ListTargetInstancesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -60769,7 +62737,11 @@ class ListTargetPoolsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -60894,7 +62866,11 @@ class ListTargetSslProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -61015,7 +62991,11 @@ class ListTargetTcpProxiesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -61138,7 +63118,11 @@ class ListTargetVpnGatewaysRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -61263,7 +63247,11 @@ class ListUrlMapsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -61384,7 +63372,11 @@ class ListUsableBackendServicesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -61509,7 +63501,11 @@ class ListUsableRegionBackendServicesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -61634,7 +63630,11 @@ class ListUsableSubnetworksRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -61757,7 +63757,11 @@ class ListVpnGatewaysRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -61884,7 +63888,11 @@ class ListVpnTunnelsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -62011,7 +64019,11 @@ class ListXpnHostsProjectsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -62139,7 +64151,11 @@ class ListZoneOperationsRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
         zone (str):
@@ -62266,7 +64282,11 @@ class ListZonesRequest(proto.Message):
         return_partial_success (bool):
             Opt-in for partial success behavior which
             provides partial results in case of failure. The
-            default value is false.
+            default value is false. For example, when
+            partial success behavior is enabled,
+            aggregatedList for a single zone scope either
+            returns all resources in the zone or no
+            resources, with an error code.
 
             This field is a member of `oneof`_ ``_return_partial_success``.
     """
@@ -74111,6 +76131,14 @@ class Project(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
+        cloud_armor_tier (str):
+            [Output Only] The Cloud Armor tier for this project. It can
+            be one of the following values: CA_STANDARD,
+            CA_ENTERPRISE_PAYGO. If this field is not specified, it is
+            assumed to be CA_STANDARD. Check the CloudArmorTier enum for
+            the list of possible values.
+
+            This field is a member of `oneof`_ ``_cloud_armor_tier``.
         common_instance_metadata (google.cloud.compute_v1.types.Metadata):
             Metadata key/value pairs available to all
             instances contained in this project. See Custom
@@ -74189,6 +76217,27 @@ class Project(proto.Message):
             This field is a member of `oneof`_ ``_xpn_project_status``.
     """
 
+    class CloudArmorTier(proto.Enum):
+        r"""[Output Only] The Cloud Armor tier for this project. It can be one
+        of the following values: CA_STANDARD, CA_ENTERPRISE_PAYGO. If this
+        field is not specified, it is assumed to be CA_STANDARD.
+
+        Values:
+            UNDEFINED_CLOUD_ARMOR_TIER (0):
+                A value indicating that the enum field is not
+                set.
+            CA_ENTERPRISE_ANNUAL (219921116):
+                Enterprise tier protection billed annually.
+            CA_ENTERPRISE_PAYGO (453530323):
+                Enterprise tier protection billed monthly.
+            CA_STANDARD (13156734):
+                Standard protection.
+        """
+        UNDEFINED_CLOUD_ARMOR_TIER = 0
+        CA_ENTERPRISE_ANNUAL = 219921116
+        CA_ENTERPRISE_PAYGO = 453530323
+        CA_STANDARD = 13156734
+
     class DefaultNetworkTier(proto.Enum):
         r"""This signifies the default network tier used for configuring
         resources of the project and can only take the following values:
@@ -74258,6 +76307,11 @@ class Project(proto.Message):
         HOST = 2223528
         UNSPECIFIED_XPN_PROJECT_STATUS = 340393257
 
+    cloud_armor_tier: str = proto.Field(
+        proto.STRING,
+        number=4427052,
+        optional=True,
+    )
     common_instance_metadata: "Metadata" = proto.Field(
         proto.MESSAGE,
         number=185794117,
@@ -74437,6 +76491,46 @@ class ProjectsListXpnHostsRequest(proto.Message):
     organization: str = proto.Field(
         proto.STRING,
         number=105180467,
+        optional=True,
+    )
+
+
+class ProjectsSetCloudArmorTierRequest(proto.Message):
+    r"""
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        cloud_armor_tier (str):
+            Managed protection tier to be set.
+            Check the CloudArmorTier enum for the list of
+            possible values.
+
+            This field is a member of `oneof`_ ``_cloud_armor_tier``.
+    """
+
+    class CloudArmorTier(proto.Enum):
+        r"""Managed protection tier to be set.
+
+        Values:
+            UNDEFINED_CLOUD_ARMOR_TIER (0):
+                A value indicating that the enum field is not
+                set.
+            CA_ENTERPRISE_ANNUAL (219921116):
+                Enterprise tier protection billed annually.
+            CA_ENTERPRISE_PAYGO (453530323):
+                Enterprise tier protection billed monthly.
+            CA_STANDARD (13156734):
+                Standard protection.
+        """
+        UNDEFINED_CLOUD_ARMOR_TIER = 0
+        CA_ENTERPRISE_ANNUAL = 219921116
+        CA_ENTERPRISE_PAYGO = 453530323
+        CA_STANDARD = 13156734
+
+    cloud_armor_tier: str = proto.Field(
+        proto.STRING,
+        number=4427052,
         optional=True,
     )
 
@@ -87281,6 +89375,54 @@ class SetCertificateMapTargetSslProxyRequest(proto.Message):
     )
 
 
+class SetCloudArmorTierProjectRequest(proto.Message):
+    r"""A request message for Projects.SetCloudArmorTier. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        projects_set_cloud_armor_tier_request_resource (google.cloud.compute_v1.types.ProjectsSetCloudArmorTierRequest):
+            The body resource for this request
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    projects_set_cloud_armor_tier_request_resource: "ProjectsSetCloudArmorTierRequest" = proto.Field(
+        proto.MESSAGE,
+        number=77053391,
+        message="ProjectsSetCloudArmorTierRequest",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+
+
 class SetCommonInstanceMetadataOperationMetadata(proto.Message):
     r"""
 
@@ -87917,6 +90059,40 @@ class SetIamPolicyInstanceTemplateRequest(proto.Message):
     )
 
 
+class SetIamPolicyInstantSnapshotRequest(proto.Message):
+    r"""A request message for InstantSnapshots.SetIamPolicy. See the
+    method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+        zone (str):
+            The name of the zone for this request.
+        zone_set_policy_request_resource (google.cloud.compute_v1.types.ZoneSetPolicyRequest):
+            The body resource for this request
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+    zone_set_policy_request_resource: "ZoneSetPolicyRequest" = proto.Field(
+        proto.MESSAGE,
+        number=382082107,
+        message="ZoneSetPolicyRequest",
+    )
+
+
 class SetIamPolicyLicenseRequest(proto.Message):
     r"""A request message for Licenses.SetIamPolicy. See the method
     description for details.
@@ -88140,6 +90316,40 @@ class SetIamPolicyRegionBackendServiceRequest(proto.Message):
 class SetIamPolicyRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.SetIamPolicy. See the
     method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region for this request.
+        region_set_policy_request_resource (google.cloud.compute_v1.types.RegionSetPolicyRequest):
+            The body resource for this request
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    region_set_policy_request_resource: "RegionSetPolicyRequest" = proto.Field(
+        proto.MESSAGE,
+        number=276489091,
+        message="RegionSetPolicyRequest",
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+
+
+class SetIamPolicyRegionInstantSnapshotRequest(proto.Message):
+    r"""A request message for RegionInstantSnapshots.SetIamPolicy.
+    See the method description for details.
 
     Attributes:
         project (str):
@@ -88845,6 +91055,66 @@ class SetLabelsInstanceRequest(proto.Message):
     )
 
 
+class SetLabelsInstantSnapshotRequest(proto.Message):
+    r"""A request message for InstantSnapshots.SetLabels. See the
+    method description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        resource (str):
+            Name or id of the resource for this request.
+        zone (str):
+            The name of the zone for this request.
+        zone_set_labels_request_resource (google.cloud.compute_v1.types.ZoneSetLabelsRequest):
+            The body resource for this request
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+    zone_set_labels_request_resource: "ZoneSetLabelsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=364950798,
+        message="ZoneSetLabelsRequest",
+    )
+
+
 class SetLabelsInterconnectAttachmentRequest(proto.Message):
     r"""A request message for InterconnectAttachments.SetLabels. See
     the method description for details.
@@ -88936,6 +91206,66 @@ class SetLabelsInterconnectRequest(proto.Message):
 class SetLabelsRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.SetLabels. See the method
     description for details.
+
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        region (str):
+            The region for this request.
+        region_set_labels_request_resource (google.cloud.compute_v1.types.RegionSetLabelsRequest):
+            The body resource for this request
+        request_id (str):
+            An optional request ID to identify requests.
+            Specify a unique request ID so that if you must
+            retry your request, the server will know to
+            ignore the request if it has already been
+            completed. For example, consider a situation
+            where you make an initial request and the
+            request times out. If you make the request again
+            with the same request ID, the server can check
+            if original operation with the same request ID
+            was received, and if so, will ignore the second
+            request. This prevents clients from accidentally
+            creating duplicate commitments. The request ID
+            must be a valid UUID with the exception that
+            zero UUID is not supported (
+            00000000-0000-0000-0000-000000000000).
+
+            This field is a member of `oneof`_ ``_request_id``.
+        resource (str):
+            Name or id of the resource for this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    region_set_labels_request_resource: "RegionSetLabelsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=259357782,
+        message="RegionSetLabelsRequest",
+    )
+    request_id: str = proto.Field(
+        proto.STRING,
+        number=37109963,
+        optional=True,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+
+
+class SetLabelsRegionInstantSnapshotRequest(proto.Message):
+    r"""A request message for RegionInstantSnapshots.SetLabels. See
+    the method description for details.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -91844,6 +94174,32 @@ class Snapshot(proto.Message):
             of a given disk name.
 
             This field is a member of `oneof`_ ``_source_disk_id``.
+        source_instant_snapshot (str):
+            The source instant snapshot used to create
+            this snapshot. You can provide this as a partial
+            or full URL to the resource. For example, the
+            following are valid values: -
+            https://www.googleapis.com/compute/v1/projects/project/zones/zone
+            /instantSnapshots/instantSnapshot -
+            projects/project/zones/zone/instantSnapshots/instantSnapshot
+            - zones/zone/instantSnapshots/instantSnapshot
+
+            This field is a member of `oneof`_ ``_source_instant_snapshot``.
+        source_instant_snapshot_encryption_key (google.cloud.compute_v1.types.CustomerEncryptionKey):
+            Customer provided encryption key when
+            creating Snapshot from Instant Snapshot.
+
+            This field is a member of `oneof`_ ``_source_instant_snapshot_encryption_key``.
+        source_instant_snapshot_id (str):
+            [Output Only] The unique ID of the instant snapshot used to
+            create this snapshot. This value identifies the exact
+            instant snapshot that was used to create this persistent
+            disk. For example, if you created the persistent disk from
+            an instant snapshot that was later deleted and recreated
+            under the same name, the source instant snapshot ID would
+            identify the exact instant snapshot that was used.
+
+            This field is a member of `oneof`_ ``_source_instant_snapshot_id``.
         source_snapshot_schedule_policy (str):
             [Output Only] URL of the resource policy which created this
             scheduled snapshot.
@@ -92097,6 +94453,22 @@ class Snapshot(proto.Message):
     source_disk_id: str = proto.Field(
         proto.STRING,
         number=454190809,
+        optional=True,
+    )
+    source_instant_snapshot: str = proto.Field(
+        proto.STRING,
+        number=219202054,
+        optional=True,
+    )
+    source_instant_snapshot_encryption_key: "CustomerEncryptionKey" = proto.Field(
+        proto.MESSAGE,
+        number=436536060,
+        optional=True,
+        message="CustomerEncryptionKey",
+    )
+    source_instant_snapshot_id: str = proto.Field(
+        proto.STRING,
+        number=287582708,
         optional=True,
     )
     source_snapshot_schedule_policy: str = proto.Field(
@@ -98931,6 +101303,40 @@ class TestIamPermissionsInstanceTemplateRequest(proto.Message):
     )
 
 
+class TestIamPermissionsInstantSnapshotRequest(proto.Message):
+    r"""A request message for InstantSnapshots.TestIamPermissions.
+    See the method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        resource (str):
+            Name or id of the resource for this request.
+        test_permissions_request_resource (google.cloud.compute_v1.types.TestPermissionsRequest):
+            The body resource for this request
+        zone (str):
+            The name of the zone for this request.
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+    test_permissions_request_resource: "TestPermissionsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=439214758,
+        message="TestPermissionsRequest",
+    )
+    zone: str = proto.Field(
+        proto.STRING,
+        number=3744684,
+    )
+
+
 class TestIamPermissionsLicenseCodeRequest(proto.Message):
     r"""A request message for LicenseCodes.TestIamPermissions. See
     the method description for details.
@@ -99253,6 +101659,41 @@ class TestIamPermissionsRegionBackendServiceRequest(proto.Message):
 class TestIamPermissionsRegionDiskRequest(proto.Message):
     r"""A request message for RegionDisks.TestIamPermissions. See the
     method description for details.
+
+    Attributes:
+        project (str):
+            Project ID for this request.
+        region (str):
+            The name of the region for this request.
+        resource (str):
+            Name or id of the resource for this request.
+        test_permissions_request_resource (google.cloud.compute_v1.types.TestPermissionsRequest):
+            The body resource for this request
+    """
+
+    project: str = proto.Field(
+        proto.STRING,
+        number=227560217,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=138946292,
+    )
+    resource: str = proto.Field(
+        proto.STRING,
+        number=195806222,
+    )
+    test_permissions_request_resource: "TestPermissionsRequest" = proto.Field(
+        proto.MESSAGE,
+        number=439214758,
+        message="TestPermissionsRequest",
+    )
+
+
+class TestIamPermissionsRegionInstantSnapshotRequest(proto.Message):
+    r"""A request message for
+    RegionInstantSnapshots.TestIamPermissions. See the method
+    description for details.
 
     Attributes:
         project (str):
@@ -102679,6 +105120,13 @@ class VpnGateway(proto.Message):
             resource.
 
             This field is a member of `oneof`_ ``_description``.
+        gateway_ip_version (str):
+            The IP family of the gateway IPs for the
+            HA-VPN gateway interfaces. If not specified,
+            IPV4 will be used. Check the GatewayIpVersion
+            enum for the list of possible values.
+
+            This field is a member of `oneof`_ ``_gateway_ip_version``.
         id (int):
             [Output Only] The unique identifier for the resource. This
             identifier is defined by the server.
@@ -102746,6 +105194,25 @@ class VpnGateway(proto.Message):
             this VPN gateway.
     """
 
+    class GatewayIpVersion(proto.Enum):
+        r"""The IP family of the gateway IPs for the HA-VPN gateway
+        interfaces. If not specified, IPV4 will be used.
+
+        Values:
+            UNDEFINED_GATEWAY_IP_VERSION (0):
+                A value indicating that the enum field is not
+                set.
+            IPV4 (2254341):
+                Every HA-VPN gateway interface is configured
+                with an IPv4 address.
+            IPV6 (2254343):
+                Every HA-VPN gateway interface is configured
+                with an IPv6 address.
+        """
+        UNDEFINED_GATEWAY_IP_VERSION = 0
+        IPV4 = 2254341
+        IPV6 = 2254343
+
     class StackType(proto.Enum):
         r"""The stack type for this VPN gateway to identify the IP protocols
         that are enabled. Possible values are: IPV4_ONLY, IPV4_IPV6. If not
@@ -102773,6 +105240,11 @@ class VpnGateway(proto.Message):
     description: str = proto.Field(
         proto.STRING,
         number=422937596,
+        optional=True,
+    )
+    gateway_ip_version: str = proto.Field(
+        proto.STRING,
+        number=65074843,
         optional=True,
     )
     id: int = proto.Field(
@@ -103211,6 +105683,13 @@ class VpnGatewayVpnGatewayInterface(proto.Message):
             regional external IP address.
 
             This field is a member of `oneof`_ ``_ip_address``.
+        ipv6_address (str):
+            [Output Only] IPv6 address for this VPN interface associated
+            with the VPN gateway. The IPv6 address must be a regional
+            external IPv6 address. The format is RFC 5952 format (e.g.
+            2001:db8::2d9:51:0:0).
+
+            This field is a member of `oneof`_ ``_ipv6_address``.
     """
 
     id: int = proto.Field(
@@ -103226,6 +105705,11 @@ class VpnGatewayVpnGatewayInterface(proto.Message):
     ip_address: str = proto.Field(
         proto.STRING,
         number=406272220,
+        optional=True,
+    )
+    ipv6_address: str = proto.Field(
+        proto.STRING,
+        number=341563804,
         optional=True,
     )
 

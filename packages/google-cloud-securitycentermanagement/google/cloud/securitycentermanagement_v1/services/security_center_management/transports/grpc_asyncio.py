@@ -364,7 +364,7 @@ class SecurityCenterManagementGrpcAsyncIOTransport(SecurityCenterManagementTrans
 
         Returns a list of all resident
         SecurityHealthAnalyticsCustomModules under the given CRM
-        parent and all of the parent’s CRM descendants.
+        parent and all of the parent's CRM descendants.
 
         Returns:
             Callable[[~.ListDescendantSecurityHealthAnalyticsCustomModulesRequest],

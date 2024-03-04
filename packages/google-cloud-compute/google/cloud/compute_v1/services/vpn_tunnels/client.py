@@ -649,7 +649,9 @@ class VpnTunnelsClient(metaclass=VpnTunnelsClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of VPN tunnels.
+        r"""Retrieves an aggregated list of VPN tunnels. To prevent failure,
+        Google recommends that you set the ``returnPartialSuccess``
+        parameter to ``true``.
 
         .. code-block:: python
 

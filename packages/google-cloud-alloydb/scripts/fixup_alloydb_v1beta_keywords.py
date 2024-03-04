@@ -60,6 +60,7 @@ class alloydbCallTransformer(cst.CSTTransformer):
         'inject_fault': ('fault_type', 'name', 'request_id', 'validate_only', ),
         'list_backups': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_clusters': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
+        'list_databases': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_instances': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_supported_database_flags': ('parent', 'page_size', 'page_token', ),
         'list_users': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
