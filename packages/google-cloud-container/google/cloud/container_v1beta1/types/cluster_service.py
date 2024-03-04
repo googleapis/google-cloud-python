@@ -210,6 +210,7 @@ __protobuf__ = proto.module(
         "Fleet",
         "ResourceManagerTags",
         "EnterpriseConfig",
+        "SecondaryBootDisk",
     },
 )
 
@@ -723,10 +724,10 @@ class NodeConfig(proto.Message):
             A map of resource manager tag keys and values
             to be attached to the nodes.
         enable_confidential_storage (bool):
-            Optional. Enable confidential storage on Hyperdisk.
-            boot_disk_kms_key is required when
-            enable_confidential_storage is true. This is only available
-            for private preview.
+            Optional. Reserved for future use.
+        secondary_boot_disks (MutableSequence[google.cloud.container_v1beta1.types.SecondaryBootDisk]):
+            List of secondary boot disks attached to the
+            nodes.
     """
 
     machine_type: str = proto.Field(
@@ -905,6 +906,11 @@ class NodeConfig(proto.Message):
     enable_confidential_storage: bool = proto.Field(
         proto.BOOL,
         number=46,
+    )
+    secondary_boot_disks: MutableSequence["SecondaryBootDisk"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=48,
+        message="SecondaryBootDisk",
     )
 
 
@@ -5142,6 +5148,9 @@ class UpdateNodePoolRequest(proto.Message):
             Engine firewalls using Network Firewall
             Policies. Existing tags will be replaced with
             new values.
+        queued_provisioning (google.cloud.container_v1beta1.types.NodePool.QueuedProvisioning):
+            Specifies the configuration of queued
+            provisioning.
     """
 
     project_id: str = proto.Field(
@@ -5271,6 +5280,11 @@ class UpdateNodePoolRequest(proto.Message):
         proto.MESSAGE,
         number=39,
         message="ResourceManagerTags",
+    )
+    queued_provisioning: "NodePool.QueuedProvisioning" = proto.Field(
+        proto.MESSAGE,
+        number=42,
+        message="NodePool.QueuedProvisioning",
     )
 
 
@@ -10369,6 +10383,43 @@ class EnterpriseConfig(proto.Message):
         proto.ENUM,
         number=1,
         enum=ClusterTier,
+    )
+
+
+class SecondaryBootDisk(proto.Message):
+    r"""SecondaryBootDisk represents a persistent disk attached to a
+    node with special configurations based on its mode.
+
+    Attributes:
+        mode (google.cloud.container_v1beta1.types.SecondaryBootDisk.Mode):
+            Disk mode (container image cache, etc.)
+        disk_image (str):
+            Fully-qualified resource ID for an existing
+            disk image.
+    """
+
+    class Mode(proto.Enum):
+        r"""Mode specifies how the secondary boot disk will be used.
+        This triggers mode-specified logic in the control plane.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                MODE_UNSPECIFIED is when mode is not set.
+            CONTAINER_IMAGE_CACHE (1):
+                CONTAINER_IMAGE_CACHE is for using the secondary boot disk
+                as a container image cache.
+        """
+        MODE_UNSPECIFIED = 0
+        CONTAINER_IMAGE_CACHE = 1
+
+    mode: Mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Mode,
+    )
+    disk_image: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
