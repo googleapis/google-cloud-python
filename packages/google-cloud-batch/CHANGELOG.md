@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.17.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.12...google-cloud-batch-v0.17.13) (2024-03-04)
+
+
+### Documentation
+
+* [google-cloud-batch] Remove UUID specification in comment ([#12366](https://github.com/googleapis/google-cloud-python/issues/12366)) ([13c7f8f](https://github.com/googleapis/google-cloud-python/commit/13c7f8f24450f520e4021336753c5a9219d52cf6))
+* [google-cloud-batch] update description of Job uid field ([13c7f8f](https://github.com/googleapis/google-cloud-python/commit/13c7f8f24450f520e4021336753c5a9219d52cf6))
+
 ## [0.17.12](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.11...google-cloud-batch-v0.17.12) (2024-02-22)
 
 

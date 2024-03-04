@@ -70,6 +70,8 @@ __protobuf__ = proto.module(
         "CreateUserRequest",
         "UpdateUserRequest",
         "DeleteUserRequest",
+        "ListDatabasesRequest",
+        "ListDatabasesResponse",
     },
 )
 
@@ -1684,8 +1686,8 @@ class GenerateClientCertificateRequest(proto.Message):
             exception that zero UUID is not supported
             (00000000-0000-0000-0000-000000000000).
         pem_csr (str):
-            Optional. A pem-encoded X.509 certificate
-            signing request (CSR).
+            Optional. A pem-encoded X.509 certificate signing request
+            (CSR). It is recommended to use public_key instead.
         cert_duration (google.protobuf.duration_pb2.Duration):
             Optional. An optional hint to the endpoint to
             generate the client certificate with the
@@ -2133,6 +2135,76 @@ class DeleteUserRequest(proto.Message):
     validate_only: bool = proto.Field(
         proto.BOOL,
         number=3,
+    )
+
+
+class ListDatabasesRequest(proto.Message):
+    r"""Message for requesting list of Databases.
+
+    Attributes:
+        parent (str):
+            Required. Parent value for
+            ListDatabasesRequest.
+        page_size (int):
+            Optional. The maximum number of databases to
+            return. The service may return fewer than this
+            value. If unspecified, an appropriate number of
+            databases will be returned. The max value will
+            be 2000, values above max will be coerced to
+            max.
+        page_token (str):
+            Optional. A page token, received from a previous
+            ``ListDatabases`` call. This should be provided to retrieve
+            the subsequent page. This field is currently not supported,
+            its value will be ignored if passed.
+        filter (str):
+            Optional. Filtering results.
+            This field is currently not supported, its value
+            will be ignored if passed.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size: int = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListDatabasesResponse(proto.Message):
+    r"""Message for response to listing Databases.
+
+    Attributes:
+        databases (MutableSequence[google.cloud.alloydb_v1beta.types.Database]):
+            The list of databases
+        next_page_token (str):
+            A token identifying the next page of results
+            the server should return. If this field is
+            omitted, there are no subsequent pages.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    databases: MutableSequence[resources.Database] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Database,
+    )
+    next_page_token: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

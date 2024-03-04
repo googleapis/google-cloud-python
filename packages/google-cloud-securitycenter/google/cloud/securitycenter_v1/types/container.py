@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import label
@@ -47,6 +48,8 @@ class Container(proto.Message):
         labels (MutableSequence[google.cloud.securitycenter_v1.types.Label]):
             Container labels, as provided by the
             container runtime.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time that the container was created.
     """
 
     name: str = proto.Field(
@@ -65,6 +68,11 @@ class Container(proto.Message):
         proto.MESSAGE,
         number=4,
         message=label.Label,
+    )
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
 
 

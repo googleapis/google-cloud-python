@@ -35,16 +35,16 @@ class Database(proto.Message):
     name <https://google.aip.dev/122#full-resource-names>`__ populated
     because these resource types, such as Cloud SQL databases, are not
     yet supported by Cloud Asset Inventory. In these cases only the
-    display name is provided. Some database resources may not have the
-    `full resource
-    name <https://google.aip.dev/122#full-resource-names>`__ populated
-    because these resource types are not yet supported by Cloud Asset
-    Inventory (e.g. Cloud SQL databases). In these cases only the
-    display name will be provided.
+    display name is provided.
 
     Attributes:
         name (str):
-            The `full resource
+            Some database resources may not have the `full resource
+            name <https://google.aip.dev/122#full-resource-names>`__
+            populated because these resource types are not yet supported
+            by Cloud Asset Inventory (e.g. Cloud SQL databases). In
+            these cases only the display name will be provided. The
+            `full resource
             name <https://google.aip.dev/122#full-resource-names>`__ of
             the database that the user connected to, if it is supported
             by Cloud Asset Inventory.
@@ -62,6 +62,10 @@ class Database(proto.Message):
             The target usernames, roles, or groups of an
             SQL privilege grant, which is not an IAM policy
             change.
+        version (str):
+            The version of the database, for example, POSTGRES_14. See
+            `the complete
+            list <https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1/SqlDatabaseVersion>`__.
     """
 
     name: str = proto.Field(
@@ -83,6 +87,10 @@ class Database(proto.Message):
     grantees: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
         number=5,
+    )
+    version: str = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 

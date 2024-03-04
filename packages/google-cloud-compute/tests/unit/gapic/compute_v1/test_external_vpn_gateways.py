@@ -1939,7 +1939,13 @@ def test_insert_rest(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "id": 205,
-        "interfaces": [{"id": 205, "ip_address": "ip_address_value"}],
+        "interfaces": [
+            {
+                "id": 205,
+                "ip_address": "ip_address_value",
+                "ipv6_address": "ipv6_address_value",
+            }
+        ],
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},
@@ -2350,7 +2356,13 @@ def test_insert_unary_rest(request_type):
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
         "id": 205,
-        "interfaces": [{"id": 205, "ip_address": "ip_address_value"}],
+        "interfaces": [
+            {
+                "id": 205,
+                "ip_address": "ip_address_value",
+                "ipv6_address": "ipv6_address_value",
+            }
+        ],
         "kind": "kind_value",
         "label_fingerprint": "label_fingerprint_value",
         "labels": {},

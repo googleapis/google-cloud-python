@@ -27,6 +27,7 @@ Services for Google Cloud Compute v1 API
     instance_groups
     instances
     instance_templates
+    instant_snapshots
     interconnect_attachments
     interconnect_locations
     interconnect_remote_locations
@@ -58,6 +59,7 @@ Services for Google Cloud Compute v1 API
     region_instance_groups
     region_instances
     region_instance_templates
+    region_instant_snapshots
     region_network_endpoint_groups
     region_network_firewall_policies
     region_notification_endpoints

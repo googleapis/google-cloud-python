@@ -44,6 +44,9 @@ class Exfiltration(proto.Message):
             If there are multiple targets, each target
             would get a complete copy of the "joined" source
             data.
+        total_exfiltrated_bytes (int):
+            Total exfiltrated bytes processed for the
+            entire job.
     """
 
     sources: MutableSequence["ExfilResource"] = proto.RepeatedField(
@@ -55,6 +58,10 @@ class Exfiltration(proto.Message):
         proto.MESSAGE,
         number=2,
         message="ExfilResource",
+    )
+    total_exfiltrated_bytes: int = proto.Field(
+        proto.INT64,
+        number=3,
     )
 
 
