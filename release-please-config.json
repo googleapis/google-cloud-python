@@ -80,6 +80,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-apps-chat": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-apps-chat",
+            "extra-files": [
+                "google/apps/chat/gapic_version.py",
+                "google/apps/chat_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.chat.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-apps-meet": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
