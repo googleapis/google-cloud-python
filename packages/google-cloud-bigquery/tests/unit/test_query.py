@@ -376,6 +376,100 @@ class Test_StructQueryParameterType(unittest.TestCase):
         self.assertEqual(repr(param_type), expected)
 
 
+class Test_RangeQueryParameterType(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        return RangeQueryParameterType
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor_str(self):
+        param_type = self._make_one("DATE", name="foo", description="bar")
+        self.assertEqual(param_type.type_._type, "DATE")
+        self.assertEqual(param_type.name, "foo")
+        self.assertEqual(param_type.description, "bar")
+
+    def test_ctor_type(self):
+        from google.cloud.bigquery import ScalarQueryParameterType
+
+        scalar_type = ScalarQueryParameterType("DATE")
+        param_type = self._make_one(scalar_type, name="foo", description="bar")
+        self.assertEqual(param_type.type_._type, "DATE")
+        self.assertEqual(param_type.name, "foo")
+        self.assertEqual(param_type.description, "bar")
+
+    def test_ctor_unsupported_type_str(self):
+        with self.assertRaises(ValueError):
+            self._make_one("TIME")
+
+    def test_ctor_unsupported_type_type(self):
+        from google.cloud.bigquery import ScalarQueryParameterType
+
+        scalar_type = ScalarQueryParameterType("TIME")
+        with self.assertRaises(ValueError):
+            self._make_one(scalar_type)
+
+    def test_ctor_wrong_type(self):
+        with self.assertRaises(ValueError):
+            self._make_one(None)
+
+    def test_from_api_repr(self):
+        RESOURCE = {
+            "type": "RANGE",
+            "rangeElementType": {"type": "DATE"},
+        }
+
+        klass = self._get_target_class()
+        result = klass.from_api_repr(RESOURCE)
+        self.assertEqual(result.type_._type, "DATE")
+        self.assertIsNone(result.name)
+        self.assertIsNone(result.description)
+
+    def test_to_api_repr(self):
+        EXPECTED = {
+            "type": "RANGE",
+            "rangeElementType": {"type": "DATE"},
+        }
+        param_type = self._make_one("DATE", name="foo", description="bar")
+        result = param_type.to_api_repr()
+        self.assertEqual(result, EXPECTED)
+
+    def test__repr__(self):
+        param_type = self._make_one("DATE", name="foo", description="bar")
+        param_repr = "RangeQueryParameterType(ScalarQueryParameterType('DATE'), name='foo', description='bar')"
+        self.assertEqual(repr(param_type), param_repr)
+
+    def test__eq__(self):
+        param_type1 = self._make_one("DATE", name="foo", description="bar")
+        self.assertEqual(param_type1, param_type1)
+        self.assertNotEqual(param_type1, object())
+
+        alias = self._make_one("DATE", name="foo", description="bar")
+        self.assertIsNot(param_type1, alias)
+        self.assertEqual(param_type1, alias)
+
+        wrong_type = self._make_one("DATETIME", name="foo", description="bar")
+        self.assertNotEqual(param_type1, wrong_type)
+
+        wrong_name = self._make_one("DATETIME", name="foo2", description="bar")
+        self.assertNotEqual(param_type1, wrong_name)
+
+        wrong_description = self._make_one("DATETIME", name="foo", description="bar2")
+        self.assertNotEqual(param_type1, wrong_description)
+
+    def test_with_name(self):
+        param_type1 = self._make_one("DATE", name="foo", description="bar")
+        param_type2 = param_type1.with_name("foo2")
+
+        self.assertIsNot(param_type1, param_type2)
+        self.assertEqual(param_type2.type_._type, "DATE")
+        self.assertEqual(param_type2.name, "foo2")
+        self.assertEqual(param_type2.description, "bar")
+
+
 class Test__AbstractQueryParameter(unittest.TestCase):
     @staticmethod
     def _get_target_class():
@@ -661,6 +755,460 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         field1 = self._make_one("field1", "STRING", "value")
         expected = "ScalarQueryParameter('field1', 'STRING', 'value')"
         self.assertEqual(repr(field1), expected)
+
+
+class Test_RangeQueryParameter(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.bigquery.query import RangeQueryParameter
+
+        return RangeQueryParameter
+
+    def _make_one(self, *args, **kw):
+        return self._get_target_class()(*args, **kw)
+
+    def test_ctor(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        range_element_type = RangeQueryParameterType(type_="DATE")
+        param = self._make_one(
+            range_element_type="DATE", start="2016-08-11", name="foo"
+        )
+        self.assertEqual(param.name, "foo")
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertEqual(param.start, "2016-08-11")
+        self.assertIs(param.end, None)
+
+    def test_ctor_w_datetime_query_parameter_type_str(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        range_element_type = RangeQueryParameterType(type_="DATETIME")
+        start_datetime = datetime.datetime(year=2020, month=12, day=31, hour=12)
+        end_datetime = datetime.datetime(year=2021, month=12, day=31, hour=12)
+        param = self._make_one(
+            range_element_type="DATETIME",
+            start=start_datetime,
+            end=end_datetime,
+            name="foo",
+        )
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertEqual(param.start, start_datetime)
+        self.assertEqual(param.end, end_datetime)
+        self.assertEqual(param.name, "foo")
+
+    def test_ctor_w_datetime_query_parameter_type_type(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        range_element_type = RangeQueryParameterType(type_="DATETIME")
+        param = self._make_one(range_element_type=range_element_type)
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertEqual(param.start, None)
+        self.assertEqual(param.end, None)
+        self.assertEqual(param.name, None)
+
+    def test_ctor_w_timestamp_query_parameter_typ_str(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        range_element_type = RangeQueryParameterType(type_="TIMESTAMP")
+        start_datetime = datetime.datetime(year=2020, month=12, day=31, hour=12)
+        end_datetime = datetime.datetime(year=2021, month=12, day=31, hour=12)
+        param = self._make_one(
+            range_element_type="TIMESTAMP",
+            start=start_datetime,
+            end=end_datetime,
+            name="foo",
+        )
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertEqual(param.start, start_datetime)
+        self.assertEqual(param.end, end_datetime)
+        self.assertEqual(param.name, "foo")
+
+    def test_ctor_w_timestamp_query_parameter_type_type(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        range_element_type = RangeQueryParameterType(type_="TIMESTAMP")
+        param = self._make_one(range_element_type=range_element_type)
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertEqual(param.start, None)
+        self.assertEqual(param.end, None)
+        self.assertEqual(param.name, None)
+
+    def test_ctor_w_date_query_parameter_type_str(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        range_element_type = RangeQueryParameterType(type_="DATE")
+        start_date = datetime.date(year=2020, month=12, day=31)
+        end_date = datetime.date(year=2021, month=12, day=31)
+        param = self._make_one(
+            range_element_type="DATE",
+            start=start_date,
+            end=end_date,
+            name="foo",
+        )
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertEqual(param.start, start_date)
+        self.assertEqual(param.end, end_date)
+        self.assertEqual(param.name, "foo")
+
+    def test_ctor_w_date_query_parameter_type_type(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        range_element_type = RangeQueryParameterType(type_="DATE")
+        param = self._make_one(range_element_type=range_element_type)
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertEqual(param.start, None)
+        self.assertEqual(param.end, None)
+        self.assertEqual(param.name, None)
+
+    def test_ctor_w_name_empty_str(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        range_element_type = RangeQueryParameterType(type_="DATE")
+        param = self._make_one(
+            range_element_type="DATE",
+            name="",
+        )
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertIs(param.start, None)
+        self.assertIs(param.end, None)
+        self.assertEqual(param.name, "")
+
+    def test_ctor_wo_value(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        range_element_type = RangeQueryParameterType(type_="DATETIME")
+        param = self._make_one(range_element_type="DATETIME", name="foo")
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertIs(param.start, None)
+        self.assertIs(param.end, None)
+        self.assertEqual(param.name, "foo")
+
+    def test_ctor_w_unsupported_query_parameter_type_str(self):
+        with self.assertRaises(ValueError):
+            self._make_one(range_element_type="TIME", name="foo")
+
+    def test_ctor_w_unsupported_query_parameter_type_type(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        range_element_type = RangeQueryParameterType(type_="DATE")
+        range_element_type.type_._type = "TIME"
+        with self.assertRaises(ValueError):
+            self._make_one(range_element_type=range_element_type, name="foo")
+
+    def test_ctor_w_unsupported_query_parameter_type_input(self):
+        with self.assertRaises(ValueError):
+            self._make_one(range_element_type=None, name="foo")
+
+    def test_positional(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        range_element_type = RangeQueryParameterType(type_="DATE")
+        klass = self._get_target_class()
+        param = klass.positional(
+            range_element_type="DATE", start="2016-08-11", end="2016-08-12"
+        )
+        self.assertIs(param.name, None)
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertEqual(param.start, "2016-08-11")
+        self.assertEqual(param.end, "2016-08-12")
+
+    def test_from_api_repr_w_name(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        RESOURCE = {
+            "name": "foo",
+            "parameterType": {
+                "type": "RANGE",
+                "rangeElementType": {
+                    "type": "DATE",
+                },
+            },
+            "parameterValue": {
+                "rangeValue": {"start": {"value": None}, "end": {"value": "2020-12-31"}}
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.from_api_repr(RESOURCE)
+        range_element_type = RangeQueryParameterType(type_="DATE")
+        self.assertEqual(param.name, "foo")
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertEqual(param.start, None)
+        self.assertEqual(param.end, "2020-12-31")
+
+    def test_from_api_repr_wo_name(self):
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        RESOURCE = {
+            "parameterType": {
+                "type": "RANGE",
+                "rangeElementType": {
+                    "type": "DATE",
+                },
+            },
+            "parameterValue": {
+                "rangeValue": {"start": {"value": None}, "end": {"value": "2020-12-31"}}
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.from_api_repr(RESOURCE)
+        range_element_type = RangeQueryParameterType(type_="DATE")
+        self.assertEqual(param.name, None)
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertEqual(param.start, None)
+        self.assertEqual(param.end, "2020-12-31")
+
+    def test_from_api_repr_wo_value(self):
+        # Back-end may not send back values for None params. See #9027
+        from google.cloud.bigquery.query import RangeQueryParameterType
+
+        RESOURCE = {
+            "parameterType": {
+                "type": "RANGE",
+                "rangeElementType": {
+                    "type": "DATE",
+                },
+            },
+        }
+        range_element_type = RangeQueryParameterType(type_="DATE")
+        klass = self._get_target_class()
+        param = klass.from_api_repr(RESOURCE)
+        self.assertIs(param.name, None)
+        self.assertEqual(param.range_element_type, range_element_type)
+        self.assertIs(param.start, None)
+        self.assertIs(param.end, None)
+
+    def test_to_api_repr_w_name(self):
+        EXPECTED = {
+            "name": "foo",
+            "parameterType": {
+                "type": "RANGE",
+                "rangeElementType": {
+                    "type": "DATE",
+                },
+            },
+            "parameterValue": {
+                "rangeValue": {"start": {"value": None}, "end": {"value": "2016-08-11"}}
+            },
+        }
+        param = self._make_one(range_element_type="DATE", end="2016-08-11", name="foo")
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_wo_name(self):
+        EXPECTED = {
+            "parameterType": {
+                "type": "RANGE",
+                "rangeElementType": {
+                    "type": "DATE",
+                },
+            },
+            "parameterValue": {
+                "rangeValue": {"start": {"value": None}, "end": {"value": "2016-08-11"}}
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(range_element_type="DATE", end="2016-08-11")
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_date_date(self):
+        today = datetime.date.today()
+        today_str = today.strftime("%Y-%m-%d")
+        EXPECTED = {
+            "name": "foo",
+            "parameterType": {
+                "type": "RANGE",
+                "rangeElementType": {
+                    "type": "DATE",
+                },
+            },
+            "parameterValue": {
+                "rangeValue": {"start": {"value": None}, "end": {"value": today_str}}
+            },
+        }
+        param = self._make_one(range_element_type="DATE", end=today, name="foo")
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_datetime_str(self):
+        EXPECTED = {
+            "parameterType": {
+                "type": "RANGE",
+                "rangeElementType": {
+                    "type": "DATETIME",
+                },
+            },
+            "parameterValue": {
+                "rangeValue": {
+                    "start": {"value": None},
+                    "end": {"value": "2020-01-01T12:00:00.000000"},
+                }
+            },
+        }
+        klass = self._get_target_class()
+        end_datetime = datetime.datetime(year=2020, month=1, day=1, hour=12)
+        param = klass.positional(range_element_type="DATETIME", end=end_datetime)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_datetime_datetime(self):
+        from google.cloud.bigquery._helpers import _RFC3339_MICROS_NO_ZULU
+
+        now = datetime.datetime.utcnow()
+        now_str = now.strftime(_RFC3339_MICROS_NO_ZULU)
+        EXPECTED = {
+            "parameterType": {
+                "type": "RANGE",
+                "rangeElementType": {
+                    "type": "DATETIME",
+                },
+            },
+            "parameterValue": {
+                "rangeValue": {"start": {"value": None}, "end": {"value": now_str}}
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(range_element_type="DATETIME", end=now)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_timestamp_str(self):
+        EXPECTED = {
+            "parameterType": {
+                "type": "RANGE",
+                "rangeElementType": {
+                    "type": "TIMESTAMP",
+                },
+            },
+            "parameterValue": {
+                "rangeValue": {
+                    "start": {"value": None},
+                    "end": {"value": "2020-01-01 12:00:00+00:00"},
+                }
+            },
+        }
+        klass = self._get_target_class()
+        end_timestamp = datetime.datetime(year=2020, month=1, day=1, hour=12)
+        param = klass.positional(range_element_type="TIMESTAMP", end=end_timestamp)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_w_timestamp_timestamp(self):
+        from google.cloud._helpers import UTC  # type: ignore
+
+        now = datetime.datetime.utcnow()
+        now = now.astimezone(UTC)
+        now_str = str(now)
+        EXPECTED = {
+            "parameterType": {
+                "type": "RANGE",
+                "rangeElementType": {
+                    "type": "TIMESTAMP",
+                },
+            },
+            "parameterValue": {
+                "rangeValue": {"start": {"value": None}, "end": {"value": now_str}}
+            },
+        }
+        klass = self._get_target_class()
+        param = klass.positional(range_element_type="TIMESTAMP", end=now)
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_wo_values(self):
+        EXPECTED = {
+            "name": "foo",
+            "parameterType": {
+                "type": "RANGE",
+                "rangeElementType": {
+                    "type": "DATE",
+                },
+            },
+            "parameterValue": {
+                "rangeValue": {"start": {"value": None}, "end": {"value": None}}
+            },
+        }
+        param = self._make_one(range_element_type="DATE", name="foo")
+        self.assertEqual(param.to_api_repr(), EXPECTED)
+
+    def test_to_api_repr_unsupported_value_type(self):
+        with self.assertRaisesRegex(
+            ValueError, "Cannot convert range element value from type"
+        ):
+            range_param = self._make_one(
+                range_element_type="DATE", start=datetime.date.today()
+            )
+            range_param.range_element_type.type_._type = "LONG"
+            range_param.to_api_repr()
+
+    def test___eq__(self):
+        param = self._make_one(
+            range_element_type="DATE", start="2016-08-11", name="foo"
+        )
+        self.assertEqual(param, param)
+        self.assertNotEqual(param, object())
+        alias = self._make_one(
+            range_element_type="DATE", start="2016-08-11", name="bar"
+        )
+        self.assertNotEqual(param, alias)
+        wrong_type = self._make_one(
+            range_element_type="DATETIME",
+            start="2020-12-31 12:00:00.000000",
+            name="foo",
+        )
+        self.assertNotEqual(param, wrong_type)
+        wrong_val = self._make_one(
+            range_element_type="DATE", start="2016-08-12", name="foo"
+        )
+        self.assertNotEqual(param, wrong_val)
+
+    def test___eq___wrong_type(self):
+        param = self._make_one(
+            range_element_type="DATE", start="2016-08-11", name="foo"
+        )
+        other = object()
+        self.assertNotEqual(param, other)
+        self.assertEqual(param, mock.ANY)
+
+    def test___eq___name_mismatch(self):
+        param = self._make_one(
+            range_element_type="DATE", start="2016-08-11", name="foo"
+        )
+        other = self._make_one(
+            range_element_type="DATE", start="2016-08-11", name="bar"
+        )
+        self.assertNotEqual(param, other)
+
+    def test___eq___field_type_mismatch(self):
+        param = self._make_one(range_element_type="DATE")
+        other = self._make_one(range_element_type="DATETIME")
+        self.assertNotEqual(param, other)
+
+    def test___eq___value_mismatch(self):
+        param = self._make_one(range_element_type="DATE", start="2016-08-11")
+        other = self._make_one(range_element_type="DATE", start="2016-08-12")
+        self.assertNotEqual(param, other)
+
+    def test___eq___hit(self):
+        param = self._make_one(range_element_type="DATE", start="2016-08-12")
+        other = self._make_one(range_element_type="DATE", start="2016-08-12")
+        self.assertEqual(param, other)
+
+    def test___ne___wrong_type(self):
+        param = self._make_one(range_element_type="DATE")
+        other = object()
+        self.assertNotEqual(param, other)
+        self.assertEqual(param, mock.ANY)
+
+    def test___ne___same_value(self):
+        param1 = self._make_one(range_element_type="DATE")
+        param2 = self._make_one(range_element_type="DATE")
+        # unittest ``assertEqual`` uses ``==`` not ``!=``.
+        comparison_val = param1 != param2
+        self.assertFalse(comparison_val)
+
+    def test___ne___different_values(self):
+        param1 = self._make_one(range_element_type="DATE", start="2016-08-12")
+        param2 = self._make_one(range_element_type="DATE")
+        self.assertNotEqual(param1, param2)
+
+    def test___repr__(self):
+        param1 = self._make_one(range_element_type="DATE", start="2016-08-12")
+        expected = "RangeQueryParameter(None, {'type': 'RANGE', 'rangeElementType': {'type': 'DATE'}}, '2016-08-12', None)"
+        self.assertEqual(repr(param1), expected)
 
 
 def _make_subparam(name, type_, value):

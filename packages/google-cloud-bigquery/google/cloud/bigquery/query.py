@@ -30,6 +30,8 @@ _SCALAR_VALUE_TYPE = Optional[
     Union[str, int, float, decimal.Decimal, bool, datetime.datetime, datetime.date]
 ]
 
+_RANGE_ELEMENT_TYPE_STR = {"TIMESTAMP", "DATETIME", "DATE"}
+
 
 class ConnectionProperty:
     """A connection-level property to customize query behavior.
@@ -360,6 +362,129 @@ class StructQueryParameterType(_AbstractQueryParameterType):
         )
         items = ", ".join(repr(field) for field in self._fields)
         return f"{self.__class__.__name__}({items}{name}{description})"
+
+
+class RangeQueryParameterType(_AbstractQueryParameterType):
+    """Type representation for range query parameters.
+
+    Args:
+        type_ (Union[ScalarQueryParameterType, str]):
+            Type of range element, must be one of 'TIMESTAMP', 'DATETIME', or
+            'DATE'.
+        name (Optional[str]):
+            The name of the query parameter. Primarily used if the type is
+            one of the subfields in ``StructQueryParameterType`` instance.
+        description (Optional[str]):
+            The query parameter description. Primarily used if the type is
+            one of the subfields in ``StructQueryParameterType`` instance.
+    """
+
+    @classmethod
+    def _parse_range_element_type(self, type_):
+        """Helper method that parses the input range element type, which may
+        be a string, or a ScalarQueryParameterType object.
+
+        Returns:
+            google.cloud.bigquery.query.ScalarQueryParameterType: Instance
+        """
+        if isinstance(type_, str):
+            if type_ not in _RANGE_ELEMENT_TYPE_STR:
+                raise ValueError(
+                    "If given as a string, range element type must be one of "
+                    "'TIMESTAMP', 'DATE', or 'DATETIME'."
+                )
+            return ScalarQueryParameterType(type_)
+        elif isinstance(type_, ScalarQueryParameterType):
+            if type_._type not in _RANGE_ELEMENT_TYPE_STR:
+                raise ValueError(
+                    "If given as a ScalarQueryParameter object, range element "
+                    "type must be one of 'TIMESTAMP', 'DATE', or 'DATETIME' "
+                    "type."
+                )
+            return type_
+        else:
+            raise ValueError(
+                "range_type must be a string or ScalarQueryParameter object, "
+                "of 'TIMESTAMP', 'DATE', or 'DATETIME' type."
+            )
+
+    def __init__(self, type_, *, name=None, description=None):
+        self.type_ = self._parse_range_element_type(type_)
+        self.name = name
+        self.description = description
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory: construct parameter type from JSON resource.
+
+        Args:
+            resource (Dict): JSON mapping of parameter
+
+        Returns:
+            google.cloud.bigquery.query.RangeQueryParameterType: Instance
+        """
+        type_ = resource["rangeElementType"]["type"]
+        name = resource.get("name")
+        description = resource.get("description")
+
+        return cls(type_, name=name, description=description)
+
+    def to_api_repr(self):
+        """Construct JSON API representation for the parameter type.
+
+        Returns:
+            Dict: JSON mapping
+        """
+        # Name and description are only used if the type is a field inside a struct
+        # type, but it's StructQueryParameterType's responsibilty to use these two
+        # attributes in the API representation when needed. Here we omit them.
+        return {
+            "type": "RANGE",
+            "rangeElementType": self.type_.to_api_repr(),
+        }
+
+    def with_name(self, new_name: Union[str, None]):
+        """Return a copy of the instance with ``name`` set to ``new_name``.
+
+        Args:
+            name (Union[str, None]):
+                The new name of the range query parameter type. If ``None``,
+                the existing name is cleared.
+
+        Returns:
+            google.cloud.bigquery.query.RangeQueryParameterType:
+               A new instance with updated name.
+        """
+        return type(self)(self.type_, name=new_name, description=self.description)
+
+    def __repr__(self):
+        name = f", name={self.name!r}" if self.name is not None else ""
+        description = (
+            f", description={self.description!r}"
+            if self.description is not None
+            else ""
+        )
+        return f"{self.__class__.__name__}({self.type_!r}{name}{description})"
+
+    def _key(self):
+        """A tuple key that uniquely describes this field.
+
+        Used to compute this instance's hashcode and evaluate equality.
+
+        Returns:
+            Tuple: The contents of this
+            :class:`~google.cloud.bigquery.query.RangeQueryParameterType`.
+        """
+        type_ = self.type_.to_api_repr()
+        return (self.name, type_, self.description)
+
+    def __eq__(self, other):
+        if not isinstance(other, RangeQueryParameterType):
+            return NotImplemented
+        return self._key() == other._key()
+
+    def __ne__(self, other):
+        return not self == other
 
 
 class _AbstractQueryParameter(object):
@@ -809,6 +934,178 @@ class StructQueryParameter(_AbstractQueryParameter):
 
     def __repr__(self):
         return "StructQueryParameter{}".format(self._key())
+
+
+class RangeQueryParameter(_AbstractQueryParameter):
+    """Named / positional query parameters for range values.
+
+    Args:
+        range_element_type (Union[str, RangeQueryParameterType]):
+            The type of range elements. It must be one of 'TIMESTAMP',
+            'DATE', or 'DATETIME'.
+
+        start (Optional[Union[ScalarQueryParameter, str]]):
+            The start of the range value. Must be the same type as
+            range_element_type. If not provided, it's interpreted as UNBOUNDED.
+
+        end (Optional[Union[ScalarQueryParameter, str]]):
+            The end of the range value. Must be the same type as
+            range_element_type. If not provided, it's interpreted as UNBOUNDED.
+
+        name (Optional[str]):
+            Parameter name, used via ``@foo`` syntax.  If None, the
+            parameter can only be addressed via position (``?``).
+    """
+
+    @classmethod
+    def _parse_range_element_type(self, range_element_type):
+        if isinstance(range_element_type, str):
+            if range_element_type not in _RANGE_ELEMENT_TYPE_STR:
+                raise ValueError(
+                    "If given as a string, range_element_type must be one of "
+                    f"'TIMESTAMP', 'DATE', or 'DATETIME'. Got {range_element_type}."
+                )
+            return RangeQueryParameterType(range_element_type)
+        elif isinstance(range_element_type, RangeQueryParameterType):
+            if range_element_type.type_._type not in _RANGE_ELEMENT_TYPE_STR:
+                raise ValueError(
+                    "If given as a RangeQueryParameterType object, "
+                    "range_element_type must be one of 'TIMESTAMP', 'DATE', "
+                    "or 'DATETIME' type."
+                )
+            return range_element_type
+        else:
+            raise ValueError(
+                "range_element_type must be a string or "
+                "RangeQueryParameterType object, of 'TIMESTAMP', 'DATE', "
+                "or 'DATETIME' type. Got "
+                f"{type(range_element_type)}:{range_element_type}"
+            )
+
+    @classmethod
+    def _serialize_range_element_value(self, value, type_):
+        if value is None or isinstance(value, str):
+            return value
+        else:
+            converter = _SCALAR_VALUE_TO_JSON_PARAM.get(type_)
+            if converter is not None:
+                return converter(value)  # type: ignore
+            else:
+                raise ValueError(
+                    f"Cannot convert range element value from type {type_}, "
+                    "must be one of the strings 'TIMESTAMP', 'DATE' "
+                    "'DATETIME' or a RangeQueryParameterType object."
+                )
+
+    def __init__(
+        self,
+        range_element_type,
+        start=None,
+        end=None,
+        name=None,
+    ):
+        self.name = name
+        self.range_element_type = self._parse_range_element_type(range_element_type)
+        print(self.range_element_type.type_._type)
+        self.start = start
+        self.end = end
+
+    @classmethod
+    def positional(
+        cls, range_element_type, start=None, end=None
+    ) -> "RangeQueryParameter":
+        """Factory for positional parameters.
+
+        Args:
+            range_element_type (Union[str, RangeQueryParameterType]):
+                The type of range elements. It must be one of `'TIMESTAMP'`,
+                `'DATE'`, or `'DATETIME'`.
+
+            start (Optional[Union[ScalarQueryParameter, str]]):
+                The start of the range value. Must be the same type as
+                range_element_type. If not provided, it's interpreted as
+                UNBOUNDED.
+
+            end (Optional[Union[ScalarQueryParameter, str]]):
+                The end of the range value. Must be the same type as
+                range_element_type. If not provided, it's interpreted as
+                UNBOUNDED.
+
+        Returns:
+            google.cloud.bigquery.query.RangeQueryParameter: Instance without
+            name.
+        """
+        return cls(range_element_type, start, end)
+
+    @classmethod
+    def from_api_repr(cls, resource: dict) -> "RangeQueryParameter":
+        """Factory: construct parameter from JSON resource.
+
+        Args:
+            resource (Dict): JSON mapping of parameter
+
+        Returns:
+            google.cloud.bigquery.query.RangeQueryParameter: Instance
+        """
+        name = resource.get("name")
+        range_element_type = (
+            resource.get("parameterType", {}).get("rangeElementType", {}).get("type")
+        )
+        range_value = resource.get("parameterValue", {}).get("rangeValue", {})
+        start = range_value.get("start", {}).get("value")
+        end = range_value.get("end", {}).get("value")
+
+        return cls(range_element_type, start=start, end=end, name=name)
+
+    def to_api_repr(self) -> dict:
+        """Construct JSON API representation for the parameter.
+
+        Returns:
+            Dict: JSON mapping
+        """
+        range_element_type = self.range_element_type.to_api_repr()
+        type_ = self.range_element_type.type_._type
+        start = self._serialize_range_element_value(self.start, type_)
+        end = self._serialize_range_element_value(self.end, type_)
+        resource = {
+            "parameterType": range_element_type,
+            "parameterValue": {
+                "rangeValue": {
+                    "start": {"value": start},
+                    "end": {"value": end},
+                },
+            },
+        }
+
+        # distinguish between name not provided vs. name being empty string
+        if self.name is not None:
+            resource["name"] = self.name
+
+        return resource
+
+    def _key(self):
+        """A tuple key that uniquely describes this field.
+
+        Used to compute this instance's hashcode and evaluate equality.
+
+        Returns:
+            Tuple: The contents of this
+            :class:`~google.cloud.bigquery.query.RangeQueryParameter`.
+        """
+
+        range_element_type = self.range_element_type.to_api_repr()
+        return (self.name, range_element_type, self.start, self.end)
+
+    def __eq__(self, other):
+        if not isinstance(other, RangeQueryParameter):
+            return NotImplemented
+        return self._key() == other._key()
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __repr__(self):
+        return "RangeQueryParameter{}".format(self._key())
 
 
 class SqlParameterScalarTypes:

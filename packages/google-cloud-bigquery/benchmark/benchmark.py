@@ -231,7 +231,7 @@ def _is_datetime_min(time_str: str) -> bool:
 
 
 def _summary(run: dict) -> str:
-    """Coverts run dict to run summary string."""
+    """Converts run dict to run summary string."""
     no_val = "NODATA"
     output = ["QUERYTIME "]
 

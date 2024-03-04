@@ -26,6 +26,7 @@ from google.cloud.bigquery.query import ScalarQueryParameter
 from google.cloud.bigquery.query import ScalarQueryParameterType
 from google.cloud.bigquery.query import StructQueryParameter
 from google.cloud.bigquery.query import StructQueryParameterType
+from google.cloud.bigquery.query import RangeQueryParameter
 
 
 @pytest.fixture(params=["INSERT", "QUERY"])
@@ -419,6 +420,38 @@ def test_query_statistics(bigquery_client, query_api_method):
                     ArrayQueryParameter(
                         name="friends", array_type="STRING", values=["Jack", "Jill"]
                     ),
+                )
+            ],
+        ),
+        (
+            "SELECT @range_date",
+            "[2016-12-05, UNBOUNDED)",
+            [
+                RangeQueryParameter(
+                    name="range_date",
+                    range_element_type="DATE",
+                    start=datetime.date(2016, 12, 5),
+                )
+            ],
+        ),
+        (
+            "SELECT @range_datetime",
+            "[2016-12-05T00:00:00, UNBOUNDED)",
+            [
+                RangeQueryParameter(
+                    name="range_datetime",
+                    range_element_type="DATETIME",
+                    start=datetime.datetime(2016, 12, 5),
+                )
+            ],
+        ),
+        (
+            "SELECT @range_unbounded",
+            "[UNBOUNDED, UNBOUNDED)",
+            [
+                RangeQueryParameter(
+                    name="range_unbounded",
+                    range_element_type="DATETIME",
                 )
             ],
         ),
