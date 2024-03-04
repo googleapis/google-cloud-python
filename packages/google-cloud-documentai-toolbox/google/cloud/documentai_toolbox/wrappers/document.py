@@ -22,6 +22,7 @@ import os
 import re
 from typing import Dict, List, Optional, Type, Union
 
+from google.api_core.client_options import ClientOptions
 from google.api_core.operation import from_gapic as operation_from_gapic
 from google.cloud.vision import AnnotateFileResponse
 from google.longrunning.operations_pb2 import GetOperationRequest
@@ -138,6 +139,7 @@ def _get_shards(gcs_bucket_name: str, gcs_prefix: str) -> List[documentai.Docume
 
 def _get_batch_process_metadata(
     operation_name: str,
+    location: Optional[str] = None,
     timeout: Optional[float] = None,
 ) -> documentai.BatchProcessMetadata:
     r"""Get `BatchProcessMetadata` from a `batch_process_documents()` long-running operation.
@@ -146,6 +148,10 @@ def _get_batch_process_metadata(
         operation_name (str):
             Required. The fully qualified operation name for a `batch_process_documents()` operation.
 
+        location (str):
+                Optional. The location of the processor used for `batch_process_documents()`.
+                Deprecated. Maintained for backwards compatibility.
+
         timeout (float):
             Optional. Default None. Time in seconds to wait for operation to complete.
             If None, will wait indefinitely.
@@ -153,15 +159,30 @@ def _get_batch_process_metadata(
         documentai.BatchProcessMetadata:
             Metadata from batch process.
     """
+    # Validate Operation Name
+    match = re.search(
+        r"projects\/\w+\/locations\/(\w+)\/operations\/\w+", operation_name
+    )
+
+    if not match:
+        raise ValueError(
+            f"Invalid Operation Name: {operation_name}\n"
+            "Expected operation name in the format `projects/<project>/locations/<location>/operations/<operation>`"
+        )
+
+    location = location or match.group(1)
+
     client = documentai.DocumentProcessorServiceClient(
         client_info=gcs_utilities._get_client_info(module="get_batch_process_metadata"),
+        client_options=ClientOptions(
+            api_endpoint=f"{location}-documentai.googleapis.com"
+        ),
     )
 
     # Poll Operation until complete.
     operation = operation_from_gapic(
         operation=client.get_operation(
             request=GetOperationRequest(name=operation_name),
-            metadata=documentai.BatchProcessMetadata(),
         ),
         operations_client=client,
         result_type=documentai.BatchProcessResponse,
@@ -599,6 +620,7 @@ class Document:
         return cls.from_batch_process_metadata(
             metadata=_get_batch_process_metadata(
                 operation_name=operation_name,
+                location=location,
                 timeout=timeout,
             )
         )

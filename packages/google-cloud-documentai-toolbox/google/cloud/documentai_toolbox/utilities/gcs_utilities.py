@@ -18,7 +18,7 @@ import os
 import re
 from typing import Dict, List, Optional, Tuple
 
-from google.api_core import client_info
+from google.api_core.gapic_v1 import client_info
 
 from google.cloud import documentai, documentai_toolbox, storage
 from google.cloud.documentai_toolbox import constants

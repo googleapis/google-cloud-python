@@ -317,6 +317,16 @@ def test_get_batch_process_metadata_with_invalid_metadata_type(mock_docai):
         document._get_batch_process_metadata(operation_name)
 
 
+def test_get_batch_process_metadata_with_invalid_operation_name():
+    with pytest.raises(
+        ValueError,
+        match="Invalid Operation Name",
+    ):
+        document._get_batch_process_metadata(
+            "projects//locations/us/operations/7890123"
+        )
+
+
 def test_bigquery_column_name():
     string_map = {
         "Phone #:": "phone_num",

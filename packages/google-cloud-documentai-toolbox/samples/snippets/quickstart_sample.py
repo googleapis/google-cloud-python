@@ -15,41 +15,88 @@
 
 
 # [START documentai_toolbox_quickstart]
+from typing import Optional
 
+from google.cloud import documentai
 from google.cloud.documentai_toolbox import document
 from google.cloud.documentai_toolbox import gcs_utilities
 
 # TODO(developer): Uncomment these variables before running the sample.
-# Given a document.proto or sharded document.proto in path gs://bucket/path/to/folder
+# Given a Document JSON or sharded Document JSON in path gs://bucket/path/to/folder
 # gcs_bucket_name = "bucket"
 # gcs_prefix = "path/to/folder"
 
+# Or, given a Document JSON in path gs://bucket/path/to/folder/document.json
+# gcs_uri = "gs://bucket/path/to/folder/document.json"
 
-def quickstart_sample(gcs_bucket_name: str, gcs_prefix: str) -> None:
-    print("Document structure in Cloud Storage")
-    gcs_utilities.print_gcs_document_tree(
-        gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix
-    )
+# Or, given a Document JSON in path local/path/to/folder/document.json
+# document_path = "local/path/to/folder/document.json"
 
-    wrapped_document = document.Document.from_gcs(
-        gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix
-    )
+# Or, given a Document object from Document AI
+# documentai_document = documentai.Document()
+
+# Or, given a BatchProcessMetadata object from Document AI
+# operation = client.batch_process_documents(request)
+# operation.result(timeout=timeout)
+# batch_process_metadata = documentai.BatchProcessMetadata(operation.metadata)
+
+# Or, given a BatchProcessOperation name from Document AI
+# batch_process_operation = "projects/project_id/locations/location/operations/operation_id"
+
+
+def quickstart_sample(
+    gcs_bucket_name: Optional[str] = None,
+    gcs_prefix: Optional[str] = None,
+    gcs_uri: Optional[str] = None,
+    document_path: Optional[str] = None,
+    documentai_document: Optional[documentai.Document] = None,
+    batch_process_metadata: Optional[documentai.BatchProcessMetadata] = None,
+    batch_process_operation: Optional[str] = None,
+) -> None:
+    if gcs_bucket_name and gcs_prefix:
+        # Load from Google Cloud Storage Directory
+        print("Document structure in Cloud Storage")
+        gcs_utilities.print_gcs_document_tree(
+            gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix
+        )
+
+        wrapped_document = document.Document.from_gcs(
+            gcs_bucket_name=gcs_bucket_name, gcs_prefix=gcs_prefix
+        )
+    elif gcs_uri:
+        # Load a single Document from a Google Cloud Storage URI
+        wrapped_document = document.Document.from_gcs_uri(gcs_uri=gcs_uri)
+    elif document_path:
+        # Load from local `Document` JSON file
+        wrapped_document = document.Document.from_document_path(document_path)
+    elif documentai_document:
+        # Load from `documentai.Document` object
+        wrapped_document = document.Document.from_documentai_document(
+            documentai_document
+        )
+    elif batch_process_metadata:
+        # Load Documents from `BatchProcessMetadata` object
+        wrapped_documents = document.Document.from_batch_process_metadata(
+            metadata=batch_process_metadata
+        )
+        wrapped_document = wrapped_documents[0]
+    elif batch_process_operation:
+        wrapped_documents = document.Document.from_batch_process_operation(
+            location="us", operation_name=batch_process_operation
+        )
+        wrapped_document = wrapped_documents[0]
+    else:
+        raise ValueError("No document source provided.")
+
     # For all properties and methods, refer to:
     # https://cloud.google.com/python/docs/reference/documentai-toolbox/latest/google.cloud.documentai_toolbox.wrappers.document.Document
-
-    # Alternatively, create wrapped document from:
-    #
-    # - Local `Document` JSON file:     `document.Document.from_document_path()`
-    # - `Document` object:              `document.Document.from_documentai_document()`
-    # - `BatchProcessMetadata`:         `document.Document.from_batch_process_metadata()`
-    # - Batch Processing Operation:     `document.Document.from_batch_process_operation()`
 
     print("Document Successfully Loaded!")
     print(f"\t Number of Pages: {len(wrapped_document.pages)}")
     print(f"\t Number of Entities: {len(wrapped_document.entities)}")
 
-    for idx, page in enumerate(wrapped_document.pages):
-        print(f"Page {idx}")
+    for page in wrapped_document.pages:
+        print(f"Page {page.page_number}")
         for block in page.blocks:
             print(block.text)
         for paragraph in page.paragraphs:
