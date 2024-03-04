@@ -649,7 +649,9 @@ class RoutersClient(metaclass=RoutersClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of routers.
+        r"""Retrieves an aggregated list of routers. To prevent failure,
+        Google recommends that you set the ``returnPartialSuccess``
+        parameter to ``true``.
 
         .. code-block:: python
 

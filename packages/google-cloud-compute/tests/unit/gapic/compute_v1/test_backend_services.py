@@ -3464,6 +3464,7 @@ def test_get_rest(request_type):
             security_policy="security_policy_value",
             self_link="self_link_value",
             service_bindings=["service_bindings_value"],
+            service_lb_policy="service_lb_policy_value",
             session_affinity="session_affinity_value",
             timeout_sec=1185,
         )
@@ -3504,6 +3505,7 @@ def test_get_rest(request_type):
     assert response.security_policy == "security_policy_value"
     assert response.self_link == "self_link_value"
     assert response.service_bindings == ["service_bindings_value"]
+    assert response.service_lb_policy == "service_lb_policy_value"
     assert response.session_affinity == "session_affinity_value"
     assert response.timeout_sec == 1185
 
@@ -4428,6 +4430,7 @@ def test_insert_rest(request_type):
                 "max_rate_per_endpoint": 0.22310000000000002,
                 "max_rate_per_instance": 0.22190000000000001,
                 "max_utilization": 0.1633,
+                "preference": "preference_value",
             }
         ],
         "cdn_policy": {
@@ -4569,6 +4572,7 @@ def test_insert_rest(request_type):
         },
         "self_link": "self_link_value",
         "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
+        "service_lb_policy": "service_lb_policy_value",
         "session_affinity": "session_affinity_value",
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
@@ -4983,6 +4987,7 @@ def test_insert_unary_rest(request_type):
                 "max_rate_per_endpoint": 0.22310000000000002,
                 "max_rate_per_instance": 0.22190000000000001,
                 "max_utilization": 0.1633,
+                "preference": "preference_value",
             }
         ],
         "cdn_policy": {
@@ -5124,6 +5129,7 @@ def test_insert_unary_rest(request_type):
         },
         "self_link": "self_link_value",
         "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
+        "service_lb_policy": "service_lb_policy_value",
         "session_affinity": "session_affinity_value",
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
@@ -6214,6 +6220,7 @@ def test_patch_rest(request_type):
                 "max_rate_per_endpoint": 0.22310000000000002,
                 "max_rate_per_instance": 0.22190000000000001,
                 "max_utilization": 0.1633,
+                "preference": "preference_value",
             }
         ],
         "cdn_policy": {
@@ -6355,6 +6362,7 @@ def test_patch_rest(request_type):
         },
         "self_link": "self_link_value",
         "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
+        "service_lb_policy": "service_lb_policy_value",
         "session_affinity": "session_affinity_value",
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
@@ -6776,6 +6784,7 @@ def test_patch_unary_rest(request_type):
                 "max_rate_per_endpoint": 0.22310000000000002,
                 "max_rate_per_instance": 0.22190000000000001,
                 "max_utilization": 0.1633,
+                "preference": "preference_value",
             }
         ],
         "cdn_policy": {
@@ -6917,6 +6926,7 @@ def test_patch_unary_rest(request_type):
         },
         "self_link": "self_link_value",
         "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
+        "service_lb_policy": "service_lb_policy_value",
         "session_affinity": "session_affinity_value",
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
@@ -9723,6 +9733,7 @@ def test_update_rest(request_type):
                 "max_rate_per_endpoint": 0.22310000000000002,
                 "max_rate_per_instance": 0.22190000000000001,
                 "max_utilization": 0.1633,
+                "preference": "preference_value",
             }
         ],
         "cdn_policy": {
@@ -9864,6 +9875,7 @@ def test_update_rest(request_type):
         },
         "self_link": "self_link_value",
         "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
+        "service_lb_policy": "service_lb_policy_value",
         "session_affinity": "session_affinity_value",
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,
@@ -10285,6 +10297,7 @@ def test_update_unary_rest(request_type):
                 "max_rate_per_endpoint": 0.22310000000000002,
                 "max_rate_per_instance": 0.22190000000000001,
                 "max_utilization": 0.1633,
+                "preference": "preference_value",
             }
         ],
         "cdn_policy": {
@@ -10426,6 +10439,7 @@ def test_update_unary_rest(request_type):
         },
         "self_link": "self_link_value",
         "service_bindings": ["service_bindings_value1", "service_bindings_value2"],
+        "service_lb_policy": "service_lb_policy_value",
         "session_affinity": "session_affinity_value",
         "subsetting": {"policy": "policy_value"},
         "timeout_sec": 1185,

@@ -6362,7 +6362,8 @@ def test_insert_rest(request_type):
         "id": 205,
         "instance_group": "instance_group_value",
         "instance_lifecycle_policy": {
-            "force_update_on_repair": "force_update_on_repair_value"
+            "default_action_on_failure": "default_action_on_failure_value",
+            "force_update_on_repair": "force_update_on_repair_value",
         },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
@@ -6853,7 +6854,8 @@ def test_insert_unary_rest(request_type):
         "id": 205,
         "instance_group": "instance_group_value",
         "instance_lifecycle_policy": {
-            "force_update_on_repair": "force_update_on_repair_value"
+            "default_action_on_failure": "default_action_on_failure_value",
+            "force_update_on_repair": "force_update_on_repair_value",
         },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
@@ -8863,7 +8865,8 @@ def test_patch_rest(request_type):
         "id": 205,
         "instance_group": "instance_group_value",
         "instance_lifecycle_policy": {
-            "force_update_on_repair": "force_update_on_repair_value"
+            "default_action_on_failure": "default_action_on_failure_value",
+            "force_update_on_repair": "force_update_on_repair_value",
         },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
@@ -9372,7 +9375,8 @@ def test_patch_unary_rest(request_type):
         "id": 205,
         "instance_group": "instance_group_value",
         "instance_lifecycle_policy": {
-            "force_update_on_repair": "force_update_on_repair_value"
+            "default_action_on_failure": "default_action_on_failure_value",
+            "force_update_on_repair": "force_update_on_repair_value",
         },
         "instance_template": "instance_template_value",
         "kind": "kind_value",
