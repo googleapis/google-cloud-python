@@ -2924,6 +2924,9 @@ def test_create_snapshot_rest(request_type):
         "source_disk_encryption_key": {},
         "source_disk_for_recovery_checkpoint": "source_disk_for_recovery_checkpoint_value",
         "source_disk_id": "source_disk_id_value",
+        "source_instant_snapshot": "source_instant_snapshot_value",
+        "source_instant_snapshot_encryption_key": {},
+        "source_instant_snapshot_id": "source_instant_snapshot_id_value",
         "source_snapshot_schedule_policy": "source_snapshot_schedule_policy_value",
         "source_snapshot_schedule_policy_id": "source_snapshot_schedule_policy_id_value",
         "status": "status_value",
@@ -3374,6 +3377,9 @@ def test_create_snapshot_unary_rest(request_type):
         "source_disk_encryption_key": {},
         "source_disk_for_recovery_checkpoint": "source_disk_for_recovery_checkpoint_value",
         "source_disk_id": "source_disk_id_value",
+        "source_instant_snapshot": "source_instant_snapshot_value",
+        "source_instant_snapshot_encryption_key": {},
+        "source_instant_snapshot_id": "source_instant_snapshot_id_value",
         "source_snapshot_schedule_policy": "source_snapshot_schedule_policy_value",
         "source_snapshot_schedule_policy_id": "source_snapshot_schedule_policy_id_value",
         "status": "status_value",
@@ -4430,6 +4436,8 @@ def test_get_rest(request_type):
             source_disk_id="source_disk_id_value",
             source_image="source_image_value",
             source_image_id="source_image_id_value",
+            source_instant_snapshot="source_instant_snapshot_value",
+            source_instant_snapshot_id="source_instant_snapshot_id_value",
             source_snapshot="source_snapshot_value",
             source_snapshot_id="source_snapshot_id_value",
             source_storage_object="source_storage_object_value",
@@ -4488,6 +4496,8 @@ def test_get_rest(request_type):
     assert response.source_disk_id == "source_disk_id_value"
     assert response.source_image == "source_image_value"
     assert response.source_image_id == "source_image_id_value"
+    assert response.source_instant_snapshot == "source_instant_snapshot_value"
+    assert response.source_instant_snapshot_id == "source_instant_snapshot_id_value"
     assert response.source_snapshot == "source_snapshot_value"
     assert response.source_snapshot_id == "source_snapshot_id_value"
     assert response.source_storage_object == "source_storage_object_value"
@@ -5099,6 +5109,8 @@ def test_insert_rest(request_type):
         "source_image": "source_image_value",
         "source_image_encryption_key": {},
         "source_image_id": "source_image_id_value",
+        "source_instant_snapshot": "source_instant_snapshot_value",
+        "source_instant_snapshot_id": "source_instant_snapshot_id_value",
         "source_snapshot": "source_snapshot_value",
         "source_snapshot_encryption_key": {},
         "source_snapshot_id": "source_snapshot_id_value",
@@ -5559,6 +5571,8 @@ def test_insert_unary_rest(request_type):
         "source_image": "source_image_value",
         "source_image_encryption_key": {},
         "source_image_id": "source_image_id_value",
+        "source_instant_snapshot": "source_instant_snapshot_value",
+        "source_instant_snapshot_id": "source_instant_snapshot_id_value",
         "source_snapshot": "source_snapshot_value",
         "source_snapshot_encryption_key": {},
         "source_snapshot_id": "source_snapshot_id_value",
@@ -11851,6 +11865,8 @@ def test_update_rest(request_type):
         "source_image": "source_image_value",
         "source_image_encryption_key": {},
         "source_image_id": "source_image_id_value",
+        "source_instant_snapshot": "source_instant_snapshot_value",
+        "source_instant_snapshot_id": "source_instant_snapshot_id_value",
         "source_snapshot": "source_snapshot_value",
         "source_snapshot_encryption_key": {},
         "source_snapshot_id": "source_snapshot_id_value",
@@ -12320,6 +12336,8 @@ def test_update_unary_rest(request_type):
         "source_image": "source_image_value",
         "source_image_encryption_key": {},
         "source_image_id": "source_image_id_value",
+        "source_instant_snapshot": "source_instant_snapshot_value",
+        "source_instant_snapshot_id": "source_instant_snapshot_id_value",
         "source_snapshot": "source_snapshot_value",
         "source_snapshot_encryption_key": {},
         "source_snapshot_id": "source_snapshot_id_value",

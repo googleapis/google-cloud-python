@@ -656,7 +656,9 @@ class TargetInstancesClient(metaclass=TargetInstancesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of target instances.
+        r"""Retrieves an aggregated list of target instances. To prevent
+        failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 

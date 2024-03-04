@@ -648,7 +648,9 @@ class MachineTypesClient(metaclass=MachineTypesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves an aggregated list of machine types.
+        r"""Retrieves an aggregated list of machine types. To prevent
+        failure, Google recommends that you set the
+        ``returnPartialSuccess`` parameter to ``true``.
 
         .. code-block:: python
 

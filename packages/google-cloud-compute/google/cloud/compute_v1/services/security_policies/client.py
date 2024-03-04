@@ -940,8 +940,10 @@ class SecurityPoliciesClient(metaclass=SecurityPoliciesClientMeta):
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.AggregatedListPager:
-        r"""Retrieves the list of all SecurityPolicy resources,
-        regional and global, available to the specified project.
+        r"""Retrieves the list of all SecurityPolicy resources, regional and
+        global, available to the specified project. To prevent failure,
+        Google recommends that you set the ``returnPartialSuccess``
+        parameter to ``true``.
 
         .. code-block:: python
 
