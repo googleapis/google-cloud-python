@@ -47,7 +47,8 @@ from google.cloud.securitycenter_v1.types import application as gcs_application
 from google.cloud.securitycenter_v1.types import database as gcs_database
 from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v1.types import kubernetes as gcs_kubernetes
-from google.cloud.securitycenter_v1.types import process
+from google.cloud.securitycenter_v1.types import load_balancer, log_entry
+from google.cloud.securitycenter_v1.types import org_policy, process
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v1",
@@ -242,11 +243,19 @@ class Finding(proto.Message):
             with the finding.
         kernel_rootkit (google.cloud.securitycenter_v1.types.KernelRootkit):
             Signature of the kernel rootkit.
+        org_policies (MutableSequence[google.cloud.securitycenter_v1.types.OrgPolicy]):
+            Contains information about the org policies
+            associated with the finding.
         application (google.cloud.securitycenter_v1.types.Application):
             Represents an application associated with the
             finding.
         backup_disaster_recovery (google.cloud.securitycenter_v1.types.BackupDisasterRecovery):
             Fields related to Backup and DR findings.
+        log_entries (MutableSequence[google.cloud.securitycenter_v1.types.LogEntry]):
+            Log entries that are relevant to the finding.
+        load_balancers (MutableSequence[google.cloud.securitycenter_v1.types.LoadBalancer]):
+            The load balancers associated with the
+            finding.
     """
 
     class State(proto.Enum):
@@ -589,6 +598,11 @@ class Finding(proto.Message):
         number=50,
         message=gcs_kernel_rootkit.KernelRootkit,
     )
+    org_policies: MutableSequence[org_policy.OrgPolicy] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=51,
+        message=org_policy.OrgPolicy,
+    )
     application: gcs_application.Application = proto.Field(
         proto.MESSAGE,
         number=53,
@@ -600,6 +614,16 @@ class Finding(proto.Message):
             number=55,
             message=gcs_backup_disaster_recovery.BackupDisasterRecovery,
         )
+    )
+    log_entries: MutableSequence[log_entry.LogEntry] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=57,
+        message=log_entry.LogEntry,
+    )
+    load_balancers: MutableSequence[load_balancer.LoadBalancer] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=58,
+        message=load_balancer.LoadBalancer,
     )
 
 

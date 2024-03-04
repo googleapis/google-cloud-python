@@ -1115,6 +1115,34 @@ class AlloyDBAdminGrpcAsyncIOTransport(AlloyDBAdminTransport):
             )
         return self._stubs["delete_user"]
 
+    @property
+    def list_databases(
+        self,
+    ) -> Callable[
+        [service.ListDatabasesRequest], Awaitable[service.ListDatabasesResponse]
+    ]:
+        r"""Return a callable for the list databases method over gRPC.
+
+        Lists Databases in a given project and location.
+
+        Returns:
+            Callable[[~.ListDatabasesRequest],
+                    Awaitable[~.ListDatabasesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_databases" not in self._stubs:
+            self._stubs["list_databases"] = self.grpc_channel.unary_unary(
+                "/google.cloud.alloydb.v1beta.AlloyDBAdmin/ListDatabases",
+                request_serializer=service.ListDatabasesRequest.serialize,
+                response_deserializer=service.ListDatabasesResponse.deserialize,
+            )
+        return self._stubs["list_databases"]
+
     def close(self):
         return self.grpc_channel.close()
 

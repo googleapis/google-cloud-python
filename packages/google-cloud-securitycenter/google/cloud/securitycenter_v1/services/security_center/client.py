@@ -81,6 +81,8 @@ from google.cloud.securitycenter_v1.types import (
     indicator,
     kernel_rootkit,
     kubernetes,
+    load_balancer,
+    log_entry,
     mitre_attack,
 )
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
@@ -101,6 +103,7 @@ from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import mute_config
 from google.cloud.securitycenter_v1.types import mute_config as gcs_mute_config
 from google.cloud.securitycenter_v1.types import notification_config
+from google.cloud.securitycenter_v1.types import org_policy
 from google.cloud.securitycenter_v1.types import organization_settings
 from google.cloud.securitycenter_v1.types import security_marks
 from google.cloud.securitycenter_v1.types import securitycenter_service
@@ -420,6 +423,26 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         """Parses a organization_settings path into its component segments."""
         m = re.match(
             r"^organizations/(?P<organization>.+?)/organizationSettings$", path
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def policy_path(
+        organization: str,
+        constraint_name: str,
+    ) -> str:
+        """Returns a fully-qualified policy string."""
+        return "organizations/{organization}/policies/{constraint_name}".format(
+            organization=organization,
+            constraint_name=constraint_name,
+        )
+
+    @staticmethod
+    def parse_policy_path(path: str) -> Dict[str, str]:
+        """Parses a policy path into its component segments."""
+        m = re.match(
+            r"^organizations/(?P<organization>.+?)/policies/(?P<constraint_name>.+?)$",
+            path,
         )
         return m.groupdict() if m else {}
 
