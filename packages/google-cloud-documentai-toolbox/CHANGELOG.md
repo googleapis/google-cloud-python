@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.13.0-alpha...v0.13.1-alpha) (2024-03-04)
+
+
+### Bug Fixes
+
+* Changed `client_info` import and added new quickstart samples ([#268](https://github.com/googleapis/python-documentai-toolbox/issues/268)) ([c4b1d58](https://github.com/googleapis/python-documentai-toolbox/commit/c4b1d58aaf4cedd2a08b9445220e44b906151e6a)), closes [#266](https://github.com/googleapis/python-documentai-toolbox/issues/266)
+
 ## [0.13.0-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.12.2-alpha...v0.13.0-alpha) (2024-02-26)
 
 
