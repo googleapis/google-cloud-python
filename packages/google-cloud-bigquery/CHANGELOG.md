@@ -5,6 +5,25 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.18.0](https://github.com/googleapis/python-bigquery/compare/v3.17.2...v3.18.0) (2024-02-29)
+
+
+### Features
+
+* Support nullable boolean and Int64 dtypes in `insert_rows_from_dataframe` ([#1816](https://github.com/googleapis/python-bigquery/issues/1816)) ([ab0cf4c](https://github.com/googleapis/python-bigquery/commit/ab0cf4cc03292f62b56a8813cfb7681daa87f872))
+* Support slot_ms in QueryPlanEntry ([#1831](https://github.com/googleapis/python-bigquery/issues/1831)) ([d62cabb](https://github.com/googleapis/python-bigquery/commit/d62cabbf115637ecbaf8cc378f39329a5ae74c26))
+
+
+### Bug Fixes
+
+* Keyword rendering and docstring improvements ([#1829](https://github.com/googleapis/python-bigquery/issues/1829)) ([4dfb920](https://github.com/googleapis/python-bigquery/commit/4dfb920b106784e98f343b3e3fc8e8ff70c50560))
+
+
+### Documentation
+
+* **samples:** Updates to urllib3 constraint for Python 3.7 ([#1834](https://github.com/googleapis/python-bigquery/issues/1834)) ([b099c32](https://github.com/googleapis/python-bigquery/commit/b099c32a83946a347560f6a71d08c3f263e56cb6))
+* Update `client_query_w_named_params.py` to use `query_and_wait` API ([#1782](https://github.com/googleapis/python-bigquery/issues/1782)) ([89dfcb6](https://github.com/googleapis/python-bigquery/commit/89dfcb6469d22e78003a70371a0938a6856e033c))
+
 ## [3.17.2](https://github.com/googleapis/python-bigquery/compare/v3.17.1...v3.17.2) (2024-01-30)
 
 
