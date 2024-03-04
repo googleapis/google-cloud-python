@@ -35,23 +35,24 @@ def create_backup(instance_id, database_id, backup_id, version_time):
         backup as backup_pb
 
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(instance_id)
-    database = instance.database(database_id)
+    database_admin_api = spanner_client.database_admin_api
 
     # Create a backup
     expire_time = datetime.utcnow() + timedelta(days=14)
 
     request = backup_pb.CreateBackupRequest(
-        parent=instance.name,
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
         backup_id=backup_id,
         backup=backup_pb.Backup(
-            database=database.name,
+            database=database_admin_api.database_path(
+                spanner_client.project, instance_id, database_id
+            ),
             expire_time=expire_time,
             version_time=version_time,
         ),
     )
 
-    operation = spanner_client.database_admin_api.create_backup(request)
+    operation = database_admin_api.create_backup(request)
 
     # Wait for backup operation to complete.
     backup = operation.result(2100)
@@ -81,8 +82,7 @@ def create_backup_with_encryption_key(
         backup as backup_pb
 
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(instance_id)
-    database = instance.database(database_id)
+    database_admin_api = spanner_client.database_admin_api
 
     # Create a backup
     expire_time = datetime.utcnow() + timedelta(days=14)
@@ -91,15 +91,17 @@ def create_backup_with_encryption_key(
         "kms_key_name": kms_key_name,
     }
     request = backup_pb.CreateBackupRequest(
-        parent=instance.name,
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
         backup_id=backup_id,
         backup=backup_pb.Backup(
-            database=database.name,
+            database=database_admin_api.database_path(
+                spanner_client.project, instance_id, database_id
+            ),
             expire_time=expire_time,
         ),
         encryption_config=encryption_config,
     )
-    operation = spanner_client.database_admin_api.create_backup(request)
+    operation = database_admin_api.create_backup(request)
 
     # Wait for backup operation to complete.
     backup = operation.result(2100)
@@ -124,15 +126,17 @@ def restore_database(instance_id, new_database_id, backup_id):
     from google.cloud.spanner_admin_database_v1 import RestoreDatabaseRequest
 
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(instance_id)
+    database_admin_api = spanner_client.database_admin_api
 
     # Start restoring an existing backup to a new database.
     request = RestoreDatabaseRequest(
-        parent=instance.name,
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
         database_id=new_database_id,
-        backup="{}/backups/{}".format(instance.name, backup_id),
+        backup=database_admin_api.backup_path(
+            spanner_client.project, instance_id, backup_id
+        ),
     )
-    operation = spanner_client.database_admin_api.restore_database(request)
+    operation = database_admin_api.restore_database(request)
 
     # Wait for restore operation to complete.
     db = operation.result(1600)
@@ -161,7 +165,7 @@ def restore_database_with_encryption_key(
         RestoreDatabaseEncryptionConfig, RestoreDatabaseRequest)
 
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(instance_id)
+    database_admin_api = spanner_client.database_admin_api
 
     # Start restoring an existing backup to a new database.
     encryption_config = {
@@ -170,12 +174,14 @@ def restore_database_with_encryption_key(
     }
 
     request = RestoreDatabaseRequest(
-        parent=instance.name,
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
         database_id=new_database_id,
-        backup="{}/backups/{}".format(instance.name, backup_id),
+        backup=database_admin_api.backup_path(
+            spanner_client.project, instance_id, backup_id
+        ),
         encryption_config=encryption_config,
     )
-    operation = spanner_client.database_admin_api.restore_database(request)
+    operation = database_admin_api.restore_database(request)
 
     # Wait for restore operation to complete.
     db = operation.result(1600)
@@ -201,43 +207,48 @@ def cancel_backup(instance_id, database_id, backup_id):
         backup as backup_pb
 
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(instance_id)
-    database = instance.database(database_id)
+    database_admin_api = spanner_client.database_admin_api
 
     expire_time = datetime.utcnow() + timedelta(days=30)
 
     # Create a backup.
     request = backup_pb.CreateBackupRequest(
-        parent=instance.name,
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
         backup_id=backup_id,
         backup=backup_pb.Backup(
-            database=database.name,
+            database=database_admin_api.database_path(
+                spanner_client.project, instance_id, database_id
+            ),
             expire_time=expire_time,
         ),
     )
 
-    operation = spanner_client.database_admin_api.create_backup(request)
+    operation = database_admin_api.create_backup(request)
     # Cancel backup creation.
     operation.cancel()
 
-    # Cancel operations are best effort so either it will complete or
+    # Cancel operations are the best effort so either it will complete or
     # be cancelled.
     while not operation.done():
         time.sleep(300)  # 5 mins
 
     try:
-        spanner_client.database_admin_api.get_backup(
+        database_admin_api.get_backup(
             backup_pb.GetBackupRequest(
-                name="{}/backups/{}".format(instance.name, backup_id)
+                name=database_admin_api.backup_path(
+                    spanner_client.project, instance_id, backup_id
+                ),
             )
         )
     except NotFound:
         print("Backup creation was successfully cancelled.")
         return
     print("Backup was created before the cancel completed.")
-    spanner_client.database_admin_api.delete_backup(
+    database_admin_api.delete_backup(
         backup_pb.DeleteBackupRequest(
-            name="{}/backups/{}".format(instance.name, backup_id)
+            name=database_admin_api.backup_path(
+                spanner_client.project, instance_id, backup_id
+            ),
         )
     )
     print("Backup deleted.")
@@ -252,7 +263,7 @@ def list_backup_operations(instance_id, database_id, backup_id):
         backup as backup_pb
 
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(instance_id)
+    database_admin_api = spanner_client.database_admin_api
 
     # List the CreateBackup operations.
     filter_ = (
@@ -261,9 +272,10 @@ def list_backup_operations(instance_id, database_id, backup_id):
         "AND (metadata.database:{})"
     ).format(database_id)
     request = backup_pb.ListBackupOperationsRequest(
-        parent=instance.name, filter=filter_
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
+        filter=filter_,
     )
-    operations = spanner_client.database_admin_api.list_backup_operations(request)
+    operations = database_admin_api.list_backup_operations(request)
     for op in operations:
         metadata = protobuf_helpers.from_any_pb(
             backup_pb.CreateBackupMetadata, op.metadata
@@ -280,9 +292,10 @@ def list_backup_operations(instance_id, database_id, backup_id):
         "AND (metadata.source_backup:{})"
     ).format(backup_id)
     request = backup_pb.ListBackupOperationsRequest(
-        parent=instance.name, filter=filter_
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
+        filter=filter_,
     )
-    operations = spanner_client.database_admin_api.list_backup_operations(request)
+    operations = database_admin_api.list_backup_operations(request)
     for op in operations:
         metadata = protobuf_helpers.from_any_pb(
             backup_pb.CopyBackupMetadata, op.metadata
@@ -305,7 +318,7 @@ def list_database_operations(instance_id):
         spanner_database_admin
 
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(instance_id)
+    database_admin_api = spanner_client.database_admin_api
 
     # List the progress of restore.
     filter_ = (
@@ -313,9 +326,10 @@ def list_database_operations(instance_id):
         "google.spanner.admin.database.v1.OptimizeRestoredDatabaseMetadata)"
     )
     request = spanner_database_admin.ListDatabaseOperationsRequest(
-        parent=instance.name, filter=filter_
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
+        filter=filter_,
     )
-    operations = spanner_client.database_admin_api.list_database_operations(request)
+    operations = database_admin_api.list_database_operations(request)
     for op in operations:
         metadata = protobuf_helpers.from_any_pb(
             spanner_database_admin.OptimizeRestoredDatabaseMetadata, op.metadata
@@ -336,30 +350,35 @@ def list_backups(instance_id, database_id, backup_id):
         backup as backup_pb
 
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(instance_id)
+    database_admin_api = spanner_client.database_admin_api
 
     # List all backups.
     print("All backups:")
-    request = backup_pb.ListBackupsRequest(parent=instance.name, filter="")
-    operations = spanner_client.database_admin_api.list_backups(request)
+    request = backup_pb.ListBackupsRequest(
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
+        filter="",
+    )
+    operations = database_admin_api.list_backups(request)
     for backup in operations:
         print(backup.name)
 
     # List all backups that contain a name.
     print('All backups with backup name containing "{}":'.format(backup_id))
     request = backup_pb.ListBackupsRequest(
-        parent=instance.name, filter="name:{}".format(backup_id)
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
+        filter="name:{}".format(backup_id),
     )
-    operations = spanner_client.database_admin_api.list_backups(request)
+    operations = database_admin_api.list_backups(request)
     for backup in operations:
         print(backup.name)
 
     # List all backups for a database that contains a name.
     print('All backups with database name containing "{}":'.format(database_id))
     request = backup_pb.ListBackupsRequest(
-        parent=instance.name, filter="database:{}".format(database_id)
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
+        filter="database:{}".format(database_id),
     )
-    operations = spanner_client.database_admin_api.list_backups(request)
+    operations = database_admin_api.list_backups(request)
     for backup in operations:
         print(backup.name)
 
@@ -371,19 +390,20 @@ def list_backups(instance_id, database_id, backup_id):
         )
     )
     request = backup_pb.ListBackupsRequest(
-        parent=instance.name,
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
         filter='expire_time < "{}-{}-{}T{}:{}:{}Z"'.format(*expire_time.timetuple()),
     )
-    operations = spanner_client.database_admin_api.list_backups(request)
+    operations = database_admin_api.list_backups(request)
     for backup in operations:
         print(backup.name)
 
     # List all backups with a size greater than some bytes.
     print("All backups with backup size more than 100 bytes:")
     request = backup_pb.ListBackupsRequest(
-        parent=instance.name, filter="size_bytes > 100"
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
+        filter="size_bytes > 100",
     )
-    operations = spanner_client.database_admin_api.list_backups(request)
+    operations = database_admin_api.list_backups(request)
     for backup in operations:
         print(backup.name)
 
@@ -395,12 +415,12 @@ def list_backups(instance_id, database_id, backup_id):
         )
     )
     request = backup_pb.ListBackupsRequest(
-        parent=instance.name,
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
         filter='create_time >= "{}-{}-{}T{}:{}:{}Z" AND state:READY'.format(
             *create_time.timetuple()
         ),
     )
-    operations = spanner_client.database_admin_api.list_backups(request)
+    operations = database_admin_api.list_backups(request)
     for backup in operations:
         print(backup.name)
 
@@ -408,8 +428,11 @@ def list_backups(instance_id, database_id, backup_id):
     # If there are multiple pages, additional ``ListBackup``
     # requests will be made as needed while iterating.
     paged_backups = set()
-    request = backup_pb.ListBackupsRequest(parent=instance.name, page_size=2)
-    operations = spanner_client.database_admin_api.list_backups(request)
+    request = backup_pb.ListBackupsRequest(
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
+        page_size=2,
+    )
+    operations = database_admin_api.list_backups(request)
     for backup in operations:
         paged_backups.add(backup.name)
     for backup in paged_backups:
@@ -425,30 +448,32 @@ def delete_backup(instance_id, backup_id):
         backup as backup_pb
 
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(instance_id)
-    backup = spanner_client.database_admin_api.get_backup(
+    database_admin_api = spanner_client.database_admin_api
+    backup = database_admin_api.get_backup(
         backup_pb.GetBackupRequest(
-            name="{}/backups/{}".format(instance.name, backup_id)
+            name=database_admin_api.backup_path(
+                spanner_client.project, instance_id, backup_id
+            ),
         )
     )
 
     # Wait for databases that reference this backup to finish optimizing.
     while backup.referencing_databases:
         time.sleep(30)
-        backup = spanner_client.database_admin_api.get_backup(
+        backup = database_admin_api.get_backup(
             backup_pb.GetBackupRequest(
-                name="{}/backups/{}".format(instance.name, backup_id)
+                name=database_admin_api.backup_path(
+                    spanner_client.project, instance_id, backup_id
+                ),
             )
         )
 
     # Delete the backup.
-    spanner_client.database_admin_api.delete_backup(
-        backup_pb.DeleteBackupRequest(name=backup.name)
-    )
+    database_admin_api.delete_backup(backup_pb.DeleteBackupRequest(name=backup.name))
 
     # Verify that the backup is deleted.
     try:
-        backup = spanner_client.database_admin_api.get_backup(
+        backup = database_admin_api.get_backup(
             backup_pb.GetBackupRequest(name=backup.name)
         )
     except NotFound:
@@ -465,11 +490,13 @@ def update_backup(instance_id, backup_id):
         backup as backup_pb
 
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(instance_id)
+    database_admin_api = spanner_client.database_admin_api
 
-    backup = spanner_client.database_admin_api.get_backup(
+    backup = database_admin_api.get_backup(
         backup_pb.GetBackupRequest(
-            name="{}/backups/{}".format(instance.name, backup_id)
+            name=database_admin_api.backup_path(
+                spanner_client.project, instance_id, backup_id
+            ),
         )
     )
 
@@ -477,7 +504,7 @@ def update_backup(instance_id, backup_id):
     old_expire_time = backup.expire_time
     # New expire time should be less than the max expire time
     new_expire_time = min(backup.max_expire_time, old_expire_time + timedelta(days=30))
-    spanner_client.database_admin_api.update_backup(
+    database_admin_api.update_backup(
         backup_pb.UpdateBackupRequest(
             backup=backup_pb.Backup(name=backup.name, expire_time=new_expire_time),
             update_mask={"paths": ["expire_time"]},
@@ -503,7 +530,7 @@ def create_database_with_version_retention_period(
         spanner_database_admin
 
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(instance_id)
+    database_admin_api = spanner_client.database_admin_api
     ddl_statements = [
         "CREATE TABLE Singers ("
         + "  SingerId   INT64 NOT NULL,"
@@ -522,9 +549,11 @@ def create_database_with_version_retention_period(
             database_id, retention_period
         ),
     ]
-    operation = spanner_client.database_admin_api.create_database(
+    operation = database_admin_api.create_database(
         request=spanner_database_admin.CreateDatabaseRequest(
-            parent=instance.name,
+            parent=database_admin_api.instance_path(
+                spanner_client.project, instance_id
+            ),
             create_statement="CREATE DATABASE `{}`".format(database_id),
             extra_statements=ddl_statements,
         )
@@ -537,7 +566,7 @@ def create_database_with_version_retention_period(
         )
     )
 
-    spanner_client.database_admin_api.drop_database(
+    database_admin_api.drop_database(
         spanner_database_admin.DropDatabaseRequest(database=db.name)
     )
 
@@ -553,18 +582,18 @@ def copy_backup(instance_id, backup_id, source_backup_path):
         backup as backup_pb
 
     spanner_client = spanner.Client()
-    instance = spanner_client.instance(instance_id)
+    database_admin_api = spanner_client.database_admin_api
 
     # Create a backup object and wait for copy backup operation to complete.
     expire_time = datetime.utcnow() + timedelta(days=14)
     request = backup_pb.CopyBackupRequest(
-        parent=instance.name,
+        parent=database_admin_api.instance_path(spanner_client.project, instance_id),
         backup_id=backup_id,
         source_backup=source_backup_path,
         expire_time=expire_time,
     )
 
-    operation = spanner_client.database_admin_api.copy_backup(request)
+    operation = database_admin_api.copy_backup(request)
 
     # Wait for backup operation to complete.
     copy_backup = operation.result(2100)
