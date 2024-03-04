@@ -13,8 +13,8 @@
 # limitations under the License.
 import uuid
 
-from google.api_core.exceptions import DeadlineExceeded
 import pytest
+from google.api_core.exceptions import DeadlineExceeded
 from test_utils.retry import RetryErrors
 
 import backup_sample

@@ -16,15 +16,11 @@
 import time
 import uuid
 
+import pytest
 from google.api_core import exceptions
-
 from google.cloud import spanner_admin_database_v1
 from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
-from google.cloud.spanner_v1 import backup
-from google.cloud.spanner_v1 import client
-from google.cloud.spanner_v1 import database
-from google.cloud.spanner_v1 import instance
-import pytest
+from google.cloud.spanner_v1 import backup, client, database, instance
 from test_utils import retry
 
 INSTANCE_CREATION_TIMEOUT = 560  # seconds

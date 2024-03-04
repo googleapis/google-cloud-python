@@ -30,10 +30,7 @@ import time
 
 from google.cloud import spanner
 from google.cloud.spanner_admin_instance_v1.types import spanner_instance_admin
-from google.cloud.spanner_v1 import param_types
-from google.cloud.spanner_v1 import DirectedReadOptions
-from google.type import expr_pb2
-from google.iam.v1 import policy_pb2
+from google.cloud.spanner_v1 import DirectedReadOptions, param_types
 from google.cloud.spanner_v1.data_types import JsonObject
 from google.protobuf import field_mask_pb2  # type: ignore
 
@@ -43,25 +40,29 @@ OPERATION_TIMEOUT_SECONDS = 240
 # [START spanner_create_instance]
 def create_instance(instance_id):
     """Creates an instance."""
+    from google.cloud.spanner_admin_instance_v1.types import \
+        spanner_instance_admin
+
     spanner_client = spanner.Client()
 
     config_name = "{}/instanceConfigs/regional-us-central1".format(
         spanner_client.project_name
     )
 
-    instance = spanner_client.instance(
-        instance_id,
-        configuration_name=config_name,
-        display_name="This is a display name.",
-        node_count=1,
-        labels={
-            "cloud_spanner_samples": "true",
-            "sample_name": "snippets-create_instance-explicit",
-            "created": str(int(time.time())),
-        },
+    operation = spanner_client.instance_admin_api.create_instance(
+        parent=spanner_client.project_name,
+        instance_id=instance_id,
+        instance=spanner_instance_admin.Instance(
+            config=config_name,
+            display_name="This is a display name.",
+            node_count=1,
+            labels={
+                "cloud_spanner_samples": "true",
+                "sample_name": "snippets-create_instance-explicit",
+                "created": str(int(time.time())),
+            },
+        ),
     )
-
-    operation = instance.create()
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -75,28 +76,34 @@ def create_instance(instance_id):
 # [START spanner_create_instance_with_processing_units]
 def create_instance_with_processing_units(instance_id, processing_units):
     """Creates an instance."""
+    from google.cloud.spanner_admin_instance_v1.types import \
+        spanner_instance_admin
+
     spanner_client = spanner.Client()
 
     config_name = "{}/instanceConfigs/regional-us-central1".format(
         spanner_client.project_name
     )
 
-    instance = spanner_client.instance(
-        instance_id,
-        configuration_name=config_name,
-        display_name="This is a display name.",
-        processing_units=processing_units,
-        labels={
-            "cloud_spanner_samples": "true",
-            "sample_name": "snippets-create_instance_with_processing_units",
-            "created": str(int(time.time())),
-        },
+    request = spanner_instance_admin.CreateInstanceRequest(
+        parent=spanner_client.project_name,
+        instance_id=instance_id,
+        instance=spanner_instance_admin.Instance(
+            config=config_name,
+            display_name="This is a display name.",
+            processing_units=processing_units,
+            labels={
+                "cloud_spanner_samples": "true",
+                "sample_name": "snippets-create_instance_with_processing_units",
+                "created": str(int(time.time())),
+            },
+        ),
     )
 
-    operation = instance.create()
+    operation = spanner_client.instance_admin_api.create_instance(request=request)
 
     print("Waiting for operation to complete...")
-    operation.result(OPERATION_TIMEOUT_SECONDS)
+    instance = operation.result(OPERATION_TIMEOUT_SECONDS)
 
     print(
         "Created instance {} with {} processing units".format(
@@ -129,9 +136,17 @@ def get_instance_config(instance_config):
 # [START spanner_list_instance_configs]
 def list_instance_config():
     """Lists the available instance configurations."""
+    from google.cloud.spanner_admin_instance_v1.types import \
+        spanner_instance_admin
+
     spanner_client = spanner.Client()
-    configs = spanner_client.list_instance_configs()
-    for config in configs:
+
+    request = spanner_instance_admin.ListInstanceConfigsRequest(
+        parent=spanner_client.project_name
+    )
+    for config in spanner_client.instance_admin_api.list_instance_configs(
+        request=request
+    ):
         print(
             "Available leader options for instance config {}: {}".format(
                 config.name, config.leader_options
@@ -145,11 +160,15 @@ def list_instance_config():
 # [START spanner_list_databases]
 def list_databases(instance_id):
     """Lists databases and their leader options."""
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
 
-    databases = list(instance.list_databases())
-    for database in databases:
+    request = spanner_database_admin.ListDatabasesRequest(parent=instance.name)
+
+    for database in spanner_client.database_admin_api.list_databases(request=request):
         print(
             "Database {} has default leader {}".format(
                 database.name, database.default_leader
@@ -163,12 +182,16 @@ def list_databases(instance_id):
 # [START spanner_create_database]
 def create_database(instance_id, database_id):
     """Creates a database and tables for sample data."""
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
 
-    database = instance.database(
-        database_id,
-        ddl_statements=[
+    request = spanner_database_admin.CreateDatabaseRequest(
+        parent=instance.name,
+        create_statement=f"CREATE DATABASE `{database_id}`",
+        extra_statements=[
             """CREATE TABLE Singers (
             SingerId     INT64 NOT NULL,
             FirstName    STRING(1024),
@@ -187,12 +210,12 @@ def create_database(instance_id, database_id):
         ],
     )
 
-    operation = database.create()
+    operation = spanner_client.database_admin_api.create_database(request=request)
 
     print("Waiting for operation to complete...")
-    operation.result(OPERATION_TIMEOUT_SECONDS)
+    database = operation.result(OPERATION_TIMEOUT_SECONDS)
 
-    print("Created database {} on instance {}".format(database_id, instance_id))
+    print("Created database {} on instance {}".format(database.name, instance.name))
 
 
 # [END spanner_create_database]
@@ -201,18 +224,28 @@ def create_database(instance_id, database_id):
 # [START spanner_update_database]
 def update_database(instance_id, database_id):
     """Updates the drop protection setting for a database."""
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
 
-    db = instance.database(database_id)
-    db.enable_drop_protection = True
-
-    operation = db.update(["enable_drop_protection"])
-
-    print("Waiting for update operation for {} to complete...".format(db.name))
+    request = spanner_database_admin.UpdateDatabaseRequest(
+        database=spanner_database_admin.Database(
+            name="{}/databases/{}".format(instance.name, database_id),
+            enable_drop_protection=True,
+        ),
+        update_mask={"paths": ["enable_drop_protection"]},
+    )
+    operation = spanner_client.database_admin_api.update_database(request=request)
+    print(
+        "Waiting for update operation for {}/databases/{} to complete...".format(
+            instance.name, database_id
+        )
+    )
     operation.result(OPERATION_TIMEOUT_SECONDS)
 
-    print("Updated database {}.".format(db.name))
+    print("Updated database {}/databases/{}.".format(instance.name, database_id))
 
 
 # [END spanner_update_database]
@@ -221,12 +254,17 @@ def update_database(instance_id, database_id):
 # [START spanner_create_database_with_encryption_key]
 def create_database_with_encryption_key(instance_id, database_id, kms_key_name):
     """Creates a database with tables using a Customer Managed Encryption Key (CMEK)."""
+    from google.cloud.spanner_admin_database_v1 import EncryptionConfig
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
 
-    database = instance.database(
-        database_id,
-        ddl_statements=[
+    request = spanner_database_admin.CreateDatabaseRequest(
+        parent=instance.name,
+        create_statement=f"CREATE DATABASE `{database_id}`",
+        extra_statements=[
             """CREATE TABLE Singers (
             SingerId     INT64 NOT NULL,
             FirstName    STRING(1024),
@@ -240,13 +278,13 @@ def create_database_with_encryption_key(instance_id, database_id, kms_key_name):
         ) PRIMARY KEY (SingerId, AlbumId),
         INTERLEAVE IN PARENT Singers ON DELETE CASCADE""",
         ],
-        encryption_config={"kms_key_name": kms_key_name},
+        encryption_config=EncryptionConfig(kms_key_name=kms_key_name),
     )
 
-    operation = database.create()
+    operation = spanner_client.database_admin_api.create_database(request=request)
 
     print("Waiting for operation to complete...")
-    operation.result(OPERATION_TIMEOUT_SECONDS)
+    database = operation.result(OPERATION_TIMEOUT_SECONDS)
 
     print(
         "Database {} created with encryption key {}".format(
@@ -261,34 +299,39 @@ def create_database_with_encryption_key(instance_id, database_id, kms_key_name):
 # [START spanner_create_database_with_default_leader]
 def create_database_with_default_leader(instance_id, database_id, default_leader):
     """Creates a database with tables with a default leader."""
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
 
-    database = instance.database(
-        database_id,
-        ddl_statements=[
-            """CREATE TABLE Singers (
-            SingerId     INT64 NOT NULL,
-            FirstName    STRING(1024),
-            LastName     STRING(1024),
-            SingerInfo   BYTES(MAX)
-        ) PRIMARY KEY (SingerId)""",
-            """CREATE TABLE Albums (
-            SingerId     INT64 NOT NULL,
-            AlbumId      INT64 NOT NULL,
-            AlbumTitle   STRING(MAX)
-        ) PRIMARY KEY (SingerId, AlbumId),
-        INTERLEAVE IN PARENT Singers ON DELETE CASCADE""",
-            "ALTER DATABASE {}"
-            " SET OPTIONS (default_leader = '{}')".format(database_id, default_leader),
-        ],
+    operation = spanner_client.database_admin_api.create_database(
+        request=spanner_database_admin.CreateDatabaseRequest(
+            parent=instance.name,
+            create_statement=f"CREATE DATABASE `{database_id}`",
+            extra_statements=[
+                """CREATE TABLE Singers (
+                    SingerId     INT64 NOT NULL,
+                    FirstName    STRING(1024),
+                    LastName     STRING(1024),
+                    SingerInfo   BYTES(MAX)
+                ) PRIMARY KEY (SingerId)""",
+                """CREATE TABLE Albums (
+                    SingerId     INT64 NOT NULL,
+                    AlbumId      INT64 NOT NULL,
+                    AlbumTitle   STRING(MAX)
+                ) PRIMARY KEY (SingerId, AlbumId),
+                INTERLEAVE IN PARENT Singers ON DELETE CASCADE""",
+                "ALTER DATABASE {}"
+                " SET OPTIONS (default_leader = '{}')".format(
+                    database_id, default_leader
+                ),
+            ],
+        )
     )
-    operation = database.create()
 
     print("Waiting for operation to complete...")
-    operation.result(OPERATION_TIMEOUT_SECONDS)
-
-    database.reload()
+    database = operation.result(OPERATION_TIMEOUT_SECONDS)
 
     print(
         "Database {} created with default leader {}".format(
@@ -303,25 +346,26 @@ def create_database_with_default_leader(instance_id, database_id, default_leader
 # [START spanner_update_database_with_default_leader]
 def update_database_with_default_leader(instance_id, database_id, default_leader):
     """Updates a database with tables with a default leader."""
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
-
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        [
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
             "ALTER DATABASE {}"
             " SET OPTIONS (default_leader = '{}')".format(database_id, default_leader)
-        ]
+        ],
     )
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
+
     operation.result(OPERATION_TIMEOUT_SECONDS)
 
-    database.reload()
-
     print(
-        "Database {} updated with default leader {}".format(
-            database.name, database.default_leader
-        )
+        "Database {} updated with default leader {}".format(database_id, default_leader)
     )
 
 
@@ -590,13 +634,20 @@ def query_data_with_new_column(instance_id, database_id):
 # [START spanner_create_index]
 def add_index(instance_id, database_id):
     """Adds a simple index to the example database."""
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        ["CREATE INDEX AlbumsByAlbumTitle ON Albums(AlbumTitle)"]
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=["CREATE INDEX AlbumsByAlbumTitle ON Albums(AlbumTitle)"],
     )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -686,16 +737,23 @@ def read_data_with_index(instance_id, database_id):
 # [START spanner_create_storing_index]
 def add_storing_index(instance_id, database_id):
     """Adds an storing index to the example database."""
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        [
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
             "CREATE INDEX AlbumsByAlbumTitle2 ON Albums(AlbumTitle)"
             "STORING (MarketingBudget)"
-        ]
+        ],
     )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -742,17 +800,25 @@ def read_data_with_storing_index(instance_id, database_id):
 # [START spanner_add_column]
 def add_column(instance_id, database_id):
     """Adds a new column to the Albums table in the example database."""
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        ["ALTER TABLE Albums ADD COLUMN MarketingBudget INT64"]
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
+            "ALTER TABLE Albums ADD COLUMN MarketingBudget INT64",
+        ],
     )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
-
     print("Added the MarketingBudget column.")
 
 
@@ -897,12 +963,16 @@ def read_only_transaction(instance_id, database_id):
 def create_table_with_timestamp(instance_id, database_id):
     """Creates a table with a COMMIT_TIMESTAMP column."""
 
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        [
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
             """CREATE TABLE Performances (
             SingerId     INT64 NOT NULL,
             VenueId      INT64 NOT NULL,
@@ -912,8 +982,10 @@ def create_table_with_timestamp(instance_id, database_id):
             OPTIONS(allow_commit_timestamp=true)
         ) PRIMARY KEY (SingerId, VenueId, EventDate),
           INTERLEAVE IN PARENT Singers ON DELETE CASCADE"""
-        ]
+        ],
     )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -957,17 +1029,24 @@ def insert_data_with_timestamp(instance_id, database_id):
 # [START spanner_add_timestamp_column]
 def add_timestamp_column(instance_id, database_id):
     """Adds a new TIMESTAMP column to the Albums table in the example database."""
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
 
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        [
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
             "ALTER TABLE Albums ADD COLUMN LastUpdateTime TIMESTAMP "
             "OPTIONS(allow_commit_timestamp=true)"
-        ]
+        ],
     )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -1054,12 +1133,20 @@ def query_data_with_timestamp(instance_id, database_id):
 # [START spanner_add_numeric_column]
 def add_numeric_column(instance_id, database_id):
     """Adds a new NUMERIC column to the Venues table in the example database."""
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
-
     database = instance.database(database_id)
 
-    operation = database.update_ddl(["ALTER TABLE Venues ADD COLUMN Revenue NUMERIC"])
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=["ALTER TABLE Venues ADD COLUMN Revenue NUMERIC"],
+    )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -1111,12 +1198,22 @@ def update_data_with_numeric(instance_id, database_id):
 # [START spanner_add_json_column]
 def add_json_column(instance_id, database_id):
     """Adds a new JSON column to the Venues table in the example database."""
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
-
     database = instance.database(database_id)
 
-    operation = database.update_ddl(["ALTER TABLE Venues ADD COLUMN VenueDetails JSON"])
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=["ALTER TABLE Venues ADD COLUMN VenueDetails JSON"],
+    )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -1374,6 +1471,7 @@ def insert_data_with_dml(instance_id, database_id):
 # [START spanner_get_commit_stats]
 def log_commit_stats(instance_id, database_id):
     """Inserts sample data using DML and displays the commit statistics."""
+
     # By default, commit statistics are logged via stdout at level Info.
     # This sample uses a custom logger to access the commit statistics.
     class CommitStatsSampleLogger(logging.Logger):
@@ -1812,12 +1910,17 @@ def create_table_with_datatypes(instance_id, database_id):
     # [START spanner_create_table_with_datatypes]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        [
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
             """CREATE TABLE Venues (
             VenueId         INT64 NOT NULL,
             VenueName       STRING(100),
@@ -1830,8 +1933,9 @@ def create_table_with_datatypes(instance_id, database_id):
             LastUpdateTime  TIMESTAMP NOT NULL
             OPTIONS(allow_commit_timestamp=true)
         ) PRIMARY KEY (VenueId)"""
-        ]
+        ],
     )
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -2333,6 +2437,7 @@ def create_instance_config(user_config_name, base_config_id):
 
 # [END spanner_create_instance_config]
 
+
 # [START spanner_update_instance_config]
 def update_instance_config(user_config_name):
     """Updates the user-managed instance configuration."""
@@ -2356,6 +2461,7 @@ def update_instance_config(user_config_name):
 
 
 # [END spanner_update_instance_config]
+
 
 # [START spanner_delete_instance_config]
 def delete_instance_config(user_config_id):
@@ -2398,31 +2504,42 @@ def add_and_drop_database_roles(instance_id, database_id):
     # [START spanner_add_and_drop_database_role]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
+
     role_parent = "new_parent"
     role_child = "new_child"
 
-    operation = database.update_ddl(
-        [
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
             "CREATE ROLE {}".format(role_parent),
             "GRANT SELECT ON TABLE Singers TO ROLE {}".format(role_parent),
             "CREATE ROLE {}".format(role_child),
             "GRANT ROLE {} TO ROLE {}".format(role_parent, role_child),
-        ]
+        ],
     )
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
+
     operation.result(OPERATION_TIMEOUT_SECONDS)
     print(
         "Created roles {} and {} and granted privileges".format(role_parent, role_child)
     )
 
-    operation = database.update_ddl(
-        [
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
             "REVOKE ROLE {} FROM ROLE {}".format(role_parent, role_child),
             "DROP ROLE {}".format(role_child),
-        ]
+        ],
     )
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
+
     operation.result(OPERATION_TIMEOUT_SECONDS)
     print("Revoked privileges and dropped role {}".format(role_child))
 
@@ -2452,13 +2569,17 @@ def list_database_roles(instance_id, database_id):
     # [START spanner_list_database_roles]
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
+    request = spanner_database_admin.ListDatabaseRolesRequest(parent=database.name)
     # List database roles.
     print("Database Roles are:")
-    for role in database.list_database_roles():
+    for role in spanner_client.database_admin_api.list_database_roles(request):
         print(role.name.split("/")[-1])
     # [END spanner_list_database_roles]
 
@@ -2477,6 +2598,10 @@ def enable_fine_grained_access(
     # iam_member = "user:alice@example.com"
     # database_role = "new_parent"
     # title = "condition title"
+
+    from google.iam.v1 import iam_policy_pb2, options_pb2, policy_pb2
+    from google.type import expr_pb2
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
@@ -2485,7 +2610,11 @@ def enable_fine_grained_access(
     # that you specified, or it might use a lower policy version. For example, if you
     # specify version 3, but the policy has no conditional role bindings, the response
     # uses version 1. Valid values are 0, 1, and 3.
-    policy = database.get_iam_policy(3)
+    request = iam_policy_pb2.GetIamPolicyRequest(
+        resource=database.name,
+        options=options_pb2.GetPolicyOptions(requested_policy_version=3),
+    )
+    policy = spanner_client.database_admin_api.get_iam_policy(request=request)
     if policy.version < 3:
         policy.version = 3
 
@@ -2500,9 +2629,13 @@ def enable_fine_grained_access(
 
     policy.version = 3
     policy.bindings.append(new_binding)
-    database.set_iam_policy(policy)
+    set_request = iam_policy_pb2.SetIamPolicyRequest(
+        resource=database.name,
+        policy=policy,
+    )
+    spanner_client.database_admin_api.set_iam_policy(set_request)
 
-    new_policy = database.get_iam_policy(3)
+    new_policy = spanner_client.database_admin_api.get_iam_policy(request=request)
     print(
         f"Enabled fine-grained access in IAM. New policy has version {new_policy.version}"
     )
@@ -2512,12 +2645,17 @@ def enable_fine_grained_access(
 # [START spanner_create_table_with_foreign_key_delete_cascade]
 def create_table_with_foreign_key_delete_cascade(instance_id, database_id):
     """Creates a table with foreign key delete cascade action"""
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        [
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
             """CREATE TABLE Customers (
                CustomerId INT64 NOT NULL,
                CustomerName STRING(62) NOT NULL,
@@ -2532,8 +2670,10 @@ def create_table_with_foreign_key_delete_cascade(instance_id, database_id):
                REFERENCES Customers (CustomerId) ON DELETE CASCADE
                ) PRIMARY KEY (CartId)
             """,
-        ]
+        ],
     )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -2552,19 +2692,26 @@ def create_table_with_foreign_key_delete_cascade(instance_id, database_id):
 # [START spanner_alter_table_with_foreign_key_delete_cascade]
 def alter_table_with_foreign_key_delete_cascade(instance_id, database_id):
     """Alters a table with foreign key delete cascade action"""
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        [
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
             """ALTER TABLE ShoppingCarts
                ADD CONSTRAINT FKShoppingCartsCustomerName
                FOREIGN KEY (CustomerName)
                REFERENCES Customers(CustomerName)
                ON DELETE CASCADE"""
-        ]
+        ],
     )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -2583,16 +2730,23 @@ def alter_table_with_foreign_key_delete_cascade(instance_id, database_id):
 # [START spanner_drop_foreign_key_constraint_delete_cascade]
 def drop_foreign_key_constraint_delete_cascade(instance_id, database_id):
     """Alter table to drop foreign key delete cascade action"""
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        [
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
             """ALTER TABLE ShoppingCarts
                DROP CONSTRAINT FKShoppingCartsCustomerName"""
-        ]
+        ],
     )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -2611,19 +2765,26 @@ def drop_foreign_key_constraint_delete_cascade(instance_id, database_id):
 # [START spanner_create_sequence]
 def create_sequence(instance_id, database_id):
     """Creates the Sequence and insert data"""
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        [
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
             "CREATE SEQUENCE Seq OPTIONS (sequence_kind = 'bit_reversed_positive')",
             """CREATE TABLE Customers (
             CustomerId     INT64 DEFAULT (GET_NEXT_SEQUENCE_VALUE(Sequence Seq)),
             CustomerName      STRING(1024)
             ) PRIMARY KEY (CustomerId)""",
-        ]
+        ],
     )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -2655,18 +2816,26 @@ def create_sequence(instance_id, database_id):
 
 # [END spanner_create_sequence]
 
+
 # [START spanner_alter_sequence]
 def alter_sequence(instance_id, database_id):
     """Alters the Sequence and insert data"""
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        [
-            "ALTER SEQUENCE Seq SET OPTIONS (skip_range_min = 1000, skip_range_max = 5000000)"
-        ]
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
+            "ALTER SEQUENCE Seq SET OPTIONS (skip_range_min = 1000, skip_range_max = 5000000)",
+        ],
     )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)
@@ -2698,19 +2867,27 @@ def alter_sequence(instance_id, database_id):
 
 # [END spanner_alter_sequence]
 
+
 # [START spanner_drop_sequence]
 def drop_sequence(instance_id, database_id):
     """Drops the Sequence"""
+
+    from google.cloud.spanner_admin_database_v1.types import \
+        spanner_database_admin
+
     spanner_client = spanner.Client()
     instance = spanner_client.instance(instance_id)
     database = instance.database(database_id)
 
-    operation = database.update_ddl(
-        [
+    request = spanner_database_admin.UpdateDatabaseDdlRequest(
+        database=database.name,
+        statements=[
             "ALTER TABLE Customers ALTER COLUMN CustomerId DROP DEFAULT",
             "DROP SEQUENCE Seq",
-        ]
+        ],
     )
+
+    operation = spanner_client.database_admin_api.update_database_ddl(request)
 
     print("Waiting for operation to complete...")
     operation.result(OPERATION_TIMEOUT_SECONDS)

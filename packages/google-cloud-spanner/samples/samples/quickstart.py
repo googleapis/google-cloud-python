@@ -25,7 +25,6 @@ def run_quickstart(instance_id, database_id):
     #
     # Your Cloud Spanner database ID.
     # database_id = "my-database-id"
-
     # Instantiate a client.
     spanner_client = spanner.Client()
 

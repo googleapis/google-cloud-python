@@ -206,6 +206,12 @@ def test_update_database(capsys, instance_id, sample_database):
     op.result()
 
 
+def test_list_databases(capsys, instance_id):
+    samples.list_databases(instance_id)
+    out, _ = capsys.readouterr()
+    assert "has default leader" in out
+
+
 @pytest.mark.dependency(
     name="add_and_drop_database_roles", depends=["create_table_with_datatypes"]
 )
@@ -214,6 +220,19 @@ def test_add_and_drop_database_roles(capsys, instance_id, sample_database):
     out, _ = capsys.readouterr()
     assert "Created roles new_parent and new_child and granted privileges" in out
     assert "Revoked privileges and dropped role new_child" in out
+
+
+@pytest.mark.dependency(depends=["add_and_drop_database_roles"])
+def test_list_database_roles(capsys, instance_id, sample_database):
+    samples.list_database_roles(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "new_parent" in out
+
+
+def test_list_instance_config(capsys):
+    samples.list_instance_config()
+    out, _ = capsys.readouterr()
+    assert "regional-us-central1" in out
 
 
 @pytest.mark.dependency(name="create_table_with_datatypes")

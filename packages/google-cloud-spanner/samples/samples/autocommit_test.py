@@ -4,8 +4,8 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from google.api_core.exceptions import Aborted
 import pytest
+from google.api_core.exceptions import Aborted
 from test_utils.retry import RetryErrors
 
 import autocommit

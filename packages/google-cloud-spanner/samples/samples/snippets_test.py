@@ -15,10 +15,10 @@
 import time
 import uuid
 
+import pytest
 from google.api_core import exceptions
 from google.cloud import spanner
 from google.cloud.spanner_admin_database_v1.types.common import DatabaseDialect
-import pytest
 from test_utils.retry import RetryErrors
 
 import snippets
