@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storageinsights-v0.1.7...google-cloud-storageinsights-v0.1.8) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12387](https://github.com/googleapis/google-cloud-python/issues/12387)) ([12ce658](https://github.com/googleapis/google-cloud-python/commit/12ce658210f148eb93d9ff501568fb6f88e77f18))
+
 ## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-storageinsights-v0.1.6...google-cloud-storageinsights-v0.1.7) (2024-02-22)
 
 
