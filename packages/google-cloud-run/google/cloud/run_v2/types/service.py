@@ -265,11 +265,11 @@ class Service(proto.Message):
             its JSON representation will be a ``string`` instead of an
             ``integer``.
         labels (MutableMapping[str, str]):
-            Unstructured key value map that can be used to organize and
-            categorize objects. User-provided labels are shared with
-            Google's billing system, so they can be used to filter, or
-            break down billing charges by team, component, environment,
-            state, etc. For more information, visit
+            Optional. Unstructured key value map that can be used to
+            organize and categorize objects. User-provided labels are
+            shared with Google's billing system, so they can be used to
+            filter, or break down billing charges by team, component,
+            environment, state, etc. For more information, visit
             https://cloud.google.com/resource-manager/docs/creating-managing-labels
             or https://cloud.google.com/run/docs/configuring/labels.
 
@@ -280,9 +280,9 @@ class Service(proto.Message):
                 namespaces, and they will be rejected. All system labels in v1 now have a
                 corresponding field in v2 Service.
         annotations (MutableMapping[str, str]):
-            Unstructured key value map that may be set by external tools
-            to store and arbitrary metadata. They are not queryable and
-            should be preserved when modifying objects.
+            Optional. Unstructured key value map that may be set by
+            external tools to store and arbitrary metadata. They are not
+            queryable and should be preserved when modifying objects.
 
             .. raw:: html
 
@@ -344,6 +344,12 @@ class Service(proto.Message):
             Revisions belonging to the Service. If traffic is empty or
             not provided, defaults to 100% traffic to the latest
             ``Ready`` Revision.
+        scaling (google.cloud.run_v2.types.ServiceScaling):
+            Optional. Specifies service-level scaling
+            settings
+        default_uri_disabled (bool):
+            Optional. Disables public resolution of the
+            default URI of this service.
         observed_generation (int):
             Output only. The generation of this Service currently
             serving traffic. See comments in ``reconciling`` for
@@ -508,6 +514,15 @@ class Service(proto.Message):
         proto.MESSAGE,
         number=19,
         message=traffic_target.TrafficTarget,
+    )
+    scaling: vendor_settings.ServiceScaling = proto.Field(
+        proto.MESSAGE,
+        number=20,
+        message=vendor_settings.ServiceScaling,
+    )
+    default_uri_disabled: bool = proto.Field(
+        proto.BOOL,
+        number=22,
     )
     observed_generation: int = proto.Field(
         proto.INT64,

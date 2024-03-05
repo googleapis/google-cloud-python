@@ -62,7 +62,13 @@ from google.cloud.run_v2.services.revisions import (
     pagers,
     transports,
 )
-from google.cloud.run_v2.types import condition, k8s_min, revision, vendor_settings
+from google.cloud.run_v2.types import (
+    condition,
+    k8s_min,
+    revision,
+    status,
+    vendor_settings,
+)
 
 
 def client_cert_source_callback():

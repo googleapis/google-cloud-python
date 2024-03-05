@@ -34,6 +34,8 @@ __protobuf__ = proto.module(
         "VersionToPath",
         "CloudSqlInstance",
         "EmptyDirVolumeSource",
+        "NFSVolumeSource",
+        "GCSVolumeSource",
         "Probe",
         "HTTPGetAction",
         "HTTPHeader",
@@ -167,7 +169,7 @@ class ResourceRequirements(proto.Message):
 
     Attributes:
         limits (MutableMapping[str, str]):
-            Only ´memory´ and 'cpu' are supported.
+            Only ``memory`` and ``cpu`` keys in the map are supported.
 
             .. raw:: html
 
@@ -178,8 +180,11 @@ class ResourceRequirements(proto.Message):
                   * For supported 'memory' values and syntax, go to
                  https://cloud.google.com/run/docs/configuring/memory-limits
         cpu_idle (bool):
-            Determines whether CPU should be throttled or
-            not outside of requests.
+            Determines whether CPU is only allocated
+            during requests (true by default). However, if
+            ResourceRequirements is set, the caller must
+            explicitly set this field to true to preserve
+            the default behavior.
         startup_cpu_boost (bool):
             Determines whether CPU should be boosted on
             startup of a new container instance above the
@@ -375,6 +380,16 @@ class Volume(proto.Message):
             Ephemeral storage used as a shared volume.
 
             This field is a member of `oneof`_ ``volume_type``.
+        nfs (google.cloud.run_v2.types.NFSVolumeSource):
+            For NFS Voumes, contains the path to the nfs
+            Volume
+
+            This field is a member of `oneof`_ ``volume_type``.
+        gcs (google.cloud.run_v2.types.GCSVolumeSource):
+            Persistent storage backed by a Google Cloud
+            Storage bucket.
+
+            This field is a member of `oneof`_ ``volume_type``.
     """
 
     name: str = proto.Field(
@@ -398,6 +413,18 @@ class Volume(proto.Message):
         number=4,
         oneof="volume_type",
         message="EmptyDirVolumeSource",
+    )
+    nfs: "NFSVolumeSource" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="volume_type",
+        message="NFSVolumeSource",
+    )
+    gcs: "GCSVolumeSource" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="volume_type",
+        message="GCSVolumeSource",
     )
 
 
@@ -584,6 +611,52 @@ class EmptyDirVolumeSource(proto.Message):
     )
     size_limit: str = proto.Field(
         proto.STRING,
+        number=2,
+    )
+
+
+class NFSVolumeSource(proto.Message):
+    r"""Represents an NFS mount.
+
+    Attributes:
+        server (str):
+            Hostname or IP address of the NFS server
+        path (str):
+            Path that is exported by the NFS server.
+        read_only (bool):
+            If true, mount the NFS volume as read only
+    """
+
+    server: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    path: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    read_only: bool = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
+class GCSVolumeSource(proto.Message):
+    r"""Represents a GCS Bucket mounted as a volume.
+
+    Attributes:
+        bucket (str):
+            GCS Bucket name
+        read_only (bool):
+            If true, mount the GCS bucket as read-only
+    """
+
+    bucket: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    read_only: bool = proto.Field(
+        proto.BOOL,
         number=2,
     )
 
