@@ -2,7 +2,7 @@
 
 .. include:: multiprocessing.rst
 
-This package includes clients for multiple versions of .
+This package includes clients for multiple versions of Cloud Controls Partner API.
 By default, you will get version ``cloudcontrolspartner_v1``.
 
 

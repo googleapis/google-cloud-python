@@ -1,8 +1,8 @@
 {
     "name": "google-cloud-cloudcontrolspartner",
-    "name_pretty": "",
-    "api_description": "",
-    "product_documentation": "",
+    "name_pretty": "Cloud Controls Partner API",
+    "api_description": "Provides insights about your customers and their Assured Workloads based on your Sovereign Controls by Partners offering.",
+    "product_documentation": "https://cloud.google.com/sovereign-controls-by-partners/docs/sovereign-partners/reference/rest",
     "client_documentation": "https://cloud.google.com/python/docs/reference/google-cloud-cloudcontrolspartner/latest",
     "issue_tracker": "https://github.com/googleapis/google-cloud-python/issues",
     "release_level": "preview",
