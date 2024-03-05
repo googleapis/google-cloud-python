@@ -25,6 +25,8 @@ API Reference
 
     metrics
 
+    metrics.pairwise
+
     model_selection
 
     pipeline
