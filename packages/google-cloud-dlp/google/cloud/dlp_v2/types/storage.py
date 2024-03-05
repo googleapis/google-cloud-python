@@ -67,7 +67,7 @@ class Likelihood(proto.Enum):
 
     For more information about each likelihood level and how likelihood
     works, see `Match
-    likelihood <https://cloud.google.com/dlp/docs/likelihood>`__.
+    likelihood <https://cloud.google.com/sensitive-data-protection/docs/likelihood>`__.
 
     Values:
         LIKELIHOOD_UNSPECIFIED (0):
@@ -115,9 +115,9 @@ class FileType(proto.Enum):
             plist, pm, php, phtml, pht,   properties, py,
             pyw, rb, rbw, rs, rss,  rc, scala, sh, sql,
             swift, tex,   shtml, shtm, xhtml, lhs, ics, ini,
-            java, js, json, kix, kml, ocaml, md,   txt,
-            text, tsv, vb, vcard, vcs, wml, xcodeproj, xml,
-            xsl, xsd, yml, yaml.
+            java, js, json, jsonl, kix, kml,   ocaml, md,
+            txt, text, tsv, vb, vcard, vcs, wml, xcodeproj,
+            xml, xsl, xsd,   yml, yaml.
         IMAGE (3):
             Included file extensions: bmp, gif, jpg, jpeg, jpe, png.
             Setting
@@ -182,7 +182,8 @@ class InfoType(proto.Message):
         name (str):
             Name of the information type. Either a name of your choosing
             when creating a CustomInfoType, or one of the names listed
-            at https://cloud.google.com/dlp/docs/infotypes-reference
+            at
+            https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference
             when specifying a built-in type. When sending Cloud DLP
             results to Data Catalog, infoType names should conform to
             the pattern ``[A-Za-z0-9$_-]{1,64}``.
@@ -344,7 +345,7 @@ class CustomInfoType(proto.Message):
     """
 
     class ExclusionType(proto.Enum):
-        r"""
+        r"""Type of exclusion rule.
 
         Values:
             EXCLUSION_TYPE_UNSPECIFIED (0):
@@ -378,10 +379,10 @@ class CustomInfoType(proto.Message):
         Dictionary words containing a large number of characters that are
         not letters or digits may result in unexpected findings because such
         characters are treated as whitespace. The
-        `limits <https://cloud.google.com/dlp/limits>`__ page contains
-        details about the size limits of dictionaries. For dictionaries that
-        do not fit within these constraints, consider using
-        ``LargeCustomDictionaryConfig`` in the ``StoredInfoType`` API.
+        `limits <https://cloud.google.com/sensitive-data-protection/limits>`__
+        page contains details about the size limits of dictionaries. For
+        dictionaries that do not fit within these constraints, consider
+        using ``LargeCustomDictionaryConfig`` in the ``StoredInfoType`` API.
 
         This message has `oneof`_ fields (mutually exclusive fields).
         For each oneof, at most one member field can be set at the same time.
@@ -460,7 +461,7 @@ class CustomInfoType(proto.Message):
     class SurrogateType(proto.Message):
         r"""Message for detecting output from deidentification transformations
         such as
-        ```CryptoReplaceFfxFpeConfig`` <https://cloud.google.com/dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>`__.
+        ```CryptoReplaceFfxFpeConfig`` <https://cloud.google.com/sensitive-data-protection/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>`__.
         These types of transformations are those that perform
         pseudonymization, thereby producing a "surrogate" as output. This
         should be used in conjunction with a field on the transformation
@@ -496,7 +497,7 @@ class CustomInfoType(proto.Message):
                     entire column of findngs, set this to 1. For more
                     information, see [Hotword example: Set the match likelihood
                     of a table column]
-                    (https://cloud.google.com/dlp/docs/creating-custom-infotypes-likelihood#match-column-values).
+                    (https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes-likelihood#match-column-values).
                 window_after (int):
                     Number of characters after the finding to
                     consider.
@@ -576,7 +577,7 @@ class CustomInfoType(proto.Message):
                     For tabular data, if you want to modify the likelihood of an
                     entire column of findngs, see [Hotword example: Set the
                     match likelihood of a table column]
-                    (https://cloud.google.com/dlp/docs/creating-custom-infotypes-likelihood#match-column-values).
+                    (https://cloud.google.com/sensitive-data-protection/docs/creating-custom-infotypes-likelihood#match-column-values).
                 likelihood_adjustment (google.cloud.dlp_v2.types.CustomInfoType.DetectionRule.LikelihoodAdjustment):
                     Likelihood adjustment to apply to all
                     matching findings.
@@ -829,7 +830,7 @@ class CloudStorageOptions(proto.Message):
             field can't be set if de-identification is requested. For
             certain file types, setting this field has no effect. For
             more information, see `Limits on bytes scanned per
-            file <https://cloud.google.com/dlp/docs/supported-file-types#max-byte-size-per-file>`__.
+            file <https://cloud.google.com/sensitive-data-protection/docs/supported-file-types#max-byte-size-per-file>`__.
         bytes_limit_per_file_percent (int):
             Max percentage of bytes to scan from a file. The rest are
             omitted. The number of bytes scanned is rounded down. Must
@@ -839,7 +840,7 @@ class CloudStorageOptions(proto.Message):
             can't be set if de-identification is requested. For certain
             file types, setting this field has no effect. For more
             information, see `Limits on bytes scanned per
-            file <https://cloud.google.com/dlp/docs/supported-file-types#max-byte-size-per-file>`__.
+            file <https://cloud.google.com/sensitive-data-protection/docs/supported-file-types#max-byte-size-per-file>`__.
         file_types (MutableSequence[google.cloud.dlp_v2.types.FileType]):
             List of file type groups to include in the scan. If empty,
             all files are scanned and available data format processors
@@ -850,7 +851,7 @@ class CloudStorageOptions(proto.Message):
             inspection is restricted to 'global', 'us', 'asia', and
             'europe'.
         sample_method (google.cloud.dlp_v2.types.CloudStorageOptions.SampleMethod):
-
+            How to sample the data.
         files_limit_percent (int):
             Limits the number of files to scan to this
             percentage of the input FileSet. Number of files
@@ -866,7 +867,7 @@ class CloudStorageOptions(proto.Message):
 
         Values:
             SAMPLE_METHOD_UNSPECIFIED (0):
-                No description available.
+                No sampling.
             TOP (1):
                 Scan from the top (default).
             RANDOM_START (2):
@@ -959,8 +960,8 @@ class CloudStoragePath(proto.Message):
 
     Attributes:
         path (str):
-            A url representing a file or path (no wildcards) in Cloud
-            Storage. Example: gs://[BUCKET_NAME]/dictionary.txt
+            A URL representing a file or path (no wildcards) in Cloud
+            Storage. Example: ``gs://[BUCKET_NAME]/dictionary.txt``
     """
 
     path: str = proto.Field(
@@ -995,8 +996,13 @@ class BigQueryOptions(proto.Message):
             Defaults to 0. Only one of rows_limit and rows_limit_percent
             can be specified. Cannot be used in conjunction with
             TimespanConfig.
-        sample_method (google.cloud.dlp_v2.types.BigQueryOptions.SampleMethod):
 
+            Caution: A `known
+            issue <https://cloud.google.com/sensitive-data-protection/docs/known-issues#bq-sampling>`__
+            is causing the ``rowsLimitPercent`` field to behave
+            unexpectedly. We recommend using ``rowsLimit`` instead.
+        sample_method (google.cloud.dlp_v2.types.BigQueryOptions.SampleMethod):
+            How to sample the data.
         excluded_fields (MutableSequence[google.cloud.dlp_v2.types.FieldId]):
             References to fields excluded from scanning.
             This allows you to skip inspection of entire
@@ -1020,7 +1026,7 @@ class BigQueryOptions(proto.Message):
 
         Values:
             SAMPLE_METHOD_UNSPECIFIED (0):
-                No description available.
+                No sampling.
             TOP (1):
                 Scan groups of rows in the order BigQuery
                 provides (default). Multiple groups of rows may
@@ -1096,7 +1102,8 @@ class StorageConfig(proto.Message):
 
             This field is a member of `oneof`_ ``type``.
         timespan_config (google.cloud.dlp_v2.types.StorageConfig.TimespanConfig):
-
+            Configuration of the timespan of the items to
+            include in scanning.
     """
 
     class TimespanConfig(proto.Message):
@@ -1151,7 +1158,7 @@ class StorageConfig(proto.Message):
                 provided timestamp property are: ``TIMESTAMP``.
 
                 See the `known
-                issue <https://cloud.google.com/dlp/docs/known-issues#bq-timespan>`__
+                issue <https://cloud.google.com/sensitive-data-protection/docs/known-issues#bq-timespan>`__
                 related to this operation.
             enable_auto_population_of_timespan_config (bool):
                 When the job is started by a JobTrigger we will
@@ -1418,9 +1425,11 @@ class RecordKey(proto.Message):
 
     Attributes:
         datastore_key (google.cloud.dlp_v2.types.DatastoreKey):
+            BigQuery key
 
             This field is a member of `oneof`_ ``type``.
         big_query_key (google.cloud.dlp_v2.types.BigQueryKey):
+            Datastore key
 
             This field is a member of `oneof`_ ``type``.
         id_values (MutableSequence[str]):

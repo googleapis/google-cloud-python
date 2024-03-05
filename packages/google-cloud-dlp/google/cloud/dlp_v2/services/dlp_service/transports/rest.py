@@ -162,6 +162,14 @@ class DlpServiceRestInterceptor:
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
+            def pre_get_column_data_profile(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_column_data_profile(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_deidentify_template(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -202,11 +210,27 @@ class DlpServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_project_data_profile(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_project_data_profile(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_get_stored_info_type(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_get_stored_info_type(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_get_table_data_profile(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_table_data_profile(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -231,6 +255,14 @@ class DlpServiceRestInterceptor:
                 return request, metadata
 
             def post_inspect_content(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_column_data_profiles(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_column_data_profiles(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -282,11 +314,27 @@ class DlpServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_list_project_data_profiles(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_project_data_profiles(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_stored_info_types(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
             def post_list_stored_info_types(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_list_table_data_profiles(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_list_table_data_profiles(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -612,6 +660,29 @@ class DlpServiceRestInterceptor:
         """
         return request, metadata
 
+    def pre_get_column_data_profile(
+        self,
+        request: dlp.GetColumnDataProfileRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dlp.GetColumnDataProfileRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_column_data_profile
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_get_column_data_profile(
+        self, response: dlp.ColumnDataProfile
+    ) -> dlp.ColumnDataProfile:
+        """Post-rpc interceptor for get_column_data_profile
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_deidentify_template(
         self,
         request: dlp.GetDeidentifyTemplateRequest,
@@ -719,6 +790,29 @@ class DlpServiceRestInterceptor:
         """
         return response
 
+    def pre_get_project_data_profile(
+        self,
+        request: dlp.GetProjectDataProfileRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dlp.GetProjectDataProfileRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_project_data_profile
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_get_project_data_profile(
+        self, response: dlp.ProjectDataProfile
+    ) -> dlp.ProjectDataProfile:
+        """Post-rpc interceptor for get_project_data_profile
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_get_stored_info_type(
         self, request: dlp.GetStoredInfoTypeRequest, metadata: Sequence[Tuple[str, str]]
     ) -> Tuple[dlp.GetStoredInfoTypeRequest, Sequence[Tuple[str, str]]]:
@@ -733,6 +827,29 @@ class DlpServiceRestInterceptor:
         self, response: dlp.StoredInfoType
     ) -> dlp.StoredInfoType:
         """Post-rpc interceptor for get_stored_info_type
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_get_table_data_profile(
+        self,
+        request: dlp.GetTableDataProfileRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dlp.GetTableDataProfileRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for get_table_data_profile
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_get_table_data_profile(
+        self, response: dlp.TableDataProfile
+    ) -> dlp.TableDataProfile:
+        """Post-rpc interceptor for get_table_data_profile
 
         Override in a subclass to manipulate the response
         after it is returned by the DlpService server but before
@@ -800,6 +917,29 @@ class DlpServiceRestInterceptor:
         self, response: dlp.InspectContentResponse
     ) -> dlp.InspectContentResponse:
         """Post-rpc interceptor for inspect_content
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_column_data_profiles(
+        self,
+        request: dlp.ListColumnDataProfilesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dlp.ListColumnDataProfilesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_column_data_profiles
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_list_column_data_profiles(
+        self, response: dlp.ListColumnDataProfilesResponse
+    ) -> dlp.ListColumnDataProfilesResponse:
+        """Post-rpc interceptor for list_column_data_profiles
 
         Override in a subclass to manipulate the response
         after it is returned by the DlpService server but before
@@ -939,6 +1079,29 @@ class DlpServiceRestInterceptor:
         """
         return response
 
+    def pre_list_project_data_profiles(
+        self,
+        request: dlp.ListProjectDataProfilesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dlp.ListProjectDataProfilesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_project_data_profiles
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_list_project_data_profiles(
+        self, response: dlp.ListProjectDataProfilesResponse
+    ) -> dlp.ListProjectDataProfilesResponse:
+        """Post-rpc interceptor for list_project_data_profiles
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_stored_info_types(
         self,
         request: dlp.ListStoredInfoTypesRequest,
@@ -955,6 +1118,29 @@ class DlpServiceRestInterceptor:
         self, response: dlp.ListStoredInfoTypesResponse
     ) -> dlp.ListStoredInfoTypesResponse:
         """Post-rpc interceptor for list_stored_info_types
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DlpService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_list_table_data_profiles(
+        self,
+        request: dlp.ListTableDataProfilesRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[dlp.ListTableDataProfilesRequest, Sequence[Tuple[str, str]]]:
+        """Pre-rpc interceptor for list_table_data_profiles
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DlpService server.
+        """
+        return request, metadata
+
+    def post_list_table_data_profiles(
+        self, response: dlp.ListTableDataProfilesResponse
+    ) -> dlp.ListTableDataProfilesResponse:
+        """Post-rpc interceptor for list_table_data_profiles
 
         Override in a subclass to manipulate the response
         after it is returned by the DlpService server but before
@@ -1136,7 +1322,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
     sets.
 
     To learn more about concepts and find how-to guides see
-    https://cloud.google.com/dlp/docs/.
+    https://cloud.google.com/sensitive-data-protection/docs/.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -1450,7 +1636,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                         DeidentifyTemplates contains
                     instructions on how to de-identify
                     content. See
-                    https://cloud.google.com/dlp/docs/concepts-templates
+                    https://cloud.google.com/sensitive-data-protection/docs/concepts-templates
                     to learn more.
 
             """
@@ -1568,7 +1754,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
                 The generated data profiles are retained according to
                 the [data retention policy]
-                (https://cloud.google.com/dlp/docs/data-profiles#retention).
+                (https://cloud.google.com/sensitive-data-protection/docs/data-profiles#retention).
 
             """
 
@@ -1777,7 +1963,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 data to be detected) to be used anywhere
                 you otherwise would normally specify
                 InspectConfig. See
-                https://cloud.google.com/dlp/docs/concepts-templates
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-templates
                 to learn more.
 
             """
@@ -1890,7 +2076,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 ~.dlp.JobTrigger:
                     Contains a configuration to make dlp
                 api calls on a repeating basis. See
-                https://cloud.google.com/dlp/docs/concepts-job-triggers
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
 
             """
@@ -2751,6 +2937,99 @@ class DlpServiceRestTransport(DlpServiceTransport):
             if response.status_code >= 400:
                 raise core_exceptions.from_http_response(response)
 
+    class _GetColumnDataProfile(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("GetColumnDataProfile")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.GetColumnDataProfileRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.ColumnDataProfile:
+            r"""Call the get column data profile method over HTTP.
+
+            Args:
+                request (~.dlp.GetColumnDataProfileRequest):
+                    The request object. Request to get a column data profile.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.ColumnDataProfile:
+                    The profile for a scanned column
+                within a table.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=organizations/*/locations/*/columnDataProfiles/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=projects/*/locations/*/columnDataProfiles/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_column_data_profile(
+                request, metadata
+            )
+            pb_request = dlp.GetColumnDataProfileRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.ColumnDataProfile()
+            pb_resp = dlp.ColumnDataProfile.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_column_data_profile(resp)
+            return resp
+
     class _GetDeidentifyTemplate(DlpServiceRestStub):
         def __hash__(self):
             return hash("GetDeidentifyTemplate")
@@ -2790,7 +3069,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                     DeidentifyTemplates contains
                 instructions on how to de-identify
                 content. See
-                https://cloud.google.com/dlp/docs/concepts-templates
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-templates
                 to learn more.
 
             """
@@ -2898,7 +3177,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
                 The generated data profiles are retained according to
                 the [data retention policy]
-                (https://cloud.google.com/dlp/docs/data-profiles#retention).
+                (https://cloud.google.com/sensitive-data-protection/docs/data-profiles#retention).
 
             """
 
@@ -3087,7 +3366,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 data to be detected) to be used anywhere
                 you otherwise would normally specify
                 InspectConfig. See
-                https://cloud.google.com/dlp/docs/concepts-templates
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-templates
                 to learn more.
 
             """
@@ -3190,7 +3469,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 ~.dlp.JobTrigger:
                     Contains a configuration to make dlp
                 api calls on a repeating basis. See
-                https://cloud.google.com/dlp/docs/concepts-job-triggers
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
 
             """
@@ -3248,6 +3527,101 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_job_trigger(resp)
+            return resp
+
+    class _GetProjectDataProfile(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("GetProjectDataProfile")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.GetProjectDataProfileRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.ProjectDataProfile:
+            r"""Call the get project data profile method over HTTP.
+
+            Args:
+                request (~.dlp.GetProjectDataProfileRequest):
+                    The request object. Request to get a project data
+                profile.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.ProjectDataProfile:
+                    An aggregated profile for this
+                project, based on the resources profiled
+                within it.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=organizations/*/locations/*/projectDataProfiles/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=projects/*/locations/*/projectDataProfiles/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_project_data_profile(
+                request, metadata
+            )
+            pb_request = dlp.GetProjectDataProfileRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.ProjectDataProfile()
+            pb_resp = dlp.ProjectDataProfile.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_project_data_profile(resp)
             return resp
 
     class _GetStoredInfoType(DlpServiceRestStub):
@@ -3351,6 +3725,97 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_get_stored_info_type(resp)
+            return resp
+
+    class _GetTableDataProfile(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("GetTableDataProfile")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.GetTableDataProfileRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.TableDataProfile:
+            r"""Call the get table data profile method over HTTP.
+
+            Args:
+                request (~.dlp.GetTableDataProfileRequest):
+                    The request object. Request to get a table data profile.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.TableDataProfile:
+                    The profile for a scanned table.
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=organizations/*/locations/*/tableDataProfiles/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{name=projects/*/locations/*/tableDataProfiles/*}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_table_data_profile(
+                request, metadata
+            )
+            pb_request = dlp.GetTableDataProfileRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.TableDataProfile()
+            pb_resp = dlp.TableDataProfile.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_table_data_profile(resp)
             return resp
 
     class _HybridInspectDlpJob(DlpServiceRestStub):
@@ -3633,6 +4098,101 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_inspect_content(resp)
+            return resp
+
+    class _ListColumnDataProfiles(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("ListColumnDataProfiles")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.ListColumnDataProfilesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.ListColumnDataProfilesResponse:
+            r"""Call the list column data profiles method over HTTP.
+
+            Args:
+                request (~.dlp.ListColumnDataProfilesRequest):
+                    The request object. Request to list the profiles
+                generated for a given organization or
+                project.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.ListColumnDataProfilesResponse:
+                    List of profiles generated for a
+                given organization or project.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=organizations/*/locations/*}/columnDataProfiles",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/columnDataProfiles",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_column_data_profiles(
+                request, metadata
+            )
+            pb_request = dlp.ListColumnDataProfilesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.ListColumnDataProfilesResponse()
+            pb_resp = dlp.ListColumnDataProfilesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_column_data_profiles(resp)
             return resp
 
     class _ListDeidentifyTemplates(DlpServiceRestStub):
@@ -4204,6 +4764,102 @@ class DlpServiceRestTransport(DlpServiceTransport):
             resp = self._interceptor.post_list_job_triggers(resp)
             return resp
 
+    class _ListProjectDataProfiles(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("ListProjectDataProfiles")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.ListProjectDataProfilesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.ListProjectDataProfilesResponse:
+            r"""Call the list project data
+            profiles method over HTTP.
+
+                Args:
+                    request (~.dlp.ListProjectDataProfilesRequest):
+                        The request object. Request to list the profiles
+                    generated for a given organization or
+                    project.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.dlp.ListProjectDataProfilesResponse:
+                        List of profiles generated for a
+                    given organization or project.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=organizations/*/locations/*}/projectDataProfiles",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/projectDataProfiles",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_project_data_profiles(
+                request, metadata
+            )
+            pb_request = dlp.ListProjectDataProfilesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.ListProjectDataProfilesResponse()
+            pb_resp = dlp.ListProjectDataProfilesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_project_data_profiles(resp)
+            return resp
+
     class _ListStoredInfoTypes(DlpServiceRestStub):
         def __hash__(self):
             return hash("ListStoredInfoTypes")
@@ -4304,6 +4960,101 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
             json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
             resp = self._interceptor.post_list_stored_info_types(resp)
+            return resp
+
+    class _ListTableDataProfiles(DlpServiceRestStub):
+        def __hash__(self):
+            return hash("ListTableDataProfiles")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: dlp.ListTableDataProfilesRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> dlp.ListTableDataProfilesResponse:
+            r"""Call the list table data profiles method over HTTP.
+
+            Args:
+                request (~.dlp.ListTableDataProfilesRequest):
+                    The request object. Request to list the profiles
+                generated for a given organization or
+                project.
+                retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                    should be retried.
+                timeout (float): The timeout for this request.
+                metadata (Sequence[Tuple[str, str]]): Strings which should be
+                    sent along with the request as metadata.
+
+            Returns:
+                ~.dlp.ListTableDataProfilesResponse:
+                    List of profiles generated for a
+                given organization or project.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=organizations/*/locations/*}/tableDataProfiles",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v2/{parent=projects/*/locations/*}/tableDataProfiles",
+                },
+            ]
+            request, metadata = self._interceptor.pre_list_table_data_profiles(
+                request, metadata
+            )
+            pb_request = dlp.ListTableDataProfilesRequest.pb(request)
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = dlp.ListTableDataProfilesResponse()
+            pb_resp = dlp.ListTableDataProfilesResponse.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_list_table_data_profiles(resp)
             return resp
 
     class _RedactImage(DlpServiceRestStub):
@@ -4533,7 +5284,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                         DeidentifyTemplates contains
                     instructions on how to de-identify
                     content. See
-                    https://cloud.google.com/dlp/docs/concepts-templates
+                    https://cloud.google.com/sensitive-data-protection/docs/concepts-templates
                     to learn more.
 
             """
@@ -4651,7 +5402,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
 
                 The generated data profiles are retained according to
                 the [data retention policy]
-                (https://cloud.google.com/dlp/docs/data-profiles#retention).
+                (https://cloud.google.com/sensitive-data-protection/docs/data-profiles#retention).
 
             """
 
@@ -4757,7 +5508,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 data to be detected) to be used anywhere
                 you otherwise would normally specify
                 InspectConfig. See
-                https://cloud.google.com/dlp/docs/concepts-templates
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-templates
                 to learn more.
 
             """
@@ -4870,7 +5621,7 @@ class DlpServiceRestTransport(DlpServiceTransport):
                 ~.dlp.JobTrigger:
                     Contains a configuration to make dlp
                 api calls on a repeating basis. See
-                https://cloud.google.com/dlp/docs/concepts-job-triggers
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
 
             """
@@ -5175,6 +5926,14 @@ class DlpServiceRestTransport(DlpServiceTransport):
         return self._FinishDlpJob(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_column_data_profile(
+        self,
+    ) -> Callable[[dlp.GetColumnDataProfileRequest], dlp.ColumnDataProfile]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetColumnDataProfile(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_deidentify_template(
         self,
     ) -> Callable[[dlp.GetDeidentifyTemplateRequest], dlp.DeidentifyTemplate]:
@@ -5211,12 +5970,28 @@ class DlpServiceRestTransport(DlpServiceTransport):
         return self._GetJobTrigger(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_project_data_profile(
+        self,
+    ) -> Callable[[dlp.GetProjectDataProfileRequest], dlp.ProjectDataProfile]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetProjectDataProfile(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def get_stored_info_type(
         self,
     ) -> Callable[[dlp.GetStoredInfoTypeRequest], dlp.StoredInfoType]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._GetStoredInfoType(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def get_table_data_profile(
+        self,
+    ) -> Callable[[dlp.GetTableDataProfileRequest], dlp.TableDataProfile]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetTableDataProfile(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def hybrid_inspect_dlp_job(
@@ -5241,6 +6016,16 @@ class DlpServiceRestTransport(DlpServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._InspectContent(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_column_data_profiles(
+        self,
+    ) -> Callable[
+        [dlp.ListColumnDataProfilesRequest], dlp.ListColumnDataProfilesResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListColumnDataProfiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def list_deidentify_templates(
@@ -5293,12 +6078,32 @@ class DlpServiceRestTransport(DlpServiceTransport):
         return self._ListJobTriggers(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def list_project_data_profiles(
+        self,
+    ) -> Callable[
+        [dlp.ListProjectDataProfilesRequest], dlp.ListProjectDataProfilesResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListProjectDataProfiles(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_stored_info_types(
         self,
     ) -> Callable[[dlp.ListStoredInfoTypesRequest], dlp.ListStoredInfoTypesResponse]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._ListStoredInfoTypes(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def list_table_data_profiles(
+        self,
+    ) -> Callable[
+        [dlp.ListTableDataProfilesRequest], dlp.ListTableDataProfilesResponse
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._ListTableDataProfiles(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def redact_image(

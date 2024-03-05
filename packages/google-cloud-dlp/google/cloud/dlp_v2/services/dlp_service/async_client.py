@@ -47,7 +47,7 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.dlp_v2.services.dlp_service import pagers
-from google.cloud.dlp_v2.types import dlp
+from google.cloud.dlp_v2.types import dlp, storage
 
 from .client import DlpServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, DlpServiceTransport
@@ -65,7 +65,7 @@ class DlpServiceAsyncClient:
     sets.
 
     To learn more about concepts and find how-to guides see
-    https://cloud.google.com/dlp/docs/.
+    https://cloud.google.com/sensitive-data-protection/docs/.
     """
 
     _client: DlpServiceClient
@@ -77,6 +77,10 @@ class DlpServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = DlpServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = DlpServiceClient._DEFAULT_UNIVERSE
 
+    column_data_profile_path = staticmethod(DlpServiceClient.column_data_profile_path)
+    parse_column_data_profile_path = staticmethod(
+        DlpServiceClient.parse_column_data_profile_path
+    )
     deidentify_template_path = staticmethod(DlpServiceClient.deidentify_template_path)
     parse_deidentify_template_path = staticmethod(
         DlpServiceClient.parse_deidentify_template_path
@@ -97,9 +101,17 @@ class DlpServiceAsyncClient:
     )
     job_trigger_path = staticmethod(DlpServiceClient.job_trigger_path)
     parse_job_trigger_path = staticmethod(DlpServiceClient.parse_job_trigger_path)
+    project_data_profile_path = staticmethod(DlpServiceClient.project_data_profile_path)
+    parse_project_data_profile_path = staticmethod(
+        DlpServiceClient.parse_project_data_profile_path
+    )
     stored_info_type_path = staticmethod(DlpServiceClient.stored_info_type_path)
     parse_stored_info_type_path = staticmethod(
         DlpServiceClient.parse_stored_info_type_path
+    )
+    table_data_profile_path = staticmethod(DlpServiceClient.table_data_profile_path)
+    parse_table_data_profile_path = staticmethod(
+        DlpServiceClient.parse_table_data_profile_path
     )
     common_billing_account_path = staticmethod(
         DlpServiceClient.common_billing_account_path
@@ -301,8 +313,9 @@ class DlpServiceAsyncClient:
         may change over time as detectors are updated.
 
         For how to guides, see
-        https://cloud.google.com/dlp/docs/inspecting-images and
-        https://cloud.google.com/dlp/docs/inspecting-text,
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-images
+        and
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-text,
 
         .. code-block:: python
 
@@ -395,7 +408,7 @@ class DlpServiceAsyncClient:
         r"""Redacts potentially sensitive info from an image.
         This method has limits on input size, processing time,
         and output size. See
-        https://cloud.google.com/dlp/docs/redacting-sensitive-data-images
+        https://cloud.google.com/sensitive-data-protection/docs/redacting-sensitive-data-images
         to learn more.
 
         When no InfoTypes or CustomInfoTypes are specified in
@@ -495,7 +508,7 @@ class DlpServiceAsyncClient:
         r"""De-identifies potentially sensitive info from a
         ContentItem. This method has limits on input size and
         output size. See
-        https://cloud.google.com/dlp/docs/deidentify-sensitive-data
+        https://cloud.google.com/sensitive-data-protection/docs/deidentify-sensitive-data
         to learn more.
 
         When no InfoTypes or CustomInfoTypes are specified in
@@ -593,7 +606,7 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.ReidentifyContentResponse:
         r"""Re-identifies content that has been de-identified. See
-        https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example
+        https://cloud.google.com/sensitive-data-protection/docs/pseudonymization#re-identification_in_free_text_code_example
         to learn more.
 
         .. code-block:: python
@@ -687,8 +700,8 @@ class DlpServiceAsyncClient:
     ) -> dlp.ListInfoTypesResponse:
         r"""Returns a list of the sensitive information types
         that DLP API supports. See
-        https://cloud.google.com/dlp/docs/infotypes-reference to
-        learn more.
+        https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference
+        to learn more.
 
         .. code-block:: python
 
@@ -804,8 +817,8 @@ class DlpServiceAsyncClient:
         r"""Creates an InspectTemplate for reusing frequently
         used configuration for inspecting content, images, and
         storage. See
-        https://cloud.google.com/dlp/docs/creating-templates to
-        learn more.
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates
+        to learn more.
 
         .. code-block:: python
 
@@ -843,7 +856,7 @@ class DlpServiceAsyncClient:
                 The format of this value varies depending on the scope
                 of the request (project or organization) and whether you
                 have `specified a processing
-                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+                location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
                    ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
@@ -886,7 +899,7 @@ class DlpServiceAsyncClient:
                 data to be detected) to be used anywhere
                 you otherwise would normally specify
                 InspectConfig. See
-                https://cloud.google.com/dlp/docs/concepts-templates
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-templates
                 to learn more.
 
         """
@@ -949,7 +962,8 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.InspectTemplate:
         r"""Updates the InspectTemplate.
-        See https://cloud.google.com/dlp/docs/creating-templates
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates
         to learn more.
 
         .. code-block:: python
@@ -1016,7 +1030,7 @@ class DlpServiceAsyncClient:
                 data to be detected) to be used anywhere
                 you otherwise would normally specify
                 InspectConfig. See
-                https://cloud.google.com/dlp/docs/concepts-templates
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-templates
                 to learn more.
 
         """
@@ -1079,7 +1093,8 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.InspectTemplate:
         r"""Gets an InspectTemplate.
-        See https://cloud.google.com/dlp/docs/creating-templates
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates
         to learn more.
 
         .. code-block:: python
@@ -1134,7 +1149,7 @@ class DlpServiceAsyncClient:
                 data to be detected) to be used anywhere
                 you otherwise would normally specify
                 InspectConfig. See
-                https://cloud.google.com/dlp/docs/concepts-templates
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-templates
                 to learn more.
 
         """
@@ -1203,7 +1218,8 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> pagers.ListInspectTemplatesAsyncPager:
         r"""Lists InspectTemplates.
-        See https://cloud.google.com/dlp/docs/creating-templates
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates
         to learn more.
 
         .. code-block:: python
@@ -1243,7 +1259,7 @@ class DlpServiceAsyncClient:
                 The format of this value varies depending on the scope
                 of the request (project or organization) and whether you
                 have `specified a processing
-                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+                location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
                    ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
@@ -1355,7 +1371,8 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> None:
         r"""Deletes an InspectTemplate.
-        See https://cloud.google.com/dlp/docs/creating-templates
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates
         to learn more.
 
         .. code-block:: python
@@ -1465,7 +1482,7 @@ class DlpServiceAsyncClient:
         r"""Creates a DeidentifyTemplate for reusing frequently
         used configuration for de-identifying content, images,
         and storage. See
-        https://cloud.google.com/dlp/docs/creating-templates-deid
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         to learn more.
 
         .. code-block:: python
@@ -1504,7 +1521,7 @@ class DlpServiceAsyncClient:
                 The format of this value varies depending on the scope
                 of the request (project or organization) and whether you
                 have `specified a processing
-                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+                location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
                    ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
@@ -1545,7 +1562,7 @@ class DlpServiceAsyncClient:
                 DeidentifyTemplates contains
                 instructions on how to de-identify
                 content. See
-                https://cloud.google.com/dlp/docs/concepts-templates
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-templates
                 to learn more.
 
         """
@@ -1609,7 +1626,7 @@ class DlpServiceAsyncClient:
     ) -> dlp.DeidentifyTemplate:
         r"""Updates the DeidentifyTemplate.
         See
-        https://cloud.google.com/dlp/docs/creating-templates-deid
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         to learn more.
 
         .. code-block:: python
@@ -1674,7 +1691,7 @@ class DlpServiceAsyncClient:
                 DeidentifyTemplates contains
                 instructions on how to de-identify
                 content. See
-                https://cloud.google.com/dlp/docs/concepts-templates
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-templates
                 to learn more.
 
         """
@@ -1738,7 +1755,7 @@ class DlpServiceAsyncClient:
     ) -> dlp.DeidentifyTemplate:
         r"""Gets a DeidentifyTemplate.
         See
-        https://cloud.google.com/dlp/docs/creating-templates-deid
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         to learn more.
 
         .. code-block:: python
@@ -1791,7 +1808,7 @@ class DlpServiceAsyncClient:
                 DeidentifyTemplates contains
                 instructions on how to de-identify
                 content. See
-                https://cloud.google.com/dlp/docs/concepts-templates
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-templates
                 to learn more.
 
         """
@@ -1861,7 +1878,7 @@ class DlpServiceAsyncClient:
     ) -> pagers.ListDeidentifyTemplatesAsyncPager:
         r"""Lists DeidentifyTemplates.
         See
-        https://cloud.google.com/dlp/docs/creating-templates-deid
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         to learn more.
 
         .. code-block:: python
@@ -1901,7 +1918,7 @@ class DlpServiceAsyncClient:
                 The format of this value varies depending on the scope
                 of the request (project or organization) and whether you
                 have `specified a processing
-                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+                location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
                    ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
@@ -2014,7 +2031,7 @@ class DlpServiceAsyncClient:
     ) -> None:
         r"""Deletes a DeidentifyTemplate.
         See
-        https://cloud.google.com/dlp/docs/creating-templates-deid
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         to learn more.
 
         .. code-block:: python
@@ -2124,7 +2141,7 @@ class DlpServiceAsyncClient:
         r"""Creates a job trigger to run DLP actions such as
         scanning storage for sensitive information on a set
         schedule. See
-        https://cloud.google.com/dlp/docs/creating-job-triggers
+        https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         to learn more.
 
         .. code-block:: python
@@ -2165,7 +2182,7 @@ class DlpServiceAsyncClient:
 
                 The format of this value varies depending on whether you
                 have `specified a processing
-                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+                location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
                    ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
@@ -2199,7 +2216,7 @@ class DlpServiceAsyncClient:
             google.cloud.dlp_v2.types.JobTrigger:
                 Contains a configuration to make dlp
                 api calls on a repeating basis. See
-                https://cloud.google.com/dlp/docs/concepts-job-triggers
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
 
         """
@@ -2263,7 +2280,7 @@ class DlpServiceAsyncClient:
     ) -> dlp.JobTrigger:
         r"""Updates a job trigger.
         See
-        https://cloud.google.com/dlp/docs/creating-job-triggers
+        https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         to learn more.
 
         .. code-block:: python
@@ -2325,7 +2342,7 @@ class DlpServiceAsyncClient:
             google.cloud.dlp_v2.types.JobTrigger:
                 Contains a configuration to make dlp
                 api calls on a repeating basis. See
-                https://cloud.google.com/dlp/docs/concepts-job-triggers
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
 
         """
@@ -2498,7 +2515,7 @@ class DlpServiceAsyncClient:
     ) -> dlp.JobTrigger:
         r"""Gets a job trigger.
         See
-        https://cloud.google.com/dlp/docs/creating-job-triggers
+        https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         to learn more.
 
         .. code-block:: python
@@ -2548,7 +2565,7 @@ class DlpServiceAsyncClient:
             google.cloud.dlp_v2.types.JobTrigger:
                 Contains a configuration to make dlp
                 api calls on a repeating basis. See
-                https://cloud.google.com/dlp/docs/concepts-job-triggers
+                https://cloud.google.com/sensitive-data-protection/docs/concepts-job-triggers
                 to learn more.
 
         """
@@ -2618,7 +2635,7 @@ class DlpServiceAsyncClient:
     ) -> pagers.ListJobTriggersAsyncPager:
         r"""Lists job triggers.
         See
-        https://cloud.google.com/dlp/docs/creating-job-triggers
+        https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         to learn more.
 
         .. code-block:: python
@@ -2656,7 +2673,7 @@ class DlpServiceAsyncClient:
 
                 The format of this value varies depending on whether you
                 have `specified a processing
-                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+                location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
                    ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
@@ -2765,7 +2782,7 @@ class DlpServiceAsyncClient:
     ) -> None:
         r"""Deletes a job trigger.
         See
-        https://cloud.google.com/dlp/docs/creating-job-triggers
+        https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         to learn more.
 
         .. code-block:: python
@@ -3031,7 +3048,7 @@ class DlpServiceAsyncClient:
 
                    The generated data profiles are retained according to
                    the [data retention policy]
-                   (https://cloud.google.com/dlp/docs/data-profiles#retention).
+                   (https://cloud.google.com/sensitive-data-protection/docs/data-profiles#retention).
 
         """
         # Create or coerce a protobuf request object.
@@ -3162,7 +3179,7 @@ class DlpServiceAsyncClient:
 
                    The generated data profiles are retained according to
                    the [data retention policy]
-                   (https://cloud.google.com/dlp/docs/data-profiles#retention).
+                   (https://cloud.google.com/sensitive-data-protection/docs/data-profiles#retention).
 
         """
         # Create or coerce a protobuf request object.
@@ -3277,7 +3294,7 @@ class DlpServiceAsyncClient:
 
                    The generated data profiles are retained according to
                    the [data retention policy]
-                   (https://cloud.google.com/dlp/docs/data-profiles#retention).
+                   (https://cloud.google.com/sensitive-data-protection/docs/data-profiles#retention).
 
         """
         # Create or coerce a protobuf request object.
@@ -3591,8 +3608,9 @@ class DlpServiceAsyncClient:
     ) -> dlp.DlpJob:
         r"""Creates a new job to inspect storage or calculate
         risk metrics. See
-        https://cloud.google.com/dlp/docs/inspecting-storage and
-        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        and
+        https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         to learn more.
 
         When no InfoTypes or CustomInfoTypes are specified in
@@ -3638,7 +3656,7 @@ class DlpServiceAsyncClient:
 
                 The format of this value varies depending on whether you
                 have `specified a processing
-                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+                location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
                    ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
@@ -3744,8 +3762,9 @@ class DlpServiceAsyncClient:
     ) -> pagers.ListDlpJobsAsyncPager:
         r"""Lists DlpJobs that match the specified filter in the
         request. See
-        https://cloud.google.com/dlp/docs/inspecting-storage and
-        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        and
+        https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         to learn more.
 
         .. code-block:: python
@@ -3784,7 +3803,7 @@ class DlpServiceAsyncClient:
 
                 The format of this value varies depending on whether you
                 have `specified a processing
-                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+                location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
                    ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
@@ -3892,9 +3911,10 @@ class DlpServiceAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> dlp.DlpJob:
         r"""Gets the latest state of a long-running DlpJob.
-        See https://cloud.google.com/dlp/docs/inspecting-storage
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
         and
-        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         to learn more.
 
         .. code-block:: python
@@ -4012,9 +4032,10 @@ class DlpServiceAsyncClient:
         r"""Deletes a long-running DlpJob. This method indicates
         that the client is no longer interested in the DlpJob
         result. The job will be canceled if possible.
-        See https://cloud.google.com/dlp/docs/inspecting-storage
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
         and
-        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         to learn more.
 
         .. code-block:: python
@@ -4120,9 +4141,10 @@ class DlpServiceAsyncClient:
         r"""Starts asynchronous cancellation on a long-running
         DlpJob. The server makes a best effort to cancel the
         DlpJob, but success is not guaranteed.
-        See https://cloud.google.com/dlp/docs/inspecting-storage
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
         and
-        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         to learn more.
 
         .. code-block:: python
@@ -4198,7 +4220,7 @@ class DlpServiceAsyncClient:
     ) -> dlp.StoredInfoType:
         r"""Creates a pre-built stored infoType to be used for
         inspection. See
-        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         to learn more.
 
         .. code-block:: python
@@ -4237,7 +4259,7 @@ class DlpServiceAsyncClient:
                 The format of this value varies depending on the scope
                 of the request (project or organization) and whether you
                 have `specified a processing
-                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+                location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
                    ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
@@ -4341,7 +4363,7 @@ class DlpServiceAsyncClient:
         r"""Updates the stored infoType by creating a new
         version. The existing version will continue to be used
         until the new version is ready. See
-        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         to learn more.
 
         .. code-block:: python
@@ -4472,7 +4494,7 @@ class DlpServiceAsyncClient:
     ) -> dlp.StoredInfoType:
         r"""Gets a stored infoType.
         See
-        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         to learn more.
 
         .. code-block:: python
@@ -4593,7 +4615,7 @@ class DlpServiceAsyncClient:
     ) -> pagers.ListStoredInfoTypesAsyncPager:
         r"""Lists stored infoTypes.
         See
-        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         to learn more.
 
         .. code-block:: python
@@ -4633,7 +4655,7 @@ class DlpServiceAsyncClient:
                 The format of this value varies depending on the scope
                 of the request (project or organization) and whether you
                 have `specified a processing
-                location <https://cloud.google.com/dlp/docs/specifying-location>`__:
+                location <https://cloud.google.com/sensitive-data-protection/docs/specifying-location>`__:
 
                 -  Projects scope, location specified:
                    ``projects/``\ PROJECT_ID\ ``/locations/``\ LOCATION_ID
@@ -4742,7 +4764,7 @@ class DlpServiceAsyncClient:
     ) -> None:
         r"""Deletes a stored infoType.
         See
-        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         to learn more.
 
         .. code-block:: python
@@ -4838,6 +4860,735 @@ class DlpServiceAsyncClient:
             timeout=timeout,
             metadata=metadata,
         )
+
+    async def list_project_data_profiles(
+        self,
+        request: Optional[Union[dlp.ListProjectDataProfilesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListProjectDataProfilesAsyncPager:
+        r"""Lists data profiles for an organization.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_list_project_data_profiles():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ListProjectDataProfilesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_project_data_profiles(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.ListProjectDataProfilesRequest, dict]]):
+                The request object. Request to list the profiles
+                generated for a given organization or
+                project.
+            parent (:class:`str`):
+                Required. organizations/{org_id}/locations/{loc_id}
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.services.dlp_service.pagers.ListProjectDataProfilesAsyncPager:
+                List of profiles generated for a
+                given organization or project.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dlp.ListProjectDataProfilesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_project_data_profiles,
+            default_retry=retries.AsyncRetry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=300.0,
+            ),
+            default_timeout=300.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListProjectDataProfilesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_table_data_profiles(
+        self,
+        request: Optional[Union[dlp.ListTableDataProfilesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListTableDataProfilesAsyncPager:
+        r"""Lists data profiles for an organization.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_list_table_data_profiles():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ListTableDataProfilesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_table_data_profiles(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.ListTableDataProfilesRequest, dict]]):
+                The request object. Request to list the profiles
+                generated for a given organization or
+                project.
+            parent (:class:`str`):
+                Required. Resource name of the organization or project,
+                for example ``organizations/433245324/locations/europe``
+                or ``projects/project-id/locations/asia``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.services.dlp_service.pagers.ListTableDataProfilesAsyncPager:
+                List of profiles generated for a
+                given organization or project.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dlp.ListTableDataProfilesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_table_data_profiles,
+            default_retry=retries.AsyncRetry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=300.0,
+            ),
+            default_timeout=300.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListTableDataProfilesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_column_data_profiles(
+        self,
+        request: Optional[Union[dlp.ListColumnDataProfilesRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListColumnDataProfilesAsyncPager:
+        r"""Lists data profiles for an organization.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_list_column_data_profiles():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.ListColumnDataProfilesRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_column_data_profiles(request=request)
+
+                # Handle the response
+                async for response in page_result:
+                    print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.ListColumnDataProfilesRequest, dict]]):
+                The request object. Request to list the profiles
+                generated for a given organization or
+                project.
+            parent (:class:`str`):
+                Required. Resource name of the organization or project,
+                for example ``organizations/433245324/locations/europe``
+                or ``projects/project-id/locations/asia``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.services.dlp_service.pagers.ListColumnDataProfilesAsyncPager:
+                List of profiles generated for a
+                given organization or project.
+                Iterating over this object will yield
+                results and resolve additional pages
+                automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dlp.ListColumnDataProfilesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_column_data_profiles,
+            default_retry=retries.AsyncRetry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=300.0,
+            ),
+            default_timeout=300.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListColumnDataProfilesAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_project_data_profile(
+        self,
+        request: Optional[Union[dlp.GetProjectDataProfileRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dlp.ProjectDataProfile:
+        r"""Gets a project data profile.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_get_project_data_profile():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.GetProjectDataProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_project_data_profile(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.GetProjectDataProfileRequest, dict]]):
+                The request object. Request to get a project data
+                profile.
+            name (:class:`str`):
+                Required. Resource name, for example
+                ``organizations/12345/locations/us/projectDataProfiles/53234423``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.types.ProjectDataProfile:
+                An aggregated profile for this
+                project, based on the resources profiled
+                within it.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dlp.GetProjectDataProfileRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_project_data_profile,
+            default_retry=retries.AsyncRetry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=300.0,
+            ),
+            default_timeout=300.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_table_data_profile(
+        self,
+        request: Optional[Union[dlp.GetTableDataProfileRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dlp.TableDataProfile:
+        r"""Gets a table data profile.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_get_table_data_profile():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.GetTableDataProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_table_data_profile(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.GetTableDataProfileRequest, dict]]):
+                The request object. Request to get a table data profile.
+            name (:class:`str`):
+                Required. Resource name, for example
+                ``organizations/12345/locations/us/tableDataProfiles/53234423``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.types.TableDataProfile:
+                The profile for a scanned table.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dlp.GetTableDataProfileRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_table_data_profile,
+            default_retry=retries.AsyncRetry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=300.0,
+            ),
+            default_timeout=300.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_column_data_profile(
+        self,
+        request: Optional[Union[dlp.GetColumnDataProfileRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> dlp.ColumnDataProfile:
+        r"""Gets a column data profile.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import dlp_v2
+
+            async def sample_get_column_data_profile():
+                # Create a client
+                client = dlp_v2.DlpServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = dlp_v2.GetColumnDataProfileRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_column_data_profile(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.dlp_v2.types.GetColumnDataProfileRequest, dict]]):
+                The request object. Request to get a column data profile.
+            name (:class:`str`):
+                Required. Resource name, for example
+                ``organizations/12345/locations/us/columnDataProfiles/53234423``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.dlp_v2.types.ColumnDataProfile:
+                The profile for a scanned column
+                within a table.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = dlp.GetColumnDataProfileRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_column_data_profile,
+            default_retry=retries.AsyncRetry(
+                initial=0.1,
+                maximum=60.0,
+                multiplier=1.3,
+                predicate=retries.if_exception_type(
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
+                ),
+                deadline=300.0,
+            ),
+            default_timeout=300.0,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
 
     async def hybrid_inspect_dlp_job(
         self,
