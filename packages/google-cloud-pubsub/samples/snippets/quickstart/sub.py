@@ -57,7 +57,7 @@ if __name__ == "__main__":
     parser.add_argument("project_id", help="Google Cloud project ID")
     parser.add_argument("subscription_id", help="Pub/Sub subscription ID")
     parser.add_argument(
-        "timeout", default=None, nargs="?", const=1, help="Pub/Sub subscription ID"
+        "timeout", default=None, type=float, nargs="?", const=1, help="StreamingPull timeout in seconds"
     )
 
     args = parser.parse_args()
