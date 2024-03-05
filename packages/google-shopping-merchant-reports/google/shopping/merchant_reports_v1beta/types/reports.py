@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -684,13 +684,11 @@ class ProductView(proto.Message):
 
         Here's an example of how the aggregated status is computed:
 
-        ```
         Free listings \| Shopping Ads \| Status
         --------------|--------------|------------------------------
         Approved \| Approved \| ELIGIBLE Approved \| Pending \| ELIGIBLE
         Approved \| Disapproved \| ELIGIBLE_LIMITED Pending \| Pending \|
         PENDING Disapproved \| Disapproved \| NOT_ELIGIBLE_OR_DISAPPROVED
-        ```
 
         Values:
             AGGREGATED_REPORTING_CONTEXT_STATUS_UNSPECIFIED (0):
