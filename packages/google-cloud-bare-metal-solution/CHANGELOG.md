@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.7.2...google-cloud-bare-metal-solution-v1.7.3) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12382](https://github.com/googleapis/google-cloud-python/issues/12382)) ([d5db265](https://github.com/googleapis/google-cloud-python/commit/d5db2656c011be2264bd778244caf8e23d288c75))
+
 ## [1.7.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-bare-metal-solution-v1.7.1...google-cloud-bare-metal-solution-v1.7.2) (2024-02-22)
 
 
