@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.17.14](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.13...google-cloud-batch-v0.17.14) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12382](https://github.com/googleapis/google-cloud-python/issues/12382)) ([d5db265](https://github.com/googleapis/google-cloud-python/commit/d5db2656c011be2264bd778244caf8e23d288c75))
+
 ## [0.17.13](https://github.com/googleapis/google-cloud-python/compare/google-cloud-batch-v0.17.12...google-cloud-batch-v0.17.13) (2024-03-04)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gsuiteaddons-v0.3.7...google-cloud-gsuiteaddons-v0.3.8) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12385](https://github.com/googleapis/google-cloud-python/issues/12385)) ([d50f4d0](https://github.com/googleapis/google-cloud-python/commit/d50f4d042774e2f12e9fe03459eae9ce91247df3))
+
 ## [0.3.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gsuiteaddons-v0.3.6...google-cloud-gsuiteaddons-v0.3.7) (2024-02-22)
 
 

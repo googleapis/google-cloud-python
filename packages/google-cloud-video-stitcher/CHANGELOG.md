@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.8...google-cloud-video-stitcher-v0.7.9) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12388](https://github.com/googleapis/google-cloud-python/issues/12388)) ([d2cd4ff](https://github.com/googleapis/google-cloud-python/commit/d2cd4ffd12467ad512cccd7a0e9bb897ff2ce2a7))
+
 ## [0.7.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-video-stitcher-v0.7.7...google-cloud-video-stitcher-v0.7.8) (2024-02-22)
 
 

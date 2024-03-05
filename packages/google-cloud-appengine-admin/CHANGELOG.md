@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.11.2...google-cloud-appengine-admin-v1.11.3) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12381](https://github.com/googleapis/google-cloud-python/issues/12381)) ([48ae8ab](https://github.com/googleapis/google-cloud-python/commit/48ae8aba7ec71a382e001b3a659022f942c3b436))
+
 ## [1.11.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-appengine-admin-v1.11.1...google-cloud-appengine-admin-v1.11.2) (2024-02-22)
 
 

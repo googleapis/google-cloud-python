@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policytroubleshooter-iam-v0.1.4...google-cloud-policytroubleshooter-iam-v0.1.5) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12386](https://github.com/googleapis/google-cloud-python/issues/12386)) ([edcad16](https://github.com/googleapis/google-cloud-python/commit/edcad1661973ae1677c69b3fc1c03c3069ec0e71))
+
 ## [0.1.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-policytroubleshooter-iam-v0.1.3...google-cloud-policytroubleshooter-iam-v0.1.4) (2024-02-22)
 
 

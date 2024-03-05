@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.13.2...google-cloud-network-management-v1.13.3) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12385](https://github.com/googleapis/google-cloud-python/issues/12385)) ([d50f4d0](https://github.com/googleapis/google-cloud-python/commit/d50f4d042774e2f12e9fe03459eae9ce91247df3))
+
 ## [1.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.13.1...google-cloud-network-management-v1.13.2) (2024-02-22)
 
 

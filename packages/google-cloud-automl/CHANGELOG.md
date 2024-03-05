@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-automl/#history
 
+## [2.13.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.13.2...google-cloud-automl-v2.13.3) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12381](https://github.com/googleapis/google-cloud-python/issues/12381)) ([48ae8ab](https://github.com/googleapis/google-cloud-python/commit/48ae8aba7ec71a382e001b3a659022f942c3b436))
+
 ## [2.13.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-automl-v2.13.1...google-cloud-automl-v2.13.2) (2024-02-22)
 
 

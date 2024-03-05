@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.10.5](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.4...google-cloud-run-v0.10.5) (2024-03-05)
+
+
+### Features
+
+* Allow disabling the default URL (run.app) for Cloud Run Services ([5535d1e](https://github.com/googleapis/google-cloud-python/commit/5535d1e6288f790899f7f6b5091ad113621da176))
+* Support disabling waiting for health checks during Service deployment. ([5535d1e](https://github.com/googleapis/google-cloud-python/commit/5535d1e6288f790899f7f6b5091ad113621da176))
+* Support mounting NFS and GCS volumes in Cloud Run Jobs and Services ([5535d1e](https://github.com/googleapis/google-cloud-python/commit/5535d1e6288f790899f7f6b5091ad113621da176))
+* Support specifying a per-Service min-instance-count ([5535d1e](https://github.com/googleapis/google-cloud-python/commit/5535d1e6288f790899f7f6b5091ad113621da176))
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12387](https://github.com/googleapis/google-cloud-python/issues/12387)) ([12ce658](https://github.com/googleapis/google-cloud-python/commit/12ce658210f148eb93d9ff501568fb6f88e77f18))
+
+
+### Documentation
+
+* Clarify some defaults and required or optional values ([5535d1e](https://github.com/googleapis/google-cloud-python/commit/5535d1e6288f790899f7f6b5091ad113621da176))
+
 ## [0.10.4](https://github.com/googleapis/google-cloud-python/compare/google-cloud-run-v0.10.3...google-cloud-run-v0.10.4) (2024-02-22)
 
 
