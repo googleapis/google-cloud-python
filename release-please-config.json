@@ -762,6 +762,27 @@
             ],
             "release-type": "python"
         },
+        "packages/google-cloud-cloudcontrolspartner": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-cloudcontrolspartner",
+            "extra-files": [
+                "google/cloud/cloudcontrolspartner/gapic_version.py",
+                "google/cloud/cloudcontrolspartner_v1/gapic_version.py",
+                "google/cloud/cloudcontrolspartner_v1beta/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.cloudcontrolspartner.v1.json",
+                    "type": "json"
+                },
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.cloudcontrolspartner.v1beta.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-cloud-cloudquotas": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
