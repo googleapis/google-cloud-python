@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -666,17 +666,12 @@ class Tool(proto.Message):
                     certificates. N.B. Make sure the HTTPS server
                     certificates are signed with "subject alt name".
                     For instance a certificate can be self-signed
-                    using the following command:
-
-                    ::
-
-                        openssl x509
-                        -req -days 200 -in example.com.csr \
-                        -signkey example.com.key \
-                            -out example.com.crt \
-                            -extfile <(printf
-                        "\nsubjectAltName='DNS:www.example.com'")
-
+                    using the following command,    openssl x509
+                    -req -days 200 -in example.com.csr \
+                    -signkey example.com.key \
+                         -out example.com.crt \
+                         -extfile <(printf
+                    "\nsubjectAltName='DNS:www.example.com'")
             """
 
             display_name: str = proto.Field(
