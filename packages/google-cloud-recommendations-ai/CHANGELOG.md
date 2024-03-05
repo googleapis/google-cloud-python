@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.10.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.10.9...google-cloud-recommendations-ai-v0.10.10) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12386](https://github.com/googleapis/google-cloud-python/issues/12386)) ([edcad16](https://github.com/googleapis/google-cloud-python/commit/edcad1661973ae1677c69b3fc1c03c3069ec0e71))
+
 ## [0.10.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-recommendations-ai-v0.10.8...google-cloud-recommendations-ai-v0.10.9) (2024-02-22)
 
 

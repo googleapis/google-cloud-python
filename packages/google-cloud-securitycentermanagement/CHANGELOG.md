@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.6...google-cloud-securitycentermanagement-v0.1.7) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0  ([add6a6d](https://github.com/googleapis/google-cloud-python/commit/add6a6d5198c81e35e5edf8997eb9fde2cc9c81b))
+
+
+### Documentation
+
+* Clarify documentation for ListDescendantSecurityHealthAnalyticsCustomModules RPC and CustomConfig message ([add6a6d](https://github.com/googleapis/google-cloud-python/commit/add6a6d5198c81e35e5edf8997eb9fde2cc9c81b))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycentermanagement-v0.1.5...google-cloud-securitycentermanagement-v0.1.6) (2024-02-22)
 
 
