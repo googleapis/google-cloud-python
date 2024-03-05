@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.18.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.17.0...google-cloud-compute-v1.18.0) (2024-03-05)
+
+
+### Features
+
+* Update Compute Engine API to revision 20240220 ([6a32592](https://github.com/googleapis/google-cloud-python/commit/6a3259282df0f197ac42e02fe2e799ae93bcef44))
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([6a32592](https://github.com/googleapis/google-cloud-python/commit/6a3259282df0f197ac42e02fe2e799ae93bcef44))
+
 ## [1.17.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-compute-v1.16.1...google-cloud-compute-v1.17.0) (2024-02-22)
 
 

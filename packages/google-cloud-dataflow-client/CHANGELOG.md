@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.8.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.8.9...google-cloud-dataflow-client-v0.8.10) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12383](https://github.com/googleapis/google-cloud-python/issues/12383)) ([305f43f](https://github.com/googleapis/google-cloud-python/commit/305f43f7d6293e3316248f421fdc19c5d8405c21))
+
 ## [0.8.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dataflow-client-v0.8.8...google-cloud-dataflow-client-v0.8.9) (2024-02-22)
 
 
