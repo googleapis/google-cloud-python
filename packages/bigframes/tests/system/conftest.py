@@ -105,6 +105,11 @@ def cloudfunctions_client(
 
 
 @pytest.fixture(scope="session")
+def project_id(bigquery_client: bigquery.Client) -> str:
+    return bigquery_client.project
+
+
+@pytest.fixture(scope="session")
 def resourcemanager_client(
     session: bigframes.Session,
 ) -> resourcemanager_v3.ProjectsClient:
@@ -159,9 +164,8 @@ def dataset_id_not_created(bigquery_client: bigquery.Client):
 
 
 @pytest.fixture(scope="session")
-def dataset_id_permanent(bigquery_client: bigquery.Client) -> str:
+def dataset_id_permanent(bigquery_client: bigquery.Client, project_id: str) -> str:
     """Create a dataset if it doesn't exist."""
-    project_id = bigquery_client.project
     dataset_id = f"{project_id}.{PERMANENT_DATASET}"
     dataset = bigquery.Dataset(dataset_id)
     bigquery_client.create_dataset(dataset, exists_ok=True)

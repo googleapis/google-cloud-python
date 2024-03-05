@@ -387,6 +387,17 @@ def e2e(session: nox.sessions.Session):
     )
 
 
+@nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS[-1])
+def load(session: nox.sessions.Session):
+    """Run the very large tests in system test suite."""
+    run_system(
+        session=session,
+        prefix_name="load",
+        test_folder=os.path.join("tests", "system", "load"),
+        print_duration=True,
+    )
+
+
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
 def samples(session):
     """Run the samples test suite."""
