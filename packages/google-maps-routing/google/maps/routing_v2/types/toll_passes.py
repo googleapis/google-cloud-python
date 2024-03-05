@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -85,7 +85,6 @@ class TollPass(proto.Enum):
             E-card provided by multiple banks used to pay
             for tolls. All e-cards via banks are charged the
             same so only one enum value is needed. E.g.
-
             - Bank Mandiri
               https://www.bankmandiri.co.id/e-money
             - BCA https://www.bca.co.id/flazz
