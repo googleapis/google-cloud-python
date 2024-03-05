@@ -30,6 +30,8 @@ from google.cloud._helpers import _datetime_from_microseconds
 from google.cloud._helpers import _RFC3339_MICROS
 from google.cloud._helpers import _RFC3339_NO_FRACTION
 from google.cloud._helpers import _to_bytes
+from google.auth import credentials as ga_credentials  # type: ignore
+from google.api_core import client_options as client_options_lib
 
 _RFC3339_MICROS_NO_ZULU = "%Y-%m-%dT%H:%M:%S.%f"
 _TIMEONLY_WO_MICROS = "%H:%M:%S"
@@ -55,8 +57,62 @@ BIGQUERY_EMULATOR_HOST = "BIGQUERY_EMULATOR_HOST"
 _DEFAULT_HOST = "https://bigquery.googleapis.com"
 """Default host for JSON API."""
 
+_DEFAULT_HOST_TEMPLATE = "https://bigquery.{UNIVERSE_DOMAIN}"
+""" Templatized endpoint format. """
+
 _DEFAULT_UNIVERSE = "googleapis.com"
 """Default universe for the JSON API."""
+
+_UNIVERSE_DOMAIN_ENV = "GOOGLE_CLOUD_UNIVERSE_DOMAIN"
+"""Environment variable for setting universe domain."""
+
+
+def _get_client_universe(
+    client_options: Optional[Union[client_options_lib.ClientOptions, dict]]
+) -> str:
+    """Retrieves the specified universe setting.
+
+    Args:
+        client_options: specified client options.
+    Returns:
+        str: resolved universe setting.
+
+    """
+    if isinstance(client_options, dict):
+        client_options = client_options_lib.from_dict(client_options)
+    universe = _DEFAULT_UNIVERSE
+    if hasattr(client_options, "universe_domain"):
+        options_universe = getattr(client_options, "universe_domain")
+        if options_universe is not None and len(options_universe) > 0:
+            universe = options_universe
+    else:
+        env_universe = os.getenv(_UNIVERSE_DOMAIN_ENV)
+        if isinstance(env_universe, str) and len(env_universe) > 0:
+            universe = env_universe
+    return universe
+
+
+def _validate_universe(client_universe: str, credentials: ga_credentials.Credentials):
+    """Validates that client provided universe and universe embedded in credentials match.
+
+    Args:
+        client_universe (str): The universe domain configured via the client options.
+        credentials (ga_credentials.Credentials): The credentials being used in the client.
+
+    Raises:
+        ValueError: when client_universe does not match the universe in credentials.
+    """
+    if hasattr(credentials, "universe_domain"):
+        cred_universe = getattr(credentials, "universe_domain")
+        if isinstance(cred_universe, str):
+            if client_universe != cred_universe:
+                raise ValueError(
+                    "The configured universe domain "
+                    f"({client_universe}) does not match the universe domain "
+                    f"found in the credentials ({cred_universe}). "
+                    "If you haven't configured the universe domain explicitly, "
+                    f"`{_DEFAULT_UNIVERSE}` is the default."
+                )
 
 
 def _get_bigquery_host():

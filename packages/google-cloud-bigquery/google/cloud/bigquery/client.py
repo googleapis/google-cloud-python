@@ -78,7 +78,10 @@ from google.cloud.bigquery._helpers import _str_or_none
 from google.cloud.bigquery._helpers import _verify_job_config_type
 from google.cloud.bigquery._helpers import _get_bigquery_host
 from google.cloud.bigquery._helpers import _DEFAULT_HOST
+from google.cloud.bigquery._helpers import _DEFAULT_HOST_TEMPLATE
 from google.cloud.bigquery._helpers import _DEFAULT_UNIVERSE
+from google.cloud.bigquery._helpers import _validate_universe
+from google.cloud.bigquery._helpers import _get_client_universe
 from google.cloud.bigquery._job_helpers import make_job_id as _make_job_id
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
@@ -245,6 +248,7 @@ class Client(ClientWithProject):
         kw_args = {"client_info": client_info}
         bq_host = _get_bigquery_host()
         kw_args["api_endpoint"] = bq_host if bq_host != _DEFAULT_HOST else None
+        client_universe = None
         if client_options:
             if isinstance(client_options, dict):
                 client_options = google.api_core.client_options.from_dict(
@@ -253,14 +257,15 @@ class Client(ClientWithProject):
             if client_options.api_endpoint:
                 api_endpoint = client_options.api_endpoint
                 kw_args["api_endpoint"] = api_endpoint
-            elif (
-                hasattr(client_options, "universe_domain")
-                and client_options.universe_domain
-                and client_options.universe_domain is not _DEFAULT_UNIVERSE
-            ):
-                kw_args["api_endpoint"] = _DEFAULT_HOST.replace(
-                    _DEFAULT_UNIVERSE, client_options.universe_domain
-                )
+            else:
+                client_universe = _get_client_universe(client_options)
+                if client_universe != _DEFAULT_UNIVERSE:
+                    kw_args["api_endpoint"] = _DEFAULT_HOST_TEMPLATE.replace(
+                        "{UNIVERSE_DOMAIN}", client_universe
+                    )
+        # Ensure credentials and universe are not in conflict.
+        if hasattr(self, "_credentials") and client_universe is not None:
+            _validate_universe(client_universe, self._credentials)
 
         self._connection = Connection(self, **kw_args)
         self._location = location

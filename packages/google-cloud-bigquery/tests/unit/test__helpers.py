@@ -17,8 +17,86 @@ import datetime
 import decimal
 import json
 import unittest
-
+import os
 import mock
+import pytest
+import packaging
+import google.api_core
+
+
+@pytest.mark.skipif(
+    packaging.version.parse(getattr(google.api_core, "__version__", "0.0.0"))
+    < packaging.version.Version("2.15.0"),
+    reason="universe_domain not supported with google-api-core < 2.15.0",
+)
+class Test_get_client_universe(unittest.TestCase):
+    def test_with_none(self):
+        from google.cloud.bigquery._helpers import _get_client_universe
+
+        self.assertEqual("googleapis.com", _get_client_universe(None))
+
+    def test_with_dict(self):
+        from google.cloud.bigquery._helpers import _get_client_universe
+
+        options = {"universe_domain": "foo.com"}
+        self.assertEqual("foo.com", _get_client_universe(options))
+
+    def test_with_dict_empty(self):
+        from google.cloud.bigquery._helpers import _get_client_universe
+
+        options = {"universe_domain": ""}
+        self.assertEqual("googleapis.com", _get_client_universe(options))
+
+    def test_with_client_options(self):
+        from google.cloud.bigquery._helpers import _get_client_universe
+        from google.api_core import client_options
+
+        options = client_options.from_dict({"universe_domain": "foo.com"})
+        self.assertEqual("foo.com", _get_client_universe(options))
+
+    @mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"})
+    def test_with_environ(self):
+        from google.cloud.bigquery._helpers import _get_client_universe
+
+        self.assertEqual("foo.com", _get_client_universe(None))
+
+    @mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": ""})
+    def test_with_environ_empty(self):
+        from google.cloud.bigquery._helpers import _get_client_universe
+
+        self.assertEqual("googleapis.com", _get_client_universe(None))
+
+
+class Test_validate_universe(unittest.TestCase):
+    def test_with_none(self):
+        from google.cloud.bigquery._helpers import _validate_universe
+
+        # should not raise
+        _validate_universe("googleapis.com", None)
+
+    def test_with_no_universe_creds(self):
+        from google.cloud.bigquery._helpers import _validate_universe
+        from .helpers import make_creds
+
+        creds = make_creds(None)
+        # should not raise
+        _validate_universe("googleapis.com", creds)
+
+    def test_with_matched_universe_creds(self):
+        from google.cloud.bigquery._helpers import _validate_universe
+        from .helpers import make_creds
+
+        creds = make_creds("googleapis.com")
+        # should not raise
+        _validate_universe("googleapis.com", creds)
+
+    def test_with_mismatched_universe_creds(self):
+        from google.cloud.bigquery._helpers import _validate_universe
+        from .helpers import make_creds
+
+        creds = make_creds("foo.com")
+        with self.assertRaises(ValueError):
+            _validate_universe("googleapis.com", creds)
 
 
 class Test_not_null(unittest.TestCase):
