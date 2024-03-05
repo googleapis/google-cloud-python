@@ -793,3 +793,387 @@ class ListStoredInfoTypesAsyncPager:
 
     def __repr__(self) -> str:
         return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListProjectDataProfilesPager:
+    """A pager for iterating through ``list_project_data_profiles`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dlp_v2.types.ListProjectDataProfilesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``project_data_profiles`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListProjectDataProfiles`` requests and continue to iterate
+    through the ``project_data_profiles`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dlp_v2.types.ListProjectDataProfilesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dlp.ListProjectDataProfilesResponse],
+        request: dlp.ListProjectDataProfilesRequest,
+        response: dlp.ListProjectDataProfilesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dlp_v2.types.ListProjectDataProfilesRequest):
+                The initial request object.
+            response (google.cloud.dlp_v2.types.ListProjectDataProfilesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dlp.ListProjectDataProfilesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dlp.ListProjectDataProfilesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[dlp.ProjectDataProfile]:
+        for page in self.pages:
+            yield from page.project_data_profiles
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListProjectDataProfilesAsyncPager:
+    """A pager for iterating through ``list_project_data_profiles`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dlp_v2.types.ListProjectDataProfilesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``project_data_profiles`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListProjectDataProfiles`` requests and continue to iterate
+    through the ``project_data_profiles`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dlp_v2.types.ListProjectDataProfilesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[dlp.ListProjectDataProfilesResponse]],
+        request: dlp.ListProjectDataProfilesRequest,
+        response: dlp.ListProjectDataProfilesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dlp_v2.types.ListProjectDataProfilesRequest):
+                The initial request object.
+            response (google.cloud.dlp_v2.types.ListProjectDataProfilesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dlp.ListProjectDataProfilesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[dlp.ListProjectDataProfilesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[dlp.ProjectDataProfile]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.project_data_profiles:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListTableDataProfilesPager:
+    """A pager for iterating through ``list_table_data_profiles`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dlp_v2.types.ListTableDataProfilesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``table_data_profiles`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListTableDataProfiles`` requests and continue to iterate
+    through the ``table_data_profiles`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dlp_v2.types.ListTableDataProfilesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dlp.ListTableDataProfilesResponse],
+        request: dlp.ListTableDataProfilesRequest,
+        response: dlp.ListTableDataProfilesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dlp_v2.types.ListTableDataProfilesRequest):
+                The initial request object.
+            response (google.cloud.dlp_v2.types.ListTableDataProfilesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dlp.ListTableDataProfilesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dlp.ListTableDataProfilesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[dlp.TableDataProfile]:
+        for page in self.pages:
+            yield from page.table_data_profiles
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListTableDataProfilesAsyncPager:
+    """A pager for iterating through ``list_table_data_profiles`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dlp_v2.types.ListTableDataProfilesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``table_data_profiles`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListTableDataProfiles`` requests and continue to iterate
+    through the ``table_data_profiles`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dlp_v2.types.ListTableDataProfilesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[dlp.ListTableDataProfilesResponse]],
+        request: dlp.ListTableDataProfilesRequest,
+        response: dlp.ListTableDataProfilesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dlp_v2.types.ListTableDataProfilesRequest):
+                The initial request object.
+            response (google.cloud.dlp_v2.types.ListTableDataProfilesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dlp.ListTableDataProfilesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[dlp.ListTableDataProfilesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[dlp.TableDataProfile]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.table_data_profiles:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListColumnDataProfilesPager:
+    """A pager for iterating through ``list_column_data_profiles`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dlp_v2.types.ListColumnDataProfilesResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``column_data_profiles`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListColumnDataProfiles`` requests and continue to iterate
+    through the ``column_data_profiles`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dlp_v2.types.ListColumnDataProfilesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., dlp.ListColumnDataProfilesResponse],
+        request: dlp.ListColumnDataProfilesRequest,
+        response: dlp.ListColumnDataProfilesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dlp_v2.types.ListColumnDataProfilesRequest):
+                The initial request object.
+            response (google.cloud.dlp_v2.types.ListColumnDataProfilesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dlp.ListColumnDataProfilesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[dlp.ListColumnDataProfilesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[dlp.ColumnDataProfile]:
+        for page in self.pages:
+            yield from page.column_data_profiles
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListColumnDataProfilesAsyncPager:
+    """A pager for iterating through ``list_column_data_profiles`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.dlp_v2.types.ListColumnDataProfilesResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``column_data_profiles`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListColumnDataProfiles`` requests and continue to iterate
+    through the ``column_data_profiles`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.dlp_v2.types.ListColumnDataProfilesResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[dlp.ListColumnDataProfilesResponse]],
+        request: dlp.ListColumnDataProfilesRequest,
+        response: dlp.ListColumnDataProfilesResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.dlp_v2.types.ListColumnDataProfilesRequest):
+                The initial request object.
+            response (google.cloud.dlp_v2.types.ListColumnDataProfilesResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = dlp.ListColumnDataProfilesRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(self) -> AsyncIterator[dlp.ListColumnDataProfilesResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[dlp.ColumnDataProfile]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.column_data_profiles:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)

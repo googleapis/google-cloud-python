@@ -90,6 +90,11 @@
                 "finish_dlp_job"
               ]
             },
+            "GetColumnDataProfile": {
+              "methods": [
+                "get_column_data_profile"
+              ]
+            },
             "GetDeidentifyTemplate": {
               "methods": [
                 "get_deidentify_template"
@@ -115,9 +120,19 @@
                 "get_job_trigger"
               ]
             },
+            "GetProjectDataProfile": {
+              "methods": [
+                "get_project_data_profile"
+              ]
+            },
             "GetStoredInfoType": {
               "methods": [
                 "get_stored_info_type"
+              ]
+            },
+            "GetTableDataProfile": {
+              "methods": [
+                "get_table_data_profile"
               ]
             },
             "HybridInspectDlpJob": {
@@ -133,6 +148,11 @@
             "InspectContent": {
               "methods": [
                 "inspect_content"
+              ]
+            },
+            "ListColumnDataProfiles": {
+              "methods": [
+                "list_column_data_profiles"
               ]
             },
             "ListDeidentifyTemplates": {
@@ -165,9 +185,19 @@
                 "list_job_triggers"
               ]
             },
+            "ListProjectDataProfiles": {
+              "methods": [
+                "list_project_data_profiles"
+              ]
+            },
             "ListStoredInfoTypes": {
               "methods": [
                 "list_stored_info_types"
+              ]
+            },
+            "ListTableDataProfiles": {
+              "methods": [
+                "list_table_data_profiles"
               ]
             },
             "RedactImage": {
@@ -290,6 +320,11 @@
                 "finish_dlp_job"
               ]
             },
+            "GetColumnDataProfile": {
+              "methods": [
+                "get_column_data_profile"
+              ]
+            },
             "GetDeidentifyTemplate": {
               "methods": [
                 "get_deidentify_template"
@@ -315,9 +350,19 @@
                 "get_job_trigger"
               ]
             },
+            "GetProjectDataProfile": {
+              "methods": [
+                "get_project_data_profile"
+              ]
+            },
             "GetStoredInfoType": {
               "methods": [
                 "get_stored_info_type"
+              ]
+            },
+            "GetTableDataProfile": {
+              "methods": [
+                "get_table_data_profile"
               ]
             },
             "HybridInspectDlpJob": {
@@ -333,6 +378,11 @@
             "InspectContent": {
               "methods": [
                 "inspect_content"
+              ]
+            },
+            "ListColumnDataProfiles": {
+              "methods": [
+                "list_column_data_profiles"
               ]
             },
             "ListDeidentifyTemplates": {
@@ -365,9 +415,19 @@
                 "list_job_triggers"
               ]
             },
+            "ListProjectDataProfiles": {
+              "methods": [
+                "list_project_data_profiles"
+              ]
+            },
             "ListStoredInfoTypes": {
               "methods": [
                 "list_stored_info_types"
+              ]
+            },
+            "ListTableDataProfiles": {
+              "methods": [
+                "list_table_data_profiles"
               ]
             },
             "RedactImage": {
@@ -490,6 +550,11 @@
                 "finish_dlp_job"
               ]
             },
+            "GetColumnDataProfile": {
+              "methods": [
+                "get_column_data_profile"
+              ]
+            },
             "GetDeidentifyTemplate": {
               "methods": [
                 "get_deidentify_template"
@@ -515,9 +580,19 @@
                 "get_job_trigger"
               ]
             },
+            "GetProjectDataProfile": {
+              "methods": [
+                "get_project_data_profile"
+              ]
+            },
             "GetStoredInfoType": {
               "methods": [
                 "get_stored_info_type"
+              ]
+            },
+            "GetTableDataProfile": {
+              "methods": [
+                "get_table_data_profile"
               ]
             },
             "HybridInspectDlpJob": {
@@ -533,6 +608,11 @@
             "InspectContent": {
               "methods": [
                 "inspect_content"
+              ]
+            },
+            "ListColumnDataProfiles": {
+              "methods": [
+                "list_column_data_profiles"
               ]
             },
             "ListDeidentifyTemplates": {
@@ -565,9 +645,19 @@
                 "list_job_triggers"
               ]
             },
+            "ListProjectDataProfiles": {
+              "methods": [
+                "list_project_data_profiles"
+              ]
+            },
             "ListStoredInfoTypes": {
               "methods": [
                 "list_stored_info_types"
+              ]
+            },
+            "ListTableDataProfiles": {
+              "methods": [
+                "list_table_data_profiles"
               ]
             },
             "RedactImage": {
