@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -137,7 +137,7 @@ class CheckResponse(proto.Message):
             project_number (int):
                 The Google cloud project number, e.g.
                 1234567890. A value of 0 indicates no project
-                number is found.
+                    number is found.
 
                 NOTE: This field is deprecated after we support
                 flexible consumer id. New code should not depend
