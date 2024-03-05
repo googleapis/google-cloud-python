@@ -1324,6 +1324,7 @@ def test_get_service(request_type, transport: str = "grpc"):
             client_version="client_version_value",
             ingress=vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL,
             launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+            default_uri_disabled=True,
             observed_generation=2021,
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
@@ -1352,6 +1353,7 @@ def test_get_service(request_type, transport: str = "grpc"):
     assert response.client_version == "client_version_value"
     assert response.ingress == vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
+    assert response.default_uri_disabled is True
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
@@ -1406,6 +1408,7 @@ async def test_get_service_async(
                 client_version="client_version_value",
                 ingress=vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL,
                 launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+                default_uri_disabled=True,
                 observed_generation=2021,
                 latest_ready_revision="latest_ready_revision_value",
                 latest_created_revision="latest_created_revision_value",
@@ -1435,6 +1438,7 @@ async def test_get_service_async(
     assert response.client_version == "client_version_value"
     assert response.ingress == vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
+    assert response.default_uri_disabled is True
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
@@ -2960,12 +2964,19 @@ def test_create_service_rest(request_type):
                         "instances": ["instances_value1", "instances_value2"]
                     },
                     "empty_dir": {"medium": 1, "size_limit": "size_limit_value"},
+                    "nfs": {
+                        "server": "server_value",
+                        "path": "path_value",
+                        "read_only": True,
+                    },
+                    "gcs": {"bucket": "bucket_value", "read_only": True},
                 }
             ],
             "execution_environment": 1,
             "encryption_key": "encryption_key_value",
             "max_instance_request_concurrency": 3436,
             "session_affinity": True,
+            "health_check_disabled": True,
         },
         "traffic": [
             {
@@ -2975,6 +2986,8 @@ def test_create_service_rest(request_type):
                 "tag": "tag_value",
             }
         ],
+        "scaling": {"min_instance_count": 1920},
+        "default_uri_disabled": True,
         "observed_generation": 2021,
         "terminal_condition": {
             "type_": "type__value",
@@ -3382,6 +3395,7 @@ def test_get_service_rest(request_type):
             client_version="client_version_value",
             ingress=vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL,
             launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+            default_uri_disabled=True,
             observed_generation=2021,
             latest_ready_revision="latest_ready_revision_value",
             latest_created_revision="latest_created_revision_value",
@@ -3415,6 +3429,7 @@ def test_get_service_rest(request_type):
     assert response.client_version == "client_version_value"
     assert response.ingress == vendor_settings.IngressTraffic.INGRESS_TRAFFIC_ALL
     assert response.launch_stage == launch_stage_pb2.LaunchStage.UNIMPLEMENTED
+    assert response.default_uri_disabled is True
     assert response.observed_generation == 2021
     assert response.latest_ready_revision == "latest_ready_revision_value"
     assert response.latest_created_revision == "latest_created_revision_value"
@@ -4096,12 +4111,19 @@ def test_update_service_rest(request_type):
                         "instances": ["instances_value1", "instances_value2"]
                     },
                     "empty_dir": {"medium": 1, "size_limit": "size_limit_value"},
+                    "nfs": {
+                        "server": "server_value",
+                        "path": "path_value",
+                        "read_only": True,
+                    },
+                    "gcs": {"bucket": "bucket_value", "read_only": True},
                 }
             ],
             "execution_environment": 1,
             "encryption_key": "encryption_key_value",
             "max_instance_request_concurrency": 3436,
             "session_affinity": True,
+            "health_check_disabled": True,
         },
         "traffic": [
             {
@@ -4111,6 +4133,8 @@ def test_update_service_rest(request_type):
                 "tag": "tag_value",
             }
         ],
+        "scaling": {"min_instance_count": 1920},
+        "default_uri_disabled": True,
         "observed_generation": 2021,
         "terminal_condition": {
             "type_": "type__value",
