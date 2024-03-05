@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.32.1](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.32.0...google-cloud-dialogflow-cx-v1.32.1) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12390](https://github.com/googleapis/google-cloud-python/issues/12390)) ([25c291a](https://github.com/googleapis/google-cloud-python/commit/25c291afa9facc72f4af80b9c2721efe24b02953))
+
 ## [1.32.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dialogflow-cx-v1.31.1...google-cloud-dialogflow-cx-v1.32.0) (2024-02-22)
 
 
