@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-build/#history
 
+## [3.23.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.23.2...google-cloud-build-v3.23.3) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12382](https://github.com/googleapis/google-cloud-python/issues/12382)) ([d5db265](https://github.com/googleapis/google-cloud-python/commit/d5db2656c011be2264bd778244caf8e23d288c75))
+
 ## [3.23.2](https://github.com/googleapis/google-cloud-python/compare/google-cloud-build-v3.23.1...google-cloud-build-v3.23.2) (2024-02-22)
 
 
