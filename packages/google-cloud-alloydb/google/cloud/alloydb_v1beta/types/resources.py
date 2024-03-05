@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1312,7 +1312,7 @@ class Instance(proto.Message):
             query_string_length (int):
                 Query string length. The default value is
                 1024. Any integer between 256 and 4500 is
-                considered valid.
+                    considered valid.
             query_plans_per_minute (int):
                 Number of query execution plans captured by
                 Insights per minute for all queries combined.
