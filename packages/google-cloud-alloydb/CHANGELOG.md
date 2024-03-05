@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.3.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.9...google-cloud-alloydb-v0.3.10) (2024-03-05)
+
+
+### Features
+
+* Add new API to list the databases in a project and location ([3f2a93c](https://github.com/googleapis/google-cloud-python/commit/3f2a93c4892bd5995a87c152f2d54e26aa6cf138))
+* Add PSC cluster and instance configuration settings to enable/disable PSC and obtain the PSC endpoint name ([3f2a93c](https://github.com/googleapis/google-cloud-python/commit/3f2a93c4892bd5995a87c152f2d54e26aa6cf138))
+* Add support for getting PSC DNS name from the GetConnectionInfo API ([3f2a93c](https://github.com/googleapis/google-cloud-python/commit/3f2a93c4892bd5995a87c152f2d54e26aa6cf138))
+* Add support for obtaining the public IP address of an Instance ([3f2a93c](https://github.com/googleapis/google-cloud-python/commit/3f2a93c4892bd5995a87c152f2d54e26aa6cf138))
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([3f2a93c](https://github.com/googleapis/google-cloud-python/commit/3f2a93c4892bd5995a87c152f2d54e26aa6cf138))
+
+
+### Documentation
+
+* Clarified read pool config is for read pool type instances ([3f2a93c](https://github.com/googleapis/google-cloud-python/commit/3f2a93c4892bd5995a87c152f2d54e26aa6cf138))
+
 ## [0.3.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-alloydb-v0.3.8...google-cloud-alloydb-v0.3.9) (2024-02-22)
 
 

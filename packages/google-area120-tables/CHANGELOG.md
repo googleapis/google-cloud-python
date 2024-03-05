@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.9](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.8...google-area120-tables-v0.11.9) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12381](https://github.com/googleapis/google-cloud-python/issues/12381)) ([48ae8ab](https://github.com/googleapis/google-cloud-python/commit/48ae8aba7ec71a382e001b3a659022f942c3b436))
+
 ## [0.11.8](https://github.com/googleapis/google-cloud-python/compare/google-area120-tables-v0.11.7...google-area120-tables-v0.11.8) (2024-02-22)
 
 

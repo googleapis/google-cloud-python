@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.18.7](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.6...google-analytics-data-v0.18.7) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12381](https://github.com/googleapis/google-cloud-python/issues/12381)) ([48ae8ab](https://github.com/googleapis/google-cloud-python/commit/48ae8aba7ec71a382e001b3a659022f942c3b436))
+
 ## [0.18.6](https://github.com/googleapis/google-cloud-python/compare/google-analytics-data-v0.18.5...google-analytics-data-v0.18.6) (2024-02-22)
 
 
