@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -2522,6 +2522,12 @@ class FirewallAction(proto.Message):
             The user will get an HTTP error code.
 
             This field is a member of `oneof`_ ``firewall_action_oneof``.
+        include_recaptcha_script (google.cloud.recaptchaenterprise_v1.types.FirewallAction.IncludeRecaptchaScriptAction):
+            This action will inject reCAPTCHA JavaScript
+            code into the HTML page returned by the site
+            backend.
+
+            This field is a member of `oneof`_ ``firewall_action_oneof``.
         redirect (google.cloud.recaptchaenterprise_v1.types.FirewallAction.RedirectAction):
             This action will redirect the request to a
             ReCaptcha interstitial to attach a token.
@@ -2546,6 +2552,16 @@ class FirewallAction(proto.Message):
     class BlockAction(proto.Message):
         r"""A block action serves an HTTP error code a prevents the
         request from hitting the backend.
+
+        """
+
+    class IncludeRecaptchaScriptAction(proto.Message):
+        r"""An include reCAPTCHA script action involves injecting
+        reCAPTCHA JavaScript code into the HTML returned by the site
+        backend. This reCAPTCHA script is tasked with collecting user
+        signals on the requested web page, issuing tokens as a cookie
+        within the site domain, and enabling their utilization in
+        subsequent page requests.
 
         """
 
@@ -2606,6 +2622,12 @@ class FirewallAction(proto.Message):
         number=2,
         oneof="firewall_action_oneof",
         message=BlockAction,
+    )
+    include_recaptcha_script: IncludeRecaptchaScriptAction = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="firewall_action_oneof",
+        message=IncludeRecaptchaScriptAction,
     )
     redirect: RedirectAction = proto.Field(
         proto.MESSAGE,

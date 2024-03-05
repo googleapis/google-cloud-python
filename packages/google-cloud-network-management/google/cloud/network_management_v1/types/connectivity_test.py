@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -216,7 +216,7 @@ class Endpoint(proto.Message):
             provide forwarding information in the control
             plane. Format:
 
-            projects/{project}/global/forwardingRules/{id}
+             projects/{project}/global/forwardingRules/{id}
             or
             projects/{project}/regions/{region}/forwardingRules/{id}
         forwarding_rule_target (google.cloud.network_management_v1.types.Endpoint.ForwardingRuleTarget):
