@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.7](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.1.6...google-maps-fleetengine-delivery-v0.1.7) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12389](https://github.com/googleapis/google-cloud-python/issues/12389)) ([5db9352](https://github.com/googleapis/google-cloud-python/commit/5db93528a1ad20825d4d12dcf5fdf9624879f2ce))
+
 ## [0.1.6](https://github.com/googleapis/google-cloud-python/compare/google-maps-fleetengine-delivery-v0.1.5...google-maps-fleetengine-delivery-v0.1.6) (2024-02-22)
 
 

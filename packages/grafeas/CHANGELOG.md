@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/grafeas/#history
 
+## [1.9.3](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.9.2...grafeas-v1.9.3) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12389](https://github.com/googleapis/google-cloud-python/issues/12389)) ([5db9352](https://github.com/googleapis/google-cloud-python/commit/5db93528a1ad20825d4d12dcf5fdf9624879f2ce))
+
 ## [1.9.2](https://github.com/googleapis/google-cloud-python/compare/grafeas-v1.9.1...grafeas-v1.9.2) (2024-02-22)
 
 
