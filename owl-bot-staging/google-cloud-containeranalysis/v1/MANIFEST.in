@@ -1,0 +1,2 @@
+recursive-include google/cloud/devtools/containeranalysis *.py
+recursive-include google/cloud/devtools/containeranalysis_v1 *.py
