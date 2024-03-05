@@ -615,6 +615,7 @@ def remote_function(
     reuse: bool = True,
     name: Optional[str] = None,
     packages: Optional[Sequence[str]] = None,
+    cloud_function_service_account: Optional[str] = None,
 ):
     return global_session.with_default_session(
         bigframes.session.Session.remote_function,
@@ -625,6 +626,7 @@ def remote_function(
         reuse=reuse,
         name=name,
         packages=packages,
+        cloud_function_service_account=cloud_function_service_account,
     )
 
 

@@ -129,6 +129,7 @@ class RemoteFunctionClient:
         bq_connection_client,
         bq_connection_id,
         cloud_resource_manager_client,
+        cloud_function_service_account,
     ):
         self._gcp_project_id = gcp_project_id
         self._cloud_function_region = cloud_function_region
@@ -140,6 +141,7 @@ class RemoteFunctionClient:
         self._bq_connection_manager = clients.BqConnectionManager(
             bq_connection_client, cloud_resource_manager_client
         )
+        self._cloud_function_service_account = cloud_function_service_account
 
     def create_bq_remote_function(
         self, input_args, input_types, output_type, endpoint, bq_function_name
@@ -384,6 +386,9 @@ class RemoteFunctionClient:
             function.service_config = functions_v2.ServiceConfig()
             function.service_config.available_memory = "1024M"
             function.service_config.timeout_seconds = 600
+            function.service_config.service_account_email = (
+                self._cloud_function_service_account
+            )
             create_function_request.function = function
 
             # Create the cloud function and wait for it to be ready to use
@@ -591,6 +596,7 @@ def remote_function(
     reuse: bool = True,
     name: Optional[str] = None,
     packages: Optional[Sequence[str]] = None,
+    cloud_function_service_account: Optional[str] = None,
 ):
     """Decorator to turn a user defined function into a BigQuery remote function.
 
@@ -646,12 +652,12 @@ def remote_function(
             Client to use for BigQuery operations. If this param is not provided
             then bigquery client from the session would be used.
         bigquery_connection_client (google.cloud.bigquery_connection_v1.ConnectionServiceClient, Optional):
-            Client to use for cloud functions operations. If this param is not
-            provided then functions client from the session would be used.
-        cloud_functions_client (google.cloud.functions_v2.FunctionServiceClient, Optional):
             Client to use for BigQuery connection operations. If this param is
             not provided then bigquery connection client from the session would
             be used.
+        cloud_functions_client (google.cloud.functions_v2.FunctionServiceClient, Optional):
+            Client to use for cloud functions operations. If this param is not
+            provided then the functions client from the session would be used.
         resource_manager_client (google.cloud.resourcemanager_v3.ProjectsClient, Optional):
             Client to use for cloud resource management operations, e.g. for
             getting and setting IAM roles on cloud resources. If this param is
@@ -686,7 +692,13 @@ def remote_function(
             Explicit name of the external package dependencies. Each dependency
             is added to the `requirements.txt` as is, and can be of the form
             supported in https://pip.pypa.io/en/stable/reference/requirements-file-format/.
-
+        cloud_function_service_account (str, Optional):
+            Service account to use for the cloud functions. If not provided then
+            the default service account would be used. See
+            https://cloud.google.com/functions/docs/securing/function-identity
+            for more details. Please make sure the service account has the
+            necessary IAM permissions configured as described in
+            https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration.
     """
     import bigframes.pandas as bpd
 
@@ -787,6 +799,7 @@ def remote_function(
             bigquery_connection_client,
             bq_connection_id,
             resource_manager_client,
+            cloud_function_service_account,
         )
 
         rf_name, cf_name = remote_function_client.provision_bq_remote_function(

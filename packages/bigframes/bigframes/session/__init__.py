@@ -1337,6 +1337,7 @@ class Session(
         reuse: bool = True,
         name: Optional[str] = None,
         packages: Optional[Sequence[str]] = None,
+        cloud_function_service_account: Optional[str] = None,
     ):
         """Decorator to turn a user defined function into a BigQuery remote function. Check out
         the code samples at: https://cloud.google.com/bigquery/docs/remote-functions#bigquery-dataframes.
@@ -1410,6 +1411,13 @@ class Session(
                 Explicit name of the external package dependencies. Each dependency
                 is added to the `requirements.txt` as is, and can be of the form
                 supported in https://pip.pypa.io/en/stable/reference/requirements-file-format/.
+            cloud_function_service_account (str, Optional):
+                Service account to use for the cloud functions. If not provided
+                then the default service account would be used. See
+                https://cloud.google.com/functions/docs/securing/function-identity
+                for more details. Please make sure the service account has the
+                necessary IAM permissions configured as described in
+                https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration.
         Returns:
             callable: A remote function object pointing to the cloud assets created
             in the background to support the remote execution. The cloud assets can be
@@ -1428,6 +1436,7 @@ class Session(
             reuse=reuse,
             name=name,
             packages=packages,
+            cloud_function_service_account=cloud_function_service_account,
         )
 
     def read_gbq_function(

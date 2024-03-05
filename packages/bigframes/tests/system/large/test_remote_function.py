@@ -1279,3 +1279,46 @@ def test_remote_function_anonymous_dataset(session, scalars_dfs):
         cleanup_remote_function_assets(
             session.bqclient, session.cloudfunctionsclient, square
         )
+
+
+@pytest.mark.skip("This requires additional project config.")
+def test_remote_function_via_session_custom_sa(scalars_dfs):
+    # Set these values to run the test locally
+    # TODO(shobs): Automate and enable this test
+    PROJECT = ""
+    GCF_SERVICE_ACCOUNT = ""
+
+    rf_session = bigframes.Session(context=bigframes.BigQueryOptions(project=PROJECT))
+
+    try:
+
+        @rf_session.remote_function(
+            [int], int, reuse=False, cloud_function_service_account=GCF_SERVICE_ACCOUNT
+        )
+        def square_num(x):
+            if x is None:
+                return x
+            return x * x
+
+        scalars_df, scalars_pandas_df = scalars_dfs
+
+        bf_int64_col = scalars_df["int64_col"]
+        bf_result_col = bf_int64_col.apply(square_num)
+        bf_result = bf_int64_col.to_frame().assign(result=bf_result_col).to_pandas()
+
+        pd_int64_col = scalars_pandas_df["int64_col"]
+        pd_result_col = pd_int64_col.apply(lambda x: x if x is None else x * x)
+        pd_result = pd_int64_col.to_frame().assign(result=pd_result_col)
+
+        assert_pandas_df_equal(bf_result, pd_result, check_dtype=False)
+
+        # Assert that the GCF is created with the intended SA
+        gcf = rf_session.cloudfunctionsclient.get_function(
+            name=square_num.bigframes_cloud_function
+        )
+        assert gcf.service_config.service_account_email == GCF_SERVICE_ACCOUNT
+    finally:
+        # clean up the gcp assets created for the remote function
+        cleanup_remote_function_assets(
+            rf_session.bqclient, rf_session.cloudfunctionsclient, square_num
+        )
