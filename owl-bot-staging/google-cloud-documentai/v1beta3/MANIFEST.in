@@ -1,0 +1,2 @@
+recursive-include google/cloud/documentai *.py
+recursive-include google/cloud/documentai_v1beta3 *.py
