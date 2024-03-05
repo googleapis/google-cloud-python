@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -764,11 +764,11 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
                 role is a superset of the previous
                 role's permitted operations:
 
-                - reader can use the resource (e.g.
+                 - reader can use the resource (e.g.
                   tuned model) for inference
-                - writer has reader's permissions and
+                 - writer has reader's permissions and
                   additionally can edit and share
-                - owner has writer's permissions and
+                 - owner has writer's permissions and
                   additionally can delete
 
         """
@@ -894,11 +894,11 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
                 role is a superset of the previous
                 role's permitted operations:
 
-                - reader can use the resource (e.g.
+                 - reader can use the resource (e.g.
                   tuned model) for inference
-                - writer has reader's permissions and
+                 - writer has reader's permissions and
                   additionally can edit and share
-                - owner has writer's permissions and
+                 - owner has writer's permissions and
                   additionally can delete
 
         """
@@ -1150,11 +1150,11 @@ class PermissionServiceClient(metaclass=PermissionServiceClientMeta):
                 role is a superset of the previous
                 role's permitted operations:
 
-                - reader can use the resource (e.g.
+                 - reader can use the resource (e.g.
                   tuned model) for inference
-                - writer has reader's permissions and
+                 - writer has reader's permissions and
                   additionally can edit and share
-                - owner has writer's permissions and
+                 - owner has writer's permissions and
                   additionally can delete
 
         """

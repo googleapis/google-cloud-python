@@ -1,2 +1,0 @@
-recursive-include google/apps/card *.py
-recursive-include google/apps/card_v1 *.py
