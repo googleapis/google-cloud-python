@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.6...google-cloud-gke-backup-v0.5.7) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#12384](https://github.com/googleapis/google-cloud-python/issues/12384)) ([c69966f](https://github.com/googleapis/google-cloud-python/commit/c69966fa7aac2cba4e22513e4a053b3754f8ea5e))
+
 ## [0.5.6](https://github.com/googleapis/google-cloud-python/compare/google-cloud-gke-backup-v0.5.5...google-cloud-gke-backup-v0.5.6) (2024-02-22)
 
 
