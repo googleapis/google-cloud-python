@@ -22,7 +22,7 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.run_v2.types import condition, k8s_min, vendor_settings
+from google.cloud.run_v2.types import condition, k8s_min, status, vendor_settings
 
 __protobuf__ = proto.module(
     package="google.cloud.run.v2",
@@ -277,6 +277,9 @@ class Revision(proto.Message):
             Output only. Reserved for future use.
         session_affinity (bool):
             Enable session affinity.
+        scaling_status (google.cloud.run_v2.types.RevisionScalingStatus):
+            Output only. The current effective scaling
+            settings for the revision.
         etag (str):
             Output only. A system-generated fingerprint
             for this version of the resource. May be used to
@@ -412,6 +415,11 @@ class Revision(proto.Message):
     session_affinity: bool = proto.Field(
         proto.BOOL,
         number=38,
+    )
+    scaling_status: status.RevisionScalingStatus = proto.Field(
+        proto.MESSAGE,
+        number=39,
+        message=status.RevisionScalingStatus,
     )
     etag: str = proto.Field(
         proto.STRING,

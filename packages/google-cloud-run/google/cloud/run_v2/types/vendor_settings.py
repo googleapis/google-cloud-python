@@ -28,6 +28,7 @@ __protobuf__ = proto.module(
         "VpcAccess",
         "BinaryAuthorization",
         "RevisionScaling",
+        "ServiceScaling",
     },
 )
 
@@ -229,6 +230,24 @@ class RevisionScaling(proto.Message):
     max_instance_count: int = proto.Field(
         proto.INT32,
         number=2,
+    )
+
+
+class ServiceScaling(proto.Message):
+    r"""Scaling settings applied at the service level rather than
+    at the revision level.
+
+    Attributes:
+        min_instance_count (int):
+            total min instances for the service. This
+            number of instances is divided among all
+            revisions with specified traffic based on the
+            percent of traffic they are receiving. (BETA)
+    """
+
+    min_instance_count: int = proto.Field(
+        proto.INT32,
+        number=1,
     )
 
 

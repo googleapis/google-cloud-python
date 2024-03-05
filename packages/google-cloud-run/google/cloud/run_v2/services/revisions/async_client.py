@@ -51,7 +51,13 @@ from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.run_v2.services.revisions import pagers
-from google.cloud.run_v2.types import condition, k8s_min, revision, vendor_settings
+from google.cloud.run_v2.types import (
+    condition,
+    k8s_min,
+    revision,
+    status,
+    vendor_settings,
+)
 
 from .client import RevisionsClient
 from .transports.base import DEFAULT_CLIENT_INFO, RevisionsTransport
