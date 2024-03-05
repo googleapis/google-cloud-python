@@ -1,0 +1,2 @@
+recursive-include google/cloud/accessapproval *.py
+recursive-include google/cloud/accessapproval_v1 *.py
