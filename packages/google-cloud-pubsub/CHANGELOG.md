@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.19.8](https://github.com/googleapis/python-pubsub/compare/v2.19.7...v2.19.8) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Exclude google-auth 2.24.0 and 2.25.0 ([#1102](https://github.com/googleapis/python-pubsub/issues/1102)) ([165c983](https://github.com/googleapis/python-pubsub/commit/165c983803c48a17141765395cf9ec2e6a7056fa))
+
 ## [2.19.7](https://github.com/googleapis/python-pubsub/compare/v2.19.6...v2.19.7) (2024-02-24)
 
 
