@@ -20,6 +20,8 @@ set -eo pipefail
 # Enables `**` to include files nested inside sub-folders
 shopt -s globstar
 
+DIFF_FROM="origin/main..."
+
 # Exit early if samples don't exist
 if ! find samples -name 'requirements.txt' | grep -q .; then
   echo "No tests run. './samples/**/requirements.txt' not found"
@@ -70,6 +72,16 @@ for file in samples/**/requirements.txt; do
     # Navigate to the project folder.
     file=$(dirname "$file")
     cd "$file"
+
+    # If $DIFF_FROM is set, use it to check for changes in this directory.
+    if [[ -n "${DIFF_FROM:-}" ]]; then
+        git diff --quiet "$DIFF_FROM" .
+        CHANGED=$?
+        if [[ "$CHANGED" -eq 0 ]]; then
+          # echo -e "\n Skipping $file: no changes in folder.\n"
+          continue
+        fi
+    fi
 
     echo "------------------------------------------------------------"
     echo "- testing $file"

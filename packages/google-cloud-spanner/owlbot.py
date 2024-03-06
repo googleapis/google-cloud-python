@@ -137,6 +137,7 @@ s.move(
         ".github/workflows",  # exclude gh actions as credentials are needed for tests
         "README.rst",
         ".github/release-please.yml",
+        ".kokoro/test-samples-impl.sh",
     ],
 )
 
