@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.20.1](https://github.com/googleapis/python-pubsub/compare/v2.20.0...v2.20.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* Catch and surface BaseException() ([#1108](https://github.com/googleapis/python-pubsub/issues/1108)) ([07e427f](https://github.com/googleapis/python-pubsub/commit/07e427f675464b9aa79c68dede67082529054980))
+
 ## [2.20.0](https://github.com/googleapis/python-pubsub/compare/v2.19.8...v2.20.0) (2024-03-05)
 
 
