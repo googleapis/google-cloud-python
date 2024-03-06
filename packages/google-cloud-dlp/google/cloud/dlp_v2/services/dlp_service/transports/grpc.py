@@ -42,7 +42,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
     sets.
 
     To learn more about concepts and find how-to guides see
-    https://cloud.google.com/dlp/docs/.
+    https://cloud.google.com/sensitive-data-protection/docs/.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -256,8 +256,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         may change over time as detectors are updated.
 
         For how to guides, see
-        https://cloud.google.com/dlp/docs/inspecting-images and
-        https://cloud.google.com/dlp/docs/inspecting-text,
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-images
+        and
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-text,
 
         Returns:
             Callable[[~.InspectContentRequest],
@@ -286,7 +287,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         Redacts potentially sensitive info from an image.
         This method has limits on input size, processing time,
         and output size. See
-        https://cloud.google.com/dlp/docs/redacting-sensitive-data-images
+        https://cloud.google.com/sensitive-data-protection/docs/redacting-sensitive-data-images
         to learn more.
 
         When no InfoTypes or CustomInfoTypes are specified in
@@ -321,7 +322,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         De-identifies potentially sensitive info from a
         ContentItem. This method has limits on input size and
         output size. See
-        https://cloud.google.com/dlp/docs/deidentify-sensitive-data
+        https://cloud.google.com/sensitive-data-protection/docs/deidentify-sensitive-data
         to learn more.
 
         When no InfoTypes or CustomInfoTypes are specified in
@@ -354,7 +355,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the reidentify content method over gRPC.
 
         Re-identifies content that has been de-identified. See
-        https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example
+        https://cloud.google.com/sensitive-data-protection/docs/pseudonymization#re-identification_in_free_text_code_example
         to learn more.
 
         Returns:
@@ -383,8 +384,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Returns a list of the sensitive information types
         that DLP API supports. See
-        https://cloud.google.com/dlp/docs/infotypes-reference to
-        learn more.
+        https://cloud.google.com/sensitive-data-protection/docs/infotypes-reference
+        to learn more.
 
         Returns:
             Callable[[~.ListInfoTypesRequest],
@@ -413,8 +414,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         Creates an InspectTemplate for reusing frequently
         used configuration for inspecting content, images, and
         storage. See
-        https://cloud.google.com/dlp/docs/creating-templates to
-        learn more.
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates
+        to learn more.
 
         Returns:
             Callable[[~.CreateInspectTemplateRequest],
@@ -441,7 +442,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the update inspect template method over gRPC.
 
         Updates the InspectTemplate.
-        See https://cloud.google.com/dlp/docs/creating-templates
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates
         to learn more.
 
         Returns:
@@ -469,7 +471,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the get inspect template method over gRPC.
 
         Gets an InspectTemplate.
-        See https://cloud.google.com/dlp/docs/creating-templates
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates
         to learn more.
 
         Returns:
@@ -497,7 +500,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the list inspect templates method over gRPC.
 
         Lists InspectTemplates.
-        See https://cloud.google.com/dlp/docs/creating-templates
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates
         to learn more.
 
         Returns:
@@ -525,7 +529,8 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the delete inspect template method over gRPC.
 
         Deletes an InspectTemplate.
-        See https://cloud.google.com/dlp/docs/creating-templates
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates
         to learn more.
 
         Returns:
@@ -555,7 +560,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         Creates a DeidentifyTemplate for reusing frequently
         used configuration for de-identifying content, images,
         and storage. See
-        https://cloud.google.com/dlp/docs/creating-templates-deid
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         to learn more.
 
         Returns:
@@ -584,7 +589,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Updates the DeidentifyTemplate.
         See
-        https://cloud.google.com/dlp/docs/creating-templates-deid
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         to learn more.
 
         Returns:
@@ -613,7 +618,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Gets a DeidentifyTemplate.
         See
-        https://cloud.google.com/dlp/docs/creating-templates-deid
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         to learn more.
 
         Returns:
@@ -644,7 +649,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Lists DeidentifyTemplates.
         See
-        https://cloud.google.com/dlp/docs/creating-templates-deid
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         to learn more.
 
         Returns:
@@ -673,7 +678,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Deletes a DeidentifyTemplate.
         See
-        https://cloud.google.com/dlp/docs/creating-templates-deid
+        https://cloud.google.com/sensitive-data-protection/docs/creating-templates-deid
         to learn more.
 
         Returns:
@@ -703,7 +708,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         Creates a job trigger to run DLP actions such as
         scanning storage for sensitive information on a set
         schedule. See
-        https://cloud.google.com/dlp/docs/creating-job-triggers
+        https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         to learn more.
 
         Returns:
@@ -732,7 +737,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Updates a job trigger.
         See
-        https://cloud.google.com/dlp/docs/creating-job-triggers
+        https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         to learn more.
 
         Returns:
@@ -788,7 +793,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Gets a job trigger.
         See
-        https://cloud.google.com/dlp/docs/creating-job-triggers
+        https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         to learn more.
 
         Returns:
@@ -817,7 +822,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Lists job triggers.
         See
-        https://cloud.google.com/dlp/docs/creating-job-triggers
+        https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         to learn more.
 
         Returns:
@@ -846,7 +851,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Deletes a job trigger.
         See
-        https://cloud.google.com/dlp/docs/creating-job-triggers
+        https://cloud.google.com/sensitive-data-protection/docs/creating-job-triggers
         to learn more.
 
         Returns:
@@ -1032,8 +1037,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Creates a new job to inspect storage or calculate
         risk metrics. See
-        https://cloud.google.com/dlp/docs/inspecting-storage and
-        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        and
+        https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         to learn more.
 
         When no InfoTypes or CustomInfoTypes are specified in
@@ -1067,8 +1073,9 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Lists DlpJobs that match the specified filter in the
         request. See
-        https://cloud.google.com/dlp/docs/inspecting-storage and
-        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
+        and
+        https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         to learn more.
 
         Returns:
@@ -1094,9 +1101,10 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         r"""Return a callable for the get dlp job method over gRPC.
 
         Gets the latest state of a long-running DlpJob.
-        See https://cloud.google.com/dlp/docs/inspecting-storage
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
         and
-        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         to learn more.
 
         Returns:
@@ -1124,9 +1132,10 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         Deletes a long-running DlpJob. This method indicates
         that the client is no longer interested in the DlpJob
         result. The job will be canceled if possible.
-        See https://cloud.google.com/dlp/docs/inspecting-storage
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
         and
-        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         to learn more.
 
         Returns:
@@ -1154,9 +1163,10 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         Starts asynchronous cancellation on a long-running
         DlpJob. The server makes a best effort to cancel the
         DlpJob, but success is not guaranteed.
-        See https://cloud.google.com/dlp/docs/inspecting-storage
+        See
+        https://cloud.google.com/sensitive-data-protection/docs/inspecting-storage
         and
-        https://cloud.google.com/dlp/docs/compute-risk-analysis
+        https://cloud.google.com/sensitive-data-protection/docs/compute-risk-analysis
         to learn more.
 
         Returns:
@@ -1185,7 +1195,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Creates a pre-built stored infoType to be used for
         inspection. See
-        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         to learn more.
 
         Returns:
@@ -1215,7 +1225,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
         Updates the stored infoType by creating a new
         version. The existing version will continue to be used
         until the new version is ready. See
-        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         to learn more.
 
         Returns:
@@ -1244,7 +1254,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Gets a stored infoType.
         See
-        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         to learn more.
 
         Returns:
@@ -1273,7 +1283,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Lists stored infoTypes.
         See
-        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         to learn more.
 
         Returns:
@@ -1302,7 +1312,7 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
 
         Deletes a stored infoType.
         See
-        https://cloud.google.com/dlp/docs/creating-stored-infotypes
+        https://cloud.google.com/sensitive-data-protection/docs/creating-stored-infotypes
         to learn more.
 
         Returns:
@@ -1322,6 +1332,168 @@ class DlpServiceGrpcTransport(DlpServiceTransport):
                 response_deserializer=empty_pb2.Empty.FromString,
             )
         return self._stubs["delete_stored_info_type"]
+
+    @property
+    def list_project_data_profiles(
+        self,
+    ) -> Callable[
+        [dlp.ListProjectDataProfilesRequest], dlp.ListProjectDataProfilesResponse
+    ]:
+        r"""Return a callable for the list project data profiles method over gRPC.
+
+        Lists data profiles for an organization.
+
+        Returns:
+            Callable[[~.ListProjectDataProfilesRequest],
+                    ~.ListProjectDataProfilesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_project_data_profiles" not in self._stubs:
+            self._stubs["list_project_data_profiles"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/ListProjectDataProfiles",
+                request_serializer=dlp.ListProjectDataProfilesRequest.serialize,
+                response_deserializer=dlp.ListProjectDataProfilesResponse.deserialize,
+            )
+        return self._stubs["list_project_data_profiles"]
+
+    @property
+    def list_table_data_profiles(
+        self,
+    ) -> Callable[
+        [dlp.ListTableDataProfilesRequest], dlp.ListTableDataProfilesResponse
+    ]:
+        r"""Return a callable for the list table data profiles method over gRPC.
+
+        Lists data profiles for an organization.
+
+        Returns:
+            Callable[[~.ListTableDataProfilesRequest],
+                    ~.ListTableDataProfilesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_table_data_profiles" not in self._stubs:
+            self._stubs["list_table_data_profiles"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/ListTableDataProfiles",
+                request_serializer=dlp.ListTableDataProfilesRequest.serialize,
+                response_deserializer=dlp.ListTableDataProfilesResponse.deserialize,
+            )
+        return self._stubs["list_table_data_profiles"]
+
+    @property
+    def list_column_data_profiles(
+        self,
+    ) -> Callable[
+        [dlp.ListColumnDataProfilesRequest], dlp.ListColumnDataProfilesResponse
+    ]:
+        r"""Return a callable for the list column data profiles method over gRPC.
+
+        Lists data profiles for an organization.
+
+        Returns:
+            Callable[[~.ListColumnDataProfilesRequest],
+                    ~.ListColumnDataProfilesResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_column_data_profiles" not in self._stubs:
+            self._stubs["list_column_data_profiles"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/ListColumnDataProfiles",
+                request_serializer=dlp.ListColumnDataProfilesRequest.serialize,
+                response_deserializer=dlp.ListColumnDataProfilesResponse.deserialize,
+            )
+        return self._stubs["list_column_data_profiles"]
+
+    @property
+    def get_project_data_profile(
+        self,
+    ) -> Callable[[dlp.GetProjectDataProfileRequest], dlp.ProjectDataProfile]:
+        r"""Return a callable for the get project data profile method over gRPC.
+
+        Gets a project data profile.
+
+        Returns:
+            Callable[[~.GetProjectDataProfileRequest],
+                    ~.ProjectDataProfile]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_project_data_profile" not in self._stubs:
+            self._stubs["get_project_data_profile"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/GetProjectDataProfile",
+                request_serializer=dlp.GetProjectDataProfileRequest.serialize,
+                response_deserializer=dlp.ProjectDataProfile.deserialize,
+            )
+        return self._stubs["get_project_data_profile"]
+
+    @property
+    def get_table_data_profile(
+        self,
+    ) -> Callable[[dlp.GetTableDataProfileRequest], dlp.TableDataProfile]:
+        r"""Return a callable for the get table data profile method over gRPC.
+
+        Gets a table data profile.
+
+        Returns:
+            Callable[[~.GetTableDataProfileRequest],
+                    ~.TableDataProfile]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_table_data_profile" not in self._stubs:
+            self._stubs["get_table_data_profile"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/GetTableDataProfile",
+                request_serializer=dlp.GetTableDataProfileRequest.serialize,
+                response_deserializer=dlp.TableDataProfile.deserialize,
+            )
+        return self._stubs["get_table_data_profile"]
+
+    @property
+    def get_column_data_profile(
+        self,
+    ) -> Callable[[dlp.GetColumnDataProfileRequest], dlp.ColumnDataProfile]:
+        r"""Return a callable for the get column data profile method over gRPC.
+
+        Gets a column data profile.
+
+        Returns:
+            Callable[[~.GetColumnDataProfileRequest],
+                    ~.ColumnDataProfile]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_column_data_profile" not in self._stubs:
+            self._stubs["get_column_data_profile"] = self.grpc_channel.unary_unary(
+                "/google.privacy.dlp.v2.DlpService/GetColumnDataProfile",
+                request_serializer=dlp.GetColumnDataProfileRequest.serialize,
+                response_deserializer=dlp.ColumnDataProfile.deserialize,
+            )
+        return self._stubs["get_column_data_profile"]
 
     @property
     def hybrid_inspect_dlp_job(

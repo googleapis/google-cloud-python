@@ -543,6 +543,96 @@ class DlpServiceTransport(abc.ABC):
                 default_timeout=300.0,
                 client_info=client_info,
             ),
+            self.list_project_data_profiles: gapic_v1.method.wrap_method(
+                self.list_project_data_profiles,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.list_table_data_profiles: gapic_v1.method.wrap_method(
+                self.list_table_data_profiles,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.list_column_data_profiles: gapic_v1.method.wrap_method(
+                self.list_column_data_profiles,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.get_project_data_profile: gapic_v1.method.wrap_method(
+                self.get_project_data_profile,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.get_table_data_profile: gapic_v1.method.wrap_method(
+                self.get_table_data_profile,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
+            self.get_column_data_profile: gapic_v1.method.wrap_method(
+                self.get_column_data_profile,
+                default_retry=retries.Retry(
+                    initial=0.1,
+                    maximum=60.0,
+                    multiplier=1.3,
+                    predicate=retries.if_exception_type(
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
+                    ),
+                    deadline=300.0,
+                ),
+                default_timeout=300.0,
+                client_info=client_info,
+            ),
             self.hybrid_inspect_dlp_job: gapic_v1.method.wrap_method(
                 self.hybrid_inspect_dlp_job,
                 default_timeout=300.0,
@@ -893,6 +983,69 @@ class DlpServiceTransport(abc.ABC):
     ) -> Callable[
         [dlp.DeleteStoredInfoTypeRequest],
         Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_project_data_profiles(
+        self,
+    ) -> Callable[
+        [dlp.ListProjectDataProfilesRequest],
+        Union[
+            dlp.ListProjectDataProfilesResponse,
+            Awaitable[dlp.ListProjectDataProfilesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_table_data_profiles(
+        self,
+    ) -> Callable[
+        [dlp.ListTableDataProfilesRequest],
+        Union[
+            dlp.ListTableDataProfilesResponse,
+            Awaitable[dlp.ListTableDataProfilesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_column_data_profiles(
+        self,
+    ) -> Callable[
+        [dlp.ListColumnDataProfilesRequest],
+        Union[
+            dlp.ListColumnDataProfilesResponse,
+            Awaitable[dlp.ListColumnDataProfilesResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_project_data_profile(
+        self,
+    ) -> Callable[
+        [dlp.GetProjectDataProfileRequest],
+        Union[dlp.ProjectDataProfile, Awaitable[dlp.ProjectDataProfile]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_table_data_profile(
+        self,
+    ) -> Callable[
+        [dlp.GetTableDataProfileRequest],
+        Union[dlp.TableDataProfile, Awaitable[dlp.TableDataProfile]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_column_data_profile(
+        self,
+    ) -> Callable[
+        [dlp.GetColumnDataProfileRequest],
+        Union[dlp.ColumnDataProfile, Awaitable[dlp.ColumnDataProfile]],
     ]:
         raise NotImplementedError()
 
