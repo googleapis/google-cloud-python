@@ -193,6 +193,7 @@ __protobuf__ = proto.module(
         "EphemeralStorageLocalSsdConfig",
         "ResourceManagerTags",
         "EnterpriseConfig",
+        "SecondaryBootDisk",
     },
 )
 
@@ -717,6 +718,9 @@ class NodeConfig(proto.Message):
             to be attached to the nodes.
         enable_confidential_storage (bool):
             Optional. Reserved for future use.
+        secondary_boot_disks (MutableSequence[google.cloud.container_v1.types.SecondaryBootDisk]):
+            List of secondary boot disks attached to the
+            nodes.
     """
 
     machine_type: str = proto.Field(
@@ -885,6 +889,11 @@ class NodeConfig(proto.Message):
     enable_confidential_storage: bool = proto.Field(
         proto.BOOL,
         number=46,
+    )
+    secondary_boot_disks: MutableSequence["SecondaryBootDisk"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=48,
+        message="SecondaryBootDisk",
     )
 
 
@@ -9326,6 +9335,43 @@ class EnterpriseConfig(proto.Message):
         proto.ENUM,
         number=1,
         enum=ClusterTier,
+    )
+
+
+class SecondaryBootDisk(proto.Message):
+    r"""SecondaryBootDisk represents a persistent disk attached to a
+    node with special configurations based on its mode.
+
+    Attributes:
+        mode (google.cloud.container_v1.types.SecondaryBootDisk.Mode):
+            Disk mode (container image cache, etc.)
+        disk_image (str):
+            Fully-qualified resource ID for an existing
+            disk image.
+    """
+
+    class Mode(proto.Enum):
+        r"""Mode specifies how the secondary boot disk will be used.
+        This triggers mode-specified logic in the control plane.
+
+        Values:
+            MODE_UNSPECIFIED (0):
+                MODE_UNSPECIFIED is when mode is not set.
+            CONTAINER_IMAGE_CACHE (1):
+                CONTAINER_IMAGE_CACHE is for using the secondary boot disk
+                as a container image cache.
+        """
+        MODE_UNSPECIFIED = 0
+        CONTAINER_IMAGE_CACHE = 1
+
+    mode: Mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Mode,
+    )
+    disk_image: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
