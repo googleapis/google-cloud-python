@@ -3469,6 +3469,11 @@ class ClusterUpdate(proto.Message):
             Specify the details of in-transit encryption.
 
             This field is a member of `oneof`_ ``_desired_in_transit_encryption_config``.
+        desired_enable_cilium_clusterwide_network_policy (bool):
+            Enable/Disable Cilium Clusterwide Network
+            Policy for the cluster.
+
+            This field is a member of `oneof`_ ``_desired_enable_cilium_clusterwide_network_policy``.
     """
 
     desired_node_version: str = proto.Field(
@@ -3722,6 +3727,11 @@ class ClusterUpdate(proto.Message):
         number=137,
         optional=True,
         enum="InTransitEncryptionConfig",
+    )
+    desired_enable_cilium_clusterwide_network_policy: bool = proto.Field(
+        proto.BOOL,
+        number=138,
+        optional=True,
     )
 
 
@@ -7562,6 +7572,11 @@ class NetworkConfig(proto.Message):
             Specify the details of in-transit encryption.
 
             This field is a member of `oneof`_ ``_in_transit_encryption_config``.
+        enable_cilium_clusterwide_network_policy (bool):
+            Whether CiliumClusterwideNetworkPolicy is
+            enabled on this cluster.
+
+            This field is a member of `oneof`_ ``_enable_cilium_clusterwide_network_policy``.
     """
 
     class ClusterNetworkPerformanceConfig(proto.Message):
@@ -7662,6 +7677,11 @@ class NetworkConfig(proto.Message):
         number=20,
         optional=True,
         enum="InTransitEncryptionConfig",
+    )
+    enable_cilium_clusterwide_network_policy: bool = proto.Field(
+        proto.BOOL,
+        number=21,
+        optional=True,
     )
 
 
