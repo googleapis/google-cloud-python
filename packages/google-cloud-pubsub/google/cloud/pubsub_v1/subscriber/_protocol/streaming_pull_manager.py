@@ -112,7 +112,7 @@ def _wrap_as_exception(maybe_exception: Any) -> BaseException:
 
 def _wrap_callback_errors(
     callback: Callable[["google.cloud.pubsub_v1.subscriber.message.Message"], Any],
-    on_callback_error: Callable[[Exception], Any],
+    on_callback_error: Callable[[BaseException], Any],
     message: "google.cloud.pubsub_v1.subscriber.message.Message",
 ):
     """Wraps a user callback so that if an exception occurs the message is
@@ -124,7 +124,7 @@ def _wrap_callback_errors(
     """
     try:
         callback(message)
-    except Exception as exc:
+    except BaseException as exc:
         # Note: the likelihood of this failing is extremely low. This just adds
         # a message to a queue, so if this doesn't work the world is in an
         # unrecoverable state and this thread should just bail.
