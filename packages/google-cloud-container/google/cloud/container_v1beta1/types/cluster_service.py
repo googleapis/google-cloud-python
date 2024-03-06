@@ -210,6 +210,7 @@ __protobuf__ = proto.module(
         "Fleet",
         "ResourceManagerTags",
         "EnterpriseConfig",
+        "SecretManagerConfig",
         "SecondaryBootDisk",
     },
 )
@@ -3231,6 +3232,8 @@ class Cluster(proto.Message):
             for the cluster.
         enterprise_config (google.cloud.container_v1beta1.types.EnterpriseConfig):
             GKE Enterprise Configuration.
+        secret_manager_config (google.cloud.container_v1beta1.types.SecretManagerConfig):
+            Secret CSI driver configuration.
     """
 
     class Status(proto.Enum):
@@ -3619,6 +3622,11 @@ class Cluster(proto.Message):
         proto.MESSAGE,
         number=149,
         message="EnterpriseConfig",
+    )
+    secret_manager_config: "SecretManagerConfig" = proto.Field(
+        proto.MESSAGE,
+        number=150,
+        message="SecretManagerConfig",
     )
 
 
@@ -4150,6 +4158,15 @@ class ClusterUpdate(proto.Message):
             Specify the details of in-transit encryption.
 
             This field is a member of `oneof`_ ``_desired_in_transit_encryption_config``.
+        desired_enable_cilium_clusterwide_network_policy (bool):
+            Enable/Disable Cilium Clusterwide Network
+            Policy for the cluster.
+
+            This field is a member of `oneof`_ ``_desired_enable_cilium_clusterwide_network_policy``.
+        desired_secret_manager_config (google.cloud.container_v1beta1.types.SecretManagerConfig):
+            Enable/Disable Secret Manager Config.
+
+            This field is a member of `oneof`_ ``_desired_secret_manager_config``.
     """
 
     desired_node_version: str = proto.Field(
@@ -4444,6 +4461,17 @@ class ClusterUpdate(proto.Message):
         number=137,
         optional=True,
         enum="InTransitEncryptionConfig",
+    )
+    desired_enable_cilium_clusterwide_network_policy: bool = proto.Field(
+        proto.BOOL,
+        number=138,
+        optional=True,
+    )
+    desired_secret_manager_config: "SecretManagerConfig" = proto.Field(
+        proto.MESSAGE,
+        number=139,
+        optional=True,
+        message="SecretManagerConfig",
     )
 
 
@@ -8553,6 +8581,11 @@ class NetworkConfig(proto.Message):
             Specify the details of in-transit encryption.
 
             This field is a member of `oneof`_ ``_in_transit_encryption_config``.
+        enable_cilium_clusterwide_network_policy (bool):
+            Whether CiliumClusterWideNetworkPolicy is
+            enabled on this cluster.
+
+            This field is a member of `oneof`_ ``_enable_cilium_clusterwide_network_policy``.
     """
 
     class ClusterNetworkPerformanceConfig(proto.Message):
@@ -8653,6 +8686,11 @@ class NetworkConfig(proto.Message):
         number=20,
         optional=True,
         enum="InTransitEncryptionConfig",
+    )
+    enable_cilium_clusterwide_network_policy: bool = proto.Field(
+        proto.BOOL,
+        number=21,
+        optional=True,
     )
 
 
@@ -10383,6 +10421,26 @@ class EnterpriseConfig(proto.Message):
         proto.ENUM,
         number=1,
         enum=ClusterTier,
+    )
+
+
+class SecretManagerConfig(proto.Message):
+    r"""SecretManagerConfig is config for secret manager enablement.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        enabled (bool):
+            Whether the cluster is configured to use
+            secret manager CSI component.
+
+            This field is a member of `oneof`_ ``_enabled``.
+    """
+
+    enabled: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+        optional=True,
     )
 
 
