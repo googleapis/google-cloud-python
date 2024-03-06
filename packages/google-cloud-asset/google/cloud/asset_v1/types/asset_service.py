@@ -3151,6 +3151,18 @@ class AnalyzerOrgPolicy(proto.Message):
                 This field is a member of `oneof`_ ``kind``.
             condition (google.type.expr_pb2.Expr):
                 The evaluating condition for this rule.
+            condition_evaluation (google.cloud.asset_v1.types.ConditionEvaluation):
+                The condition evaluation result for this rule. Only
+                populated if it meets all the following criteria:
+
+                -  there is a
+                   [condition][google.cloud.asset.v1.AnalyzerOrgPolicy.Rule.condition]
+                   defined for this rule
+                -  this rule is within a consolidated_policy
+                -  the consolidated_policy is within
+                   [AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer]
+                   or
+                   [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource]
         """
 
         class StringValues(proto.Message):
@@ -3197,6 +3209,11 @@ class AnalyzerOrgPolicy(proto.Message):
             proto.MESSAGE,
             number=7,
             message=expr_pb2.Expr,
+        )
+        condition_evaluation: gca_assets.ConditionEvaluation = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message=gca_assets.ConditionEvaluation,
         )
 
     attached_resource: str = proto.Field(
@@ -3600,6 +3617,20 @@ class AnalyzeOrgPoliciesResponse(proto.Message):
 
                 If the constraint is defined with default policy, it will
                 also appear in the list.
+            project (str):
+                The project that this consolidated policy belongs to, in the
+                format of projects/{PROJECT_NUMBER}. This field is available
+                when the consolidated policy belongs to a project.
+            folders (MutableSequence[str]):
+                The folder(s) that this consolidated policy belongs to, in
+                the format of folders/{FOLDER_NUMBER}. This field is
+                available when the consolidated policy belongs (directly or
+                cascadingly) to one or more folders.
+            organization (str):
+                The organization that this consolidated policy belongs to,
+                in the format of organizations/{ORGANIZATION_NUMBER}. This
+                field is available when the consolidated policy belongs
+                (directly or cascadingly) to an organization.
         """
 
         consolidated_policy: "AnalyzerOrgPolicy" = proto.Field(
@@ -3611,6 +3642,18 @@ class AnalyzeOrgPoliciesResponse(proto.Message):
             proto.MESSAGE,
             number=2,
             message="AnalyzerOrgPolicy",
+        )
+        project: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        folders: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=4,
+        )
+        organization: str = proto.Field(
+            proto.STRING,
+            number=5,
         )
 
     @property
@@ -3747,6 +3790,22 @@ class AnalyzeOrgPolicyGovernedContainersResponse(proto.Message):
 
                 If the constraint is defined with default policy, it will
                 also appear in the list.
+            project (str):
+                The project that this resource belongs to, in the format of
+                projects/{PROJECT_NUMBER}. This field is available when the
+                resource belongs to a project.
+            folders (MutableSequence[str]):
+                The folder(s) that this resource belongs to, in the format
+                of folders/{FOLDER_NUMBER}. This field is available when the
+                resource belongs (directly or cascadingly) to one or more
+                folders.
+            organization (str):
+                The organization that this resource belongs to, in the
+                format of organizations/{ORGANIZATION_NUMBER}. This field is
+                available when the resource belongs (directly or
+                cascadingly) to an organization.
+            effective_tags (MutableSequence[google.cloud.asset_v1.types.EffectiveTagDetails]):
+                The effective tags on this resource.
         """
 
         full_resource_name: str = proto.Field(
@@ -3766,6 +3825,25 @@ class AnalyzeOrgPolicyGovernedContainersResponse(proto.Message):
             proto.MESSAGE,
             number=4,
             message="AnalyzerOrgPolicy",
+        )
+        project: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        folders: MutableSequence[str] = proto.RepeatedField(
+            proto.STRING,
+            number=6,
+        )
+        organization: str = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+        effective_tags: MutableSequence[
+            gca_assets.EffectiveTagDetails
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=8,
+            message=gca_assets.EffectiveTagDetails,
         )
 
     @property
@@ -3921,6 +3999,15 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
                 format of organizations/{ORGANIZATION_NUMBER}. This field is
                 available when the resource belongs (directly or
                 cascadingly) to an organization.
+            asset_type (str):
+                The asset type of the
+                [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource.full_resource_name]
+                Example: ``cloudresourcemanager.googleapis.com/Project`` See
+                `Cloud Asset Inventory Supported Asset
+                Types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
+                for all supported asset types.
+            effective_tags (MutableSequence[google.cloud.asset_v1.types.EffectiveTagDetails]):
+                The effective tags on this resource.
         """
 
         full_resource_name: str = proto.Field(
@@ -3942,6 +4029,17 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
         organization: str = proto.Field(
             proto.STRING,
             number=7,
+        )
+        asset_type: str = proto.Field(
+            proto.STRING,
+            number=8,
+        )
+        effective_tags: MutableSequence[
+            gca_assets.EffectiveTagDetails
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=9,
+            message=gca_assets.EffectiveTagDetails,
         )
 
     class GovernedIamPolicy(proto.Message):
@@ -3973,6 +4071,13 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
                 format of organizations/{ORGANIZATION_NUMBER}. This field is
                 available when the IAM policy belongs (directly or
                 cascadingly) to an organization.
+            asset_type (str):
+                The asset type of the
+                [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy.attached_resource][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedIamPolicy.attached_resource].
+                Example: ``cloudresourcemanager.googleapis.com/Project`` See
+                `Cloud Asset Inventory Supported Asset
+                Types <https://cloud.google.com/asset-inventory/docs/supported-asset-types>`__
+                for all supported asset types.
         """
 
         attached_resource: str = proto.Field(
@@ -3995,6 +4100,10 @@ class AnalyzeOrgPolicyGovernedAssetsResponse(proto.Message):
         organization: str = proto.Field(
             proto.STRING,
             number=7,
+        )
+        asset_type: str = proto.Field(
+            proto.STRING,
+            number=8,
         )
 
     class GovernedAsset(proto.Message):
