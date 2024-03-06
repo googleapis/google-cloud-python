@@ -4,13 +4,13 @@
   - href: changelog.md
     name: Changelog
   - items:
-    - href: summary_overview.yml
+    - href: summary_overview.html
       name: Overview
-    - href: summary_class.yml
+    - href: summary_class.html
       name: Classes
-    - href: summary_method.yml
+    - href: summary_method.html
       name: Methods
-    - href: summary_property.yml
+    - href: summary_property.html
       name: Properties and Attributes
     name: BigQuery DataFrames API
   - items:
