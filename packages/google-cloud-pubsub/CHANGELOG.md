@@ -5,6 +5,18 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.20.0](https://github.com/googleapis/python-pubsub/compare/v2.19.8...v2.20.0) (2024-03-05)
+
+
+### Features
+
+* Add include_recaptcha_script for as a new action in firewall policies ([#1109](https://github.com/googleapis/python-pubsub/issues/1109)) ([54041a5](https://github.com/googleapis/python-pubsub/commit/54041a527398eb0ec5daa97a346ba3202ce349f3))
+
+
+### Documentation
+
+* **samples:** Correct type and description of `timeout` parameter in subscriber quickstart ([#1051](https://github.com/googleapis/python-pubsub/issues/1051)) ([141a473](https://github.com/googleapis/python-pubsub/commit/141a473561bd0e45d3137a02cbefddb454ab3af4))
+
 ## [2.19.8](https://github.com/googleapis/python-pubsub/compare/v2.19.7...v2.19.8) (2024-03-05)
 
 
