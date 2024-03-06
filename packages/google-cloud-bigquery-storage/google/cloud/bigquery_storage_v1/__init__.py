@@ -38,4 +38,5 @@ __all__ = (
     "types",
     # google.cloud.bigquery_storage_v1.client
     "BigQueryReadClient",
+    "BigQueryWriteClient",
 )
