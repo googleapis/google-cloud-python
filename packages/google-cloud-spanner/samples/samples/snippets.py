@@ -3017,6 +3017,51 @@ def directed_read_options(
     # [END spanner_directed_read]
 
 
+def set_custom_timeout_and_retry(instance_id, database_id):
+    """Executes a snapshot read with custom timeout and retry."""
+    # [START spanner_set_custom_timeout_and_retry]
+    from google.api_core import retry
+    from google.api_core import exceptions as core_exceptions
+
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    retry = retry.Retry(
+        # Customize retry with an initial wait time of 500 milliseconds.
+        initial=0.5,
+        # Customize retry with a maximum wait time of 16 seconds.
+        maximum=16,
+        # Customize retry with a wait time multiplier per iteration of 1.5.
+        multiplier=1.5,
+        # Customize retry with a timeout on
+        # how long a certain RPC may be retried in
+        # case the server returns an error.
+        timeout=60,
+        # Configure which errors should be retried.
+        predicate=retry.if_exception_type(
+            core_exceptions.ServiceUnavailable,
+        ),
+    )
+
+    # Set a custom retry and timeout setting.
+    with database.snapshot() as snapshot:
+        results = snapshot.execute_sql(
+            "SELECT SingerId, AlbumId, AlbumTitle FROM Albums",
+            # Set custom retry setting for this request
+            retry=retry,
+            # Set custom timeout of 60 seconds for this request
+            timeout=60,
+        )
+
+        for row in results:
+            print("SingerId: {}, AlbumId: {}, AlbumTitle: {}".format(*row))
+
+    # [END spanner_set_custom_timeout_and_retry]
+
+
 if __name__ == "__main__":  # noqa: C901
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
@@ -3157,6 +3202,9 @@ if __name__ == "__main__":  # noqa: C901
     )
     enable_fine_grained_access_parser.add_argument("--title", default="condition title")
     subparsers.add_parser("directed_read_options", help=directed_read_options.__doc__)
+    subparsers.add_parser(
+        "set_custom_timeout_and_retry", help=set_custom_timeout_and_retry.__doc__
+    )
 
     args = parser.parse_args()
 
@@ -3290,3 +3338,5 @@ if __name__ == "__main__":  # noqa: C901
         )
     elif args.command == "directed_read_options":
         directed_read_options(args.instance_id, args.database_id)
+    elif args.command == "set_custom_timeout_and_retry":
+        set_custom_timeout_and_retry(args.instance_id, args.database_id)

@@ -662,7 +662,14 @@ class TestTransaction(OpenTelemetryBase):
         with self.assertRaises(RuntimeError):
             transaction.batch_update(statements=[DML_QUERY])
 
-    def _batch_update_helper(self, error_after=None, count=0, request_options=None):
+    def _batch_update_helper(
+        self,
+        error_after=None,
+        count=0,
+        request_options=None,
+        retry=gapic_v1.method.DEFAULT,
+        timeout=gapic_v1.method.DEFAULT,
+    ):
         from google.rpc.status_pb2 import Status
         from google.protobuf.struct_pb2 import Struct
         from google.cloud.spanner_v1 import param_types
@@ -716,7 +723,10 @@ class TestTransaction(OpenTelemetryBase):
             request_options = RequestOptions(request_options)
 
         status, row_counts = transaction.batch_update(
-            dml_statements, request_options=request_options
+            dml_statements,
+            request_options=request_options,
+            retry=retry,
+            timeout=timeout,
         )
 
         self.assertEqual(status, expected_status)
@@ -753,6 +763,8 @@ class TestTransaction(OpenTelemetryBase):
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
             ],
+            retry=retry,
+            timeout=timeout,
         )
 
         self.assertEqual(transaction._execute_sql_count, count + 1)
@@ -825,6 +837,15 @@ class TestTransaction(OpenTelemetryBase):
             transaction.batch_update(dml_statements)
 
         self.assertEqual(transaction._execute_sql_count, 1)
+
+    def test_batch_update_w_timeout_param(self):
+        self._batch_update_helper(timeout=2.0)
+
+    def test_batch_update_w_retry_param(self):
+        self._batch_update_helper(retry=gapic_v1.method.DEFAULT)
+
+    def test_batch_update_w_timeout_and_retry_params(self):
+        self._batch_update_helper(retry=gapic_v1.method.DEFAULT, timeout=2.0)
 
     def test_context_mgr_success(self):
         import datetime

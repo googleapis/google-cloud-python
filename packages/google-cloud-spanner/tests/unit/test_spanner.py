@@ -556,6 +556,8 @@ class TestTransaction(OpenTelemetryBase):
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
             ],
+            retry=RETRY,
+            timeout=TIMEOUT,
         )
 
     def test_transaction_should_use_transaction_id_if_error_with_first_batch_update(
@@ -574,6 +576,8 @@ class TestTransaction(OpenTelemetryBase):
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
             ],
+            retry=RETRY,
+            timeout=TIMEOUT,
         )
         self._execute_update_helper(transaction=transaction, api=api)
         api.execute_sql.assert_called_once_with(
@@ -715,6 +719,8 @@ class TestTransaction(OpenTelemetryBase):
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
             ],
+            retry=RETRY,
+            timeout=TIMEOUT,
         )
 
     def test_transaction_should_use_transaction_id_returned_by_first_batch_update(self):
@@ -729,6 +735,8 @@ class TestTransaction(OpenTelemetryBase):
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
             ],
+            retry=RETRY,
+            timeout=TIMEOUT,
         )
         self._read_helper(transaction=transaction, api=api)
         api.streaming_read.assert_called_once_with(
@@ -797,6 +805,8 @@ class TestTransaction(OpenTelemetryBase):
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
             ],
+            retry=RETRY,
+            timeout=TIMEOUT,
         )
 
         self.assertEqual(api.execute_sql.call_count, 2)
@@ -846,6 +856,8 @@ class TestTransaction(OpenTelemetryBase):
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
             ],
+            retry=RETRY,
+            timeout=TIMEOUT,
         )
 
         api.execute_batch_dml.assert_any_call(
@@ -854,6 +866,8 @@ class TestTransaction(OpenTelemetryBase):
                 ("google-cloud-resource-prefix", database.name),
                 ("x-goog-spanner-route-to-leader", "true"),
             ],
+            retry=RETRY,
+            timeout=TIMEOUT,
         )
 
         self.assertEqual(api.execute_sql.call_count, 1)

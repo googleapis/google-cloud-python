@@ -410,7 +410,14 @@ class Transaction(_SnapshotBase, _BatchBase):
 
         return response.stats.row_count_exact
 
-    def batch_update(self, statements, request_options=None):
+    def batch_update(
+        self,
+        statements,
+        request_options=None,
+        *,
+        retry=gapic_v1.method.DEFAULT,
+        timeout=gapic_v1.method.DEFAULT,
+    ):
         """Perform a batch of DML statements via an ``ExecuteBatchDml`` request.
 
         :type statements:
@@ -430,6 +437,12 @@ class Transaction(_SnapshotBase, _BatchBase):
                 (Optional) Common options for this request.
                 If a dict is provided, it must be of the same form as the protobuf
                 message :class:`~google.cloud.spanner_v1.types.RequestOptions`.
+
+        :type retry: :class:`~google.api_core.retry.Retry`
+        :param retry: (Optional) The retry settings for this request.
+
+        :type timeout: float
+        :param timeout: (Optional) The timeout for this request.
 
         :rtype:
             Tuple(status, Sequence[int])
@@ -486,6 +499,8 @@ class Transaction(_SnapshotBase, _BatchBase):
             api.execute_batch_dml,
             request=request,
             metadata=metadata,
+            retry=retry,
+            timeout=timeout,
         )
 
         if self._transaction_id is None:
