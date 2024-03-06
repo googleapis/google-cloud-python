@@ -208,7 +208,7 @@ def _compare_entity_proto(entity_pb1, entity_pb2):
             assert val1 == val2
 
 
-def test_enity_to_protobf_w_empty():
+def test_entity_to_protobuf_w_empty():
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import entity_to_protobuf
@@ -218,7 +218,7 @@ def test_enity_to_protobf_w_empty():
     _compare_entity_proto(entity_pb, entity_pb2.Entity())
 
 
-def test_enity_to_protobf_w_key_only():
+def test_entity_to_protobuf_w_key_only():
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import entity_to_protobuf
@@ -239,7 +239,7 @@ def test_enity_to_protobf_w_key_only():
     _compare_entity_proto(entity_pb, expected_pb)
 
 
-def test_enity_to_protobf_w_simple_fields():
+def test_entity_to_protobuf_w_simple_fields():
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import _new_value_pb
@@ -261,7 +261,7 @@ def test_enity_to_protobf_w_simple_fields():
     _compare_entity_proto(entity_pb, expected_pb)
 
 
-def test_enity_to_protobf_w_with_empty_list():
+def test_entity_to_protobuf_w_with_empty_list():
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import entity_to_protobuf
@@ -277,7 +277,7 @@ def test_enity_to_protobf_w_with_empty_list():
     _compare_entity_proto(entity_pb, expected_pb)
 
 
-def test_enity_to_protobf_w_inverts_to_protobuf():
+def test_entity_to_protobuf_w_inverts_to_protobuf():
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.helpers import _new_value_pb
     from google.cloud.datastore.helpers import entity_from_protobuf
@@ -332,7 +332,7 @@ def test_enity_to_protobf_w_inverts_to_protobuf():
     _compare_entity_proto(original_pb, new_pb)
 
 
-def test_enity_to_protobf_w_meaning_with_change():
+def test_entity_to_protobuf_w_meaning_with_change():
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import _new_value_pb
@@ -352,7 +352,7 @@ def test_enity_to_protobf_w_meaning_with_change():
     _compare_entity_proto(entity_pb, expected_pb)
 
 
-def test_enity_to_protobf_w_variable_meanings():
+def test_entity_to_protobuf_w_variable_meanings():
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import _new_value_pb
@@ -380,7 +380,7 @@ def test_enity_to_protobf_w_variable_meanings():
     _compare_entity_proto(entity_pb, expected_pb)
 
 
-def test_enity_to_protobf_w_dict_to_entity():
+def test_entity_to_protobuf_w_dict_to_entity():
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import entity_to_protobuf
@@ -401,7 +401,7 @@ def test_enity_to_protobf_w_dict_to_entity():
     assert entity_pb == expected_pb
 
 
-def test_enity_to_protobf_w_dict_to_entity_recursive():
+def test_entity_to_protobuf_w_dict_to_entity_recursive():
     from google.cloud.datastore_v1.types import entity as entity_pb2
     from google.cloud.datastore.entity import Entity
     from google.cloud.datastore.helpers import entity_to_protobuf

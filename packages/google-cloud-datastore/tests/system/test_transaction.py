@@ -49,7 +49,7 @@ def test_transaction_via_explicit_begin_get_commit(
     # github.com/GoogleCloudPlatform/google-cloud-python/issues/1859
     # Note that this example lacks the threading which provokes the race
     # condition in that issue:  we are basically just exercising the
-    # "explict" path for using transactions.
+    # "explicit" path for using transactions.
     before_1 = 100
     before_2 = 0
     transfer_amount = 40

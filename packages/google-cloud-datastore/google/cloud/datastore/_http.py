@@ -32,7 +32,7 @@ API_URL_TEMPLATE = "{api_base}/{api_version}/projects" "/{project}:{method}"
 
 
 def _make_retry_timeout_kwargs(retry, timeout):
-    """Helper for methods taking optional retry / timout args."""
+    """Helper for methods taking optional retry / timeout args."""
     kwargs = {}
 
     if retry is not None:
