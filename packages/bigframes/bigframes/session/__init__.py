@@ -1130,19 +1130,32 @@ class Session(
     def read_parquet(
         self,
         path: str | IO["bytes"],
+        *,
+        engine: str = "auto",
     ) -> dataframe.DataFrame:
-        # Note: "engine" is omitted because it is redundant. Loading a table
-        # from a pandas DataFrame will just create another parquet file + load
-        # job anyway.
         table = bigframes_io.random_table(self._anonymous_dataset)
 
-        job_config = bigquery.LoadJobConfig()
-        job_config.create_disposition = bigquery.CreateDisposition.CREATE_IF_NEEDED
-        job_config.source_format = bigquery.SourceFormat.PARQUET
-        job_config.write_disposition = bigquery.WriteDisposition.WRITE_EMPTY
-        job_config.labels = {"bigframes-api": "read_parquet"}
+        if engine == "bigquery":
+            job_config = bigquery.LoadJobConfig()
+            job_config.create_disposition = bigquery.CreateDisposition.CREATE_IF_NEEDED
+            job_config.source_format = bigquery.SourceFormat.PARQUET
+            job_config.write_disposition = bigquery.WriteDisposition.WRITE_EMPTY
+            job_config.labels = {"bigframes-api": "read_parquet"}
 
-        return self._read_bigquery_load_job(path, table, job_config=job_config)
+            return self._read_bigquery_load_job(path, table, job_config=job_config)
+        else:
+            read_parquet_kwargs: Dict[str, Any] = {}
+            if pandas.__version__.startswith("1."):
+                read_parquet_kwargs["use_nullable_dtypes"] = True
+            else:
+                read_parquet_kwargs["dtype_backend"] = "pyarrow"
+
+            pandas_obj = pandas.read_parquet(
+                path,
+                engine=engine,  # type: ignore
+                **read_parquet_kwargs,
+            )
+            return self._read_pandas(pandas_obj, "read_parquet")
 
     def read_json(
         self,
