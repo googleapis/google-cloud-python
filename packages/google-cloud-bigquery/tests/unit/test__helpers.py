@@ -60,6 +60,21 @@ class Test_get_client_universe(unittest.TestCase):
 
         self.assertEqual("foo.com", _get_client_universe(None))
 
+    @mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"})
+    def test_with_environ_and_dict(self):
+        from google.cloud.bigquery._helpers import _get_client_universe
+
+        options = ({"credentials_file": "file.json"},)
+        self.assertEqual("foo.com", _get_client_universe(options))
+
+    @mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"})
+    def test_with_environ_and_empty_options(self):
+        from google.cloud.bigquery._helpers import _get_client_universe
+        from google.api_core import client_options
+
+        options = client_options.from_dict({})
+        self.assertEqual("foo.com", _get_client_universe(options))
+
     @mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": ""})
     def test_with_environ_empty(self):
         from google.cloud.bigquery._helpers import _get_client_universe
