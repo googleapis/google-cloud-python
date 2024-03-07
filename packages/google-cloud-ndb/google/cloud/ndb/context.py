@@ -20,7 +20,6 @@ import contextlib
 import contextvars
 import itertools
 import os
-import six
 import threading
 import uuid
 
@@ -550,7 +549,7 @@ class Context(_Context):
         if policy is None:
             policy = _default_global_cache_timeout_policy
 
-        elif isinstance(policy, six.integer_types):
+        elif isinstance(policy, int):
             timeout = policy
 
             def policy(key):

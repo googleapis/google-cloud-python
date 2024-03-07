@@ -46,8 +46,6 @@ def main():
         "pymemcache >= 2.1.0, < 5.0.0dev",
         "pytz >= 2018.3",
         "redis >= 3.0.0, < 6.0.0dev",
-        # TODO(https://github.com/googleapis/python-ndb/issues/913) remove this dependency once six is no longer used in the codebase
-        "six >= 1.12.0, < 2.0.0dev"
     ]
 
     setuptools.setup(

@@ -1,6 +1,5 @@
 import datetime
 import re
-import six
 import time
 
 from google.cloud.ndb import context as context_module
@@ -656,7 +655,7 @@ class GQL(object):
         """
         vals = []
         for arg in args:
-            if isinstance(arg, six.string_types + six.integer_types):
+            if isinstance(arg, (str, int)):
                 val = query_module.Parameter(arg)
             else:
                 val = arg.Get()
@@ -782,7 +781,7 @@ def _raise_cast_error(message):
 def _time_function(values):
     if len(values) == 1:
         value = values[0]
-        if isinstance(value, six.string_types):
+        if isinstance(value, str):
             try:
                 time_tuple = time.strptime(value, "%H:%M:%S")
             except ValueError as error:
@@ -791,7 +790,7 @@ def _time_function(values):
                 )
             time_tuple = time_tuple[3:]
             time_tuple = time_tuple[0:3]
-        elif isinstance(value, six.integer_types):
+        elif isinstance(value, int):
             time_tuple = (value,)
         else:
             _raise_cast_error("Invalid argument for time(), {}".format(value))
@@ -808,7 +807,7 @@ def _time_function(values):
 def _date_function(values):
     if len(values) == 1:
         value = values[0]
-        if isinstance(value, six.string_types):
+        if isinstance(value, str):
             try:
                 time_tuple = time.strptime(value, "%Y-%m-%d")[0:6]
             except ValueError as error:
@@ -830,7 +829,7 @@ def _date_function(values):
 def _datetime_function(values):
     if len(values) == 1:
         value = values[0]
-        if isinstance(value, six.string_types):
+        if isinstance(value, str):
             try:
                 time_tuple = time.strptime(value, "%Y-%m-%d %H:%M:%S")[0:6]
             except ValueError as error:

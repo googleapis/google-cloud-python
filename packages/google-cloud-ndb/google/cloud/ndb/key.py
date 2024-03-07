@@ -90,7 +90,6 @@ namespace. To explicitly select the empty namespace pass ``namespace=""``.
 
 import base64
 import functools
-import six
 
 from google.cloud.datastore import _app_engine_key_pb2
 from google.cloud.datastore import key as _key_module
@@ -1245,7 +1244,7 @@ def _from_urlsafe(urlsafe, app, namespace, database):
         Tuple[google.cloud.datastore.key.Key, .Reference]: The key
         corresponding to ``urlsafe`` and the Reference protobuf.
     """
-    if isinstance(urlsafe, six.string_types):  # pragma: NO BRANCH
+    if isinstance(urlsafe, str):  # pragma: NO BRANCH
         urlsafe = urlsafe.encode("ascii")
     padding = b"=" * (-len(urlsafe) % 4)
     urlsafe += padding
@@ -1526,7 +1525,7 @@ def _clean_flat_path(flat):
         if isinstance(kind, type):
             kind = kind._get_kind()
             flat[i] = kind
-        if not isinstance(kind, six.string_types):
+        if not isinstance(kind, str):
             raise TypeError(
                 "Key kind must be a string or Model class; "
                 "received {!r}".format(kind)
@@ -1537,7 +1536,7 @@ def _clean_flat_path(flat):
         if id_ is None:
             if i + 2 < len(flat):
                 raise exceptions.BadArgumentError("Incomplete Key entry must be last")
-        elif not isinstance(id_, six.string_types + six.integer_types):
+        elif not isinstance(id_, (str, int)):
             raise TypeError(_INVALID_ID_TYPE.format(id_))
 
     # Remove trailing ``None`` for a partial key.

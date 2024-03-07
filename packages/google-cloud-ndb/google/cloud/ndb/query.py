@@ -139,7 +139,6 @@ tasklet, properly yielding when appropriate::
 
 import functools
 import logging
-import six
 
 from google.cloud.ndb import context as context_module
 from google.cloud.ndb import exceptions
@@ -306,7 +305,7 @@ class Parameter(ParameterizedThing):
     """
 
     def __init__(self, key):
-        if not isinstance(key, six.integer_types + six.string_types):
+        if not isinstance(key, (int, str)):
             raise TypeError(
                 "Parameter key must be an integer or string, not {}".format(key)
             )
@@ -1680,7 +1679,7 @@ class Query(object):
             elif isinstance(order, model.Property):
                 # use the sign to turn it into a PropertyOrder
                 orders.append(+order)
-            elif isinstance(order, six.string_types):
+            elif isinstance(order, str):
                 name = order
                 reverse = False
                 if order.startswith("-"):
@@ -2349,7 +2348,7 @@ def _to_property_names(properties):
 
     fixed = []
     for prop in properties:
-        if isinstance(prop, six.string_types):
+        if isinstance(prop, str):
             fixed.append(prop)
         elif isinstance(prop, model.Property):
             fixed.append(prop._name)

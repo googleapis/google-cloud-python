@@ -257,7 +257,6 @@ import functools
 import inspect
 import json
 import pickle
-import six
 import zlib
 
 import pytz
@@ -1069,7 +1068,7 @@ class Property(ModelAttribute):
             TypeError: If the ``name`` is not a string.
             ValueError: If the name contains a ``.``.
         """
-        if not isinstance(name, six.string_types):
+        if not isinstance(name, str):
             raise TypeError("Name {!r} is not a string".format(name))
 
         if "." in name:
@@ -2102,7 +2101,7 @@ class Property(ModelAttribute):
                     # If this passes, don't return unicode.
                 except UnicodeDecodeError:
                     try:
-                        sval = six.text_type(sval.decode("utf-8"))
+                        sval = str(sval.decode("utf-8"))
                     except UnicodeDecodeError:
                         pass
             return sval
@@ -2435,7 +2434,7 @@ class IntegerProperty(Property):
             .BadValueError: If ``value`` is not an :class:`int` or convertible
                 to one.
         """
-        if not isinstance(value, six.integer_types):
+        if not isinstance(value, int):
             raise exceptions.BadValueError(
                 "In field {}, expected integer, got {!r}".format(self._name, value)
             )
@@ -2467,14 +2466,14 @@ class FloatProperty(Property):
             .BadValueError: If ``value`` is not a :class:`float` or convertible
                 to one.
         """
-        if not isinstance(value, six.integer_types + (float,)):
+        if not isinstance(value, (float, int)):
             raise exceptions.BadValueError(
                 "In field {}, expected float, got {!r}".format(self._name, value)
             )
         return float(value)
 
 
-class _CompressedValue(six.binary_type):
+class _CompressedValue(bytes):
     """A marker object wrapping compressed values.
 
     Args:
@@ -2784,7 +2783,7 @@ class CompressedTextProperty(BlobProperty):
             .BadValueError: If the current property is indexed but the UTF-8
                 encoded value exceeds the maximum length (1500 bytes).
         """
-        if not isinstance(value, six.text_type):
+        if not isinstance(value, str):
             # In Python 2.7, bytes is a synonym for str
             if isinstance(value, bytes):
                 try:
@@ -2811,7 +2810,7 @@ class CompressedTextProperty(BlobProperty):
             :class:`str`, this will return the UTF-8 encoded bytes for it.
             Otherwise, it will return :data:`None`.
         """
-        if isinstance(value, six.text_type):
+        if isinstance(value, str):
             return value.encode("utf-8")
 
     def _from_base_type(self, value):
@@ -2946,7 +2945,7 @@ class TextProperty(Property):
             .BadValueError: If the current property is indexed but the UTF-8
                 encoded value exceeds the maximum length (1500 bytes).
         """
-        if isinstance(value, six.binary_type):
+        if isinstance(value, bytes):
             try:
                 encoded_length = len(value)
                 value = value.decode("utf-8")
@@ -2956,7 +2955,7 @@ class TextProperty(Property):
                         self._name, value
                     )
                 )
-        elif isinstance(value, six.string_types):
+        elif isinstance(value, str):
             encoded_length = len(value.encode("utf-8"))
         else:
             raise exceptions.BadValueError("Expected string, got {!r}".format(value))
@@ -2978,7 +2977,7 @@ class TextProperty(Property):
             :class:`bytes`, this will return the UTF-8 decoded ``str`` for it.
             Otherwise, it will return :data:`None`.
         """
-        if isinstance(value, six.binary_type):
+        if isinstance(value, bytes):
             return value.decode("utf-8")
 
     def _from_base_type(self, value):
@@ -3001,7 +3000,7 @@ class TextProperty(Property):
             :class:`str` corresponding to it. Otherwise, it will return
             :data:`None`.
         """
-        if isinstance(value, six.binary_type):
+        if isinstance(value, bytes):
             try:
                 return value.decode("utf-8")
             except UnicodeError:
@@ -3209,7 +3208,7 @@ class JsonProperty(BlobProperty):
         """
         # We write and retrieve `bytes` normally, but for some reason get back
         # `str` from a projection query.
-        if not isinstance(value, six.text_type):
+        if not isinstance(value, str):
             value = value.decode("ascii")
         return json.loads(value)
 
@@ -3510,14 +3509,14 @@ class UserProperty(Property):
         user_entity = ds_entity_module.Entity()
 
         # Set required fields.
-        user_entity["email"] = six.ensure_text(value.email())
+        user_entity["email"] = str(value.email())
         user_entity.exclude_from_indexes.add("email")
-        user_entity["auth_domain"] = six.ensure_text(value.auth_domain())
+        user_entity["auth_domain"] = str(value.auth_domain())
         user_entity.exclude_from_indexes.add("auth_domain")
         # Set optional field.
         user_id = value.user_id()
         if user_id:
-            user_entity["user_id"] = six.ensure_text(user_id)
+            user_entity["user_id"] = str(user_id)
             user_entity.exclude_from_indexes.add("user_id")
 
         return user_entity
@@ -3612,7 +3611,7 @@ class KeyProperty(Property):
         @functools.wraps(wrapped)
         def wrapper(self, *args, **kwargs):
             for arg in args:
-                if isinstance(arg, six.string_types):
+                if isinstance(arg, str):
                     if "name" in kwargs:
                         raise TypeError("You can only specify name once")
 
@@ -3651,7 +3650,7 @@ class KeyProperty(Property):
             kind = kind._get_kind()
 
         else:
-            if kind is not None and not isinstance(kind, six.string_types):
+            if kind is not None and not isinstance(kind, str):
                 raise TypeError("Kind must be a Model class or a string")
 
         super(KeyProperty, self).__init__(
@@ -3933,7 +3932,7 @@ class DateTimeProperty(Property):
                 returns the value without ``tzinfo`` or ``None`` if value did
                 not have ``tzinfo`` set.
         """
-        if isinstance(value, six.integer_types):
+        if isinstance(value, int):
             # Projection query, value is integer nanoseconds
             seconds = value / 1e6
             value = datetime.datetime.fromtimestamp(seconds, pytz.utc)
@@ -4698,8 +4697,7 @@ class MetaModel(type):
         return "{}<{}>".format(cls.__name__, ", ".join(props))
 
 
-@six.add_metaclass(MetaModel)
-class Model(_NotEqualMixin):
+class Model(_NotEqualMixin, metaclass=MetaModel):
     """A class describing Cloud Datastore entities.
 
     Model instances are usually called entities. All model classes
@@ -4965,7 +4963,7 @@ class Model(_NotEqualMixin):
 
     def _get_property_for(self, p, indexed=True, depth=0):
         """Internal helper to get the Property for a protobuf-level property."""
-        if isinstance(p.name(), six.text_type):
+        if isinstance(p.name(), str):
             p.set_name(bytes(p.name(), encoding="utf-8"))
         parts = p.name().decode().split(".")
         if len(parts) <= depth:
@@ -5023,9 +5021,9 @@ class Model(_NotEqualMixin):
         # A key passed in overrides a key in the pb.
         if key is None and pb.key().path.element_size():
             # modern NDB expects strings.
-            if not isinstance(pb.key_.app_, six.text_type):  # pragma: NO BRANCH
+            if not isinstance(pb.key_.app_, str):  # pragma: NO BRANCH
                 pb.key_.app_ = pb.key_.app_.decode()
-            if not isinstance(pb.key_.name_space_, six.text_type):  # pragma: NO BRANCH
+            if not isinstance(pb.key_.name_space_, str):  # pragma: NO BRANCH
                 pb.key_.name_space_ = pb.key_.name_space_.decode()
 
             key = Key(reference=pb.key())
@@ -5331,7 +5329,7 @@ class Model(_NotEqualMixin):
                 an underscore.
         """
         kind = cls._get_kind()
-        if not isinstance(kind, six.string_types):
+        if not isinstance(kind, str):
             raise KindError(
                 "Class {} defines a ``_get_kind()`` method that returns "
                 "a non-string ({!r})".format(cls.__name__, kind)
@@ -6061,7 +6059,7 @@ class Model(_NotEqualMixin):
         project = _cls._get_arg(kwargs, "project")
         options = kwargs.pop("_options")
 
-        if not isinstance(name, six.string_types):
+        if not isinstance(name, str):
             raise TypeError("'name' must be a string; received {!r}".format(name))
 
         elif not name:
@@ -6666,10 +6664,10 @@ def get_indexes(**options):
 def _unpack_user(v):
     """Internal helper to unpack a User value from a protocol buffer."""
     uv = v.uservalue()
-    email = six.text_type(uv.email().decode("utf-8"))
-    auth_domain = six.text_type(uv.auth_domain().decode("utf-8"))
+    email = str(uv.email().decode("utf-8"))
+    auth_domain = str(uv.auth_domain().decode("utf-8"))
     obfuscated_gaiaid = uv.obfuscated_gaiaid().decode("utf-8")
-    obfuscated_gaiaid = six.text_type(obfuscated_gaiaid)
+    obfuscated_gaiaid = str(obfuscated_gaiaid)
 
     value = User(
         email=email,
