@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.3.8](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.7...google-cloud-netapp-v0.3.8) (2024-03-07)
+
+
+### Documentation
+
+* change comments of the psa_range field to note it is currently not implemented ([2a91b59](https://github.com/googleapis/google-cloud-python/commit/2a91b59c970c488afb8f728b3553e4317260d556))
+* mark optional fields explicitly in Storage Pool ([2a91b59](https://github.com/googleapis/google-cloud-python/commit/2a91b59c970c488afb8f728b3553e4317260d556))
+* update comments of ServiceLevel and EncryptionType ([2a91b59](https://github.com/googleapis/google-cloud-python/commit/2a91b59c970c488afb8f728b3553e4317260d556))
+
 ## [0.3.7](https://github.com/googleapis/google-cloud-python/compare/google-cloud-netapp-v0.3.6...google-cloud-netapp-v0.3.7) (2024-03-05)
 
 
