@@ -3935,6 +3935,11 @@ class DataFrame(NDFrame):
         ``df.sort_values(columns, ascending=False).head(n)``, but more
         performant.
 
+        .. note::
+            This function cannot be used with all column types. For example, when
+            specifying columns with `object` or `category` dtypes, ``TypeError`` is
+            raised.
+
         **Examples:**
 
             >>> import bigframes.pandas as bpd
@@ -4002,11 +4007,6 @@ class DataFrame(NDFrame):
 
         Returns:
             DataFrame: The first `n` rows ordered by the given columns in descending order.
-
-        .. note::
-            This function cannot be used with all column types. For example, when
-            specifying columns with `object` or `category` dtypes, ``TypeError`` is
-            raised.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
@@ -4021,6 +4021,12 @@ class DataFrame(NDFrame):
         This method is equivalent to
         ``df.sort_values(columns, ascending=True).head(n)``, but more
         performant.
+
+        .. note::
+
+            This function cannot be used with all column types. For example, when
+            specifying columns with `object` or `category` dtypes, ``TypeError`` is
+            raised.
 
         **Examples:**
 
@@ -4090,11 +4096,6 @@ class DataFrame(NDFrame):
 
         Returns:
             DataFrame: The first `n` rows ordered by the given columns in ascending order.
-
-        .. note::
-            This function cannot be used with all column types. For example, when
-            specifying columns with `object` or `category` dtypes, ``TypeError`` is
-            raised.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
