@@ -15,8 +15,7 @@
 import datetime
 import importlib
 import sys
-
-import mock
+from unittest import mock
 
 try:
     import opentelemetry

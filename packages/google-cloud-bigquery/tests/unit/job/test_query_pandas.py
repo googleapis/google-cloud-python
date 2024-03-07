@@ -15,8 +15,8 @@
 import concurrent.futures
 import copy
 import json
+from unittest import mock
 
-import mock
 import pytest
 
 

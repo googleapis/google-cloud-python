@@ -16,8 +16,8 @@ from google.cloud import bigquery
 from google.cloud.bigquery.standard_sql import StandardSqlStructType
 from google.cloud.bigquery.schema import PolicyTagList
 import unittest
+from unittest import mock
 
-import mock
 import pytest
 
 

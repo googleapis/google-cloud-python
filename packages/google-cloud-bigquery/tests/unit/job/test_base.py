@@ -15,11 +15,11 @@
 import copy
 import http
 import unittest
+from unittest import mock
 
 from google.api_core import exceptions
 import google.api_core.retry
 from google.api_core.future import polling
-import mock
 import pytest
 
 from ..helpers import make_connection

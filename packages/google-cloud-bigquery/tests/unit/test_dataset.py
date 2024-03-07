@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import unittest
+from unittest import mock
 
-import mock
 from google.cloud.bigquery.routine.routine import Routine, RoutineReference
 import pytest
 from google.cloud.bigquery.dataset import (

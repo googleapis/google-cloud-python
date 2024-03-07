@@ -13,9 +13,9 @@
 #  limitations under the License.
 
 import functools
-import mock
 import operator as op
 import unittest
+from unittest import mock
 
 import pytest
 

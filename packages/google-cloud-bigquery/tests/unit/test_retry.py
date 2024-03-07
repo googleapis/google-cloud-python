@@ -13,8 +13,8 @@
 # limitations under the License.
 
 import unittest
+from unittest import mock
 
-import mock
 import requests.exceptions
 
 

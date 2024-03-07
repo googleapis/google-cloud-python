@@ -19,9 +19,9 @@ from sys import version_info
 import time
 import types
 import unittest
+from unittest import mock
 import warnings
 
-import mock
 import pytest
 
 try:

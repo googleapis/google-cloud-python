@@ -15,8 +15,7 @@
 import datetime
 import decimal
 import unittest
-
-import mock
+from unittest import mock
 
 
 class Test_UDFResource(unittest.TestCase):

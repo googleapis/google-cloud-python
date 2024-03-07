@@ -16,11 +16,12 @@ import base64
 import datetime
 import decimal
 import json
-import unittest
 import os
-import mock
 import pytest
 import packaging
+import unittest
+from unittest import mock
+
 import google.api_core
 
 

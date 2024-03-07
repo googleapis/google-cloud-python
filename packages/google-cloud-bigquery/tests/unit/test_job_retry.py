@@ -14,8 +14,8 @@
 
 import datetime
 import re
+from unittest import mock
 
-import mock
 import pytest
 
 import google.api_core.exceptions

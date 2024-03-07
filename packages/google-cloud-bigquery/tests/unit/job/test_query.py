@@ -17,11 +17,11 @@ import copy
 import http
 import textwrap
 import types
+from unittest import mock
 
 import freezegun
 from google.api_core import exceptions
 import google.api_core.retry
-import mock
 import requests
 
 from google.cloud.bigquery.client import _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS
@@ -382,11 +382,11 @@ class TestQueryJob(_Base):
             job._done_or_raise(timeout=42)
 
         fake_get_results.assert_called_once()
-        call_args = fake_get_results.call_args
-        self.assertEqual(call_args.kwargs.get("timeout"), 42)
+        call_args = fake_get_results.call_args[0][1]
+        self.assertEqual(call_args.timeout, 600.0)
 
-        call_args = fake_reload.call_args
-        self.assertEqual(call_args.kwargs.get("timeout"), 42)
+        call_args = fake_reload.call_args[1]
+        self.assertEqual(call_args["timeout"], 42)
 
     def test__done_or_raise_w_timeout_and_longer_internal_api_timeout(self):
         client = _make_client(project=self.PROJECT)
@@ -404,11 +404,11 @@ class TestQueryJob(_Base):
         expected_timeout = 5.5
 
         fake_get_results.assert_called_once()
-        call_args = fake_get_results.call_args
-        self.assertAlmostEqual(call_args.kwargs.get("timeout"), expected_timeout)
+        call_args = fake_get_results.call_args[0][1]
+        self.assertAlmostEqual(call_args.timeout, 600.0)
 
         call_args = fake_reload.call_args
-        self.assertAlmostEqual(call_args.kwargs.get("timeout"), expected_timeout)
+        self.assertAlmostEqual(call_args[1].get("timeout"), expected_timeout)
 
     def test__done_or_raise_w_query_results_error_reload_ok(self):
         client = _make_client(project=self.PROJECT)

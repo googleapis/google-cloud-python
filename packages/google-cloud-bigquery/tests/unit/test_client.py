@@ -24,9 +24,9 @@ import itertools
 import json
 import operator
 import unittest
+from unittest import mock
 import warnings
 
-import mock
 import requests
 import packaging
 import pytest
@@ -8733,9 +8733,9 @@ class TestClientUpload(object):
                 parquet_compression="LZ4",
             )
 
-        call_args = fake_to_parquet.call_args
+        call_args = fake_to_parquet.call_args[1]
         assert call_args is not None
-        assert call_args.kwargs.get("parquet_compression") == "LZ4"
+        assert call_args.get("parquet_compression") == "LZ4"
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
     @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
@@ -9498,12 +9498,11 @@ class TestClientUpload(object):
             timeout=mock.ANY,
         )
 
-        # Check the project ID used in the call to initiate resumable upload.
         initiation_url = next(
             (
-                call.args[1]
+                call[0][1]
                 for call in transport.request.call_args_list
-                if call.args[0] == "POST" and "uploadType=resumable" in call.args[1]
+                if call[0][0] == "POST" and "uploadType=resumable" in call[0][1]
             ),
             None,
         )  # pragma: NO COVER
@@ -9525,7 +9524,7 @@ class TestClientUpload(object):
 
         # The timeout should be applied to all underlying calls.
         for call_args in transport.request.call_args_list:
-            assert call_args.kwargs.get("timeout") == 3.14
+            assert call_args[1].get("timeout") == 3.14
 
     def test__do_multipart_upload(self):
         transport = self._make_transport([self._make_response(http.client.OK)])

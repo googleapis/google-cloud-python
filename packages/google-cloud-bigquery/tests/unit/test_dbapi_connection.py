@@ -14,8 +14,7 @@
 
 import gc
 import unittest
-
-import mock
+from unittest import mock
 
 try:
     from google.cloud import bigquery_storage

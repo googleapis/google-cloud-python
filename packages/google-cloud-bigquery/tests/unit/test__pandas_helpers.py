@@ -18,14 +18,13 @@ import decimal
 import functools
 import operator
 import queue
+from unittest import mock
 import warnings
 
 try:
     import importlib.metadata as metadata
 except ImportError:
     import importlib_metadata as metadata
-
-import mock
 
 try:
     import pandas
@@ -1200,7 +1199,7 @@ def test_dataframe_to_parquet_compression_method(module_under_test):
 
     call_args = fake_write_table.call_args
     assert call_args is not None
-    assert call_args.kwargs.get("compression") == "ZSTD"
+    assert call_args[1].get("compression") == "ZSTD"
 
 
 @pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
@@ -1635,7 +1634,7 @@ def test_dataframe_to_parquet_dict_sequence_schema(module_under_test):
         schema.SchemaField("field01", "STRING", mode="REQUIRED"),
         schema.SchemaField("field02", "BOOL", mode="NULLABLE"),
     ]
-    schema_arg = fake_to_arrow.call_args.args[1]
+    schema_arg = fake_to_arrow.call_args[0][1]
     assert schema_arg == expected_schema_arg
 
 

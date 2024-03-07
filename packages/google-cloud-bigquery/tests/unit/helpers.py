@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from unittest import mock
+
+import pytest
+
 import google.cloud.bigquery.client
 import google.cloud.bigquery.dataset
-import mock
-import pytest
 
 
 def make_connection(*responses):
     import google.cloud.bigquery._http
-    import mock
     from google.cloud.exceptions import NotFound
 
     mock_conn = mock.create_autospec(google.cloud.bigquery._http.Connection)
