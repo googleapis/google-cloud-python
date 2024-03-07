@@ -58,15 +58,16 @@ class ListStoragePoolsRequest(proto.Message):
         parent (str):
             Required. Parent value
         page_size (int):
-            The maximum number of items to return.
+            Optional. The maximum number of items to
+            return.
         page_token (str):
-            The next_page_token value to use if there are additional
-            results to retrieve for this list request.
+            Optional. The next_page_token value to use if there are
+            additional results to retrieve for this list request.
         order_by (str):
-            Sort results. Supported values are "name",
-            "name desc" or "" (unsorted).
+            Optional. Sort results. Supported values are
+            "name", "name desc" or "" (unsorted).
         filter (str):
-            List filter.
+            Optional. List filter.
     """
 
     parent: str = proto.Field(
@@ -224,26 +225,26 @@ class StoragePool(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Create time of the storage pool
         description (str):
-            Description of the storage pool
+            Optional. Description of the storage pool
         labels (MutableMapping[str, str]):
-            Labels as key value pairs
+            Optional. Labels as key value pairs
         network (str):
             Required. VPC Network name.
             Format:
             projects/{project}/global/networks/{network}
         active_directory (str):
-            Specifies the Active Directory to be used for
-            creating a SMB volume.
+            Optional. Specifies the Active Directory to
+            be used for creating a SMB volume.
         kms_config (str):
-            Specifies the KMS config to be used for
-            volume encryption.
+            Optional. Specifies the KMS config to be used
+            for volume encryption.
         ldap_enabled (bool):
-            Flag indicating if the pool is NFS LDAP
-            enabled or not.
+            Optional. Flag indicating if the pool is NFS
+            LDAP enabled or not.
         psa_range (str):
-            Name of the Private Service Access allocated
-            range. If not provided, any available range will
-            be chosen.
+            Optional. This field is currently not
+            implemented. Currently values provided in this
+            field will be ignored.
         encryption_type (google.cloud.netapp_v1.types.EncryptionType):
             Output only. Specifies the current pool
             encryption key source.
