@@ -1253,10 +1253,16 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                     ex.message += f"\n{_remote_function_recommendation_message}"
                 raise
 
+        # We are working with remote function at this point
         reprojected_series = Series(self._block._force_reproject())
-        return reprojected_series._apply_unary_op(
+        result_series = reprojected_series._apply_unary_op(
             ops.RemoteFunctionOp(func=func, apply_on_null=True)
         )
+
+        # return Series with materialized result so that any error in the remote
+        # function is caught early
+        materialized_series = result_series._cached()
+        return materialized_series
 
     def add_prefix(self, prefix: str, axis: int | str | None = None) -> Series:
         return Series(self._get_block().add_prefix(prefix))
