@@ -34,6 +34,11 @@ Prerequisites
   `install and initialize the gcloud CLI <https://cloud.google.com/sdk/docs/install>`_,
   and then generate the application default credentials by doing
   `gcloud auth application-default login <https://cloud.google.com/sdk/gcloud/reference/auth/application-default/login>`_.
+* The user must have
+  `BigQuery Job User <https://cloud.google.com/bigquery/docs/access-control#bigquery.jobUser>`_ and
+  `BigQuery Read Session User <https://cloud.google.com/bigquery/docs/access-control#bigquery.readSessionUser>`_
+  roles for the minimum usage. Additional IAM requirements apply for using remote
+  functions and ML.
 
 Code sample
 ^^^^^^^^^^^
@@ -215,6 +220,30 @@ steps and an estimator together.
   to create a pipeline of transforms with a final estimator.
 
 
+ML remote models
+----------------
+
+**Requirements**
+
+To use BigQuery DataFrames ML remote models (`bigframes.ml.remote` or `bigframes.ml.llm`),
+you must enable the following APIs:
+
+* The BigQuery API (bigquery.googleapis.com)
+* The BigQuery Connection API (bigqueryconnection.googleapis.com)
+* The Vertex AI API (aiplatform.googleapis.com)
+
+and you must be granted the following IAM roles:
+
+* BigQuery Data Editor (roles/bigquery.dataEditor)
+* BigQuery Connection Admin (roles/bigquery.connectionAdmin)
+* Service Account User (roles/iam.serviceAccountUser) on the
+  `service account <https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration>`__
+  ``PROJECT_NUMBER-compute@developer.gserviceaccount.com``
+* Vertex AI User (roles/aiplatform.user)
+* Project IAM Admin (roles/resourcemanager.projectIamAdmin) if using default
+  BigQuery connection, or Browser (roles/browser) if using a pre-created connection
+
+
 ML locations
 ------------
 
@@ -311,24 +340,8 @@ following IAM roles:
   `service account <https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration>`__
   ``PROJECT_NUMBER-compute@developer.gserviceaccount.com``
 * Storage Object Viewer (roles/storage.objectViewer)
-* Project IAM Admin (roles/resourcemanager.projectIamAdmin)
-
-To use BigQuery DataFrames ML remote models(bigframes.ml.remote or bigframes.ml.llm), you must enable the following APIs:
-
-* The BigQuery API (bigquery.googleapis.com)
-* The BigQuery Connection API (bigqueryconnection.googleapis.com)
-* The Vertex AI API (aiplatform.googleapis.com)
-
-To use BigQuery DataFrames ML remote models(bigframes.ml.remote or bigframes.ml.llm), you must be granted the
-following IAM roles:
-
-* BigQuery Data Editor (roles/bigquery.dataEditor)
-* BigQuery Connection Admin (roles/bigquery.connectionAdmin)
-* Service Account User (roles/iam.serviceAccountUser) on the
-  `service account <https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration>`__
-  ``PROJECT_NUMBER-compute@developer.gserviceaccount.com``
-* Vertex AI User (roles/aiplatform.user)
-* Project IAM Admin (roles/resourcemanager.projectIamAdmin)
+* Project IAM Admin (roles/resourcemanager.projectIamAdmin) if using default
+  BigQuery connection, or Browser (roles/browser) if using a pre-created connection
 
 **Limitations**
 
