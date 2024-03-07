@@ -3043,8 +3043,8 @@ def directed_read_options(
 def set_custom_timeout_and_retry(instance_id, database_id):
     """Executes a snapshot read with custom timeout and retry."""
     # [START spanner_set_custom_timeout_and_retry]
-    from google.api_core import retry
     from google.api_core import exceptions as core_exceptions
+    from google.api_core import retry
 
     # instance_id = "your-spanner-instance"
     # database_id = "your-spanner-db-id"
@@ -3083,6 +3083,65 @@ def set_custom_timeout_and_retry(instance_id, database_id):
             print("SingerId: {}, AlbumId: {}, AlbumTitle: {}".format(*row))
 
     # [END spanner_set_custom_timeout_and_retry]
+
+
+# [START spanner_create_instance_with_autoscaling_config]
+def create_instance_with_autoscaling_config(instance_id):
+    """Creates a Cloud Spanner instance with an autoscaling configuration."""
+    from google.cloud.spanner_admin_instance_v1.types import \
+        spanner_instance_admin
+
+    spanner_client = spanner.Client()
+
+    config_name = "{}/instanceConfigs/regional-us-central1".format(
+        spanner_client.project_name
+    )
+
+    autoscaling_config = spanner_instance_admin.AutoscalingConfig(
+        # Only one of minNodes/maxNodes or minProcessingUnits/maxProcessingUnits can be set.
+        autoscaling_limits=spanner_instance_admin.AutoscalingConfig.AutoscalingLimits(
+            min_nodes=1,
+            max_nodes=2,
+        ),
+        # highPriorityCpuUtilizationPercent and storageUtilizationPercent are both
+        # percentages and must lie between 0 and 100.
+        autoscaling_targets=spanner_instance_admin.AutoscalingConfig.AutoscalingTargets(
+            high_priority_cpu_utilization_percent=65,
+            storage_utilization_percent=95,
+        ),
+    )
+
+    #  Creates a new instance with autoscaling configuration
+    #  When autoscalingConfig is enabled, nodeCount and processingUnits fields
+    #  need not be specified.
+    request = spanner_instance_admin.CreateInstanceRequest(
+        parent=spanner_client.project_name,
+        instance_id=instance_id,
+        instance=spanner_instance_admin.Instance(
+            config=config_name,
+            display_name="This is a display name.",
+            autoscaling_config=autoscaling_config,
+            labels={
+                "cloud_spanner_samples": "true",
+                "sample_name": "snippets-create_instance_with_autoscaling_config",
+                "created": str(int(time.time())),
+            },
+        ),
+    )
+
+    operation = spanner_client.instance_admin_api.create_instance(request=request)
+
+    print("Waiting for operation to complete...")
+    instance = operation.result(OPERATION_TIMEOUT_SECONDS)
+
+    print(
+        "Created instance {} with {} autoscaling config".format(
+            instance_id, instance.autoscaling_config
+        )
+    )
+
+
+# [END spanner_create_instance_with_autoscaling_config]
 
 
 if __name__ == "__main__":  # noqa: C901
@@ -3366,3 +3425,5 @@ if __name__ == "__main__":  # noqa: C901
         directed_read_options(args.instance_id, args.database_id)
     elif args.command == "set_custom_timeout_and_retry":
         set_custom_timeout_and_retry(args.instance_id, args.database_id)
+    elif args.command == "create_instance_with_autoscaling_config":
+        create_instance_with_autoscaling_config(args.instance_id)
