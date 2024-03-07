@@ -371,9 +371,9 @@ class Volume(proto.Message):
         share_name (str):
             Required. Share name of the volume
         psa_range (str):
-            Output only. Name of the Private Service
-            Access allocated range. This is optional. If not
-            provided, any available range will be chosen.
+            Output only. This field is currently not
+            implemented. Currently values provided in this
+            field will be ignored.
         storage_pool (str):
             Required. StoragePool name of the volume
         network (str):

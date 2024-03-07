@@ -236,10 +236,10 @@ class ActiveDirectory(proto.Message):
             Required. Password of the Active Directory
             domain administrator.
         backup_operators (MutableSequence[str]):
-            Users to be added to the Built-in Backup
-            Operator active directory group.
+            Optional. Users to be added to the Built-in
+            Backup Operator active directory group.
         security_operators (MutableSequence[str]):
-            Domain users to be given the
+            Optional. Domain users to be given the
             SeSecurityPrivilege.
         kdc_hostname (str):
             Name of the active directory machine. This

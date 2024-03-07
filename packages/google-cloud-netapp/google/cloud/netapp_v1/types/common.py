@@ -29,7 +29,7 @@ __protobuf__ = proto.module(
 
 
 class ServiceLevel(proto.Enum):
-    r"""The service levels - Storage Pool, Volumes
+    r"""The service level of a storage pool and its volumes.
 
     Values:
         SERVICE_LEVEL_UNSPECIFIED (0):
@@ -39,7 +39,7 @@ class ServiceLevel(proto.Enum):
         EXTREME (2):
             Extreme service level.
         STANDARD (3):
-            Standard (Software offering)
+            Standard service level.
     """
     SERVICE_LEVEL_UNSPECIFIED = 0
     PREMIUM = 1
@@ -48,11 +48,11 @@ class ServiceLevel(proto.Enum):
 
 
 class EncryptionType(proto.Enum):
-    r"""Defined the current volume encryption key source.
+    r"""The volume encryption key source.
 
     Values:
         ENCRYPTION_TYPE_UNSPECIFIED (0):
-            The source of encryption key is not
+            The source of the encryption key is not
             specified.
         SERVICE_MANAGED (1):
             Google managed encryption key.
