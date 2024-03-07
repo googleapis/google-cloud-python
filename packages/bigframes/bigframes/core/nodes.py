@@ -115,7 +115,7 @@ class JoinNode(BigFrameNode):
     left_child: BigFrameNode
     right_child: BigFrameNode
     join: JoinDefinition
-    allow_row_identity_join: bool = True
+    allow_row_identity_join: bool = False
 
     @property
     def row_preserving(self) -> bool:

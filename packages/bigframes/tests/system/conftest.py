@@ -286,6 +286,13 @@ def scalars_table_id(test_data_tables) -> str:
 
 
 @pytest.fixture(scope="session")
+def baseball_schedules_df(session: bigframes.Session) -> bigframes.dataframe.DataFrame:
+    """Public BQ table"""
+    df = session.read_gbq("bigquery-public-data.baseball.schedules")
+    return df
+
+
+@pytest.fixture(scope="session")
 def hockey_table_id(test_data_tables) -> str:
     return test_data_tables["hockey_players"]
 

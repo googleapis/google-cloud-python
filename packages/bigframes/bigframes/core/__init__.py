@@ -349,7 +349,7 @@ class ArrayValue:
         self,
         other: ArrayValue,
         join_def: join_def.JoinDefinition,
-        allow_row_identity_join: bool = True,
+        allow_row_identity_join: bool = False,
     ):
         return ArrayValue(
             nodes.JoinNode(
