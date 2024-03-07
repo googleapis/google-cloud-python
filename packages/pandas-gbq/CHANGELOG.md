@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.22.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.21.0...v0.22.0) (2024-03-05)
+
+
+### Features
+
+* Move bqstorage to extras and add debug capability ([#735](https://github.com/googleapis/python-bigquery-pandas/issues/735)) ([366cb55](https://github.com/googleapis/python-bigquery-pandas/commit/366cb55a5f2dde4f92994de9ba6c59eb3e1d7c9f))
+
+
+### Bug Fixes
+
+* Remove python 3.7 due to end of life (EOL) ([#737](https://github.com/googleapis/python-bigquery-pandas/issues/737)) ([d0810e8](https://github.com/googleapis/python-bigquery-pandas/commit/d0810e82322c5cc81b33894b7e7f50c140f542ed))
+
 ## [0.21.0](https://github.com/googleapis/python-bigquery-pandas/compare/v0.20.0...v0.21.0) (2024-01-25)
 
 
