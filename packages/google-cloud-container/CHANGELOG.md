@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-cloud-container/#history
 
+## [2.43.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.42.0...google-cloud-container-v2.43.0) (2024-03-07)
+
+
+### Features
+
+* [google-cloud-container] add API to enable/disable secret manager csi component on GKE clusters ([#12421](https://github.com/googleapis/google-cloud-python/issues/12421)) ([30d38b5](https://github.com/googleapis/google-cloud-python/commit/30d38b5758118a30dddf45443e8694131bb172fc))
+* Add API to enable/disable secret manager csi component on GKE clusters ([358ef49](https://github.com/googleapis/google-cloud-python/commit/358ef49cba7acb091de627293f9f0e5b63f27ece))
+* Add secondary boot disks field to NodePool API ([358ef49](https://github.com/googleapis/google-cloud-python/commit/358ef49cba7acb091de627293f9f0e5b63f27ece))
+
 ## [2.42.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-container-v2.41.0...google-cloud-container-v2.42.0) (2024-03-04)
 
 

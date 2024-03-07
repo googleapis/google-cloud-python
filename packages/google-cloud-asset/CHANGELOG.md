@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-asset/#history
 
+## [3.25.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.24.3...google-cloud-asset-v3.25.0) (2024-03-07)
+
+
+### Features
+
+* Add `asset_type` field to `GovernedIamPolicy` and `GovernedResource` ([ff71d1a](https://github.com/googleapis/google-cloud-python/commit/ff71d1a34668a0684b0ec55cf068774faf3c127f))
+* Add `effective_tags` field to `GovernedResource` ([ff71d1a](https://github.com/googleapis/google-cloud-python/commit/ff71d1a34668a0684b0ec55cf068774faf3c127f))
+* Add field `condition_evaluation` to `AnalyzerOrgPolicy.Rule` ([ff71d1a](https://github.com/googleapis/google-cloud-python/commit/ff71d1a34668a0684b0ec55cf068774faf3c127f))
+* Add fields `project`, `folders` and `organization` to `OrgPolicyResult` ([ff71d1a](https://github.com/googleapis/google-cloud-python/commit/ff71d1a34668a0684b0ec55cf068774faf3c127f))
+* Add fields `project`, `folders`, `organization` and `effective_tags` to `GovernedContainer` ([ff71d1a](https://github.com/googleapis/google-cloud-python/commit/ff71d1a34668a0684b0ec55cf068774faf3c127f))
+
+
+### Documentation
+
+* Update comment for rpc `AnalyzeOrgPolicyGovernedAssets` to include additional canned constraints ([ff71d1a](https://github.com/googleapis/google-cloud-python/commit/ff71d1a34668a0684b0ec55cf068774faf3c127f))
+
 ## [3.24.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-asset-v3.24.2...google-cloud-asset-v3.24.3) (2024-03-05)
 
 

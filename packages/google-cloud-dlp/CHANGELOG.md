@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-cloud-dlp/#history
 
+## [3.16.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.15.3...google-cloud-dlp-v3.16.0) (2024-03-07)
+
+
+### Features
+
+* Add RPCs for getting and listing project, table, and column data profiles ([d319fac](https://github.com/googleapis/google-cloud-python/commit/d319facb5b523d8f4360ac2ce4d940d272446069))
+
+
+### Documentation
+
+* Update urls to reflect branding change to Sensitive Data Protection ([d319fac](https://github.com/googleapis/google-cloud-python/commit/d319facb5b523d8f4360ac2ce4d940d272446069))
+
 ## [3.15.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-dlp-v3.15.2...google-cloud-dlp-v3.15.3) (2024-03-05)
 
 
