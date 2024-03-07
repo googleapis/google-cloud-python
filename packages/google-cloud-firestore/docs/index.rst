@@ -8,18 +8,20 @@ API Reference
 .. toctree::
   :maxdepth: 2
 
-  client
-  collection
-  aggregation
-  document
-  field_path
-  query
-  batch
-  bundles
-  transaction
-  transforms
-  types
-  admin_client
+  firestore_admin_v1/admin_client
+
+  firestore_bundle/bundles
+
+  firestore_v1/aggregation
+  firestore_v1/batch
+  firestore_v1/client
+  firestore_v1/collection
+  firestore_v1/document
+  firestore_v1/field_path
+  firestore_v1/query
+  firestore_v1/transaction
+  firestore_v1/transforms
+  firestore_v1/types
 
 Migration Guide
 ---------------
