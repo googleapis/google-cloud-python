@@ -499,6 +499,13 @@ def test_log_commit_stats(capsys, instance_id, sample_database):
     assert "4 mutation(s) in transaction." in out
 
 
+@pytest.mark.dependency(name="set_max_commit_delay")
+def test_set_max_commit_delay(capsys, instance_id, sample_database):
+    snippets.set_max_commit_delay(instance_id, sample_database.database_id)
+    out, _ = capsys.readouterr()
+    assert "1 record(s) inserted." in out
+
+
 @pytest.mark.dependency(depends=["insert_data"])
 def test_update_data_with_dml(capsys, instance_id, sample_database):
     snippets.update_data_with_dml(instance_id, sample_database.database_id)
@@ -588,7 +595,7 @@ def update_data_with_partitioned_dml(capsys, instance_id, sample_database):
 def test_delete_data_with_partitioned_dml(capsys, instance_id, sample_database):
     snippets.delete_data_with_partitioned_dml(instance_id, sample_database.database_id)
     out, _ = capsys.readouterr()
-    assert "6 record(s) deleted" in out
+    assert "7 record(s) deleted" in out
 
 
 @pytest.mark.dependency(depends=["add_column"])

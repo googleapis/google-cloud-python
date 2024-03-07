@@ -1527,6 +1527,29 @@ def log_commit_stats(instance_id, database_id):
 # [END spanner_get_commit_stats]
 
 
+def set_max_commit_delay(instance_id, database_id):
+    """Inserts sample data and sets a max commit delay."""
+    # [START spanner_set_max_commit_delay]
+    # instance_id = "your-spanner-instance"
+    # database_id = "your-spanner-db-id"
+    spanner_client = spanner.Client()
+    instance = spanner_client.instance(instance_id)
+    database = instance.database(database_id)
+
+    def insert_singers(transaction):
+        row_ct = transaction.execute_update(
+            "INSERT Singers (SingerId, FirstName, LastName) "
+            " VALUES (111, 'Grace', 'Bennis')"
+        )
+
+        print("{} record(s) inserted.".format(row_ct))
+
+    database.run_in_transaction(
+        insert_singers, max_commit_delay=datetime.timedelta(milliseconds=100)
+    )
+    # [END spanner_set_max_commit_delay]
+
+
 def update_data_with_dml(instance_id, database_id):
     """Updates sample data from the database using a DML statement."""
     # [START spanner_dml_standard_update]
@@ -3082,6 +3105,7 @@ if __name__ == "__main__":  # noqa: C901
     subparsers.add_parser("read_stale_data", help=read_stale_data.__doc__)
     subparsers.add_parser("add_column", help=add_column.__doc__)
     subparsers.add_parser("update_data", help=update_data.__doc__)
+    subparsers.add_parser("set_max_commit_delay", help=set_max_commit_delay.__doc__)
     subparsers.add_parser(
         "query_data_with_new_column", help=query_data_with_new_column.__doc__
     )
@@ -3228,6 +3252,8 @@ if __name__ == "__main__":  # noqa: C901
         add_column(args.instance_id, args.database_id)
     elif args.command == "update_data":
         update_data(args.instance_id, args.database_id)
+    elif args.command == "set_max_commit_delay":
+        set_max_commit_delay(args.instance_id, args.database_id)
     elif args.command == "query_data_with_new_column":
         query_data_with_new_column(args.instance_id, args.database_id)
     elif args.command == "read_write_transaction":
