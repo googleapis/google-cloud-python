@@ -2193,6 +2193,44 @@ class TestBigQuery(unittest.TestCase):
         assert len(rows) == 1
         assert rows[0].max_value == 100.0
 
+    def test_create_routine_with_range(self):
+        routine_name = "routine_range"
+        dataset = self.temp_dataset(_make_dataset_id("routine_range"))
+
+        routine = bigquery.Routine(
+            dataset.routine(routine_name),
+            type_="SCALAR_FUNCTION",
+            language="SQL",
+            body="RANGE_START(x)",
+            arguments=[
+                bigquery.RoutineArgument(
+                    name="x",
+                    data_type=bigquery.StandardSqlDataType(
+                        type_kind=bigquery.StandardSqlTypeNames.RANGE,
+                        range_element_type=bigquery.StandardSqlDataType(
+                            type_kind=bigquery.StandardSqlTypeNames.DATE
+                        ),
+                    ),
+                )
+            ],
+            return_type=bigquery.StandardSqlDataType(
+                type_kind=bigquery.StandardSqlTypeNames.DATE
+            ),
+        )
+
+        query_string = (
+            "SELECT `{}`(RANGE<DATE> '[2016-08-12, UNBOUNDED)') as range_start;".format(
+                str(routine.reference)
+            )
+        )
+
+        routine = helpers.retry_403(Config.CLIENT.create_routine)(routine)
+        query_job = helpers.retry_403(Config.CLIENT.query)(query_string)
+        rows = list(query_job.result())
+
+        assert len(rows) == 1
+        assert rows[0].range_start == datetime.date(2016, 8, 12)
+
     def test_create_tvf_routine(self):
         from google.cloud.bigquery import (
             Routine,

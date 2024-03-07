@@ -254,6 +254,7 @@ class StandardSqlTypeNames(str, enum.Enum):
     JSON = enum.auto()
     ARRAY = enum.auto()
     STRUCT = enum.auto()
+    RANGE = enum.auto()
 
 
 class EntityTypes(str, enum.Enum):
@@ -292,6 +293,7 @@ class SqlTypeNames(str, enum.Enum):
     TIME = "TIME"
     DATETIME = "DATETIME"
     INTERVAL = "INTERVAL"  # NOTE: not available in legacy types
+    RANGE = "RANGE"  # NOTE: not available in legacy types
 
 
 class WriteDisposition(object):

@@ -43,6 +43,7 @@ class StandardSqlDataType:
                 ]
             }
         }
+        RANGE: {type_kind="RANGE", range_element_type="DATETIME"}
 
     Args:
         type_kind:
@@ -52,6 +53,8 @@ class StandardSqlDataType:
             The type of the array's elements, if type_kind is ARRAY.
         struct_type:
             The fields of this struct, in order, if type_kind is STRUCT.
+        range_element_type:
+            The type of the range's elements, if type_kind is RANGE.
     """
 
     def __init__(
@@ -61,12 +64,14 @@ class StandardSqlDataType:
         ] = StandardSqlTypeNames.TYPE_KIND_UNSPECIFIED,
         array_element_type: Optional["StandardSqlDataType"] = None,
         struct_type: Optional["StandardSqlStructType"] = None,
+        range_element_type: Optional["StandardSqlDataType"] = None,
     ):
         self._properties: Dict[str, Any] = {}
 
         self.type_kind = type_kind
         self.array_element_type = array_element_type
         self.struct_type = struct_type
+        self.range_element_type = range_element_type
 
     @property
     def type_kind(self) -> Optional[StandardSqlTypeNames]:
@@ -127,6 +132,28 @@ class StandardSqlDataType:
         else:
             self._properties["structType"] = struct_type
 
+    @property
+    def range_element_type(self) -> Optional["StandardSqlDataType"]:
+        """The type of the range's elements, if type_kind = "RANGE". Must be
+        one of DATETIME, DATE, or TIMESTAMP."""
+        range_element_info = self._properties.get("rangeElementType")
+
+        if range_element_info is None:
+            return None
+
+        result = StandardSqlDataType()
+        result._properties = range_element_info  # We do not use a copy on purpose.
+        return result
+
+    @range_element_type.setter
+    def range_element_type(self, value: Optional["StandardSqlDataType"]):
+        range_element_type = None if value is None else value.to_api_repr()
+
+        if range_element_type is None:
+            self._properties.pop("rangeElementType", None)
+        else:
+            self._properties["rangeElementType"] = range_element_type
+
     def to_api_repr(self) -> Dict[str, Any]:
         """Construct the API resource representation of this SQL data type."""
         return copy.deepcopy(self._properties)
@@ -155,7 +182,13 @@ class StandardSqlDataType:
             if struct_info:
                 struct_type = StandardSqlStructType.from_api_repr(struct_info)
 
-        return cls(type_kind, array_element_type, struct_type)
+        range_element_type = None
+        if type_kind == StandardSqlTypeNames.RANGE:
+            range_element_info = resource.get("rangeElementType")
+            if range_element_info:
+                range_element_type = cls.from_api_repr(range_element_info)
+
+        return cls(type_kind, array_element_type, struct_type, range_element_type)
 
     def __eq__(self, other):
         if not isinstance(other, StandardSqlDataType):
@@ -165,6 +198,7 @@ class StandardSqlDataType:
                 self.type_kind == other.type_kind
                 and self.array_element_type == other.array_element_type
                 and self.struct_type == other.struct_type
+                and self.range_element_type == other.range_element_type
             )
 
     def __str__(self):
