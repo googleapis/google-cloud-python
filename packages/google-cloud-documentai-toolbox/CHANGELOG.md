@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.13.2-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.13.1-alpha...v0.13.2-alpha) (2024-03-08)
+
+
+### Bug Fixes
+
+* Add trailing slash if not present for `gcs_prefix` in `Document.from_gcs()` to cover matching prefixes edge case. ([#274](https://github.com/googleapis/python-documentai-toolbox/issues/274)) ([b4762e8](https://github.com/googleapis/python-documentai-toolbox/commit/b4762e8212e9e435eaa430bcd345291c69e518ac))
+
 ## [0.13.1-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.13.0-alpha...v0.13.1-alpha) (2024-03-04)
 
 
