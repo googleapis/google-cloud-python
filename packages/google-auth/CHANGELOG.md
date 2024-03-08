@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.28.2](https://github.com/googleapis/google-auth-library-python/compare/v2.28.1...v2.28.2) (2024-03-08)
+
+
+### Bug Fixes
+
+* Remove gce log for expected 404 ([#1491](https://github.com/googleapis/google-auth-library-python/issues/1491)) ([cb04e49](https://github.com/googleapis/google-auth-library-python/commit/cb04e49efa17004bff3aaa9ed974396d10f839b5))
+
 ## [2.28.1](https://github.com/googleapis/google-auth-library-python/compare/v2.28.0...v2.28.1) (2024-02-21)
 
 
