@@ -46,6 +46,7 @@ __protobuf__ = proto.module(
         "CloudRunRevisionInfo",
         "AppEngineVersionInfo",
         "VpcConnectorInfo",
+        "NatInfo",
         "ProxyConnectionInfo",
         "LoadBalancerBackendInfo",
         "StorageBucketInfo",
@@ -263,6 +264,10 @@ class Step(proto.Message):
             This field is a member of `oneof`_ ``step_info``.
         cloud_run_revision (google.cloud.network_management_v1.types.CloudRunRevisionInfo):
             Display information of a Cloud Run revision.
+
+            This field is a member of `oneof`_ ``step_info``.
+        nat (google.cloud.network_management_v1.types.NatInfo):
+            Display information of a NAT.
 
             This field is a member of `oneof`_ ``step_info``.
         proxy_connection (google.cloud.network_management_v1.types.ProxyConnectionInfo):
@@ -548,6 +553,12 @@ class Step(proto.Message):
         number=23,
         oneof="step_info",
         message="CloudRunRevisionInfo",
+    )
+    nat: "NatInfo" = proto.Field(
+        proto.MESSAGE,
+        number=25,
+        oneof="step_info",
+        message="NatInfo",
     )
     proxy_connection: "ProxyConnectionInfo" = proto.Field(
         proto.MESSAGE,
@@ -2155,6 +2166,124 @@ class VpcConnectorInfo(proto.Message):
     location: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class NatInfo(proto.Message):
+    r"""For display only. Metadata associated with NAT.
+
+    Attributes:
+        type_ (google.cloud.network_management_v1.types.NatInfo.Type):
+            Type of NAT.
+        protocol (str):
+            IP protocol in string format, for example:
+            "TCP", "UDP", "ICMP".
+        network_uri (str):
+            URI of the network where NAT translation
+            takes place.
+        old_source_ip (str):
+            Source IP address before NAT translation.
+        new_source_ip (str):
+            Source IP address after NAT translation.
+        old_destination_ip (str):
+            Destination IP address before NAT
+            translation.
+        new_destination_ip (str):
+            Destination IP address after NAT translation.
+        old_source_port (int):
+            Source port before NAT translation. Only
+            valid when protocol is TCP or UDP.
+        new_source_port (int):
+            Source port after NAT translation. Only valid
+            when protocol is TCP or UDP.
+        old_destination_port (int):
+            Destination port before NAT translation. Only
+            valid when protocol is TCP or UDP.
+        new_destination_port (int):
+            Destination port after NAT translation. Only
+            valid when protocol is TCP or UDP.
+        router_uri (str):
+            Uri of the Cloud Router. Only valid when type is CLOUD_NAT.
+        nat_gateway_name (str):
+            The name of Cloud NAT Gateway. Only valid when type is
+            CLOUD_NAT.
+    """
+
+    class Type(proto.Enum):
+        r"""Types of NAT.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Type is unspecified.
+            INTERNAL_TO_EXTERNAL (1):
+                From Compute Engine instance's internal
+                address to external address.
+            EXTERNAL_TO_INTERNAL (2):
+                From Compute Engine instance's external
+                address to internal address.
+            CLOUD_NAT (3):
+                Cloud NAT Gateway.
+            PRIVATE_SERVICE_CONNECT (4):
+                Private service connect NAT.
+        """
+        TYPE_UNSPECIFIED = 0
+        INTERNAL_TO_EXTERNAL = 1
+        EXTERNAL_TO_INTERNAL = 2
+        CLOUD_NAT = 3
+        PRIVATE_SERVICE_CONNECT = 4
+
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    protocol: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    network_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    old_source_ip: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    new_source_ip: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    old_destination_ip: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    new_destination_ip: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    old_source_port: int = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    new_source_port: int = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    old_destination_port: int = proto.Field(
+        proto.INT32,
+        number=10,
+    )
+    new_destination_port: int = proto.Field(
+        proto.INT32,
+        number=11,
+    )
+    router_uri: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    nat_gateway_name: str = proto.Field(
+        proto.STRING,
+        number=13,
     )
 
 
