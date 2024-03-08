@@ -52,6 +52,7 @@ from .run_asset_discovery_response import RunAssetDiscoveryResponse
 from .security_health_analytics_custom_config import CustomConfig
 from .security_health_analytics_custom_module import SecurityHealthAnalyticsCustomModule
 from .security_marks import SecurityMarks
+from .security_posture import SecurityPosture
 from .securitycenter_service import (
     BulkMuteFindingsRequest,
     BulkMuteFindingsResponse,
@@ -164,6 +165,7 @@ __all__ = (
     "CustomConfig",
     "SecurityHealthAnalyticsCustomModule",
     "SecurityMarks",
+    "SecurityPosture",
     "BulkMuteFindingsRequest",
     "BulkMuteFindingsResponse",
     "CreateBigQueryExportRequest",

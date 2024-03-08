@@ -97,6 +97,10 @@ from google.cloud.securitycenter_v1.types import (
     log_entry,
     mitre_attack,
 )
+from google.cloud.securitycenter_v1.types import (
+    security_posture,
+    securitycenter_service,
+)
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
@@ -119,7 +123,6 @@ from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import org_policy
 from google.cloud.securitycenter_v1.types import organization_settings
 from google.cloud.securitycenter_v1.types import security_marks
-from google.cloud.securitycenter_v1.types import securitycenter_service
 from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
 from google.cloud.securitycenter_v1.types import vulnerability
@@ -11753,6 +11756,8 @@ def test_update_external_system(request_type, transport: str = "grpc"):
             assignees=["assignees_value"],
             external_uid="external_uid_value",
             status="status_value",
+            case_uri="case_uri_value",
+            case_priority="case_priority_value",
         )
         response = client.update_external_system(request)
 
@@ -11767,6 +11772,8 @@ def test_update_external_system(request_type, transport: str = "grpc"):
     assert response.assignees == ["assignees_value"]
     assert response.external_uid == "external_uid_value"
     assert response.status == "status_value"
+    assert response.case_uri == "case_uri_value"
+    assert response.case_priority == "case_priority_value"
 
 
 def test_update_external_system_empty_call():
@@ -11812,6 +11819,8 @@ async def test_update_external_system_async(
                 assignees=["assignees_value"],
                 external_uid="external_uid_value",
                 status="status_value",
+                case_uri="case_uri_value",
+                case_priority="case_priority_value",
             )
         )
         response = await client.update_external_system(request)
@@ -11827,6 +11836,8 @@ async def test_update_external_system_async(
     assert response.assignees == ["assignees_value"]
     assert response.external_uid == "external_uid_value"
     assert response.status == "status_value"
+    assert response.case_uri == "case_uri_value"
+    assert response.case_priority == "case_priority_value"
 
 
 @pytest.mark.asyncio
@@ -16444,6 +16455,22 @@ def test_create_finding_rest(request_type):
             "appliance": "appliance_value",
             "backup_type": "backup_type_value",
             "backup_create_time": {},
+        },
+        "security_posture": {
+            "name": "name_value",
+            "revision_id": "revision_id_value",
+            "posture_deployment_resource": "posture_deployment_resource_value",
+            "posture_deployment": "posture_deployment_value",
+            "changed_policy": "changed_policy_value",
+            "policy_set": "policy_set_value",
+            "policy": "policy_value",
+            "policy_drift_details": [
+                {
+                    "field": "field_value",
+                    "expected_value": "expected_value_value",
+                    "detected_value": "detected_value_value",
+                }
+            ],
         },
         "log_entries": [
             {
@@ -25807,6 +25834,19 @@ def test_update_external_system_rest(request_type):
         "external_uid": "external_uid_value",
         "status": "status_value",
         "external_system_update_time": {"seconds": 751, "nanos": 543},
+        "case_uri": "case_uri_value",
+        "case_priority": "case_priority_value",
+        "case_sla": {},
+        "case_create_time": {},
+        "case_close_time": {},
+        "ticket_info": {
+            "id": "id_value",
+            "assignee": "assignee_value",
+            "description": "description_value",
+            "uri": "uri_value",
+            "status": "status_value",
+            "update_time": {},
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -25887,6 +25927,8 @@ def test_update_external_system_rest(request_type):
             assignees=["assignees_value"],
             external_uid="external_uid_value",
             status="status_value",
+            case_uri="case_uri_value",
+            case_priority="case_priority_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -25906,6 +25948,8 @@ def test_update_external_system_rest(request_type):
     assert response.assignees == ["assignees_value"]
     assert response.external_uid == "external_uid_value"
     assert response.status == "status_value"
+    assert response.case_uri == "case_uri_value"
+    assert response.case_priority == "case_priority_value"
 
 
 def test_update_external_system_rest_required_fields(
@@ -26404,6 +26448,22 @@ def test_update_finding_rest(request_type):
             "appliance": "appliance_value",
             "backup_type": "backup_type_value",
             "backup_create_time": {},
+        },
+        "security_posture": {
+            "name": "name_value",
+            "revision_id": "revision_id_value",
+            "posture_deployment_resource": "posture_deployment_resource_value",
+            "posture_deployment": "posture_deployment_value",
+            "changed_policy": "changed_policy_value",
+            "policy_set": "policy_set_value",
+            "policy": "policy_value",
+            "policy_drift_details": [
+                {
+                    "field": "field_value",
+                    "expected_value": "expected_value_value",
+                    "detected_value": "detected_value_value",
+                }
+            ],
         },
         "log_entries": [
             {

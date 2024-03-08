@@ -42,16 +42,87 @@ class ExternalSystem(proto.Message):
             References primary/secondary etc assignees in
             the external system.
         external_uid (str):
-            Identifier that's used to track the given
-            finding in the external system.
+            The identifier that's used to track the
+            finding's corresponding case in the external
+            system.
         status (str):
-            Most recent status of the corresponding
-            finding's ticket/tracker in the external system.
+            The most recent status of the finding's
+            corresponding case, as reported by the external
+            system.
         external_system_update_time (google.protobuf.timestamp_pb2.Timestamp):
-            The most recent time when the corresponding
-            finding's ticket/tracker was updated in the
-            external system.
+            The time when the case was last updated, as
+            reported by the external system.
+        case_uri (str):
+            The link to the finding's corresponding case
+            in the external system.
+        case_priority (str):
+            The priority of the finding's corresponding
+            case in the external system.
+        case_sla (google.protobuf.timestamp_pb2.Timestamp):
+            The SLA of the finding's corresponding case
+            in the external system.
+        case_create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the case was created, as
+            reported by the external system.
+        case_close_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when the case was closed, as
+            reported by the external system.
+        ticket_info (google.cloud.securitycenter_v1.types.ExternalSystem.TicketInfo):
+            Information about the ticket, if any, that is
+            being used to track the resolution of the issue
+            that is identified by this finding.
     """
+
+    class TicketInfo(proto.Message):
+        r"""Information about the ticket, if any, that is being used to
+        track the resolution of the issue that is identified by this
+        finding.
+
+        Attributes:
+            id (str):
+                The identifier of the ticket in the ticket
+                system.
+            assignee (str):
+                The assignee of the ticket in the ticket
+                system.
+            description (str):
+                The description of the ticket in the ticket
+                system.
+            uri (str):
+                The link to the ticket in the ticket system.
+            status (str):
+                The latest status of the ticket, as reported
+                by the ticket system.
+            update_time (google.protobuf.timestamp_pb2.Timestamp):
+                The time when the ticket was last updated, as
+                reported by the ticket system.
+        """
+
+        id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        assignee: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        description: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        uri: str = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        status: str = proto.Field(
+            proto.STRING,
+            number=5,
+        )
+        update_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=6,
+            message=timestamp_pb2.Timestamp,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -73,6 +144,34 @@ class ExternalSystem(proto.Message):
         proto.MESSAGE,
         number=5,
         message=timestamp_pb2.Timestamp,
+    )
+    case_uri: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    case_priority: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    case_sla: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
+    case_create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
+    )
+    case_close_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
+    )
+    ticket_info: TicketInfo = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=TicketInfo,
     )
 
 

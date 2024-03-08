@@ -85,6 +85,10 @@ from google.cloud.securitycenter_v1.types import (
     log_entry,
     mitre_attack,
 )
+from google.cloud.securitycenter_v1.types import (
+    security_posture,
+    securitycenter_service,
+)
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import (
     notification_config as gcs_notification_config,
@@ -106,7 +110,6 @@ from google.cloud.securitycenter_v1.types import notification_config
 from google.cloud.securitycenter_v1.types import org_policy
 from google.cloud.securitycenter_v1.types import organization_settings
 from google.cloud.securitycenter_v1.types import security_marks
-from google.cloud.securitycenter_v1.types import securitycenter_service
 from google.cloud.securitycenter_v1.types import source
 from google.cloud.securitycenter_v1.types import source as gcs_source
 from google.cloud.securitycenter_v1.types import vulnerability
