@@ -249,20 +249,19 @@ class Client(ClientWithProject):
         bq_host = _get_bigquery_host()
         kw_args["api_endpoint"] = bq_host if bq_host != _DEFAULT_HOST else None
         client_universe = None
-        if client_options:
-            if isinstance(client_options, dict):
-                client_options = google.api_core.client_options.from_dict(
-                    client_options
+        if client_options is None:
+            client_options = {}
+        if isinstance(client_options, dict):
+            client_options = google.api_core.client_options.from_dict(client_options)
+        if client_options.api_endpoint:
+            api_endpoint = client_options.api_endpoint
+            kw_args["api_endpoint"] = api_endpoint
+        else:
+            client_universe = _get_client_universe(client_options)
+            if client_universe != _DEFAULT_UNIVERSE:
+                kw_args["api_endpoint"] = _DEFAULT_HOST_TEMPLATE.replace(
+                    "{UNIVERSE_DOMAIN}", client_universe
                 )
-            if client_options.api_endpoint:
-                api_endpoint = client_options.api_endpoint
-                kw_args["api_endpoint"] = api_endpoint
-            else:
-                client_universe = _get_client_universe(client_options)
-                if client_universe != _DEFAULT_UNIVERSE:
-                    kw_args["api_endpoint"] = _DEFAULT_HOST_TEMPLATE.replace(
-                        "{UNIVERSE_DOMAIN}", client_universe
-                    )
         # Ensure credentials and universe are not in conflict.
         if hasattr(self, "_credentials") and client_universe is not None:
             _validate_universe(client_universe, self._credentials)

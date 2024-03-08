@@ -23,6 +23,7 @@ import io
 import itertools
 import json
 import operator
+import os
 import unittest
 from unittest import mock
 import warnings
@@ -170,6 +171,17 @@ class TestClient(unittest.TestCase):
         self.assertEqual(
             client._connection.API_BASE_URL, client._connection.DEFAULT_API_ENDPOINT
         )
+
+    @mock.patch.dict(os.environ, {"GOOGLE_CLOUD_UNIVERSE_DOMAIN": "foo.com"})
+    def test_ctor_w_only_env_universe(self):
+        creds = _make_credentials()
+        http = object()
+        client = self._make_one(
+            project=self.PROJECT,
+            credentials=creds,
+            _http=http,
+        )
+        self.assertEqual(client._connection.API_BASE_URL, "https://bigquery.foo.com")
 
     def test_ctor_w_client_options_dict(self):
         creds = _make_credentials()
