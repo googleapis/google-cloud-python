@@ -52,7 +52,7 @@ def quickstart_sample(
     documentai_document: Optional[documentai.Document] = None,
     batch_process_metadata: Optional[documentai.BatchProcessMetadata] = None,
     batch_process_operation: Optional[str] = None,
-) -> None:
+) -> document.Document:
     if gcs_bucket_name and gcs_prefix:
         # Load from Google Cloud Storage Directory
         print("Document structure in Cloud Storage")
@@ -128,5 +128,6 @@ def quickstart_sample(
         if entity.normalized_text:
             print(f"\tNormalized Text: {entity.normalized_text}")
 
+    # [END documentai_toolbox_quickstart]
 
-# [END documentai_toolbox_quickstart]
+    return wrapped_document
