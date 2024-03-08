@@ -7167,6 +7167,7 @@ def test_create_service_config_rest(request_type):
                 }
             ],
             "proto_reference_documentation_uri": "proto_reference_documentation_uri_value",
+            "rest_reference_documentation_uri": "rest_reference_documentation_uri_value",
         },
         "config_version": {"value": 541},
     }
