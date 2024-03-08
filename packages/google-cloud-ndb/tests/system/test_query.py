@@ -156,7 +156,7 @@ def test_ancestor_query(ds_entity):
         foo = ndb.IntegerProperty()
 
     query = SomeKind.query(ancestor=ndb.Key(KIND, root_id))
-    results = eventually(query.fetch, length_equals(6))
+    results = query.fetch()
 
     results = sorted(results, key=operator.attrgetter("foo"))
     assert [entity.foo for entity in results] == [-1, 0, 1, 2, 3, 4]
@@ -180,7 +180,7 @@ def test_ancestor_query_with_namespace(client_context, dispose_of, other_namespa
 
     with client_context.new(namespace=other_namespace).use():
         query = Dummy.query(ancestor=parent_key, namespace="xyz")
-        results = eventually(query.fetch, length_equals(2))
+        results = query.fetch()
 
     assert results[0].foo == "bar"
     assert results[1].foo == "child"
@@ -206,7 +206,7 @@ def test_ancestor_query_with_default_namespace(
 
     with client_context.new(namespace=other_namespace).use():
         query = Dummy.query(ancestor=parent_key, namespace="")
-        results = eventually(query.fetch, length_equals(2))
+        results = query.fetch()
 
     assert results[0].foo == "bar"
     assert results[1].foo == "child"
