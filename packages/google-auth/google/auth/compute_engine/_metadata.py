@@ -222,11 +222,6 @@ def get(
     content = _helpers.from_bytes(response.data)
 
     if response.status == http_client.NOT_FOUND and return_none_for_not_found_error:
-        _LOGGER.debug(
-            "Compute Engine Metadata server call to %s returned 404, reason: %s",
-            path,
-            content,
-        )
         return None
 
     if response.status == http_client.OK:
