@@ -162,4 +162,5 @@ def tweak_logging(*args, **kwargs):
 
 
 def wrapping(*args, **kwargs):
+    """Use functools.wraps instead"""
     raise NotImplementedError
