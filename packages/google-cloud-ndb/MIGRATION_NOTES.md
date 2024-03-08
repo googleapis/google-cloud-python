@@ -284,7 +284,7 @@ refactoring, or new features of Python 3, and are no longer implemented:
 - `utils.logging_debug()`
 - `utils.positional()`
 - `utils.tweak_logging()`
-- `utils.wrapping()`
+- `utils.wrapping()` (use `functools.wraps` instead)
 - `utils.threading_local()`
 
 ## Bare Metal
