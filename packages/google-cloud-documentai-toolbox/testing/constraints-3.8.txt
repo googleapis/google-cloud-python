@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
-# This constraints file is required for unit tests.
+# This constraints file is used to check that lower bounds
+# are correct in setup.py
 # List all library dependencies and extras in this file.
-google-api-core
-libcst
-pandas
-proto-plus
-grpc-google-iam-v1
-google-cloud-bigquery
-google-cloud-documentai
-google-cloud-storage
-numpy==1.21.6
+# Pin the version to the lower bound.
+# e.g., if setup.py has "google-cloud-foo >= 1.14.0, < 2.0.0dev",
+# Then this file should have google-cloud-foo==1.14.0
+google-api-core==2.17.1
+pandas==2.0.0
+proto-plus==1.22.3
+grpc-google-iam-v1==0.12.6
+google-cloud-bigquery==3.5.0
+google-cloud-documentai==2.20.0
+google-cloud-storage==2.7.0
+pandas-gbq==0.21.0
+numpy==1.23.5
 pikepdf==8.2.3
