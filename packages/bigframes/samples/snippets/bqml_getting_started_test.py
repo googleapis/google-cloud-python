@@ -14,7 +14,7 @@
 
 
 def test_bqml_getting_started(random_model_id):
-    your_model_id = random_model_id
+    your_model_id = random_model_id  # for example: bqml_tutorial.sample_model
 
     # [START bigquery_dataframes_bqml_getting_started_tutorial]
     from bigframes.ml.linear_model import LogisticRegression
@@ -26,17 +26,12 @@ def test_bqml_getting_started(random_model_id):
     # https://github.com/googleapis/python-bigquery-dataframes/issues/169
     # for updates to `read_gbq` to support wildcard tables.
 
-    df = bpd.read_gbq(
-        """
-        -- Since the order of rows isn't useful for the model training,
-        -- generate a random ID to use as the index for the DataFrame.
-        SELECT GENERATE_UUID() AS rowindex, *
-        FROM
-        `bigquery-public-data.google_analytics_sample.ga_sessions_*`
-        WHERE
-        _TABLE_SUFFIX BETWEEN '20160801' AND '20170630'
-        """,
-        index_col="rowindex",
+    df = bpd.read_gbq_table(
+        "bigquery-public-data.google_analytics_sample.ga_sessions_*",
+        filters=[
+            ("_table_suffix", ">=", "20160801"),
+            ("_table_suffix", "<=", "20170630"),
+        ],
     )
 
     # Extract the total number of transactions within
@@ -53,14 +48,14 @@ def test_bqml_getting_started(random_model_id):
     # ecommerce transactions within the Google Analytics session.
     # If the number of transactions is NULL, the value in the label
     # column is set to 0. Otherwise, it is set to 1.
-    label = transactions.notnull().map({True: 1, False: 0})
+    label = transactions.notnull().map({True: 1, False: 0}).rename("label")
 
     # Extract the operating system of the visitor's device.
-    operatingSystem = df["device"].struct.field("operatingSystem")
-    operatingSystem = operatingSystem.fillna("")
+    operating_system = df["device"].struct.field("operatingSystem")
+    operating_system = operating_system.fillna("")
 
     # Extract whether the visitor's device is a mobile device.
-    isMobile = df["device"].struct.field("isMobile")
+    is_mobile = df["device"].struct.field("isMobile")
 
     # Extract the country from which the sessions originated, based on the IP address.
     country = df["geoNetwork"].struct.field("country").fillna("")
@@ -72,8 +67,8 @@ def test_bqml_getting_started(random_model_id):
     # to use as training data.
     features = bpd.DataFrame(
         {
-            "os": operatingSystem,
-            "is_mobile": isMobile,
+            "os": operating_system,
+            "is_mobile": is_mobile,
             "country": country,
             "pageviews": pageviews,
         }
@@ -95,39 +90,36 @@ def test_bqml_getting_started(random_model_id):
     # [START bigquery_dataframes_bqml_getting_started_tutorial_evaluate]
     import bigframes.pandas as bpd
 
-    # Select model you'll use for training. `read_gbq_model` loads model data from a
+    # Select model you'll use for evaluating. `read_gbq_model` loads model data from a
     # BigQuery, but you could also use the `model` object from the previous steps.
     model = bpd.read_gbq_model(
         your_model_id,  # For example: "bqml_tutorial.sample_model",
     )
 
-    # The WHERE clause — _TABLE_SUFFIX BETWEEN '20170701' AND '20170801' —
-    # limits the number of tables scanned by the query. The date range scanned is
-    # July 1, 2017 to August 1, 2017. This is the data you're using to evaluate the predictive performance
-    # of the model. It was collected in the month immediately following the time
-    # period spanned by the training data.
-
-    df = bpd.read_gbq(
-        """
-        SELECT GENERATE_UUID() AS rowindex, *
-        FROM
-        `bigquery-public-data.google_analytics_sample.ga_sessions_*`
-        WHERE
-        _TABLE_SUFFIX BETWEEN '20170701' AND '20170801'
-        """,
-        index_col="rowindex",
+    # The filters parameter limits the number of tables scanned by the query.
+    # The date range scanned is July 1, 2017 to August 1, 2017. This is the
+    # data you're using to evaluate the predictive performance of the model.
+    # It was collected in the month immediately following the time period
+    # spanned by the training data.
+    df = bpd.read_gbq_table(
+        "bigquery-public-data.google_analytics_sample.ga_sessions_*",
+        filters=[
+            ("_table_suffix", ">=", "20170701"),
+            ("_table_suffix", "<=", "20170801"),
+        ],
     )
+
     transactions = df["totals"].struct.field("transactions")
-    label = transactions.notnull().map({True: 1, False: 0})
-    operatingSystem = df["device"].struct.field("operatingSystem")
-    operatingSystem = operatingSystem.fillna("")
-    isMobile = df["device"].struct.field("isMobile")
+    label = transactions.notnull().map({True: 1, False: 0}).rename("label")
+    operating_system = df["device"].struct.field("operatingSystem")
+    operating_system = operating_system.fillna("")
+    is_mobile = df["device"].struct.field("isMobile")
     country = df["geoNetwork"].struct.field("country").fillna("")
     pageviews = df["totals"].struct.field("pageviews").fillna(0)
     features = bpd.DataFrame(
         {
-            "os": operatingSystem,
-            "is_mobile": isMobile,
+            "os": operating_system,
+            "is_mobile": is_mobile,
             "country": country,
             "pageviews": pageviews,
         }
@@ -163,6 +155,143 @@ def test_bqml_getting_started(random_model_id):
     # [1 rows x 6 columns]
     # [END bigquery_dataframes_bqml_getting_started_tutorial_evaluate]
 
-    # [START bigquery_dataframes_bqml_getting_started_tutorial_predict]
+    # [START bigquery_dataframes_bqml_getting_started_tutorial_predict_by_country]
+    import bigframes.pandas as bpd
 
-    # [END bigquery_dataframes_bqml_getting_started_tutorial_predict]
+    # Select model you'll use for predicting.
+    # `read_gbq_model` loads model data from
+    # BigQuery, but you could also use the `model`
+    # object from the previous steps.
+    model = bpd.read_gbq_model(
+        your_model_id,  # For example: "bqml_tutorial.sample_model",
+    )
+
+    # The filters parameter limits the number of tables scanned by the query.
+    # The date range scanned is July 1, 2017 to August 1, 2017. This is the
+    # data you're using to make the prediction.
+    # It was collected in the month immediately following the time period
+    # spanned by the training data.
+    df = bpd.read_gbq_table(
+        "bigquery-public-data.google_analytics_sample.ga_sessions_*",
+        filters=[
+            ("_table_suffix", ">=", "20170701"),
+            ("_table_suffix", "<=", "20170801"),
+        ],
+    )
+
+    operating_system = df["device"].struct.field("operatingSystem")
+    operating_system = operating_system.fillna("")
+    is_mobile = df["device"].struct.field("isMobile")
+    country = df["geoNetwork"].struct.field("country").fillna("")
+    pageviews = df["totals"].struct.field("pageviews").fillna(0)
+    features = bpd.DataFrame(
+        {
+            "os": operating_system,
+            "is_mobile": is_mobile,
+            "country": country,
+            "pageviews": pageviews,
+        }
+    )
+    # Use Logistic Regression predict method to predict results
+    # using your model.
+    # Find more information here in
+    # [BigFrames](https://cloud.google.com/python/docs/reference/bigframes/latest/bigframes.ml.linear_model.LogisticRegression#bigframes_ml_linear_model_LogisticRegression_predict)
+
+    predictions = model.predict(features)
+
+    # Call groupby method to group predicted_label by country.
+    # Call sum method to get the total_predicted_label by country.
+    total_predicted_purchases = predictions.groupby(["country"])[
+        ["predicted_label"]
+    ].sum()
+
+    # Call the sort_values method with the parameter
+    # ascending = False to get the highest values.
+    # Call head method to limit to the 10 highest values.
+    total_predicted_purchases.sort_values(ascending=False).head(10)
+
+    # country
+    # United States    220
+    # Taiwan             8
+    # Canada             7
+    # India              2
+    # Japan              2
+    # Turkey             2
+    # Australia          1
+    # Brazil             1
+    # Germany            1
+    # Guyana             1
+    # Name: predicted_label, dtype: Int64
+
+    # [END bigquery_dataframes_bqml_getting_started_tutorial_predict_by_country]
+
+    # [START bigquery_dataframes_bqml_getting_started_tutorial_predict_by_visitor]
+
+    import bigframes.pandas as bpd
+
+    # Select model you'll use for predicting.
+    # `read_gbq_model` loads model data from
+    # BigQuery, but you could also use the `model`
+    # object from the previous steps.
+    model = bpd.read_gbq_model(
+        your_model_id,  # For example: "bqml_tutorial.sample_model",
+    )
+
+    # The filters parameter limits the number of tables scanned by the query.
+    # The date range scanned is July 1, 2017 to August 1, 2017. This is the
+    # data you're using to make the prediction.
+    # It was collected in the month immediately following the time period
+    # spanned by the training data.
+    df = bpd.read_gbq_table(
+        "bigquery-public-data.google_analytics_sample.ga_sessions_*",
+        filters=[
+            ("_table_suffix", ">=", "20170701"),
+            ("_table_suffix", "<=", "20170801"),
+        ],
+    )
+
+    operating_system = df["device"].struct.field("operatingSystem")
+    operating_system = operating_system.fillna("")
+    is_mobile = df["device"].struct.field("isMobile")
+    country = df["geoNetwork"].struct.field("country").fillna("")
+    pageviews = df["totals"].struct.field("pageviews").fillna(0)
+    full_visitor_id = df["fullVisitorId"]
+
+    features = bpd.DataFrame(
+        {
+            "os": operating_system,
+            "is_mobile": is_mobile,
+            "country": country,
+            "pageviews": pageviews,
+            "fullVisitorId": full_visitor_id,
+        }
+    )
+
+    predictions = model.predict(features)
+
+    # Call groupby method to group predicted_label by visitor.
+    # Call sum method to get the total_predicted_label by visitor.
+    total_predicted_purchases = predictions.groupby(["fullVisitorId"])[
+        ["predicted_label"]
+    ].sum()
+
+    # Call the sort_values method with the parameter
+    # ascending = False to get the highest values.
+    # Call head method to limit to the 10 highest values.
+    total_predicted_purchases.sort_values(ascending=False).head(10)
+
+    # fullVisitorId
+    # 9417857471295131045    4
+    # 0376394056092189113    2
+    # 0456807427403774085    2
+    # 057693500927581077     2
+    # 112288330928895942     2
+    # 1280993661204347450    2
+    # 2105122376016897629    2
+    # 2158257269735455737    2
+    # 2969418676126258798    2
+    # 489038402765684003     2
+    # Name: predicted_label, dtype: Int64
+
+
+# [END bigquery_dataframes_bqml_getting_started_tutorial_predict_by_visitor]
