@@ -46,6 +46,9 @@ __protobuf__ = proto.module(
         "CloudRunRevisionInfo",
         "AppEngineVersionInfo",
         "VpcConnectorInfo",
+        "ProxyConnectionInfo",
+        "LoadBalancerBackendInfo",
+        "StorageBucketInfo",
     },
 )
 
@@ -262,6 +265,20 @@ class Step(proto.Message):
             Display information of a Cloud Run revision.
 
             This field is a member of `oneof`_ ``step_info``.
+        proxy_connection (google.cloud.network_management_v1.types.ProxyConnectionInfo):
+            Display information of a ProxyConnection.
+
+            This field is a member of `oneof`_ ``step_info``.
+        load_balancer_backend_info (google.cloud.network_management_v1.types.LoadBalancerBackendInfo):
+            Display information of a specific load
+            balancer backend.
+
+            This field is a member of `oneof`_ ``step_info``.
+        storage_bucket (google.cloud.network_management_v1.types.StorageBucketInfo):
+            Display information of a Storage Bucket. Used
+            only for return traces.
+
+            This field is a member of `oneof`_ ``step_info``.
     """
 
     class State(proto.Enum):
@@ -321,6 +338,9 @@ class Step(proto.Message):
                 Config checking state: verify route.
             APPLY_FORWARDING_RULE (7):
                 Config checking state: match forwarding rule.
+            ANALYZE_LOAD_BALANCER_BACKEND (28):
+                Config checking state: verify load balancer
+                backend configuration.
             SPOOFING_APPROVED (8):
                 Config checking state: packet sent or
                 received under foreign IP address and allowed.
@@ -376,6 +396,7 @@ class Step(proto.Message):
         APPLY_EGRESS_FIREWALL_RULE = 5
         APPLY_ROUTE = 6
         APPLY_FORWARDING_RULE = 7
+        ANALYZE_LOAD_BALANCER_BACKEND = 28
         SPOOFING_APPROVED = 8
         ARRIVE_AT_INSTANCE = 9
         ARRIVE_AT_INTERNAL_LOAD_BALANCER = 10
@@ -527,6 +548,24 @@ class Step(proto.Message):
         number=23,
         oneof="step_info",
         message="CloudRunRevisionInfo",
+    )
+    proxy_connection: "ProxyConnectionInfo" = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        oneof="step_info",
+        message="ProxyConnectionInfo",
+    )
+    load_balancer_backend_info: "LoadBalancerBackendInfo" = proto.Field(
+        proto.MESSAGE,
+        number=27,
+        oneof="step_info",
+        message="LoadBalancerBackendInfo",
+    )
+    storage_bucket: "StorageBucketInfo" = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        oneof="step_info",
+        message="StorageBucketInfo",
     )
 
 
@@ -1470,6 +1509,8 @@ class DeliverInfo(proto.Message):
             SERVERLESS_NEG (9):
                 Target is a serverless network endpoint
                 group.
+            STORAGE_BUCKET (10):
+                Target is a Cloud Storage bucket.
         """
         TARGET_UNSPECIFIED = 0
         INSTANCE = 1
@@ -1481,6 +1522,7 @@ class DeliverInfo(proto.Message):
         PSC_GOOGLE_API = 7
         PSC_VPC_SC = 8
         SERVERLESS_NEG = 9
+        STORAGE_BUCKET = 10
 
     target: Target = proto.Field(
         proto.ENUM,
@@ -2113,6 +2155,228 @@ class VpcConnectorInfo(proto.Message):
     location: str = proto.Field(
         proto.STRING,
         number=3,
+    )
+
+
+class ProxyConnectionInfo(proto.Message):
+    r"""For display only. Metadata associated with ProxyConnection.
+
+    Attributes:
+        protocol (str):
+            IP protocol in string format, for example:
+            "TCP", "UDP", "ICMP".
+        old_source_ip (str):
+            Source IP address of an original connection.
+        new_source_ip (str):
+            Source IP address of a new connection.
+        old_destination_ip (str):
+            Destination IP address of an original
+            connection
+        new_destination_ip (str):
+            Destination IP address of a new connection.
+        old_source_port (int):
+            Source port of an original connection. Only
+            valid when protocol is TCP or UDP.
+        new_source_port (int):
+            Source port of a new connection. Only valid
+            when protocol is TCP or UDP.
+        old_destination_port (int):
+            Destination port of an original connection.
+            Only valid when protocol is TCP or UDP.
+        new_destination_port (int):
+            Destination port of a new connection. Only
+            valid when protocol is TCP or UDP.
+        subnet_uri (str):
+            Uri of proxy subnet.
+        network_uri (str):
+            URI of the network where connection is
+            proxied.
+    """
+
+    protocol: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    old_source_ip: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    new_source_ip: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    old_destination_ip: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    new_destination_ip: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    old_source_port: int = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    new_source_port: int = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    old_destination_port: int = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    new_destination_port: int = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    subnet_uri: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    network_uri: str = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+
+
+class LoadBalancerBackendInfo(proto.Message):
+    r"""For display only. Metadata associated with the load balancer
+    backend.
+
+    Attributes:
+        name (str):
+            Display name of the backend. For example, it
+            might be an instance name for the instance group
+            backends, or an IP address and port for zonal
+            network endpoint group backends.
+        instance_uri (str):
+            URI of the backend instance (if applicable).
+            Populated for instance group backends, and zonal
+            NEG backends.
+        backend_service_uri (str):
+            URI of the backend service this backend
+            belongs to (if applicable).
+        instance_group_uri (str):
+            URI of the instance group this backend
+            belongs to (if applicable).
+        network_endpoint_group_uri (str):
+            URI of the network endpoint group this
+            backend belongs to (if applicable).
+        backend_bucket_uri (str):
+            URI of the backend bucket this backend
+            targets (if applicable).
+        psc_service_attachment_uri (str):
+            URI of the PSC service attachment this PSC
+            NEG backend targets (if applicable).
+        psc_google_api_target (str):
+            PSC Google API target this PSC NEG backend
+            targets (if applicable).
+        health_check_uri (str):
+            URI of the health check attached to this
+            backend (if applicable).
+        health_check_firewalls_config_state (google.cloud.network_management_v1.types.LoadBalancerBackendInfo.HealthCheckFirewallsConfigState):
+            Health check firewalls configuration state
+            for the backend. This is a result of the static
+            firewall analysis (verifying that health check
+            traffic from required IP ranges to the backend
+            is allowed or not). The backend might still be
+            unhealthy even if these firewalls are
+            configured. Please refer to the documentation
+            for more information:
+
+            https://cloud.google.com/load-balancing/docs/firewall-rules
+    """
+
+    class HealthCheckFirewallsConfigState(proto.Enum):
+        r"""Health check firewalls configuration state enum.
+
+        Values:
+            HEALTH_CHECK_FIREWALLS_CONFIG_STATE_UNSPECIFIED (0):
+                Configuration state unspecified. It usually
+                means that the backend has no health check
+                attached, or there was an unexpected
+                configuration error preventing Connectivity
+                tests from verifying health check configuration.
+            FIREWALLS_CONFIGURED (1):
+                Firewall rules (policies) allowing health
+                check traffic from all required IP ranges to the
+                backend are configured.
+            FIREWALLS_PARTIALLY_CONFIGURED (2):
+                Firewall rules (policies) allow health check
+                traffic only from a part of required IP ranges.
+            FIREWALLS_NOT_CONFIGURED (3):
+                Firewall rules (policies) deny health check
+                traffic from all required IP ranges to the
+                backend.
+            FIREWALLS_UNSUPPORTED (4):
+                The network contains firewall rules of
+                unsupported types, so Connectivity tests were
+                not able to verify health check configuration
+                status. Please refer to the documentation for
+                the list of unsupported configurations:
+
+                https://cloud.google.com/network-intelligence-center/docs/connectivity-tests/concepts/overview#unsupported-configs
+        """
+        HEALTH_CHECK_FIREWALLS_CONFIG_STATE_UNSPECIFIED = 0
+        FIREWALLS_CONFIGURED = 1
+        FIREWALLS_PARTIALLY_CONFIGURED = 2
+        FIREWALLS_NOT_CONFIGURED = 3
+        FIREWALLS_UNSUPPORTED = 4
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_uri: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    backend_service_uri: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    instance_group_uri: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    network_endpoint_group_uri: str = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    backend_bucket_uri: str = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    psc_service_attachment_uri: str = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    psc_google_api_target: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    health_check_uri: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    health_check_firewalls_config_state: HealthCheckFirewallsConfigState = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=HealthCheckFirewallsConfigState,
+    )
+
+
+class StorageBucketInfo(proto.Message):
+    r"""For display only. Metadata associated with Storage Bucket.
+
+    Attributes:
+        bucket (str):
+            Cloud Storage Bucket name.
+    """
+
+    bucket: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
