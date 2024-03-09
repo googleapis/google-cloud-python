@@ -60,6 +60,7 @@ from .types.security_health_analytics_custom_module import (
     SecurityHealthAnalyticsCustomModule,
 )
 from .types.security_marks import SecurityMarks
+from .types.security_posture import SecurityPosture
 from .types.securitycenter_service import (
     BulkMuteFindingsRequest,
     BulkMuteFindingsResponse,
@@ -221,6 +222,7 @@ __all__ = (
     "SecurityCenterClient",
     "SecurityHealthAnalyticsCustomModule",
     "SecurityMarks",
+    "SecurityPosture",
     "ServiceAccountDelegationInfo",
     "SetFindingStateRequest",
     "SetMuteRequest",
