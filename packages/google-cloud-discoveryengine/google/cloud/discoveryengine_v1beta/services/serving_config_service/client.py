@@ -104,7 +104,9 @@ class ServingConfigServiceClientMeta(type):
 
 
 class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
-    """Service for modifying ServingConfig."""
+    """Service for operations related to
+    [ServingConfig][google.cloud.discoveryengine.v1beta.ServingConfig].
+    """
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -191,28 +193,6 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 instance.
         """
         return self._transport
-
-    @staticmethod
-    def data_store_path(
-        project: str,
-        location: str,
-        data_store: str,
-    ) -> str:
-        """Returns a fully-qualified data_store string."""
-        return "projects/{project}/locations/{location}/dataStores/{data_store}".format(
-            project=project,
-            location=location,
-            data_store=data_store,
-        )
-
-    @staticmethod
-    def parse_data_store_path(path: str) -> Dict[str, str]:
-        """Parses a data_store path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
 
     @staticmethod
     def serving_config_path(
@@ -882,7 +862,7 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
             name (str):
                 Required. The resource name of the ServingConfig to get.
                 Format:
-                ``projects/{project_number}/locations/{location}/collections/{collection}/dataStores/{data_store}/servingConfigs/{serving_config_id}``
+                ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -993,8 +973,9 @@ class ServingConfigServiceClient(metaclass=ServingConfigServiceClientMeta):
                 The request object. Request for ListServingConfigs
                 method.
             parent (str):
-                Required. The dataStore resource name. Format:
-                ``projects/{project_number}/locations/{location}/collections/{collection}/dataStores/{data_store}``
+                Required. Full resource name of the parent resource.
+                Format:
+                ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

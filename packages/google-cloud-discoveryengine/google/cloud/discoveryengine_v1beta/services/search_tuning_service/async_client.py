@@ -42,62 +42,57 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.AsyncRetry, object, None]  # type: ignore
 
+from google.api_core import operation  # type: ignore
+from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.services.search_service import pagers
-from google.cloud.discoveryengine_v1beta.types import search_service
+from google.cloud.discoveryengine_v1beta.types import search_tuning_service
 
-from .client import SearchServiceClient
-from .transports.base import DEFAULT_CLIENT_INFO, SearchServiceTransport
-from .transports.grpc_asyncio import SearchServiceGrpcAsyncIOTransport
+from .client import SearchTuningServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, SearchTuningServiceTransport
+from .transports.grpc_asyncio import SearchTuningServiceGrpcAsyncIOTransport
 
 
-class SearchServiceAsyncClient:
-    """Service for search."""
+class SearchTuningServiceAsyncClient:
+    """Service for search tuning."""
 
-    _client: SearchServiceClient
+    _client: SearchTuningServiceClient
 
     # Copy defaults from the synchronous client for use here.
     # Note: DEFAULT_ENDPOINT is deprecated. Use _DEFAULT_ENDPOINT_TEMPLATE instead.
-    DEFAULT_ENDPOINT = SearchServiceClient.DEFAULT_ENDPOINT
-    DEFAULT_MTLS_ENDPOINT = SearchServiceClient.DEFAULT_MTLS_ENDPOINT
-    _DEFAULT_ENDPOINT_TEMPLATE = SearchServiceClient._DEFAULT_ENDPOINT_TEMPLATE
-    _DEFAULT_UNIVERSE = SearchServiceClient._DEFAULT_UNIVERSE
+    DEFAULT_ENDPOINT = SearchTuningServiceClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = SearchTuningServiceClient.DEFAULT_MTLS_ENDPOINT
+    _DEFAULT_ENDPOINT_TEMPLATE = SearchTuningServiceClient._DEFAULT_ENDPOINT_TEMPLATE
+    _DEFAULT_UNIVERSE = SearchTuningServiceClient._DEFAULT_UNIVERSE
 
-    branch_path = staticmethod(SearchServiceClient.branch_path)
-    parse_branch_path = staticmethod(SearchServiceClient.parse_branch_path)
-    data_store_path = staticmethod(SearchServiceClient.data_store_path)
-    parse_data_store_path = staticmethod(SearchServiceClient.parse_data_store_path)
-    document_path = staticmethod(SearchServiceClient.document_path)
-    parse_document_path = staticmethod(SearchServiceClient.parse_document_path)
-    serving_config_path = staticmethod(SearchServiceClient.serving_config_path)
-    parse_serving_config_path = staticmethod(
-        SearchServiceClient.parse_serving_config_path
+    data_store_path = staticmethod(SearchTuningServiceClient.data_store_path)
+    parse_data_store_path = staticmethod(
+        SearchTuningServiceClient.parse_data_store_path
     )
     common_billing_account_path = staticmethod(
-        SearchServiceClient.common_billing_account_path
+        SearchTuningServiceClient.common_billing_account_path
     )
     parse_common_billing_account_path = staticmethod(
-        SearchServiceClient.parse_common_billing_account_path
+        SearchTuningServiceClient.parse_common_billing_account_path
     )
-    common_folder_path = staticmethod(SearchServiceClient.common_folder_path)
+    common_folder_path = staticmethod(SearchTuningServiceClient.common_folder_path)
     parse_common_folder_path = staticmethod(
-        SearchServiceClient.parse_common_folder_path
+        SearchTuningServiceClient.parse_common_folder_path
     )
     common_organization_path = staticmethod(
-        SearchServiceClient.common_organization_path
+        SearchTuningServiceClient.common_organization_path
     )
     parse_common_organization_path = staticmethod(
-        SearchServiceClient.parse_common_organization_path
+        SearchTuningServiceClient.parse_common_organization_path
     )
-    common_project_path = staticmethod(SearchServiceClient.common_project_path)
+    common_project_path = staticmethod(SearchTuningServiceClient.common_project_path)
     parse_common_project_path = staticmethod(
-        SearchServiceClient.parse_common_project_path
+        SearchTuningServiceClient.parse_common_project_path
     )
-    common_location_path = staticmethod(SearchServiceClient.common_location_path)
+    common_location_path = staticmethod(SearchTuningServiceClient.common_location_path)
     parse_common_location_path = staticmethod(
-        SearchServiceClient.parse_common_location_path
+        SearchTuningServiceClient.parse_common_location_path
     )
 
     @classmethod
@@ -111,9 +106,9 @@ class SearchServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            SearchServiceAsyncClient: The constructed client.
+            SearchTuningServiceAsyncClient: The constructed client.
         """
-        return SearchServiceClient.from_service_account_info.__func__(SearchServiceAsyncClient, info, *args, **kwargs)  # type: ignore
+        return SearchTuningServiceClient.from_service_account_info.__func__(SearchTuningServiceAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -127,9 +122,9 @@ class SearchServiceAsyncClient:
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            SearchServiceAsyncClient: The constructed client.
+            SearchTuningServiceAsyncClient: The constructed client.
         """
-        return SearchServiceClient.from_service_account_file.__func__(SearchServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
+        return SearchTuningServiceClient.from_service_account_file.__func__(SearchTuningServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
@@ -167,14 +162,14 @@ class SearchServiceAsyncClient:
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        return SearchServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
+        return SearchTuningServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
     @property
-    def transport(self) -> SearchServiceTransport:
+    def transport(self) -> SearchTuningServiceTransport:
         """Returns the transport used by the client instance.
 
         Returns:
-            SearchServiceTransport: The transport used by the client instance.
+            SearchTuningServiceTransport: The transport used by the client instance.
         """
         return self._client.transport
 
@@ -198,18 +193,19 @@ class SearchServiceAsyncClient:
         return self._client._universe_domain
 
     get_transport_class = functools.partial(
-        type(SearchServiceClient).get_transport_class, type(SearchServiceClient)
+        type(SearchTuningServiceClient).get_transport_class,
+        type(SearchTuningServiceClient),
     )
 
     def __init__(
         self,
         *,
         credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, SearchServiceTransport] = "grpc_asyncio",
+        transport: Union[str, SearchTuningServiceTransport] = "grpc_asyncio",
         client_options: Optional[ClientOptions] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
-        """Instantiates the search service async client.
+        """Instantiates the search tuning service async client.
 
         Args:
             credentials (Optional[google.auth.credentials.Credentials]): The
@@ -217,7 +213,7 @@ class SearchServiceAsyncClient:
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, ~.SearchServiceTransport]): The
+            transport (Union[str, ~.SearchTuningServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
             client_options (Optional[Union[google.api_core.client_options.ClientOptions, dict]]):
@@ -256,22 +252,24 @@ class SearchServiceAsyncClient:
             google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        self._client = SearchServiceClient(
+        self._client = SearchTuningServiceClient(
             credentials=credentials,
             transport=transport,
             client_options=client_options,
             client_info=client_info,
         )
 
-    async def search(
+    async def train_custom_model(
         self,
-        request: Optional[Union[search_service.SearchRequest, dict]] = None,
+        request: Optional[
+            Union[search_tuning_service.TrainCustomModelRequest, dict]
+        ] = None,
         *,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.SearchAsyncPager:
-        r"""Performs a search.
+    ) -> operation_async.AsyncOperation:
+        r"""Trains a custom model.
 
         .. code-block:: python
 
@@ -284,26 +282,29 @@ class SearchServiceAsyncClient:
             #   https://googleapis.dev/python/google-api-core/latest/client_options.html
             from google.cloud import discoveryengine_v1beta
 
-            async def sample_search():
+            async def sample_train_custom_model():
                 # Create a client
-                client = discoveryengine_v1beta.SearchServiceAsyncClient()
+                client = discoveryengine_v1beta.SearchTuningServiceAsyncClient()
 
                 # Initialize request argument(s)
-                request = discoveryengine_v1beta.SearchRequest(
-                    serving_config="serving_config_value",
+                request = discoveryengine_v1beta.TrainCustomModelRequest(
+                    data_store="data_store_value",
                 )
 
                 # Make the request
-                page_result = client.search(request=request)
+                operation = client.train_custom_model(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = (await operation).result()
 
                 # Handle the response
-                async for response in page_result:
-                    print(response)
+                print(response)
 
         Args:
-            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.SearchRequest, dict]]):
+            request (Optional[Union[google.cloud.discoveryengine_v1beta.types.TrainCustomModelRequest, dict]]):
                 The request object. Request message for
-                [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
+                [SearchTuningService.TrainCustomModel][google.cloud.discoveryengine.v1beta.SearchTuningService.TrainCustomModel]
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
@@ -312,22 +313,22 @@ class SearchServiceAsyncClient:
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.discoveryengine_v1beta.services.search_service.pagers.SearchAsyncPager:
-                Response message for
-                   [SearchService.Search][google.cloud.discoveryengine.v1beta.SearchService.Search]
-                   method.
+            google.api_core.operation_async.AsyncOperation:
+                An object representing a long-running operation.
 
-                Iterating over this object will yield results and
-                resolve additional pages automatically.
+                The result type for the operation will be :class:`google.cloud.discoveryengine_v1beta.types.TrainCustomModelResponse` Response of the
+                   [TrainCustomModelRequest][google.cloud.discoveryengine.v1beta.TrainCustomModelRequest].
+                   This message is returned by the
+                   google.longrunning.Operations.response field.
 
         """
         # Create or coerce a protobuf request object.
-        request = search_service.SearchRequest(request)
+        request = search_tuning_service.TrainCustomModelRequest(request)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = gapic_v1.method_async.wrap_method(
-            self._client._transport.search,
+            self._client._transport.train_custom_model,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
@@ -336,7 +337,7 @@ class SearchServiceAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
-                (("serving_config", request.serving_config),)
+                (("data_store", request.data_store),)
             ),
         )
 
@@ -351,13 +352,12 @@ class SearchServiceAsyncClient:
             metadata=metadata,
         )
 
-        # This method is paged; wrap the response in a pager, which provides
-        # an `__aiter__` convenience method.
-        response = pagers.SearchAsyncPager(
-            method=rpc,
-            request=request,
-            response=response,
-            metadata=metadata,
+        # Wrap the response in an operation future.
+        response = operation_async.from_gapic(
+            response,
+            self._client._transport.operations_client,
+            search_tuning_service.TrainCustomModelResponse,
+            metadata_type=search_tuning_service.TrainCustomModelMetadata,
         )
 
         # Done; return the response.
@@ -477,7 +477,7 @@ class SearchServiceAsyncClient:
         # Done; return the response.
         return response
 
-    async def __aenter__(self) -> "SearchServiceAsyncClient":
+    async def __aenter__(self) -> "SearchTuningServiceAsyncClient":
         return self
 
     async def __aexit__(self, exc_type, exc, tb):
@@ -489,4 +489,4 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-__all__ = ("SearchServiceAsyncClient",)
+__all__ = ("SearchTuningServiceAsyncClient",)

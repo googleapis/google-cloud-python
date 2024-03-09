@@ -85,6 +85,9 @@ class SearchRequest(proto.Message):
 
             If this field is negative, an ``INVALID_ARGUMENT`` is
             returned.
+        data_store_specs (MutableSequence[google.cloud.discoveryengine_v1beta.types.SearchRequest.DataStoreSpec]):
+            A list of data store specs to apply on a
+            search call.
         filter (str):
             The filter syntax consists of an expression language for
             constructing a predicate from one or more fields of the
@@ -266,6 +269,22 @@ class SearchRequest(proto.Message):
             proto.STRING,
             number=1,
             oneof="image",
+        )
+
+    class DataStoreSpec(proto.Message):
+        r"""A struct to define data stores to filter on in a search call.
+
+        Attributes:
+            data_store (str):
+                Required. Full resource name of
+                [DataStore][google.cloud.discoveryengine.v1beta.DataStore],
+                such as
+                ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
+        """
+
+        data_store: str = proto.Field(
+            proto.STRING,
+            number=1,
         )
 
     class FacetSpec(proto.Message):
@@ -485,9 +504,7 @@ class SearchRequest(proto.Message):
 
                     -  To boost documents with document ID "doc_1" or "doc_2",
                        and color "Red" or "Blue":
-
-                       -  (id: ANY("doc_1", "doc_2")) AND (color:
-                          ANY("Red","Blue"))
+                       ``(document_id: ANY("doc_1", "doc_2")) AND (color: ANY("Red", "Blue"))``
                 boost (float):
                     Strength of the condition boost, which should be in [-1, 1].
                     Negative boost means demotion. Default is 0.0.
@@ -673,7 +690,7 @@ class SearchRequest(proto.Message):
                     ``summaryResultCount``, the summary is generated from all of
                     the results.
 
-                    At most five results can be used to generate a summary.
+                    At most 10 results can be used to generate a summary.
                 include_citations (bool):
                     Specifies whether to include citations in the summary. The
                     default value is ``false``.
@@ -961,6 +978,11 @@ class SearchRequest(proto.Message):
     offset: int = proto.Field(
         proto.INT32,
         number=6,
+    )
+    data_store_specs: MutableSequence[DataStoreSpec] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=32,
+        message=DataStoreSpec,
     )
     filter: str = proto.Field(
         proto.STRING,

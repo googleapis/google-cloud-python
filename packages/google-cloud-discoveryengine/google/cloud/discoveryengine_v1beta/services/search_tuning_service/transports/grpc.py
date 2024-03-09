@@ -16,7 +16,7 @@
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, grpc_helpers
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
@@ -24,20 +24,15 @@ from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import (
-    serving_config as gcd_serving_config,
-)
-from google.cloud.discoveryengine_v1beta.types import serving_config
-from google.cloud.discoveryengine_v1beta.types import serving_config_service
+from google.cloud.discoveryengine_v1beta.types import search_tuning_service
 
-from .base import DEFAULT_CLIENT_INFO, ServingConfigServiceTransport
+from .base import DEFAULT_CLIENT_INFO, SearchTuningServiceTransport
 
 
-class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
-    """gRPC backend transport for ServingConfigService.
+class SearchTuningServiceGrpcTransport(SearchTuningServiceTransport):
+    """gRPC backend transport for SearchTuningService.
 
-    Service for operations related to
-    [ServingConfig][google.cloud.discoveryengine.v1beta.ServingConfig].
+    Service for search tuning.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -117,6 +112,7 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
         self._grpc_channel = None
         self._ssl_channel_credentials = ssl_channel_credentials
         self._stubs: Dict[str, Callable] = {}
+        self._operations_client: Optional[operations_v1.OperationsClient] = None
 
         if api_mtls_endpoint:
             warnings.warn("api_mtls_endpoint is deprecated", DeprecationWarning)
@@ -236,52 +232,32 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
         return self._grpc_channel
 
     @property
-    def update_serving_config(
-        self,
-    ) -> Callable[
-        [serving_config_service.UpdateServingConfigRequest],
-        gcd_serving_config.ServingConfig,
-    ]:
-        r"""Return a callable for the update serving config method over gRPC.
+    def operations_client(self) -> operations_v1.OperationsClient:
+        """Create the client designed to process long-running operations.
 
-        Updates a ServingConfig.
-
-        Returns a NOT_FOUND error if the ServingConfig does not exist.
-
-        Returns:
-            Callable[[~.UpdateServingConfigRequest],
-                    ~.ServingConfig]:
-                A function that, when called, will call the underlying RPC
-                on the server.
+        This property caches on the instance; repeated calls return the same
+        client.
         """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "update_serving_config" not in self._stubs:
-            self._stubs["update_serving_config"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.ServingConfigService/UpdateServingConfig",
-                request_serializer=serving_config_service.UpdateServingConfigRequest.serialize,
-                response_deserializer=gcd_serving_config.ServingConfig.deserialize,
-            )
-        return self._stubs["update_serving_config"]
+        # Quick check: Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            self._operations_client = operations_v1.OperationsClient(self.grpc_channel)
+
+        # Return the client from cache.
+        return self._operations_client
 
     @property
-    def get_serving_config(
+    def train_custom_model(
         self,
     ) -> Callable[
-        [serving_config_service.GetServingConfigRequest], serving_config.ServingConfig
+        [search_tuning_service.TrainCustomModelRequest], operations_pb2.Operation
     ]:
-        r"""Return a callable for the get serving config method over gRPC.
+        r"""Return a callable for the train custom model method over gRPC.
 
-        Gets a ServingConfig.
-
-        Returns a NotFound error if the ServingConfig does not
-        exist.
+        Trains a custom model.
 
         Returns:
-            Callable[[~.GetServingConfigRequest],
-                    ~.ServingConfig]:
+            Callable[[~.TrainCustomModelRequest],
+                    ~.Operation]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -289,42 +265,13 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
         # the request.
         # gRPC handles serialization and deserialization, so we just need
         # to pass in the functions for each.
-        if "get_serving_config" not in self._stubs:
-            self._stubs["get_serving_config"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.ServingConfigService/GetServingConfig",
-                request_serializer=serving_config_service.GetServingConfigRequest.serialize,
-                response_deserializer=serving_config.ServingConfig.deserialize,
+        if "train_custom_model" not in self._stubs:
+            self._stubs["train_custom_model"] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1beta.SearchTuningService/TrainCustomModel",
+                request_serializer=search_tuning_service.TrainCustomModelRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
             )
-        return self._stubs["get_serving_config"]
-
-    @property
-    def list_serving_configs(
-        self,
-    ) -> Callable[
-        [serving_config_service.ListServingConfigsRequest],
-        serving_config_service.ListServingConfigsResponse,
-    ]:
-        r"""Return a callable for the list serving configs method over gRPC.
-
-        Lists all ServingConfigs linked to this dataStore.
-
-        Returns:
-            Callable[[~.ListServingConfigsRequest],
-                    ~.ListServingConfigsResponse]:
-                A function that, when called, will call the underlying RPC
-                on the server.
-        """
-        # Generate a "stub function" on-the-fly which will actually make
-        # the request.
-        # gRPC handles serialization and deserialization, so we just need
-        # to pass in the functions for each.
-        if "list_serving_configs" not in self._stubs:
-            self._stubs["list_serving_configs"] = self.grpc_channel.unary_unary(
-                "/google.cloud.discoveryengine.v1beta.ServingConfigService/ListServingConfigs",
-                request_serializer=serving_config_service.ListServingConfigsRequest.serialize,
-                response_deserializer=serving_config_service.ListServingConfigsResponse.deserialize,
-            )
-        return self._stubs["list_serving_configs"]
+        return self._stubs["train_custom_model"]
 
     def close(self):
         self.grpc_channel.close()
@@ -370,4 +317,4 @@ class ServingConfigServiceGrpcTransport(ServingConfigServiceTransport):
         return "grpc"
 
 
-__all__ = ("ServingConfigServiceGrpcTransport",)
+__all__ = ("SearchTuningServiceGrpcTransport",)

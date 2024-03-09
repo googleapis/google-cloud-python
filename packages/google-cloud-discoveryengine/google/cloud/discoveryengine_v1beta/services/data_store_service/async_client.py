@@ -51,10 +51,14 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.services.data_store_service import pagers
+from google.cloud.discoveryengine_v1beta.types import (
+    data_store_service,
+    document_processing_config,
+    schema,
+)
 from google.cloud.discoveryengine_v1beta.types import data_store as gcd_data_store
 from google.cloud.discoveryengine_v1beta.types import common
 from google.cloud.discoveryengine_v1beta.types import data_store
-from google.cloud.discoveryengine_v1beta.types import data_store_service
 
 from .client import DataStoreServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, DataStoreServiceTransport
@@ -80,6 +84,14 @@ class DataStoreServiceAsyncClient:
     parse_collection_path = staticmethod(DataStoreServiceClient.parse_collection_path)
     data_store_path = staticmethod(DataStoreServiceClient.data_store_path)
     parse_data_store_path = staticmethod(DataStoreServiceClient.parse_data_store_path)
+    document_processing_config_path = staticmethod(
+        DataStoreServiceClient.document_processing_config_path
+    )
+    parse_document_processing_config_path = staticmethod(
+        DataStoreServiceClient.parse_document_processing_config_path
+    )
+    schema_path = staticmethod(DataStoreServiceClient.schema_path)
+    parse_schema_path = staticmethod(DataStoreServiceClient.parse_schema_path)
     common_billing_account_path = staticmethod(
         DataStoreServiceClient.common_billing_account_path
     )

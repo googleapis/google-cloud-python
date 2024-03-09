@@ -3917,37 +3917,11 @@ def test_serving_config_service_transport_channel_mtls_with_adc(transport_class)
             assert transport.grpc_channel == mock_grpc_channel
 
 
-def test_data_store_path():
+def test_serving_config_path():
     project = "squid"
     location = "clam"
     data_store = "whelk"
-    expected = "projects/{project}/locations/{location}/dataStores/{data_store}".format(
-        project=project,
-        location=location,
-        data_store=data_store,
-    )
-    actual = ServingConfigServiceClient.data_store_path(project, location, data_store)
-    assert expected == actual
-
-
-def test_parse_data_store_path():
-    expected = {
-        "project": "octopus",
-        "location": "oyster",
-        "data_store": "nudibranch",
-    }
-    path = ServingConfigServiceClient.data_store_path(**expected)
-
-    # Check that the path construction is reversible.
-    actual = ServingConfigServiceClient.parse_data_store_path(path)
-    assert expected == actual
-
-
-def test_serving_config_path():
-    project = "cuttlefish"
-    location = "mussel"
-    data_store = "winkle"
-    serving_config = "nautilus"
+    serving_config = "octopus"
     expected = "projects/{project}/locations/{location}/dataStores/{data_store}/servingConfigs/{serving_config}".format(
         project=project,
         location=location,
@@ -3962,10 +3936,10 @@ def test_serving_config_path():
 
 def test_parse_serving_config_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
-        "data_store": "squid",
-        "serving_config": "clam",
+        "project": "oyster",
+        "location": "nudibranch",
+        "data_store": "cuttlefish",
+        "serving_config": "mussel",
     }
     path = ServingConfigServiceClient.serving_config_path(**expected)
 
@@ -3975,7 +3949,7 @@ def test_parse_serving_config_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "whelk"
+    billing_account = "winkle"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3985,7 +3959,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "octopus",
+        "billing_account": "nautilus",
     }
     path = ServingConfigServiceClient.common_billing_account_path(**expected)
 
@@ -3995,7 +3969,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "oyster"
+    folder = "scallop"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -4005,7 +3979,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "nudibranch",
+        "folder": "abalone",
     }
     path = ServingConfigServiceClient.common_folder_path(**expected)
 
@@ -4015,7 +3989,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "cuttlefish"
+    organization = "squid"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -4025,7 +3999,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "mussel",
+        "organization": "clam",
     }
     path = ServingConfigServiceClient.common_organization_path(**expected)
 
@@ -4035,7 +4009,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "winkle"
+    project = "whelk"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -4045,7 +4019,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nautilus",
+        "project": "octopus",
     }
     path = ServingConfigServiceClient.common_project_path(**expected)
 
@@ -4055,8 +4029,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "scallop"
-    location = "abalone"
+    project = "oyster"
+    location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -4067,8 +4041,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "squid",
-        "location": "clam",
+        "project": "cuttlefish",
+        "location": "mussel",
     }
     path = ServingConfigServiceClient.common_location_path(**expected)
 

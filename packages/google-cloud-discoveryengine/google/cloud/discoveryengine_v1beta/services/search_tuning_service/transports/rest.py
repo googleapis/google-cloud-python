@@ -20,7 +20,13 @@ import re
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
-from google.api_core import gapic_v1, path_template, rest_helpers, rest_streaming
+from google.api_core import (
+    gapic_v1,
+    operations_v1,
+    path_template,
+    rest_helpers,
+    rest_streaming,
+)
 from google.api_core import exceptions as core_exceptions
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -39,14 +45,10 @@ except AttributeError:  # pragma: NO COVER
 
 from google.longrunning import operations_pb2  # type: ignore
 
-from google.cloud.discoveryengine_v1beta.types import (
-    serving_config as gcd_serving_config,
-)
-from google.cloud.discoveryengine_v1beta.types import serving_config
-from google.cloud.discoveryengine_v1beta.types import serving_config_service
+from google.cloud.discoveryengine_v1beta.types import search_tuning_service
 
 from .base import DEFAULT_CLIENT_INFO as BASE_DEFAULT_CLIENT_INFO
-from .base import ServingConfigServiceTransport
+from .base import SearchTuningServiceTransport
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=BASE_DEFAULT_CLIENT_INFO.gapic_version,
@@ -55,8 +57,8 @@ DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
 )
 
 
-class ServingConfigServiceRestInterceptor:
-    """Interceptor for ServingConfigService.
+class SearchTuningServiceRestInterceptor:
+    """Interceptor for SearchTuningService.
 
     Interceptors are used to manipulate requests, request metadata, and responses
     in arbitrary ways.
@@ -66,111 +68,45 @@ class ServingConfigServiceRestInterceptor:
     * Stripping extraneous information from responses
 
     These use cases and more can be enabled by injecting an
-    instance of a custom subclass when constructing the ServingConfigServiceRestTransport.
+    instance of a custom subclass when constructing the SearchTuningServiceRestTransport.
 
     .. code-block:: python
-        class MyCustomServingConfigServiceInterceptor(ServingConfigServiceRestInterceptor):
-            def pre_get_serving_config(self, request, metadata):
+        class MyCustomSearchTuningServiceInterceptor(SearchTuningServiceRestInterceptor):
+            def pre_train_custom_model(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
 
-            def post_get_serving_config(self, response):
+            def post_train_custom_model(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
-            def pre_list_serving_configs(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_list_serving_configs(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-            def pre_update_serving_config(self, request, metadata):
-                logging.log(f"Received request: {request}")
-                return request, metadata
-
-            def post_update_serving_config(self, response):
-                logging.log(f"Received response: {response}")
-                return response
-
-        transport = ServingConfigServiceRestTransport(interceptor=MyCustomServingConfigServiceInterceptor())
-        client = ServingConfigServiceClient(transport=transport)
+        transport = SearchTuningServiceRestTransport(interceptor=MyCustomSearchTuningServiceInterceptor())
+        client = SearchTuningServiceClient(transport=transport)
 
 
     """
 
-    def pre_get_serving_config(
+    def pre_train_custom_model(
         self,
-        request: serving_config_service.GetServingConfigRequest,
+        request: search_tuning_service.TrainCustomModelRequest,
         metadata: Sequence[Tuple[str, str]],
     ) -> Tuple[
-        serving_config_service.GetServingConfigRequest, Sequence[Tuple[str, str]]
+        search_tuning_service.TrainCustomModelRequest, Sequence[Tuple[str, str]]
     ]:
-        """Pre-rpc interceptor for get_serving_config
+        """Pre-rpc interceptor for train_custom_model
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the ServingConfigService server.
+        before they are sent to the SearchTuningService server.
         """
         return request, metadata
 
-    def post_get_serving_config(
-        self, response: serving_config.ServingConfig
-    ) -> serving_config.ServingConfig:
-        """Post-rpc interceptor for get_serving_config
+    def post_train_custom_model(
+        self, response: operations_pb2.Operation
+    ) -> operations_pb2.Operation:
+        """Post-rpc interceptor for train_custom_model
 
         Override in a subclass to manipulate the response
-        after it is returned by the ServingConfigService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_list_serving_configs(
-        self,
-        request: serving_config_service.ListServingConfigsRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[
-        serving_config_service.ListServingConfigsRequest, Sequence[Tuple[str, str]]
-    ]:
-        """Pre-rpc interceptor for list_serving_configs
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the ServingConfigService server.
-        """
-        return request, metadata
-
-    def post_list_serving_configs(
-        self, response: serving_config_service.ListServingConfigsResponse
-    ) -> serving_config_service.ListServingConfigsResponse:
-        """Post-rpc interceptor for list_serving_configs
-
-        Override in a subclass to manipulate the response
-        after it is returned by the ServingConfigService server but before
-        it is returned to user code.
-        """
-        return response
-
-    def pre_update_serving_config(
-        self,
-        request: serving_config_service.UpdateServingConfigRequest,
-        metadata: Sequence[Tuple[str, str]],
-    ) -> Tuple[
-        serving_config_service.UpdateServingConfigRequest, Sequence[Tuple[str, str]]
-    ]:
-        """Pre-rpc interceptor for update_serving_config
-
-        Override in a subclass to manipulate the request or metadata
-        before they are sent to the ServingConfigService server.
-        """
-        return request, metadata
-
-    def post_update_serving_config(
-        self, response: gcd_serving_config.ServingConfig
-    ) -> gcd_serving_config.ServingConfig:
-        """Post-rpc interceptor for update_serving_config
-
-        Override in a subclass to manipulate the response
-        after it is returned by the ServingConfigService server but before
+        after it is returned by the SearchTuningService server but before
         it is returned to user code.
         """
         return response
@@ -183,7 +119,7 @@ class ServingConfigServiceRestInterceptor:
         """Pre-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the ServingConfigService server.
+        before they are sent to the SearchTuningService server.
         """
         return request, metadata
 
@@ -193,7 +129,7 @@ class ServingConfigServiceRestInterceptor:
         """Post-rpc interceptor for get_operation
 
         Override in a subclass to manipulate the response
-        after it is returned by the ServingConfigService server but before
+        after it is returned by the SearchTuningService server but before
         it is returned to user code.
         """
         return response
@@ -206,7 +142,7 @@ class ServingConfigServiceRestInterceptor:
         """Pre-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the request or metadata
-        before they are sent to the ServingConfigService server.
+        before they are sent to the SearchTuningService server.
         """
         return request, metadata
 
@@ -216,24 +152,23 @@ class ServingConfigServiceRestInterceptor:
         """Post-rpc interceptor for list_operations
 
         Override in a subclass to manipulate the response
-        after it is returned by the ServingConfigService server but before
+        after it is returned by the SearchTuningService server but before
         it is returned to user code.
         """
         return response
 
 
 @dataclasses.dataclass
-class ServingConfigServiceRestStub:
+class SearchTuningServiceRestStub:
     _session: AuthorizedSession
     _host: str
-    _interceptor: ServingConfigServiceRestInterceptor
+    _interceptor: SearchTuningServiceRestInterceptor
 
 
-class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
-    """REST backend transport for ServingConfigService.
+class SearchTuningServiceRestTransport(SearchTuningServiceTransport):
+    """REST backend transport for SearchTuningService.
 
-    Service for operations related to
-    [ServingConfig][google.cloud.discoveryengine.v1beta.ServingConfig].
+    Service for search tuning.
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation
@@ -255,7 +190,7 @@ class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
         url_scheme: str = "https",
-        interceptor: Optional[ServingConfigServiceRestInterceptor] = None,
+        interceptor: Optional[SearchTuningServiceRestInterceptor] = None,
         api_audience: Optional[str] = None,
     ) -> None:
         """Instantiate the transport.
@@ -314,14 +249,159 @@ class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
         self._session = AuthorizedSession(
             self._credentials, default_host=self.DEFAULT_HOST
         )
+        self._operations_client: Optional[operations_v1.AbstractOperationsClient] = None
         if client_cert_source_for_mtls:
             self._session.configure_mtls_channel(client_cert_source_for_mtls)
-        self._interceptor = interceptor or ServingConfigServiceRestInterceptor()
+        self._interceptor = interceptor or SearchTuningServiceRestInterceptor()
         self._prep_wrapped_messages(client_info)
 
-    class _GetServingConfig(ServingConfigServiceRestStub):
+    @property
+    def operations_client(self) -> operations_v1.AbstractOperationsClient:
+        """Create the client designed to process long-running operations.
+
+        This property caches on the instance; repeated calls return the same
+        client.
+        """
+        # Only create a new client if we do not already have one.
+        if self._operations_client is None:
+            http_options: Dict[str, List[Dict[str, str]]] = {
+                "google.longrunning.Operations.GetOperation": [
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/models/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/operations/*}",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/operations/*}",
+                    },
+                ],
+                "google.longrunning.Operations.ListOperations": [
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataConnector}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/branches/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/models/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/schemas/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine/targetSites}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/siteSearchEngine}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/collections/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/branches/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/models/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*/locations/*}/operations",
+                    },
+                    {
+                        "method": "get",
+                        "uri": "/v1beta/{name=projects/*}/operations",
+                    },
+                ],
+            }
+
+            rest_transport = operations_v1.OperationsRestTransport(
+                host=self._host,
+                # use the credentials which are saved
+                credentials=self._credentials,
+                scopes=self._scopes,
+                http_options=http_options,
+                path_prefix="v1beta",
+            )
+
+            self._operations_client = operations_v1.AbstractOperationsClient(
+                transport=rest_transport
+            )
+
+        # Return the client from cache.
+        return self._operations_client
+
+    class _TrainCustomModel(SearchTuningServiceRestStub):
         def __hash__(self):
-            return hash("GetServingConfig")
+            return hash("TrainCustomModel")
 
         __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
 
@@ -335,118 +415,18 @@ class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
 
         def __call__(
             self,
-            request: serving_config_service.GetServingConfigRequest,
+            request: search_tuning_service.TrainCustomModelRequest,
             *,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: Optional[float] = None,
             metadata: Sequence[Tuple[str, str]] = (),
-        ) -> serving_config.ServingConfig:
-            r"""Call the get serving config method over HTTP.
+        ) -> operations_pb2.Operation:
+            r"""Call the train custom model method over HTTP.
 
             Args:
-                request (~.serving_config_service.GetServingConfigRequest):
-                    The request object. Request for GetServingConfig method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.serving_config.ServingConfig:
-                    Configures metadata that is used to
-                generate serving time results (e.g.
-                search results or recommendation
-                predictions). The ServingConfig is
-                passed in the search and predict request
-                and generates results.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/dataStores/*/servingConfigs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/dataStores/*/servingConfigs/*}",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{name=projects/*/locations/*/collections/*/engines/*/servingConfigs/*}",
-                },
-            ]
-            request, metadata = self._interceptor.pre_get_serving_config(
-                request, metadata
-            )
-            pb_request = serving_config_service.GetServingConfigRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = serving_config.ServingConfig()
-            pb_resp = serving_config.ServingConfig.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_get_serving_config(resp)
-            return resp
-
-    class _ListServingConfigs(ServingConfigServiceRestStub):
-        def __hash__(self):
-            return hash("ListServingConfigs")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: serving_config_service.ListServingConfigsRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> serving_config_service.ListServingConfigsResponse:
-            r"""Call the list serving configs method over HTTP.
-
-            Args:
-                request (~.serving_config_service.ListServingConfigsRequest):
-                    The request object. Request for ListServingConfigs
+                request (~.search_tuning_service.TrainCustomModelRequest):
+                    The request object. Request message for
+                [SearchTuningService.TrainCustomModel][google.cloud.discoveryengine.v1beta.SearchTuningService.TrainCustomModel]
                 method.
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
@@ -455,135 +435,24 @@ class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
                     sent along with the request as metadata.
 
             Returns:
-                ~.serving_config_service.ListServingConfigsResponse:
-                    Response for ListServingConfigs
-                method.
+                ~.operations_pb2.Operation:
+                    This resource represents a
+                long-running operation that is the
+                result of a network API call.
 
             """
 
             http_options: List[Dict[str, str]] = [
                 {
-                    "method": "get",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/dataStores/*}/servingConfigs",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/dataStores/*}/servingConfigs",
-                },
-                {
-                    "method": "get",
-                    "uri": "/v1beta/{parent=projects/*/locations/*/collections/*/engines/*}/servingConfigs",
+                    "method": "post",
+                    "uri": "/v1beta/{data_store=projects/*/locations/*/collections/*/dataStores/*}:trainCustomModel",
+                    "body": "*",
                 },
             ]
-            request, metadata = self._interceptor.pre_list_serving_configs(
+            request, metadata = self._interceptor.pre_train_custom_model(
                 request, metadata
             )
-            pb_request = serving_config_service.ListServingConfigsRequest.pb(request)
-            transcoded_request = path_template.transcode(http_options, pb_request)
-
-            uri = transcoded_request["uri"]
-            method = transcoded_request["method"]
-
-            # Jsonify the query params
-            query_params = json.loads(
-                json_format.MessageToJson(
-                    transcoded_request["query_params"],
-                    use_integers_for_enums=True,
-                )
-            )
-            query_params.update(self._get_unset_required_fields(query_params))
-
-            query_params["$alt"] = "json;enum-encoding=int"
-
-            # Send the request
-            headers = dict(metadata)
-            headers["Content-Type"] = "application/json"
-            response = getattr(self._session, method)(
-                "{host}{uri}".format(host=self._host, uri=uri),
-                timeout=timeout,
-                headers=headers,
-                params=rest_helpers.flatten_query_params(query_params, strict=True),
-            )
-
-            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
-            # subclass.
-            if response.status_code >= 400:
-                raise core_exceptions.from_http_response(response)
-
-            # Return the response
-            resp = serving_config_service.ListServingConfigsResponse()
-            pb_resp = serving_config_service.ListServingConfigsResponse.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_list_serving_configs(resp)
-            return resp
-
-    class _UpdateServingConfig(ServingConfigServiceRestStub):
-        def __hash__(self):
-            return hash("UpdateServingConfig")
-
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
-
-        @classmethod
-        def _get_unset_required_fields(cls, message_dict):
-            return {
-                k: v
-                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
-                if k not in message_dict
-            }
-
-        def __call__(
-            self,
-            request: serving_config_service.UpdateServingConfigRequest,
-            *,
-            retry: OptionalRetry = gapic_v1.method.DEFAULT,
-            timeout: Optional[float] = None,
-            metadata: Sequence[Tuple[str, str]] = (),
-        ) -> gcd_serving_config.ServingConfig:
-            r"""Call the update serving config method over HTTP.
-
-            Args:
-                request (~.serving_config_service.UpdateServingConfigRequest):
-                    The request object. Request for UpdateServingConfig
-                method.
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
-
-            Returns:
-                ~.gcd_serving_config.ServingConfig:
-                    Configures metadata that is used to
-                generate serving time results (e.g.
-                search results or recommendation
-                predictions). The ServingConfig is
-                passed in the search and predict request
-                and generates results.
-
-            """
-
-            http_options: List[Dict[str, str]] = [
-                {
-                    "method": "patch",
-                    "uri": "/v1beta/{serving_config.name=projects/*/locations/*/dataStores/*/servingConfigs/*}",
-                    "body": "serving_config",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1beta/{serving_config.name=projects/*/locations/*/collections/*/dataStores/*/servingConfigs/*}",
-                    "body": "serving_config",
-                },
-                {
-                    "method": "patch",
-                    "uri": "/v1beta/{serving_config.name=projects/*/locations/*/collections/*/engines/*/servingConfigs/*}",
-                    "body": "serving_config",
-                },
-            ]
-            request, metadata = self._interceptor.pre_update_serving_config(
-                request, metadata
-            )
-            pb_request = serving_config_service.UpdateServingConfigRequest.pb(request)
+            pb_request = search_tuning_service.TrainCustomModelRequest.pb(request)
             transcoded_request = path_template.transcode(http_options, pb_request)
 
             # Jsonify the request body
@@ -622,50 +491,26 @@ class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
                 raise core_exceptions.from_http_response(response)
 
             # Return the response
-            resp = gcd_serving_config.ServingConfig()
-            pb_resp = gcd_serving_config.ServingConfig.pb(resp)
-
-            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
-            resp = self._interceptor.post_update_serving_config(resp)
+            resp = operations_pb2.Operation()
+            json_format.Parse(response.content, resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_train_custom_model(resp)
             return resp
 
     @property
-    def get_serving_config(
+    def train_custom_model(
         self,
     ) -> Callable[
-        [serving_config_service.GetServingConfigRequest], serving_config.ServingConfig
+        [search_tuning_service.TrainCustomModelRequest], operations_pb2.Operation
     ]:
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
-        return self._GetServingConfig(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def list_serving_configs(
-        self,
-    ) -> Callable[
-        [serving_config_service.ListServingConfigsRequest],
-        serving_config_service.ListServingConfigsResponse,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._ListServingConfigs(self._session, self._host, self._interceptor)  # type: ignore
-
-    @property
-    def update_serving_config(
-        self,
-    ) -> Callable[
-        [serving_config_service.UpdateServingConfigRequest],
-        gcd_serving_config.ServingConfig,
-    ]:
-        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
-        # In C++ this would require a dynamic_cast
-        return self._UpdateServingConfig(self._session, self._host, self._interceptor)  # type: ignore
+        return self._TrainCustomModel(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):
         return self._GetOperation(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _GetOperation(ServingConfigServiceRestStub):
+    class _GetOperation(SearchTuningServiceRestStub):
         def __call__(
             self,
             request: operations_pb2.GetOperationRequest,
@@ -783,7 +628,7 @@ class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
     def list_operations(self):
         return self._ListOperations(self._session, self._host, self._interceptor)  # type: ignore
 
-    class _ListOperations(ServingConfigServiceRestStub):
+    class _ListOperations(SearchTuningServiceRestStub):
         def __call__(
             self,
             request: operations_pb2.ListOperationsRequest,
@@ -905,4 +750,4 @@ class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
         self._session.close()
 
 
-__all__ = ("ServingConfigServiceRestTransport",)
+__all__ = ("SearchTuningServiceRestTransport",)

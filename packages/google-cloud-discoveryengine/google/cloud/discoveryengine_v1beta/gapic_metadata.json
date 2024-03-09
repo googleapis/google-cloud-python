@@ -652,6 +652,40 @@
         }
       }
     },
+    "SearchTuningService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "SearchTuningServiceClient",
+          "rpcs": {
+            "TrainCustomModel": {
+              "methods": [
+                "train_custom_model"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "SearchTuningServiceAsyncClient",
+          "rpcs": {
+            "TrainCustomModel": {
+              "methods": [
+                "train_custom_model"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "SearchTuningServiceClient",
+          "rpcs": {
+            "TrainCustomModel": {
+              "methods": [
+                "train_custom_model"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ServingConfigService": {
       "clients": {
         "grpc": {

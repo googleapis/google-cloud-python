@@ -18,6 +18,7 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 __protobuf__ = proto.module(
@@ -83,6 +84,13 @@ class Document(proto.Message):
         derived_struct_data (google.protobuf.struct_pb2.Struct):
             Output only. This field is OUTPUT_ONLY. It contains derived
             data that are not in the original input document.
+        index_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The last time the document was indexed. If this
+            field is set, the document could be returned in search
+            results.
+
+            This field is OUTPUT_ONLY. If this field is not populated,
+            it means the document has never been indexed.
     """
 
     class Content(proto.Message):
@@ -182,6 +190,11 @@ class Document(proto.Message):
         proto.MESSAGE,
         number=6,
         message=struct_pb2.Struct,
+    )
+    index_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=timestamp_pb2.Timestamp,
     )
 
 
