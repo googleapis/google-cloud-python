@@ -41,6 +41,9 @@ from google.cloud.securitycenter_v1.types import exfiltration as gcs_exfiltratio
 from google.cloud.securitycenter_v1.types import kernel_rootkit as gcs_kernel_rootkit
 from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attack
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
+from google.cloud.securitycenter_v1.types import (
+    security_posture as gcs_security_posture,
+)
 from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerability
 from google.cloud.securitycenter_v1.types import access as gcs_access
 from google.cloud.securitycenter_v1.types import application as gcs_application
@@ -251,6 +254,9 @@ class Finding(proto.Message):
             finding.
         backup_disaster_recovery (google.cloud.securitycenter_v1.types.BackupDisasterRecovery):
             Fields related to Backup and DR findings.
+        security_posture (google.cloud.securitycenter_v1.types.SecurityPosture):
+            The security posture associated with the
+            finding.
         log_entries (MutableSequence[google.cloud.securitycenter_v1.types.LogEntry]):
             Log entries that are relevant to the finding.
         load_balancers (MutableSequence[google.cloud.securitycenter_v1.types.LoadBalancer]):
@@ -404,6 +410,9 @@ class Finding(proto.Message):
             SCC_ERROR (5):
                 Describes an error that prevents some SCC
                 functionality.
+            POSTURE_VIOLATION (6):
+                Describes a potential security risk due to a
+                change in the security posture.
         """
         FINDING_CLASS_UNSPECIFIED = 0
         THREAT = 1
@@ -411,6 +420,7 @@ class Finding(proto.Message):
         MISCONFIGURATION = 3
         OBSERVATION = 4
         SCC_ERROR = 5
+        POSTURE_VIOLATION = 6
 
     name: str = proto.Field(
         proto.STRING,
@@ -614,6 +624,11 @@ class Finding(proto.Message):
             number=55,
             message=gcs_backup_disaster_recovery.BackupDisasterRecovery,
         )
+    )
+    security_posture: gcs_security_posture.SecurityPosture = proto.Field(
+        proto.MESSAGE,
+        number=56,
+        message=gcs_security_posture.SecurityPosture,
     )
     log_entries: MutableSequence[log_entry.LogEntry] = proto.RepeatedField(
         proto.MESSAGE,

@@ -84,6 +84,7 @@ from google.cloud.securitycenter_v1.types.security_health_analytics_custom_modul
     SecurityHealthAnalyticsCustomModule,
 )
 from google.cloud.securitycenter_v1.types.security_marks import SecurityMarks
+from google.cloud.securitycenter_v1.types.security_posture import SecurityPosture
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
     BulkMuteFindingsRequest,
     BulkMuteFindingsResponse,
@@ -198,6 +199,7 @@ __all__ = (
     "CustomConfig",
     "SecurityHealthAnalyticsCustomModule",
     "SecurityMarks",
+    "SecurityPosture",
     "BulkMuteFindingsRequest",
     "BulkMuteFindingsResponse",
     "CreateBigQueryExportRequest",
