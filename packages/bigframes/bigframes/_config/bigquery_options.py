@@ -39,6 +39,7 @@ class BigQueryOptions:
         bq_connection: Optional[str] = None,
         use_regional_endpoints: bool = False,
         application_name: Optional[str] = None,
+        kms_key_name: Optional[str] = None,
     ):
         self._credentials = credentials
         self._project = project
@@ -46,6 +47,7 @@ class BigQueryOptions:
         self._bq_connection = bq_connection
         self._use_regional_endpoints = use_regional_endpoints
         self._application_name = application_name
+        self._kms_key_name = kms_key_name
         self._session_started = False
 
     @property
@@ -148,3 +150,26 @@ class BigQueryOptions:
             )
 
         self._use_regional_endpoints = value
+
+    @property
+    def kms_key_name(self) -> Optional[str]:
+        """Customer managed encryption key used to control encryption of the
+        data-at-rest in BigQuery. This is of the format
+        projects/PROJECT_ID/locations/LOCATION/keyRings/KEYRING/cryptoKeys/KEY
+
+        See https://cloud.google.com/bigquery/docs/customer-managed-encryption
+        for more details.
+
+        Please make sure the project used for Bigquery DataFrames has "Cloud KMS
+        CryptoKey Encrypter/Decrypter" role in the key's project, See
+        https://cloud.google.com/bigquery/docs/customer-managed-encryption#assign_role
+        for steps on how to ensure that.
+        """
+        return self._kms_key_name
+
+    @kms_key_name.setter
+    def kms_key_name(self, value: str):
+        if self._session_started and self._kms_key_name != value:
+            raise ValueError(SESSION_STARTED_MESSAGE.format(attribute="kms_key_name"))
+
+        self._kms_key_name = value

@@ -383,6 +383,7 @@ def _set_default_session_location_if_possible(query):
         use_regional_endpoints=options.bigquery.use_regional_endpoints,
         credentials=options.bigquery.credentials,
         application_name=options.bigquery.application_name,
+        bq_kms_key_name=options.bigquery.kms_key_name,
     )
 
     bqclient = clients_provider.bqclient

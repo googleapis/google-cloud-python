@@ -38,6 +38,7 @@ def create_clients_provider(application_name: Optional[str] = None):
         use_regional_endpoints=False,
         credentials=credentials,
         application_name=application_name,
+        bq_kms_key_name="projects/my-project/locations/us/keyRings/myKeyRing/cryptoKeys/myKey",
     )
 
 

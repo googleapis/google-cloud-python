@@ -35,6 +35,7 @@ def mock_session():
     mock_session._anonymous_dataset = bigquery.DatasetReference(
         TEMP_MODEL_ID.project, TEMP_MODEL_ID.dataset_id
     )
+    mock_session._bq_kms_key_name = None
 
     query_job = mock.create_autospec(bigquery.QueryJob)
     type(query_job).destination = mock.PropertyMock(
@@ -42,7 +43,7 @@ def mock_session():
             mock_session._anonymous_dataset, TEMP_MODEL_ID.model_id
         )
     )
-    mock_session._start_query.return_value = (None, query_job)
+    mock_session._start_query_create_model.return_value = (None, query_job)
 
     return mock_session
 
@@ -103,7 +104,7 @@ def test_linear_regression_default_fit(
     model._bqml_model_factory = bqml_model_factory
     model.fit(mock_X, mock_y)
 
-    mock_session._start_query.assert_called_once_with(
+    mock_session._start_query_create_model.assert_called_once_with(
         'CREATE OR REPLACE MODEL `test-project`.`_anon123`.`temp_model_id`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="normal_equation",\n  fit_intercept=True,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  early_stop=True,\n  min_rel_progress=0.01,\n  ls_init_learn_rate=0.1,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
@@ -113,7 +114,7 @@ def test_linear_regression_params_fit(bqml_model_factory, mock_session, mock_X, 
     model._bqml_model_factory = bqml_model_factory
     model.fit(mock_X, mock_y)
 
-    mock_session._start_query.assert_called_once_with(
+    mock_session._start_query_create_model.assert_called_once_with(
         'CREATE OR REPLACE MODEL `test-project`.`_anon123`.`temp_model_id`\nOPTIONS(\n  model_type="LINEAR_REG",\n  data_split_method="NO_SPLIT",\n  optimize_strategy="normal_equation",\n  fit_intercept=False,\n  l2_reg=0.0,\n  max_iterations=20,\n  learn_rate_strategy="line_search",\n  early_stop=True,\n  min_rel_progress=0.01,\n  ls_init_learn_rate=0.1,\n  calculate_p_values=False,\n  enable_global_explain=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
@@ -146,7 +147,7 @@ def test_logistic_regression_default_fit(
     model._bqml_model_factory = bqml_model_factory
     model.fit(mock_X, mock_y)
 
-    mock_session._start_query.assert_called_once_with(
+    mock_session._start_query_create_model.assert_called_once_with(
         'CREATE OR REPLACE MODEL `test-project`.`_anon123`.`temp_model_id`\nOPTIONS(\n  model_type="LOGISTIC_REG",\n  data_split_method="NO_SPLIT",\n  fit_intercept=True,\n  auto_class_weights=False,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 
@@ -160,7 +161,7 @@ def test_logistic_regression_params_fit(
     model._bqml_model_factory = bqml_model_factory
     model.fit(mock_X, mock_y)
 
-    mock_session._start_query.assert_called_once_with(
+    mock_session._start_query_create_model.assert_called_once_with(
         'CREATE OR REPLACE MODEL `test-project`.`_anon123`.`temp_model_id`\nOPTIONS(\n  model_type="LOGISTIC_REG",\n  data_split_method="NO_SPLIT",\n  fit_intercept=False,\n  auto_class_weights=True,\n  INPUT_LABEL_COLS=["input_column_label"])\nAS input_X_y_sql'
     )
 

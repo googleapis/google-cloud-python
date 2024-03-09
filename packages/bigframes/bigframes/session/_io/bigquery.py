@@ -20,10 +20,16 @@ import datetime
 import itertools
 import textwrap
 import types
-from typing import Dict, Iterable, Optional, Sequence, Union
+from typing import Dict, Iterable, Optional, Sequence, Tuple, Union
 import uuid
 
+import google.api_core.exceptions
 import google.cloud.bigquery as bigquery
+
+import bigframes
+from bigframes.core import log_adapter
+import bigframes.formatting_helpers as formatting_helpers
+import bigframes.session._io.bigquery as bigframes_io
 
 IO_ORDERING_ID = "bqdf_row_nums"
 MAX_LABELS_COUNT = 64
@@ -207,3 +213,34 @@ def format_option(key: str, value: Union[bool, str]) -> str:
     if isinstance(value, bool):
         return f"{key}=true" if value else f"{key}=false"
     return f"{key}={repr(value)}"
+
+
+def start_query_with_client(
+    bq_client: bigquery.Client,
+    sql: str,
+    job_config: bigquery.job.QueryJobConfig,
+    max_results: Optional[int] = None,
+) -> Tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
+    """
+    Starts query job and waits for results.
+    """
+    api_methods = log_adapter.get_and_reset_api_methods()
+    job_config.labels = bigframes_io.create_job_configs_labels(
+        job_configs_labels=job_config.labels, api_methods=api_methods
+    )
+
+    try:
+        query_job = bq_client.query(sql, job_config=job_config)
+    except google.api_core.exceptions.Forbidden as ex:
+        if "Drive credentials" in ex.message:
+            ex.message += "\nCheck https://cloud.google.com/bigquery/docs/query-drive-data#Google_Drive_permissions."
+        raise
+
+    opts = bigframes.options.display
+    if opts.progress_bar is not None and not query_job.configuration.dry_run:
+        results_iterator = formatting_helpers.wait_for_query_job(
+            query_job, max_results, opts.progress_bar
+        )
+    else:
+        results_iterator = query_job.result(max_results=max_results)
+    return results_iterator, query_job

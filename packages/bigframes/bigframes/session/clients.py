@@ -68,6 +68,7 @@ class ClientsProvider:
         use_regional_endpoints: Optional[bool],
         credentials: Optional[google.auth.credentials.Credentials],
         application_name: Optional[str],
+        bq_kms_key_name: Optional[str],
     ):
         credentials_project = None
         if credentials is None:
@@ -98,6 +99,7 @@ class ClientsProvider:
         self._location = location
         self._use_regional_endpoints = use_regional_endpoints
         self._credentials = credentials
+        self._bq_kms_key_name = bq_kms_key_name
 
         # cloud clients initialized for lazy load
         self._bqclient = None
@@ -106,28 +108,34 @@ class ClientsProvider:
         self._cloudfunctionsclient = None
         self._resourcemanagerclient = None
 
+    def _create_bigquery_client(self):
+        bq_options = None
+        if self._use_regional_endpoints:
+            bq_options = google.api_core.client_options.ClientOptions(
+                api_endpoint=(
+                    _BIGQUERY_REGIONAL_ENDPOINT
+                    if self._location.lower() in _REP_SUPPORTED_REGIONS
+                    else _BIGQUERY_LOCATIONAL_ENDPOINT
+                ).format(location=self._location),
+            )
+        bq_info = google.api_core.client_info.ClientInfo(
+            user_agent=self._application_name
+        )
+
+        bq_client = bigquery.Client(
+            client_info=bq_info,
+            client_options=bq_options,
+            credentials=self._credentials,
+            project=self._project,
+            location=self._location,
+        )
+
+        return bq_client
+
     @property
     def bqclient(self):
         if not self._bqclient:
-            bq_options = None
-            if self._use_regional_endpoints:
-                bq_options = google.api_core.client_options.ClientOptions(
-                    api_endpoint=(
-                        _BIGQUERY_REGIONAL_ENDPOINT
-                        if self._location.lower() in _REP_SUPPORTED_REGIONS
-                        else _BIGQUERY_LOCATIONAL_ENDPOINT
-                    ).format(location=self._location),
-                )
-            bq_info = google.api_core.client_info.ClientInfo(
-                user_agent=self._application_name
-            )
-            self._bqclient = bigquery.Client(
-                client_info=bq_info,
-                client_options=bq_options,
-                credentials=self._credentials,
-                project=self._project,
-                location=self._location,
-            )
+            self._bqclient = self._create_bigquery_client()
 
         return self._bqclient
 
