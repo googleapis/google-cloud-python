@@ -100,6 +100,18 @@ class Test_retry:
 
     @staticmethod
     @pytest.mark.usefixtures("in_context")
+    def test_api_core_unknown():
+        def callback():
+            raise core_exceptions.Unknown("Unknown")
+
+        with pytest.raises(core_exceptions.RetryError) as e:
+            retry = _retry.retry_async(callback, retries=1)
+            retry().result()
+
+        assert e.value.cause == "google.api_core.exceptions.Unknown"
+
+    @staticmethod
+    @pytest.mark.usefixtures("in_context")
     @mock.patch("google.cloud.ndb.tasklets.sleep")
     @mock.patch("google.cloud.ndb._retry.core_retry")
     def test_transient_error(core_retry, sleep):

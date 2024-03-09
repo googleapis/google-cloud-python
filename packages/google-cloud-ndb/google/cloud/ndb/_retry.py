@@ -82,9 +82,10 @@ def retry_async(callback, retries=_DEFAULT_RETRIES):
                     result = yield result
             except exceptions.NestedRetryException as e:
                 error = e
-            except Exception as e:
+            except BaseException as e:
                 # `e` is removed from locals at end of block
                 error = e  # See: https://goo.gl/5J8BMK
+
                 if not is_transient_error(error):
                     # If we are in an inner retry block, use special nested
                     # retry exception to bubble up to outer retry. Else, raise
@@ -103,6 +104,10 @@ def retry_async(callback, retries=_DEFAULT_RETRIES):
                     context.clear_retry_state()
 
             yield tasklets.sleep(sleep_time)
+
+        # Unknown errors really want to show up as None, so manually set the error.
+        if isinstance(error, core_exceptions.Unknown):
+            error = "google.api_core.exceptions.Unknown"
 
         raise core_exceptions.RetryError(
             "Maximum number of {} retries exceeded while calling {}".format(
