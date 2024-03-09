@@ -130,7 +130,7 @@ class Engine(proto.Message):
             Note that when used in
             [CreateEngineRequest][google.cloud.discoveryengine.v1alpha.CreateEngineRequest],
             one DataStore id must be provided as the system will use it
-            for necessary intializations.
+            for necessary initializations.
         solution_type (google.cloud.discoveryengine_v1alpha.types.SolutionType):
             Required. The solutions of the engine.
         industry_vertical (google.cloud.discoveryengine_v1alpha.types.IndustryVertical):
@@ -181,7 +181,7 @@ class Engine(proto.Message):
 
         Attributes:
             type_ (str):
-                Required. The type of engine e.g. ``recommended-for-you``.
+                Required. The type of engine. e.g., ``recommended-for-you``.
 
                 This field together with
                 [optimization_objective][Engine.optimization_objective]
@@ -192,7 +192,7 @@ class Engine(proto.Message):
                 ``others-you-may-like``, ``more-like-this``,
                 ``most-popular-items``.
             optimization_objective (str):
-                The optimization objective e.g. ``cvr``.
+                The optimization objective. e.g., ``cvr``.
 
                 This field together with
                 [optimization_objective][google.cloud.discoveryengine.v1alpha.Engine.MediaRecommendationEngineConfig.type]
@@ -316,8 +316,8 @@ class Engine(proto.Message):
                 or
                 [EngineService.ListEngines][google.cloud.discoveryengine.v1alpha.EngineService.ListEngines]
                 API after engine creation. Please use
-                [chat_engine_metadata.dialogflow_agent][] for actual agent
-                association after Engine is created.
+                [ChatEngineMetadata.dialogflow_agent][google.cloud.discoveryengine.v1alpha.Engine.ChatEngineMetadata.dialogflow_agent]
+                for actual agent association after Engine is created.
         """
 
         class AgentCreationConfig(proto.Message):
@@ -345,6 +345,12 @@ class Engine(proto.Message):
                     Required. The time zone of the agent from the `time zone
                     database <https://www.iana.org/time-zones>`__, e.g.,
                     America/New_York, Europe/Paris.
+                location (str):
+                    Agent location for Agent creation, supported
+                    values: global/us/eu. If not provided, us Engine
+                    will create Agent using us-central-1 by default;
+                    eu Engine will create Agent using eu-west-1 by
+                    default.
             """
 
             business: str = proto.Field(
@@ -358,6 +364,10 @@ class Engine(proto.Message):
             time_zone: str = proto.Field(
                 proto.STRING,
                 number=3,
+            )
+            location: str = proto.Field(
+                proto.STRING,
+                number=4,
             )
 
         agent_creation_config: "Engine.ChatEngineConfig.AgentCreationConfig" = (
@@ -377,9 +387,10 @@ class Engine(proto.Message):
 
         Attributes:
             company_name (str):
-                The name of the company, business or entity
-                that is associated with the engine. Setting this
-                may help improve LLM related features.
+                Immutable. The name of the company, business
+                or entity that is associated with the engine.
+                Setting this may help improve LLM related
+                features.
         """
 
         company_name: str = proto.Field(

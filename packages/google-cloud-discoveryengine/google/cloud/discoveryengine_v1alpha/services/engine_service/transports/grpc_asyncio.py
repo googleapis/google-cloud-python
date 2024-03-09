@@ -399,7 +399,8 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
         r"""Return a callable for the pause engine method over gRPC.
 
         Pauses the training of an existing engine. Only applicable if
-        [solution_type][] is
+        [SolutionType][google.cloud.discoveryengine.v1alpha.SolutionType]
+        is
         [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
 
         Returns:
@@ -457,7 +458,8 @@ class EngineServiceGrpcAsyncIOTransport(EngineServiceTransport):
     ]:
         r"""Return a callable for the tune engine method over gRPC.
 
-        Tunes an existing engine. Only applicable if [solution_type][]
+        Tunes an existing engine. Only applicable if
+        [SolutionType][google.cloud.discoveryengine.v1alpha.SolutionType]
         is
         [SOLUTION_TYPE_RECOMMENDATION][google.cloud.discoveryengine.v1alpha.SolutionType.SOLUTION_TYPE_RECOMMENDATION].
 

@@ -18,7 +18,10 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.cloud.discoveryengine_v1alpha.types import common
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
@@ -83,6 +86,15 @@ class Document(proto.Message):
         derived_struct_data (google.protobuf.struct_pb2.Struct):
             Output only. This field is OUTPUT_ONLY. It contains derived
             data that are not in the original input document.
+        acl_info (google.cloud.discoveryengine_v1alpha.types.Document.AclInfo):
+            Access control information for the document.
+        index_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. The last time the document was indexed. If this
+            field is set, the document could be returned in search
+            results.
+
+            This field is OUTPUT_ONLY. If this field is not populated,
+            it means the document has never been indexed.
     """
 
     class Content(proto.Message):
@@ -146,6 +158,52 @@ class Document(proto.Message):
             number=1,
         )
 
+    class AclInfo(proto.Message):
+        r"""ACL Information of the Document.
+
+        Attributes:
+            readers (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Document.AclInfo.AccessRestriction]):
+                Readers of the document.
+        """
+
+        class AccessRestriction(proto.Message):
+            r"""AclRestriction to model complex inheritance restrictions.
+
+            Example: Modeling a "Both Permit" inheritance, where to access a
+            child document, user needs to have access to parent document.
+
+            Document Hierarchy - Space_S --> Page_P.
+
+            Readers: Space_S: group_1, user_1 Page_P: group_2, group_3, user_2
+
+            Space_S ACL Restriction - { "acl_info": { "readers": [ {
+            "principals": [ { "group_id": "group_1" }, { "user_id": "user_1" } ]
+            } ] } }
+
+            Page_P ACL Restriction. { "acl_info": { "readers": [ { "principals":
+            [ { "group_id": "group_2" }, { "group_id": "group_3" }, { "user_id":
+            "user_2" } ], }, { "principals": [ { "group_id": "group_1" }, {
+            "user_id": "user_1" } ], } ] } }
+
+            Attributes:
+                principals (MutableSequence[google.cloud.discoveryengine_v1alpha.types.Principal]):
+                    List of principals.
+            """
+
+            principals: MutableSequence[common.Principal] = proto.RepeatedField(
+                proto.MESSAGE,
+                number=1,
+                message=common.Principal,
+            )
+
+        readers: MutableSequence[
+            "Document.AclInfo.AccessRestriction"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message="Document.AclInfo.AccessRestriction",
+        )
+
     struct_data: struct_pb2.Struct = proto.Field(
         proto.MESSAGE,
         number=4,
@@ -182,6 +240,16 @@ class Document(proto.Message):
         proto.MESSAGE,
         number=6,
         message=struct_pb2.Struct,
+    )
+    acl_info: AclInfo = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=AclInfo,
+    )
+    index_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=timestamp_pb2.Timestamp,
     )
 
 

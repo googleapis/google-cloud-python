@@ -43,7 +43,7 @@ class TrainCustomModelRequest(proto.Message):
 
     Attributes:
         gcs_training_input (google.cloud.discoveryengine_v1alpha.types.TrainCustomModelRequest.GcsTrainingInput):
-            Gcs training input.
+            Cloud Storage training input.
 
             This field is a member of `oneof`_ ``training_input``.
         data_store (str):
@@ -62,42 +62,43 @@ class TrainCustomModelRequest(proto.Message):
     """
 
     class GcsTrainingInput(proto.Message):
-        r"""Gcs training data input.
+        r"""Cloud Storage training data input.
 
         Attributes:
             corpus_data_path (str):
-                The gcs corpus data which could be associated in train data.
-                The data path format is
-                gs://<bucket_to_data>/<jsonl_file_name>. A newline delimited
-                jsonl/ndjson file.
+                The Cloud Storage corpus data which could be associated in
+                train data. The data path format is
+                ``gs://<bucket_to_data>/<jsonl_file_name>``. A newline
+                delimited jsonl/ndjson file.
 
-                -  For search-tuning model, each line should have the \_id,
-                   title and text. Example: {"_id": "doc1", title: "relevant
-                   doc", "text": "relevant text"}
+                For search-tuning model, each line should have the \_id,
+                title and text. Example: {"_id": "doc1", title: "relevant
+                doc", "text": "relevant text"}
             query_data_path (str):
                 The gcs query data which could be associated in train data.
                 The data path format is
-                gs://<bucket_to_data>/<jsonl_file_name>. A newline delimited
-                jsonl/ndjson file.
+                ``gs://<bucket_to_data>/<jsonl_file_name>``. A newline
+                delimited jsonl/ndjson file.
 
-                -  For search-tuning model, each line should have the \_id
-                   and text. Example: {"_id": "query1", "text": "example
-                   query"}
+                For search-tuning model, each line should have the \_id and
+                text. Example: {"_id": "query1", "text": "example query"}
             train_data_path (str):
-                Gcs training data path whose format should be
-                gs://<bucket_to_data>/<tsv_file_name>. The file should be in
-                tsv format. Each line should have the doc_id and query_id
-                and score (number).
+                Cloud Storage training data path whose format should be
+                ``gs://<bucket_to_data>/<tsv_file_name>``. The file should
+                be in tsv format. Each line should have the doc_id and
+                query_id and score (number).
 
-                -  For search-tuning model, it should have the query-id
-                   corpus-id score as tsv file header. The score should be a
-                   number in [0, inf+). The larger the number is, the more
-                   relevant the pair is. Example: query-id\tcorpus-id\tscore
-                   query1\tdoc1\t1
+                For search-tuning model, it should have the query-id
+                corpus-id score as tsv file header. The score should be a
+                number in ``[0, inf+)``. The larger the number is, the more
+                relevant the pair is. Example:
+
+                -  ``query-id\tcorpus-id\tscore``
+                -  ``query1\tdoc1\t1``
             test_data_path (str):
-                Gcs test data. Same format as train_data_path. If not
-                provided, a random 80/20 train/test split will be performed
-                on train_data_path.
+                Cloud Storage test data. Same format as train_data_path. If
+                not provided, a random 80/20 train/test split will be
+                performed on train_data_path.
         """
 
         corpus_data_path: str = proto.Field(

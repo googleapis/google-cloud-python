@@ -28,6 +28,10 @@ from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha import gapic_version as package_version
 from google.cloud.discoveryengine_v1alpha.types import data_store as gcd_data_store
+from google.cloud.discoveryengine_v1alpha.types import document_processing_config
+from google.cloud.discoveryengine_v1alpha.types import (
+    document_processing_config as gcd_document_processing_config,
+)
 from google.cloud.discoveryengine_v1alpha.types import data_store
 from google.cloud.discoveryengine_v1alpha.types import data_store_service
 
@@ -155,6 +159,16 @@ class DataStoreServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.get_document_processing_config: gapic_v1.method.wrap_method(
+                self.get_document_processing_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_document_processing_config: gapic_v1.method.wrap_method(
+                self.update_document_processing_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -216,6 +230,30 @@ class DataStoreServiceTransport(abc.ABC):
     ) -> Callable[
         [data_store_service.UpdateDataStoreRequest],
         Union[gcd_data_store.DataStore, Awaitable[gcd_data_store.DataStore]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_document_processing_config(
+        self,
+    ) -> Callable[
+        [data_store_service.GetDocumentProcessingConfigRequest],
+        Union[
+            document_processing_config.DocumentProcessingConfig,
+            Awaitable[document_processing_config.DocumentProcessingConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_document_processing_config(
+        self,
+    ) -> Callable[
+        [data_store_service.UpdateDocumentProcessingConfigRequest],
+        Union[
+            gcd_document_processing_config.DocumentProcessingConfig,
+            Awaitable[gcd_document_processing_config.DocumentProcessingConfig],
+        ],
     ]:
         raise NotImplementedError()
 

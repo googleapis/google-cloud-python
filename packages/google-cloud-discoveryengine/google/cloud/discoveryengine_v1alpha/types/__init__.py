@@ -13,16 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from .acl_config import AclConfig
+from .acl_config_service import GetAclConfigRequest, UpdateAclConfigRequest
+from .chunk import Chunk
+from .chunk_service import GetChunkRequest, ListChunksRequest, ListChunksResponse
 from .common import (
     CustomAttribute,
+    CustomFineTuningSpec,
     DoubleList,
+    EmbeddingConfig,
+    GuidedSearchSpec,
+    IdpConfig,
     IndustryVertical,
     Interval,
+    Principal,
     SearchAddOn,
     SearchTier,
     SolutionType,
     UserInfo,
 )
+from .completion import SuggestionDenyListEntry
 from .completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .conversation import (
     Conversation,
@@ -48,11 +58,14 @@ from .data_store_service import (
     DeleteDataStoreMetadata,
     DeleteDataStoreRequest,
     GetDataStoreRequest,
+    GetDocumentProcessingConfigRequest,
     ListDataStoresRequest,
     ListDataStoresResponse,
     UpdateDataStoreRequest,
+    UpdateDocumentProcessingConfigRequest,
 )
 from .document import Document
+from .document_processing_config import DocumentProcessingConfig
 from .document_service import (
     CreateDocumentRequest,
     DeleteDocumentRequest,
@@ -77,6 +90,11 @@ from .engine_service import (
     TuneEngineResponse,
     UpdateEngineRequest,
 )
+from .estimate_billing_service import (
+    EstimateDataSizeMetadata,
+    EstimateDataSizeRequest,
+    EstimateDataSizeResponse,
+)
 from .import_config import (
     BigQuerySource,
     GcsSource,
@@ -84,6 +102,9 @@ from .import_config import (
     ImportDocumentsRequest,
     ImportDocumentsResponse,
     ImportErrorConfig,
+    ImportSuggestionDenyListEntriesMetadata,
+    ImportSuggestionDenyListEntriesRequest,
+    ImportSuggestionDenyListEntriesResponse,
     ImportUserEventsMetadata,
     ImportUserEventsRequest,
     ImportUserEventsResponse,
@@ -92,6 +113,10 @@ from .purge_config import (
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
     PurgeDocumentsResponse,
+    PurgeErrorConfig,
+    PurgeSuggestionDenyListEntriesMetadata,
+    PurgeSuggestionDenyListEntriesRequest,
+    PurgeSuggestionDenyListEntriesResponse,
     PurgeUserEventsMetadata,
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
@@ -114,6 +139,13 @@ from .search_tuning_service import (
     TrainCustomModelMetadata,
     TrainCustomModelRequest,
     TrainCustomModelResponse,
+)
+from .serving_config import ServingConfig
+from .serving_config_service import (
+    GetServingConfigRequest,
+    ListServingConfigsRequest,
+    ListServingConfigsResponse,
+    UpdateServingConfigRequest,
 )
 from .site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
 from .site_search_engine_service import (
@@ -158,14 +190,27 @@ from .user_event import (
 from .user_event_service import CollectUserEventRequest, WriteUserEventRequest
 
 __all__ = (
+    "AclConfig",
+    "GetAclConfigRequest",
+    "UpdateAclConfigRequest",
+    "Chunk",
+    "GetChunkRequest",
+    "ListChunksRequest",
+    "ListChunksResponse",
     "CustomAttribute",
+    "CustomFineTuningSpec",
     "DoubleList",
+    "EmbeddingConfig",
+    "GuidedSearchSpec",
+    "IdpConfig",
     "Interval",
+    "Principal",
     "UserInfo",
     "IndustryVertical",
     "SearchAddOn",
     "SearchTier",
     "SolutionType",
+    "SuggestionDenyListEntry",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
     "Conversation",
@@ -187,10 +232,13 @@ __all__ = (
     "DeleteDataStoreMetadata",
     "DeleteDataStoreRequest",
     "GetDataStoreRequest",
+    "GetDocumentProcessingConfigRequest",
     "ListDataStoresRequest",
     "ListDataStoresResponse",
     "UpdateDataStoreRequest",
+    "UpdateDocumentProcessingConfigRequest",
     "Document",
+    "DocumentProcessingConfig",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
     "GetDocumentRequest",
@@ -211,18 +259,28 @@ __all__ = (
     "TuneEngineRequest",
     "TuneEngineResponse",
     "UpdateEngineRequest",
+    "EstimateDataSizeMetadata",
+    "EstimateDataSizeRequest",
+    "EstimateDataSizeResponse",
     "BigQuerySource",
     "GcsSource",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
     "ImportErrorConfig",
+    "ImportSuggestionDenyListEntriesMetadata",
+    "ImportSuggestionDenyListEntriesRequest",
+    "ImportSuggestionDenyListEntriesResponse",
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
+    "PurgeErrorConfig",
+    "PurgeSuggestionDenyListEntriesMetadata",
+    "PurgeSuggestionDenyListEntriesRequest",
+    "PurgeSuggestionDenyListEntriesResponse",
     "PurgeUserEventsMetadata",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
@@ -244,6 +302,11 @@ __all__ = (
     "TrainCustomModelMetadata",
     "TrainCustomModelRequest",
     "TrainCustomModelResponse",
+    "ServingConfig",
+    "GetServingConfigRequest",
+    "ListServingConfigsRequest",
+    "ListServingConfigsResponse",
+    "UpdateServingConfigRequest",
     "SiteSearchEngine",
     "SiteVerificationInfo",
     "TargetSite",

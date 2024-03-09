@@ -46,7 +46,9 @@ from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
 from google.cloud.location import locations_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.services.document_service import pagers
 from google.cloud.discoveryengine_v1alpha.types import (
@@ -669,10 +671,12 @@ class DocumentServiceAsyncClient:
         self,
         request: Optional[Union[document_service.UpdateDocumentRequest, dict]] = None,
         *,
+        document: Optional[gcd_document.Document] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: Union[float, object] = gapic_v1.method.DEFAULT,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> document.Document:
+    ) -> gcd_document.Document:
         r"""Updates a
         [Document][google.cloud.discoveryengine.v1alpha.Document].
 
@@ -706,6 +710,32 @@ class DocumentServiceAsyncClient:
                 The request object. Request message for
                 [DocumentService.UpdateDocument][google.cloud.discoveryengine.v1alpha.DocumentService.UpdateDocument]
                 method.
+            document (:class:`google.cloud.discoveryengine_v1alpha.types.Document`):
+                Required. The document to update/create.
+
+                If the caller does not have permission to update the
+                [Document][google.cloud.discoveryengine.v1alpha.Document],
+                regardless of whether or not it exists, a
+                ``PERMISSION_DENIED`` error is returned.
+
+                If the
+                [Document][google.cloud.discoveryengine.v1alpha.Document]
+                to update does not exist and
+                [allow_missing][google.cloud.discoveryengine.v1alpha.UpdateDocumentRequest.allow_missing]
+                is not set, a ``NOT_FOUND`` error is returned.
+
+                This corresponds to the ``document`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Indicates which fields in the
+                provided imported 'document' to update.
+                If not set, will by default update all
+                fields.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.
             timeout (float): The timeout for this request.
@@ -720,7 +750,23 @@ class DocumentServiceAsyncClient:
 
         """
         # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([document, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
         request = document_service.UpdateDocumentRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if document is not None:
+            request.document = document
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1019,7 +1065,11 @@ class DocumentServiceAsyncClient:
                 client = discoveryengine_v1alpha.DocumentServiceAsyncClient()
 
                 # Initialize request argument(s)
+                gcs_source = discoveryengine_v1alpha.GcsSource()
+                gcs_source.input_uris = ['input_uris_value1', 'input_uris_value2']
+
                 request = discoveryengine_v1alpha.PurgeDocumentsRequest(
+                    gcs_source=gcs_source,
                     parent="parent_value",
                     filter="filter_value",
                 )
