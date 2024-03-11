@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.13.3...google-cloud-network-management-v1.14.0) (2024-03-11)
+
+
+### Features
+
+* Add new load balancer fields to public API ([f40217d](https://github.com/googleapis/google-cloud-python/commit/f40217da28be7729ae1c8a2a3378be267eb401d1))
+* Add new NAT fields to Network Management API definition ([f40217d](https://github.com/googleapis/google-cloud-python/commit/f40217da28be7729ae1c8a2a3378be267eb401d1))
+
 ## [1.13.3](https://github.com/googleapis/google-cloud-python/compare/google-cloud-network-management-v1.13.2...google-cloud-network-management-v1.13.3) (2024-03-05)
 
 
