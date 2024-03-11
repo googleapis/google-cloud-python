@@ -3135,6 +3135,16 @@
                 }
             ],
             "release-type": "python"
+        },
+        "packages/google-cloud-apphub": {
+            "extra-files": [
+                "google/cloud/apphub_v1/gapic_version.py",
+                {
+                    "type": "json",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.apphub.v1.json",
+                    "jsonpath": "$.clientLibrary.version"
+                }
+            ]
         }
     }
 }
