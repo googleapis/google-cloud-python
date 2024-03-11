@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -360,9 +360,7 @@ def test__validate_universe_domain(client_class, transport_class, transport_name
     google_auth_major, google_auth_minor = [
         int(part) for part in google.auth.__version__.split(".")[0:2]
     ]
-    if google_auth_major > 2 or (
-        google_auth_major == 2 and google_auth_minor >= 23
-    ):  # pragma: NO COVER
+    if google_auth_major > 2 or (google_auth_major == 2 and google_auth_minor >= 23):
         credentials = ga_credentials.AnonymousCredentials()
         credentials._universe_domain = "foo.com"
         # Test the case when there is a universe mismatch from the credentials.
