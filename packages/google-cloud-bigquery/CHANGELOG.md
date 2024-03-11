@@ -5,6 +5,23 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+## [3.19.0](https://github.com/googleapis/python-bigquery/compare/v3.18.0...v3.19.0) (2024-03-11)
+
+
+### Features
+
+* Support RANGE query parameters ([#1827](https://github.com/googleapis/python-bigquery/issues/1827)) ([b359a9a](https://github.com/googleapis/python-bigquery/commit/b359a9a55936a759a36aa69c5e5b014685e1fca6))
+* Support range sql ([#1807](https://github.com/googleapis/python-bigquery/issues/1807)) ([86a45c9](https://github.com/googleapis/python-bigquery/commit/86a45c989836b34dca456bac014352e55d6f86c0))
+
+
+### Bug Fixes
+
+* Add google-auth as a direct dependency ([713ce2c](https://github.com/googleapis/python-bigquery/commit/713ce2c2f6ce9931f67cbbcd63ad436ad336ad26))
+* Augment universe_domain handling ([#1837](https://github.com/googleapis/python-bigquery/issues/1837)) ([53c2cbf](https://github.com/googleapis/python-bigquery/commit/53c2cbf98d2961f553747514de273bcd5c117f0e))
+* **deps:** Require google-api-core&gt;=1.34.1, >=2.11.0 ([713ce2c](https://github.com/googleapis/python-bigquery/commit/713ce2c2f6ce9931f67cbbcd63ad436ad336ad26))
+* Supplementary fix to env-based universe resolution ([#1844](https://github.com/googleapis/python-bigquery/issues/1844)) ([b818992](https://github.com/googleapis/python-bigquery/commit/b8189929b6008f7780214822062f8ed05d8d2a01))
+* Supplementary fix to env-based universe resolution ([#1847](https://github.com/googleapis/python-bigquery/issues/1847)) ([6dff50f](https://github.com/googleapis/python-bigquery/commit/6dff50f4fbc5aeb644383a4050dd5ffc05015ffe))
+
 ## [3.18.0](https://github.com/googleapis/python-bigquery/compare/v3.17.2...v3.18.0) (2024-02-29)
 
 
