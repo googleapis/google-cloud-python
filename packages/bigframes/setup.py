@@ -58,6 +58,7 @@ dependencies = [
     "tabulate >= 0.9",
     "ipywidgets >=7.7.1",
     "humanize >= 4.6.0",
+    "matplotlib >= 3.7.1",
 ]
 extras = {
     # Optional test dependencies packages. If they're missed, may skip some tests.

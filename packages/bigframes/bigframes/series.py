@@ -50,6 +50,7 @@ import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.operations.base
 import bigframes.operations.datetimes as dt
+import bigframes.operations.plotting as plotting
 import bigframes.operations.strings as strings
 import bigframes.operations.structs as structs
 import third_party.bigframes_vendored.pandas.core.series as vendored_pandas_series
@@ -1556,6 +1557,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     @property
     def str(self) -> strings.StringMethods:
         return strings.StringMethods(self._block)
+
+    @property
+    def plot(self):
+        return plotting.PlotAccessor(self)
 
     def _slice(
         self,

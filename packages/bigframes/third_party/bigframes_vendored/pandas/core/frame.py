@@ -5224,3 +5224,14 @@ class DataFrame(NDFrame):
                 the matrix product of self and other in a DataFrame.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def plot(self):
+        """
+        Make plots of Dataframes.
+
+        Returns:
+            bigframes.operations.plotting.PlotAccessor:
+                An accessor making plots.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

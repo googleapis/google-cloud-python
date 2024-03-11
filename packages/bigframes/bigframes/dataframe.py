@@ -59,6 +59,7 @@ import bigframes.dtypes
 import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
+import bigframes.operations.plotting as plotting
 import bigframes.series
 import bigframes.series as bf_series
 import bigframes.session._io.bigquery
@@ -3192,5 +3193,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             result = result[result.columns[0]].rename()
 
         return result
+
+    @property
+    def plot(self):
+        return plotting.PlotAccessor(self)
 
     __matmul__ = dot

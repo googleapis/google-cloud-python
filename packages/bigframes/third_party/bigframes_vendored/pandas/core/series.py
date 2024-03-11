@@ -3111,6 +3111,17 @@ class Series(NDFrame):  # type: ignore[misc]
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
+    @property
+    def plot(self):
+        """
+        Make plots of Series.
+
+        Returns:
+            bigframes.operations.plotting.PlotAccessor:
+                An accessor making plots.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
     def isin(self, values):
         """
         Whether elements in Series are contained in values.
