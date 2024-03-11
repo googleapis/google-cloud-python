@@ -5,7 +5,7 @@ branchProtectionRules:
 # Defaults to `main`
 - pattern: main
   requiresCodeOwnerReviews: true
-  requiresStrictStatusChecks: true
+  requiresStrictStatusChecks: false
   requiredStatusCheckContexts:
     - 'conventionalcommits.org'
     - 'cla/google'
