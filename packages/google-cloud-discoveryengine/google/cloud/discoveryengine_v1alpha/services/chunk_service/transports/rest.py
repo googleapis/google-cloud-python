@@ -417,11 +417,11 @@ class ChunkServiceRestTransport(ChunkServiceTransport):
             http_options: List[Dict[str, str]] = [
                 {
                     "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/*/branches/*}/documents/*/chunks",
+                    "uri": "/v1alpha/{parent=projects/*/locations/*/dataStores/*/branches/*/documents/*}/chunks",
                 },
                 {
                     "method": "get",
-                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*/branches/*}/documents/*/chunks",
+                    "uri": "/v1alpha/{parent=projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*}/chunks",
                 },
             ]
             request, metadata = self._interceptor.pre_list_chunks(request, metadata)

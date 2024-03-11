@@ -2040,7 +2040,7 @@ def test_list_chunks_rest(request_type):
 
     # send a request that will satisfy transcoding
     request_init = {
-        "parent": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4"
+        "parent": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4/documents/sample5"
     }
     request = request_type(**request_init)
 
@@ -2230,7 +2230,7 @@ def test_list_chunks_rest_bad_request(
 
     # send a request that will satisfy transcoding
     request_init = {
-        "parent": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4"
+        "parent": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4/documents/sample5"
     }
     request = request_type(**request_init)
 
@@ -2259,7 +2259,7 @@ def test_list_chunks_rest_flattened():
 
         # get arguments that satisfy an http rule for this method
         sample_request = {
-            "parent": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4"
+            "parent": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4/documents/sample5"
         }
 
         # get truthy value for each flattened field
@@ -2284,7 +2284,7 @@ def test_list_chunks_rest_flattened():
         assert len(req.mock_calls) == 1
         _, args, _ = req.mock_calls[0]
         assert path_template.validate(
-            "%s/v1alpha/{parent=projects/*/locations/*/dataStores/*/branches/*}/documents/*/chunks"
+            "%s/v1alpha/{parent=projects/*/locations/*/dataStores/*/branches/*/documents/*}/chunks"
             % client.transport._host,
             args[1],
         )
@@ -2354,7 +2354,7 @@ def test_list_chunks_rest_pager(transport: str = "rest"):
         req.side_effect = return_values
 
         sample_request = {
-            "parent": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4"
+            "parent": "projects/sample1/locations/sample2/dataStores/sample3/branches/sample4/documents/sample5"
         }
 
         pager = client.list_chunks(request=sample_request)
