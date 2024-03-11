@@ -18,6 +18,7 @@
     "packages/google-cloud-apigee-registry": "0.6.9",
     "packages/google-cloud-appengine-admin": "1.11.3",
     "packages/google-cloud-appengine-logging": "1.4.3",
+    "packages/google-cloud-apphub": "0.0.0",
     "packages/google-cloud-artifact-registry": "1.11.3",
     "packages/google-cloud-asset": "3.25.0",
     "packages/google-cloud-assured-workloads": "1.12.3",
