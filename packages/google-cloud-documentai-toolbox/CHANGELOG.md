@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.13.3-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.13.2-alpha...v0.13.3-alpha) (2024-03-11)
+
+
+### Bug Fixes
+
+* Drop Python 3.7 Support ([71e6c51](https://github.com/googleapis/python-documentai-toolbox/commit/71e6c518e8da1b88f1d2b6ebedb8a20f4104b836))
+* Escape html special characters in `hocr_document_template.xml.j2` ([#279](https://github.com/googleapis/python-documentai-toolbox/issues/279)) ([2d9f05b](https://github.com/googleapis/python-documentai-toolbox/commit/2d9f05bfc28efb5fc6f8829921b45a046b768944))
+* Require google-api-core &gt;= 2.17.1 ([71e6c51](https://github.com/googleapis/python-documentai-toolbox/commit/71e6c518e8da1b88f1d2b6ebedb8a20f4104b836))
+* Require numpy &gt;= 1.23.5 ([71e6c51](https://github.com/googleapis/python-documentai-toolbox/commit/71e6c518e8da1b88f1d2b6ebedb8a20f4104b836))
+* Require pandas &gt;= 2.0.0 ([71e6c51](https://github.com/googleapis/python-documentai-toolbox/commit/71e6c518e8da1b88f1d2b6ebedb8a20f4104b836))
+* Require pikepdf &gt;= 8.0.0 ([71e6c51](https://github.com/googleapis/python-documentai-toolbox/commit/71e6c518e8da1b88f1d2b6ebedb8a20f4104b836))
+* Require Pillow &gt;= 10.0.0 ([71e6c51](https://github.com/googleapis/python-documentai-toolbox/commit/71e6c518e8da1b88f1d2b6ebedb8a20f4104b836))
+* Require proto-plus &gt;= 1.22.3 ([71e6c51](https://github.com/googleapis/python-documentai-toolbox/commit/71e6c518e8da1b88f1d2b6ebedb8a20f4104b836))
+
 ## [0.13.2-alpha](https://github.com/googleapis/python-documentai-toolbox/compare/v0.13.1-alpha...v0.13.2-alpha) (2024-03-08)
 
 
