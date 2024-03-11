@@ -52,7 +52,7 @@ setuptools.setup(
         "google.cloud.documentai_toolbox": ["templates/*.xml.j2"],
     },
     install_requires=(
-        "google-api-core>=2.17.1, <3.0.0dev",
+        "google-api-core>=2.15.0, <3.0.0dev",
         "pandas[performance,gcp]>=2.0.0, <3.0.0",
         "pyarrow>=15.0.0, <16.0.0",
         "tabulate>=0.9.0, <1.0.0",
