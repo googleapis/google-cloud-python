@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.11.10](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.9...google-cloud-discoveryengine-v0.11.10) (2024-03-12)
+
+
+### Features
+
+* add billing estimation services ([9b1d014](https://github.com/googleapis/google-cloud-python/commit/9b1d0145d9af6c805e4c1043ef0a2ad8ff41fa6d))
+* add document processing config services ([9b1d014](https://github.com/googleapis/google-cloud-python/commit/9b1d0145d9af6c805e4c1043ef0a2ad8ff41fa6d))
+* add search tuning services ([9b1d014](https://github.com/googleapis/google-cloud-python/commit/9b1d0145d9af6c805e4c1043ef0a2ad8ff41fa6d))
+* add serving config services ([9b1d014](https://github.com/googleapis/google-cloud-python/commit/9b1d0145d9af6c805e4c1043ef0a2ad8ff41fa6d))
+* add suggestion deny list import/purge services ([9b1d014](https://github.com/googleapis/google-cloud-python/commit/9b1d0145d9af6c805e4c1043ef0a2ad8ff41fa6d))
+* allow setting schema on schema creation ([9b1d014](https://github.com/googleapis/google-cloud-python/commit/9b1d0145d9af6c805e4c1043ef0a2ad8ff41fa6d))
+* support acl-based and blended search ([9b1d014](https://github.com/googleapis/google-cloud-python/commit/9b1d0145d9af6c805e4c1043ef0a2ad8ff41fa6d))
+* support batch documents purge with GCS input ([9b1d014](https://github.com/googleapis/google-cloud-python/commit/9b1d0145d9af6c805e4c1043ef0a2ad8ff41fa6d))
+* support boost in multi-turn search ([9b1d014](https://github.com/googleapis/google-cloud-python/commit/9b1d0145d9af6c805e4c1043ef0a2ad8ff41fa6d))
+* support chunk-based document search ([9b1d014](https://github.com/googleapis/google-cloud-python/commit/9b1d0145d9af6c805e4c1043ef0a2ad8ff41fa6d))
+* support search adaptor based search ([9b1d014](https://github.com/googleapis/google-cloud-python/commit/9b1d0145d9af6c805e4c1043ef0a2ad8ff41fa6d))
+
+
+### Documentation
+
+* keep the API doc up-to-date with recent changes ([9b1d014](https://github.com/googleapis/google-cloud-python/commit/9b1d0145d9af6c805e4c1043ef0a2ad8ff41fa6d))
+
 ## [0.11.9](https://github.com/googleapis/google-cloud-python/compare/google-cloud-discoveryengine-v0.11.8...google-cloud-discoveryengine-v0.11.9) (2024-03-05)
 
 
