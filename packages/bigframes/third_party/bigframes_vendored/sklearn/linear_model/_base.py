@@ -17,12 +17,13 @@ Generalized Linear Models.
 
 from abc import ABCMeta
 
-from bigframes import constants
-from third_party.bigframes_vendored.sklearn.base import (
+from bigframes_vendored.sklearn.base import (
     BaseEstimator,
     ClassifierMixin,
     RegressorMixin,
 )
+
+from bigframes import constants
 
 
 class LinearModel(BaseEstimator, metaclass=ABCMeta):

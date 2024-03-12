@@ -19,6 +19,8 @@ from __future__ import annotations
 
 from typing import Dict, List, Literal, Optional, Union
 
+import bigframes_vendored.sklearn.linear_model._base
+import bigframes_vendored.sklearn.linear_model._logistic
 from google.cloud import bigquery
 
 import bigframes
@@ -26,8 +28,6 @@ import bigframes.constants as constants
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
-import third_party.bigframes_vendored.sklearn.linear_model._base
-import third_party.bigframes_vendored.sklearn.linear_model._logistic
 
 _BQML_PARAMS_MAPPING = {
     "optimize_strategy": "optimizationStrategy",
@@ -50,11 +50,9 @@ _BQML_PARAMS_MAPPING = {
 @log_adapter.class_logger
 class LinearRegression(
     base.SupervisedTrainablePredictor,
-    third_party.bigframes_vendored.sklearn.linear_model._base.LinearRegression,
+    bigframes_vendored.sklearn.linear_model._base.LinearRegression,
 ):
-    __doc__ = (
-        third_party.bigframes_vendored.sklearn.linear_model._base.LinearRegression.__doc__
-    )
+    __doc__ = bigframes_vendored.sklearn.linear_model._base.LinearRegression.__doc__
 
     def __init__(
         self,
@@ -184,10 +182,10 @@ class LinearRegression(
 @log_adapter.class_logger
 class LogisticRegression(
     base.SupervisedTrainablePredictor,
-    third_party.bigframes_vendored.sklearn.linear_model._logistic.LogisticRegression,
+    bigframes_vendored.sklearn.linear_model._logistic.LogisticRegression,
 ):
     __doc__ = (
-        third_party.bigframes_vendored.sklearn.linear_model._logistic.LogisticRegression.__doc__
+        bigframes_vendored.sklearn.linear_model._logistic.LogisticRegression.__doc__
     )
 
     # TODO(ashleyxu) support class_weights in the constructor.

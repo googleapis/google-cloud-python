@@ -17,11 +17,12 @@ Configuration for BigQuery DataFrames. Do not depend on other parts of BigQuery
 DataFrames from this package.
 """
 
+import bigframes_vendored.pandas._config.config as pandas_config
+
 import bigframes._config.bigquery_options as bigquery_options
 import bigframes._config.compute_options as compute_options
 import bigframes._config.display_options as display_options
 import bigframes._config.sampling_options as sampling_options
-import third_party.bigframes_vendored.pandas._config.config as pandas_config
 
 
 class Options:

@@ -19,22 +19,22 @@ from __future__ import annotations
 
 from typing import Dict, List, Optional, Union
 
+import bigframes_vendored.sklearn.cluster._kmeans
 from google.cloud import bigquery
 
 import bigframes
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
-import third_party.bigframes_vendored.sklearn.cluster._kmeans
 
 
 @log_adapter.class_logger
 class KMeans(
     base.UnsupervisedTrainablePredictor,
-    third_party.bigframes_vendored.sklearn.cluster._kmeans.KMeans,
+    bigframes_vendored.sklearn.cluster._kmeans.KMeans,
 ):
 
-    __doc__ = third_party.bigframes_vendored.sklearn.cluster._kmeans.KMeans.__doc__
+    __doc__ = bigframes_vendored.sklearn.cluster._kmeans.KMeans.__doc__
 
     def __init__(self, n_clusters: int = 8):
         self.n_clusters = n_clusters

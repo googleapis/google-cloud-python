@@ -3,8 +3,9 @@ from __future__ import annotations
 
 from typing import Iterator, Literal, Optional
 
+from bigframes_vendored.pandas.core import indexing
+
 from bigframes import constants
-from third_party.bigframes_vendored.pandas.core import indexing
 
 
 class NDFrame(indexing.IndexingMixin):

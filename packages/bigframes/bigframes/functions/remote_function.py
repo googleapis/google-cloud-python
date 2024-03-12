@@ -32,6 +32,7 @@ import requests
 if TYPE_CHECKING:
     from bigframes.session import Session
 
+import bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
 import cloudpickle
 import google.api_core.exceptions
 import google.api_core.retry
@@ -47,7 +48,6 @@ from ibis.expr.datatypes.core import DataType as IbisDataType
 from bigframes import clients
 import bigframes.constants as constants
 import bigframes.dtypes
-import third_party.bigframes_vendored.ibis.backends.bigquery.datatypes as third_party_ibis_bqtypes
 
 logger = logging.getLogger(__name__)
 

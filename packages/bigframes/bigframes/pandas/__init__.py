@@ -36,6 +36,12 @@ from typing import (
     Union,
 )
 
+import bigframes_vendored.pandas.core.reshape.concat as vendored_pandas_concat
+import bigframes_vendored.pandas.core.reshape.encoding as vendored_pandas_encoding
+import bigframes_vendored.pandas.core.reshape.merge as vendored_pandas_merge
+import bigframes_vendored.pandas.core.reshape.tile as vendored_pandas_tile
+import bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetimes
+import bigframes_vendored.pandas.io.gbq as vendored_pandas_gbq
 from google.cloud import bigquery
 import numpy
 import pandas
@@ -59,12 +65,6 @@ import bigframes.operations as ops
 import bigframes.series
 import bigframes.session
 import bigframes.session.clients
-import third_party.bigframes_vendored.pandas.core.reshape.concat as vendored_pandas_concat
-import third_party.bigframes_vendored.pandas.core.reshape.encoding as vendored_pandas_encoding
-import third_party.bigframes_vendored.pandas.core.reshape.merge as vendored_pandas_merge
-import third_party.bigframes_vendored.pandas.core.reshape.tile as vendored_pandas_tile
-import third_party.bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetimes
-import third_party.bigframes_vendored.pandas.io.gbq as vendored_pandas_gbq
 
 
 # Include method definition so that the method appears in our docs for

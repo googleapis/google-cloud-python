@@ -15,10 +15,9 @@ import re
 import typing
 from typing import Hashable, Iterable, List
 
+import bigframes_vendored.pandas.io.common as vendored_pandas_io_common
 import pandas as pd
 import typing_extensions
-
-import third_party.bigframes_vendored.pandas.io.common as vendored_pandas_io_common
 
 UNNAMED_COLUMN_ID = "bigframes_unnamed_column"
 UNNAMED_INDEX_ID = "bigframes_unnamed_index"

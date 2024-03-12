@@ -88,7 +88,11 @@ version_id = version["__version__"]
 packages = [
     package
     for package in setuptools.find_namespace_packages()
-    if package.startswith("bigframes") or package.startswith("third_party")
+    if package.startswith("bigframes")
+] + [
+    package
+    for package in setuptools.find_namespace_packages("third_party")
+    if package.startswith("bigframes_vendored")
 ]
 
 setuptools.setup(
@@ -115,6 +119,10 @@ setuptools.setup(
     install_requires=dependencies,
     extras_require=extras,
     platforms="Posix; MacOS X; Windows",
+    package_dir={
+        "bigframes": "bigframes",
+        "bigframes_vendored": "third_party/bigframes_vendored",
+    },
     packages=packages,
     python_requires=">=3.9",
     include_package_data=True,

@@ -29,6 +29,7 @@ import typing
 from typing import Iterable, List, Mapping, Optional, Sequence, Tuple
 import warnings
 
+import bigframes_vendored.pandas.io.common as vendored_pandas_io_common
 import google.cloud.bigquery as bigquery
 import pandas as pd
 
@@ -45,7 +46,6 @@ import bigframes.dtypes
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.session._io.pandas
-import third_party.bigframes_vendored.pandas.io.common as vendored_pandas_io_common
 
 # Type constraint for wherever column labels are used
 Label = typing.Hashable

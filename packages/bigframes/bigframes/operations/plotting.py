@@ -14,9 +14,10 @@
 
 from typing import Optional, Sequence
 
+import bigframes_vendored.pandas.plotting._core as vendordt
+
 import bigframes.constants as constants
 import bigframes.operations._matplotlib as bfplt
-import third_party.bigframes_vendored.pandas.plotting._core as vendordt
 
 
 class PlotAccessor:

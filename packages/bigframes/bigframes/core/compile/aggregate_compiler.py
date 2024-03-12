@@ -15,6 +15,7 @@ import functools
 import typing
 from typing import cast, Optional
 
+import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 import ibis
 import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
@@ -26,7 +27,6 @@ import bigframes.core.expression as ex
 import bigframes.core.window_spec as window_spec
 import bigframes.dtypes as dtypes
 import bigframes.operations.aggregations as agg_ops
-import third_party.bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 
 scalar_compiler = scalar_compilers.scalar_op_compiler
 

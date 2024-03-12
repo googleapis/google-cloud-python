@@ -14,10 +14,10 @@
 
 """Tests for monkeypatched ibis code."""
 
+import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 import ibis.expr.types as ibis_types
 
 import bigframes
-import third_party.bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 
 
 def test_approximate_quantiles(session: bigframes.Session, scalars_table_id: str):

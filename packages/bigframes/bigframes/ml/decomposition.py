@@ -19,21 +19,21 @@ from __future__ import annotations
 
 from typing import List, Optional, Union
 
+import bigframes_vendored.sklearn.decomposition._pca
 from google.cloud import bigquery
 
 import bigframes
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
-import third_party.bigframes_vendored.sklearn.decomposition._pca
 
 
 @log_adapter.class_logger
 class PCA(
     base.UnsupervisedTrainablePredictor,
-    third_party.bigframes_vendored.sklearn.decomposition._pca.PCA,
+    bigframes_vendored.sklearn.decomposition._pca.PCA,
 ):
-    __doc__ = third_party.bigframes_vendored.sklearn.decomposition._pca.PCA.__doc__
+    __doc__ = bigframes_vendored.sklearn.decomposition._pca.PCA.__doc__
 
     def __init__(self, n_components: int = 3):
         self.n_components = n_components

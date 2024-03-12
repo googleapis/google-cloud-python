@@ -13,8 +13,9 @@
 
 from abc import ABC
 
+from bigframes_vendored.sklearn.base import BaseEstimator
+
 from bigframes import constants
-from third_party.bigframes_vendored.sklearn.base import BaseEstimator
 
 
 class _BaseKMeans(BaseEstimator, ABC):

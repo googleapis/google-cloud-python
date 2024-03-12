@@ -21,11 +21,12 @@ from __future__ import annotations
 import typing
 from typing import List, Optional, Tuple, Union
 
+import bigframes_vendored.sklearn.compose._column_transformer
+
 from bigframes import constants
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, preprocessing, utils
 import bigframes.pandas as bpd
-import third_party.bigframes_vendored.sklearn.compose._column_transformer
 
 CompilablePreprocessorType = Union[
     preprocessing.OneHotEncoder,
@@ -40,10 +41,10 @@ CompilablePreprocessorType = Union[
 @log_adapter.class_logger
 class ColumnTransformer(
     base.Transformer,
-    third_party.bigframes_vendored.sklearn.compose._column_transformer.ColumnTransformer,
+    bigframes_vendored.sklearn.compose._column_transformer.ColumnTransformer,
 ):
     __doc__ = (
-        third_party.bigframes_vendored.sklearn.compose._column_transformer.ColumnTransformer.__doc__
+        bigframes_vendored.sklearn.compose._column_transformer.ColumnTransformer.__doc__
     )
 
     def __init__(

@@ -63,7 +63,7 @@ s.move(
 s.replace(
     ["MANIFEST.in"],
     re.escape("recursive-include google"),
-    "recursive-include third_party *\nrecursive-include bigframes",
+    "recursive-include third_party/bigframes_vendored *\nrecursive-include bigframes",
 )
 
 # Even though BigQuery DataFrames isn't technically a client library, we are

@@ -6,8 +6,9 @@
 
 from abc import ABCMeta
 
+from bigframes_vendored.sklearn.base import BaseEstimator
+
 from bigframes import constants
-from third_party.bigframes_vendored.sklearn.base import BaseEstimator
 
 
 class _BaseComposition(BaseEstimator, metaclass=ABCMeta):

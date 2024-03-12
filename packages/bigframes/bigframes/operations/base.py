@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import typing
 
+import bigframes_vendored.pandas.pandas._typing as vendored_pandas_typing
 import pandas as pd
 
 import bigframes.constants as constants
@@ -28,7 +29,6 @@ import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 import bigframes.series as series
 import bigframes.session
-import third_party.bigframes_vendored.pandas.pandas._typing as vendored_pandas_typing
 
 
 class SeriesMethods:

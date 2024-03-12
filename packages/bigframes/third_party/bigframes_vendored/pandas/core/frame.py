@@ -13,11 +13,11 @@ from __future__ import annotations
 
 from typing import Hashable, Iterable, Literal, Mapping, Optional, Sequence, Union
 
+from bigframes_vendored.pandas.core.generic import NDFrame
 import numpy as np
 import pandas as pd
 
 from bigframes import constants
-from third_party.bigframes_vendored.pandas.core.generic import NDFrame
 
 # -----------------------------------------------------------------------
 # DataFrame class

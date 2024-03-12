@@ -24,12 +24,13 @@ This library is an evolving attempt to
 import abc
 from typing import cast, Optional, TypeVar, Union
 
+import bigframes_vendored.sklearn.base
+
 from bigframes.ml import core
 import bigframes.pandas as bpd
-import third_party.bigframes_vendored.sklearn.base
 
 
-class BaseEstimator(third_party.bigframes_vendored.sklearn.base.BaseEstimator, abc.ABC):
+class BaseEstimator(bigframes_vendored.sklearn.base.BaseEstimator, abc.ABC):
     """
     A BigQuery DataFrames machine learning component following the SKLearn API
     design Ref: https://bit.ly/3NyhKjN
@@ -80,7 +81,7 @@ class BaseEstimator(third_party.bigframes_vendored.sklearn.base.BaseEstimator, a
 
         # Estimator pretty printer adapted from Sklearn's, which is in turn an adaption of
         # the inbuilt pretty-printer in CPython
-        import third_party.bigframes_vendored.cpython._pprint as adapted_pprint
+        import bigframes_vendored.cpython._pprint as adapted_pprint
 
         prettyprinter = adapted_pprint._EstimatorPrettyPrinter(
             compact=True, indent=1, indent_at_name=True, n_max_elements_to_show=30

@@ -25,7 +25,7 @@ import pytest
 
 @pytest.fixture
 def module_under_test():
-    from third_party.bigframes_vendored.google_cloud_bigquery import _pandas_helpers
+    from bigframes_vendored.google_cloud_bigquery import _pandas_helpers
 
     return _pandas_helpers
 

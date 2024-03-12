@@ -20,23 +20,22 @@ from __future__ import annotations
 import typing
 from typing import Any, cast, List, Literal, Optional, Tuple, Union
 
+import bigframes_vendored.sklearn.preprocessing._data
+import bigframes_vendored.sklearn.preprocessing._discretization
+import bigframes_vendored.sklearn.preprocessing._encoder
+import bigframes_vendored.sklearn.preprocessing._label
+
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
 import bigframes.pandas as bpd
-import third_party.bigframes_vendored.sklearn.preprocessing._data
-import third_party.bigframes_vendored.sklearn.preprocessing._discretization
-import third_party.bigframes_vendored.sklearn.preprocessing._encoder
-import third_party.bigframes_vendored.sklearn.preprocessing._label
 
 
 @log_adapter.class_logger
 class StandardScaler(
     base.Transformer,
-    third_party.bigframes_vendored.sklearn.preprocessing._data.StandardScaler,
+    bigframes_vendored.sklearn.preprocessing._data.StandardScaler,
 ):
-    __doc__ = (
-        third_party.bigframes_vendored.sklearn.preprocessing._data.StandardScaler.__doc__
-    )
+    __doc__ = bigframes_vendored.sklearn.preprocessing._data.StandardScaler.__doc__
 
     def __init__(self):
         self._bqml_model: Optional[core.BqmlModel] = None
@@ -116,11 +115,9 @@ class StandardScaler(
 @log_adapter.class_logger
 class MaxAbsScaler(
     base.Transformer,
-    third_party.bigframes_vendored.sklearn.preprocessing._data.MaxAbsScaler,
+    bigframes_vendored.sklearn.preprocessing._data.MaxAbsScaler,
 ):
-    __doc__ = (
-        third_party.bigframes_vendored.sklearn.preprocessing._data.MaxAbsScaler.__doc__
-    )
+    __doc__ = bigframes_vendored.sklearn.preprocessing._data.MaxAbsScaler.__doc__
 
     def __init__(self):
         self._bqml_model: Optional[core.BqmlModel] = None
@@ -200,11 +197,9 @@ class MaxAbsScaler(
 @log_adapter.class_logger
 class MinMaxScaler(
     base.Transformer,
-    third_party.bigframes_vendored.sklearn.preprocessing._data.MinMaxScaler,
+    bigframes_vendored.sklearn.preprocessing._data.MinMaxScaler,
 ):
-    __doc__ = (
-        third_party.bigframes_vendored.sklearn.preprocessing._data.MinMaxScaler.__doc__
-    )
+    __doc__ = bigframes_vendored.sklearn.preprocessing._data.MinMaxScaler.__doc__
 
     def __init__(self):
         self._bqml_model: Optional[core.BqmlModel] = None
@@ -284,10 +279,10 @@ class MinMaxScaler(
 @log_adapter.class_logger
 class KBinsDiscretizer(
     base.Transformer,
-    third_party.bigframes_vendored.sklearn.preprocessing._discretization.KBinsDiscretizer,
+    bigframes_vendored.sklearn.preprocessing._discretization.KBinsDiscretizer,
 ):
     __doc__ = (
-        third_party.bigframes_vendored.sklearn.preprocessing._discretization.KBinsDiscretizer.__doc__
+        bigframes_vendored.sklearn.preprocessing._discretization.KBinsDiscretizer.__doc__
     )
 
     def __init__(
@@ -403,15 +398,13 @@ class KBinsDiscretizer(
 @log_adapter.class_logger
 class OneHotEncoder(
     base.Transformer,
-    third_party.bigframes_vendored.sklearn.preprocessing._encoder.OneHotEncoder,
+    bigframes_vendored.sklearn.preprocessing._encoder.OneHotEncoder,
 ):
     # BQML max value https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-one-hot-encoder#syntax
     TOP_K_DEFAULT = 1000000
     FREQUENCY_THRESHOLD_DEFAULT = 0
 
-    __doc__ = (
-        third_party.bigframes_vendored.sklearn.preprocessing._encoder.OneHotEncoder.__doc__
-    )
+    __doc__ = bigframes_vendored.sklearn.preprocessing._encoder.OneHotEncoder.__doc__
 
     # All estimators must implement __init__ to document their parameters, even
     # if they don't have any
@@ -533,15 +526,13 @@ class OneHotEncoder(
 @log_adapter.class_logger
 class LabelEncoder(
     base.LabelTransformer,
-    third_party.bigframes_vendored.sklearn.preprocessing._label.LabelEncoder,
+    bigframes_vendored.sklearn.preprocessing._label.LabelEncoder,
 ):
     # BQML max value https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-one-hot-encoder#syntax
     TOP_K_DEFAULT = 1000000
     FREQUENCY_THRESHOLD_DEFAULT = 0
 
-    __doc__ = (
-        third_party.bigframes_vendored.sklearn.preprocessing._label.LabelEncoder.__doc__
-    )
+    __doc__ = bigframes_vendored.sklearn.preprocessing._label.LabelEncoder.__doc__
 
     # All estimators must implement __init__ to document their parameters, even
     # if they don't have any

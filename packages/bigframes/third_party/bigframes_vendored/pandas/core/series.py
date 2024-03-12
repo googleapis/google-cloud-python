@@ -5,16 +5,16 @@ from __future__ import annotations
 
 from typing import Hashable, IO, Literal, Mapping, Sequence, TYPE_CHECKING
 
+from bigframes_vendored.pandas.core.generic import NDFrame
 import numpy as np
 from pandas._libs import lib
 from pandas._typing import Axis, FilePath, NaPosition, WriteBuffer
 
 from bigframes import constants
-from third_party.bigframes_vendored.pandas.core.generic import NDFrame
 
 if TYPE_CHECKING:
-    from third_party.bigframes_vendored.pandas.core.frame import DataFrame
-    from third_party.bigframes_vendored.pandas.core.groupby import SeriesGroupBy
+    from bigframes_vendored.pandas.core.frame import DataFrame
+    from bigframes_vendored.pandas.core.groupby import SeriesGroupBy
 
 
 class Series(NDFrame):  # type: ignore[misc]

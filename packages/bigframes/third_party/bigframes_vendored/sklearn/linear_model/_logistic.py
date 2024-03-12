@@ -12,13 +12,12 @@ Logistic Regression
 # Original location: https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/linear_model/_logistic.py
 
 
-from typing import List, Optional
-
-from bigframes import constants
-from third_party.bigframes_vendored.sklearn.linear_model._base import (
+from bigframes_vendored.sklearn.linear_model._base import (
     BaseEstimator,
     LinearClassifierMixin,
 )
+
+from bigframes import constants
 
 
 class LogisticRegression(LinearClassifierMixin, BaseEstimator):

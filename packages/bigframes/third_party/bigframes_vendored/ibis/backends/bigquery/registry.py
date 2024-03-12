@@ -1,9 +1,8 @@
 # Contains code from https://github.com/ibis-project/ibis/blob/master/ibis/backends/bigquery/registry.py
 """Module to convert from Ibis expression to SQL string."""
 
+import bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 from ibis.backends.bigquery.registry import OPERATION_REGISTRY
-
-import third_party.bigframes_vendored.ibis.expr.operations as vendored_ibis_ops
 
 
 def _approx_quantiles(translator, op: vendored_ibis_ops.ApproximateMultiQuantile):

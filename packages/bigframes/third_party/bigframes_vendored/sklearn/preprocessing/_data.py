@@ -7,8 +7,9 @@
 #          Eric Chang <ericchang2017@u.northwestern.edu>
 # License: BSD 3 clause
 
+from bigframes_vendored.sklearn.base import BaseEstimator, TransformerMixin
+
 from bigframes import constants
-from third_party.bigframes_vendored.sklearn.base import BaseEstimator, TransformerMixin
 
 
 class StandardScaler(BaseEstimator, TransformerMixin):

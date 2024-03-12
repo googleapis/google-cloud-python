@@ -19,7 +19,7 @@ from __future__ import annotations
 import dataclasses
 from typing import Literal, Optional
 
-import third_party.bigframes_vendored.pandas.core.config_init as vendored_pandas_config
+import bigframes_vendored.pandas.core.config_init as vendored_pandas_config
 
 
 @dataclasses.dataclass

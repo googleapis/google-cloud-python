@@ -18,9 +18,8 @@ import contextlib
 import dataclasses
 from typing import Literal, Optional
 
+import bigframes_vendored.pandas.core.config_init as vendored_pandas_config
 import pandas as pd
-
-import third_party.bigframes_vendored.pandas.core.config_init as vendored_pandas_config
 
 
 @dataclasses.dataclass

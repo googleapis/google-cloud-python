@@ -20,6 +20,7 @@ from __future__ import annotations
 
 from typing import cast, List, Optional, Tuple, Union
 
+import bigframes_vendored.sklearn.pipeline
 from google.cloud import bigquery
 
 import bigframes
@@ -27,15 +28,14 @@ import bigframes.constants as constants
 from bigframes.core import log_adapter
 from bigframes.ml import base, compose, forecasting, loader, preprocessing, utils
 import bigframes.pandas as bpd
-import third_party.bigframes_vendored.sklearn.pipeline
 
 
 @log_adapter.class_logger
 class Pipeline(
     base.BaseEstimator,
-    third_party.bigframes_vendored.sklearn.pipeline.Pipeline,
+    bigframes_vendored.sklearn.pipeline.Pipeline,
 ):
-    __doc__ = third_party.bigframes_vendored.sklearn.pipeline.Pipeline.__doc__
+    __doc__ = bigframes_vendored.sklearn.pipeline.Pipeline.__doc__
 
     def __init__(self, steps: List[Tuple[str, base.BaseEstimator]]):
         self.steps = steps

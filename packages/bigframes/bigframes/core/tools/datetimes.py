@@ -16,6 +16,7 @@ from collections.abc import Mapping
 from datetime import datetime
 from typing import Optional, Union
 
+import bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetimes
 import pandas as pd
 
 import bigframes.constants as constants
@@ -23,7 +24,6 @@ import bigframes.core.global_session as global_session
 import bigframes.dataframe
 import bigframes.operations as ops
 import bigframes.series
-import third_party.bigframes_vendored.pandas.core.tools.datetimes as vendored_pandas_datetimes
 
 
 def to_datetime(

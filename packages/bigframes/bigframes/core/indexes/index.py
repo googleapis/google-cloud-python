@@ -19,6 +19,7 @@ from __future__ import annotations
 import typing
 from typing import Hashable, Optional, Sequence, Union
 
+import bigframes_vendored.pandas.core.indexes.base as vendored_pandas_index
 import google.cloud.bigquery as bigquery
 import numpy as np
 import pandas
@@ -33,7 +34,6 @@ import bigframes.dtypes
 import bigframes.formatting_helpers as formatter
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
-import third_party.bigframes_vendored.pandas.core.indexes.base as vendored_pandas_index
 
 if typing.TYPE_CHECKING:
     import bigframes.dataframe

@@ -3,8 +3,9 @@
 
 # License: BSD
 
+from bigframes_vendored.sklearn.base import BaseEstimator, TransformerMixin
+
 from bigframes import constants
-from third_party.bigframes_vendored.sklearn.base import BaseEstimator, TransformerMixin
 
 
 class KBinsDiscretizer(TransformerMixin, BaseEstimator):

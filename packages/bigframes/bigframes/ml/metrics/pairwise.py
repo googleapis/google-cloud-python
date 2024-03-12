@@ -15,9 +15,10 @@
 import inspect
 from typing import Union
 
+import bigframes_vendored.sklearn.metrics.pairwise as vendored_metrics_pairwise
+
 from bigframes.ml import core, utils
 import bigframes.pandas as bpd
-import third_party.bigframes_vendored.sklearn.metrics.pairwise as vendored_metrics_pairwise
 
 
 def paired_cosine_distances(

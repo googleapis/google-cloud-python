@@ -14,12 +14,13 @@
 
 from __future__ import annotations
 
+import bigframes_vendored.pandas.core.arrays.arrow.accessors as vendoracessors
+
 from bigframes.core import log_adapter
 import bigframes.dataframe
 import bigframes.operations
 import bigframes.operations.base
 import bigframes.series
-import third_party.bigframes_vendored.pandas.core.arrays.arrow.accessors as vendoracessors
 
 
 @log_adapter.class_logger
