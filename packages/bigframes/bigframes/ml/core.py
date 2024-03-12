@@ -128,14 +128,12 @@ class BqmlModel(BaseBqml):
         return self._model
 
     def predict(self, input_data: bpd.DataFrame) -> bpd.DataFrame:
-        # TODO: validate input data schema
         return self._apply_sql(
             input_data,
             self._model_manipulation_sql_generator.ml_predict,
         )
 
     def transform(self, input_data: bpd.DataFrame) -> bpd.DataFrame:
-        # TODO: validate input data schema
         return self._apply_sql(
             input_data,
             self._model_manipulation_sql_generator.ml_transform,
@@ -146,7 +144,6 @@ class BqmlModel(BaseBqml):
         input_data: bpd.DataFrame,
         options: Mapping[str, int | float],
     ) -> bpd.DataFrame:
-        # TODO: validate input data schema
         return self._apply_sql(
             input_data,
             lambda source_df: self._model_manipulation_sql_generator.ml_generate_text(
@@ -160,10 +157,22 @@ class BqmlModel(BaseBqml):
         input_data: bpd.DataFrame,
         options: Mapping[str, int | float],
     ) -> bpd.DataFrame:
-        # TODO: validate input data schema
         return self._apply_sql(
             input_data,
             lambda source_df: self._model_manipulation_sql_generator.ml_generate_text_embedding(
+                source_df=source_df,
+                struct_options=options,
+            ),
+        )
+
+    def detect_anomalies(
+        self, input_data: bpd.DataFrame, options: Mapping[str, int | float]
+    ) -> bpd.DataFrame:
+        assert self._model.model_type in ("PCA", "KMEANS", "ARIMA_PLUS")
+
+        return self._apply_sql(
+            input_data,
+            lambda source_df: self._model_manipulation_sql_generator.ml_detect_anomalies(
                 source_df=source_df,
                 struct_options=options,
             ),
@@ -174,7 +183,6 @@ class BqmlModel(BaseBqml):
         return self._session.read_gbq(sql, index_col="forecast_timestamp").reset_index()
 
     def evaluate(self, input_data: Optional[bpd.DataFrame] = None):
-        # TODO: validate input data schema
         sql = self._model_manipulation_sql_generator.ml_evaluate(input_data)
 
         return self._session.read_gbq(sql)

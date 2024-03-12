@@ -289,6 +289,29 @@ def test_model_predict_with_unnamed_index(
     )
 
 
+def test_model_detect_anomalies(
+    penguins_bqml_pca_model: core.BqmlModel, new_penguins_df
+):
+    options = {"contamination": 0.25}
+    anomalies = penguins_bqml_pca_model.detect_anomalies(
+        new_penguins_df, options
+    ).to_pandas()
+    expected = pd.DataFrame(
+        {
+            "is_anomaly": [True, True, True],
+            "mean_squared_error": [0.254188, 0.731243, 0.298889],
+        },
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+    pd.testing.assert_frame_equal(
+        anomalies[["is_anomaly", "mean_squared_error"]].sort_index(),
+        expected,
+        check_exact=False,
+        check_dtype=False,
+        rtol=0.1,
+    )
+
+
 def test_remote_model_predict(
     bqml_linear_remote_model: core.BqmlModel, new_penguins_df
 ):
@@ -367,16 +390,19 @@ def test_model_forecast(time_series_bqml_arima_plus_model: core.BqmlModel):
     )
 
 
-def test_model_register(ephemera_penguins_bqml_linear_model):
+def test_model_register(ephemera_penguins_bqml_linear_model: core.BqmlModel):
     model = ephemera_penguins_bqml_linear_model
     model.register()
 
+    assert model.model.model_id is not None
     model_name = "bigframes_" + model.model.model_id
     # Only registered model contains the field, and the field includes project/dataset. Here only check model_id.
     assert model_name in model.model.training_runs[-1]["vertexAiModelId"]
 
 
-def test_model_register_with_params(ephemera_penguins_bqml_linear_model):
+def test_model_register_with_params(
+    ephemera_penguins_bqml_linear_model: core.BqmlModel,
+):
     model_name = "bigframes_system_test_model"
     model = ephemera_penguins_bqml_linear_model
     model.register(model_name)

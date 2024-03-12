@@ -15,10 +15,13 @@
 import pandas as pd
 
 from bigframes.ml import decomposition
+import bigframes.pandas as bpd
 import tests.system.utils
 
 
-def test_pca_predict(penguins_pca_model, new_penguins_df):
+def test_pca_predict(
+    penguins_pca_model: decomposition.PCA, new_penguins_df: bpd.DataFrame
+):
     predictions = penguins_pca_model.predict(new_penguins_df).to_pandas()
     expected = pd.DataFrame(
         {
@@ -32,6 +35,27 @@ def test_pca_predict(penguins_pca_model, new_penguins_df):
 
     tests.system.utils.assert_pandas_df_equal_pca(
         predictions, expected, check_exact=False, rtol=0.1
+    )
+
+
+def test_pca_detect_anomalies(
+    penguins_pca_model: decomposition.PCA, new_penguins_df: bpd.DataFrame
+):
+    anomalies = penguins_pca_model.detect_anomalies(new_penguins_df).to_pandas()
+    expected = pd.DataFrame(
+        {
+            "is_anomaly": [False, True, False],
+            "mean_squared_error": [0.254188, 0.731243, 0.298889],
+        },
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(
+        anomalies[["is_anomaly", "mean_squared_error"]].sort_index(),
+        expected,
+        check_exact=False,
+        check_dtype=False,
+        rtol=0.1,
     )
 
 

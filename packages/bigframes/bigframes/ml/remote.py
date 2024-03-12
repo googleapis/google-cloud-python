@@ -23,7 +23,6 @@ import bigframes
 from bigframes import clients
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
-from bigframes.ml.globals import _SUPPORTED_DTYPES
 import bigframes.pandas as bpd
 
 _REMOTE_MODEL_STATUS = "remote_model_status"
@@ -102,9 +101,9 @@ class VertexAIModel(base.BaseEstimator):
             v = v.lower()
             v = v.replace("boolean", "bool")
 
-            if v not in _SUPPORTED_DTYPES:
+            if v not in globals._SUPPORTED_DTYPES:
                 raise ValueError(
-                    f"Data type {v} is not supported. We only support {', '.join(_SUPPORTED_DTYPES)}."
+                    f"Data type {v} is not supported. We only support {', '.join(globals._SUPPORTED_DTYPES)}."
                 )
 
             return v

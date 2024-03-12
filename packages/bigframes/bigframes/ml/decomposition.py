@@ -110,6 +110,34 @@ class PCA(
 
         return self._bqml_model.predict(X)
 
+    def detect_anomalies(
+        self, X: Union[bpd.DataFrame, bpd.Series], *, contamination=0.1
+    ) -> bpd.DataFrame:
+        """Detect the anomaly data points of the input.
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                Series or a DataFrame to detect anomalies.
+            contamination (float, default 0.1):
+                Identifies the proportion of anomalies in the training dataset that are used to create the model.
+                The value must be in the range [0, 0.5].
+
+        Returns:
+            bigframes.dataframe.DataFrame: detected DataFrame."""
+        if contamination < 0.0 or contamination > 0.5:
+            raise ValueError(
+                f"contamination must be [0.0, 0.5], but is {contamination}."
+            )
+
+        if not self._bqml_model:
+            raise RuntimeError("A model must be fitted before detect_anomalies")
+
+        (X,) = utils.convert_to_dataframe(X)
+
+        return self._bqml_model.detect_anomalies(
+            X, options={"contamination": contamination}
+        )
+
     def to_gbq(self, model_name: str, replace: bool = False) -> PCA:
         """Save the model to BigQuery.
 

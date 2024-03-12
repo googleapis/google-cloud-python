@@ -23,7 +23,6 @@ from google.cloud import bigquery
 import bigframes
 from bigframes.core import log_adapter
 from bigframes.ml import base, core, globals, utils
-from bigframes.ml.globals import _SUPPORTED_DTYPES
 import bigframes.pandas as bpd
 
 
@@ -236,9 +235,9 @@ class XGBoostModel(base.Predictor):
         else:
             for io in (self.input, self.output):
                 for v in io.values():
-                    if v not in _SUPPORTED_DTYPES:
+                    if v not in globals._SUPPORTED_DTYPES:
                         raise ValueError(
-                            f"field_type {v} is not supported. We only support {', '.join(_SUPPORTED_DTYPES)}."
+                            f"field_type {v} is not supported. We only support {', '.join(globals._SUPPORTED_DTYPES)}."
                         )
 
             return self._bqml_model_factory.create_xgboost_imported_model(

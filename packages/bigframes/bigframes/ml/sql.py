@@ -276,6 +276,14 @@ class ModelManipulationSqlGenerator(BaseSqlGenerator):
         return f"""SELECT * FROM ML.GENERATE_TEXT_EMBEDDING(MODEL `{self._model_name}`,
   ({self._source_sql(source_df)}), {struct_options_sql})"""
 
+    def ml_detect_anomalies(
+        self, source_df: bpd.DataFrame, struct_options: Mapping[str, Union[int, float]]
+    ) -> str:
+        """Encode ML.DETECT_ANOMALIES for BQML"""
+        struct_options_sql = self.struct_options(**struct_options)
+        return f"""SELECT * FROM ML.DETECT_ANOMALIES(MODEL `{self._model_name}`,
+  {struct_options_sql}, ({self._source_sql(source_df)}))"""
+
     # ML evaluation TVFs
     def ml_evaluate(self, source_df: Optional[bpd.DataFrame] = None) -> str:
         """Encode ML.EVALUATE for BQML"""
