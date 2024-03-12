@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-securitycenter/#history
 
+## [1.29.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.28.0...google-cloud-securitycenter-v1.29.0) (2024-03-11)
+
+
+### Features
+
+* Add external_system.case_create_time, external_system.case_close_time, and external_system.ticket_info to finding's list of attributes ([736a1ef](https://github.com/googleapis/google-cloud-python/commit/736a1efe4cc4ecb4f293f9fa83b9ce9cf39f4c07))
+* Add security_posture, external_system.case_uri, external_system.case_priority, external_system.case_sla to finding's list of attributes ([736a1ef](https://github.com/googleapis/google-cloud-python/commit/736a1efe4cc4ecb4f293f9fa83b9ce9cf39f4c07))
+
 ## [1.28.0](https://github.com/googleapis/google-cloud-python/compare/google-cloud-securitycenter-v1.27.0...google-cloud-securitycenter-v1.28.0) (2024-03-04)
 
 
