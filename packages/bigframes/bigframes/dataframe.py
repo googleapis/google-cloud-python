@@ -1646,7 +1646,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 raise NotImplementedError(
                     "Cannot reindex with index with different nlevels"
                 )
-            new_indexer = DataFrame(index=index)[[]]
+            new_indexer = DataFrame(index=index, session=self._session)[[]]
         # multiindex join is senstive to index names, so we will set all these
         result = new_indexer.rename_axis(range(new_indexer.index.nlevels)).join(
             self.rename_axis(range(self.index.nlevels)),

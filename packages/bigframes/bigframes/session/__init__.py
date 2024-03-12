@@ -916,7 +916,7 @@ class Session(
     def _read_pandas_inline(
         self, pandas_dataframe: pandas.DataFrame
     ) -> dataframe.DataFrame:
-        return dataframe.DataFrame(blocks.Block.from_local(pandas_dataframe))
+        return dataframe.DataFrame(blocks.Block.from_local(pandas_dataframe, self))
 
     def _read_pandas_load_job(
         self, pandas_dataframe: pandas.DataFrame, api_name: str

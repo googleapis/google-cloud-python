@@ -140,7 +140,7 @@ class Block:
         self._stats_cache[" ".join(self.index_columns)] = {}
 
     @classmethod
-    def from_local(cls, data) -> Block:
+    def from_local(cls, data, session: bigframes.Session) -> Block:
         pd_data = pd.DataFrame(data)
         columns = pd_data.columns
 
@@ -162,7 +162,7 @@ class Block:
         )
         index_ids = pd_data.columns[: len(index_labels)]
 
-        keys_expr = core.ArrayValue.from_pandas(pd_data)
+        keys_expr = core.ArrayValue.from_pandas(pd_data, session)
         return cls(
             keys_expr,
             column_labels=columns,

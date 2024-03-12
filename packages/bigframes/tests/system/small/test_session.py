@@ -369,6 +369,17 @@ def test_read_pandas(session, scalars_dfs):
     pd.testing.assert_frame_equal(result, expected)
 
 
+def test_read_pandas_inline_respects_location():
+    options = bigframes.BigQueryOptions(location="europe-west1")
+    session = bigframes.Session(options)
+
+    df = session.read_pandas(pd.DataFrame([[1, 2, 3], [4, 5, 6]]))
+    repr(df)
+
+    table = session.bqclient.get_table(df.query_job.destination)
+    assert table.location == "europe-west1"
+
+
 def test_read_pandas_col_label_w_space(session: bigframes.Session):
     expected = pd.DataFrame(
         {
