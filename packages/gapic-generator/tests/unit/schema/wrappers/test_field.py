@@ -17,6 +17,7 @@ import collections
 import pytest
 
 from google.api import field_behavior_pb2
+from google.api import field_info_pb2
 from google.api import resource_pb2
 from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
@@ -138,6 +139,19 @@ def test_required():
 def test_not_required():
     field = make_field()
     assert not field.required
+
+
+def test_uuid4():
+    field = make_field()
+    field.options.Extensions[field_info_pb2.field_info].format = field_info_pb2.FieldInfo.Format.Value(
+        "UUID4"
+    )
+    assert field.uuid4
+
+
+def test_not_uuid4():
+    field = make_field()
+    assert not field.uuid4
 
 
 def test_ident_sphinx():

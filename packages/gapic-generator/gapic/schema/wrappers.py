@@ -39,6 +39,7 @@ from typing import (Any, cast, Dict, FrozenSet, Iterator, Iterable, List, Mappin
 from google.api import annotations_pb2      # type: ignore
 from google.api import client_pb2
 from google.api import field_behavior_pb2
+from google.api import field_info_pb2
 from google.api import http_pb2
 from google.api import resource_pb2
 from google.api import routing_pb2
@@ -306,6 +307,17 @@ class Field:
         """
         return (field_behavior_pb2.FieldBehavior.Value('REQUIRED') in
                 self.options.Extensions[field_behavior_pb2.field_behavior])
+
+    @property
+    def uuid4(self) -> bool:
+        """
+        Return True if the format of this field is a Universally
+        Unique Identifier, version 4 field, False otherwise.
+
+        Returns:
+            bool: Whether this field is UUID4.
+        """
+        return self.options.Extensions[field_info_pb2.field_info].format == field_info_pb2.FieldInfo.Format.Value("UUID4")
 
     @property
     def resource_reference(self) -> Optional[str]:
