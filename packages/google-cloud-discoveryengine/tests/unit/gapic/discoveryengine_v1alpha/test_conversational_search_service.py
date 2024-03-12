@@ -5504,6 +5504,43 @@ def test_conversational_search_service_transport_channel_mtls_with_adc(transport
             assert transport.grpc_channel == mock_grpc_channel
 
 
+def test_chunk_path():
+    project = "squid"
+    location = "clam"
+    data_store = "whelk"
+    branch = "octopus"
+    document = "oyster"
+    chunk = "nudibranch"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}/chunks/{chunk}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        branch=branch,
+        document=document,
+        chunk=chunk,
+    )
+    actual = ConversationalSearchServiceClient.chunk_path(
+        project, location, data_store, branch, document, chunk
+    )
+    assert expected == actual
+
+
+def test_parse_chunk_path():
+    expected = {
+        "project": "cuttlefish",
+        "location": "mussel",
+        "data_store": "winkle",
+        "branch": "nautilus",
+        "document": "scallop",
+        "chunk": "abalone",
+    }
+    path = ConversationalSearchServiceClient.chunk_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = ConversationalSearchServiceClient.parse_chunk_path(path)
+    assert expected == actual
+
+
 def test_conversation_path():
     project = "squid"
     location = "clam"

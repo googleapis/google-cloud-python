@@ -76,6 +76,8 @@ class ConversationalSearchServiceAsyncClient:
     )
     _DEFAULT_UNIVERSE = ConversationalSearchServiceClient._DEFAULT_UNIVERSE
 
+    chunk_path = staticmethod(ConversationalSearchServiceClient.chunk_path)
+    parse_chunk_path = staticmethod(ConversationalSearchServiceClient.parse_chunk_path)
     conversation_path = staticmethod(
         ConversationalSearchServiceClient.conversation_path
     )
@@ -692,7 +694,7 @@ class ConversationalSearchServiceAsyncClient:
                 [Conversation][google.cloud.discoveryengine.v1alpha.Conversation]
                 to update. The following are NOT supported:
 
-                -  [conversation.name][]
+                -  [Conversation.name][google.cloud.discoveryengine.v1alpha.Conversation.name]
 
                 If not set or empty, all supported fields are updated.
 

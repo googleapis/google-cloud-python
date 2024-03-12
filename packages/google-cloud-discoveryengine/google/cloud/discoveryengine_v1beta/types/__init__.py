@@ -55,6 +55,7 @@ from .data_store_service import (
     UpdateDataStoreRequest,
 )
 from .document import Document
+from .document_processing_config import DocumentProcessingConfig
 from .document_service import (
     CreateDocumentRequest,
     DeleteDocumentRequest,
@@ -110,6 +111,11 @@ from .schema_service import (
     UpdateSchemaRequest,
 )
 from .search_service import SearchRequest, SearchResponse
+from .search_tuning_service import (
+    TrainCustomModelMetadata,
+    TrainCustomModelRequest,
+    TrainCustomModelResponse,
+)
 from .serving_config import ServingConfig
 from .serving_config_service import (
     GetServingConfigRequest,
@@ -195,6 +201,7 @@ __all__ = (
     "ListDataStoresResponse",
     "UpdateDataStoreRequest",
     "Document",
+    "DocumentProcessingConfig",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
     "GetDocumentRequest",
@@ -242,6 +249,9 @@ __all__ = (
     "UpdateSchemaRequest",
     "SearchRequest",
     "SearchResponse",
+    "TrainCustomModelMetadata",
+    "TrainCustomModelRequest",
+    "TrainCustomModelResponse",
     "ServingConfig",
     "GetServingConfigRequest",
     "ListServingConfigsRequest",

@@ -52,9 +52,14 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.services.data_store_service import pagers
 from google.cloud.discoveryengine_v1alpha.types import data_store as gcd_data_store
+from google.cloud.discoveryengine_v1alpha.types import document_processing_config
+from google.cloud.discoveryengine_v1alpha.types import (
+    document_processing_config as gcd_document_processing_config,
+)
 from google.cloud.discoveryengine_v1alpha.types import common
 from google.cloud.discoveryengine_v1alpha.types import data_store
 from google.cloud.discoveryengine_v1alpha.types import data_store_service
+from google.cloud.discoveryengine_v1alpha.types import schema
 
 from .client import DataStoreServiceClient
 from .transports.base import DEFAULT_CLIENT_INFO, DataStoreServiceTransport
@@ -80,6 +85,14 @@ class DataStoreServiceAsyncClient:
     parse_collection_path = staticmethod(DataStoreServiceClient.parse_collection_path)
     data_store_path = staticmethod(DataStoreServiceClient.data_store_path)
     parse_data_store_path = staticmethod(DataStoreServiceClient.parse_data_store_path)
+    document_processing_config_path = staticmethod(
+        DataStoreServiceClient.document_processing_config_path
+    )
+    parse_document_processing_config_path = staticmethod(
+        DataStoreServiceClient.parse_document_processing_config_path
+    )
+    schema_path = staticmethod(DataStoreServiceClient.schema_path)
+    parse_schema_path = staticmethod(DataStoreServiceClient.parse_schema_path)
     common_billing_account_path = staticmethod(
         DataStoreServiceClient.common_billing_account_path
     )
@@ -601,9 +614,10 @@ class DataStoreServiceAsyncClient:
                 ``projects/{project}/locations/{location}/collections/{collection_id}``.
 
                 If the caller does not have permission to list
-                [DataStores][]s under this location, regardless of
-                whether or not this data store exists, a
-                PERMISSION_DENIED error is returned.
+                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s
+                under this location, regardless of whether or not this
+                data store exists, a PERMISSION_DENIED error is
+                returned.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -941,6 +955,276 @@ class DataStoreServiceAsyncClient:
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata(
                 (("data_store.name", request.data_store.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def get_document_processing_config(
+        self,
+        request: Optional[
+            Union[data_store_service.GetDocumentProcessingConfigRequest, dict]
+        ] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> document_processing_config.DocumentProcessingConfig:
+        r"""Gets a
+        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_get_document_processing_config():
+                # Create a client
+                client = discoveryengine_v1alpha.DataStoreServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.GetDocumentProcessingConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = await client.get_document_processing_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.GetDocumentProcessingConfigRequest, dict]]):
+                The request object. Request for
+                [DataStoreService.GetDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.GetDocumentProcessingConfig]
+                method.
+            name (:class:`str`):
+                Required. Full DocumentProcessingConfig resource name.
+                Format:
+                ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/documentProcessingConfig``
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.types.DocumentProcessingConfig:
+                A singleton resource of
+                   [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+                   It's empty when
+                   [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+                   is created, which defaults to digital parser. The
+                   first call to
+                   [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+                   method will initialize the config.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = data_store_service.GetDocumentProcessingConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_document_processing_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._client._validate_universe_domain()
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_document_processing_config(
+        self,
+        request: Optional[
+            Union[data_store_service.UpdateDocumentProcessingConfigRequest, dict]
+        ] = None,
+        *,
+        document_processing_config: Optional[
+            gcd_document_processing_config.DocumentProcessingConfig
+        ] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> gcd_document_processing_config.DocumentProcessingConfig:
+        r"""Updates the
+        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
+        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
+        is a singleon resource of
+        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+        It's empty when
+        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] is
+        created. The first call to this method will set up
+        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import discoveryengine_v1alpha
+
+            async def sample_update_document_processing_config():
+                # Create a client
+                client = discoveryengine_v1alpha.DataStoreServiceAsyncClient()
+
+                # Initialize request argument(s)
+                request = discoveryengine_v1alpha.UpdateDocumentProcessingConfigRequest(
+                )
+
+                # Make the request
+                response = await client.update_document_processing_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.UpdateDocumentProcessingConfigRequest, dict]]):
+                The request object. Request for
+                [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+                method.
+            document_processing_config (:class:`google.cloud.discoveryengine_v1alpha.types.DocumentProcessingConfig`):
+                Required. The
+                [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
+                to update.
+
+                If the caller does not have permission to update the
+                [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig],
+                then a PERMISSION_DENIED error is returned.
+
+                If the
+                [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
+                to update does not exist, a NOT_FOUND error is returned.
+
+                This corresponds to the ``document_processing_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Indicates which fields in the provided
+                [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
+                to update. The following are the only supported fields:
+
+                -  [DocumentProcessingConfig.ocr_config][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.ocr_config]
+
+                If not set, all supported fields are updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.discoveryengine_v1alpha.types.DocumentProcessingConfig:
+                A singleton resource of
+                   [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+                   It's empty when
+                   [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+                   is created, which defaults to digital parser. The
+                   first call to
+                   [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+                   method will initialize the config.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([document_processing_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = data_store_service.UpdateDocumentProcessingConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if document_processing_config is not None:
+            request.document_processing_config = document_processing_config
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_document_processing_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "document_processing_config.name",
+                        request.document_processing_config.name,
+                    ),
+                )
             ),
         )
 

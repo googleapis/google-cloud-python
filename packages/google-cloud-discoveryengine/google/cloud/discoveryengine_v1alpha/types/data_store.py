@@ -20,7 +20,11 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1alpha.types import (
+    document_processing_config as gcd_document_processing_config,
+)
 from google.cloud.discoveryengine_v1alpha.types import common
+from google.cloud.discoveryengine_v1alpha.types import schema
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
@@ -72,6 +76,48 @@ class DataStore(proto.Message):
             Output only. Timestamp the
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
             was created at.
+        idp_config (google.cloud.discoveryengine_v1alpha.types.IdpConfig):
+            Output only. Data store level identity
+            provider config.
+        acl_enabled (bool):
+            Immutable. Whether data in the
+            [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+            has ACL information. If set to ``true``, the source data
+            must have ACL. ACL will be ingested when data is ingested by
+            [DocumentService.ImportDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ImportDocuments]
+            methods.
+
+            When ACL is enabled for the
+            [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
+            [Document][google.cloud.discoveryengine.v1alpha.Document]
+            can't be accessed by calling
+            [DocumentService.GetDocument][google.cloud.discoveryengine.v1alpha.DocumentService.GetDocument]
+            or
+            [DocumentService.ListDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.ListDocuments].
+
+            Currently ACL is only supported in ``GENERIC`` industry
+            vertical with non-\ ``PUBLIC_WEBSITE`` content config.
+        document_processing_config (google.cloud.discoveryengine_v1alpha.types.DocumentProcessingConfig):
+            Configuration for Document understanding and
+            enrichment.
+        starting_schema (google.cloud.discoveryengine_v1alpha.types.Schema):
+            The start schema to use for this
+            [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+            when provisioning it. If unset, a default vertical
+            specialized schema will be used.
+
+            This field is only used by [CreateDataStore][] API, and will
+            be ignored if used in other APIs. This field will be omitted
+            from all API responses including [CreateDataStore][] API. To
+            retrieve a schema of a
+            [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
+            use
+            [SchemaService.GetSchema][google.cloud.discoveryengine.v1alpha.SchemaService.GetSchema]
+            API instead.
+
+            The provided schema will be validated against certain rules
+            on schema. Learn more from `this
+            doc <https://cloud.google.com/generative-ai-app-builder/docs/provide-schema>`__.
     """
 
     class ContentConfig(proto.Enum):
@@ -126,6 +172,25 @@ class DataStore(proto.Message):
         proto.MESSAGE,
         number=4,
         message=timestamp_pb2.Timestamp,
+    )
+    idp_config: common.IdpConfig = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message=common.IdpConfig,
+    )
+    acl_enabled: bool = proto.Field(
+        proto.BOOL,
+        number=24,
+    )
+    document_processing_config: gcd_document_processing_config.DocumentProcessingConfig = proto.Field(
+        proto.MESSAGE,
+        number=27,
+        message=gcd_document_processing_config.DocumentProcessingConfig,
+    )
+    starting_schema: schema.Schema = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message=schema.Schema,
     )
 
 

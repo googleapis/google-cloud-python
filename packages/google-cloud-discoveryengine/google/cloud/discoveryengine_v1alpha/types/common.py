@@ -29,7 +29,12 @@ __protobuf__ = proto.module(
         "Interval",
         "CustomAttribute",
         "UserInfo",
+        "EmbeddingConfig",
         "DoubleList",
+        "GuidedSearchSpec",
+        "CustomFineTuningSpec",
+        "IdpConfig",
+        "Principal",
     },
 )
 
@@ -239,6 +244,22 @@ class UserInfo(proto.Message):
     )
 
 
+class EmbeddingConfig(proto.Message):
+    r"""Defines embedding config, used for bring your own embeddings
+    feature.
+
+    Attributes:
+        field_path (str):
+            Full field path in the schema mapped as
+            embedding field.
+    """
+
+    field_path: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
 class DoubleList(proto.Message):
     r"""Double list.
 
@@ -250,6 +271,142 @@ class DoubleList(proto.Message):
     values: MutableSequence[float] = proto.RepeatedField(
         proto.DOUBLE,
         number=1,
+    )
+
+
+class GuidedSearchSpec(proto.Message):
+    r"""Defines guided search spec.
+
+    Attributes:
+        enable_refinement_attributes (bool):
+            Whether or not to enable and include
+            refinement attributes in gudied search result.
+        enable_related_questions (bool):
+            Whether or not to enable and include related
+            questions in search response.
+        max_related_questions (int):
+            Max number of related questions to be returned. The valid
+            range is [1, 5]. If enable_related_questions is true, the
+            default value is 3.
+    """
+
+    enable_refinement_attributes: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    enable_related_questions: bool = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    max_related_questions: int = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+
+
+class CustomFineTuningSpec(proto.Message):
+    r"""Defines custom fine tuning spec.
+
+    Attributes:
+        enable_search_adaptor (bool):
+            Whether or not to enable and include custom
+            fine tuned search adaptor model.
+    """
+
+    enable_search_adaptor: bool = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+
+
+class IdpConfig(proto.Message):
+    r"""Identity Provider Config.
+
+    Attributes:
+        idp_type (google.cloud.discoveryengine_v1alpha.types.IdpConfig.IdpType):
+            Identity provider type configured.
+        external_idp_config (google.cloud.discoveryengine_v1alpha.types.IdpConfig.ExternalIdpConfig):
+            External Identity provider config.
+    """
+
+    class IdpType(proto.Enum):
+        r"""Identity Provider Type.
+
+        Values:
+            IDP_TYPE_UNSPECIFIED (0):
+                Default value. ACL search not enabled.
+            GSUITE (1):
+                Google 1P provider.
+            THIRD_PARTY (2):
+                Third party provider.
+        """
+        IDP_TYPE_UNSPECIFIED = 0
+        GSUITE = 1
+        THIRD_PARTY = 2
+
+    class ExternalIdpConfig(proto.Message):
+        r"""Third party IDP Config.
+
+        Attributes:
+            workforce_pool_name (str):
+                Workforce pool name. Example:
+                "locations/global/workforcePools/pool_id".
+        """
+
+        workforce_pool_name: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
+    idp_type: IdpType = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=IdpType,
+    )
+    external_idp_config: ExternalIdpConfig = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ExternalIdpConfig,
+    )
+
+
+class Principal(proto.Message):
+    r"""Principal identifier of a user or a group.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        user_id (str):
+            User identifier. For Google Workspace user account, user_id
+            should be the google workspace user email. For non-google
+            identity provider user account, user_id is the mapped user
+            identifier configured during the workforcepool config.
+
+            This field is a member of `oneof`_ ``principal``.
+        group_id (str):
+            Group identifier. For Google Workspace user account,
+            group_id should be the google workspace group email. For
+            non-google identity provider user account, group_id is the
+            mapped group identifier configured during the workforcepool
+            config.
+
+            This field is a member of `oneof`_ ``principal``.
+    """
+
+    user_id: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="principal",
+    )
+    group_id: str = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="principal",
     )
 
 

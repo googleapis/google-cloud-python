@@ -47,6 +47,7 @@ from google.oauth2 import service_account
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import json_format
+from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
@@ -62,10 +63,14 @@ from google.cloud.discoveryengine_v1beta.services.data_store_service import (
     pagers,
     transports,
 )
+from google.cloud.discoveryengine_v1beta.types import (
+    data_store_service,
+    document_processing_config,
+    schema,
+)
 from google.cloud.discoveryengine_v1beta.types import data_store as gcd_data_store
 from google.cloud.discoveryengine_v1beta.types import common
 from google.cloud.discoveryengine_v1beta.types import data_store
-from google.cloud.discoveryengine_v1beta.types import data_store_service
 
 
 def client_cert_source_callback():
@@ -2640,6 +2645,25 @@ def test_create_data_store_rest(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "document_processing_config": {
+            "name": "name_value",
+            "default_parsing_config": {
+                "digital_parsing_config": {},
+                "ocr_parsing_config": {
+                    "enhanced_document_elements": [
+                        "enhanced_document_elements_value1",
+                        "enhanced_document_elements_value2",
+                    ],
+                    "use_native_text": True,
+                },
+            },
+            "parsing_config_overrides": {},
+        },
+        "starting_schema": {
+            "struct_schema": {"fields": {}},
+            "json_schema": "json_schema_value",
+            "name": "name_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3895,6 +3919,25 @@ def test_update_data_store_rest(request_type):
         "default_schema_id": "default_schema_id_value",
         "content_config": 1,
         "create_time": {"seconds": 751, "nanos": 543},
+        "document_processing_config": {
+            "name": "name_value",
+            "default_parsing_config": {
+                "digital_parsing_config": {},
+                "ocr_parsing_config": {
+                    "enhanced_document_elements": [
+                        "enhanced_document_elements_value1",
+                        "enhanced_document_elements_value2",
+                    ],
+                    "use_native_text": True,
+                },
+            },
+            "parsing_config_overrides": {},
+        },
+        "starting_schema": {
+            "struct_schema": {"fields": {}},
+            "json_schema": "json_schema_value",
+            "name": "name_value",
+        },
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -4888,8 +4931,65 @@ def test_parse_data_store_path():
     assert expected == actual
 
 
+def test_document_processing_config_path():
+    project = "squid"
+    location = "clam"
+    data_store = "whelk"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/documentProcessingConfig".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+    )
+    actual = DataStoreServiceClient.document_processing_config_path(
+        project, location, data_store
+    )
+    assert expected == actual
+
+
+def test_parse_document_processing_config_path():
+    expected = {
+        "project": "octopus",
+        "location": "oyster",
+        "data_store": "nudibranch",
+    }
+    path = DataStoreServiceClient.document_processing_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataStoreServiceClient.parse_document_processing_config_path(path)
+    assert expected == actual
+
+
+def test_schema_path():
+    project = "cuttlefish"
+    location = "mussel"
+    data_store = "winkle"
+    schema = "nautilus"
+    expected = "projects/{project}/locations/{location}/dataStores/{data_store}/schemas/{schema}".format(
+        project=project,
+        location=location,
+        data_store=data_store,
+        schema=schema,
+    )
+    actual = DataStoreServiceClient.schema_path(project, location, data_store, schema)
+    assert expected == actual
+
+
+def test_parse_schema_path():
+    expected = {
+        "project": "scallop",
+        "location": "abalone",
+        "data_store": "squid",
+        "schema": "clam",
+    }
+    path = DataStoreServiceClient.schema_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = DataStoreServiceClient.parse_schema_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -4899,7 +4999,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "octopus",
     }
     path = DataStoreServiceClient.common_billing_account_path(**expected)
 
@@ -4909,7 +5009,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -4919,7 +5019,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "nudibranch",
     }
     path = DataStoreServiceClient.common_folder_path(**expected)
 
@@ -4929,7 +5029,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -4939,7 +5039,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "mussel",
     }
     path = DataStoreServiceClient.common_organization_path(**expected)
 
@@ -4949,7 +5049,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -4959,7 +5059,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "nautilus",
     }
     path = DataStoreServiceClient.common_project_path(**expected)
 
@@ -4969,8 +5069,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -4981,8 +5081,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "squid",
+        "location": "clam",
     }
     path = DataStoreServiceClient.common_location_path(**expected)
 

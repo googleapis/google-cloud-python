@@ -50,7 +50,9 @@ class RecommendRequest(proto.Message):
             ``projects/*/locations/global/collections/*/engines/my-engine``,
             you can use
             ``projects/*/locations/global/collections/*/engines/my-engine/servingConfigs/my-engine``
-            for your [Recommend][] requests.
+            for your
+            [RecommendationService.Recommend][google.cloud.discoveryengine.v1alpha.RecommendationService.Recommend]
+            requests.
         user_event (google.cloud.discoveryengine_v1alpha.types.UserEvent):
             Required. Context about the user, what they are looking at
             and what action they took to trigger the Recommend request.

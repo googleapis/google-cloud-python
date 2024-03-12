@@ -588,7 +588,8 @@ class SiteSearchEngineServiceAsyncClient:
 
         Args:
             request (Optional[Union[google.cloud.discoveryengine_v1alpha.types.BatchCreateTargetSitesRequest, dict]]):
-                The request object. Request message for [SiteSearchEngineService.s][]
+                The request object. Request message for
+                [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchCreateTargetSites]
                 method.
             retry (google.api_core.retry_async.AsyncRetry): Designation of what errors, if any,
                 should be retried.

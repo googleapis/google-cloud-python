@@ -232,7 +232,8 @@ class ServingConfigServiceRestStub:
 class ServingConfigServiceRestTransport(ServingConfigServiceTransport):
     """REST backend transport for ServingConfigService.
 
-    Service for modifying ServingConfig.
+    Service for operations related to
+    [ServingConfig][google.cloud.discoveryengine.v1beta.ServingConfig].
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

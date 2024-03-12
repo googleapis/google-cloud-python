@@ -46,6 +46,7 @@ from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import json_format
 from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
@@ -3459,6 +3460,7 @@ def test_create_document_rest(request_type):
         },
         "parent_document_id": "parent_document_id_value",
         "derived_struct_data": {},
+        "index_time": {"seconds": 751, "nanos": 543},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -3867,6 +3869,7 @@ def test_update_document_rest(request_type):
         },
         "parent_document_id": "parent_document_id_value",
         "derived_struct_data": {},
+        "index_time": {"seconds": 751, "nanos": 543},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

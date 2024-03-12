@@ -22,6 +22,9 @@ from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import data_store as gcd_data_store
+from google.cloud.discoveryengine_v1alpha.types import (
+    document_processing_config as gcd_document_processing_config,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
@@ -34,6 +37,8 @@ __protobuf__ = proto.module(
         "DeleteDataStoreRequest",
         "UpdateDataStoreRequest",
         "DeleteDataStoreMetadata",
+        "GetDocumentProcessingConfigRequest",
+        "UpdateDocumentProcessingConfigRequest",
     },
 )
 
@@ -153,9 +158,9 @@ class ListDataStoresRequest(proto.Message):
             ``projects/{project}/locations/{location}/collections/{collection_id}``.
 
             If the caller does not have permission to list
-            [DataStores][]s under this location, regardless of whether
-            or not this data store exists, a PERMISSION_DENIED error is
-            returned.
+            [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s
+            under this location, regardless of whether or not this data
+            store exists, a PERMISSION_DENIED error is returned.
         page_size (int):
             Maximum number of
             [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]s
@@ -319,6 +324,64 @@ class DeleteDataStoreMetadata(proto.Message):
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class GetDocumentProcessingConfigRequest(proto.Message):
+    r"""Request for
+    [DataStoreService.GetDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.GetDocumentProcessingConfig]
+    method.
+
+    Attributes:
+        name (str):
+            Required. Full DocumentProcessingConfig resource name.
+            Format:
+            ``projects/{project_number}/locations/{location_id}/collections/{collection_id}/dataStores/{data_store_id}/documentProcessingConfig``
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class UpdateDocumentProcessingConfigRequest(proto.Message):
+    r"""Request for
+    [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+    method.
+
+    Attributes:
+        document_processing_config (google.cloud.discoveryengine_v1alpha.types.DocumentProcessingConfig):
+            Required. The
+            [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
+            to update.
+
+            If the caller does not have permission to update the
+            [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig],
+            then a PERMISSION_DENIED error is returned.
+
+            If the
+            [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
+            to update does not exist, a NOT_FOUND error is returned.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Indicates which fields in the provided
+            [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
+            to update. The following are the only supported fields:
+
+            -  [DocumentProcessingConfig.ocr_config][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig.ocr_config]
+
+            If not set, all supported fields are updated.
+    """
+
+    document_processing_config: gcd_document_processing_config.DocumentProcessingConfig = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcd_document_processing_config.DocumentProcessingConfig,
+    )
+    update_mask: field_mask_pb2.FieldMask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 

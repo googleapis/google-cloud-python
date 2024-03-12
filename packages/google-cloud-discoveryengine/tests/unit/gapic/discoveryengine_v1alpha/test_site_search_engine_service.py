@@ -4331,7 +4331,7 @@ def test_create_target_site_rest(request_type):
         },
         "indexing_status": 1,
         "update_time": {},
-        "failure_reason": {"quota_failure": {}},
+        "failure_reason": {"quota_failure": {"total_required_quota": 2157}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -5199,7 +5199,7 @@ def test_update_target_site_rest(request_type):
         },
         "indexing_status": 1,
         "update_time": {},
-        "failure_reason": {"quota_failure": {}},
+        "failure_reason": {"quota_failure": {"total_required_quota": 2157}},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency

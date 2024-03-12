@@ -67,6 +67,10 @@ class SearchServiceAsyncClient:
 
     branch_path = staticmethod(SearchServiceClient.branch_path)
     parse_branch_path = staticmethod(SearchServiceClient.parse_branch_path)
+    chunk_path = staticmethod(SearchServiceClient.chunk_path)
+    parse_chunk_path = staticmethod(SearchServiceClient.parse_chunk_path)
+    data_store_path = staticmethod(SearchServiceClient.data_store_path)
+    parse_data_store_path = staticmethod(SearchServiceClient.parse_data_store_path)
     document_path = staticmethod(SearchServiceClient.document_path)
     parse_document_path = staticmethod(SearchServiceClient.parse_document_path)
     serving_config_path = staticmethod(SearchServiceClient.serving_config_path)

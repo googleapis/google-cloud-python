@@ -61,7 +61,9 @@ from .transports.grpc_asyncio import ServingConfigServiceGrpcAsyncIOTransport
 
 
 class ServingConfigServiceAsyncClient:
-    """Service for modifying ServingConfig."""
+    """Service for operations related to
+    [ServingConfig][google.cloud.discoveryengine.v1beta.ServingConfig].
+    """
 
     _client: ServingConfigServiceClient
 
@@ -72,10 +74,6 @@ class ServingConfigServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = ServingConfigServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = ServingConfigServiceClient._DEFAULT_UNIVERSE
 
-    data_store_path = staticmethod(ServingConfigServiceClient.data_store_path)
-    parse_data_store_path = staticmethod(
-        ServingConfigServiceClient.parse_data_store_path
-    )
     serving_config_path = staticmethod(ServingConfigServiceClient.serving_config_path)
     parse_serving_config_path = staticmethod(
         ServingConfigServiceClient.parse_serving_config_path
@@ -452,7 +450,7 @@ class ServingConfigServiceAsyncClient:
             name (:class:`str`):
                 Required. The resource name of the ServingConfig to get.
                 Format:
-                ``projects/{project_number}/locations/{location}/collections/{collection}/dataStores/{data_store}/servingConfigs/{serving_config_id}``
+                ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config_id}``
 
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -563,8 +561,9 @@ class ServingConfigServiceAsyncClient:
                 The request object. Request for ListServingConfigs
                 method.
             parent (:class:`str`):
-                Required. The dataStore resource name. Format:
-                ``projects/{project_number}/locations/{location}/collections/{collection}/dataStores/{data_store}``
+                Required. Full resource name of the parent resource.
+                Format:
+                ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}``
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this

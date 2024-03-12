@@ -110,6 +110,9 @@ class PurgeDocumentsMetadata(proto.Message):
         failure_count (int):
             Count of entries that encountered errors
             while processing.
+        ignored_count (int):
+            Count of entries that were ignored as entries
+            were not found.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -129,6 +132,10 @@ class PurgeDocumentsMetadata(proto.Message):
     failure_count: int = proto.Field(
         proto.INT64,
         number=4,
+    )
+    ignored_count: int = proto.Field(
+        proto.INT64,
+        number=5,
     )
 
 

@@ -208,6 +208,56 @@ class SearchServiceClient(metaclass=SearchServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def chunk_path(
+        project: str,
+        location: str,
+        data_store: str,
+        branch: str,
+        document: str,
+        chunk: str,
+    ) -> str:
+        """Returns a fully-qualified chunk string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}/chunks/{chunk}".format(
+            project=project,
+            location=location,
+            data_store=data_store,
+            branch=branch,
+            document=document,
+            chunk=chunk,
+        )
+
+    @staticmethod
+    def parse_chunk_path(path: str) -> Dict[str, str]:
+        """Parses a chunk path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/branches/(?P<branch>.+?)/documents/(?P<document>.+?)/chunks/(?P<chunk>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def data_store_path(
+        project: str,
+        location: str,
+        data_store: str,
+    ) -> str:
+        """Returns a fully-qualified data_store string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}".format(
+            project=project,
+            location=location,
+            data_store=data_store,
+        )
+
+    @staticmethod
+    def parse_data_store_path(path: str) -> Dict[str, str]:
+        """Parses a data_store path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def document_path(
         project: str,
         location: str,
