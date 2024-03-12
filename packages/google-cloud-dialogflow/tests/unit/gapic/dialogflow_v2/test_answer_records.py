@@ -2189,6 +2189,7 @@ def test_update_answer_record_rest(request_type):
                     "start_time": {"seconds": 751, "nanos": 543},
                     "submit_time": {},
                     "summary_text": "summary_text_value",
+                    "text_sections": {},
                 },
                 "knowledge_search_feedback": {
                     "answer_copied": True,
