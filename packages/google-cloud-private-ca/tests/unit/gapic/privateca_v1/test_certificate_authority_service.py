@@ -9566,6 +9566,7 @@ def test_create_certificate_rest(request_type):
                 "additional_extensions": {},
             },
             "public_key": {"key": b"key_blob", "format_": 1},
+            "subject_key_id": {"key_id": "key_id_value"},
         },
         "issuer_certificate_authority": "issuer_certificate_authority_value",
         "lifetime": {"seconds": 751, "nanos": 543},
@@ -11005,6 +11006,7 @@ def test_update_certificate_rest(request_type):
                 "additional_extensions": {},
             },
             "public_key": {"key": b"key_blob", "format_": 1},
+            "subject_key_id": {"key_id": "key_id_value"},
         },
         "issuer_certificate_authority": "issuer_certificate_authority_value",
         "lifetime": {"seconds": 751, "nanos": 543},
@@ -11796,6 +11798,7 @@ def test_create_certificate_authority_rest(request_type):
                 "additional_extensions": {},
             },
             "public_key": {"key": b"key_blob", "format_": 1},
+            "subject_key_id": {"key_id": "key_id_value"},
         },
         "lifetime": {"seconds": 751, "nanos": 543},
         "key_spec": {
@@ -14340,6 +14343,7 @@ def test_update_certificate_authority_rest(request_type):
                 "additional_extensions": {},
             },
             "public_key": {"key": b"key_blob", "format_": 1},
+            "subject_key_id": {"key_id": "key_id_value"},
         },
         "lifetime": {"seconds": 751, "nanos": 543},
         "key_spec": {
@@ -17833,6 +17837,7 @@ def test_create_certificate_template_rest(request_type):
     request_init = {"parent": "projects/sample1/locations/sample2"}
     request_init["certificate_template"] = {
         "name": "name_value",
+        "maximum_lifetime": {"seconds": 751, "nanos": 543},
         "predefined_values": {
             "key_usage": {
                 "base_key_usage": {
@@ -19184,6 +19189,7 @@ def test_update_certificate_template_rest(request_type):
     }
     request_init["certificate_template"] = {
         "name": "projects/sample1/locations/sample2/certificateTemplates/sample3",
+        "maximum_lifetime": {"seconds": 751, "nanos": 543},
         "predefined_values": {
             "key_usage": {
                 "base_key_usage": {
