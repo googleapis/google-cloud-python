@@ -466,6 +466,27 @@ class Test_parse_value_pb(unittest.TestCase):
 
         self.assertEqual(self._callFUT(value_pb, field_type), expected_value)
 
+    def test_w_float32(self):
+        from google.cloud.spanner_v1 import Type, TypeCode
+        from google.protobuf.struct_pb2 import Value
+
+        VALUE = 3.14159
+        field_type = Type(code=TypeCode.FLOAT32)
+        value_pb = Value(number_value=VALUE)
+
+        self.assertEqual(self._callFUT(value_pb, field_type), VALUE)
+
+    def test_w_float32_str(self):
+        from google.cloud.spanner_v1 import Type, TypeCode
+        from google.protobuf.struct_pb2 import Value
+
+        VALUE = "3.14159"
+        field_type = Type(code=TypeCode.FLOAT32)
+        value_pb = Value(string_value=VALUE)
+        expected_value = 3.14159
+
+        self.assertEqual(self._callFUT(value_pb, field_type), expected_value)
+
     def test_w_date(self):
         import datetime
         from google.protobuf.struct_pb2 import Value

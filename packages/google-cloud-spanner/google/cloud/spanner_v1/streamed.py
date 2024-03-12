@@ -332,6 +332,7 @@ _MERGE_BY_TYPE = {
     TypeCode.BYTES: _merge_string,
     TypeCode.DATE: _merge_string,
     TypeCode.FLOAT64: _merge_float64,
+    TypeCode.FLOAT32: _merge_float64,
     TypeCode.INT64: _merge_string,
     TypeCode.STRING: _merge_string,
     TypeCode.STRUCT: _merge_struct,

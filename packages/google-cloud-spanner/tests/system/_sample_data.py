@@ -90,5 +90,8 @@ def _check_cell_data(found_cell, expected_cell, recurse_into_lists=True):
         for found_item, expected_item in zip(found_cell, expected_cell):
             _check_cell_data(found_item, expected_item)
 
+    elif isinstance(found_cell, float) and not math.isinf(found_cell):
+        assert abs(found_cell - expected_cell) < 0.00001
+
     else:
         assert found_cell == expected_cell

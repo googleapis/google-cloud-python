@@ -2216,6 +2216,47 @@ def test_execute_sql_w_float_bindings_transfinite(sessions_database, database_di
     )
 
 
+def test_execute_sql_w_float32_bindings(sessions_database, database_dialect):
+    pytest.skip("float32 is not yet supported in production.")
+    _bind_test_helper(
+        sessions_database,
+        database_dialect,
+        spanner_v1.param_types.FLOAT32,
+        42.3,
+        [12.3, 456.0, 7.89],
+    )
+
+
+def test_execute_sql_w_float32_bindings_transfinite(
+    sessions_database, database_dialect
+):
+    pytest.skip("float32 is not yet supported in production.")
+    key = "p1" if database_dialect == DatabaseDialect.POSTGRESQL else "neg_inf"
+    placeholder = "$1" if database_dialect == DatabaseDialect.POSTGRESQL else f"@{key}"
+
+    # Find -inf
+    _check_sql_results(
+        sessions_database,
+        sql=f"SELECT {placeholder}",
+        params={key: NEG_INF},
+        param_types={key: spanner_v1.param_types.FLOAT32},
+        expected=[(NEG_INF,)],
+        order=False,
+    )
+
+    key = "p1" if database_dialect == DatabaseDialect.POSTGRESQL else "pos_inf"
+    placeholder = "$1" if database_dialect == DatabaseDialect.POSTGRESQL else f"@{key}"
+    # Find +inf
+    _check_sql_results(
+        sessions_database,
+        sql=f"SELECT {placeholder}",
+        params={key: POS_INF},
+        param_types={key: spanner_v1.param_types.FLOAT32},
+        expected=[(POS_INF,)],
+        order=False,
+    )
+
+
 def test_execute_sql_w_bytes_bindings(sessions_database, database_dialect):
     _bind_test_helper(
         sessions_database,

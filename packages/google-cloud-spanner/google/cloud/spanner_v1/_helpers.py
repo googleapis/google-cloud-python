@@ -228,6 +228,11 @@ def _parse_value_pb(value_pb, field_type):
             return float(value_pb.string_value)
         else:
             return value_pb.number_value
+    elif type_code == TypeCode.FLOAT32:
+        if value_pb.HasField("string_value"):
+            return float(value_pb.string_value)
+        else:
+            return value_pb.number_value
     elif type_code == TypeCode.DATE:
         return _date_from_iso8601_date(value_pb.string_value)
     elif type_code == TypeCode.TIMESTAMP:
