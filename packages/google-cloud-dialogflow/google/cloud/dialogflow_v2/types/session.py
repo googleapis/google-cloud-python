@@ -1021,15 +1021,16 @@ class StreamingRecognitionResult(proto.Message):
                 Message contains a (possibly partial)
                 transcript.
             END_OF_SINGLE_UTTERANCE (2):
-                Event indicates that the server has detected the end of the
-                user's speech utterance and expects no additional inputs.
-                Therefore, the server will not process additional audio
-                (although it may subsequently return additional results).
-                The client should stop sending additional audio data,
-                half-close the gRPC connection, and wait for any additional
-                results until the server closes the gRPC connection. This
-                message is only sent if ``single_utterance`` was set to
-                ``true``, and is not used otherwise.
+                This event indicates that the server has detected the end of
+                the user's speech utterance and expects no additional
+                inputs. Therefore, the server will not process additional
+                audio (although it may subsequently return additional
+                results). The client should stop sending additional audio
+                data, half-close the gRPC connection, and wait for any
+                additional results until the server closes the gRPC
+                connection. This message is only sent if
+                ``single_utterance`` was set to ``true``, and is not used
+                otherwise.
         """
         MESSAGE_TYPE_UNSPECIFIED = 0
         TRANSCRIPT = 1
