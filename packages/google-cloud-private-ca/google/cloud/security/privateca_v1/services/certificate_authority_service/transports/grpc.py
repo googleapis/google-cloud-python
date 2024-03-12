@@ -845,10 +845,8 @@ class CertificateAuthorityServiceGrpcTransport(CertificateAuthorityServiceTransp
 
         FetchCaCerts returns the current trust anchor for the
         [CaPool][google.cloud.security.privateca.v1.CaPool]. This will
-        include CA certificate chains for all ACTIVE
-        [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
-        resources in the
-        [CaPool][google.cloud.security.privateca.v1.CaPool].
+        include CA certificate chains for all Certificate Authorities in
+        the ENABLED, DISABLED, or STAGED states.
 
         Returns:
             Callable[[~.FetchCaCertsRequest],

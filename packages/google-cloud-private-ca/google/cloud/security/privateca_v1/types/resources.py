@@ -1209,6 +1209,23 @@ class CertificateTemplate(proto.Message):
             [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
             in the format
             ``projects/*/locations/*/certificateTemplates/*``.
+        maximum_lifetime (google.protobuf.duration_pb2.Duration):
+            Optional. The maximum lifetime allowed for issued
+            [Certificates][google.cloud.security.privateca.v1.Certificate]
+            that use this template. If the issuing
+            [CaPool][google.cloud.security.privateca.v1.CaPool]'s
+            [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy]
+            specifies a
+            [maximum_lifetime][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.maximum_lifetime]
+            the minimum of the two durations will be the maximum
+            lifetime for issued
+            [Certificates][google.cloud.security.privateca.v1.Certificate].
+            Note that if the issuing
+            [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+            expires before a
+            [Certificate][google.cloud.security.privateca.v1.Certificate]'s
+            requested maximum_lifetime, the effective lifetime will be
+            explicitly truncated to match it.
         predefined_values (google.cloud.security.privateca_v1.types.X509Parameters):
             Optional. A set of X.509 values that will be applied to all
             issued certificates that use this template. If the
@@ -1266,6 +1283,11 @@ class CertificateTemplate(proto.Message):
     name: str = proto.Field(
         proto.STRING,
         number=1,
+    )
+    maximum_lifetime: duration_pb2.Duration = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=duration_pb2.Duration,
     )
     predefined_values: "X509Parameters" = proto.Field(
         proto.MESSAGE,
@@ -1629,6 +1651,13 @@ class CertificateConfig(proto.Message):
             or
             [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
             CSR.
+        subject_key_id (google.cloud.security.privateca_v1.types.CertificateConfig.KeyId):
+            Optional. When specified this provides a
+            custom SKI to be used in the certificate. This
+            should only be used to maintain a SKI of an
+            existing CA originally created outside CAS,
+            which was not generated using method (1)
+            described in RFC 5280 section 4.2.1.2.
     """
 
     class SubjectConfig(proto.Message):
@@ -1637,7 +1666,7 @@ class CertificateConfig(proto.Message):
 
         Attributes:
             subject (google.cloud.security.privateca_v1.types.Subject):
-                Required. Contains distinguished name fields
+                Optional. Contains distinguished name fields
                 such as the common name, location and
                 organization.
             subject_alt_name (google.cloud.security.privateca_v1.types.SubjectAltNames):
@@ -1656,6 +1685,22 @@ class CertificateConfig(proto.Message):
             message="SubjectAltNames",
         )
 
+    class KeyId(proto.Message):
+        r"""A KeyId identifies a specific public key, usually by hashing
+        the public key.
+
+        Attributes:
+            key_id (str):
+                Required. The value of this KeyId encoded in
+                lowercase hexadecimal. This is most likely the
+                160 bit SHA-1 hash of the public key.
+        """
+
+        key_id: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
     subject_config: SubjectConfig = proto.Field(
         proto.MESSAGE,
         number=1,
@@ -1670,6 +1715,11 @@ class CertificateConfig(proto.Message):
         proto.MESSAGE,
         number=3,
         message="PublicKey",
+    )
+    subject_key_id: KeyId = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=KeyId,
     )
 
 
