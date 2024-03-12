@@ -35,7 +35,9 @@ ARIMA_EVALUATE_OUTPUT_COL = [
 ]
 
 
-def test_model_predict_default(time_series_arima_plus_model: forecasting.ARIMAPlus):
+def test_arima_plus_predict_default(
+    time_series_arima_plus_model: forecasting.ARIMAPlus,
+):
     utc = pytz.utc
     predictions = time_series_arima_plus_model.predict().to_pandas()
     assert predictions.shape == (3, 8)
@@ -63,7 +65,7 @@ def test_model_predict_default(time_series_arima_plus_model: forecasting.ARIMAPl
     )
 
 
-def test_model_predict_params(time_series_arima_plus_model: forecasting.ARIMAPlus):
+def test_arima_plus_predict_params(time_series_arima_plus_model: forecasting.ARIMAPlus):
     utc = pytz.utc
     predictions = time_series_arima_plus_model.predict(
         horizon=4, confidence_level=0.9
@@ -94,7 +96,55 @@ def test_model_predict_params(time_series_arima_plus_model: forecasting.ARIMAPlu
     )
 
 
-def test_model_score(
+def test_arima_plus_detect_anomalies(
+    time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
+):
+    anomalies = time_series_arima_plus_model.detect_anomalies(
+        new_time_series_df
+    ).to_pandas()
+
+    expected = pd.DataFrame(
+        {
+            "is_anomaly": [False, False, False],
+            "lower_bound": [2349.301736, 2153.614829, 1849.040192],
+            "upper_bound": [3099.642833, 3033.12195, 2858.185876],
+            "anomaly_probability": [0.757824, 0.322559, 0.43011],
+        },
+    )
+    pd.testing.assert_frame_equal(
+        anomalies[["is_anomaly", "lower_bound", "upper_bound", "anomaly_probability"]],
+        expected,
+        rtol=0.1,
+        check_index_type=False,
+        check_dtype=False,
+    )
+
+
+def test_arima_plus_detect_anomalies_params(
+    time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
+):
+    anomalies = time_series_arima_plus_model.detect_anomalies(
+        new_time_series_df, anomaly_prob_threshold=0.7
+    ).to_pandas()
+
+    expected = pd.DataFrame(
+        {
+            "is_anomaly": [True, False, False],
+            "lower_bound": [2525.5363, 2360.1870, 2086.0609],
+            "upper_bound": [2923.408256, 2826.54981, 2621.165188],
+            "anomaly_probability": [0.757824, 0.322559, 0.43011],
+        },
+    )
+    pd.testing.assert_frame_equal(
+        anomalies[["is_anomaly", "lower_bound", "upper_bound", "anomaly_probability"]],
+        expected,
+        rtol=0.1,
+        check_index_type=False,
+        check_dtype=False,
+    )
+
+
+def test_arima_plus_score(
     time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
 ):
     result = time_series_arima_plus_model.score(
@@ -118,16 +168,14 @@ def test_model_score(
     )
 
 
-def test_model_summary(
-    time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
-):
+def test_arima_plus_summary(time_series_arima_plus_model: forecasting.ARIMAPlus):
     result = time_series_arima_plus_model.summary()
     assert result.shape == (1, 12)
     assert all(column in result.columns for column in ARIMA_EVALUATE_OUTPUT_COL)
 
 
-def test_model_summary_show_all_candidates(
-    time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
+def test_arima_plus_summary_show_all_candidates(
+    time_series_arima_plus_model: forecasting.ARIMAPlus,
 ):
     result = time_series_arima_plus_model.summary(
         show_all_candidate_models=True,
@@ -136,7 +184,7 @@ def test_model_summary_show_all_candidates(
     assert all(column in result.columns for column in ARIMA_EVALUATE_OUTPUT_COL)
 
 
-def test_model_score_series(
+def test_arima_plus_score_series(
     time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
 ):
     result = time_series_arima_plus_model.score(
@@ -160,9 +208,7 @@ def test_model_score_series(
     )
 
 
-def test_model_summary_series(
-    time_series_arima_plus_model: forecasting.ARIMAPlus, new_time_series_df
-):
+def test_arima_plus_summary_series(time_series_arima_plus_model: forecasting.ARIMAPlus):
     result = time_series_arima_plus_model.summary()
     assert result.shape == (1, 12)
     assert all(column in result.columns for column in ARIMA_EVALUATE_OUTPUT_COL)

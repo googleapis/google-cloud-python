@@ -111,7 +111,7 @@ class PCA(
         return self._bqml_model.predict(X)
 
     def detect_anomalies(
-        self, X: Union[bpd.DataFrame, bpd.Series], *, contamination=0.1
+        self, X: Union[bpd.DataFrame, bpd.Series], *, contamination: float = 0.1
     ) -> bpd.DataFrame:
         """Detect the anomaly data points of the input.
 

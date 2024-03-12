@@ -15,6 +15,7 @@
 import pandas as pd
 
 from bigframes.ml import cluster
+import bigframes.pandas as bpd
 from tests.system.utils import assert_pandas_df_equal
 
 _PD_NEW_PENGUINS = pd.DataFrame.from_dict(
@@ -71,6 +72,50 @@ def test_kmeans_predict(session, penguins_kmeans_model: cluster.KMeans):
         index=pd.Index(["test1", "test2", "test3", "test4"], dtype="string[pyarrow]"),
     )
     assert_pandas_df_equal(result, expected, ignore_order=True)
+
+
+def test_kmeans_detect_anomalies(
+    penguins_kmeans_model: cluster.KMeans, new_penguins_df: bpd.DataFrame
+):
+    anomalies = penguins_kmeans_model.detect_anomalies(new_penguins_df).to_pandas()
+    expected = pd.DataFrame(
+        {
+            "is_anomaly": [False, False, False],
+            "normalized_distance": [1.082937, 0.77139, 0.478304],
+        },
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(
+        anomalies[["is_anomaly", "normalized_distance"]].sort_index(),
+        expected,
+        check_exact=False,
+        check_dtype=False,
+        rtol=0.1,
+    )
+
+
+def test_kmeans_detect_anomalies_params(
+    penguins_kmeans_model: cluster.KMeans, new_penguins_df: bpd.DataFrame
+):
+    anomalies = penguins_kmeans_model.detect_anomalies(
+        new_penguins_df, contamination=0.4
+    ).to_pandas()
+    expected = pd.DataFrame(
+        {
+            "is_anomaly": [True, False, False],
+            "normalized_distance": [1.082937, 0.77139, 0.478304],
+        },
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(
+        anomalies[["is_anomaly", "normalized_distance"]].sort_index(),
+        expected,
+        check_exact=False,
+        check_dtype=False,
+        rtol=0.1,
+    )
 
 
 def test_kmeans_score(session, penguins_kmeans_model: cluster.KMeans):

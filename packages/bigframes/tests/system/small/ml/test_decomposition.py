@@ -59,6 +59,29 @@ def test_pca_detect_anomalies(
     )
 
 
+def test_pca_detect_anomalies_params(
+    penguins_pca_model: decomposition.PCA, new_penguins_df: bpd.DataFrame
+):
+    anomalies = penguins_pca_model.detect_anomalies(
+        new_penguins_df, contamination=0.2
+    ).to_pandas()
+    expected = pd.DataFrame(
+        {
+            "is_anomaly": [False, True, True],
+            "mean_squared_error": [0.254188, 0.731243, 0.298889],
+        },
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    pd.testing.assert_frame_equal(
+        anomalies[["is_anomaly", "mean_squared_error"]].sort_index(),
+        expected,
+        check_exact=False,
+        check_dtype=False,
+        rtol=0.1,
+    )
+
+
 def test_pca_score(penguins_pca_model: decomposition.PCA):
     result = penguins_pca_model.score().to_pandas()
     expected = pd.DataFrame(

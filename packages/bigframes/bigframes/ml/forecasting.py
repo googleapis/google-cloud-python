@@ -119,6 +119,36 @@ class ARIMAPlus(base.SupervisedTrainablePredictor):
             options={"horizon": horizon, "confidence_level": confidence_level}
         )
 
+    def detect_anomalies(
+        self,
+        X: Union[bpd.DataFrame, bpd.Series],
+        *,
+        anomaly_prob_threshold: float = 0.95,
+    ) -> bpd.DataFrame:
+        """Detect the anomaly data points of the input.
+
+        Args:
+            X (bigframes.dataframe.DataFrame or bigframes.series.Series):
+                Series or a DataFrame to detect anomalies.
+            anomaly_prob_threshold (float, default 0.95):
+                Identifies the custom threshold to use for anomaly detection. The value must be in the range [0, 1), with a default value of 0.95.
+
+        Returns:
+            bigframes.dataframe.DataFrame: detected DataFrame."""
+        if anomaly_prob_threshold < 0.0 or anomaly_prob_threshold >= 1.0:
+            raise ValueError(
+                f"anomaly_prob_threshold must be [0.0, 1.0), but is {anomaly_prob_threshold}."
+            )
+
+        if not self._bqml_model:
+            raise RuntimeError("A model must be fitted before detect_anomalies")
+
+        (X,) = utils.convert_to_dataframe(X)
+
+        return self._bqml_model.detect_anomalies(
+            X, options={"anomaly_prob_threshold": anomaly_prob_threshold}
+        )
+
     def score(
         self,
         X: Union[bpd.DataFrame, bpd.Series],
