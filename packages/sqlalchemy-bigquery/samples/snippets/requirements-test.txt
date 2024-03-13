@@ -1,9 +1,9 @@
 attrs==23.2.0
 click==8.1.7
-google-auth==2.28.1
+google-auth==2.28.2
 google-cloud-testutils==1.4.0
 iniconfig==2.0.0
-packaging==23.2
+packaging==24.0
 pluggy==1.4.0
 py==1.11.0
 pyasn1==0.5.1
