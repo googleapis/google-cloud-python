@@ -19,17 +19,15 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
-from grafeas.grafeas_v1.types import common
-from grafeas.grafeas_v1.types import intoto_statement
-
+from grafeas.grafeas_v1.types import common, intoto_statement
 
 __protobuf__ = proto.module(
-    package='grafeas.v1',
+    package="grafeas.v1",
     manifest={
-        'SBOMReferenceNote',
-        'SBOMReferenceOccurrence',
-        'SbomReferenceIntotoPayload',
-        'SbomReferenceIntotoPredicate',
+        "SBOMReferenceNote",
+        "SBOMReferenceOccurrence",
+        "SbomReferenceIntotoPayload",
+        "SbomReferenceIntotoPredicate",
     },
 )
 
@@ -77,10 +75,10 @@ class SBOMReferenceOccurrence(proto.Message):
             The signatures over the payload.
     """
 
-    payload: 'SbomReferenceIntotoPayload' = proto.Field(
+    payload: "SbomReferenceIntotoPayload" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='SbomReferenceIntotoPayload',
+        message="SbomReferenceIntotoPayload",
     )
     payload_type: str = proto.Field(
         proto.STRING,
@@ -126,10 +124,10 @@ class SbomReferenceIntotoPayload(proto.Message):
         number=3,
         message=intoto_statement.Subject,
     )
-    predicate: 'SbomReferenceIntotoPredicate' = proto.Field(
+    predicate: "SbomReferenceIntotoPredicate" = proto.Field(
         proto.MESSAGE,
         number=4,
-        message='SbomReferenceIntotoPredicate',
+        message="SbomReferenceIntotoPredicate",
     )
 
 
