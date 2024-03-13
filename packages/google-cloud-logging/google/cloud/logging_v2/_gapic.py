@@ -271,7 +271,6 @@ class _SinksAPI(object):
         return MessageToDict(
             LogSink.pb(created_pb),
             preserving_proto_field_name=False,
-            including_default_value_fields=False,
         )
 
     def sink_get(self, sink_name):
@@ -298,7 +297,6 @@ class _SinksAPI(object):
         return MessageToDict(
             LogSink.pb(sink_pb),
             preserving_proto_field_name=False,
-            including_default_value_fields=False,
         )
 
     def sink_update(
@@ -351,7 +349,6 @@ class _SinksAPI(object):
         return MessageToDict(
             LogSink.pb(sink_pb),
             preserving_proto_field_name=False,
-            including_default_value_fields=False,
         )
 
     def sink_delete(self, sink_name):
@@ -459,7 +456,6 @@ class _MetricsAPI(object):
         return MessageToDict(
             LogMetric.pb(metric_pb),
             preserving_proto_field_name=False,
-            including_default_value_fields=False,
         )
 
     def metric_update(
@@ -496,7 +492,6 @@ class _MetricsAPI(object):
         return MessageToDict(
             LogMetric.pb(metric_pb),
             preserving_proto_field_name=False,
-            including_default_value_fields=False,
         )
 
     def metric_delete(self, project, metric_name):
@@ -530,7 +525,6 @@ def _parse_log_entry(entry_pb):
         return MessageToDict(
             entry_pb,
             preserving_proto_field_name=False,
-            including_default_value_fields=False,
         )
     except TypeError:
         if entry_pb.HasField("proto_payload"):
@@ -539,7 +533,6 @@ def _parse_log_entry(entry_pb):
             entry_mapping = MessageToDict(
                 entry_pb,
                 preserving_proto_field_name=False,
-                including_default_value_fields=False,
             )
             entry_mapping["protoPayload"] = proto_payload
             return entry_mapping

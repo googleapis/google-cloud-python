@@ -595,7 +595,6 @@ class Test__parse_log_entry(unittest.TestCase):
         msg_to_dict_mock.assert_called_once_with(
             entry_pb,
             preserving_proto_field_name=False,
-            including_default_value_fields=False,
         )
 
     def test_unregistered_type(self):
