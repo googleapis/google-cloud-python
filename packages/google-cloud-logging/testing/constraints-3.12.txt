@@ -4,13 +4,3 @@
 google-api-core
 proto-plus
 protobuf
-
-# Lower bound testing for optional dependencies
-django==4.2
-
-# Need specific versions of Flask dependencies for Flask 1.0 to work
-flask==1.0.3
-jinja2==2.11
-markupsafe==2.0.1
-itsdangerous==2.0.1
-werkzeug==1.0.1
