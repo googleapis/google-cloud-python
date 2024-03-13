@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/googleapis/sphinx-docfx-yaml/compare/v3.0.0...v3.0.1) (2024-03-13)
+
+
+### Bug Fixes
+
+* Update dependencies to pin Sphinx for &lt;5 compatibility ([#342](https://github.com/googleapis/sphinx-docfx-yaml/issues/342)) ([e60753a](https://github.com/googleapis/sphinx-docfx-yaml/commit/e60753a099bf8a603055e6441f6040dd042f228f))
+
 ## [3.0.0](https://github.com/googleapis/sphinx-docfx-yaml/compare/v2.0.7...v3.0.0) (2023-11-02)
 
 
