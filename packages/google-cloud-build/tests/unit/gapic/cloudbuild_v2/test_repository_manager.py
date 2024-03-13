@@ -5146,6 +5146,21 @@ def test_create_connection_rest(request_type):
             "ssl_ca": "ssl_ca_value",
             "server_version": "server_version_value",
         },
+        "bitbucket_data_center_config": {
+            "host_uri": "host_uri_value",
+            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
+            "read_authorizer_credential": {},
+            "authorizer_credential": {},
+            "service_directory_config": {},
+            "ssl_ca": "ssl_ca_value",
+            "server_version": "server_version_value",
+        },
+        "bitbucket_cloud_config": {
+            "workspace": "workspace_value",
+            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
+            "read_authorizer_credential": {},
+            "authorizer_credential": {},
+        },
         "installation_state": {
             "stage": 1,
             "message": "message_value",
@@ -6161,6 +6176,21 @@ def test_update_connection_rest(request_type):
             "service_directory_config": {},
             "ssl_ca": "ssl_ca_value",
             "server_version": "server_version_value",
+        },
+        "bitbucket_data_center_config": {
+            "host_uri": "host_uri_value",
+            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
+            "read_authorizer_credential": {},
+            "authorizer_credential": {},
+            "service_directory_config": {},
+            "ssl_ca": "ssl_ca_value",
+            "server_version": "server_version_value",
+        },
+        "bitbucket_cloud_config": {
+            "workspace": "workspace_value",
+            "webhook_secret_secret_version": "webhook_secret_secret_version_value",
+            "read_authorizer_credential": {},
+            "authorizer_credential": {},
         },
         "installation_state": {
             "stage": 1,
