@@ -4,6 +4,36 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [0.24.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.23.0...v0.24.0) (2024-03-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* `read_parquet` uses a "pandas" engine to parse files by default. Use `engine="bigquery"` for the previous behavior
+
+### Features
+
+* (Series|Dataframe).plot.hist() ([#420](https://github.com/googleapis/python-bigquery-dataframes/issues/420)) ([4aadff4](https://github.com/googleapis/python-bigquery-dataframes/commit/4aadff4db59243b4510a874fef2bdb17402d1674))
+* Add detect_anomalies to ml ARIMAPlus and KMeans models ([#426](https://github.com/googleapis/python-bigquery-dataframes/issues/426)) ([6df28ed](https://github.com/googleapis/python-bigquery-dataframes/commit/6df28ed704552ebec7869e1f2034614cb6407098))
+* Add engine parameter to `read_parquet` ([#413](https://github.com/googleapis/python-bigquery-dataframes/issues/413)) ([31325a1](https://github.com/googleapis/python-bigquery-dataframes/commit/31325a190320bf01ced53d9f4cdb94462daaa06b))
+* Add ml PCA.detect_anomalies method ([#422](https://github.com/googleapis/python-bigquery-dataframes/issues/422)) ([8d82945](https://github.com/googleapis/python-bigquery-dataframes/commit/8d8294544ac7fedaca753c5473e3ca2a27868420))
+* Support BYOSA in `remote_function` ([#407](https://github.com/googleapis/python-bigquery-dataframes/issues/407)) ([d92ced2](https://github.com/googleapis/python-bigquery-dataframes/commit/d92ced2adaa30a0405ace9ca6cd70a8e217f13d0))
+* Support CMEK for BQ tables ([#403](https://github.com/googleapis/python-bigquery-dataframes/issues/403)) ([9a678e3](https://github.com/googleapis/python-bigquery-dataframes/commit/9a678e35201d935e1d93875429005033cfe7cff6))
+
+
+### Bug Fixes
+
+* Move `third_party.bigframes_vendored` to `bigframes_vendored` ([#424](https://github.com/googleapis/python-bigquery-dataframes/issues/424)) ([763edeb](https://github.com/googleapis/python-bigquery-dataframes/commit/763edeb4f4e8bc4b8bb05a992dae80c49c245e25))
+* Only do row identity based joins when joining by index ([#356](https://github.com/googleapis/python-bigquery-dataframes/issues/356)) ([76b252f](https://github.com/googleapis/python-bigquery-dataframes/commit/76b252f907055d72556e3e95f6cb5ee41de5b1c2))
+* Read_pandas inline respects location ([#412](https://github.com/googleapis/python-bigquery-dataframes/issues/412)) ([ae0e3ea](https://github.com/googleapis/python-bigquery-dataframes/commit/ae0e3eaca49171fd449de4d43ddc3e3ce9fdc2ce))
+
+
+### Documentation
+
+* Add predict sample to samples/snippets/bqml_getting_started_test.py ([#388](https://github.com/googleapis/python-bigquery-dataframes/issues/388)) ([6a3b0cc](https://github.com/googleapis/python-bigquery-dataframes/commit/6a3b0cc7f84120fc5978ce11b6b7c55e89654304))
+* Document minimum IAM requirement ([#416](https://github.com/googleapis/python-bigquery-dataframes/issues/416)) ([36173b0](https://github.com/googleapis/python-bigquery-dataframes/commit/36173b0c14747fb52909bbedd93249024bae9ac1))
+* Fix the note rendering for DataFrames methods: nlargest, nsmallest ([#417](https://github.com/googleapis/python-bigquery-dataframes/issues/417)) ([38bd2ba](https://github.com/googleapis/python-bigquery-dataframes/commit/38bd2ba21bc1a3222635de22eecd97930bf5b1de))
+
 ## [0.23.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.22.0...v0.23.0) (2024-03-05)
 
 
