@@ -1592,12 +1592,13 @@ class Session(
             self.bqclient, sql, job_config, max_results
         )
 
-    def _start_query_create_model(
+    def _start_query_ml_ddl(
         self,
         sql: str,
     ) -> Tuple[bigquery.table.RowIterator, bigquery.QueryJob]:
         """
-        Starts BigQuery ML CREATE MODEL query job and waits for results.
+        Starts BigQuery ML DDL query job (CREATE MODEL/ALTER MODEL/...) and
+        waits for results.
         """
         job_config = self._prepare_query_job_config()
 

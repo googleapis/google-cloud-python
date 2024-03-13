@@ -245,7 +245,7 @@ class BqmlModel(BaseBqml):
             options={"vertex_ai_model_id": vertex_ai_model_id}
         )
         # Register the model and wait it to finish
-        self._session._start_query_create_model(sql)
+        self._session._start_query_ml_ddl(sql)
 
         self._model = self._session.bqclient.get_model(self.model_name)
         return self
@@ -264,7 +264,7 @@ class BqmlModelFactory:
 
     def _create_model_with_sql(self, session: bigframes.Session, sql: str) -> BqmlModel:
         # fit the model, synchronously
-        _, job = session._start_query_create_model(sql)
+        _, job = session._start_query_ml_ddl(sql)
 
         # real model path in the session specific hidden dataset and table prefix
         model_name_full = f"{job.destination.project}.{job.destination.dataset_id}.{job.destination.table_id}"

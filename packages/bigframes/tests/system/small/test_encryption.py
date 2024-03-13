@@ -130,7 +130,7 @@ def test_df_apis(bq_cmek, session_with_bq_cmek, scalars_table_id):
     # Read a BQ table and assert encryption
     df = session_with_bq_cmek.read_gbq(scalars_table_id)
 
-    # Perform a few dataframe operations and assert assertion
+    # Perform a few dataframe operations and assert encryption
     df1 = df.dropna()
     _assert_bq_table_is_encrypted(df1, bq_cmek, session_with_bq_cmek)
 
@@ -179,14 +179,31 @@ def test_to_gbq(bq_cmek, session_with_bq_cmek, scalars_table_id):
     df = session_with_bq_cmek.read_gbq(scalars_table_id)
     _assert_bq_table_is_encrypted(df, bq_cmek, session_with_bq_cmek)
 
-    # Modify the dataframe and assert assertion
+    # Modify the dataframe and assert encryption
     df = df.dropna().head()
     _assert_bq_table_is_encrypted(df, bq_cmek, session_with_bq_cmek)
 
-    # Write the result to BQ and assert assertion
+    # Write the result to BQ and assert encryption
     output_table_id = df.to_gbq()
     output_table = session_with_bq_cmek.bqclient.get_table(output_table_id)
     assert output_table.encryption_configuration.kms_key_name == bq_cmek
+
+    # Write the result to BQ custom table and assert encryption
+    session_with_bq_cmek.bqclient.get_table(output_table_id)
+    output_table_ref = bigframes.session._io.bigquery.random_table(
+        session_with_bq_cmek._anonymous_dataset
+    )
+    output_table_id = str(output_table_ref)
+    df.to_gbq(output_table_id)
+    output_table = session_with_bq_cmek.bqclient.get_table(output_table_id)
+    assert output_table.encryption_configuration.kms_key_name == bq_cmek
+
+    # Lastly, assert that the encryption is not because of any default set at
+    # the dataset level
+    output_table_dataset = session_with_bq_cmek.bqclient.get_dataset(
+        output_table.dataset_id
+    )
+    assert output_table_dataset.default_encryption_configuration is None
 
 
 @pytest.mark.skip(
@@ -252,5 +269,23 @@ def test_bqml(bq_cmek, session_with_bq_cmek, penguins_table_id):
     assert new_model._bqml_model.model.encryption_configuration.kms_key_name == bq_cmek
 
     # Assert that model exists in BQ with intended encryption
+    model_bq = session_with_bq_cmek.bqclient.get_model(new_model._bqml_model.model_name)
+    assert model_bq.encryption_configuration.kms_key_name == bq_cmek
+
+    # Assert that model registration keeps the encryption
+    # Note that model registration only creates an entry (metadata) to be
+    # included in the Vertex AI Model Registry. See for more details
+    # https://cloud.google.com/bigquery/docs/update_vertex#add-existing.
+    # When use deploys the model to an endpoint from the Model Registry then
+    # they can specify an encryption key to further protect the artifacts at
+    # rest on the Vertex AI side. See for more details:
+    # https://cloud.google.com/vertex-ai/docs/general/deployment#deploy_a_model_to_an_endpoint,
+    # https://cloud.google.com/vertex-ai/docs/general/cmek#create_resources_with_the_kms_key.
+    # bigframes.ml does not provide any API for the model deployment.
+    model_registered = new_model.register()
+    assert (
+        model_registered._bqml_model.model.encryption_configuration.kms_key_name
+        == bq_cmek
+    )
     model_bq = session_with_bq_cmek.bqclient.get_model(new_model._bqml_model.model_name)
     assert model_bq.encryption_configuration.kms_key_name == bq_cmek
