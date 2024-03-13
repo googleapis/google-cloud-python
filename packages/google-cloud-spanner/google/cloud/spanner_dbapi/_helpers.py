@@ -40,6 +40,7 @@ CODE_TO_DISPLAY_SIZE = {
     param_types.BOOL.code: 1,
     param_types.DATE.code: 4,
     param_types.FLOAT64.code: 8,
+    param_types.FLOAT32.code: 4,
     param_types.INT64.code: 8,
     param_types.TIMESTAMP.code: 12,
 }
