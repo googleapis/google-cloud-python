@@ -159,7 +159,9 @@ Running System Tests
   run all the tests.
 
 - System tests may be run against the emulator. To do this, set the
-  ``DATASTORE_EMULATOR_HOST`` environment variable.
+  ``DATASTORE_EMULATOR_HOST`` environment variable. Alternatively,
+  system tests with the emulator can run with
+  `nox -e emulator-system-PYTHON_VERSION`
 
 - System tests will be run against an actual project and
   so you'll need to provide some environment variables to facilitate

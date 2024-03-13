@@ -20,6 +20,8 @@ Assumes ``nox >= 2018.9.14`` is installed.
 import os
 import pathlib
 import shutil
+import signal
+import subprocess
 
 import nox
 
@@ -89,6 +91,50 @@ def cover(session):
     session.run("coverage", "report", "--show-missing", "--fail-under=100")
 
     session.run("coverage", "erase")
+
+
+@nox.session(name="emulator-system", python=ALL_INTERPRETERS)
+def emulator_system(session):
+    """Run the system test suite."""
+    # Only run the emulator tests manually.
+    if not session.interactive:
+        return
+
+    constraints_path = str(
+        CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
+    )
+    system_test_folder_path = os.path.join("tests", "system")
+
+    # Install all test dependencies, then install this package into the
+    # virtualenv's dist-packages.
+    session.install("pytest")
+    session.install("google-cloud-testutils")
+    for local_dep in LOCAL_DEPS:
+        session.install(local_dep)
+    session.install(".", "-c", constraints_path)
+
+    # TODO: It would be better to allow the emulator to bind to any port and pull
+    # the port from stderr.
+    emulator_args = [
+        "gcloud",
+        "emulators",
+        "firestore",
+        "start",
+        "--database-mode=datastore-mode",
+        "--host-port=localhost:8092",
+    ]
+    emulator = subprocess.Popen(emulator_args, stderr=subprocess.PIPE)
+    # Run py.test against the system tests.
+    session.run(
+        "py.test",
+        "--quiet",
+        system_test_folder_path,
+        *session.posargs,
+        env={"DATASTORE_EMULATOR_HOST": "localhost:8092"},
+    )
+    session.run("curl", "-d", "", "localhost:8092/shutdown", external=True)
+    emulator.terminate()
+    emulator.wait(timeout=2)
 
 
 def run_black(session, use_check=False):
