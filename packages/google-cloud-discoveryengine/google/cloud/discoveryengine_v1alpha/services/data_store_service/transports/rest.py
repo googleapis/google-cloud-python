@@ -46,6 +46,10 @@ except AttributeError:  # pragma: NO COVER
 from google.longrunning import operations_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import data_store as gcd_data_store
+from google.cloud.discoveryengine_v1alpha.types import document_processing_config
+from google.cloud.discoveryengine_v1alpha.types import (
+    document_processing_config as gcd_document_processing_config,
+)
 from google.cloud.discoveryengine_v1alpha.types import data_store
 from google.cloud.discoveryengine_v1alpha.types import data_store_service
 
@@ -98,6 +102,14 @@ class DataStoreServiceRestInterceptor:
                 logging.log(f"Received response: {response}")
                 return response
 
+            def pre_get_document_processing_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_get_document_processing_config(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
             def pre_list_data_stores(self, request, metadata):
                 logging.log(f"Received request: {request}")
                 return request, metadata
@@ -111,6 +123,14 @@ class DataStoreServiceRestInterceptor:
                 return request, metadata
 
             def post_update_data_store(self, response):
+                logging.log(f"Received response: {response}")
+                return response
+
+            def pre_update_document_processing_config(self, request, metadata):
+                logging.log(f"Received request: {request}")
+                return request, metadata
+
+            def post_update_document_processing_config(self, response):
                 logging.log(f"Received response: {response}")
                 return response
 
@@ -189,6 +209,31 @@ class DataStoreServiceRestInterceptor:
         """
         return response
 
+    def pre_get_document_processing_config(
+        self,
+        request: data_store_service.GetDocumentProcessingConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        data_store_service.GetDocumentProcessingConfigRequest, Sequence[Tuple[str, str]]
+    ]:
+        """Pre-rpc interceptor for get_document_processing_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataStoreService server.
+        """
+        return request, metadata
+
+    def post_get_document_processing_config(
+        self, response: document_processing_config.DocumentProcessingConfig
+    ) -> document_processing_config.DocumentProcessingConfig:
+        """Post-rpc interceptor for get_document_processing_config
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DataStoreService server but before
+        it is returned to user code.
+        """
+        return response
+
     def pre_list_data_stores(
         self,
         request: data_store_service.ListDataStoresRequest,
@@ -228,6 +273,32 @@ class DataStoreServiceRestInterceptor:
         self, response: gcd_data_store.DataStore
     ) -> gcd_data_store.DataStore:
         """Post-rpc interceptor for update_data_store
+
+        Override in a subclass to manipulate the response
+        after it is returned by the DataStoreService server but before
+        it is returned to user code.
+        """
+        return response
+
+    def pre_update_document_processing_config(
+        self,
+        request: data_store_service.UpdateDocumentProcessingConfigRequest,
+        metadata: Sequence[Tuple[str, str]],
+    ) -> Tuple[
+        data_store_service.UpdateDocumentProcessingConfigRequest,
+        Sequence[Tuple[str, str]],
+    ]:
+        """Pre-rpc interceptor for update_document_processing_config
+
+        Override in a subclass to manipulate the request or metadata
+        before they are sent to the DataStoreService server.
+        """
+        return request, metadata
+
+    def post_update_document_processing_config(
+        self, response: gcd_document_processing_config.DocumentProcessingConfig
+    ) -> gcd_document_processing_config.DocumentProcessingConfig:
+        """Post-rpc interceptor for update_document_processing_config
 
         Override in a subclass to manipulate the response
         after it is returned by the DataStoreService server but before
@@ -816,6 +887,110 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
             resp = self._interceptor.post_get_data_store(resp)
             return resp
 
+    class _GetDocumentProcessingConfig(DataStoreServiceRestStub):
+        def __hash__(self):
+            return hash("GetDocumentProcessingConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: data_store_service.GetDocumentProcessingConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> document_processing_config.DocumentProcessingConfig:
+            r"""Call the get document processing
+            config method over HTTP.
+
+                Args:
+                    request (~.data_store_service.GetDocumentProcessingConfigRequest):
+                        The request object. Request for
+                    [DataStoreService.GetDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.GetDocumentProcessingConfig]
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.document_processing_config.DocumentProcessingConfig:
+                        A singleton resource of
+                    [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+                    It's empty when
+                    [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+                    is created, which defaults to digital parser. The first
+                    call to
+                    [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+                    method will initialize the config.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/dataStores/*/documentProcessingConfig}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1alpha/{name=projects/*/locations/*/collections/*/dataStores/*/documentProcessingConfig}",
+                },
+            ]
+            request, metadata = self._interceptor.pre_get_document_processing_config(
+                request, metadata
+            )
+            pb_request = data_store_service.GetDocumentProcessingConfigRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = document_processing_config.DocumentProcessingConfig()
+            pb_resp = document_processing_config.DocumentProcessingConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_get_document_processing_config(resp)
+            return resp
+
     class _ListDataStores(DataStoreServiceRestStub):
         def __hash__(self):
             return hash("ListDataStores")
@@ -1015,6 +1190,118 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
             resp = self._interceptor.post_update_data_store(resp)
             return resp
 
+    class _UpdateDocumentProcessingConfig(DataStoreServiceRestStub):
+        def __hash__(self):
+            return hash("UpdateDocumentProcessingConfig")
+
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, Any] = {}
+
+        @classmethod
+        def _get_unset_required_fields(cls, message_dict):
+            return {
+                k: v
+                for k, v in cls.__REQUIRED_FIELDS_DEFAULT_VALUES.items()
+                if k not in message_dict
+            }
+
+        def __call__(
+            self,
+            request: data_store_service.UpdateDocumentProcessingConfigRequest,
+            *,
+            retry: OptionalRetry = gapic_v1.method.DEFAULT,
+            timeout: Optional[float] = None,
+            metadata: Sequence[Tuple[str, str]] = (),
+        ) -> gcd_document_processing_config.DocumentProcessingConfig:
+            r"""Call the update document
+            processing config method over HTTP.
+
+                Args:
+                    request (~.data_store_service.UpdateDocumentProcessingConfigRequest):
+                        The request object. Request for
+                    [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+                    method.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
+
+                Returns:
+                    ~.gcd_document_processing_config.DocumentProcessingConfig:
+                        A singleton resource of
+                    [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+                    It's empty when
+                    [DataStore][google.cloud.discoveryengine.v1alpha.DataStore]
+                    is created, which defaults to digital parser. The first
+                    call to
+                    [DataStoreService.UpdateDocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DataStoreService.UpdateDocumentProcessingConfig]
+                    method will initialize the config.
+
+            """
+
+            http_options: List[Dict[str, str]] = [
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{document_processing_config.name=projects/*/locations/*/dataStores/*/documentProcessingConfig}",
+                    "body": "document_processing_config",
+                },
+                {
+                    "method": "patch",
+                    "uri": "/v1alpha/{document_processing_config.name=projects/*/locations/*/collections/*/dataStores/*/documentProcessingConfig}",
+                    "body": "document_processing_config",
+                },
+            ]
+            request, metadata = self._interceptor.pre_update_document_processing_config(
+                request, metadata
+            )
+            pb_request = data_store_service.UpdateDocumentProcessingConfigRequest.pb(
+                request
+            )
+            transcoded_request = path_template.transcode(http_options, pb_request)
+
+            # Jsonify the request body
+
+            body = json_format.MessageToJson(
+                transcoded_request["body"], use_integers_for_enums=True
+            )
+            uri = transcoded_request["uri"]
+            method = transcoded_request["method"]
+
+            # Jsonify the query params
+            query_params = json.loads(
+                json_format.MessageToJson(
+                    transcoded_request["query_params"],
+                    use_integers_for_enums=True,
+                )
+            )
+            query_params.update(self._get_unset_required_fields(query_params))
+
+            query_params["$alt"] = "json;enum-encoding=int"
+
+            # Send the request
+            headers = dict(metadata)
+            headers["Content-Type"] = "application/json"
+            response = getattr(self._session, method)(
+                "{host}{uri}".format(host=self._host, uri=uri),
+                timeout=timeout,
+                headers=headers,
+                params=rest_helpers.flatten_query_params(query_params, strict=True),
+                data=body,
+            )
+
+            # In case of error, raise the appropriate core_exceptions.GoogleAPICallError exception
+            # subclass.
+            if response.status_code >= 400:
+                raise core_exceptions.from_http_response(response)
+
+            # Return the response
+            resp = gcd_document_processing_config.DocumentProcessingConfig()
+            pb_resp = gcd_document_processing_config.DocumentProcessingConfig.pb(resp)
+
+            json_format.Parse(response.content, pb_resp, ignore_unknown_fields=True)
+            resp = self._interceptor.post_update_document_processing_config(resp)
+            return resp
+
     @property
     def create_data_store(
         self,
@@ -1044,6 +1331,17 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
         return self._GetDataStore(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
+    def get_document_processing_config(
+        self,
+    ) -> Callable[
+        [data_store_service.GetDocumentProcessingConfigRequest],
+        document_processing_config.DocumentProcessingConfig,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._GetDocumentProcessingConfig(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
     def list_data_stores(
         self,
     ) -> Callable[
@@ -1063,6 +1361,17 @@ class DataStoreServiceRestTransport(DataStoreServiceTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return self._UpdateDataStore(self._session, self._host, self._interceptor)  # type: ignore
+
+    @property
+    def update_document_processing_config(
+        self,
+    ) -> Callable[
+        [data_store_service.UpdateDocumentProcessingConfigRequest],
+        gcd_document_processing_config.DocumentProcessingConfig,
+    ]:
+        # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
+        # In C++ this would require a dynamic_cast
+        return self._UpdateDocumentProcessingConfig(self._session, self._host, self._interceptor)  # type: ignore
 
     @property
     def get_operation(self):

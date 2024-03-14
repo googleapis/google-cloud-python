@@ -25,6 +25,10 @@ import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.discoveryengine_v1alpha.types import data_store as gcd_data_store
+from google.cloud.discoveryengine_v1alpha.types import document_processing_config
+from google.cloud.discoveryengine_v1alpha.types import (
+    document_processing_config as gcd_document_processing_config,
+)
 from google.cloud.discoveryengine_v1alpha.types import data_store
 from google.cloud.discoveryengine_v1alpha.types import data_store_service
 
@@ -406,6 +410,78 @@ class DataStoreServiceGrpcAsyncIOTransport(DataStoreServiceTransport):
                 response_deserializer=gcd_data_store.DataStore.deserialize,
             )
         return self._stubs["update_data_store"]
+
+    @property
+    def get_document_processing_config(
+        self,
+    ) -> Callable[
+        [data_store_service.GetDocumentProcessingConfigRequest],
+        Awaitable[document_processing_config.DocumentProcessingConfig],
+    ]:
+        r"""Return a callable for the get document processing config method over gRPC.
+
+        Gets a
+        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
+
+        Returns:
+            Callable[[~.GetDocumentProcessingConfigRequest],
+                    Awaitable[~.DocumentProcessingConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_document_processing_config" not in self._stubs:
+            self._stubs[
+                "get_document_processing_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.DataStoreService/GetDocumentProcessingConfig",
+                request_serializer=data_store_service.GetDocumentProcessingConfigRequest.serialize,
+                response_deserializer=document_processing_config.DocumentProcessingConfig.deserialize,
+            )
+        return self._stubs["get_document_processing_config"]
+
+    @property
+    def update_document_processing_config(
+        self,
+    ) -> Callable[
+        [data_store_service.UpdateDocumentProcessingConfigRequest],
+        Awaitable[gcd_document_processing_config.DocumentProcessingConfig],
+    ]:
+        r"""Return a callable for the update document processing
+        config method over gRPC.
+
+        Updates the
+        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
+        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig]
+        is a singleon resource of
+        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore].
+        It's empty when
+        [DataStore][google.cloud.discoveryengine.v1alpha.DataStore] is
+        created. The first call to this method will set up
+        [DocumentProcessingConfig][google.cloud.discoveryengine.v1alpha.DocumentProcessingConfig].
+
+        Returns:
+            Callable[[~.UpdateDocumentProcessingConfigRequest],
+                    Awaitable[~.DocumentProcessingConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_document_processing_config" not in self._stubs:
+            self._stubs[
+                "update_document_processing_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.discoveryengine.v1alpha.DataStoreService/UpdateDocumentProcessingConfig",
+                request_serializer=data_store_service.UpdateDocumentProcessingConfigRequest.serialize,
+                response_deserializer=gcd_document_processing_config.DocumentProcessingConfig.deserialize,
+            )
+        return self._stubs["update_document_processing_config"]
 
     def close(self):
         return self.grpc_channel.close()

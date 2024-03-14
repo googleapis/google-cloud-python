@@ -18,7 +18,10 @@ from __future__ import annotations
 from typing import MutableMapping, MutableSequence
 
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
+
+from google.cloud.discoveryengine_v1alpha.types import import_config
 
 __protobuf__ = proto.module(
     package="google.cloud.discoveryengine.v1alpha",
@@ -26,9 +29,13 @@ __protobuf__ = proto.module(
         "PurgeUserEventsRequest",
         "PurgeUserEventsResponse",
         "PurgeUserEventsMetadata",
+        "PurgeErrorConfig",
         "PurgeDocumentsRequest",
         "PurgeDocumentsResponse",
         "PurgeDocumentsMetadata",
+        "PurgeSuggestionDenyListEntriesRequest",
+        "PurgeSuggestionDenyListEntriesResponse",
+        "PurgeSuggestionDenyListEntriesMetadata",
     },
 )
 
@@ -144,24 +151,67 @@ class PurgeUserEventsMetadata(proto.Message):
     )
 
 
+class PurgeErrorConfig(proto.Message):
+    r"""Configuration of destination for Purge related errors.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        gcs_prefix (str):
+            Cloud Storage prefix for purge errors. This must be an
+            empty, existing Cloud Storage directory. Purge errors are
+            written to sharded files in this directory, one per line, as
+            a JSON-encoded ``google.rpc.Status`` message.
+
+            This field is a member of `oneof`_ ``destination``.
+    """
+
+    gcs_prefix: str = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="destination",
+    )
+
+
 class PurgeDocumentsRequest(proto.Message):
     r"""Request message for
     [DocumentService.PurgeDocuments][google.cloud.discoveryengine.v1alpha.DocumentService.PurgeDocuments]
     method.
 
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
     Attributes:
+        gcs_source (google.cloud.discoveryengine_v1alpha.types.GcsSource):
+            Cloud Storage location for the input content. Supported
+            ``data_schema``:
+
+            -  ``document_id``: One valid
+               [Document.id][google.cloud.discoveryengine.v1alpha.Document.id]
+               per line.
+
+            This field is a member of `oneof`_ ``source``.
         parent (str):
             Required. The parent resource name, such as
             ``projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}``.
         filter (str):
             Required. Filter matching documents to purge. Only currently
             supported value is ``*`` (all items).
+        error_config (google.cloud.discoveryengine_v1alpha.types.PurgeErrorConfig):
+            The desired location of errors incurred
+            during the purge.
         force (bool):
             Actually performs the purge. If ``force`` is set to false,
             return the expected purge count without deleting any
             documents.
     """
 
+    gcs_source: import_config.GcsSource = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="source",
+        message=import_config.GcsSource,
+    )
     parent: str = proto.Field(
         proto.STRING,
         number=1,
@@ -169,6 +219,11 @@ class PurgeDocumentsRequest(proto.Message):
     filter: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    error_config: "PurgeErrorConfig" = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="PurgeErrorConfig",
     )
     force: bool = proto.Field(
         proto.BOOL,
@@ -220,6 +275,9 @@ class PurgeDocumentsMetadata(proto.Message):
         failure_count (int):
             Count of entries that encountered errors
             while processing.
+        ignored_count (int):
+            Count of entries that were ignored as entries
+            were not found.
     """
 
     create_time: timestamp_pb2.Timestamp = proto.Field(
@@ -239,6 +297,78 @@ class PurgeDocumentsMetadata(proto.Message):
     failure_count: int = proto.Field(
         proto.INT64,
         number=4,
+    )
+    ignored_count: int = proto.Field(
+        proto.INT64,
+        number=5,
+    )
+
+
+class PurgeSuggestionDenyListEntriesRequest(proto.Message):
+    r"""Request message for
+    [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1alpha.CompletionService.PurgeSuggestionDenyListEntries]
+    method.
+
+    Attributes:
+        parent (str):
+            Required. The parent data store resource name for which to
+            import denylist entries. Follows pattern
+            projects/\ */locations/*/collections/*/dataStores/*.
+    """
+
+    parent: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class PurgeSuggestionDenyListEntriesResponse(proto.Message):
+    r"""Response message for
+    [CompletionService.PurgeSuggestionDenyListEntries][google.cloud.discoveryengine.v1alpha.CompletionService.PurgeSuggestionDenyListEntries]
+    method.
+
+    Attributes:
+        purge_count (int):
+            Number of suggestion deny list entries
+            purged.
+        error_samples (MutableSequence[google.rpc.status_pb2.Status]):
+            A sample of errors encountered while
+            processing the request.
+    """
+
+    purge_count: int = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    error_samples: MutableSequence[status_pb2.Status] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+
+
+class PurgeSuggestionDenyListEntriesMetadata(proto.Message):
+    r"""Metadata related to the progress of the
+    PurgeSuggestionDenyListEntries operation. This is returned by
+    the google.longrunning.Operation.metadata field.
+
+    Attributes:
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation create time.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            Operation last update time. If the operation
+            is done, this is also the finish time.
+    """
+
+    create_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time: timestamp_pb2.Timestamp = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
 
 

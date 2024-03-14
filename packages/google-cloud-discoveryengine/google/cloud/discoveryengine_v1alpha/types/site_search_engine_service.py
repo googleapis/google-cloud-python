@@ -136,7 +136,9 @@ class CreateTargetSiteMetadata(proto.Message):
 
 
 class BatchCreateTargetSitesRequest(proto.Message):
-    r"""Request message for [SiteSearchEngineService.s][] method.
+    r"""Request message for
+    [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchCreateTargetSites]
+    method.
 
     Attributes:
         parent (str):
@@ -382,8 +384,9 @@ class ListTargetSitesResponse(proto.Message):
 
 class BatchCreateTargetSiteMetadata(proto.Message):
     r"""Metadata related to the progress of the
-    [SiteSearchEngineService.BatchCreateTargetSite][] operation. This
-    will be returned by the google.longrunning.Operation.metadata field.
+    [SiteSearchEngineService.BatchCreateTargetSites][google.cloud.discoveryengine.v1alpha.SiteSearchEngineService.BatchCreateTargetSites]
+    operation. This will be returned by the
+    google.longrunning.Operation.metadata field.
 
     Attributes:
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -586,7 +589,7 @@ class RecrawlUrisResponse(proto.Message):
 
         class FailureReason(proto.Message):
             r"""Details about why crawling failed for a particular
-            CorpusType, e.g. DESKTOP and MOBILE crawling may fail for
+            CorpusType, e.g., DESKTOP and MOBILE crawling may fail for
             different reasons.
 
             Attributes:

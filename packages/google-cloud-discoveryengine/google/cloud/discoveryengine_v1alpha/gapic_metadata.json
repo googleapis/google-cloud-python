@@ -5,6 +5,104 @@
   "protoPackage": "google.cloud.discoveryengine.v1alpha",
   "schema": "1.0",
   "services": {
+    "AclConfigService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "AclConfigServiceClient",
+          "rpcs": {
+            "GetAclConfig": {
+              "methods": [
+                "get_acl_config"
+              ]
+            },
+            "UpdateAclConfig": {
+              "methods": [
+                "update_acl_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "AclConfigServiceAsyncClient",
+          "rpcs": {
+            "GetAclConfig": {
+              "methods": [
+                "get_acl_config"
+              ]
+            },
+            "UpdateAclConfig": {
+              "methods": [
+                "update_acl_config"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "AclConfigServiceClient",
+          "rpcs": {
+            "GetAclConfig": {
+              "methods": [
+                "get_acl_config"
+              ]
+            },
+            "UpdateAclConfig": {
+              "methods": [
+                "update_acl_config"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ChunkService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ChunkServiceClient",
+          "rpcs": {
+            "GetChunk": {
+              "methods": [
+                "get_chunk"
+              ]
+            },
+            "ListChunks": {
+              "methods": [
+                "list_chunks"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ChunkServiceAsyncClient",
+          "rpcs": {
+            "GetChunk": {
+              "methods": [
+                "get_chunk"
+              ]
+            },
+            "ListChunks": {
+              "methods": [
+                "list_chunks"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ChunkServiceClient",
+          "rpcs": {
+            "GetChunk": {
+              "methods": [
+                "get_chunk"
+              ]
+            },
+            "ListChunks": {
+              "methods": [
+                "list_chunks"
+              ]
+            }
+          }
+        }
+      }
+    },
     "CompletionService": {
       "clients": {
         "grpc": {
@@ -13,6 +111,16 @@
             "CompleteQuery": {
               "methods": [
                 "complete_query"
+              ]
+            },
+            "ImportSuggestionDenyListEntries": {
+              "methods": [
+                "import_suggestion_deny_list_entries"
+              ]
+            },
+            "PurgeSuggestionDenyListEntries": {
+              "methods": [
+                "purge_suggestion_deny_list_entries"
               ]
             }
           }
@@ -24,6 +132,16 @@
               "methods": [
                 "complete_query"
               ]
+            },
+            "ImportSuggestionDenyListEntries": {
+              "methods": [
+                "import_suggestion_deny_list_entries"
+              ]
+            },
+            "PurgeSuggestionDenyListEntries": {
+              "methods": [
+                "purge_suggestion_deny_list_entries"
+              ]
             }
           }
         },
@@ -33,6 +151,16 @@
             "CompleteQuery": {
               "methods": [
                 "complete_query"
+              ]
+            },
+            "ImportSuggestionDenyListEntries": {
+              "methods": [
+                "import_suggestion_deny_list_entries"
+              ]
+            },
+            "PurgeSuggestionDenyListEntries": {
+              "methods": [
+                "purge_suggestion_deny_list_entries"
               ]
             }
           }
@@ -168,6 +296,11 @@
                 "get_data_store"
               ]
             },
+            "GetDocumentProcessingConfig": {
+              "methods": [
+                "get_document_processing_config"
+              ]
+            },
             "ListDataStores": {
               "methods": [
                 "list_data_stores"
@@ -176,6 +309,11 @@
             "UpdateDataStore": {
               "methods": [
                 "update_data_store"
+              ]
+            },
+            "UpdateDocumentProcessingConfig": {
+              "methods": [
+                "update_document_processing_config"
               ]
             }
           }
@@ -198,6 +336,11 @@
                 "get_data_store"
               ]
             },
+            "GetDocumentProcessingConfig": {
+              "methods": [
+                "get_document_processing_config"
+              ]
+            },
             "ListDataStores": {
               "methods": [
                 "list_data_stores"
@@ -206,6 +349,11 @@
             "UpdateDataStore": {
               "methods": [
                 "update_data_store"
+              ]
+            },
+            "UpdateDocumentProcessingConfig": {
+              "methods": [
+                "update_document_processing_config"
               ]
             }
           }
@@ -228,6 +376,11 @@
                 "get_data_store"
               ]
             },
+            "GetDocumentProcessingConfig": {
+              "methods": [
+                "get_document_processing_config"
+              ]
+            },
             "ListDataStores": {
               "methods": [
                 "list_data_stores"
@@ -236,6 +389,11 @@
             "UpdateDataStore": {
               "methods": [
                 "update_data_store"
+              ]
+            },
+            "UpdateDocumentProcessingConfig": {
+              "methods": [
+                "update_document_processing_config"
               ]
             }
           }
@@ -505,6 +663,40 @@
         }
       }
     },
+    "EstimateBillingService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "EstimateBillingServiceClient",
+          "rpcs": {
+            "EstimateDataSize": {
+              "methods": [
+                "estimate_data_size"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "EstimateBillingServiceAsyncClient",
+          "rpcs": {
+            "EstimateDataSize": {
+              "methods": [
+                "estimate_data_size"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "EstimateBillingServiceClient",
+          "rpcs": {
+            "EstimateDataSize": {
+              "methods": [
+                "estimate_data_size"
+              ]
+            }
+          }
+        }
+      }
+    },
     "RecommendationService": {
       "clients": {
         "grpc": {
@@ -695,6 +887,70 @@
             "TrainCustomModel": {
               "methods": [
                 "train_custom_model"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ServingConfigService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "ServingConfigServiceClient",
+          "rpcs": {
+            "GetServingConfig": {
+              "methods": [
+                "get_serving_config"
+              ]
+            },
+            "ListServingConfigs": {
+              "methods": [
+                "list_serving_configs"
+              ]
+            },
+            "UpdateServingConfig": {
+              "methods": [
+                "update_serving_config"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "ServingConfigServiceAsyncClient",
+          "rpcs": {
+            "GetServingConfig": {
+              "methods": [
+                "get_serving_config"
+              ]
+            },
+            "ListServingConfigs": {
+              "methods": [
+                "list_serving_configs"
+              ]
+            },
+            "UpdateServingConfig": {
+              "methods": [
+                "update_serving_config"
+              ]
+            }
+          }
+        },
+        "rest": {
+          "libraryClient": "ServingConfigServiceClient",
+          "rpcs": {
+            "GetServingConfig": {
+              "methods": [
+                "get_serving_config"
+              ]
+            },
+            "ListServingConfigs": {
+              "methods": [
+                "list_serving_configs"
+              ]
+            },
+            "UpdateServingConfig": {
+              "methods": [
+                "update_serving_config"
               ]
             }
           }

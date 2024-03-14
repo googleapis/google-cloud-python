@@ -42,8 +42,9 @@ class CompleteQueryRequest(proto.Message):
             Required. The typeahead input used to fetch
             suggestions. Maximum length is 128 characters.
         query_model (str):
-            Selects data model of query suggestions for serving.
-            Currently supported values:
+            Specifies the autocomplete data model. This overrides any
+            model specified in the Configuration > Autocomplete section
+            of the Cloud console. Currently supported values:
 
             -  ``document`` - Using suggestions generated from
                user-imported documents.

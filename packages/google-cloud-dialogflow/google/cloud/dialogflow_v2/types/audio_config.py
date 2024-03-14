@@ -437,6 +437,12 @@ class InputAudioConfig(proto.Message):
         enable_automatic_punctuation (bool):
             Enable automatic punctuation option at the
             speech backend.
+        opt_out_conformer_model_migration (bool):
+            If ``true``, the request will opt out for STT conformer
+            model migration. This field will be deprecated once force
+            migration takes place in June 2024. Please refer to
+            `Dialogflow ES Speech model
+            migration <https://cloud.google.com/dialogflow/es/docs/speech-model-migration>`__.
     """
 
     audio_encoding: "AudioEncoding" = proto.Field(
@@ -485,6 +491,10 @@ class InputAudioConfig(proto.Message):
     enable_automatic_punctuation: bool = proto.Field(
         proto.BOOL,
         number=17,
+    )
+    opt_out_conformer_model_migration: bool = proto.Field(
+        proto.BOOL,
+        number=26,
     )
 
 

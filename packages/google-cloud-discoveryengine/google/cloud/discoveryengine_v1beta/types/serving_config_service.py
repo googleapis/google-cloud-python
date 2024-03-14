@@ -70,7 +70,7 @@ class GetServingConfigRequest(proto.Message):
         name (str):
             Required. The resource name of the ServingConfig to get.
             Format:
-            ``projects/{project_number}/locations/{location}/collections/{collection}/dataStores/{data_store}/servingConfigs/{serving_config_id}``
+            ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config_id}``
     """
 
     name: str = proto.Field(
@@ -84,8 +84,8 @@ class ListServingConfigsRequest(proto.Message):
 
     Attributes:
         parent (str):
-            Required. The dataStore resource name. Format:
-            ``projects/{project_number}/locations/{location}/collections/{collection}/dataStores/{data_store}``
+            Required. Full resource name of the parent resource. Format:
+            ``projects/{project_number}/locations/{location}/collections/{collection}/engines/{engine}``
         page_size (int):
             Optional. Maximum number of results to
             return. If unspecified, defaults to 100. If a

@@ -55,7 +55,7 @@ class ServingConfig(proto.Message):
             This field is a member of `oneof`_ ``vertical_config``.
         name (str):
             Immutable. Fully qualified name
-            ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}/servingConfigs/{serving_config_id}``
+            ``projects/{project}/locations/{location}/collections/{collection_id}/engines/{engine_id}/servingConfigs/{serving_config_id}``
         display_name (str):
             Required. The human readable serving config display name.
             Used in Discovery UI.
@@ -110,8 +110,9 @@ class ServingConfig(proto.Message):
             retrieval documents. To leverage this, document embedding is
             required. The ranking expression setting in ServingConfig
             applies to all search requests served by the serving config.
-            However, if [SearchRequest.ranking_expression][] is
-            specified, it overrides the ServingConfig ranking
+            However, if
+            [SearchRequest.ranking_expression][google.cloud.discoveryengine.v1beta.SearchRequest.ranking_expression]
+            is specified, it overrides the ServingConfig ranking
             expression.
 
             The ranking expression is a single function or multiple

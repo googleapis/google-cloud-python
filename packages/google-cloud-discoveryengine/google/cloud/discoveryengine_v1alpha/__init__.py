@@ -18,6 +18,11 @@ from google.cloud.discoveryengine_v1alpha import gapic_version as package_versio
 __version__ = package_version.__version__
 
 
+from .services.acl_config_service import (
+    AclConfigServiceAsyncClient,
+    AclConfigServiceClient,
+)
+from .services.chunk_service import ChunkServiceAsyncClient, ChunkServiceClient
 from .services.completion_service import (
     CompletionServiceAsyncClient,
     CompletionServiceClient,
@@ -32,6 +37,10 @@ from .services.data_store_service import (
 )
 from .services.document_service import DocumentServiceAsyncClient, DocumentServiceClient
 from .services.engine_service import EngineServiceAsyncClient, EngineServiceClient
+from .services.estimate_billing_service import (
+    EstimateBillingServiceAsyncClient,
+    EstimateBillingServiceClient,
+)
 from .services.recommendation_service import (
     RecommendationServiceAsyncClient,
     RecommendationServiceClient,
@@ -42,6 +51,10 @@ from .services.search_tuning_service import (
     SearchTuningServiceAsyncClient,
     SearchTuningServiceClient,
 )
+from .services.serving_config_service import (
+    ServingConfigServiceAsyncClient,
+    ServingConfigServiceClient,
+)
 from .services.site_search_engine_service import (
     SiteSearchEngineServiceAsyncClient,
     SiteSearchEngineServiceClient,
@@ -50,16 +63,26 @@ from .services.user_event_service import (
     UserEventServiceAsyncClient,
     UserEventServiceClient,
 )
+from .types.acl_config import AclConfig
+from .types.acl_config_service import GetAclConfigRequest, UpdateAclConfigRequest
+from .types.chunk import Chunk
+from .types.chunk_service import GetChunkRequest, ListChunksRequest, ListChunksResponse
 from .types.common import (
     CustomAttribute,
+    CustomFineTuningSpec,
     DoubleList,
+    EmbeddingConfig,
+    GuidedSearchSpec,
+    IdpConfig,
     IndustryVertical,
     Interval,
+    Principal,
     SearchAddOn,
     SearchTier,
     SolutionType,
     UserInfo,
 )
+from .types.completion import SuggestionDenyListEntry
 from .types.completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .types.conversation import (
     Conversation,
@@ -85,11 +108,14 @@ from .types.data_store_service import (
     DeleteDataStoreMetadata,
     DeleteDataStoreRequest,
     GetDataStoreRequest,
+    GetDocumentProcessingConfigRequest,
     ListDataStoresRequest,
     ListDataStoresResponse,
     UpdateDataStoreRequest,
+    UpdateDocumentProcessingConfigRequest,
 )
 from .types.document import Document
+from .types.document_processing_config import DocumentProcessingConfig
 from .types.document_service import (
     CreateDocumentRequest,
     DeleteDocumentRequest,
@@ -114,6 +140,11 @@ from .types.engine_service import (
     TuneEngineResponse,
     UpdateEngineRequest,
 )
+from .types.estimate_billing_service import (
+    EstimateDataSizeMetadata,
+    EstimateDataSizeRequest,
+    EstimateDataSizeResponse,
+)
 from .types.import_config import (
     BigQuerySource,
     GcsSource,
@@ -121,6 +152,9 @@ from .types.import_config import (
     ImportDocumentsRequest,
     ImportDocumentsResponse,
     ImportErrorConfig,
+    ImportSuggestionDenyListEntriesMetadata,
+    ImportSuggestionDenyListEntriesRequest,
+    ImportSuggestionDenyListEntriesResponse,
     ImportUserEventsMetadata,
     ImportUserEventsRequest,
     ImportUserEventsResponse,
@@ -129,6 +163,10 @@ from .types.purge_config import (
     PurgeDocumentsMetadata,
     PurgeDocumentsRequest,
     PurgeDocumentsResponse,
+    PurgeErrorConfig,
+    PurgeSuggestionDenyListEntriesMetadata,
+    PurgeSuggestionDenyListEntriesRequest,
+    PurgeSuggestionDenyListEntriesResponse,
     PurgeUserEventsMetadata,
     PurgeUserEventsRequest,
     PurgeUserEventsResponse,
@@ -151,6 +189,13 @@ from .types.search_tuning_service import (
     TrainCustomModelMetadata,
     TrainCustomModelRequest,
     TrainCustomModelResponse,
+)
+from .types.serving_config import ServingConfig
+from .types.serving_config_service import (
+    GetServingConfigRequest,
+    ListServingConfigsRequest,
+    ListServingConfigsResponse,
+    UpdateServingConfigRequest,
 )
 from .types.site_search_engine import SiteSearchEngine, SiteVerificationInfo, TargetSite
 from .types.site_search_engine_service import (
@@ -195,17 +240,23 @@ from .types.user_event import (
 from .types.user_event_service import CollectUserEventRequest, WriteUserEventRequest
 
 __all__ = (
+    "AclConfigServiceAsyncClient",
+    "ChunkServiceAsyncClient",
     "CompletionServiceAsyncClient",
     "ConversationalSearchServiceAsyncClient",
     "DataStoreServiceAsyncClient",
     "DocumentServiceAsyncClient",
     "EngineServiceAsyncClient",
+    "EstimateBillingServiceAsyncClient",
     "RecommendationServiceAsyncClient",
     "SchemaServiceAsyncClient",
     "SearchServiceAsyncClient",
     "SearchTuningServiceAsyncClient",
+    "ServingConfigServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceAsyncClient",
+    "AclConfig",
+    "AclConfigServiceClient",
     "BatchCreateTargetSiteMetadata",
     "BatchCreateTargetSitesRequest",
     "BatchCreateTargetSitesResponse",
@@ -213,6 +264,8 @@ __all__ = (
     "BatchVerifyTargetSitesRequest",
     "BatchVerifyTargetSitesResponse",
     "BigQuerySource",
+    "Chunk",
+    "ChunkServiceClient",
     "CollectUserEventRequest",
     "CompleteQueryRequest",
     "CompleteQueryResponse",
@@ -235,6 +288,7 @@ __all__ = (
     "CreateTargetSiteMetadata",
     "CreateTargetSiteRequest",
     "CustomAttribute",
+    "CustomFineTuningSpec",
     "DataStore",
     "DataStoreServiceClient",
     "DeleteConversationRequest",
@@ -252,33 +306,50 @@ __all__ = (
     "DisableAdvancedSiteSearchResponse",
     "Document",
     "DocumentInfo",
+    "DocumentProcessingConfig",
     "DocumentServiceClient",
     "DoubleList",
+    "EmbeddingConfig",
     "EnableAdvancedSiteSearchMetadata",
     "EnableAdvancedSiteSearchRequest",
     "EnableAdvancedSiteSearchResponse",
     "Engine",
     "EngineServiceClient",
+    "EstimateBillingServiceClient",
+    "EstimateDataSizeMetadata",
+    "EstimateDataSizeRequest",
+    "EstimateDataSizeResponse",
     "FetchDomainVerificationStatusRequest",
     "FetchDomainVerificationStatusResponse",
     "FieldConfig",
     "GcsSource",
+    "GetAclConfigRequest",
+    "GetChunkRequest",
     "GetConversationRequest",
     "GetDataStoreRequest",
+    "GetDocumentProcessingConfigRequest",
     "GetDocumentRequest",
     "GetEngineRequest",
     "GetSchemaRequest",
+    "GetServingConfigRequest",
     "GetSiteSearchEngineRequest",
     "GetTargetSiteRequest",
+    "GuidedSearchSpec",
+    "IdpConfig",
     "ImportDocumentsMetadata",
     "ImportDocumentsRequest",
     "ImportDocumentsResponse",
     "ImportErrorConfig",
+    "ImportSuggestionDenyListEntriesMetadata",
+    "ImportSuggestionDenyListEntriesRequest",
+    "ImportSuggestionDenyListEntriesResponse",
     "ImportUserEventsMetadata",
     "ImportUserEventsRequest",
     "ImportUserEventsResponse",
     "IndustryVertical",
     "Interval",
+    "ListChunksRequest",
+    "ListChunksResponse",
     "ListConversationsRequest",
     "ListConversationsResponse",
     "ListDataStoresRequest",
@@ -289,15 +360,22 @@ __all__ = (
     "ListEnginesResponse",
     "ListSchemasRequest",
     "ListSchemasResponse",
+    "ListServingConfigsRequest",
+    "ListServingConfigsResponse",
     "ListTargetSitesRequest",
     "ListTargetSitesResponse",
     "MediaInfo",
     "PageInfo",
     "PanelInfo",
     "PauseEngineRequest",
+    "Principal",
     "PurgeDocumentsMetadata",
     "PurgeDocumentsRequest",
     "PurgeDocumentsResponse",
+    "PurgeErrorConfig",
+    "PurgeSuggestionDenyListEntriesMetadata",
+    "PurgeSuggestionDenyListEntriesRequest",
+    "PurgeSuggestionDenyListEntriesResponse",
     "PurgeUserEventsMetadata",
     "PurgeUserEventsRequest",
     "PurgeUserEventsResponse",
@@ -318,10 +396,13 @@ __all__ = (
     "SearchServiceClient",
     "SearchTier",
     "SearchTuningServiceClient",
+    "ServingConfig",
+    "ServingConfigServiceClient",
     "SiteSearchEngine",
     "SiteSearchEngineServiceClient",
     "SiteVerificationInfo",
     "SolutionType",
+    "SuggestionDenyListEntry",
     "TargetSite",
     "TextInput",
     "TrainCustomModelMetadata",
@@ -331,12 +412,15 @@ __all__ = (
     "TuneEngineMetadata",
     "TuneEngineRequest",
     "TuneEngineResponse",
+    "UpdateAclConfigRequest",
     "UpdateConversationRequest",
     "UpdateDataStoreRequest",
+    "UpdateDocumentProcessingConfigRequest",
     "UpdateDocumentRequest",
     "UpdateEngineRequest",
     "UpdateSchemaMetadata",
     "UpdateSchemaRequest",
+    "UpdateServingConfigRequest",
     "UpdateTargetSiteMetadata",
     "UpdateTargetSiteRequest",
     "UserEvent",

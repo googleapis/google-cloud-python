@@ -1112,11 +1112,10 @@ class FetchCaCertsResponse(proto.Message):
 
     Attributes:
         ca_certs (MutableSequence[google.cloud.security.privateca_v1.types.FetchCaCertsResponse.CertChain]):
-            The PEM encoded CA certificate chains of all
-            [ACTIVE][CertificateAuthority.State.ACTIVE]
-            [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
-            resources in this
-            [CaPool][google.cloud.security.privateca.v1.CaPool].
+            The PEM encoded CA certificate chains of all Certificate
+            Authorities in this
+            [CaPool][google.cloud.security.privateca.v1.CaPool] in the
+            ENABLED, DISABLED, or STAGED states.
     """
 
     class CertChain(proto.Message):

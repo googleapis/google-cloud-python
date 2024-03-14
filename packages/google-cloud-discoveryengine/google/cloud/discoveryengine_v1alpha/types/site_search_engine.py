@@ -61,8 +61,8 @@ class TargetSite(proto.Message):
             Required. Input only. The user provided URI pattern from
             which the ``generated_uri_pattern`` is generated.
         type_ (google.cloud.discoveryengine_v1alpha.types.TargetSite.Type):
-            The type of the target site, e.g. whether the
-            site is to be included or excluded.
+            The type of the target site, e.g., whether
+            the site is to be included or excluded.
         exact_match (bool):
             Input only. If set to false, a uri_pattern is generated to
             include all pages whose address contains the
@@ -146,7 +146,19 @@ class TargetSite(proto.Message):
         """
 
         class QuotaFailure(proto.Message):
-            r""" """
+            r"""Failed due to insufficient quota.
+
+            Attributes:
+                total_required_quota (int):
+                    This number is an estimation on how much
+                    total quota this project needs to successfully
+                    complete indexing.
+            """
+
+            total_required_quota: int = proto.Field(
+                proto.INT64,
+                number=1,
+            )
 
         quota_failure: "TargetSite.FailureReason.QuotaFailure" = proto.Field(
             proto.MESSAGE,
@@ -222,7 +234,7 @@ class SiteVerificationInfo(proto.Message):
                 Site ownership pending verification or
                 verification failed.
             EXEMPTED (3):
-                Site exempt from verification, e.g. a public
+                Site exempt from verification, e.g., a public
                 website that opens to all.
         """
         SITE_VERIFICATION_STATE_UNSPECIFIED = 0

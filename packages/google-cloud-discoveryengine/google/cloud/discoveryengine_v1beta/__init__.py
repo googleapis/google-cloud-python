@@ -38,6 +38,10 @@ from .services.recommendation_service import (
 )
 from .services.schema_service import SchemaServiceAsyncClient, SchemaServiceClient
 from .services.search_service import SearchServiceAsyncClient, SearchServiceClient
+from .services.search_tuning_service import (
+    SearchTuningServiceAsyncClient,
+    SearchTuningServiceClient,
+)
 from .services.serving_config_service import (
     ServingConfigServiceAsyncClient,
     ServingConfigServiceClient,
@@ -92,6 +96,7 @@ from .types.data_store_service import (
     UpdateDataStoreRequest,
 )
 from .types.document import Document
+from .types.document_processing_config import DocumentProcessingConfig
 from .types.document_service import (
     CreateDocumentRequest,
     DeleteDocumentRequest,
@@ -147,6 +152,11 @@ from .types.schema_service import (
     UpdateSchemaRequest,
 )
 from .types.search_service import SearchRequest, SearchResponse
+from .types.search_tuning_service import (
+    TrainCustomModelMetadata,
+    TrainCustomModelRequest,
+    TrainCustomModelResponse,
+)
 from .types.serving_config import ServingConfig
 from .types.serving_config_service import (
     GetServingConfigRequest,
@@ -205,6 +215,7 @@ __all__ = (
     "RecommendationServiceAsyncClient",
     "SchemaServiceAsyncClient",
     "SearchServiceAsyncClient",
+    "SearchTuningServiceAsyncClient",
     "ServingConfigServiceAsyncClient",
     "SiteSearchEngineServiceAsyncClient",
     "UserEventServiceAsyncClient",
@@ -254,6 +265,7 @@ __all__ = (
     "DisableAdvancedSiteSearchResponse",
     "Document",
     "DocumentInfo",
+    "DocumentProcessingConfig",
     "DocumentServiceClient",
     "DoubleList",
     "EmbeddingConfig",
@@ -323,6 +335,7 @@ __all__ = (
     "SearchResponse",
     "SearchServiceClient",
     "SearchTier",
+    "SearchTuningServiceClient",
     "ServingConfig",
     "ServingConfigServiceClient",
     "SiteSearchEngine",
@@ -332,6 +345,9 @@ __all__ = (
     "SuggestionDenyListEntry",
     "TargetSite",
     "TextInput",
+    "TrainCustomModelMetadata",
+    "TrainCustomModelRequest",
+    "TrainCustomModelResponse",
     "TransactionInfo",
     "UpdateConversationRequest",
     "UpdateDataStoreRequest",

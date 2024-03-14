@@ -95,6 +95,21 @@
             ],
             "release-type": "python"
         },
+        "packages/google-apps-events-subscriptions": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-apps-events-subscriptions",
+            "extra-files": [
+                "google/apps/events_subscriptions/gapic_version.py",
+                "google/apps/events_subscriptions_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.apps.events.subscriptions.v1.json",
+                    "type": "json"
+                }
+            ],
+            "release-type": "python"
+        },
         "packages/google-apps-meet": {
             "bump-minor-pre-major": true,
             "bump-patch-for-minor-pre-major": true,
@@ -295,6 +310,21 @@
             "extra-files": [
                 "google/cloud/appengine_logging/gapic_version.py",
                 "google/cloud/appengine_logging_v1/gapic_version.py"
+            ],
+            "release-type": "python"
+        },
+        "packages/google-cloud-apphub": {
+            "bump-minor-pre-major": true,
+            "bump-patch-for-minor-pre-major": true,
+            "component": "google-cloud-apphub",
+            "extra-files": [
+                "google/cloud/apphub/gapic_version.py",
+                "google/cloud/apphub_v1/gapic_version.py",
+                {
+                    "jsonpath": "$.clientLibrary.version",
+                    "path": "samples/generated_samples/snippet_metadata_google.cloud.apphub.v1.json",
+                    "type": "json"
+                }
             ],
             "release-type": "python"
         },

@@ -56,10 +56,14 @@ from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 from google.cloud.discoveryengine_v1beta.services.data_store_service import pagers
+from google.cloud.discoveryengine_v1beta.types import (
+    data_store_service,
+    document_processing_config,
+    schema,
+)
 from google.cloud.discoveryengine_v1beta.types import data_store as gcd_data_store
 from google.cloud.discoveryengine_v1beta.types import common
 from google.cloud.discoveryengine_v1beta.types import data_store
-from google.cloud.discoveryengine_v1beta.types import data_store_service
 
 from .transports.base import DEFAULT_CLIENT_INFO, DataStoreServiceTransport
 from .transports.grpc import DataStoreServiceGrpcTransport
@@ -238,6 +242,52 @@ class DataStoreServiceClient(metaclass=DataStoreServiceClientMeta):
         """Parses a data_store path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def document_processing_config_path(
+        project: str,
+        location: str,
+        data_store: str,
+    ) -> str:
+        """Returns a fully-qualified document_processing_config string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/documentProcessingConfig".format(
+            project=project,
+            location=location,
+            data_store=data_store,
+        )
+
+    @staticmethod
+    def parse_document_processing_config_path(path: str) -> Dict[str, str]:
+        """Parses a document_processing_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/documentProcessingConfig$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def schema_path(
+        project: str,
+        location: str,
+        data_store: str,
+        schema: str,
+    ) -> str:
+        """Returns a fully-qualified schema string."""
+        return "projects/{project}/locations/{location}/dataStores/{data_store}/schemas/{schema}".format(
+            project=project,
+            location=location,
+            data_store=data_store,
+            schema=schema,
+        )
+
+    @staticmethod
+    def parse_schema_path(path: str) -> Dict[str, str]:
+        """Parses a schema path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataStores/(?P<data_store>.+?)/schemas/(?P<schema>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

@@ -66,6 +66,12 @@ from google.cloud.discoveryengine_v1beta.services.search_service.async_client im
 from google.cloud.discoveryengine_v1beta.services.search_service.client import (
     SearchServiceClient,
 )
+from google.cloud.discoveryengine_v1beta.services.search_tuning_service.async_client import (
+    SearchTuningServiceAsyncClient,
+)
+from google.cloud.discoveryengine_v1beta.services.search_tuning_service.client import (
+    SearchTuningServiceClient,
+)
 from google.cloud.discoveryengine_v1beta.services.serving_config_service.async_client import (
     ServingConfigServiceAsyncClient,
 )
@@ -129,6 +135,9 @@ from google.cloud.discoveryengine_v1beta.types.data_store_service import (
     UpdateDataStoreRequest,
 )
 from google.cloud.discoveryengine_v1beta.types.document import Document
+from google.cloud.discoveryengine_v1beta.types.document_processing_config import (
+    DocumentProcessingConfig,
+)
 from google.cloud.discoveryengine_v1beta.types.document_service import (
     CreateDocumentRequest,
     DeleteDocumentRequest,
@@ -189,6 +198,11 @@ from google.cloud.discoveryengine_v1beta.types.schema_service import (
 from google.cloud.discoveryengine_v1beta.types.search_service import (
     SearchRequest,
     SearchResponse,
+)
+from google.cloud.discoveryengine_v1beta.types.search_tuning_service import (
+    TrainCustomModelMetadata,
+    TrainCustomModelRequest,
+    TrainCustomModelResponse,
 )
 from google.cloud.discoveryengine_v1beta.types.serving_config import ServingConfig
 from google.cloud.discoveryengine_v1beta.types.serving_config_service import (
@@ -263,6 +277,8 @@ __all__ = (
     "SchemaServiceAsyncClient",
     "SearchServiceClient",
     "SearchServiceAsyncClient",
+    "SearchTuningServiceClient",
+    "SearchTuningServiceAsyncClient",
     "ServingConfigServiceClient",
     "ServingConfigServiceAsyncClient",
     "SiteSearchEngineServiceClient",
@@ -304,6 +320,7 @@ __all__ = (
     "ListDataStoresResponse",
     "UpdateDataStoreRequest",
     "Document",
+    "DocumentProcessingConfig",
     "CreateDocumentRequest",
     "DeleteDocumentRequest",
     "GetDocumentRequest",
@@ -351,6 +368,9 @@ __all__ = (
     "UpdateSchemaRequest",
     "SearchRequest",
     "SearchResponse",
+    "TrainCustomModelMetadata",
+    "TrainCustomModelRequest",
+    "TrainCustomModelResponse",
     "ServingConfig",
     "GetServingConfigRequest",
     "ListServingConfigsRequest",

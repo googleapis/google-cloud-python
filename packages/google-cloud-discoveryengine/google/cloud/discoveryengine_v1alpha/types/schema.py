@@ -257,6 +257,8 @@ class FieldConfig(proto.Message):
                 Field value type is Boolean.
             GEOLOCATION (6):
                 Field value type is Geolocation.
+            DATETIME (7):
+                Field value type is Datetime.
         """
         FIELD_TYPE_UNSPECIFIED = 0
         OBJECT = 1
@@ -265,6 +267,7 @@ class FieldConfig(proto.Message):
         INTEGER = 4
         BOOLEAN = 5
         GEOLOCATION = 6
+        DATETIME = 7
 
     class IndexableOption(proto.Enum):
         r"""The setting of Indexable options in schema.

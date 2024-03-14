@@ -20,6 +20,7 @@ from typing import MutableMapping, MutableSequence
 from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
+from google.cloud.discoveryengine_v1alpha.types import chunk as gcd_chunk
 from google.cloud.discoveryengine_v1alpha.types import common
 from google.cloud.discoveryengine_v1alpha.types import document as gcd_document
 
@@ -85,6 +86,9 @@ class SearchRequest(proto.Message):
 
             If this field is negative, an ``INVALID_ARGUMENT`` is
             returned.
+        data_store_specs (MutableSequence[google.cloud.discoveryengine_v1alpha.types.SearchRequest.DataStoreSpec]):
+            A list of data store specs to apply on a
+            search call.
         filter (str):
             The filter syntax consists of an expression language for
             constructing a predicate from one or more fields of the
@@ -193,14 +197,14 @@ class SearchRequest(proto.Message):
             Uses the provided embedding to do additional semantic
             document retrieval. The retrieval is based on the dot
             product of
-            [SearchRequest.embedding_spec.embedding_vectors.vector][]
+            [SearchRequest.EmbeddingSpec.EmbeddingVector.vector][google.cloud.discoveryengine.v1alpha.SearchRequest.EmbeddingSpec.EmbeddingVector.vector]
             and the document embedding that is provided in
-            [SearchRequest.embedding_spec.embedding_vectors.field_path][].
+            [SearchRequest.EmbeddingSpec.EmbeddingVector.field_path][google.cloud.discoveryengine.v1alpha.SearchRequest.EmbeddingSpec.EmbeddingVector.field_path].
 
             If
-            [SearchRequest.embedding_spec.embedding_vectors.field_path][]
+            [SearchRequest.EmbeddingSpec.EmbeddingVector.field_path][google.cloud.discoveryengine.v1alpha.SearchRequest.EmbeddingSpec.EmbeddingVector.field_path]
             is not provided, it will use
-            [ServingConfig.embedding_config.field_paths][].
+            [ServingConfig.EmbeddingConfig.field_path][].
         ranking_expression (str):
             The ranking expression controls the customized ranking on
             retrieval documents. This overrides
@@ -247,6 +251,8 @@ class SearchRequest(proto.Message):
             See `Google Cloud
             Document <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__
             for more details.
+        custom_fine_tuning_spec (google.cloud.discoveryengine_v1alpha.types.CustomFineTuningSpec):
+            Custom fine tuning configs.
     """
 
     class ImageQuery(proto.Message):
@@ -266,6 +272,22 @@ class SearchRequest(proto.Message):
             proto.STRING,
             number=1,
             oneof="image",
+        )
+
+    class DataStoreSpec(proto.Message):
+        r"""A struct to define data stores to filter on in a search call.
+
+        Attributes:
+            data_store (str):
+                Required. Full resource name of
+                [DataStore][google.cloud.discoveryengine.v1alpha.DataStore],
+                such as
+                ``projects/{project}/locations/{location}/collections/{collection_id}/dataStores/{data_store_id}``.
+        """
+
+        data_store: str = proto.Field(
+            proto.STRING,
+            number=1,
         )
 
     class FacetSpec(proto.Message):
@@ -485,9 +507,7 @@ class SearchRequest(proto.Message):
 
                     -  To boost documents with document ID "doc_1" or "doc_2",
                        and color "Red" or "Blue":
-
-                       -  (id: ANY("doc_1", "doc_2")) AND (color:
-                          ANY("Red","Blue"))
+                       ``(document_id: ANY("doc_1", "doc_2")) AND (color: ANY("Red", "Blue"))``
                 boost (float):
                     Strength of the condition boost, which should be in [-1, 1].
                     Negative boost means demotion. Default is 0.0.
@@ -627,7 +647,38 @@ class SearchRequest(proto.Message):
             extractive_content_spec (google.cloud.discoveryengine_v1alpha.types.SearchRequest.ContentSearchSpec.ExtractiveContentSpec):
                 If there is no extractive_content_spec provided, there will
                 be no extractive answer in the search response.
+            search_result_mode (google.cloud.discoveryengine_v1alpha.types.SearchRequest.ContentSearchSpec.SearchResultMode):
+                Specifies the search result mode. If unspecified, the search
+                result mode is based on
+                [DataStore.DocumentProcessingConfig.chunking_config][]:
+
+                -  If [DataStore.DocumentProcessingConfig.chunking_config][]
+                   is specified, it defaults to ``CHUNKS``.
+                -  Otherwise, it defaults to ``DOCUMENTS``.
         """
+
+        class SearchResultMode(proto.Enum):
+            r"""Specifies the search result mode. If unspecified, the search result
+            mode is based on
+            [DataStore.DocumentProcessingConfig.chunking_config][]:
+
+            -  If [DataStore.DocumentProcessingConfig.chunking_config][] is
+               specified, it defaults to ``CHUNKS``.
+            -  Otherwise, it defaults to ``DOCUMENTS``.
+
+            Values:
+                SEARCH_RESULT_MODE_UNSPECIFIED (0):
+                    Default value.
+                DOCUMENTS (1):
+                    Returns documents in the search result.
+                CHUNKS (2):
+                    Returns chunks in the search result. Only available if the
+                    [DataStore.DocumentProcessingConfig.chunking_config][] is
+                    specified.
+            """
+            SEARCH_RESULT_MODE_UNSPECIFIED = 0
+            DOCUMENTS = 1
+            CHUNKS = 2
 
         class SnippetSpec(proto.Message):
             r"""A specification for configuring snippets in a search
@@ -673,7 +724,7 @@ class SearchRequest(proto.Message):
                     ``summaryResultCount``, the summary is generated from all of
                     the results.
 
-                    At most five results can be used to generate a summary.
+                    At most 10 results can be used to generate a summary.
                 include_citations (bool):
                     Specifies whether to include citations in the summary. The
                     default value is ``false``.
@@ -752,8 +803,16 @@ class SearchRequest(proto.Message):
 
                 Attributes:
                     version (str):
-                        The string format of the model version.
-                        e.g. stable, preview, etc.
+                        The model version used to generate the summary.
+
+                        Supported values are:
+
+                        -  ``stable``: string. Default value when no value is
+                           specified. Uses a generally available, fine-tuned version
+                           of the text-bison@001 model.
+                        -  ``preview``: string. (Public preview) Uses a fine-tuned
+                           version of the text-bison@002 model. This model works
+                           only for summaries in English.
                 """
 
                 version: str = proto.Field(
@@ -811,7 +870,7 @@ class SearchRequest(proto.Message):
                     ``max_extractive_answer_count``, return all of the answers.
                     Otherwise, return the ``max_extractive_answer_count``.
 
-                    At most one answer is returned for each
+                    At most five answers are returned for each
                     [SearchResult][google.cloud.discoveryengine.v1alpha.SearchResponse.SearchResult].
                 max_extractive_segment_count (int):
                     The max number of extractive segments returned in each
@@ -887,6 +946,13 @@ class SearchRequest(proto.Message):
             number=3,
             message="SearchRequest.ContentSearchSpec.ExtractiveContentSpec",
         )
+        search_result_mode: "SearchRequest.ContentSearchSpec.SearchResultMode" = (
+            proto.Field(
+                proto.ENUM,
+                number=4,
+                enum="SearchRequest.ContentSearchSpec.SearchResultMode",
+            )
+        )
 
     class EmbeddingSpec(proto.Message):
         r"""The specification that uses customized query embedding vector
@@ -953,6 +1019,11 @@ class SearchRequest(proto.Message):
     offset: int = proto.Field(
         proto.INT32,
         number=6,
+    )
+    data_store_specs: MutableSequence[DataStoreSpec] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=32,
+        message=DataStoreSpec,
     )
     filter: str = proto.Field(
         proto.STRING,
@@ -1023,6 +1094,11 @@ class SearchRequest(proto.Message):
         proto.STRING,
         proto.STRING,
         number=22,
+    )
+    custom_fine_tuning_spec: common.CustomFineTuningSpec = proto.Field(
+        proto.MESSAGE,
+        number=34,
+        message=common.CustomFineTuningSpec,
     )
 
 
@@ -1095,6 +1171,11 @@ class SearchResponse(proto.Message):
                 The document data snippet in the search
                 response. Only fields that are marked as
                 retrievable are populated.
+            chunk (google.cloud.discoveryengine_v1alpha.types.Chunk):
+                The chunk data in the search response if the
+                [SearchRequest.ContentSearchSpec.search_result_mode][google.cloud.discoveryengine.v1alpha.SearchRequest.ContentSearchSpec.search_result_mode]
+                is set to
+                [CHUNKS][google.cloud.discoveryengine.v1alpha.SearchRequest.ContentSearchSpec.SearchResultMode.CHUNKS].
             model_scores (MutableMapping[str, google.cloud.discoveryengine_v1alpha.types.DoubleList]):
                 Google provided available scores.
         """
@@ -1107,6 +1188,11 @@ class SearchResponse(proto.Message):
             proto.MESSAGE,
             number=2,
             message=gcd_document.Document,
+        )
+        chunk: gcd_chunk.Chunk = proto.Field(
+            proto.MESSAGE,
+            number=18,
+            message=gcd_chunk.Chunk,
         )
         model_scores: MutableMapping[str, common.DoubleList] = proto.MapField(
             proto.STRING,
@@ -1246,7 +1332,7 @@ class SearchResponse(proto.Message):
                 A collection of Safety Attribute categories
                 and their associated confidence scores.
             summary_with_metadata (google.cloud.discoveryengine_v1alpha.types.SearchResponse.Summary.SummaryWithMetadata):
-
+                Summary with metadata information.
         """
 
         class SummarySkippedReason(proto.Enum):
@@ -1393,7 +1479,7 @@ class SearchResponse(proto.Message):
                     document, in the format
                     ``projects/*/locations/*/collections/*/dataStores/*/branches/*/documents/*``.
                 uri (str):
-                    GCS or HTTP uri for the document.
+                    Cloud Storage or HTTP uri for the document.
             """
 
             title: str = proto.Field(
