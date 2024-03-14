@@ -15,6 +15,26 @@ from __future__ import annotations
 display_options_doc = """
 Encapsulates configuration for displaying objects.
 
+**Examples:**
+
+Define Repr mode to "deferred" will prevent job execution in repr.
+    >>> import bigframes.pandas as bpd
+    >>> df = bpd.read_gbq("bigquery-public-data.ml_datasets.penguins")
+
+    >>> bpd.options.display.repr_mode = "deferred"
+    >>> df.head(20) # will no longer run the job
+    Computation deferred. Computation will process 28.9 kB
+
+Users can also get a dry run of the job by accessing the query_job property before they've run the job. This will return a dry run instance of the job they can inspect.
+    >>> df.query_job.total_bytes_processed
+    28947
+
+User can execute the job by calling .to_pandas()
+    >>> # df.to_pandas()
+
+Reset option
+    >>> bpd.options.display.repr_mode = "head"
+
 Attributes:
     max_columns (int, default 20):
         If `max_columns` is exceeded, switch to truncate view.
