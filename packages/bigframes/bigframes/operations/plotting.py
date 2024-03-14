@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional, Sequence
+import typing
 
 import bigframes_vendored.pandas.plotting._core as vendordt
 
@@ -20,16 +20,65 @@ import bigframes.constants as constants
 import bigframes.operations._matplotlib as bfplt
 
 
-class PlotAccessor:
+class PlotAccessor(vendordt.PlotAccessor):
     __doc__ = vendordt.PlotAccessor.__doc__
 
     def __init__(self, data) -> None:
         self._parent = data
 
-    def hist(self, by: Optional[Sequence[str]] = None, bins: int = 10, **kwargs):
+    def hist(
+        self, by: typing.Optional[typing.Sequence[str]] = None, bins: int = 10, **kwargs
+    ):
         if kwargs.pop("backend", None) is not None:
             raise NotImplementedError(
                 f"Only support matplotlib backend for now. {constants.FEEDBACK_LINK}"
             )
-        # Calls matplotlib backend to plot the data.
         return bfplt.plot(self._parent.copy(), kind="hist", by=by, bins=bins, **kwargs)
+
+    def line(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        **kwargs,
+    ):
+        return bfplt.plot(
+            self._parent.copy(),
+            kind="line",
+            x=x,
+            y=y,
+            **kwargs,
+        )
+
+    def area(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        stacked: bool = True,
+        **kwargs,
+    ):
+        return bfplt.plot(
+            self._parent.copy(),
+            kind="area",
+            x=x,
+            y=y,
+            stacked=stacked,
+            **kwargs,
+        )
+
+    def scatter(
+        self,
+        x: typing.Optional[typing.Hashable] = None,
+        y: typing.Optional[typing.Hashable] = None,
+        s: typing.Union[typing.Hashable, typing.Sequence[typing.Hashable]] = None,
+        c: typing.Union[typing.Hashable, typing.Sequence[typing.Hashable]] = None,
+        **kwargs,
+    ):
+        return bfplt.plot(
+            self._parent.copy(),
+            kind="scatter",
+            x=x,
+            y=y,
+            s=s,
+            c=c,
+            **kwargs,
+        )

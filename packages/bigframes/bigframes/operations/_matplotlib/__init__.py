@@ -17,6 +17,9 @@ import bigframes.operations._matplotlib.hist as hist
 
 PLOT_CLASSES: dict[str, type[core.MPLPlot]] = {
     "hist": hist.HistPlot,
+    "line": core.LinePlot,
+    "area": core.AreaPlot,
+    "scatter": core.ScatterPlot,
 }
 
 

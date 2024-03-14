@@ -12,8 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import numpy as np
 import pandas._testing as tm
 import pytest
+
+import bigframes.pandas as bpd
 
 
 def _check_legend_labels(ax, labels):
@@ -166,3 +169,67 @@ def test_hist_kwargs_ticks_props(scalars_dfs):
     for i in range(len(pd_xlables)):
         tm.assert_almost_equal(ylabels[i].get_fontsize(), pd_ylables[i].get_fontsize())
         tm.assert_almost_equal(ylabels[i].get_rotation(), pd_ylables[i].get_rotation())
+
+
+def test_line(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_names = ["int64_col", "float64_col", "int64_too", "bool_col"]
+    ax = scalars_df[col_names].plot.line()
+    pd_ax = scalars_pandas_df[col_names].plot.line()
+    tm.assert_almost_equal(ax.get_xticks(), pd_ax.get_xticks())
+    tm.assert_almost_equal(ax.get_yticks(), pd_ax.get_yticks())
+    for line, pd_line in zip(ax.lines, pd_ax.lines):
+        # Compare y coordinates between the lines
+        tm.assert_almost_equal(line.get_data()[1], pd_line.get_data()[1])
+
+
+def test_area(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_names = ["int64_col", "float64_col", "int64_too"]
+    ax = scalars_df[col_names].plot.area(stacked=False)
+    pd_ax = scalars_pandas_df[col_names].plot.area(stacked=False)
+    tm.assert_almost_equal(ax.get_xticks(), pd_ax.get_xticks())
+    tm.assert_almost_equal(ax.get_yticks(), pd_ax.get_yticks())
+    for line, pd_line in zip(ax.lines, pd_ax.lines):
+        # Compare y coordinates between the lines
+        tm.assert_almost_equal(line.get_data()[1], pd_line.get_data()[1])
+
+
+def test_scatter(scalars_dfs):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    col_names = ["int64_col", "float64_col", "int64_too", "bool_col"]
+    ax = scalars_df[col_names].plot.scatter(x="int64_col", y="float64_col")
+    pd_ax = scalars_pandas_df[col_names].plot.scatter(x="int64_col", y="float64_col")
+    tm.assert_almost_equal(ax.get_xticks(), pd_ax.get_xticks())
+    tm.assert_almost_equal(ax.get_yticks(), pd_ax.get_yticks())
+    tm.assert_almost_equal(
+        ax.collections[0].get_sizes(), pd_ax.collections[0].get_sizes()
+    )
+
+
+def test_sampling_plot_args_n():
+    df = bpd.DataFrame(np.arange(1000), columns=["one"])
+    ax = df.plot.line()
+    assert len(ax.lines) == 1
+    # Default sampling_n is 100
+    assert len(ax.lines[0].get_data()[1]) == 100
+
+    ax = df.plot.line(sampling_n=2)
+    assert len(ax.lines) == 1
+    assert len(ax.lines[0].get_data()[1]) == 2
+
+
+def test_sampling_plot_args_random_state():
+    df = bpd.DataFrame(np.arange(1000), columns=["one"])
+    ax_0 = df.plot.line()
+    ax_1 = df.plot.line()
+    ax_2 = df.plot.line(sampling_random_state=100)
+    ax_3 = df.plot.line(sampling_random_state=100)
+
+    # Setting a fixed sampling_random_state guarantees reproducible plotted sampling.
+    tm.assert_almost_equal(ax_0.lines[0].get_data()[1], ax_1.lines[0].get_data()[1])
+    tm.assert_almost_equal(ax_2.lines[0].get_data()[1], ax_3.lines[0].get_data()[1])
+
+    msg = "numpy array are different"
+    with pytest.raises(AssertionError, match=msg):
+        tm.assert_almost_equal(ax_0.lines[0].get_data()[1], ax_2.lines[0].get_data()[1])
