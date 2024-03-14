@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/bigframes/#history
 
+## [0.25.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.24.0...v0.25.0) (2024-03-14)
+
+
+### Features
+
+* (Series|DataFrame).plot.(line|area|scatter) ([#431](https://github.com/googleapis/python-bigquery-dataframes/issues/431)) ([0772510](https://github.com/googleapis/python-bigquery-dataframes/commit/077251084e3121019c56e5d6c16aebab16be8dc7))
+* Support CMEK for `remote_function` cloud functions ([#430](https://github.com/googleapis/python-bigquery-dataframes/issues/430)) ([2fd69f4](https://github.com/googleapis/python-bigquery-dataframes/commit/2fd69f4bed143fc8c040dac1c55288c1cb660f6e))
+
 ## [0.24.0](https://github.com/googleapis/python-bigquery-dataframes/compare/v0.23.0...v0.24.0) (2024-03-12)
 
 
