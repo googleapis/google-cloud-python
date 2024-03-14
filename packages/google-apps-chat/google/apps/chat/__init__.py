@@ -26,6 +26,8 @@ from google.apps.chat_v1.types.action_status import ActionStatus
 from google.apps.chat_v1.types.annotation import (
     Annotation,
     AnnotationType,
+    DriveLinkData,
+    RichLinkMetadata,
     SlashCommandMetadata,
     UserMentionMetadata,
 )
@@ -98,6 +100,8 @@ __all__ = (
     "ChatServiceAsyncClient",
     "ActionStatus",
     "Annotation",
+    "DriveLinkData",
+    "RichLinkMetadata",
     "SlashCommandMetadata",
     "UserMentionMetadata",
     "AnnotationType",
