@@ -130,6 +130,8 @@ class RemoteFunctionClient:
         bq_connection_id,
         cloud_resource_manager_client,
         cloud_function_service_account,
+        cloud_function_kms_key_name,
+        cloud_function_docker_repository,
     ):
         self._gcp_project_id = gcp_project_id
         self._cloud_function_region = cloud_function_region
@@ -142,6 +144,8 @@ class RemoteFunctionClient:
             bq_connection_client, cloud_resource_manager_client
         )
         self._cloud_function_service_account = cloud_function_service_account
+        self._cloud_function_kms_key_name = cloud_function_kms_key_name
+        self._cloud_function_docker_repository = cloud_function_docker_repository
 
     def create_bq_remote_function(
         self, input_args, input_types, output_type, endpoint, bq_function_name
@@ -344,7 +348,9 @@ class RemoteFunctionClient:
             )
 
             # Determine an upload URL for user code
-            upload_url_request = functions_v2.GenerateUploadUrlRequest()
+            upload_url_request = functions_v2.GenerateUploadUrlRequest(
+                kms_key_name=self._cloud_function_kms_key_name
+            )
             upload_url_request.parent = self.get_cloud_function_fully_qualified_parent()
             upload_url_response = self._cloud_functions_client.generate_upload_url(
                 request=upload_url_request
@@ -383,12 +389,16 @@ class RemoteFunctionClient:
             function.build_config.source.storage_source.object_ = (
                 upload_url_response.storage_source.object_
             )
+            function.build_config.docker_repository = (
+                self._cloud_function_docker_repository
+            )
             function.service_config = functions_v2.ServiceConfig()
             function.service_config.available_memory = "1024M"
             function.service_config.timeout_seconds = 600
             function.service_config.service_account_email = (
                 self._cloud_function_service_account
             )
+            function.kms_key_name = self._cloud_function_kms_key_name
             create_function_request.function = function
 
             # Create the cloud function and wait for it to be ready to use
@@ -597,6 +607,8 @@ def remote_function(
     name: Optional[str] = None,
     packages: Optional[Sequence[str]] = None,
     cloud_function_service_account: Optional[str] = None,
+    cloud_function_kms_key_name: Optional[str] = None,
+    cloud_function_docker_repository: Optional[str] = None,
 ):
     """Decorator to turn a user defined function into a BigQuery remote function.
 
@@ -699,6 +711,20 @@ def remote_function(
             for more details. Please make sure the service account has the
             necessary IAM permissions configured as described in
             https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration.
+        cloud_function_kms_key_name (str, Optional):
+            Customer managed encryption key to protect cloud functions and
+            related data at rest. This is of the format
+            projects/PROJECT_ID/locations/LOCATION/keyRings/KEYRING/cryptoKeys/KEY.
+            Read https://cloud.google.com/functions/docs/securing/cmek for
+            more details including granting necessary service accounts
+            access to the key.
+        cloud_function_docker_repository (str, Optional):
+            Docker repository created with the same encryption key as
+            `cloud_function_kms_key_name` to store encrypted artifacts
+            created to support the cloud function. This is of the format
+            projects/PROJECT_ID/locations/LOCATION/repositories/REPOSITORY_NAME.
+            For more details see
+            https://cloud.google.com/functions/docs/securing/cmek#before_you_begin.
     """
     import bigframes.pandas as bpd
 
@@ -780,6 +806,16 @@ def remote_function(
             f"{bq_location}."
         )
 
+    # If any CMEK is intended then check that a docker repository is also specified
+    if (
+        cloud_function_kms_key_name is not None
+        and cloud_function_docker_repository is None
+    ):
+        raise ValueError(
+            "cloud_function_docker_repository must be specified with cloud_function_kms_key_name."
+            " For more details see https://cloud.google.com/functions/docs/securing/cmek#before_you_begin"
+        )
+
     def wrapper(f):
         if not callable(f):
             raise TypeError("f must be callable, got {}".format(f))
@@ -800,6 +836,8 @@ def remote_function(
             bq_connection_id,
             resource_manager_client,
             cloud_function_service_account,
+            cloud_function_kms_key_name,
+            cloud_function_docker_repository,
         )
 
         rf_name, cf_name = remote_function_client.provision_bq_remote_function(

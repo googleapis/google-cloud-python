@@ -1364,6 +1364,8 @@ class Session(
         name: Optional[str] = None,
         packages: Optional[Sequence[str]] = None,
         cloud_function_service_account: Optional[str] = None,
+        cloud_function_kms_key_name: Optional[str] = None,
+        cloud_function_docker_repository: Optional[str] = None,
     ):
         """Decorator to turn a user defined function into a BigQuery remote function. Check out
         the code samples at: https://cloud.google.com/bigquery/docs/remote-functions#bigquery-dataframes.
@@ -1444,6 +1446,20 @@ class Session(
                 for more details. Please make sure the service account has the
                 necessary IAM permissions configured as described in
                 https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration.
+            cloud_function_kms_key_name (str, Optional):
+                Customer managed encryption key to protect cloud functions and
+                related data at rest. This is of the format
+                projects/PROJECT_ID/locations/LOCATION/keyRings/KEYRING/cryptoKeys/KEY.
+                Read https://cloud.google.com/functions/docs/securing/cmek for
+                more details including granting necessary service accounts
+                access to the key.
+            cloud_function_docker_repository (str, Optional):
+                Docker repository created with the same encryption key as
+                `cloud_function_kms_key_name` to store encrypted artifacts
+                created to support the cloud function. This is of the format
+                projects/PROJECT_ID/locations/LOCATION/repositories/REPOSITORY_NAME.
+                For more details see
+                https://cloud.google.com/functions/docs/securing/cmek#before_you_begin.
         Returns:
             callable: A remote function object pointing to the cloud assets created
             in the background to support the remote execution. The cloud assets can be
@@ -1463,6 +1479,8 @@ class Session(
             name=name,
             packages=packages,
             cloud_function_service_account=cloud_function_service_account,
+            cloud_function_kms_key_name=cloud_function_kms_key_name,
+            cloud_function_docker_repository=cloud_function_docker_repository,
         )
 
     def read_gbq_function(
