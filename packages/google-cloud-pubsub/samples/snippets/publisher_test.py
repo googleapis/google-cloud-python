@@ -124,6 +124,38 @@ def test_create(
     assert f"Created topic: {topic_path}" in out
 
 
+def test_create_kinesis_ingestion(
+    publisher_client: pubsub_v1.PublisherClient, capsys: CaptureFixture[str]
+) -> None:
+    # The scope of `topic_path` is limited to this function.
+    topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC_ID)
+
+    # Outside of automated CI tests, these values must be of actual AWS resources for the test to pass.
+    stream_arn = "arn:aws:kinesis:us-west-2:111111111111:stream/fake-stream-name"
+    consumer_arn = "arn:aws:kinesis:us-west-2:111111111111:stream/fake-stream-name/consumer/consumer-1:1111111111"
+    aws_role_arn = "arn:aws:iam::111111111111:role/fake-role-name"
+    gcp_service_account = (
+        "fake-service-account@fake-gcp-project.iam.gserviceaccount.com"
+    )
+
+    try:
+        publisher_client.delete_topic(request={"topic": topic_path})
+    except NotFound:
+        pass
+
+    publisher.create_topic_kinesis_ingestion(
+        PROJECT_ID,
+        TOPIC_ID,
+        stream_arn,
+        consumer_arn,
+        aws_role_arn,
+        gcp_service_account,
+    )
+
+    out, _ = capsys.readouterr()
+    assert f"Created topic: {topic_path} with AWS Kinesis Ingestion Settings" in out
+
+
 def test_list(topic_path: str, capsys: CaptureFixture[str]) -> None:
     publisher.list_topics(PROJECT_ID)
     out, _ = capsys.readouterr()
