@@ -4,6 +4,26 @@
 
 [1]: https://pypi.org/project/google-cloud-logging/#history
 
+## [3.10.0](https://github.com/googleapis/python-logging/compare/v3.9.0...v3.10.0) (2024-03-13)
+
+
+### Features
+
+* Allow users to explicitly configure universe domain ([#846](https://github.com/googleapis/python-logging/issues/846)) ([e998a21](https://github.com/googleapis/python-logging/commit/e998a219740cf8b2373e462867244a6860b0c88c))
+
+
+### Bug Fixes
+
+* Added placeholder kwargs to StructuredLogHandler ([#845](https://github.com/googleapis/python-logging/issues/845)) ([9bc0a37](https://github.com/googleapis/python-logging/commit/9bc0a37d910340d828db8bab33d67785f184f00c))
+* Allowed for a partial override of loggers that get excluded from setup_client ([#831](https://github.com/googleapis/python-logging/issues/831)) ([870c940](https://github.com/googleapis/python-logging/commit/870c9403e03d31a0f22dddc257cd5fb2b4fc5ee3))
+* Remove usage in including_default_value_fields to prepare for protobuf 5.x ([#866](https://github.com/googleapis/python-logging/issues/866)) ([66a534d](https://github.com/googleapis/python-logging/commit/66a534d1b83d7c63f5c7b013bf27ed54dd2786c3))
+* Use value of cluster-location in GKE for tagging location ([#830](https://github.com/googleapis/python-logging/issues/830)) ([c15847c](https://github.com/googleapis/python-logging/commit/c15847c215c18ad3970efba12f5d337e6d499883))
+
+
+### Documentation
+
+* Added documentation for Django/Flask integrations and dictConfig ([#848](https://github.com/googleapis/python-logging/issues/848)) ([c65ec92](https://github.com/googleapis/python-logging/commit/c65ec92bf348e2bcdd8f4c5bacc152cfb4737eb1))
+
 ## [3.9.0](https://github.com/googleapis/python-logging/compare/v3.8.0...v3.9.0) (2023-12-08)
 
 
