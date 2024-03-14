@@ -3203,3 +3203,28 @@ def test_apply_not_supported(scalars_dfs, col, lambda_, exception):
     bf_col = scalars_df[col]
     with pytest.raises(exception):
         bf_col.apply(lambda_, by_row=False)
+
+
+def test_series_pipe(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    column = "int64_too"
+
+    def foo(x: int, y: int, df):
+        return (df + x) % y
+
+    bf_result = (
+        scalars_df_index[column]
+        .pipe((foo, "df"), x=7, y=9)
+        .pipe(lambda x: x**2)
+        .to_pandas()
+    )
+
+    pd_result = (
+        scalars_pandas_df_index[column]
+        .pipe((foo, "df"), x=7, y=9)
+        .pipe(lambda x: x**2)
+    )
+
+    assert_series_equal(bf_result, pd_result)

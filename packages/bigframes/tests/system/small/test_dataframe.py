@@ -1000,6 +1000,31 @@ def test_apply_series_scalar_callable(
     pandas.testing.assert_series_equal(bf_result, pd_result)
 
 
+def test_df_pipe(
+    scalars_df_index,
+    scalars_pandas_df_index,
+):
+    columns = ["int64_too", "int64_col"]
+
+    def foo(x: int, y: int, df):
+        return (df + x) % y
+
+    bf_result = (
+        scalars_df_index[columns]
+        .pipe((foo, "df"), x=7, y=9)
+        .pipe(lambda x: x**2)
+        .to_pandas()
+    )
+
+    pd_result = (
+        scalars_pandas_df_index[columns]
+        .pipe((foo, "df"), x=7, y=9)
+        .pipe(lambda x: x**2)
+    )
+
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
 def test_df_keys(
     scalars_df_index,
     scalars_pandas_df_index,
