@@ -2259,7 +2259,7 @@ def test_{{ message.resource_type|snake_case }}_path():
     {% for arg in message.resource_path_args %}
     {{ arg }} = "{{ molluscs.next() }}"
     {% endfor %}
-    expected = "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+    expected = "{{ message.resource_path_formatted }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
     actual = {{ service.client_name }}.{{ message.resource_type|snake_case }}_path({{message.resource_path_args|join(", ") }})
     assert expected == actual
 
@@ -2282,7 +2282,7 @@ def test_common_{{ resource_msg.message_type.resource_type|snake_case }}_path():
     {% for arg in resource_msg.message_type.resource_path_args %}
     {{ arg }} = "{{ molluscs.next() }}"
     {% endfor %}
-    expected = "{{ resource_msg.message_type.resource_path }}".format({% for arg in resource_msg.message_type.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+    expected = "{{ resource_msg.message_type.resource_path_formatted }}".format({% for arg in resource_msg.message_type.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
     actual = {{ service.client_name }}.common_{{ resource_msg.message_type.resource_type|snake_case }}_path({{ resource_msg.message_type.resource_path_args|join(", ") }})
     assert expected == actual
 

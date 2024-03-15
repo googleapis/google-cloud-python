@@ -613,6 +613,16 @@ class MessageType:
     def resource_path_args(self) -> Sequence[str]:
         return self.PATH_ARG_RE.findall(self.resource_path or '')
 
+    @property
+    def resource_path_formatted(self) -> str:
+        """
+        Returns a formatted version of `resource_path`. This re-writes
+        patterns like: 'projects/{project}/metricDescriptors/{metric_descriptor=**}'
+        to 'projects/{project}/metricDescriptors/{metric_descriptor}
+        so it can be used in an f-string.
+        """
+        return self.PATH_ARG_RE.sub(r"{\g<1>}", self.resource_path or '')
+
     @utils.cached_property
     def path_regex_str(self) -> str:
         # The indirection here is a little confusing:

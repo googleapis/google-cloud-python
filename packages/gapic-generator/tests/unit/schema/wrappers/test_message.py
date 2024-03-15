@@ -221,6 +221,7 @@ def test_resource_path_with_wildcard():
                     "kingdoms/my-kingdom/phyla/my-phylum/classes/my-klass/additional-segment")
     assert re.match(message.path_regex_str,
                     "kingdoms/my-kingdom/phyla/my-phylum/classes/") is None
+    assert message.resource_path_formatted == "kingdoms/{kingdom}/phyla/{phylum}/classes/{klass}"
 
 
 def test_resource_path_pure_wildcard():

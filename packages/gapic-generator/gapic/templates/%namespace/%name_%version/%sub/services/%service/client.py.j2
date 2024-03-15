@@ -195,7 +195,7 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
     @staticmethod
     def {{ message.resource_type|snake_case }}_path({% for arg in message.resource_path_args %}{{ arg }}: str,{% endfor %}) -> str:
         """Returns a fully-qualified {{ message.resource_type|snake_case }} string."""
-        return "{{ message.resource_path }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
+        return "{{ message.resource_path_formatted }}".format({% for arg in message.resource_path_args %}{{ arg }}={{ arg }}, {% endfor %})
 
 
     @staticmethod
