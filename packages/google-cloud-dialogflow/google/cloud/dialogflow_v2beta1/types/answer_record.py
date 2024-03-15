@@ -327,6 +327,9 @@ class AgentAssistantFeedback(proto.Message):
                 Timestamp when the summary was submitted.
             summary_text (str):
                 Text of actual submitted summary.
+            text_sections (MutableMapping[str, str]):
+                Optional. Actual text sections of submitted
+                summary.
         """
 
         start_timestamp: timestamp_pb2.Timestamp = proto.Field(
@@ -342,6 +345,11 @@ class AgentAssistantFeedback(proto.Message):
         summary_text: str = proto.Field(
             proto.STRING,
             number=3,
+        )
+        text_sections: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=4,
         )
 
     class KnowledgeSearchFeedback(proto.Message):

@@ -774,6 +774,10 @@ class AnalyzeContentRequest(proto.Message):
             suggestion.
 
             This field is a member of `oneof`_ ``input``.
+        intent_input (google.cloud.dialogflow_v2beta1.types.IntentInput):
+            The intent to be triggered on V3 agent.
+
+            This field is a member of `oneof`_ ``input``.
         reply_audio_config (google.cloud.dialogflow_v2beta1.types.OutputAudioConfig):
             Speech synthesis configuration.
             The speech synthesis settings for a virtual
@@ -859,6 +863,12 @@ class AnalyzeContentRequest(proto.Message):
         number=12,
         oneof="input",
         message="SuggestionInput",
+    )
+    intent_input: "IntentInput" = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="input",
+        message="IntentInput",
     )
     reply_audio_config: gcd_audio_config.OutputAudioConfig = proto.Field(
         proto.MESSAGE,
@@ -1121,6 +1131,17 @@ class StreamingAnalyzeContentRequest(proto.Message):
             indicated that DTMF input is not accepted.
 
             This field is a member of `oneof`_ ``input``.
+        input_intent (str):
+            The intent to be triggered on V3 agent. Format:
+            ``projects/<Project ID>/locations/<Location ID>/locations/ <Location ID>/agents/<Agent ID>/intents/<Intent ID>``.
+
+            This field is a member of `oneof`_ ``input``.
+        input_event (str):
+            The input event name.
+            This can only be sent once and would cancel the
+            ongoing speech recognition if any.
+
+            This field is a member of `oneof`_ ``input``.
         query_params (google.cloud.dialogflow_v2beta1.types.QueryParameters):
             Parameters for a Dialogflow virtual-agent
             query.
@@ -1216,6 +1237,16 @@ class StreamingAnalyzeContentRequest(proto.Message):
         number=9,
         oneof="input",
         message=gcd_audio_config.TelephonyDtmfEvents,
+    )
+    input_intent: str = proto.Field(
+        proto.STRING,
+        number=17,
+        oneof="input",
+    )
+    input_event: str = proto.Field(
+        proto.STRING,
+        number=20,
+        oneof="input",
     )
     query_params: session.QueryParameters = proto.Field(
         proto.MESSAGE,
