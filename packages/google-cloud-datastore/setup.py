@@ -30,6 +30,9 @@ description = "Google Cloud Datastore API client library"
 release_status = "Development Status :: 5 - Production/Stable"
 dependencies = [
     "google-api-core[grpc] >= 1.34.0, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
+    # Exclude incompatible versions of `google-auth`
+    # See https://github.com/googleapis/google-cloud-python/issues/12364
+    "google-auth >= 2.14.1, <3.0.0dev,!=2.24.0,!=2.25.0",
     "google-cloud-core >= 1.4.0, <3.0.0dev",
     "proto-plus >= 1.22.0, <2.0.0dev",
     "proto-plus >= 1.22.2, <2.0.0dev; python_version>='3.11'",

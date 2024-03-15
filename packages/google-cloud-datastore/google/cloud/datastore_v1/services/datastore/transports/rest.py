@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,9 +34,9 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple, Union
 import warnings
 
 try:
-    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
+    OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
-    OptionalRetry = Union[retries.Retry, object]  # type: ignore
+    OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
 
 from google.cloud.datastore_v1.types import datastore
@@ -443,7 +443,7 @@ class DatastoreRestTransport(DatastoreTransport):
 
         Args:
             host (Optional[str]):
-                 The hostname to connect to.
+                 The hostname to connect to (default: 'datastore.googleapis.com').
             credentials (Optional[google.auth.credentials.Credentials]): The
                 authorization credentials to attach to requests. These
                 credentials identify the application to the service; if none
@@ -555,9 +555,7 @@ class DatastoreRestTransport(DatastoreTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -566,7 +564,6 @@ class DatastoreRestTransport(DatastoreTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -655,9 +652,7 @@ class DatastoreRestTransport(DatastoreTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -666,7 +661,6 @@ class DatastoreRestTransport(DatastoreTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -753,9 +747,7 @@ class DatastoreRestTransport(DatastoreTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -764,7 +756,6 @@ class DatastoreRestTransport(DatastoreTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -851,9 +842,7 @@ class DatastoreRestTransport(DatastoreTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -862,7 +851,6 @@ class DatastoreRestTransport(DatastoreTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -949,9 +937,7 @@ class DatastoreRestTransport(DatastoreTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -960,7 +946,6 @@ class DatastoreRestTransport(DatastoreTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1048,9 +1033,7 @@ class DatastoreRestTransport(DatastoreTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1059,7 +1042,6 @@ class DatastoreRestTransport(DatastoreTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1148,9 +1130,7 @@ class DatastoreRestTransport(DatastoreTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1159,7 +1139,6 @@ class DatastoreRestTransport(DatastoreTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )
@@ -1246,9 +1225,7 @@ class DatastoreRestTransport(DatastoreTransport):
             # Jsonify the request body
 
             body = json_format.MessageToJson(
-                transcoded_request["body"],
-                including_default_value_fields=False,
-                use_integers_for_enums=True,
+                transcoded_request["body"], use_integers_for_enums=True
             )
             uri = transcoded_request["uri"]
             method = transcoded_request["method"]
@@ -1257,7 +1234,6 @@ class DatastoreRestTransport(DatastoreTransport):
             query_params = json.loads(
                 json_format.MessageToJson(
                     transcoded_request["query_params"],
-                    including_default_value_fields=False,
                     use_integers_for_enums=True,
                 )
             )

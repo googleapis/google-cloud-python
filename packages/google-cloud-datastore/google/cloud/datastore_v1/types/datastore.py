@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import proto  # type: ignore
 from google.cloud.datastore_v1.types import aggregation_result
 from google.cloud.datastore_v1.types import entity
 from google.cloud.datastore_v1.types import query as gd_query
+from google.cloud.datastore_v1.types import query_profile
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
@@ -185,6 +186,11 @@ class RunQueryRequest(proto.Message):
             non-aggregation query.
 
             This field is a member of `oneof`_ ``query_type``.
+        explain_options (google.cloud.datastore_v1.types.ExplainOptions):
+            Optional. Explain options for the query. If
+            set, additional query statistics will be
+            returned. If not, only query results will be
+            returned.
     """
 
     project_id: str = proto.Field(
@@ -217,6 +223,11 @@ class RunQueryRequest(proto.Message):
         oneof="query_type",
         message=gd_query.GqlQuery,
     )
+    explain_options: query_profile.ExplainOptions = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=query_profile.ExplainOptions,
+    )
 
 
 class RunQueryResponse(proto.Message):
@@ -237,6 +248,11 @@ class RunQueryResponse(proto.Message):
             [ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction]
             was set in
             [RunQueryRequest.read_options][google.datastore.v1.RunQueryRequest.read_options].
+        explain_metrics (google.cloud.datastore_v1.types.ExplainMetrics):
+            Query explain metrics. This is only present when the
+            [RunQueryRequest.explain_options][google.datastore.v1.RunQueryRequest.explain_options]
+            is provided, and it is sent only once with the last response
+            in the stream.
     """
 
     batch: gd_query.QueryResultBatch = proto.Field(
@@ -252,6 +268,11 @@ class RunQueryResponse(proto.Message):
     transaction: bytes = proto.Field(
         proto.BYTES,
         number=5,
+    )
+    explain_metrics: query_profile.ExplainMetrics = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=query_profile.ExplainMetrics,
     )
 
 
@@ -292,6 +313,11 @@ class RunAggregationQueryRequest(proto.Message):
             aggregation query.
 
             This field is a member of `oneof`_ ``query_type``.
+        explain_options (google.cloud.datastore_v1.types.ExplainOptions):
+            Optional. Explain options for the query. If
+            set, additional query statistics will be
+            returned. If not, only query results will be
+            returned.
     """
 
     project_id: str = proto.Field(
@@ -324,6 +350,11 @@ class RunAggregationQueryRequest(proto.Message):
         oneof="query_type",
         message=gd_query.GqlQuery,
     )
+    explain_options: query_profile.ExplainOptions = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=query_profile.ExplainOptions,
+    )
 
 
 class RunAggregationQueryResponse(proto.Message):
@@ -345,6 +376,11 @@ class RunAggregationQueryResponse(proto.Message):
             [ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction]
             was set in
             [RunAggregationQueryRequest.read_options][google.datastore.v1.RunAggregationQueryRequest.read_options].
+        explain_metrics (google.cloud.datastore_v1.types.ExplainMetrics):
+            Query explain metrics. This is only present when the
+            [RunAggregationQueryRequest.explain_options][google.datastore.v1.RunAggregationQueryRequest.explain_options]
+            is provided, and it is sent only once with the last response
+            in the stream.
     """
 
     batch: aggregation_result.AggregationResultBatch = proto.Field(
@@ -360,6 +396,11 @@ class RunAggregationQueryResponse(proto.Message):
     transaction: bytes = proto.Field(
         proto.BYTES,
         number=5,
+    )
+    explain_metrics: query_profile.ExplainMetrics = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=query_profile.ExplainMetrics,
     )
 
 

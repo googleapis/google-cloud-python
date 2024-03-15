@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,8 +45,8 @@ class datastoreCallTransformer(cst.CSTTransformer):
         'lookup': ('project_id', 'keys', 'database_id', 'read_options', ),
         'reserve_ids': ('project_id', 'keys', 'database_id', ),
         'rollback': ('project_id', 'transaction', 'database_id', ),
-        'run_aggregation_query': ('project_id', 'database_id', 'partition_id', 'read_options', 'aggregation_query', 'gql_query', ),
-        'run_query': ('project_id', 'database_id', 'partition_id', 'read_options', 'query', 'gql_query', ),
+        'run_aggregation_query': ('project_id', 'database_id', 'partition_id', 'read_options', 'aggregation_query', 'gql_query', 'explain_options', ),
+        'run_query': ('project_id', 'database_id', 'partition_id', 'read_options', 'query', 'gql_query', 'explain_options', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:
