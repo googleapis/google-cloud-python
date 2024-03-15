@@ -60,6 +60,7 @@ DtypeString = Literal[
     "boolean",
     "Float64",
     "Int64",
+    "int64[pyarrow]",
     "string",
     "string[pyarrow]",
     "timestamp[us, tz=UTC][pyarrow]",
@@ -172,6 +173,9 @@ BIGFRAMES_STRING_TO_BIGFRAMES: Dict[DtypeString, Dtype] = {
 # special case - string[pyarrow] doesn't include the storage in its name, and both
 # "string" and "string[pyarrow]" are accepted
 BIGFRAMES_STRING_TO_BIGFRAMES["string[pyarrow]"] = pd.StringDtype(storage="pyarrow")
+
+# special case - both "Int64" and "int64[pyarrow]" are accepted
+BIGFRAMES_STRING_TO_BIGFRAMES["int64[pyarrow]"] = pd.Int64Dtype()
 
 # For the purposes of dataframe.memory_usage
 # https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#data_type_sizes
@@ -310,11 +314,12 @@ def bigframes_dtype_to_ibis_dtype(
             textwrap.dedent(
                 f"""
                 Unexpected data type {bigframes_dtype}. The following
-                        str dtypes are supppted: 'boolean','Float64','Int64', 'string',
-                        'string[pyarrow]','timestamp[us, tz=UTC][pyarrow]',
-                        'timestamp[us][pyarrow]','date32[day][pyarrow]',
-                        'time64[us][pyarrow]'. The following pandas.ExtensionDtype are
-                        supported: pandas.BooleanDtype(), pandas.Float64Dtype(),
+                        str dtypes are supppted: 'boolean','Float64','Int64',
+                        'int64[pyarrow]','string','string[pyarrow]',
+                        'timestamp[us, tz=UTC][pyarrow]','timestamp[us][pyarrow]',
+                        'date32[day][pyarrow]','time64[us][pyarrow]'.
+                        The following pandas.ExtensionDtype are supported:
+                        pandas.BooleanDtype(), pandas.Float64Dtype(),
                         pandas.Int64Dtype(), pandas.StringDtype(storage="pyarrow"),
                         pd.ArrowDtype(pa.date32()), pd.ArrowDtype(pa.time64("us")),
                         pd.ArrowDtype(pa.timestamp("us")),
@@ -434,6 +439,9 @@ def cast_ibis_value(
             ibis_dtypes.string,
             ibis_dtypes.Decimal(precision=38, scale=9),
             ibis_dtypes.Decimal(precision=76, scale=38),
+            ibis_dtypes.time,
+            ibis_dtypes.timestamp,
+            ibis_dtypes.Timestamp(timezone="UTC"),
         ),
         ibis_dtypes.float64: (
             ibis_dtypes.string,
@@ -447,8 +455,15 @@ def cast_ibis_value(
             ibis_dtypes.Decimal(precision=38, scale=9),
             ibis_dtypes.Decimal(precision=76, scale=38),
             ibis_dtypes.binary,
+            ibis_dtypes.date,
+            ibis_dtypes.timestamp,
+            ibis_dtypes.Timestamp(timezone="UTC"),
         ),
-        ibis_dtypes.date: (ibis_dtypes.string,),
+        ibis_dtypes.date: (
+            ibis_dtypes.string,
+            ibis_dtypes.timestamp,
+            ibis_dtypes.Timestamp(timezone="UTC"),
+        ),
         ibis_dtypes.Decimal(precision=38, scale=9): (
             ibis_dtypes.float64,
             ibis_dtypes.Decimal(precision=76, scale=38),
@@ -457,9 +472,24 @@ def cast_ibis_value(
             ibis_dtypes.float64,
             ibis_dtypes.Decimal(precision=38, scale=9),
         ),
-        ibis_dtypes.time: (),
-        ibis_dtypes.timestamp: (ibis_dtypes.Timestamp(timezone="UTC"),),
-        ibis_dtypes.Timestamp(timezone="UTC"): (ibis_dtypes.timestamp,),
+        ibis_dtypes.time: (
+            ibis_dtypes.int64,
+            ibis_dtypes.string,
+        ),
+        ibis_dtypes.timestamp: (
+            ibis_dtypes.date,
+            ibis_dtypes.int64,
+            ibis_dtypes.string,
+            ibis_dtypes.time,
+            ibis_dtypes.Timestamp(timezone="UTC"),
+        ),
+        ibis_dtypes.Timestamp(timezone="UTC"): (
+            ibis_dtypes.date,
+            ibis_dtypes.int64,
+            ibis_dtypes.string,
+            ibis_dtypes.time,
+            ibis_dtypes.timestamp,
+        ),
         ibis_dtypes.binary: (ibis_dtypes.string,),
     }
 

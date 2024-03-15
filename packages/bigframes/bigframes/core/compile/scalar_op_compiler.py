@@ -634,11 +634,56 @@ def struct_field_op_impl(x: ibis_types.Value, op: ops.StructFieldOp):
     return struct_value[name].name(name)
 
 
+def numeric_to_datatime(x: ibis_types.Value, unit: str) -> ibis_types.TimestampValue:
+    if not isinstance(x, ibis_types.IntegerValue) and not isinstance(
+        x, ibis_types.FloatingValue
+    ):
+        raise TypeError("Non-numerical types are not supposed to reach this function.")
+
+    if unit not in UNIT_TO_US_CONVERSION_FACTORS:
+        raise ValueError(f"Cannot convert input with unit '{unit}'.")
+    x_converted = x * UNIT_TO_US_CONVERSION_FACTORS[unit]
+    x_converted = x_converted.cast(ibis_dtypes.int64)
+
+    # Note: Due to an issue where casting directly to a timestamp
+    # without a timezone does not work, we first cast to UTC. This
+    # approach appears to bypass a potential bug in Ibis's cast function,
+    # allowing for subsequent casting to a timestamp type without timezone
+    # information. Further investigation is needed to confirm this behavior.
+    return x_converted.to_timestamp(unit="us").cast(
+        ibis_dtypes.Timestamp(timezone="UTC")
+    )
+
+
 @scalar_op_compiler.register_unary_op(ops.AsTypeOp, pass_op=True)
 def astype_op_impl(x: ibis_types.Value, op: ops.AsTypeOp):
     to_type = bigframes.dtypes.bigframes_dtype_to_ibis_dtype(op.to_type)
     if isinstance(x, ibis_types.NullScalar):
         return ibis_types.null().cast(to_type)
+
+    # When casting DATETIME column into INT column, we need to convert the column into TIMESTAMP first.
+    if to_type == ibis_dtypes.int64 and x.type() == ibis_dtypes.timestamp:
+        x_converted = x.cast(ibis_dtypes.Timestamp(timezone="UTC"))
+        return bigframes.dtypes.cast_ibis_value(x_converted, to_type)
+
+    if to_type == ibis_dtypes.int64 and x.type() == ibis_dtypes.time:
+        # The conversion unit is set to "us" (microseconds) for consistency
+        # with pandas converting time64[us][pyarrow] to int64[pyarrow].
+        return x.delta(ibis.time("00:00:00"), part="microsecond")
+
+    if x.type() == ibis_dtypes.int64:
+        # The conversion unit is set to "us" (microseconds) for consistency
+        # with pandas converting int64[pyarrow] to timestamp[us][pyarrow],
+        # timestamp[us, tz=UTC][pyarrow], and time64[us][pyarrow].
+        unit = "us"
+        x_converted = numeric_to_datatime(x, unit)
+        if to_type == ibis_dtypes.timestamp:
+            return x_converted.cast(ibis_dtypes.Timestamp())
+        elif to_type == ibis_dtypes.Timestamp(timezone="UTC"):
+            return x_converted
+        elif to_type == ibis_dtypes.time:
+            return x_converted.time()
+
     return bigframes.dtypes.cast_ibis_value(x, to_type)
 
 
@@ -677,19 +722,7 @@ def to_datetime_op_impl(x: ibis_types.Value, op: ops.ToDatetimeOp):
         # The default unit is set to "ns" (nanoseconds) for consistency
         # with pandas, where "ns" is the default unit for datetime operations.
         unit = op.unit or "ns"
-        if unit not in UNIT_TO_US_CONVERSION_FACTORS:
-            raise ValueError(f"Cannot convert input with unit '{unit}'.")
-        x_converted = x * UNIT_TO_US_CONVERSION_FACTORS[unit]
-        x_converted = x_converted.cast(ibis_dtypes.int64)
-
-        # Note: Due to an issue where casting directly to a timestamp
-        # without a timezone does not work, we first cast to UTC. This
-        # approach appears to bypass a potential bug in Ibis's cast function,
-        # allowing for subsequent casting to a timestamp type without timezone
-        # information. Further investigation is needed to confirm this behavior.
-        x = x_converted.to_timestamp(unit="us").cast(
-            ibis_dtypes.Timestamp(timezone="UTC")
-        )
+        x = numeric_to_datatime(x, unit)
 
     return x.cast(ibis_dtypes.Timestamp(timezone="UTC" if op.utc else None))
 
