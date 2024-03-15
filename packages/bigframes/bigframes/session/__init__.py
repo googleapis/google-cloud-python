@@ -916,6 +916,12 @@ class Session(
     def _read_pandas(
         self, pandas_dataframe: pandas.DataFrame, api_name: str
     ) -> dataframe.DataFrame:
+        if isinstance(pandas_dataframe, dataframe.DataFrame):
+            raise ValueError(
+                "read_pandas() expects a pandas.DataFrame, but got a "
+                "bigframes.pandas.DataFrame."
+            )
+
         if (
             pandas_dataframe.size < MAX_INLINE_DF_SIZE
             # TODO(swast): Workaround data types limitation in inline data.
