@@ -1281,19 +1281,29 @@ def test_remote_function_anonymous_dataset(session, scalars_dfs):
         )
 
 
-@pytest.mark.skip("This requires additional project config.")
+@pytest.mark.flaky(retries=2, delay=120)
 def test_remote_function_via_session_custom_sa(scalars_dfs):
-    # Set these values to run the test locally
-    # TODO(shobs): Automate and enable this test
-    PROJECT = ""
-    GCF_SERVICE_ACCOUNT = ""
+    # TODO(shobs): Automate the following set-up during testing in the test project.
+    #
+    # For upfront convenience, the following set up has been statically created
+    # in the project bigfrmames-dev-perf via cloud console:
+    #
+    # 1. Create a service account as per
+    #    https://cloud.google.com/iam/docs/service-accounts-create#iam-service-accounts-create-console
+    # 2. Give necessary roles as per
+    #    https://cloud.google.com/functions/docs/reference/iam/roles#additional-configuration
+    #
+    project = "bigframes-dev-perf"
+    gcf_service_account = (
+        "bigframes-dev-perf-1@bigframes-dev-perf.iam.gserviceaccount.com"
+    )
 
-    rf_session = bigframes.Session(context=bigframes.BigQueryOptions(project=PROJECT))
+    rf_session = bigframes.Session(context=bigframes.BigQueryOptions(project=project))
 
     try:
 
         @rf_session.remote_function(
-            [int], int, reuse=False, cloud_function_service_account=GCF_SERVICE_ACCOUNT
+            [int], int, reuse=False, cloud_function_service_account=gcf_service_account
         )
         def square_num(x):
             if x is None:
@@ -1316,7 +1326,7 @@ def test_remote_function_via_session_custom_sa(scalars_dfs):
         gcf = rf_session.cloudfunctionsclient.get_function(
             name=square_num.bigframes_cloud_function
         )
-        assert gcf.service_config.service_account_email == GCF_SERVICE_ACCOUNT
+        assert gcf.service_config.service_account_email == gcf_service_account
     finally:
         # clean up the gcp assets created for the remote function
         cleanup_remote_function_assets(
