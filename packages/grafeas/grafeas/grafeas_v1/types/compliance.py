@@ -58,6 +58,9 @@ class ComplianceNote(proto.Message):
         scan_instructions (bytes):
             Serialized scan instructions with a
             predefined format.
+        impact (str):
+
+            This field is a member of `oneof`_ ``potential_impact``.
     """
 
     class CisBenchmark(proto.Message):
@@ -110,6 +113,11 @@ class ComplianceNote(proto.Message):
     scan_instructions: bytes = proto.Field(
         proto.BYTES,
         number=7,
+    )
+    impact: str = proto.Field(
+        proto.STRING,
+        number=8,
+        oneof="potential_impact",
     )
 
 
