@@ -23,17 +23,37 @@ import bigframes.operations._matplotlib as bfplt
 class PlotAccessor(vendordt.PlotAccessor):
     __doc__ = vendordt.PlotAccessor.__doc__
 
+    _common_kinds = ("line", "area", "hist")
+    _dataframe_kinds = ("scatter",)
+    _all_kinds = _common_kinds + _dataframe_kinds
+
+    def __call__(self, **kwargs):
+        import bigframes.series as series
+
+        if kwargs.pop("backend", None) is not None:
+            raise NotImplementedError(
+                f"Only support matplotlib backend for now. {constants.FEEDBACK_LINK}"
+            )
+
+        kind = kwargs.pop("kind", "line")
+        if kind not in self._all_kinds:
+            raise NotImplementedError(
+                f"{kind} is not a valid plot kind supported for now. {constants.FEEDBACK_LINK}"
+            )
+
+        data = self._parent.copy()
+        if kind in self._dataframe_kinds and isinstance(data, series.Series):
+            raise ValueError(f"plot kind {kind} can only be used for data frames")
+
+        return bfplt.plot(data, kind=kind, **kwargs)
+
     def __init__(self, data) -> None:
         self._parent = data
 
     def hist(
         self, by: typing.Optional[typing.Sequence[str]] = None, bins: int = 10, **kwargs
     ):
-        if kwargs.pop("backend", None) is not None:
-            raise NotImplementedError(
-                f"Only support matplotlib backend for now. {constants.FEEDBACK_LINK}"
-            )
-        return bfplt.plot(self._parent.copy(), kind="hist", by=by, bins=bins, **kwargs)
+        return self(kind="hist", by=by, bins=bins, **kwargs)
 
     def line(
         self,
@@ -41,13 +61,7 @@ class PlotAccessor(vendordt.PlotAccessor):
         y: typing.Optional[typing.Hashable] = None,
         **kwargs,
     ):
-        return bfplt.plot(
-            self._parent.copy(),
-            kind="line",
-            x=x,
-            y=y,
-            **kwargs,
-        )
+        return self(kind="line", x=x, y=y, **kwargs)
 
     def area(
         self,
@@ -56,14 +70,7 @@ class PlotAccessor(vendordt.PlotAccessor):
         stacked: bool = True,
         **kwargs,
     ):
-        return bfplt.plot(
-            self._parent.copy(),
-            kind="area",
-            x=x,
-            y=y,
-            stacked=stacked,
-            **kwargs,
-        )
+        return self(kind="area", x=x, y=y, stacked=stacked, **kwargs)
 
     def scatter(
         self,
@@ -73,12 +80,4 @@ class PlotAccessor(vendordt.PlotAccessor):
         c: typing.Union[typing.Hashable, typing.Sequence[typing.Hashable]] = None,
         **kwargs,
     ):
-        return bfplt.plot(
-            self._parent.copy(),
-            kind="scatter",
-            x=x,
-            y=y,
-            s=s,
-            c=c,
-            **kwargs,
-        )
+        return self(kind="scatter", x=x, y=y, s=s, c=c, **kwargs)

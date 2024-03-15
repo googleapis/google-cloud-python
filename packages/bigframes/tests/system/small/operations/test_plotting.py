@@ -233,3 +233,31 @@ def test_sampling_plot_args_random_state():
     msg = "numpy array are different"
     with pytest.raises(AssertionError, match=msg):
         tm.assert_almost_equal(ax_0.lines[0].get_data()[1], ax_2.lines[0].get_data()[1])
+
+
+@pytest.mark.parametrize(
+    ("kind", "col_names", "kwargs"),
+    [
+        pytest.param("hist", ["int64_col", "int64_too"], {}),
+        pytest.param("line", ["int64_col", "int64_too"], {}),
+        pytest.param("area", ["int64_col", "int64_too"], {"stacked": False}),
+        pytest.param(
+            "scatter", ["int64_col", "int64_too"], {"x": "int64_col", "y": "int64_too"}
+        ),
+        pytest.param(
+            "scatter",
+            ["int64_col"],
+            {},
+            marks=pytest.mark.xfail(raises=ValueError),
+        ),
+        pytest.param(
+            "uknown",
+            ["int64_col", "int64_too"],
+            {},
+            marks=pytest.mark.xfail(raises=NotImplementedError),
+        ),
+    ],
+)
+def test_plot_call(scalars_dfs, kind, col_names, kwargs):
+    scalars_df, _ = scalars_dfs
+    scalars_df[col_names].plot(kind=kind, **kwargs)

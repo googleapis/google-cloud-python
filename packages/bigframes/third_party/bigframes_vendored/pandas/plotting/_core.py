@@ -4,7 +4,43 @@ from bigframes import constants
 
 
 class PlotAccessor:
-    """Make plots of Series or DataFrame with the `matplotlib` backend."""
+    """
+    Make plots of Series or DataFrame with the `matplotlib` backend.
+
+    **Examples:**
+    For Series:
+
+        >>> import bigframes.pandas as bpd
+        >>> ser = bpd.Series([1, 2, 3, 3])
+        >>> plot = ser.plot(kind='hist', title="My plot")
+
+    For DataFrame:
+
+        >>> df = bpd.DataFrame({'length': [1.5, 0.5, 1.2, 0.9, 3],
+        ...                   'width': [0.7, 0.2, 0.15, 0.2, 1.1]},
+        ...                   index=['pig', 'rabbit', 'duck', 'chicken', 'horse'])
+        >>> plot = df.plot(title="DataFrame Plot")
+
+    Args:
+        data (Series or DataFrame):
+            The object for which the method is called.
+        kind (str):
+            The kind of plot to produce:
+
+            - 'line' : line plot (default)
+            - 'hist' : histogram
+            - 'area' : area plot
+            - 'scatter' : scatter plot (DataFrame only)
+
+        **kwargs:
+            Options to pass to `pandas.DataFrame.plot` method. See pandas
+            documentation online for more on these arguments.
+
+    Returns:
+            matplotlib.axes.Axes or np.ndarray of them:
+                An ndarray is returned with one :class:`matplotlib.axes.Axes`
+                per column when ``subplots=True``.
+    """
 
     def hist(
         self, by: typing.Optional[typing.Sequence[str]] = None, bins: int = 10, **kwargs
