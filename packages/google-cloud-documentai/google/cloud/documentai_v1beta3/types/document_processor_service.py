@@ -1855,10 +1855,10 @@ class ImportProcessorVersionRequest(proto.Message):
 
     Attributes:
         processor_version_source (str):
-            The source processor version to import from.
-            The source processor version and destination
-            processor need to be in the same environment and
-            region.
+            The source processor version to import from. The source
+            processor version and destination processor need to be in
+            the same environment and region. Note that ProcessorVersions
+            with ``model_type`` ``MODEL_TYPE_LLM`` are not supported.
 
             This field is a member of `oneof`_ ``source``.
         external_processor_version_source (google.cloud.documentai_v1beta3.types.ImportProcessorVersionRequest.ExternalProcessorVersionSource):
