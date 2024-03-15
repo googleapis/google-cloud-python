@@ -3625,20 +3625,29 @@ def test_create_connectivity_test_rest(request_type):
                             "deliver": {
                                 "target": 1,
                                 "resource_uri": "resource_uri_value",
+                                "ip_address": "ip_address_value",
                             },
                             "forward": {
                                 "target": 1,
                                 "resource_uri": "resource_uri_value",
+                                "ip_address": "ip_address_value",
                             },
                             "abort": {
                                 "cause": 1,
                                 "resource_uri": "resource_uri_value",
+                                "ip_address": "ip_address_value",
                                 "projects_missing_permission": [
                                     "projects_missing_permission_value1",
                                     "projects_missing_permission_value2",
                                 ],
                             },
-                            "drop": {"cause": 1, "resource_uri": "resource_uri_value"},
+                            "drop": {
+                                "cause": 1,
+                                "resource_uri": "resource_uri_value",
+                                "source_ip": "source_ip_value",
+                                "destination_ip": "destination_ip_value",
+                                "region": "region_value",
+                            },
                             "load_balancer": {
                                 "load_balancer_type": 1,
                                 "health_check_uri": "health_check_uri_value",
@@ -4275,20 +4284,29 @@ def test_update_connectivity_test_rest(request_type):
                             "deliver": {
                                 "target": 1,
                                 "resource_uri": "resource_uri_value",
+                                "ip_address": "ip_address_value",
                             },
                             "forward": {
                                 "target": 1,
                                 "resource_uri": "resource_uri_value",
+                                "ip_address": "ip_address_value",
                             },
                             "abort": {
                                 "cause": 1,
                                 "resource_uri": "resource_uri_value",
+                                "ip_address": "ip_address_value",
                                 "projects_missing_permission": [
                                     "projects_missing_permission_value1",
                                     "projects_missing_permission_value2",
                                 ],
                             },
-                            "drop": {"cause": 1, "resource_uri": "resource_uri_value"},
+                            "drop": {
+                                "cause": 1,
+                                "resource_uri": "resource_uri_value",
+                                "source_ip": "source_ip_value",
+                                "destination_ip": "destination_ip_value",
+                                "region": "region_value",
+                            },
                             "load_balancer": {
                                 "load_balancer_type": 1,
                                 "health_check_uri": "health_check_uri_value",
