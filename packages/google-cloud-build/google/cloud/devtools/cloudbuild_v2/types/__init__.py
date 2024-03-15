@@ -17,6 +17,8 @@ from .cloudbuild import OperationMetadata, RunWorkflowCustomOperationMetadata
 from .repositories import (
     BatchCreateRepositoriesRequest,
     BatchCreateRepositoriesResponse,
+    BitbucketCloudConfig,
+    BitbucketDataCenterConfig,
     Connection,
     CreateConnectionRequest,
     CreateRepositoryRequest,
@@ -53,6 +55,8 @@ __all__ = (
     "RunWorkflowCustomOperationMetadata",
     "BatchCreateRepositoriesRequest",
     "BatchCreateRepositoriesResponse",
+    "BitbucketCloudConfig",
+    "BitbucketDataCenterConfig",
     "Connection",
     "CreateConnectionRequest",
     "CreateRepositoryRequest",
