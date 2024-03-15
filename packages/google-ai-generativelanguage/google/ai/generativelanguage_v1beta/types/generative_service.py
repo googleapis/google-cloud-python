@@ -181,20 +181,19 @@ class GenerationConfig(proto.Message):
             Optional. The maximum number of tokens to include in a
             candidate.
 
-            If unset, this will default to output_token_limit specified
-            in the ``Model`` specification.
+            Note: The default value varies by model, see the
+            ``Model.output_token_limit`` attribute of the ``Model``
+            returned from the ``getModel`` function.
 
             This field is a member of `oneof`_ ``_max_output_tokens``.
         temperature (float):
-            Optional. Controls the randomness of the output. Note: The
-            default value varies by model, see the ``Model.temperature``
-            attribute of the ``Model`` returned the ``getModel``
-            function.
+            Optional. Controls the randomness of the output.
 
-            Values can range from [0.0,1.0], inclusive. A value closer
-            to 1.0 will produce responses that are more varied and
-            creative, while a value closer to 0.0 will typically result
-            in more straightforward responses from the model.
+            Note: The default value varies by model, see the
+            ``Model.temperature`` attribute of the ``Model`` returned
+            from the ``getModel`` function.
+
+            Values can range from [0.0, infinity).
 
             This field is a member of `oneof`_ ``_temperature``.
         top_p (float):
@@ -210,7 +209,7 @@ class GenerationConfig(proto.Message):
             based on the cumulative probability.
 
             Note: The default value varies by model, see the
-            ``Model.top_p`` attribute of the ``Model`` returned the
+            ``Model.top_p`` attribute of the ``Model`` returned from the
             ``getModel`` function.
 
             This field is a member of `oneof`_ ``_top_p``.
@@ -221,10 +220,10 @@ class GenerationConfig(proto.Message):
             The model uses combined Top-k and nucleus sampling.
 
             Top-k sampling considers the set of ``top_k`` most probable
-            tokens. Defaults to 40.
+            tokens.
 
             Note: The default value varies by model, see the
-            ``Model.top_k`` attribute of the ``Model`` returned the
+            ``Model.top_k`` attribute of the ``Model`` returned from the
             ``getModel`` function.
 
             This field is a member of `oneof`_ ``_top_k``.
@@ -655,7 +654,11 @@ class GenerateAnswerRequest(proto.Message):
             the default settings for each ``SafetyCategory`` specified
             in the safety_settings. If there is no ``SafetySetting`` for
             a given ``SafetyCategory`` provided in the list, the API
-            will use the default safety setting for that category.
+            will use the default safety setting for that category. Harm
+            categories HARM_CATEGORY_HATE_SPEECH,
+            HARM_CATEGORY_SEXUALLY_EXPLICIT,
+            HARM_CATEGORY_DANGEROUS_CONTENT, HARM_CATEGORY_HARASSMENT
+            are supported.
         temperature (float):
             Optional. Controls the randomness of the output.
 

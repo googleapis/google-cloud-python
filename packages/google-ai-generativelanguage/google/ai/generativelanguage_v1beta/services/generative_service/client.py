@@ -883,7 +883,11 @@ class GenerativeServiceClient(metaclass=GenerativeServiceClientMeta):
                 ``SafetyCategory`` specified in the safety_settings. If
                 there is no ``SafetySetting`` for a given
                 ``SafetyCategory`` provided in the list, the API will
-                use the default safety setting for that category.
+                use the default safety setting for that category. Harm
+                categories HARM_CATEGORY_HATE_SPEECH,
+                HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                HARM_CATEGORY_DANGEROUS_CONTENT,
+                HARM_CATEGORY_HARASSMENT are supported.
 
                 This corresponds to the ``safety_settings`` field
                 on the ``request`` instance; if ``request`` is provided, this
