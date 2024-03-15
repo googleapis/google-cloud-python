@@ -16,6 +16,7 @@
 
 import pathlib
 import re
+import textwrap
 
 from synthtool import gcp
 import synthtool as s
@@ -58,6 +59,35 @@ s.move(
 # ----------------------------------------------------------------------------
 # Fixup files
 # ----------------------------------------------------------------------------
+
+# Encourage sharring all relevant versions in bug reports.
+s.replace(
+    [".github/ISSUE_TEMPLATE/bug_report.md"],
+    re.escape("#### Steps to reproduce\n"),
+    textwrap.dedent(
+        """
+        ```python
+        import sys
+        import bigframes
+        import google.cloud.bigquery
+        import ibis
+        import pandas
+        import pyarrow
+        import sqlglot
+        
+        print(f"Python: {sys.version}")
+        print(f"bigframes=={bigframes.__version__}")
+        print(f"google-cloud-bigquery=={google.cloud.bigquery.__version__}")
+        print(f"ibis=={ibis.__version__}")
+        print(f"pandas=={pandas.__version__}")
+        print(f"pyarrow=={pyarrow.__version__}")
+        print(f"sqlglot=={sqlglot.__version__}")
+        ```
+        
+        #### Steps to reproduce
+        """,
+    ),
+)
 
 # Make sure build includes all necessary files.
 s.replace(

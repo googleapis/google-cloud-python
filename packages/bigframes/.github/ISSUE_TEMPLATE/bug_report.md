@@ -22,6 +22,25 @@ If you are still having issues, please be sure to include as much information as
   - pip version: `pip --version`
   - `bigframes` version: `pip show bigframes`
 
+
+```python
+import sys
+import bigframes
+import google.cloud.bigquery
+import ibis
+import pandas
+import pyarrow
+import sqlglot
+
+print(f"Python: {sys.version}")
+print(f"bigframes=={bigframes.__version__}")
+print(f"google-cloud-bigquery=={google.cloud.bigquery.__version__}")
+print(f"ibis=={ibis.__version__}")
+print(f"pandas=={pandas.__version__}")
+print(f"pyarrow=={pyarrow.__version__}")
+print(f"sqlglot=={sqlglot.__version__}")
+```
+
 #### Steps to reproduce
 
   1. ?
