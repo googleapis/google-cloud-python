@@ -1141,6 +1141,10 @@ class GrafeasRestTransport(GrafeasTransport):
                     "method": "get",
                     "uri": "/v1/{name=projects/*/notes/*}",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/notes/*}",
+                },
             ]
             request, metadata = self._interceptor.pre_get_note(request, metadata)
             pb_request = grafeas.GetNoteRequest.pb(request)
@@ -1227,6 +1231,10 @@ class GrafeasRestTransport(GrafeasTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*/occurrences/*}",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/occurrences/*}",
                 },
             ]
             request, metadata = self._interceptor.pre_get_occurrence(request, metadata)
@@ -1315,6 +1323,10 @@ class GrafeasRestTransport(GrafeasTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{name=projects/*/occurrences/*}/notes",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/occurrences/*}/notes",
                 },
             ]
             request, metadata = self._interceptor.pre_get_occurrence_note(
@@ -1406,6 +1418,10 @@ class GrafeasRestTransport(GrafeasTransport):
                     "method": "get",
                     "uri": "/v1/{name=projects/*/notes/*}/occurrences",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{name=projects/*/locations/*/notes/*}/occurrences",
+                },
             ]
             request, metadata = self._interceptor.pre_list_note_occurrences(
                 request, metadata
@@ -1493,6 +1509,10 @@ class GrafeasRestTransport(GrafeasTransport):
                     "method": "get",
                     "uri": "/v1/{parent=projects/*}/notes",
                 },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/notes",
+                },
             ]
             request, metadata = self._interceptor.pre_list_notes(request, metadata)
             pb_request = grafeas.ListNotesRequest.pb(request)
@@ -1577,6 +1597,10 @@ class GrafeasRestTransport(GrafeasTransport):
                 {
                     "method": "get",
                     "uri": "/v1/{parent=projects/*}/occurrences",
+                },
+                {
+                    "method": "get",
+                    "uri": "/v1/{parent=projects/*/locations/*}/occurrences",
                 },
             ]
             request, metadata = self._interceptor.pre_list_occurrences(
