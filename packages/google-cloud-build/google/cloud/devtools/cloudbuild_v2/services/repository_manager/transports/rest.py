@@ -1636,8 +1636,8 @@ class RepositoryManagerRestTransport(RepositoryManagerTransport):
             Returns:
                 ~.repositories.Connection:
                     A connection to a SCM like GitHub,
-                GitHub Enterprise, Bitbucket Server or
-                GitLab.
+                GitHub Enterprise, Bitbucket Data
+                Center, Bitbucket Cloud or GitLab.
 
             """
 

@@ -349,8 +349,8 @@ class RepositoryManagerAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.devtools.cloudbuild_v2.types.Connection` A connection to a SCM like GitHub, GitHub Enterprise, Bitbucket Server or
-                   GitLab.
+                The result type for the operation will be :class:`google.cloud.devtools.cloudbuild_v2.types.Connection` A connection to a SCM like GitHub, GitHub Enterprise, Bitbucket Data Center,
+                   Bitbucket Cloud or GitLab.
 
         """
         # Create or coerce a protobuf request object.
@@ -467,8 +467,8 @@ class RepositoryManagerAsyncClient:
         Returns:
             google.cloud.devtools.cloudbuild_v2.types.Connection:
                 A connection to a SCM like GitHub,
-                GitHub Enterprise, Bitbucket Server or
-                GitLab.
+                GitHub Enterprise, Bitbucket Data
+                Center, Bitbucket Cloud or GitLab.
 
         """
         # Create or coerce a protobuf request object.
@@ -716,8 +716,8 @@ class RepositoryManagerAsyncClient:
             google.api_core.operation_async.AsyncOperation:
                 An object representing a long-running operation.
 
-                The result type for the operation will be :class:`google.cloud.devtools.cloudbuild_v2.types.Connection` A connection to a SCM like GitHub, GitHub Enterprise, Bitbucket Server or
-                   GitLab.
+                The result type for the operation will be :class:`google.cloud.devtools.cloudbuild_v2.types.Connection` A connection to a SCM like GitHub, GitHub Enterprise, Bitbucket Data Center,
+                   Bitbucket Cloud or GitLab.
 
         """
         # Create or coerce a protobuf request object.
