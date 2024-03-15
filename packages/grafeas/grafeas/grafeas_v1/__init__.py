@@ -72,7 +72,7 @@ from .types.intoto_provenance import (
     Metadata,
     Recipe,
 )
-from .types.intoto_statement import InTotoStatement, Subject
+from .types.intoto_statement import InTotoSlsaProvenanceV1, InTotoStatement, Subject
 from .types.package import (
     Architecture,
     Distribution,
@@ -95,6 +95,12 @@ from .types.provenance import (
     RepoId,
     Source,
     SourceContext,
+)
+from .types.sbom import (
+    SbomReferenceIntotoPayload,
+    SbomReferenceIntotoPredicate,
+    SBOMReferenceNote,
+    SBOMReferenceOccurrence,
 )
 from .types.severity import Severity
 from .types.slsa_provenance import SlsaProvenance
@@ -159,6 +165,7 @@ __all__ = (
     "ImageNote",
     "ImageOccurrence",
     "InTotoProvenance",
+    "InTotoSlsaProvenanceV1",
     "InTotoStatement",
     "Jwt",
     "Layer",
@@ -181,6 +188,10 @@ __all__ = (
     "Recipe",
     "RelatedUrl",
     "RepoId",
+    "SBOMReferenceNote",
+    "SBOMReferenceOccurrence",
+    "SbomReferenceIntotoPayload",
+    "SbomReferenceIntotoPredicate",
     "Severity",
     "Signature",
     "SlsaProvenance",
