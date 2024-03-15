@@ -69,7 +69,6 @@ def create_topic_kinesis_ingestion(
     gcp_service_account: str,
 ) -> None:
     """Create a new Pub/Sub topic with AWS Kinesis Ingestion Settings."""
-    # [START pubsub_quickstart_create_topic_kinesis_ingestion]
     # [START pubsub_create_topic_kinesis_ingestion]
     from google.cloud import pubsub_v1
     from google.pubsub_v1.types import Topic
@@ -101,8 +100,56 @@ def create_topic_kinesis_ingestion(
     topic = publisher.create_topic(request=request)
 
     print(f"Created topic: {topic.name} with AWS Kinesis Ingestion Settings")
-    # [END pubsub_quickstart_create_topic_kinesis_ingestion]
     # [END pubsub_create_topic_kinesis_ingestion]
+
+
+def update_topic_kinesis_ingestion(
+    project_id: str,
+    topic_id: str,
+    stream_arn: str,
+    consumer_arn: str,
+    aws_role_arn: str,
+    gcp_service_account: str,
+) -> None:
+    """Update Pub/Sub topic with AWS Kinesis Ingestion Settings."""
+    # [START pubsub_update_topic_kinesis_ingestion]
+    from google.cloud import pubsub_v1
+    from google.pubsub_v1.types import Topic
+    from google.pubsub_v1.types import IngestionDataSourceSettings
+    from google.pubsub_v1.types import UpdateTopicRequest
+    from google.protobuf import field_mask_pb2
+
+    # TODO(developer)
+    # project_id = "your-project-id"
+    # topic_id = "your-topic-id"
+    # stream_arn = "your-stream-arn"
+    # consumer_arn = "your-consumer-arn"
+    # aws_role_arn = "your-aws-role-arn"
+    # gcp_service_account = "your-gcp-service-account"
+
+    publisher = pubsub_v1.PublisherClient()
+    topic_path = publisher.topic_path(project_id, topic_id)
+
+    update_request = UpdateTopicRequest(
+        topic=Topic(
+            name=topic_path,
+            ingestion_data_source_settings=IngestionDataSourceSettings(
+                aws_kinesis=IngestionDataSourceSettings.AwsKinesis(
+                    stream_arn=stream_arn,
+                    consumer_arn=consumer_arn,
+                    aws_role_arn=aws_role_arn,
+                    gcp_service_account=gcp_service_account,
+                )
+            ),
+        ),
+        update_mask=field_mask_pb2.FieldMask(paths=["ingestion_data_source_settings"]),
+    )
+
+    topic = publisher.update_topic(request=update_request)
+    print(f"Updated topic: {topic.name} with AWS Kinesis Ingestion Settings")
+
+
+# [END pubsub_update_topic_kinesis_ingestion]
 
 
 def delete_topic(project_id: str, topic_id: str) -> None:
@@ -484,6 +531,15 @@ if __name__ == "__main__":
     create_topic_kinesis_ingestion_parser.add_argument("aws_role_arn")
     create_topic_kinesis_ingestion_parser.add_argument("gcp_service_account")
 
+    update_topic_kinesis_ingestion_parser = subparsers.add_parser(
+        "update_kinesis_ingestion", help=update_topic_kinesis_ingestion.__doc__
+    )
+    update_topic_kinesis_ingestion_parser.add_argument("topic_id")
+    update_topic_kinesis_ingestion_parser.add_argument("stream_arn")
+    update_topic_kinesis_ingestion_parser.add_argument("consumer_arn")
+    update_topic_kinesis_ingestion_parser.add_argument("aws_role_arn")
+    update_topic_kinesis_ingestion_parser.add_argument("gcp_service_account")
+
     delete_parser = subparsers.add_parser("delete", help=delete_topic.__doc__)
     delete_parser.add_argument("topic_id")
 
@@ -546,6 +602,15 @@ if __name__ == "__main__":
         create_topic(args.project_id, args.topic_id)
     elif args.command == "create_kinesis_ingestion":
         create_topic_kinesis_ingestion(
+            args.project_id,
+            args.topic_id,
+            args.stream_arn,
+            args.consumer_arn,
+            args.aws_role_arn,
+            args.gcp_service_account,
+        )
+    elif args.command == "update_kinesis_ingestion":
+        update_topic_kinesis_ingestion(
             args.project_id,
             args.topic_id,
             args.stream_arn,
