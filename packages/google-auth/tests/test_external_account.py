@@ -477,16 +477,6 @@ class TestCredentials(object):
             universe_domain=DEFAULT_UNIVERSE_DOMAIN,
         )
 
-    def test_with_invalid_impersonation_target_principal(self):
-        invalid_url = "https://iamcredentials.googleapis.com/v1/invalid"
-
-        with pytest.raises(exceptions.RefreshError) as excinfo:
-            self.make_credentials(service_account_impersonation_url=invalid_url)
-
-        assert excinfo.match(
-            r"Unable to determine target principal from service account impersonation URL."
-        )
-
     def test_info(self):
         credentials = self.make_credentials(universe_domain="dummy_universe.com")
 
@@ -1066,6 +1056,21 @@ class TestCredentials(object):
             credentials.refresh(request)
 
         assert excinfo.match(r"Unable to acquire impersonated credentials")
+        assert not credentials.expired
+        assert credentials.token is None
+
+    def test_refresh_impersonation_invalid_impersonated_url_error(self):
+        credentials = self.make_credentials(
+            service_account_impersonation_url="https://iamcredentials.googleapis.com/v1/invalid",
+            scopes=self.SCOPES,
+        )
+
+        with pytest.raises(exceptions.RefreshError) as excinfo:
+            credentials.refresh(None)
+
+        assert excinfo.match(
+            r"Unable to determine target principal from service account impersonation URL."
+        )
         assert not credentials.expired
         assert credentials.token is None
 
@@ -1913,3 +1918,10 @@ class TestCredentials(object):
         assert project_id is None
         # Only 2 requests to STS and cloud resource manager should be sent.
         assert len(request.call_args_list) == 2
+
+
+def test_supplier_context():
+    context = external_account.SupplierContext("TestTokenType", "TestAudience")
+
+    assert context.subject_token_type == "TestTokenType"
+    assert context.audience == "TestAudience"

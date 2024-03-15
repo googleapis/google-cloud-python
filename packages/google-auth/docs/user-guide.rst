@@ -212,7 +212,7 @@ There is a separate library, `google-auth-oauthlib`_, that has some helpers
 for integrating with `requests-oauthlib`_ to provide support for obtaining
 user credentials. You can use
 :func:`google_auth_oauthlib.helpers.credentials_from_session` to obtain
-:class:`google.oauth2.credentials.Credentials` from a 
+:class:`google.oauth2.credentials.Credentials` from a
 :class:`requests_oauthlib.OAuth2Session` as above::
 
     from google_auth_oauthlib.helpers import credentials_from_session
@@ -459,9 +459,9 @@ Error responses must include both the ``code`` and ``message`` fields.
 
 The library will populate the following environment variables when the
 executable is run: ``GOOGLE_EXTERNAL_ACCOUNT_AUDIENCE``: The audience
-field from the credential configuration. Always present. 
+field from the credential configuration. Always present.
 ``GOOGLE_EXTERNAL_ACCOUNT_IMPERSONATED_EMAIL``: The service account
-email. Only present when service account impersonation is used. 
+email. Only present when service account impersonation is used.
 ``GOOGLE_EXTERNAL_ACCOUNT_OUTPUT_FILE``: The output file location from
 the credential configuration. Only present when specified in the
 credential configuration.
@@ -485,6 +485,117 @@ they do not meet your specific requirements.
 
 You can now `use the Auth library <#using-external-identities>`__ to
 call Google Cloud resources from an OIDC or SAML provider.
+
+
+Accessing resources using a custom supplier with OIDC or SAML
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This library also allows for a custom implementation of :class:`google.auth.identity_pool.SubjectTokenSupplier`
+to be specificed when creating a :class:`google.auth.identity_pool.Credential`. The supplier must
+return a valid OIDC or SAML2.0 subject token, which will then be exchanged for a
+Google Cloud access token. If an error occurs during token retrieval, the supplier
+should return a :class:`google.auth.exceptions.RefreshError` and indicate via the error
+whether the subject token retrieval is retryable.
+Any call to the supplier from the Identity Pool credential will send a :class:`google.auth.external_account.SupplierContext`
+object, which contains the requested audience and subject type. Additionally, the credential will
+send the :class:`google.auth.transport.requests.Request` passed in the credential refresh call which
+can be used to make HTTP requests.::
+
+    from google.auth import exceptions
+    from google.auth import identity_pool
+
+    class CustomSubjectTokenSupplier(identity_pool.SubjectTokenSupplier):
+
+        def get_subject_token(self, context, request):
+            audience = context.audience
+            subject_token_type = context.subject_token_type
+            try:
+                # Attempt to return the valid subject token of the requested type for the requested audience.
+            except Exception as e:
+                # If token retrieval fails, raise a refresh error, setting retryable to true if the client should
+                # attempt to retrieve the subject token again.
+                raise exceptions.RefreshError(e, retryable=True)
+
+    supplier = CustomSubjectTokenSupplier()
+
+    credentials = identity_pool.Credentials(
+        AUDIENCE, # Set GCP Audience.
+        "urn:ietf:params:aws:token-type:jwt", # Set subject token type.
+        subject_token_supplier=supplier, # Set supplier.
+        scopes=SCOPES # Set desired scopes.
+    )
+
+Where the `audience`_ is: ``///iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_ID/providers/PROVIDER_ID``
+Where the following variables need to be substituted:
+
+* ``$PROJECT_NUMBER``: The project number.
+* ``$POOL_ID``: The workload pool ID.
+* ``$PROVIDER_ID``: The provider ID.
+
+The values for audience, service account impersonation URL, and any other builder field can also be found
+by generating a `credential configuration file with the gcloud CLI`_.
+
+.. _audience:
+    https://cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation#provider-audience
+.. _credential configuration file with the gcloud CLI:
+    https://cloud.google.com/sdk/gcloud/reference/iam/workload-identity-pools/create-cred-config
+
+Accessing resources using a custom supplier with AWS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This library also allows for a custom implementation of :class:`google.auth.aws.AwsSecurityCredentialsSupplier`
+to be specificed when creating a :class:`google.auth.aws.Credential`. The supplier must
+return valid AWS security credentials, which will then be exchanged for a
+Google Cloud access token. If an error occurs during credential retrieval, the supplier
+should return a :class:`google.auth.exceptions.RefreshError` and indicate via the error
+whether the credential retrieval is retryable.
+Any call to the supplier from the Identity Pool credential will send a :class:`google.auth.external_account.SupplierContext`
+object, which contains the requested audience and subject type. Additionally, the credential will
+send the :class:`google.auth.transport.requests.Request` passed in the credential refresh call which
+can be used to make HTTP requests.::
+
+    from google.auth import aws
+    from google.auth import exceptions
+
+    class CustomAwsSecurityCredentialsSupplier(aws.AwsSecurityCredentialsSupplier):
+
+        def get_aws_security_credentials(self, context, request):
+            audience = context.audience
+            try:
+                # Return valid AWS security credentials. These credentials are not cached by
+                # the google credential, so caching should be implemented in the supplier.
+                return aws.AwsSecurityCredentials(ACCESS_KEY_ID, SECRET_ACCESS_KEY, SESSION_TOKEN)
+            except Exception as e:
+                # If credentials retrieval fails, raise a refresh error, setting retryable to true if the client should
+                # attempt to retrieve the subject token again.
+                raise exceptions.RefreshError(e, retryable=True)
+
+        def get_aws_region(self, context, request):
+            # Return active AWS region.
+
+    supplier = CustomAwsSecurityCredentialsSupplier()
+
+    credentials = aws.Credentials(
+        AUDIENCE, # Set GCP Audience.
+        "urn:ietf:params:aws:token-type:aws4_request", # Set AWS subject token type.
+        aws_security_token_supplier=supplier, # Set supplier.
+        scopes=SCOPES # Set desired scopes.
+    )
+
+Where the `audience`_ is: ``///iam.googleapis.com/projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/POOL_ID/providers/PROVIDER_ID``
+Where the following variables need to be substituted:
+
+* ``$PROJECT_NUMBER``: The project number.
+* ``$POOL_ID``: The workload pool ID.
+* ``$PROVIDER_ID``: The provider ID.
+
+The values for audience, service account impersonation URL, and any other builder field can also be found
+by generating a `credential configuration file with the gcloud CLI`_.
+
+.. _audience:
+    https://cloud.google.com/iam/docs/best-practices-for-using-workload-identity-federation#provider-audience
+.. _credential configuration file with the gcloud CLI:
+    https://cloud.google.com/sdk/gcloud/reference/iam/workload-identity-pools/create-cred-config
 
 Using External Identities
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -774,6 +885,62 @@ Refer to the `using executable-sourced credentials with Workload Identity
 Federation <Using-Executable-sourced-credentials-with-OIDC-and-SAML>`__ above
 for the executable response specification.
 
+Accessing resources using a custom supplier with OIDC or SAML
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This library also allows for a custom implementation of :class:`google.auth.identity_pool.SubjectTokenSupplier`
+to be specificed when creating a :class:`google.auth.identity_pool.Credential`. The supplier must
+return a valid OIDC or SAML2.0 subject token, which will then be exchanged for a
+Google Cloud access token. If an error occurs during token retrieval, the supplier
+should return a :class:`google.auth.exceptions.RefreshError` and indicate via the error
+whether the subject token retrieval is retryable.
+Any call to the supplier from the Identity Pool credential will send a :class:`google.auth.external_account.SupplierContext`
+object, which contains the requested audience and subject type. Additionally, the credential will
+send the :class:`google.auth.transport.requests.Request` passed in the credential refresh call which
+can be used to make HTTP requests.::
+
+    from google.auth import exceptions
+    from google.auth import identity_pool
+
+    class CustomSubjectTokenSupplier(identity_pool.SubjectTokenSupplier):
+
+        def get_subject_token(self, context, request):
+            audience = context.audience
+            subject_token_type = context.subject_token_type
+            try:
+                # Attempt to return the valid subject token of the requested type for the requested audience.
+            except Exception as e:
+                # If token retrieval fails, raise a refresh error, setting retryable to true if the client should
+                # attempt to retrieve the subject token again.
+                raise exceptions.RefreshError(e, retryable=True)
+
+
+    supplier = CustomSubjectTokenSupplier()
+
+    credentials = identity_pool.Credentials(
+        AUDIENCE, # Set GCP Audience.
+        "urn:ietf:params:aws:token-type:jwt", # Set subject token type.
+        subject_token_supplier=supplier, # Set supplier.
+        scopes=SCOPES, # Set desired scopes.
+        workforce_pool_user_project=USER_PROJECT # Set workforce pool user project.
+    )
+
+Where the audience is: ``//iam.googleapis.com/locations/global/workforcePools/$WORKFORCE_POOL_ID/providers/$PROVIDER_ID``
+Where the following variables need to be substituted:
+
+* ``$WORKFORCE_POOL_ID``: The workforce pool ID.
+* ``$PROVIDER_ID``: The provider ID.
+
+and the workforce pool user project is the project number associated with the `workforce pools user project`_.
+
+The values for audience, service account impersonation URL, and any other builder field can also be found
+by generating a `credential configuration file`_ with the gcloud CLI.
+
+.. _workforce pools user project:
+    https://cloud.google.com/iam/docs/workforce-identity-federation#workforce-pools-user-project
+.. _credential configuration file:
+    https://cloud.google.com/iam/docs/workforce-obtaining-short-lived-credentials#use_configuration_files_for_sign-in
+
 Security considerations
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -814,7 +981,7 @@ Impersonated credentials
 ++++++++++++++++++++++++
 
 Impersonated Credentials allows one set of credentials issued to a user or service account
-to impersonate another. The source credentials must be granted 
+to impersonate another. The source credentials must be granted
 the "Service Account Token Creator" IAM role. ::
 
     from google.auth import impersonated_credentials
@@ -884,7 +1051,7 @@ Token broker ::
     credential_access_boundary = downscoped.CredentialAccessBoundary(
         rules=[rule])
 
-    # Retrieve the source credentials via ADC. 
+    # Retrieve the source credentials via ADC.
     source_credentials, _ = google.auth.default()
 
     # Create the downscoped credentials.
