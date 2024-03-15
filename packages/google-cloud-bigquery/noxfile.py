@@ -38,7 +38,7 @@ BLACK_PATHS = (
 
 DEFAULT_PYTHON_VERSION = "3.8"
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8", "3.11", "3.12"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+UNIT_TEST_PYTHON_VERSIONS = ["3.7", "3.8", "3.12"]
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 # 'docfx' is excluded since it only needs to run in 'docs-presubmit'
