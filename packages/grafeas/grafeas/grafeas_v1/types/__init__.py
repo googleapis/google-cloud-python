@@ -66,7 +66,7 @@ from .intoto_provenance import (
     Metadata,
     Recipe,
 )
-from .intoto_statement import InTotoStatement, Subject
+from .intoto_statement import InTotoSlsaProvenanceV1, InTotoStatement, Subject
 from .package import (
     Architecture,
     Distribution,
@@ -89,6 +89,12 @@ from .provenance import (
     RepoId,
     Source,
     SourceContext,
+)
+from .sbom import (
+    SbomReferenceIntotoPayload,
+    SbomReferenceIntotoPredicate,
+    SBOMReferenceNote,
+    SBOMReferenceOccurrence,
 )
 from .severity import Severity
 from .slsa_provenance import SlsaProvenance
@@ -154,6 +160,7 @@ __all__ = (
     "InTotoProvenance",
     "Metadata",
     "Recipe",
+    "InTotoSlsaProvenanceV1",
     "InTotoStatement",
     "Subject",
     "Distribution",
@@ -175,6 +182,10 @@ __all__ = (
     "RepoId",
     "Source",
     "SourceContext",
+    "SbomReferenceIntotoPayload",
+    "SbomReferenceIntotoPredicate",
+    "SBOMReferenceNote",
+    "SBOMReferenceOccurrence",
     "Severity",
     "SlsaProvenance",
     "SlsaProvenanceZeroTwo",

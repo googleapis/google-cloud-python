@@ -135,9 +135,13 @@ class VulnerabilityAssessmentNote(proto.Message):
 
         Attributes:
             cve (str):
-                Holds the MITRE standard Common
-                Vulnerabilities and Exposures (CVE) tracking
-                number for the vulnerability.
+                Holds the MITRE standard Common Vulnerabilities and
+                Exposures (CVE) tracking number for the vulnerability.
+                Deprecated: Use vulnerability_id instead to denote CVEs.
+            vulnerability_id (str):
+                The vulnerability identifier for this
+                Assessment. Will hold one of common identifiers
+                e.g. CVE, GHSA etc.
             short_description (str):
                 A one sentence description of this Vex.
             long_description (str):
@@ -308,6 +312,10 @@ class VulnerabilityAssessmentNote(proto.Message):
         cve: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        vulnerability_id: str = proto.Field(
+            proto.STRING,
+            number=9,
         )
         short_description: str = proto.Field(
             proto.STRING,
