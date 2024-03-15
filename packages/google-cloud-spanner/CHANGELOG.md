@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.44.0](https://github.com/googleapis/python-spanner/compare/v3.43.0...v3.44.0) (2024-03-13)
+
+
+### Features
+
+* Add support of float32 type ([#1113](https://github.com/googleapis/python-spanner/issues/1113)) ([7e0b46a](https://github.com/googleapis/python-spanner/commit/7e0b46aba7c48f7f944c0fca0cb394551b8d60c1))
+* Changes for float32 in dbapi ([#1115](https://github.com/googleapis/python-spanner/issues/1115)) ([c9f4fbf](https://github.com/googleapis/python-spanner/commit/c9f4fbf2a42054ed61916fb544c5aca947a50598))
+
+
+### Bug Fixes
+
+* Correcting name of variable from `table_schema` to `schema_name` ([#1114](https://github.com/googleapis/python-spanner/issues/1114)) ([a92c6d3](https://github.com/googleapis/python-spanner/commit/a92c6d347f2ae84779ec8662280ea894d558a887))
+
+
+### Documentation
+
+* Add sample for managed autoscaler ([#1111](https://github.com/googleapis/python-spanner/issues/1111)) ([e73c671](https://github.com/googleapis/python-spanner/commit/e73c6718b23bf78a8f264419b2ba378f95fa2554))
+
 ## [3.43.0](https://github.com/googleapis/python-spanner/compare/v3.42.0...v3.43.0) (2024-03-06)
 
 
