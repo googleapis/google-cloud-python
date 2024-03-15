@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.20.2](https://github.com/googleapis/python-pubsub/compare/v2.20.1...v2.20.2) (2024-03-15)
+
+
+### Documentation
+
+* **samples:** Add Create Topic with Kinesis IngestionDataSourceSettings Sample ([#1120](https://github.com/googleapis/python-pubsub/issues/1120)) ([83dc9ff](https://github.com/googleapis/python-pubsub/commit/83dc9fff13aa35518fb9b6a73472816da852d975))
+* **samples:** Update Topic with Kinesis Ingestion Settings ([#1123](https://github.com/googleapis/python-pubsub/issues/1123)) ([e0e2d83](https://github.com/googleapis/python-pubsub/commit/e0e2d831da8d17288c3ae8900bea2388ce8758af))
+
 ## [2.20.1](https://github.com/googleapis/python-pubsub/compare/v2.20.0...v2.20.1) (2024-03-06)
 
 
