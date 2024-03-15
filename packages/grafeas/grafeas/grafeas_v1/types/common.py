@@ -68,6 +68,8 @@ class NoteKind(proto.Enum):
             This represents a DSSE attestation Note
         VULNERABILITY_ASSESSMENT (11):
             This represents a Vulnerability Assessment.
+        SBOM_REFERENCE (12):
+            This represents an SBOM Reference.
     """
     NOTE_KIND_UNSPECIFIED = 0
     VULNERABILITY = 1
@@ -81,6 +83,7 @@ class NoteKind(proto.Enum):
     COMPLIANCE = 9
     DSSE_ATTESTATION = 10
     VULNERABILITY_ASSESSMENT = 11
+    SBOM_REFERENCE = 12
 
 
 class RelatedUrl(proto.Message):
