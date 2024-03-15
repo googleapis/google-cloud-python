@@ -77,6 +77,12 @@ class BuildOccurrence(proto.Message):
             intoto_statement can contain any type of provenance. The
             serialized payload of the statement can be stored and signed
             in the Occurrence's envelope.
+        in_toto_slsa_provenance_v1 (grafeas.grafeas_v1.types.InTotoSlsaProvenanceV1):
+            In-Toto Slsa Provenance V1 represents a slsa
+            provenance meeting the slsa spec, wrapped in an
+            in-toto statement. This allows for direct
+            jsonification of a to-spec in-toto slsa
+            statement with a to-spec slsa provenance.
     """
 
     provenance: g_provenance.BuildProvenance = proto.Field(
@@ -97,6 +103,11 @@ class BuildOccurrence(proto.Message):
         proto.MESSAGE,
         number=4,
         message=g_intoto_statement.InTotoStatement,
+    )
+    in_toto_slsa_provenance_v1: g_intoto_statement.InTotoSlsaProvenanceV1 = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=g_intoto_statement.InTotoSlsaProvenanceV1,
     )
 
 
