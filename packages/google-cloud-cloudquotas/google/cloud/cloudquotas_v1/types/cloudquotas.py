@@ -146,16 +146,13 @@ class ListQuotaPreferencesRequest(proto.Message):
             type, create/update time range.
 
             Example filters:
-            ``state=PENDING OR state=PENDING_PARTIALLY_GRANTED``
-            ``state=PENDING OR state=PENDING_PARTIALLY_GRANTED AND creation_time>2022-12-03T10:30:00``
-
-            If no filter is provided, returns all pending quota
-            preferences.
+            ``reconciling=true AND request_type=CLOUD_CONSOLE``,
+            ``reconciling=true OR creation_time>2022-12-03T10:30:00``
         order_by (str):
             Optional. How to order of the results. By default, the
             results are ordered by create time.
 
-            Example orders: ``type`` ``state, create_time``
+            Example orders: ``quota_id``, ``service, create_time``
     """
 
     parent: str = proto.Field(
