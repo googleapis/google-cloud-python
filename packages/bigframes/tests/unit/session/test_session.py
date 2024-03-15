@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import datetime
 import os
+import re
 from unittest import mock
 
 import google.api_core.exceptions
+import google.cloud.bigquery
 import pytest
 
 import bigframes
@@ -29,6 +32,22 @@ def test_read_gbq_missing_parts(missing_parts_table_id):
 
     with pytest.raises(ValueError):
         session.read_gbq(missing_parts_table_id)
+
+
+def test_read_gbq_cached_table():
+    session = resources.create_bigquery_session()
+    table_ref = google.cloud.bigquery.TableReference(
+        google.cloud.bigquery.DatasetReference("my-project", "my_dataset"),
+        "my_table",
+    )
+    session._df_snapshot[table_ref] = datetime.datetime(
+        1999, 1, 2, 3, 4, 5, 678901, tzinfo=datetime.timezone.utc
+    )
+
+    with pytest.warns(UserWarning, match=re.escape("use_cache=False")):
+        df = session.read_gbq("my-project.my_dataset.my_table")
+
+    assert "1999-01-02T03:04:05.678901" in df.sql
 
 
 @pytest.mark.parametrize(
