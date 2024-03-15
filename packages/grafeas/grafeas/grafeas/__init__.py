@@ -85,7 +85,11 @@ from grafeas.grafeas_v1.types.intoto_provenance import (
     Metadata,
     Recipe,
 )
-from grafeas.grafeas_v1.types.intoto_statement import InTotoStatement, Subject
+from grafeas.grafeas_v1.types.intoto_statement import (
+    InTotoSlsaProvenanceV1,
+    InTotoStatement,
+    Subject,
+)
 from grafeas.grafeas_v1.types.package import (
     Architecture,
     Distribution,
@@ -108,6 +112,12 @@ from grafeas.grafeas_v1.types.provenance import (
     RepoId,
     Source,
     SourceContext,
+)
+from grafeas.grafeas_v1.types.sbom import (
+    SbomReferenceIntotoPayload,
+    SbomReferenceIntotoPredicate,
+    SBOMReferenceNote,
+    SBOMReferenceOccurrence,
 )
 from grafeas.grafeas_v1.types.severity import Severity
 from grafeas.grafeas_v1.types.slsa_provenance import SlsaProvenance
@@ -183,6 +193,7 @@ __all__ = (
     "InTotoProvenance",
     "Metadata",
     "Recipe",
+    "InTotoSlsaProvenanceV1",
     "InTotoStatement",
     "Subject",
     "Distribution",
@@ -204,6 +215,10 @@ __all__ = (
     "RepoId",
     "Source",
     "SourceContext",
+    "SbomReferenceIntotoPayload",
+    "SbomReferenceIntotoPredicate",
+    "SBOMReferenceNote",
+    "SBOMReferenceOccurrence",
     "Severity",
     "SlsaProvenance",
     "SlsaProvenanceZeroTwo",

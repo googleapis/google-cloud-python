@@ -78,6 +78,8 @@ class DiscoveryOccurrence(proto.Message):
         archive_time (google.protobuf.timestamp_pb2.Timestamp):
             The time occurrences related to this
             discovery occurrence were archived.
+        sbom_status (grafeas.grafeas_v1.types.DiscoveryOccurrence.SBOMStatus):
+            The status of an SBOM generation.
     """
 
     class ContinuousAnalysis(proto.Enum):
@@ -141,6 +143,42 @@ class DiscoveryOccurrence(proto.Message):
             number=1,
         )
 
+    class SBOMStatus(proto.Message):
+        r"""The status of an SBOM generation.
+
+        Attributes:
+            sbom_state (grafeas.grafeas_v1.types.DiscoveryOccurrence.SBOMStatus.SBOMState):
+                The progress of the SBOM generation.
+            error (str):
+                If there was an error generating an SBOM,
+                this will indicate what that error was.
+        """
+
+        class SBOMState(proto.Enum):
+            r"""An enum indicating the progress of the SBOM generation.
+
+            Values:
+                SBOM_STATE_UNSPECIFIED (0):
+                    Default unknown state.
+                PENDING (1):
+                    SBOM scanning is pending.
+                COMPLETE (2):
+                    SBOM scanning has completed.
+            """
+            SBOM_STATE_UNSPECIFIED = 0
+            PENDING = 1
+            COMPLETE = 2
+
+        sbom_state: "DiscoveryOccurrence.SBOMStatus.SBOMState" = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="DiscoveryOccurrence.SBOMStatus.SBOMState",
+        )
+        error: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+
     continuous_analysis: ContinuousAnalysis = proto.Field(
         proto.ENUM,
         number=1,
@@ -179,6 +217,11 @@ class DiscoveryOccurrence(proto.Message):
         proto.MESSAGE,
         number=6,
         message=timestamp_pb2.Timestamp,
+    )
+    sbom_status: SBOMStatus = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=SBOMStatus,
     )
 
 
