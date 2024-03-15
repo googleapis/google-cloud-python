@@ -91,6 +91,15 @@ class ColumnSchema(proto.Message):
             Looker specific column info of this column.
 
             This field is a member of `oneof`_ ``system_spec``.
+        range_element_type (google.cloud.datacatalog_v1.types.ColumnSchema.FieldElementType):
+            Optional. The subtype of the RANGE, if the type of this
+            field is RANGE. If the type is RANGE, this field is
+            required. Possible values for the field element type of a
+            RANGE include:
+
+            -  DATE
+            -  DATETIME
+            -  TIMESTAMP
         gc_rule (str):
             Optional. Garbage collection policy for the
             column or column family. Applies to systems like
@@ -156,6 +165,20 @@ class ColumnSchema(proto.Message):
             enum="ColumnSchema.LookerColumnSpec.LookerColumnType",
         )
 
+    class FieldElementType(proto.Message):
+        r"""Represents the type of a field element.
+
+        Attributes:
+            type_ (str):
+                Required. The type of a field element. See
+                [ColumnSchema.type][google.cloud.datacatalog.v1.ColumnSchema.type].
+        """
+
+        type_: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+
     column: str = proto.Field(
         proto.STRING,
         number=6,
@@ -195,6 +218,11 @@ class ColumnSchema(proto.Message):
         number=18,
         oneof="system_spec",
         message=LookerColumnSpec,
+    )
+    range_element_type: FieldElementType = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=FieldElementType,
     )
     gc_rule: str = proto.Field(
         proto.STRING,
