@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [1.15.0](https://github.com/googleapis/gapic-generator-python/compare/v1.14.5...v1.15.0) (2024-03-15)
+
+
+### Features
+
+* Add support for checking uuid4 fields ([#1972](https://github.com/googleapis/gapic-generator-python/issues/1972)) ([d5f90a2](https://github.com/googleapis/gapic-generator-python/commit/d5f90a2455cb671e67e2cd30f3eb470092e4f889))
+
+
+### Bug Fixes
+
+* Fix resource path helpers for paths with =** ([#1976](https://github.com/googleapis/gapic-generator-python/issues/1976)) ([08c01e9](https://github.com/googleapis/gapic-generator-python/commit/08c01e9d92adeb492a7b526b1b5267931750ee61))
+
 ## [1.14.5](https://github.com/googleapis/gapic-generator-python/compare/v1.14.4...v1.14.5) (2024-03-04)
 
 
