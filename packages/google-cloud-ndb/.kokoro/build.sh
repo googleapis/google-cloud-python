@@ -50,13 +50,6 @@ if [[ -f "${KOKORO_GFILE_DIR}/service-account.json" ]]; then
 fi
 
 
-# Remove old nox
-python3 -m pip uninstall --yes --quiet nox-automation
-
-# Install nox
-python3 -m pip install --upgrade --quiet nox
-python3 -m nox --version
-
 # If this is a continuous build, send the test log to the FlakyBot.
 # See https://github.com/googleapis/repo-automation-bots/tree/main/packages/flakybot.
 if [[ $KOKORO_BUILD_ARTIFACTS_SUBDIR = *"continuous"* ]]; then
