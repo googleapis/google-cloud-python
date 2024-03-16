@@ -402,6 +402,24 @@ def test_parallel_threads(dispose_of, database_id, namespace):
 
 
 @pytest.mark.usefixtures("client_context")
+def test_large_rpc_lookup(dispose_of, ds_client):
+    class SomeKind(ndb.Model):
+        foo = ndb.TextProperty()
+
+    foo = "a" * (500 * 1024)
+
+    keys = []
+    for i in range(15):
+        key = SomeKind(foo=foo).put()
+        dispose_of(key._key)
+        keys.append(key)
+
+    retrieved = ndb.get_multi(keys)
+    for entity in retrieved:
+        assert entity.foo == foo
+
+
+@pytest.mark.usefixtures("client_context")
 def test_large_json_property(dispose_of, ds_client):
     class SomeKind(ndb.Model):
         foo = ndb.JsonProperty()

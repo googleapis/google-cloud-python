@@ -147,7 +147,14 @@ class Client(google_client.ClientWithProject):
             )
 
         if emulator:
-            channel = grpc.insecure_channel(self.host)
+            channel = grpc.insecure_channel(
+                self.host,
+                options=[
+                    # Default options provided in DatastoreGrpcTransport, but not when we override the channel.
+                    ("grpc.max_send_message_length", -1),
+                    ("grpc.max_receive_message_length", -1),
+                ],
+            )
         else:
             user_agent = self.client_info.to_user_agent()
             channel = _helpers.make_secure_channel(
