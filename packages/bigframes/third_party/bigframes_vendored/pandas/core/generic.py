@@ -183,7 +183,7 @@ class NDFrame(indexing.IndexingMixin):
         *,
         index: bool = True,
         lines: bool = False,
-    ) -> str | None:
+    ) -> None:
         """Convert the object to a JSON string, written to Cloud Storage.
 
         Note NaN's and None will be converted to null and datetime objects
@@ -241,7 +241,7 @@ class NDFrame(indexing.IndexingMixin):
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
-    def to_csv(self, path_or_buf: str, *, index: bool = True) -> str | None:
+    def to_csv(self, path_or_buf: str, *, index: bool = True) -> None:
         """Write object to a comma-separated values (csv) file on Cloud Storage.
 
         Args:

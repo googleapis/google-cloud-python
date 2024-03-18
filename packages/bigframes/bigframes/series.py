@@ -1390,9 +1390,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         )
         return bigframes.dataframe.DataFrame(block)
 
-    def to_csv(self, path_or_buf=None, **kwargs) -> typing.Optional[str]:
-        # TODO(b/280651142): Implement version that leverages bq export native csv support to bypass local pandas step.
-        return self.to_pandas().to_csv(path_or_buf, **kwargs)
+    def to_csv(
+        self, path_or_buf: str, sep=",", *, header: bool = True, index: bool = True
+    ) -> None:
+        return self.to_frame().to_csv(path_or_buf, sep=sep, header=header, index=index)
 
     def to_dict(self, into: type[dict] = dict) -> typing.Mapping:
         return typing.cast(dict, self.to_pandas().to_dict(into))  # type: ignore
@@ -1402,14 +1403,17 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
 
     def to_json(
         self,
-        path_or_buf=None,
+        path_or_buf: str,
         orient: typing.Literal[
             "split", "records", "index", "columns", "values", "table"
         ] = "columns",
-        **kwargs,
-    ) -> typing.Optional[str]:
-        # TODO(b/280651142): Implement version that leverages bq export native csv support to bypass local pandas step.
-        return self.to_pandas().to_json(path_or_buf, **kwargs)
+        *,
+        lines: bool = False,
+        index: bool = True,
+    ) -> None:
+        return self.to_frame().to_json(
+            path_or_buf=path_or_buf, orient=orient, lines=lines, index=index
+        )
 
     def to_latex(
         self, buf=None, columns=None, header=True, index=True, **kwargs

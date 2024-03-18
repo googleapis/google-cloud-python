@@ -2588,16 +2588,16 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         if "*" not in path_or_buf:
             raise NotImplementedError(ERROR_IO_REQUIRES_WILDCARD)
 
-        if lines is True and orient != "records":
-            raise ValueError(
-                "'lines' keyword is only valid when 'orient' is 'records'."
-            )
-
         # TODO(ashleyxu) Support lines=False for small tables with arrays and TO_JSON_STRING.
         # See: https://cloud.google.com/bigquery/docs/reference/standard-sql/json_functions#to_json_string
         if lines is False:
             raise NotImplementedError(
-                f"Only newline delimited JSON format is supported. {constants.FEEDBACK_LINK}"
+                f"Only newline-delimited JSON is supported. Add `lines=True` to your function call. {constants.FEEDBACK_LINK}"
+            )
+
+        if lines is True and orient != "records":
+            raise ValueError(
+                "'lines' keyword is only valid when 'orient' is 'records'."
             )
 
         result_table = self._run_io_query(
