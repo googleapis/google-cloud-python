@@ -183,7 +183,46 @@ class SharingEnvironmentConfig(proto.Message):
         r"""Data Clean Room (DCR), used for privacy-safe and secured data
         sharing.
 
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            single_selected_resource_sharing_restriction (bool):
+                Output only. If True, this DCR restricts the
+                contributors to sharing only a single resource
+                in a Listing. And no two resources should have
+                the same IDs. So if a contributor adds a view
+                with a conflicting name, the CreateListing API
+                will reject the request. if False, the data
+                contributor can publish an entire dataset (as
+                before). This is not configurable, and by
+                default, all new DCRs will have the restriction
+                set to True.
+
+                This field is a member of `oneof`_ ``_single_selected_resource_sharing_restriction``.
+            single_linked_dataset_per_cleanroom (bool):
+                Output only. If True, when subscribing to
+                this DCR, it will create only one linked dataset
+                containing all resources shared within the
+                cleanroom. If False, when subscribing to this
+                DCR, it will create 1 linked dataset per
+                listing. This is not configurable, and by
+                default, all new DCRs will have the restriction
+                set to True.
+
+                This field is a member of `oneof`_ ``_single_linked_dataset_per_cleanroom``.
         """
+
+        single_selected_resource_sharing_restriction: bool = proto.Field(
+            proto.BOOL,
+            number=1,
+            optional=True,
+        )
+        single_linked_dataset_per_cleanroom: bool = proto.Field(
+            proto.BOOL,
+            number=2,
+            optional=True,
+        )
 
     default_exchange_config: DefaultExchangeConfig = proto.Field(
         proto.MESSAGE,
@@ -480,11 +519,44 @@ class Listing(proto.Message):
             dataset (str):
                 Resource name of the dataset source for this listing. e.g.
                 ``projects/myproject/datasets/123``
+            selected_resources (MutableSequence[google.cloud.bigquery_analyticshub_v1.types.Listing.BigQueryDatasetSource.SelectedResource]):
+                Optional. Resources in this dataset that are
+                selectively shared. If this field is empty, then
+                the entire dataset (all resources) are shared.
+                This field is only valid for data clean room
+                exchanges.
         """
+
+        class SelectedResource(proto.Message):
+            r"""Resource in this dataset that are selectively shared.
+
+            .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+            Attributes:
+                table (str):
+                    Optional. Format: For table:
+                    ``projects/{projectId}/datasets/{datasetId}/tables/{tableId}``
+                    Example:"projects/test_project/datasets/test_dataset/tables/test_table".
+
+                    This field is a member of `oneof`_ ``resource``.
+            """
+
+            table: str = proto.Field(
+                proto.STRING,
+                number=1,
+                oneof="resource",
+            )
 
         dataset: str = proto.Field(
             proto.STRING,
             number=1,
+        )
+        selected_resources: MutableSequence[
+            "Listing.BigQueryDatasetSource.SelectedResource"
+        ] = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="Listing.BigQueryDatasetSource.SelectedResource",
         )
 
     class RestrictedExportConfig(proto.Message):

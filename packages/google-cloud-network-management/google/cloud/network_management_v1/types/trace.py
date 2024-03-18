@@ -1489,6 +1489,8 @@ class DeliverInfo(proto.Message):
         resource_uri (str):
             URI of the resource that the packet is
             delivered to.
+        ip_address (str):
+            IP address of the target (if applicable).
     """
 
     class Target(proto.Enum):
@@ -1522,6 +1524,18 @@ class DeliverInfo(proto.Message):
                 group.
             STORAGE_BUCKET (10):
                 Target is a Cloud Storage bucket.
+            PRIVATE_NETWORK (11):
+                Target is a private network. Used only for
+                return traces.
+            CLOUD_FUNCTION (12):
+                Target is a Cloud Function. Used only for
+                return traces.
+            APP_ENGINE_VERSION (13):
+                Target is a App Engine service version. Used
+                only for return traces.
+            CLOUD_RUN_REVISION (14):
+                Target is a Cloud Run revision. Used only for
+                return traces.
         """
         TARGET_UNSPECIFIED = 0
         INSTANCE = 1
@@ -1534,6 +1548,10 @@ class DeliverInfo(proto.Message):
         PSC_VPC_SC = 8
         SERVERLESS_NEG = 9
         STORAGE_BUCKET = 10
+        PRIVATE_NETWORK = 11
+        CLOUD_FUNCTION = 12
+        APP_ENGINE_VERSION = 13
+        CLOUD_RUN_REVISION = 14
 
     target: Target = proto.Field(
         proto.ENUM,
@@ -1543,6 +1561,10 @@ class DeliverInfo(proto.Message):
     resource_uri: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1556,6 +1578,8 @@ class ForwardInfo(proto.Message):
         resource_uri (str):
             URI of the resource that the packet is
             forwarded to.
+        ip_address (str):
+            IP address of the target (if applicable).
     """
 
     class Target(proto.Enum):
@@ -1583,6 +1607,8 @@ class ForwardInfo(proto.Message):
                 project.
             NCC_HUB (8):
                 Forwarded to an NCC Hub.
+            ROUTER_APPLIANCE (9):
+                Forwarded to a router appliance.
         """
         TARGET_UNSPECIFIED = 0
         PEERING_VPC = 1
@@ -1593,6 +1619,7 @@ class ForwardInfo(proto.Message):
         CLOUD_SQL_INSTANCE = 6
         ANOTHER_PROJECT = 7
         NCC_HUB = 8
+        ROUTER_APPLIANCE = 9
 
     target: Target = proto.Field(
         proto.ENUM,
@@ -1602,6 +1629,10 @@ class ForwardInfo(proto.Message):
     resource_uri: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=3,
     )
 
 
@@ -1613,10 +1644,11 @@ class AbortInfo(proto.Message):
             Causes that the analysis is aborted.
         resource_uri (str):
             URI of the resource that caused the abort.
+        ip_address (str):
+            IP address that caused the abort.
         projects_missing_permission (MutableSequence[str]):
-            List of project IDs that the user has specified in the
-            request but does not have permission to access network
-            configs. Analysis is aborted in this case with the
+            List of project IDs the user specified in the request but
+            lacks access to. In this case, analysis is aborted with the
             PERMISSION_DENIED cause.
     """
 
@@ -1627,60 +1659,77 @@ class AbortInfo(proto.Message):
             CAUSE_UNSPECIFIED (0):
                 Cause is unspecified.
             UNKNOWN_NETWORK (1):
-                Aborted due to unknown network.
-                The reachability analysis cannot proceed because
-                the user does not have access to the host
-                project's network configurations, including
-                firewall rules and routes. This happens when the
-                project is a service project and the endpoints
-                being traced are in the host project's network.
-            UNKNOWN_IP (2):
-                Aborted because the IP address(es) are
-                unknown.
+                Aborted due to unknown network. Deprecated,
+                not used in the new tests.
             UNKNOWN_PROJECT (3):
                 Aborted because no project information can be
-                derived from the test input.
-            PERMISSION_DENIED (4):
-                Aborted because the user lacks the permission
-                to access all or part of the network
-                configurations required to run the test.
-            NO_SOURCE_LOCATION (5):
-                Aborted because no valid source endpoint is
-                derived from the input test request.
-            INVALID_ARGUMENT (6):
-                Aborted because the source and/or destination
-                endpoint specified in the test are invalid. The
-                possible reasons that an endpoint is invalid
-                include: malformed IP address; nonexistent
-                instance or network URI; IP address not in the
-                range of specified network URI; and instance not
-                owning the network interface in the specified
-                network.
+                derived from the test input. Deprecated, not
+                used in the new tests.
             NO_EXTERNAL_IP (7):
                 Aborted because traffic is sent from a public
                 IP to an instance without an external IP.
+                Deprecated, not used in the new tests.
             UNINTENDED_DESTINATION (8):
                 Aborted because none of the traces matches
                 destination information specified in the input
-                test request.
-            TRACE_TOO_LONG (9):
-                Aborted because the number of steps in the
-                trace exceeding a certain limit which may be
-                caused by routing loop.
-            INTERNAL_ERROR (10):
-                Aborted due to internal server error.
+                test request. Deprecated, not used in the new
+                tests.
             SOURCE_ENDPOINT_NOT_FOUND (11):
                 Aborted because the source endpoint could not
-                be found.
+                be found. Deprecated, not used in the new tests.
             MISMATCHED_SOURCE_NETWORK (12):
                 Aborted because the source network does not
-                match the source endpoint.
+                match the source endpoint. Deprecated, not used
+                in the new tests.
             DESTINATION_ENDPOINT_NOT_FOUND (13):
                 Aborted because the destination endpoint
-                could not be found.
+                could not be found. Deprecated, not used in the
+                new tests.
             MISMATCHED_DESTINATION_NETWORK (14):
                 Aborted because the destination network does
-                not match the destination endpoint.
+                not match the destination endpoint. Deprecated,
+                not used in the new tests.
+            UNKNOWN_IP (2):
+                Aborted because no endpoint with the packet's
+                destination IP address is found.
+            SOURCE_IP_ADDRESS_NOT_IN_SOURCE_NETWORK (23):
+                Aborted because the source IP address doesn't
+                belong to any of the subnets of the source VPC
+                network.
+            PERMISSION_DENIED (4):
+                Aborted because user lacks permission to
+                access all or part of the network configurations
+                required to run the test.
+            PERMISSION_DENIED_NO_CLOUD_NAT_CONFIGS (28):
+                Aborted because user lacks permission to
+                access Cloud NAT configs required to run the
+                test.
+            PERMISSION_DENIED_NO_NEG_ENDPOINT_CONFIGS (29):
+                Aborted because user lacks permission to
+                access Network endpoint group endpoint configs
+                required to run the test.
+            NO_SOURCE_LOCATION (5):
+                Aborted because no valid source or
+                destination endpoint is derived from the input
+                test request.
+            INVALID_ARGUMENT (6):
+                Aborted because the source or destination
+                endpoint specified in the request is invalid.
+                Some examples:
+
+                - The request might contain malformed resource
+                  URI, project ID, or IP address.
+                - The request might contain inconsistent
+                  information (for example, the request might
+                  include both the instance and the network, but
+                  the instance might not have a NIC in that
+                  network).
+            TRACE_TOO_LONG (9):
+                Aborted because the number of steps in the
+                trace exceeds a certain limit. It might be
+                caused by a routing loop.
+            INTERNAL_ERROR (10):
+                Aborted due to internal server error.
             UNSUPPORTED (15):
                 Aborted because the test scenario is not
                 supported.
@@ -1695,6 +1744,18 @@ class AbortInfo(proto.Message):
             RESOURCE_CONFIG_NOT_FOUND (18):
                 Aborted because expected resource
                 configuration was missing.
+            VM_INSTANCE_CONFIG_NOT_FOUND (24):
+                Aborted because expected VM instance
+                configuration was missing.
+            NETWORK_CONFIG_NOT_FOUND (25):
+                Aborted because expected network
+                configuration was missing.
+            FIREWALL_CONFIG_NOT_FOUND (26):
+                Aborted because expected firewall
+                configuration was missing.
+            ROUTE_CONFIG_NOT_FOUND (27):
+                Aborted because expected route configuration
+                was missing.
             GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT (19):
                 Aborted because a PSC endpoint selection for
                 the Google-managed service is ambiguous (several
@@ -1705,29 +1766,49 @@ class AbortInfo(proto.Message):
             SOURCE_FORWARDING_RULE_UNSUPPORTED (21):
                 Aborted because tests with a forwarding rule
                 as a source are not supported.
+            NON_ROUTABLE_IP_ADDRESS (22):
+                Aborted because one of the endpoints is a
+                non-routable IP address (loopback, link-local,
+                etc).
+            UNKNOWN_ISSUE_IN_GOOGLE_MANAGED_PROJECT (30):
+                Aborted due to an unknown issue in the
+                Google-managed project.
+            UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG (31):
+                Aborted due to an unsupported configuration
+                of the Google-managed project.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_NETWORK = 1
-        UNKNOWN_IP = 2
         UNKNOWN_PROJECT = 3
-        PERMISSION_DENIED = 4
-        NO_SOURCE_LOCATION = 5
-        INVALID_ARGUMENT = 6
         NO_EXTERNAL_IP = 7
         UNINTENDED_DESTINATION = 8
-        TRACE_TOO_LONG = 9
-        INTERNAL_ERROR = 10
         SOURCE_ENDPOINT_NOT_FOUND = 11
         MISMATCHED_SOURCE_NETWORK = 12
         DESTINATION_ENDPOINT_NOT_FOUND = 13
         MISMATCHED_DESTINATION_NETWORK = 14
+        UNKNOWN_IP = 2
+        SOURCE_IP_ADDRESS_NOT_IN_SOURCE_NETWORK = 23
+        PERMISSION_DENIED = 4
+        PERMISSION_DENIED_NO_CLOUD_NAT_CONFIGS = 28
+        PERMISSION_DENIED_NO_NEG_ENDPOINT_CONFIGS = 29
+        NO_SOURCE_LOCATION = 5
+        INVALID_ARGUMENT = 6
+        TRACE_TOO_LONG = 9
+        INTERNAL_ERROR = 10
         UNSUPPORTED = 15
         MISMATCHED_IP_VERSION = 16
         GKE_KONNECTIVITY_PROXY_UNSUPPORTED = 17
         RESOURCE_CONFIG_NOT_FOUND = 18
+        VM_INSTANCE_CONFIG_NOT_FOUND = 24
+        NETWORK_CONFIG_NOT_FOUND = 25
+        FIREWALL_CONFIG_NOT_FOUND = 26
+        ROUTE_CONFIG_NOT_FOUND = 27
         GOOGLE_MANAGED_SERVICE_AMBIGUOUS_PSC_ENDPOINT = 19
         SOURCE_PSC_CLOUD_SQL_UNSUPPORTED = 20
         SOURCE_FORWARDING_RULE_UNSUPPORTED = 21
+        NON_ROUTABLE_IP_ADDRESS = 22
+        UNKNOWN_ISSUE_IN_GOOGLE_MANAGED_PROJECT = 30
+        UNSUPPORTED_GOOGLE_MANAGED_PROJECT_CONFIG = 31
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -1737,6 +1818,10 @@ class AbortInfo(proto.Message):
     resource_uri: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    ip_address: str = proto.Field(
+        proto.STRING,
+        number=4,
     )
     projects_missing_permission: MutableSequence[str] = proto.RepeatedField(
         proto.STRING,
@@ -1752,6 +1837,14 @@ class DropInfo(proto.Message):
             Cause that the packet is dropped.
         resource_uri (str):
             URI of the resource that caused the drop.
+        source_ip (str):
+            Source IP address of the dropped packet (if
+            relevant).
+        destination_ip (str):
+            Destination IP address of the dropped packet
+            (if relevant).
+        region (str):
+            Region of the dropped packet (if relevant).
     """
 
     class Cause(proto.Enum):
@@ -1772,7 +1865,7 @@ class DropInfo(proto.Message):
                 Dropped due to a firewall rule, unless
                 allowed due to connection tracking.
             NO_ROUTE (4):
-                Dropped due to no routes.
+                Dropped due to no matching routes.
             ROUTE_BLACKHOLE (5):
                 Dropped due to invalid route. Route's next
                 hop is a blackhole.
@@ -1781,14 +1874,50 @@ class DropInfo(proto.Message):
                 network. Example: you trace a packet from
                 VM1:Network1 to VM2:Network2, however, the route
                 configured in Network1 sends the packet destined
-                for VM2's IP addresss to Network3.
+                for VM2's IP address to Network3.
+            ROUTE_NEXT_HOP_IP_ADDRESS_NOT_RESOLVED (42):
+                Route's next hop IP address cannot be
+                resolved to a GCP resource.
+            ROUTE_NEXT_HOP_RESOURCE_NOT_FOUND (43):
+                Route's next hop resource is not found.
+            ROUTE_NEXT_HOP_INSTANCE_WRONG_NETWORK (49):
+                Route's next hop instance doesn't hace a NIC
+                in the route's network.
+            ROUTE_NEXT_HOP_INSTANCE_NON_PRIMARY_IP (50):
+                Route's next hop IP address is not a primary
+                IP address of the next hop instance.
+            ROUTE_NEXT_HOP_FORWARDING_RULE_IP_MISMATCH (51):
+                Route's next hop forwarding rule doesn't
+                match next hop IP address.
+            ROUTE_NEXT_HOP_VPN_TUNNEL_NOT_ESTABLISHED (52):
+                Route's next hop VPN tunnel is down (does not
+                have valid IKE SAs).
+            ROUTE_NEXT_HOP_FORWARDING_RULE_TYPE_INVALID (53):
+                Route's next hop forwarding rule type is
+                invalid (it's not a forwarding rule of the
+                internal passthrough load balancer).
+            NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS (44):
+                Packet is sent from the Internet to the
+                private IPv6 address.
+            VPN_TUNNEL_LOCAL_SELECTOR_MISMATCH (45):
+                The packet does not match a policy-based VPN
+                tunnel local selector.
+            VPN_TUNNEL_REMOTE_SELECTOR_MISMATCH (46):
+                The packet does not match a policy-based VPN
+                tunnel remote selector.
             PRIVATE_TRAFFIC_TO_INTERNET (7):
                 Packet with internal destination address sent
                 to the internet gateway.
             PRIVATE_GOOGLE_ACCESS_DISALLOWED (8):
                 Instance with only an internal IP address
                 tries to access Google API and services, but
-                private Google access is not enabled.
+                private Google access is not enabled in the
+                subnet.
+            PRIVATE_GOOGLE_ACCESS_VIA_VPN_TUNNEL_UNSUPPORTED (47):
+                Source endpoint tries to access Google API
+                and services through the VPN tunnel to another
+                network, but Private Google Access needs to be
+                enabled in the source endpoint network.
             NO_EXTERNAL_ADDRESS (9):
                 Instance with only an internal IP address
                 tries to access external hosts, but Cloud NAT is
@@ -1803,10 +1932,6 @@ class DropInfo(proto.Message):
             FORWARDING_RULE_MISMATCH (11):
                 Forwarding rule's protocol and ports do not
                 match the packet header.
-            FORWARDING_RULE_REGION_MISMATCH (25):
-                Packet could be dropped because it was sent
-                from a different region to a regional forwarding
-                without global access.
             FORWARDING_RULE_NO_INSTANCES (12):
                 Forwarding rule does not have backends
                 configured.
@@ -1893,10 +2018,45 @@ class DropInfo(proto.Message):
             VPC_CONNECTOR_NOT_RUNNING (24):
                 Packet could be dropped because the VPC
                 connector is not in a running state.
+            FORWARDING_RULE_REGION_MISMATCH (25):
+                Packet could be dropped because it was sent
+                from a different region to a regional forwarding
+                without global access.
             PSC_CONNECTION_NOT_ACCEPTED (26):
                 The Private Service Connect endpoint is in a
                 project that is not approved to connect to the
                 service.
+            PSC_ENDPOINT_ACCESSED_FROM_PEERED_NETWORK (41):
+                The packet is sent to the Private Service Connect endpoint
+                over the peering, but `it's not
+                supported <https://cloud.google.com/vpc/docs/configure-private-service-connect-services#on-premises>`__.
+            PSC_NEG_PRODUCER_ENDPOINT_NO_GLOBAL_ACCESS (48):
+                The packet is sent to the Private Service
+                Connect backend (network endpoint group), but
+                the producer PSC forwarding rule does not have
+                global access enabled.
+            PSC_NEG_PRODUCER_FORWARDING_RULE_MULTIPLE_PORTS (54):
+                The packet is sent to the Private Service
+                Connect backend (network endpoint group), but
+                the producer PSC forwarding rule has multiple
+                ports specified.
+            CLOUD_SQL_PSC_NEG_UNSUPPORTED (58):
+                The packet is sent to the Private Service
+                Connect backend (network endpoint group)
+                targeting a Cloud SQL service attachment, but
+                this configuration is not supported.
+            NO_NAT_SUBNETS_FOR_PSC_SERVICE_ATTACHMENT (57):
+                No NAT subnets are defined for the PSC
+                service attachment.
+            HYBRID_NEG_NON_DYNAMIC_ROUTE_MATCHED (55):
+                The packet sent from the hybrid NEG proxy
+                matches a non-dynamic route, but such a
+                configuration is not supported.
+            HYBRID_NEG_NON_LOCAL_DYNAMIC_ROUTE_MATCHED (56):
+                The packet sent from the hybrid NEG proxy
+                matches a dynamic route with a next hop in a
+                different region, but such a configuration is
+                not supported.
             CLOUD_RUN_REVISION_NOT_READY (29):
                 Packet sent from a Cloud Run revision that is
                 not ready.
@@ -1907,6 +2067,11 @@ class DropInfo(proto.Message):
                 Packet sent to a load balancer, which
                 requires a proxy-only subnet and the subnet is
                 not found.
+            CLOUD_NAT_NO_ADDRESSES (40):
+                Packet sent to Cloud Nat without active NAT
+                IPs.
+            ROUTING_LOOP (59):
+                Packet is stuck in a routing loop.
         """
         CAUSE_UNSPECIFIED = 0
         UNKNOWN_EXTERNAL_ADDRESS = 1
@@ -1915,12 +2080,22 @@ class DropInfo(proto.Message):
         NO_ROUTE = 4
         ROUTE_BLACKHOLE = 5
         ROUTE_WRONG_NETWORK = 6
+        ROUTE_NEXT_HOP_IP_ADDRESS_NOT_RESOLVED = 42
+        ROUTE_NEXT_HOP_RESOURCE_NOT_FOUND = 43
+        ROUTE_NEXT_HOP_INSTANCE_WRONG_NETWORK = 49
+        ROUTE_NEXT_HOP_INSTANCE_NON_PRIMARY_IP = 50
+        ROUTE_NEXT_HOP_FORWARDING_RULE_IP_MISMATCH = 51
+        ROUTE_NEXT_HOP_VPN_TUNNEL_NOT_ESTABLISHED = 52
+        ROUTE_NEXT_HOP_FORWARDING_RULE_TYPE_INVALID = 53
+        NO_ROUTE_FROM_INTERNET_TO_PRIVATE_IPV6_ADDRESS = 44
+        VPN_TUNNEL_LOCAL_SELECTOR_MISMATCH = 45
+        VPN_TUNNEL_REMOTE_SELECTOR_MISMATCH = 46
         PRIVATE_TRAFFIC_TO_INTERNET = 7
         PRIVATE_GOOGLE_ACCESS_DISALLOWED = 8
+        PRIVATE_GOOGLE_ACCESS_VIA_VPN_TUNNEL_UNSUPPORTED = 47
         NO_EXTERNAL_ADDRESS = 9
         UNKNOWN_INTERNAL_ADDRESS = 10
         FORWARDING_RULE_MISMATCH = 11
-        FORWARDING_RULE_REGION_MISMATCH = 25
         FORWARDING_RULE_NO_INSTANCES = 12
         FIREWALL_BLOCKING_LOAD_BALANCER_BACKEND_HEALTH_CHECK = 13
         INSTANCE_NOT_RUNNING = 14
@@ -1944,10 +2119,20 @@ class DropInfo(proto.Message):
         CLOUD_FUNCTION_NOT_ACTIVE = 22
         VPC_CONNECTOR_NOT_SET = 23
         VPC_CONNECTOR_NOT_RUNNING = 24
+        FORWARDING_RULE_REGION_MISMATCH = 25
         PSC_CONNECTION_NOT_ACCEPTED = 26
+        PSC_ENDPOINT_ACCESSED_FROM_PEERED_NETWORK = 41
+        PSC_NEG_PRODUCER_ENDPOINT_NO_GLOBAL_ACCESS = 48
+        PSC_NEG_PRODUCER_FORWARDING_RULE_MULTIPLE_PORTS = 54
+        CLOUD_SQL_PSC_NEG_UNSUPPORTED = 58
+        NO_NAT_SUBNETS_FOR_PSC_SERVICE_ATTACHMENT = 57
+        HYBRID_NEG_NON_DYNAMIC_ROUTE_MATCHED = 55
+        HYBRID_NEG_NON_LOCAL_DYNAMIC_ROUTE_MATCHED = 56
         CLOUD_RUN_REVISION_NOT_READY = 29
         DROPPED_INSIDE_PSC_SERVICE_PRODUCER = 37
         LOAD_BALANCER_HAS_NO_PROXY_SUBNET = 39
+        CLOUD_NAT_NO_ADDRESSES = 40
+        ROUTING_LOOP = 59
 
     cause: Cause = proto.Field(
         proto.ENUM,
@@ -1957,6 +2142,18 @@ class DropInfo(proto.Message):
     resource_uri: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+    source_ip: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    destination_ip: str = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    region: str = proto.Field(
+        proto.STRING,
+        number=5,
     )
 
 
@@ -2404,14 +2601,14 @@ class LoadBalancerBackendInfo(proto.Message):
             URI of the health check attached to this
             backend (if applicable).
         health_check_firewalls_config_state (google.cloud.network_management_v1.types.LoadBalancerBackendInfo.HealthCheckFirewallsConfigState):
-            Health check firewalls configuration state
-            for the backend. This is a result of the static
-            firewall analysis (verifying that health check
-            traffic from required IP ranges to the backend
-            is allowed or not). The backend might still be
-            unhealthy even if these firewalls are
-            configured. Please refer to the documentation
-            for more information:
+            Output only. Health check firewalls
+            configuration state for the backend. This is a
+            result of the static firewall analysis
+            (verifying that health check traffic from
+            required IP ranges to the backend is allowed or
+            not). The backend might still be unhealthy even
+            if these firewalls are configured. Please refer
+            to the documentation for more information:
 
             https://cloud.google.com/load-balancing/docs/firewall-rules
     """
