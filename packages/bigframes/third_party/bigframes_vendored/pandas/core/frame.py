@@ -5111,7 +5111,20 @@ class DataFrame(NDFrame):
 
     @property
     def iloc(self):
-        """Purely integer-location based indexing for selection by position."""
+        """Purely integer-location based indexing for selection by position.
+
+        Returns:
+            bigframes.core.indexers.ILocDataFrameIndexer: Purely integer-location Indexers.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    @property
+    def loc(self):
+        """Access a group of rows and columns by label(s) or a boolean array.
+
+        Returns:
+            bigframes.core.indexers.ILocDataFrameIndexer: Indexers object.
+        """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property

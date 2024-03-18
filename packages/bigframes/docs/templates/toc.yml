@@ -40,8 +40,16 @@
       - name: SeriesGroupBy
         uid: bigframes.core.groupby.SeriesGroupBy
       name: Groupby
-    - name: Indexes
-      uid: bigframes.core.indexes.index.Index
+    - items:
+      - name: ILocDataFrameIndexer
+        uid: bigframes.core.indexers.ILocDataFrameIndexer
+      - name: IlocSeriesIndexer
+        uid: bigframes.core.indexers.IlocSeriesIndexer
+      - name: LocDataFrameIndexer
+        uid: bigframes.core.indexers.LocDataFrameIndexer
+      - name: LocSeriesIndexer
+        uid: bigframes.core.indexers.LocSeriesIndexer
+      name: Indexers
     - name: pandas
       uid: bigframes.pandas
     - items:

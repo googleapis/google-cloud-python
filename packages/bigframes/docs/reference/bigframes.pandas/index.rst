@@ -9,6 +9,7 @@ BigQuery DataFrames (pandas)
     general_functions
     series
     frame
+    indexers
     indexing
     window
     groupby
