@@ -219,3 +219,50 @@ def test_dt_unit(scalars_dfs, col_name):
     pd_result = scalars_pandas_df[col_name].dt.unit
 
     assert bf_result == pd_result
+
+
+@pytest.mark.parametrize(
+    ("column", "date_format"),
+    [
+        ("timestamp_col", "%B %d, %Y, %r"),
+        ("timestamp_col", "%m-%d-%Y %H:%M"),
+        ("datetime_col", "%m-%d-%Y %H:%M"),
+        ("datetime_col", "%H:%M"),
+    ],
+)
+@skip_legacy_pandas
+def test_dt_strftime(scalars_df_index, scalars_pandas_df_index, column, date_format):
+    bf_result = scalars_df_index[column].dt.strftime(date_format).to_pandas()
+    pd_result = scalars_pandas_df_index[column].dt.strftime(date_format)
+    pd.testing.assert_series_equal(bf_result, pd_result, check_dtype=False)
+    assert bf_result.dtype == "string[pyarrow]"
+
+
+def test_dt_strftime_date():
+    bf_series = bigframes.series.Series(
+        ["2014-08-15", "2215-08-15", "2016-02-29"]
+    ).astype("date32[day][pyarrow]")
+
+    expected_result = pd.Series(["08/15/2014", "08/15/2215", "02/29/2016"])
+    bf_result = bf_series.dt.strftime("%m/%d/%Y").to_pandas()
+
+    pd.testing.assert_series_equal(
+        bf_result, expected_result, check_index_type=False, check_dtype=False
+    )
+    assert bf_result.dtype == "string[pyarrow]"
+
+
+def test_dt_strftime_time():
+    bf_series = bigframes.series.Series(
+        [143542314, 345234512341, 75543252344, 626546437654754, 8543523452345234]
+    ).astype("time64[us][pyarrow]")
+
+    expected_result = pd.Series(
+        ["00:02:23", "23:53:54", "20:59:03", "16:40:37", "08:57:32"]
+    )
+    bf_result = bf_series.dt.strftime("%X").to_pandas()
+
+    pd.testing.assert_series_equal(
+        bf_result, expected_result, check_index_type=False, check_dtype=False
+    )
+    assert bf_result.dtype == "string[pyarrow]"

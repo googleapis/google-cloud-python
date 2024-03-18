@@ -415,6 +415,15 @@ class ToDatetimeOp(UnaryOp):
         return input_types[0]
 
 
+@dataclasses.dataclass(frozen=True)
+class StrftimeOp(UnaryOp):
+    name: typing.ClassVar[str] = "strftime"
+    date_format: str
+
+    def output_type(self, *input_types):
+        return dtypes.STRING_DTYPE
+
+
 # Binary Ops
 fillna_op = create_binary_op(name="fillna")
 cliplower_op = create_binary_op(name="clip_lower")
