@@ -327,6 +327,18 @@ def test_read_gbq_twice_with_same_timestamp(session, penguins_table_id):
     assert df3 is not None
 
 
+def test_read_gbq_table_clustered_with_filter(session: bigframes.Session):
+    df = session.read_gbq_table(
+        "bigquery-public-data.cloud_storage_geo_index.landsat_index",
+        filters=[[("sensor_id", "LIKE", "OLI%")], [("sensor_id", "LIKE", "%TIRS")]],  # type: ignore
+        columns=["sensor_id"],
+    )
+    sensors = df.groupby(["sensor_id"]).agg("count").to_pandas(ordered=False)
+    assert "OLI" in sensors.index
+    assert "TIRS" in sensors.index
+    assert "OLI_TIRS" in sensors.index
+
+
 def test_read_gbq_wildcard(session: bigframes.Session):
     df = session.read_gbq("bigquery-public-data.noaa_gsod.gsod193*")
     assert df.shape == (348485, 32)

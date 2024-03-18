@@ -318,6 +318,7 @@ class Session(
             valid_operators: Mapping[third_party_pandas_gbq.FilterOps, str] = {
                 "in": "IN",
                 "not in": "NOT IN",
+                "LIKE": "LIKE",
                 "==": "=",
                 ">": ">",
                 "<": "<",
