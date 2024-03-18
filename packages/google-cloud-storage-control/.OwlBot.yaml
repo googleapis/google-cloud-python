@@ -13,6 +13,6 @@
 # limitations under the License.
 
 deep-copy-regex:
-    - source: /google/cloud/storage/control/(v.*)/.*-py
+    - source: /google/storage/control/(v.*)/.*-py
       dest: /owl-bot-staging/google-cloud-storage-control/$1
 api-name: google-cloud-storage-control
