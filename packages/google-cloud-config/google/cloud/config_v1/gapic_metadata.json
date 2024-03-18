@@ -75,6 +75,11 @@
                 "get_revision"
               ]
             },
+            "GetTerraformVersion": {
+              "methods": [
+                "get_terraform_version"
+              ]
+            },
             "ImportStatefile": {
               "methods": [
                 "import_statefile"
@@ -98,6 +103,11 @@
             "ListRevisions": {
               "methods": [
                 "list_revisions"
+              ]
+            },
+            "ListTerraformVersions": {
+              "methods": [
+                "list_terraform_versions"
               ]
             },
             "LockDeployment": {
@@ -185,6 +195,11 @@
                 "get_revision"
               ]
             },
+            "GetTerraformVersion": {
+              "methods": [
+                "get_terraform_version"
+              ]
+            },
             "ImportStatefile": {
               "methods": [
                 "import_statefile"
@@ -208,6 +223,11 @@
             "ListRevisions": {
               "methods": [
                 "list_revisions"
+              ]
+            },
+            "ListTerraformVersions": {
+              "methods": [
+                "list_terraform_versions"
               ]
             },
             "LockDeployment": {
@@ -295,6 +315,11 @@
                 "get_revision"
               ]
             },
+            "GetTerraformVersion": {
+              "methods": [
+                "get_terraform_version"
+              ]
+            },
             "ImportStatefile": {
               "methods": [
                 "import_statefile"
@@ -318,6 +343,11 @@
             "ListRevisions": {
               "methods": [
                 "list_revisions"
+              ]
+            },
+            "ListTerraformVersions": {
+              "methods": [
+                "list_terraform_versions"
               ]
             },
             "LockDeployment": {
