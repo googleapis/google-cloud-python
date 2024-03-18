@@ -2377,6 +2377,7 @@ def test_update_answer_record_rest(request_type):
                     "start_timestamp": {"seconds": 751, "nanos": 543},
                     "submit_timestamp": {},
                     "summary_text": "summary_text_value",
+                    "text_sections": {},
                 },
                 "knowledge_search_feedback": {
                     "answer_copied": True,

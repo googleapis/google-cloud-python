@@ -26,6 +26,8 @@ from .types.cloudbuild import OperationMetadata, RunWorkflowCustomOperationMetad
 from .types.repositories import (
     BatchCreateRepositoriesRequest,
     BatchCreateRepositoriesResponse,
+    BitbucketCloudConfig,
+    BitbucketDataCenterConfig,
     Connection,
     CreateConnectionRequest,
     CreateRepositoryRequest,
@@ -61,6 +63,8 @@ __all__ = (
     "RepositoryManagerAsyncClient",
     "BatchCreateRepositoriesRequest",
     "BatchCreateRepositoriesResponse",
+    "BitbucketCloudConfig",
+    "BitbucketDataCenterConfig",
     "Connection",
     "CreateConnectionRequest",
     "CreateRepositoryRequest",

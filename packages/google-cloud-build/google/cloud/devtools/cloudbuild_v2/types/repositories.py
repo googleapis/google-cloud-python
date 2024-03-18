@@ -32,6 +32,8 @@ __protobuf__ = proto.module(
         "GitHubConfig",
         "GitHubEnterpriseConfig",
         "GitLabConfig",
+        "BitbucketDataCenterConfig",
+        "BitbucketCloudConfig",
         "ServiceDirectoryConfig",
         "Repository",
         "OAuthCredential",
@@ -62,7 +64,7 @@ __protobuf__ = proto.module(
 
 class Connection(proto.Message):
     r"""A connection to a SCM like GitHub, GitHub Enterprise,
-    Bitbucket Server or GitLab.
+    Bitbucket Data Center, Bitbucket Cloud or GitLab.
 
     This message has `oneof`_ fields (mutually exclusive fields).
     For each oneof, at most one member field can be set at the same time.
@@ -94,6 +96,16 @@ class Connection(proto.Message):
         gitlab_config (google.cloud.devtools.cloudbuild_v2.types.GitLabConfig):
             Configuration for connections to gitlab.com
             or an instance of GitLab Enterprise.
+
+            This field is a member of `oneof`_ ``connection_config``.
+        bitbucket_data_center_config (google.cloud.devtools.cloudbuild_v2.types.BitbucketDataCenterConfig):
+            Configuration for connections to Bitbucket
+            Data Center.
+
+            This field is a member of `oneof`_ ``connection_config``.
+        bitbucket_cloud_config (google.cloud.devtools.cloudbuild_v2.types.BitbucketCloudConfig):
+            Configuration for connections to Bitbucket
+            Cloud.
 
             This field is a member of `oneof`_ ``connection_config``.
         installation_state (google.cloud.devtools.cloudbuild_v2.types.InstallationState):
@@ -149,6 +161,18 @@ class Connection(proto.Message):
         number=7,
         oneof="connection_config",
         message="GitLabConfig",
+    )
+    bitbucket_data_center_config: "BitbucketDataCenterConfig" = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="connection_config",
+        message="BitbucketDataCenterConfig",
+    )
+    bitbucket_cloud_config: "BitbucketCloudConfig" = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="connection_config",
+        message="BitbucketCloudConfig",
     )
     installation_state: "InstallationState" = proto.Field(
         proto.MESSAGE,
@@ -462,6 +486,116 @@ class GitLabConfig(proto.Message):
     server_version: str = proto.Field(
         proto.STRING,
         number=7,
+    )
+
+
+class BitbucketDataCenterConfig(proto.Message):
+    r"""Configuration for connections to Bitbucket Data Center.
+
+    Attributes:
+        host_uri (str):
+            Required. The URI of the Bitbucket Data
+            Center instance or cluster this connection is
+            for.
+        webhook_secret_secret_version (str):
+            Required. Immutable. SecretManager resource containing the
+            webhook secret used to verify webhook events, formatted as
+            ``projects/*/secrets/*/versions/*``.
+        read_authorizer_credential (google.cloud.devtools.cloudbuild_v2.types.UserCredential):
+            Required. A http access token with the ``REPO_READ`` access.
+        authorizer_credential (google.cloud.devtools.cloudbuild_v2.types.UserCredential):
+            Required. A http access token with the ``REPO_ADMIN`` scope
+            access.
+        service_directory_config (google.cloud.devtools.cloudbuild_v2.types.ServiceDirectoryConfig):
+            Optional. Configuration for using Service
+            Directory to privately connect to a Bitbucket
+            Data Center. This should only be set if the
+            Bitbucket Data Center is hosted on-premises and
+            not reachable by public internet. If this field
+            is left empty, calls to the Bitbucket Data
+            Center will be made over the public internet.
+        ssl_ca (str):
+            Optional. SSL certificate to use for requests
+            to the Bitbucket Data Center.
+        server_version (str):
+            Output only. Version of the Bitbucket Data Center running on
+            the ``host_uri``.
+    """
+
+    host_uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    webhook_secret_secret_version: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    read_authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="UserCredential",
+    )
+    authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="UserCredential",
+    )
+    service_directory_config: "ServiceDirectoryConfig" = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="ServiceDirectoryConfig",
+    )
+    ssl_ca: str = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    server_version: str = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+
+
+class BitbucketCloudConfig(proto.Message):
+    r"""Configuration for connections to Bitbucket Cloud.
+
+    Attributes:
+        workspace (str):
+            Required. The Bitbucket Cloud Workspace ID to
+            be connected to Google Cloud Platform.
+        webhook_secret_secret_version (str):
+            Required. SecretManager resource containing the webhook
+            secret used to verify webhook events, formatted as
+            ``projects/*/secrets/*/versions/*``.
+        read_authorizer_credential (google.cloud.devtools.cloudbuild_v2.types.UserCredential):
+            Required. An access token with the ``repository`` access. It
+            can be either a workspace, project or repository access
+            token. It's recommended to use a system account to generate
+            the credentials.
+        authorizer_credential (google.cloud.devtools.cloudbuild_v2.types.UserCredential):
+            Required. An access token with the ``webhook``,
+            ``repository``, ``repository:admin`` and ``pullrequest``
+            scope access. It can be either a workspace, project or
+            repository access token. It's recommended to use a system
+            account to generate these credentials.
+    """
+
+    workspace: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    webhook_secret_secret_version: str = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    read_authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="UserCredential",
+    )
+    authorizer_credential: "UserCredential" = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="UserCredential",
     )
 
 

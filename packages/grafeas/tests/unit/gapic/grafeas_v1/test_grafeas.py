@@ -68,6 +68,7 @@ from grafeas.grafeas_v1.types import (
     intoto_statement,
     package,
     provenance,
+    sbom,
     severity,
     slsa_provenance,
     slsa_provenance_zero_two,
@@ -5089,6 +5090,7 @@ def test_create_occurrence_rest(request_type):
             "cvss_v2": {},
             "vex_assessment": {
                 "cve": "cve_value",
+                "vulnerability_id": "vulnerability_id_value",
                 "related_uris": {},
                 "note_name": "note_name_value",
                 "state": 1,
@@ -5102,6 +5104,7 @@ def test_create_occurrence_rest(request_type):
                 ],
                 "justification": {"justification_type": 1, "details": "details_value"},
             },
+            "extra_details": "extra_details_value",
         },
         "build": {
             "provenance": {
@@ -5241,6 +5244,42 @@ def test_create_occurrence_rest(request_type):
                     "materials": [{"uri": "uri_value", "digest": {}}],
                 },
             },
+            "in_toto_slsa_provenance_v1": {
+                "type_": "type__value",
+                "subject": {},
+                "predicate_type": "predicate_type_value",
+                "predicate": {
+                    "build_definition": {
+                        "build_type": "build_type_value",
+                        "external_parameters": {},
+                        "internal_parameters": {},
+                        "resolved_dependencies": [
+                            {
+                                "name": "name_value",
+                                "uri": "uri_value",
+                                "digest": {},
+                                "content": b"content_blob",
+                                "download_location": "download_location_value",
+                                "media_type": "media_type_value",
+                                "annotations": {},
+                            }
+                        ],
+                    },
+                    "run_details": {
+                        "builder": {
+                            "id": "id_value",
+                            "version": {},
+                            "builder_dependencies": {},
+                        },
+                        "metadata": {
+                            "invocation_id": "invocation_id_value",
+                            "started_on": {},
+                            "finished_on": {},
+                        },
+                        "byproducts": {},
+                    },
+                },
+            },
         },
         "image": {
             "fingerprint": {
@@ -5290,6 +5329,7 @@ def test_create_occurrence_rest(request_type):
             "cpe": "cpe_value",
             "last_scan_time": {},
             "archive_time": {},
+            "sbom_status": {"sbom_state": 1, "error": "error_value"},
         },
         "attestation": {
             "serialized_payload": b"serialized_payload_blob",
@@ -5336,6 +5376,21 @@ def test_create_occurrence_rest(request_type):
                 "signatures": [{"sig": b"sig_blob", "keyid": "keyid_value"}],
             },
             "statement": {},
+        },
+        "sbom_reference": {
+            "payload": {
+                "type_": "type__value",
+                "predicate_type": "predicate_type_value",
+                "subject": {},
+                "predicate": {
+                    "referrer_id": "referrer_id_value",
+                    "location": "location_value",
+                    "mime_type": "mime_type_value",
+                    "digest": {},
+                },
+            },
+            "payload_type": "payload_type_value",
+            "signatures": {},
         },
         "envelope": {},
     }
@@ -6015,6 +6070,7 @@ def test_update_occurrence_rest(request_type):
             "cvss_v2": {},
             "vex_assessment": {
                 "cve": "cve_value",
+                "vulnerability_id": "vulnerability_id_value",
                 "related_uris": {},
                 "note_name": "note_name_value",
                 "state": 1,
@@ -6028,6 +6084,7 @@ def test_update_occurrence_rest(request_type):
                 ],
                 "justification": {"justification_type": 1, "details": "details_value"},
             },
+            "extra_details": "extra_details_value",
         },
         "build": {
             "provenance": {
@@ -6167,6 +6224,42 @@ def test_update_occurrence_rest(request_type):
                     "materials": [{"uri": "uri_value", "digest": {}}],
                 },
             },
+            "in_toto_slsa_provenance_v1": {
+                "type_": "type__value",
+                "subject": {},
+                "predicate_type": "predicate_type_value",
+                "predicate": {
+                    "build_definition": {
+                        "build_type": "build_type_value",
+                        "external_parameters": {},
+                        "internal_parameters": {},
+                        "resolved_dependencies": [
+                            {
+                                "name": "name_value",
+                                "uri": "uri_value",
+                                "digest": {},
+                                "content": b"content_blob",
+                                "download_location": "download_location_value",
+                                "media_type": "media_type_value",
+                                "annotations": {},
+                            }
+                        ],
+                    },
+                    "run_details": {
+                        "builder": {
+                            "id": "id_value",
+                            "version": {},
+                            "builder_dependencies": {},
+                        },
+                        "metadata": {
+                            "invocation_id": "invocation_id_value",
+                            "started_on": {},
+                            "finished_on": {},
+                        },
+                        "byproducts": {},
+                    },
+                },
+            },
         },
         "image": {
             "fingerprint": {
@@ -6216,6 +6309,7 @@ def test_update_occurrence_rest(request_type):
             "cpe": "cpe_value",
             "last_scan_time": {},
             "archive_time": {},
+            "sbom_status": {"sbom_state": 1, "error": "error_value"},
         },
         "attestation": {
             "serialized_payload": b"serialized_payload_blob",
@@ -6262,6 +6356,21 @@ def test_update_occurrence_rest(request_type):
                 "signatures": [{"sig": b"sig_blob", "keyid": "keyid_value"}],
             },
             "statement": {},
+        },
+        "sbom_reference": {
+            "payload": {
+                "type_": "type__value",
+                "predicate_type": "predicate_type_value",
+                "subject": {},
+                "predicate": {
+                    "referrer_id": "referrer_id_value",
+                    "location": "location_value",
+                    "mime_type": "mime_type_value",
+                    "digest": {},
+                },
+            },
+            "payload_type": "payload_type_value",
+            "signatures": {},
         },
         "envelope": {},
     }
@@ -7878,6 +7987,7 @@ def test_create_note_rest(request_type):
             "remediation": "remediation_value",
             "cis_benchmark": {"profile_level": 1384, "severity": 1},
             "scan_instructions": b"scan_instructions_blob",
+            "impact": "impact_value",
         },
         "dsse_attestation": {
             "hint": {"human_readable_name": "human_readable_name_value"}
@@ -7899,6 +8009,7 @@ def test_create_note_rest(request_type):
             },
             "assessment": {
                 "cve": "cve_value",
+                "vulnerability_id": "vulnerability_id_value",
                 "short_description": "short_description_value",
                 "long_description": "long_description_value",
                 "related_uris": {},
@@ -7914,6 +8025,7 @@ def test_create_note_rest(request_type):
                 ],
             },
         },
+        "sbom_reference": {"format_": "format__value", "version": "version_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
@@ -8701,6 +8813,7 @@ def test_update_note_rest(request_type):
             "remediation": "remediation_value",
             "cis_benchmark": {"profile_level": 1384, "severity": 1},
             "scan_instructions": b"scan_instructions_blob",
+            "impact": "impact_value",
         },
         "dsse_attestation": {
             "hint": {"human_readable_name": "human_readable_name_value"}
@@ -8722,6 +8835,7 @@ def test_update_note_rest(request_type):
             },
             "assessment": {
                 "cve": "cve_value",
+                "vulnerability_id": "vulnerability_id_value",
                 "short_description": "short_description_value",
                 "long_description": "long_description_value",
                 "related_uris": {},
@@ -8737,6 +8851,7 @@ def test_update_note_rest(request_type):
                 ],
             },
         },
+        "sbom_reference": {"format_": "format__value", "version": "version_value"},
     }
     # The version of a generated dependency at test runtime may differ from the version used during generation.
     # Delete any fields which are not present in the current runtime dependency
