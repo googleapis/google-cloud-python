@@ -1177,6 +1177,7 @@ class Test_Bucket(unittest.TestCase):
         expected_versions = None
         expected_projection = "noAcl"
         expected_fields = None
+        expected_include_folders_as_prefixes = None
         soft_deleted = None
         client.list_blobs.assert_called_once_with(
             bucket,
@@ -1193,6 +1194,7 @@ class Test_Bucket(unittest.TestCase):
             timeout=self._get_default_timeout(),
             retry=DEFAULT_RETRY,
             match_glob=expected_match_glob,
+            include_folders_as_prefixes=expected_include_folders_as_prefixes,
             soft_deleted=soft_deleted,
         )
 
@@ -1206,6 +1208,7 @@ class Test_Bucket(unittest.TestCase):
         start_offset = "c"
         end_offset = "g"
         include_trailing_delimiter = True
+        include_folders_as_prefixes = True
         versions = True
         soft_deleted = True
         projection = "full"
@@ -1231,6 +1234,7 @@ class Test_Bucket(unittest.TestCase):
             timeout=timeout,
             retry=retry,
             match_glob=match_glob,
+            include_folders_as_prefixes=include_folders_as_prefixes,
             soft_deleted=soft_deleted,
         )
 
@@ -1247,6 +1251,7 @@ class Test_Bucket(unittest.TestCase):
         expected_versions = versions
         expected_projection = projection
         expected_fields = fields
+        expected_include_folders_as_prefixes = include_folders_as_prefixes
         expected_soft_deleted = soft_deleted
         other_client.list_blobs.assert_called_once_with(
             bucket,
@@ -1263,6 +1268,7 @@ class Test_Bucket(unittest.TestCase):
             timeout=timeout,
             retry=retry,
             match_glob=expected_match_glob,
+            include_folders_as_prefixes=expected_include_folders_as_prefixes,
             soft_deleted=expected_soft_deleted,
         )
 

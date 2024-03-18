@@ -2015,6 +2015,7 @@ class TestClient(unittest.TestCase):
         start_offset = "c"
         end_offset = "g"
         include_trailing_delimiter = True
+        include_folders_as_prefixes = True
         soft_deleted = False
         versions = True
         projection = "full"
@@ -2048,6 +2049,7 @@ class TestClient(unittest.TestCase):
             timeout=timeout,
             retry=retry,
             match_glob=match_glob,
+            include_folders_as_prefixes=include_folders_as_prefixes,
             soft_deleted=soft_deleted,
         )
 
@@ -2070,6 +2072,7 @@ class TestClient(unittest.TestCase):
             "versions": versions,
             "fields": fields,
             "userProject": user_project,
+            "includeFoldersAsPrefixes": include_folders_as_prefixes,
             "softDeleted": soft_deleted,
         }
         expected_page_start = _blobs_page_start

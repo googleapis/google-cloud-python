@@ -653,6 +653,47 @@ def test_bucket_list_blobs_w_match_glob(
         assert [blob.name for blob in blobs] == expected_names
 
 
+def test_bucket_list_blobs_include_managed_folders(
+    storage_client,
+    buckets_to_delete,
+    blobs_to_delete,
+    hierarchy_filenames,
+):
+    bucket_name = _helpers.unique_name("ubla-mf")
+    bucket = storage_client.bucket(bucket_name)
+    bucket.iam_configuration.uniform_bucket_level_access_enabled = True
+    _helpers.retry_429_503(bucket.create)()
+    buckets_to_delete.append(bucket)
+
+    payload = b"helloworld"
+    for filename in hierarchy_filenames:
+        blob = bucket.blob(filename)
+        blob.upload_from_string(payload)
+        blobs_to_delete.append(blob)
+
+    # Make API call to create a managed folder.
+    # TODO: change to use storage control client once available.
+    path = f"/b/{bucket_name}/managedFolders"
+    properties = {"name": "managedfolder1"}
+    storage_client._post_resource(path, properties)
+
+    expected_prefixes = set(["parent/"])
+    blob_iter = bucket.list_blobs(delimiter="/")
+    list(blob_iter)
+    assert blob_iter.prefixes == expected_prefixes
+
+    # Test that managed folders are only included when IncludeFoldersAsPrefixes is set.
+    expected_prefixes = set(["parent/", "managedfolder1/"])
+    blob_iter = bucket.list_blobs(delimiter="/", include_folders_as_prefixes=True)
+    list(blob_iter)
+    assert blob_iter.prefixes == expected_prefixes
+
+    # Cleanup: API call to delete a managed folder.
+    # TODO: change to use storage control client once available.
+    path = f"/b/{bucket_name}/managedFolders/managedfolder1"
+    storage_client._delete_resource(path)
+
+
 def test_bucket_update_retention_period(
     storage_client,
     buckets_to_delete,
