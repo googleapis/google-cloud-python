@@ -28,7 +28,9 @@ from google.cloud.certificate_manager_v1.types import certificate_issuance_confi
 from google.cloud.certificate_manager_v1.types import (
     certificate_issuance_config as gcc_certificate_issuance_config,
 )
+from google.cloud.certificate_manager_v1.types import trust_config as gcc_trust_config
 from google.cloud.certificate_manager_v1.types import certificate_manager
+from google.cloud.certificate_manager_v1.types import trust_config
 
 from .base import DEFAULT_CLIENT_INFO, CertificateManagerTransport
 
@@ -982,6 +984,143 @@ class CertificateManagerGrpcTransport(CertificateManagerTransport):
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["delete_certificate_issuance_config"]
+
+    @property
+    def list_trust_configs(
+        self,
+    ) -> Callable[
+        [trust_config.ListTrustConfigsRequest], trust_config.ListTrustConfigsResponse
+    ]:
+        r"""Return a callable for the list trust configs method over gRPC.
+
+        Lists TrustConfigs in a given project and location.
+
+        Returns:
+            Callable[[~.ListTrustConfigsRequest],
+                    ~.ListTrustConfigsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_trust_configs" not in self._stubs:
+            self._stubs["list_trust_configs"] = self.grpc_channel.unary_unary(
+                "/google.cloud.certificatemanager.v1.CertificateManager/ListTrustConfigs",
+                request_serializer=trust_config.ListTrustConfigsRequest.serialize,
+                response_deserializer=trust_config.ListTrustConfigsResponse.deserialize,
+            )
+        return self._stubs["list_trust_configs"]
+
+    @property
+    def get_trust_config(
+        self,
+    ) -> Callable[[trust_config.GetTrustConfigRequest], trust_config.TrustConfig]:
+        r"""Return a callable for the get trust config method over gRPC.
+
+        Gets details of a single TrustConfig.
+
+        Returns:
+            Callable[[~.GetTrustConfigRequest],
+                    ~.TrustConfig]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_trust_config" not in self._stubs:
+            self._stubs["get_trust_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.certificatemanager.v1.CertificateManager/GetTrustConfig",
+                request_serializer=trust_config.GetTrustConfigRequest.serialize,
+                response_deserializer=trust_config.TrustConfig.deserialize,
+            )
+        return self._stubs["get_trust_config"]
+
+    @property
+    def create_trust_config(
+        self,
+    ) -> Callable[
+        [gcc_trust_config.CreateTrustConfigRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the create trust config method over gRPC.
+
+        Creates a new TrustConfig in a given project and
+        location.
+
+        Returns:
+            Callable[[~.CreateTrustConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_trust_config" not in self._stubs:
+            self._stubs["create_trust_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.certificatemanager.v1.CertificateManager/CreateTrustConfig",
+                request_serializer=gcc_trust_config.CreateTrustConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["create_trust_config"]
+
+    @property
+    def update_trust_config(
+        self,
+    ) -> Callable[
+        [gcc_trust_config.UpdateTrustConfigRequest], operations_pb2.Operation
+    ]:
+        r"""Return a callable for the update trust config method over gRPC.
+
+        Updates a TrustConfig.
+
+        Returns:
+            Callable[[~.UpdateTrustConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_trust_config" not in self._stubs:
+            self._stubs["update_trust_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.certificatemanager.v1.CertificateManager/UpdateTrustConfig",
+                request_serializer=gcc_trust_config.UpdateTrustConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["update_trust_config"]
+
+    @property
+    def delete_trust_config(
+        self,
+    ) -> Callable[[trust_config.DeleteTrustConfigRequest], operations_pb2.Operation]:
+        r"""Return a callable for the delete trust config method over gRPC.
+
+        Deletes a single TrustConfig.
+
+        Returns:
+            Callable[[~.DeleteTrustConfigRequest],
+                    ~.Operation]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_trust_config" not in self._stubs:
+            self._stubs["delete_trust_config"] = self.grpc_channel.unary_unary(
+                "/google.cloud.certificatemanager.v1.CertificateManager/DeleteTrustConfig",
+                request_serializer=trust_config.DeleteTrustConfigRequest.serialize,
+                response_deserializer=operations_pb2.Operation.FromString,
+            )
+        return self._stubs["delete_trust_config"]
 
     def close(self):
         self.grpc_channel.close()
