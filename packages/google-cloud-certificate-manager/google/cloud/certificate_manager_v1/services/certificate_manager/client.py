@@ -61,7 +61,9 @@ from google.cloud.certificate_manager_v1.types import certificate_issuance_confi
 from google.cloud.certificate_manager_v1.types import (
     certificate_issuance_config as gcc_certificate_issuance_config,
 )
+from google.cloud.certificate_manager_v1.types import trust_config as gcc_trust_config
 from google.cloud.certificate_manager_v1.types import certificate_manager
+from google.cloud.certificate_manager_v1.types import trust_config
 
 from .transports.base import DEFAULT_CLIENT_INFO, CertificateManagerTransport
 from .transports.grpc import CertificateManagerGrpcTransport
@@ -355,6 +357,28 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         """Parses a dns_authorization path into its component segments."""
         m = re.match(
             r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dnsAuthorizations/(?P<dns_authorization>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
+    def trust_config_path(
+        project: str,
+        location: str,
+        trust_config: str,
+    ) -> str:
+        """Returns a fully-qualified trust_config string."""
+        return "projects/{project}/locations/{location}/trustConfigs/{trust_config}".format(
+            project=project,
+            location=location,
+            trust_config=trust_config,
+        )
+
+    @staticmethod
+    def parse_trust_config_path(path: str) -> Dict[str, str]:
+        """Parses a trust_config path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/trustConfigs/(?P<trust_config>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -3903,6 +3927,627 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         rpc = self._transport._wrapped_methods[
             self._transport.delete_certificate_issuance_config
         ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            empty_pb2.Empty,
+            metadata_type=certificate_manager.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def list_trust_configs(
+        self,
+        request: Optional[Union[trust_config.ListTrustConfigsRequest, dict]] = None,
+        *,
+        parent: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListTrustConfigsPager:
+        r"""Lists TrustConfigs in a given project and location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import certificate_manager_v1
+
+            def sample_list_trust_configs():
+                # Create a client
+                client = certificate_manager_v1.CertificateManagerClient()
+
+                # Initialize request argument(s)
+                request = certificate_manager_v1.ListTrustConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_trust_configs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.certificate_manager_v1.types.ListTrustConfigsRequest, dict]):
+                The request object. Request for the ``ListTrustConfigs`` method.
+            parent (str):
+                Required. The project and location from which the
+                TrustConfigs should be listed, specified in the format
+                ``projects/*/locations/*``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.certificate_manager_v1.services.certificate_manager.pagers.ListTrustConfigsPager:
+                Response for the ListTrustConfigs method.
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a trust_config.ListTrustConfigsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, trust_config.ListTrustConfigsRequest):
+            request = trust_config.ListTrustConfigsRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.list_trust_configs]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__iter__` convenience method.
+        response = pagers.ListTrustConfigsPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def get_trust_config(
+        self,
+        request: Optional[Union[trust_config.GetTrustConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> trust_config.TrustConfig:
+        r"""Gets details of a single TrustConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import certificate_manager_v1
+
+            def sample_get_trust_config():
+                # Create a client
+                client = certificate_manager_v1.CertificateManagerClient()
+
+                # Initialize request argument(s)
+                request = certificate_manager_v1.GetTrustConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_trust_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.certificate_manager_v1.types.GetTrustConfigRequest, dict]):
+                The request object. Request for the ``GetTrustConfig`` method.
+            name (str):
+                Required. A name of the TrustConfig to describe. Must be
+                in the format ``projects/*/locations/*/trustConfigs/*``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.certificate_manager_v1.types.TrustConfig:
+                Defines a trust config.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a trust_config.GetTrustConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, trust_config.GetTrustConfigRequest):
+            request = trust_config.GetTrustConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.get_trust_config]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def create_trust_config(
+        self,
+        request: Optional[
+            Union[gcc_trust_config.CreateTrustConfigRequest, dict]
+        ] = None,
+        *,
+        parent: Optional[str] = None,
+        trust_config: Optional[gcc_trust_config.TrustConfig] = None,
+        trust_config_id: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Creates a new TrustConfig in a given project and
+        location.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import certificate_manager_v1
+
+            def sample_create_trust_config():
+                # Create a client
+                client = certificate_manager_v1.CertificateManagerClient()
+
+                # Initialize request argument(s)
+                request = certificate_manager_v1.CreateTrustConfigRequest(
+                    parent="parent_value",
+                    trust_config_id="trust_config_id_value",
+                )
+
+                # Make the request
+                operation = client.create_trust_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.certificate_manager_v1.types.CreateTrustConfigRequest, dict]):
+                The request object. Request for the ``CreateTrustConfig`` method.
+            parent (str):
+                Required. The parent resource of the TrustConfig. Must
+                be in the format ``projects/*/locations/*``.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            trust_config (google.cloud.certificate_manager_v1.types.TrustConfig):
+                Required. A definition of the
+                TrustConfig to create.
+
+                This corresponds to the ``trust_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            trust_config_id (str):
+                Required. A user-provided name of the TrustConfig. Must
+                match the regexp ``[a-z0-9-]{1,63}``.
+
+                This corresponds to the ``trust_config_id`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.certificate_manager_v1.types.TrustConfig`
+                Defines a trust config.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, trust_config, trust_config_id])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcc_trust_config.CreateTrustConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcc_trust_config.CreateTrustConfigRequest):
+            request = gcc_trust_config.CreateTrustConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if parent is not None:
+                request.parent = parent
+            if trust_config is not None:
+                request.trust_config = trust_config
+            if trust_config_id is not None:
+                request.trust_config_id = trust_config_id
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_trust_config]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcc_trust_config.TrustConfig,
+            metadata_type=certificate_manager.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def update_trust_config(
+        self,
+        request: Optional[
+            Union[gcc_trust_config.UpdateTrustConfigRequest, dict]
+        ] = None,
+        *,
+        trust_config: Optional[gcc_trust_config.TrustConfig] = None,
+        update_mask: Optional[field_mask_pb2.FieldMask] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Updates a TrustConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import certificate_manager_v1
+
+            def sample_update_trust_config():
+                # Create a client
+                client = certificate_manager_v1.CertificateManagerClient()
+
+                # Initialize request argument(s)
+                request = certificate_manager_v1.UpdateTrustConfigRequest(
+                )
+
+                # Make the request
+                operation = client.update_trust_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.certificate_manager_v1.types.UpdateTrustConfigRequest, dict]):
+                The request object. Request for the ``UpdateTrustConfig`` method.
+            trust_config (google.cloud.certificate_manager_v1.types.TrustConfig):
+                Required. A definition of the
+                TrustConfig to update.
+
+                This corresponds to the ``trust_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+                Required. The update mask applies to the resource. For
+                the ``FieldMask`` definition, see
+                https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be
+                :class:`google.cloud.certificate_manager_v1.types.TrustConfig`
+                Defines a trust config.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([trust_config, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a gcc_trust_config.UpdateTrustConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, gcc_trust_config.UpdateTrustConfigRequest):
+            request = gcc_trust_config.UpdateTrustConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if trust_config is not None:
+                request.trust_config = trust_config
+            if update_mask is not None:
+                request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.update_trust_config]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("trust_config.name", request.trust_config.name),)
+            ),
+        )
+
+        # Validate the universe domain.
+        self._validate_universe_domain()
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Wrap the response in an operation future.
+        response = operation.from_gapic(
+            response,
+            self._transport.operations_client,
+            gcc_trust_config.TrustConfig,
+            metadata_type=certificate_manager.OperationMetadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    def delete_trust_config(
+        self,
+        request: Optional[Union[trust_config.DeleteTrustConfigRequest, dict]] = None,
+        *,
+        name: Optional[str] = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: Union[float, object] = gapic_v1.method.DEFAULT,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> operation.Operation:
+        r"""Deletes a single TrustConfig.
+
+        .. code-block:: python
+
+            # This snippet has been automatically generated and should be regarded as a
+            # code template only.
+            # It will require modifications to work:
+            # - It may require correct/in-range values for request initialization.
+            # - It may require specifying regional endpoints when creating the service
+            #   client as shown in:
+            #   https://googleapis.dev/python/google-api-core/latest/client_options.html
+            from google.cloud import certificate_manager_v1
+
+            def sample_delete_trust_config():
+                # Create a client
+                client = certificate_manager_v1.CertificateManagerClient()
+
+                # Initialize request argument(s)
+                request = certificate_manager_v1.DeleteTrustConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                operation = client.delete_trust_config(request=request)
+
+                print("Waiting for operation to complete...")
+
+                response = operation.result()
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.certificate_manager_v1.types.DeleteTrustConfigRequest, dict]):
+                The request object. Request for the ``DeleteTrustConfig`` method.
+            name (str):
+                Required. A name of the TrustConfig to delete. Must be
+                in the format ``projects/*/locations/*/trustConfigs/*``.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.operation.Operation:
+                An object representing a long-running operation.
+
+                The result type for the operation will be :class:`google.protobuf.empty_pb2.Empty` A generic empty message that you can re-use to avoid defining duplicated
+                   empty messages in your APIs. A typical example is to
+                   use it as the request or the response type of an API
+                   method. For instance:
+
+                      service Foo {
+                         rpc Bar(google.protobuf.Empty) returns
+                         (google.protobuf.Empty);
+
+                      }
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a trust_config.DeleteTrustConfigRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, trust_config.DeleteTrustConfigRequest):
+            request = trust_config.DeleteTrustConfigRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if name is not None:
+                request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_trust_config]
 
         # Certain fields should be provided within the metadata header;
         # add these here.

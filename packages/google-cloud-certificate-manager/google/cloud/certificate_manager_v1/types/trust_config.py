@@ -17,22 +17,20 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
-import proto  # type: ignore
-
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
-    package='google.cloud.certificatemanager.v1',
+    package="google.cloud.certificatemanager.v1",
     manifest={
-        'ListTrustConfigsRequest',
-        'ListTrustConfigsResponse',
-        'GetTrustConfigRequest',
-        'CreateTrustConfigRequest',
-        'UpdateTrustConfigRequest',
-        'DeleteTrustConfigRequest',
-        'TrustConfig',
+        "ListTrustConfigsRequest",
+        "ListTrustConfigsResponse",
+        "GetTrustConfigRequest",
+        "CreateTrustConfigRequest",
+        "UpdateTrustConfigRequest",
+        "DeleteTrustConfigRequest",
+        "TrustConfig",
     },
 )
 
@@ -105,10 +103,10 @@ class ListTrustConfigsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    trust_configs: MutableSequence['TrustConfig'] = proto.RepeatedField(
+    trust_configs: MutableSequence["TrustConfig"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
-        message='TrustConfig',
+        message="TrustConfig",
     )
     next_page_token: str = proto.Field(
         proto.STRING,
@@ -158,10 +156,10 @@ class CreateTrustConfigRequest(proto.Message):
         proto.STRING,
         number=2,
     )
-    trust_config: 'TrustConfig' = proto.Field(
+    trust_config: "TrustConfig" = proto.Field(
         proto.MESSAGE,
         number=3,
-        message='TrustConfig',
+        message="TrustConfig",
     )
 
 
@@ -178,10 +176,10 @@ class UpdateTrustConfigRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.
     """
 
-    trust_config: 'TrustConfig' = proto.Field(
+    trust_config: "TrustConfig" = proto.Field(
         proto.MESSAGE,
         number=1,
-        message='TrustConfig',
+        message="TrustConfig",
     )
     update_mask: field_mask_pb2.FieldMask = proto.Field(
         proto.MESSAGE,
@@ -267,7 +265,7 @@ class TrustConfig(proto.Message):
         pem_certificate: str = proto.Field(
             proto.STRING,
             number=1,
-            oneof='kind',
+            oneof="kind",
         )
 
     class IntermediateCA(proto.Message):
@@ -289,7 +287,7 @@ class TrustConfig(proto.Message):
         pem_certificate: str = proto.Field(
             proto.STRING,
             number=1,
-            oneof='kind',
+            oneof="kind",
         )
 
     class TrustStore(proto.Message):
@@ -309,15 +307,17 @@ class TrustConfig(proto.Message):
                 feature.
         """
 
-        trust_anchors: MutableSequence['TrustConfig.TrustAnchor'] = proto.RepeatedField(
+        trust_anchors: MutableSequence["TrustConfig.TrustAnchor"] = proto.RepeatedField(
             proto.MESSAGE,
             number=1,
-            message='TrustConfig.TrustAnchor',
+            message="TrustConfig.TrustAnchor",
         )
-        intermediate_cas: MutableSequence['TrustConfig.IntermediateCA'] = proto.RepeatedField(
+        intermediate_cas: MutableSequence[
+            "TrustConfig.IntermediateCA"
+        ] = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
-            message='TrustConfig.IntermediateCA',
+            message="TrustConfig.IntermediateCA",
         )
 
     name: str = proto.Field(
