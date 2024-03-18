@@ -71,6 +71,10 @@ class MetricServiceAsyncClient:
     _DEFAULT_ENDPOINT_TEMPLATE = MetricServiceClient._DEFAULT_ENDPOINT_TEMPLATE
     _DEFAULT_UNIVERSE = MetricServiceClient._DEFAULT_UNIVERSE
 
+    metric_descriptor_path = staticmethod(MetricServiceClient.metric_descriptor_path)
+    parse_metric_descriptor_path = staticmethod(
+        MetricServiceClient.parse_metric_descriptor_path
+    )
     monitored_resource_descriptor_path = staticmethod(
         MetricServiceClient.monitored_resource_descriptor_path
     )
