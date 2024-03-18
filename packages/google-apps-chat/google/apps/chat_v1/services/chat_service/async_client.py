@@ -1638,7 +1638,7 @@ class ChatServiceAsyncClient:
             timeout (float): The timeout for this request.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
-            
+
         Returns:
             google.apps.chat_v1.types.Space:
                 A space in Google Chat. Spaces are
