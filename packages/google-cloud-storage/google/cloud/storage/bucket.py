@@ -1188,6 +1188,7 @@ class Bucket(_PropertyMixin):
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
+        soft_deleted=None,
         **kwargs,
     ):
         """Get a blob object by name.
@@ -1248,6 +1249,13 @@ class Bucket(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
+        :type soft_deleted: bool
+        :param soft_deleted:
+            (Optional) If True, looks for a soft-deleted object. Will only return
+            the object metadata if the object exists and is in a soft-deleted state.
+            Object ``generation`` is required if ``soft_deleted`` is set to True.
+            See: https://cloud.google.com/storage/docs/soft-delete
+
         :param kwargs: Keyword arguments to pass to the
                        :class:`~google.cloud.storage.blob.Blob` constructor.
 
@@ -1275,6 +1283,7 @@ class Bucket(_PropertyMixin):
                 if_metageneration_match=if_metageneration_match,
                 if_metageneration_not_match=if_metageneration_not_match,
                 retry=retry,
+                soft_deleted=soft_deleted,
             )
         except NotFound:
             return None
@@ -1297,6 +1306,7 @@ class Bucket(_PropertyMixin):
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
         match_glob=None,
+        soft_deleted=None,
     ):
         """Return an iterator used to find blobs in the bucket.
 
@@ -1378,6 +1388,13 @@ class Bucket(_PropertyMixin):
             The string value must be UTF-8 encoded. See:
             https://cloud.google.com/storage/docs/json_api/v1/objects/list#list-object-glob
 
+        :type soft_deleted: bool
+        :param soft_deleted:
+            (Optional) If true, only soft-deleted objects will be listed as distinct results in order of increasing
+            generation number. This parameter can only be used successfully if the bucket has a soft delete policy.
+            Note ``soft_deleted`` and ``versions`` cannot be set to True simultaneously. See:
+            https://cloud.google.com/storage/docs/soft-delete
+
         :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
@@ -1398,6 +1415,7 @@ class Bucket(_PropertyMixin):
             timeout=timeout,
             retry=retry,
             match_glob=match_glob,
+            soft_deleted=soft_deleted,
         )
 
     def list_notifications(
@@ -2060,6 +2078,110 @@ class Bucket(_PropertyMixin):
             )
         return new_blob
 
+    def restore_blob(
+        self,
+        blob_name,
+        client=None,
+        generation=None,
+        copy_source_acl=None,
+        projection=None,
+        if_generation_match=None,
+        if_generation_not_match=None,
+        if_metageneration_match=None,
+        if_metageneration_not_match=None,
+        timeout=_DEFAULT_TIMEOUT,
+        retry=DEFAULT_RETRY_IF_GENERATION_SPECIFIED,
+    ):
+        """Restores a soft-deleted object.
+
+        If :attr:`user_project` is set on the bucket, bills the API request to that project.
+
+        See [API reference docs](https://cloud.google.com/storage/docs/json_api/v1/objects/restore)
+
+        :type blob_name: str
+        :param blob_name: The name of the blob to be restored.
+
+        :type client: :class:`~google.cloud.storage.client.Client`
+        :param client: (Optional) The client to use. If not passed, falls back
+                       to the ``client`` stored on the current bucket.
+
+        :type generation: long
+        :param generation: (Optional) If present, selects a specific revision of this object.
+
+        :type copy_source_acl: bool
+        :param copy_source_acl: (Optional) If true, copy the soft-deleted object's access controls.
+
+        :type projection: str
+        :param projection: (Optional) Specifies the set of properties to return.
+                           If used, must be 'full' or 'noAcl'.
+
+        :type if_generation_match: long
+        :param if_generation_match:
+            (Optional) See :ref:`using-if-generation-match`
+
+        :type if_generation_not_match: long
+        :param if_generation_not_match:
+            (Optional) See :ref:`using-if-generation-not-match`
+
+        :type if_metageneration_match: long
+        :param if_metageneration_match:
+            (Optional) See :ref:`using-if-metageneration-match`
+
+        :type if_metageneration_not_match: long
+        :param if_metageneration_not_match:
+            (Optional) See :ref:`using-if-metageneration-not-match`
+
+        :type timeout: float or tuple
+        :param timeout:
+            (Optional) The amount of time, in seconds, to wait
+            for the server response.  See: :ref:`configuring_timeouts`
+
+        :type retry: google.api_core.retry.Retry or google.cloud.storage.retry.ConditionalRetryPolicy
+        :param retry:
+            (Optional) How to retry the RPC.
+            The default value is ``DEFAULT_RETRY_IF_GENERATION_SPECIFIED``, which
+            only restore operations with ``if_generation_match`` or ``generation`` set
+            will be retried.
+
+            Users can configure non-default retry behavior. A ``None`` value will
+            disable retries. A ``DEFAULT_RETRY`` value will enable retries
+            even if restore operations are not guaranteed to be idempotent.
+            See [Configuring Retries](https://cloud.google.com/python/docs/reference/storage/latest/retry_timeout).
+
+        :rtype: :class:`google.cloud.storage.blob.Blob`
+        :returns: The restored Blob.
+        """
+        client = self._require_client(client)
+        query_params = {}
+
+        if self.user_project is not None:
+            query_params["userProject"] = self.user_project
+        if generation is not None:
+            query_params["generation"] = generation
+        if copy_source_acl is not None:
+            query_params["copySourceAcl"] = copy_source_acl
+        if projection is not None:
+            query_params["projection"] = projection
+
+        _add_generation_match_parameters(
+            query_params,
+            if_generation_match=if_generation_match,
+            if_generation_not_match=if_generation_not_match,
+            if_metageneration_match=if_metageneration_match,
+            if_metageneration_not_match=if_metageneration_not_match,
+        )
+
+        blob = Blob(bucket=self, name=blob_name)
+        api_response = client._post_resource(
+            f"{blob.path}/restore",
+            None,
+            query_params=query_params,
+            timeout=timeout,
+            retry=retry,
+        )
+        blob._set_properties(api_response)
+        return blob
+
     @property
     def cors(self):
         """Retrieve or set CORS policies configured for this bucket.
@@ -2226,6 +2348,18 @@ class Bucket(_PropertyMixin):
         """
         info = self._properties.get("iamConfiguration", {})
         return IAMConfiguration.from_api_repr(info, self)
+
+    @property
+    def soft_delete_policy(self):
+        """Retrieve the soft delete policy for this bucket.
+
+        See https://cloud.google.com/storage/docs/soft-delete
+
+        :rtype: :class:`SoftDeletePolicy`
+        :returns: an instance for managing the bucket's soft delete policy.
+        """
+        policy = self._properties.get("softDeletePolicy", {})
+        return SoftDeletePolicy.from_api_repr(policy, self)
 
     @property
     def lifecycle_rules(self):
@@ -3430,6 +3564,102 @@ class Bucket(_PropertyMixin):
             headers=headers,
             query_parameters=query_parameters,
         )
+
+
+class SoftDeletePolicy(dict):
+    """Map a bucket's soft delete policy.
+
+    See https://cloud.google.com/storage/docs/soft-delete
+
+    :type bucket: :class:`Bucket`
+    :param bucket: Bucket for which this instance is the policy.
+
+    :type retention_duration_seconds: int
+    :param retention_duration_seconds:
+        (Optional) The period of time in seconds that soft-deleted objects in the bucket
+        will be retained and cannot be permanently deleted.
+
+    :type effective_time: :class:`datetime.datetime`
+    :param effective_time:
+        (Optional) When the bucket's soft delete policy is effective.
+        This value should normally only be set by the back-end API.
+    """
+
+    def __init__(self, bucket, **kw):
+        data = {}
+        retention_duration_seconds = kw.get("retention_duration_seconds")
+        data["retentionDurationSeconds"] = retention_duration_seconds
+
+        effective_time = kw.get("effective_time")
+        if effective_time is not None:
+            effective_time = _datetime_to_rfc3339(effective_time)
+        data["effectiveTime"] = effective_time
+
+        super().__init__(data)
+        self._bucket = bucket
+
+    @classmethod
+    def from_api_repr(cls, resource, bucket):
+        """Factory:  construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :type bucket: :class:`Bucket`
+        :params bucket: Bucket for which this instance is the policy.
+
+        :rtype: :class:`SoftDeletePolicy`
+        :returns: Instance created from resource.
+        """
+        instance = cls(bucket)
+        instance.update(resource)
+        return instance
+
+    @property
+    def bucket(self):
+        """Bucket for which this instance is the policy.
+
+        :rtype: :class:`Bucket`
+        :returns: the instance's bucket.
+        """
+        return self._bucket
+
+    @property
+    def retention_duration_seconds(self):
+        """Get the retention duration of the bucket's soft delete policy.
+
+        :rtype: int or ``NoneType``
+        :returns: The period of time in seconds that soft-deleted objects in the bucket
+                  will be retained and cannot be permanently deleted; Or ``None`` if the
+                  property is not set.
+        """
+        duration = self.get("retentionDurationSeconds")
+        if duration is not None:
+            return int(duration)
+
+    @retention_duration_seconds.setter
+    def retention_duration_seconds(self, value):
+        """Set the retention duration of the bucket's soft delete policy.
+
+        :type value: int
+        :param value:
+            The period of time in seconds that soft-deleted objects in the bucket
+            will be retained and cannot be permanently deleted.
+        """
+        self["retentionDurationSeconds"] = value
+        self.bucket._patch_property("softDeletePolicy", self)
+
+    @property
+    def effective_time(self):
+        """Get the effective time of the bucket's soft delete policy.
+
+        :rtype: datetime.datetime or ``NoneType``
+        :returns: point-in time at which the bucket's soft delte policy is
+                  effective, or ``None`` if the property is not set.
+        """
+        timestamp = self.get("effectiveTime")
+        if timestamp is not None:
+            return _rfc3339_nanos_to_datetime(timestamp)
 
 
 def _raise_if_len_differs(expected_len, **generation_match_args):

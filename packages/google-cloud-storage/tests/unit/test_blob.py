@@ -784,6 +784,32 @@ class Test_Blob(unittest.TestCase):
             _target_object=None,
         )
 
+    def test_exists_hit_w_generation_w_soft_deleted(self):
+        blob_name = "blob-name"
+        generation = 123456
+        api_response = {"name": blob_name}
+        client = mock.Mock(spec=["_get_resource"])
+        client._get_resource.return_value = api_response
+        bucket = _Bucket(client)
+        blob = self._make_one(blob_name, bucket=bucket, generation=generation)
+
+        self.assertTrue(blob.exists(retry=None, soft_deleted=True))
+
+        expected_query_params = {
+            "fields": "name",
+            "generation": generation,
+            "softDeleted": True,
+        }
+        expected_headers = {}
+        client._get_resource.assert_called_once_with(
+            blob.path,
+            query_params=expected_query_params,
+            headers=expected_headers,
+            timeout=self._get_default_timeout(),
+            retry=None,
+            _target_object=None,
+        )
+
     def test_exists_w_etag_match(self):
         blob_name = "blob-name"
         etag = "kittens"
@@ -5826,6 +5852,29 @@ class Test_Blob(unittest.TestCase):
         BUCKET = object()
         blob = self._make_one("blob-name", bucket=BUCKET)
         self.assertIsNone(blob.custom_time)
+
+    def test_soft_hard_delete_time_getter(self):
+        from google.cloud._helpers import _RFC3339_MICROS
+
+        BLOB_NAME = "blob-name"
+        bucket = _Bucket()
+        soft_timstamp = datetime.datetime(2024, 1, 5, 20, 34, 37, tzinfo=_UTC)
+        soft_delete = soft_timstamp.strftime(_RFC3339_MICROS)
+        hard_timstamp = datetime.datetime(2024, 1, 15, 20, 34, 37, tzinfo=_UTC)
+        hard_delete = hard_timstamp.strftime(_RFC3339_MICROS)
+        properties = {
+            "softDeleteTime": soft_delete,
+            "hardDeleteTime": hard_delete,
+        }
+        blob = self._make_one(BLOB_NAME, bucket=bucket, properties=properties)
+        self.assertEqual(blob.soft_delete_time, soft_timstamp)
+        self.assertEqual(blob.hard_delete_time, hard_timstamp)
+
+    def test_soft_hard_delte_time_unset(self):
+        BUCKET = object()
+        blob = self._make_one("blob-name", bucket=BUCKET)
+        self.assertIsNone(blob.soft_delete_time)
+        self.assertIsNone(blob.hard_delete_time)
 
     def test_from_string_w_valid_uri(self):
         from google.cloud.storage.blob import Blob

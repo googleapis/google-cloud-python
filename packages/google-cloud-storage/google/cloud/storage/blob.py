@@ -650,6 +650,7 @@ class Blob(_PropertyMixin):
         if_metageneration_not_match=None,
         timeout=_DEFAULT_TIMEOUT,
         retry=DEFAULT_RETRY,
+        soft_deleted=None,
     ):
         """Determines whether or not this blob exists.
 
@@ -694,6 +695,13 @@ class Blob(_PropertyMixin):
         :param retry:
             (Optional) How to retry the RPC. See: :ref:`configuring_retries`
 
+        :type soft_deleted: bool
+        :param soft_deleted:
+            (Optional) If True, looks for a soft-deleted object. Will only return True
+            if the object exists and is in a soft-deleted state.
+            :attr:`generation` is required to be set on the blob if ``soft_deleted`` is set to True.
+            See: https://cloud.google.com/storage/docs/soft-delete
+
         :rtype: bool
         :returns: True if the blob exists in Cloud Storage.
         """
@@ -702,6 +710,8 @@ class Blob(_PropertyMixin):
         # minimize the returned payload.
         query_params = self._query_params
         query_params["fields"] = "name"
+        if soft_deleted is not None:
+            query_params["softDeleted"] = soft_deleted
 
         _add_generation_match_parameters(
             query_params,
@@ -4699,6 +4709,32 @@ class Blob(_PropertyMixin):
         """
         info = self._properties.get("retention", {})
         return Retention.from_api_repr(info, self)
+
+    @property
+    def soft_delete_time(self):
+        """If this object has been soft-deleted, returns the time at which it became soft-deleted.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns:
+            (readonly) The time that the object became soft-deleted.
+             Note this property is only set for soft-deleted objects.
+        """
+        soft_delete_time = self._properties.get("softDeleteTime")
+        if soft_delete_time is not None:
+            return _rfc3339_nanos_to_datetime(soft_delete_time)
+
+    @property
+    def hard_delete_time(self):
+        """If this object has been soft-deleted, returns the time at which it will be permanently deleted.
+
+        :rtype: :class:`datetime.datetime` or ``NoneType``
+        :returns:
+            (readonly) The time that the object will be permanently deleted.
+            Note this property is only set for soft-deleted objects.
+        """
+        hard_delete_time = self._properties.get("hardDeleteTime")
+        if hard_delete_time is not None:
+            return _rfc3339_nanos_to_datetime(hard_delete_time)
 
 
 def _get_host_name(connection):
