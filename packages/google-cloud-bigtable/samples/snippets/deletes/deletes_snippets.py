@@ -37,9 +37,7 @@ def delete_from_column_family(project_id, instance_id, table_id):
     instance = client.instance(instance_id)
     table = instance.table(table_id)
     row = table.row("phone#4c410523#20190501")
-    row.delete_cells(
-        column_family_id="cell_plan", columns=row.ALL_COLUMNS
-    )
+    row.delete_cells(column_family_id="cell_plan", columns=row.ALL_COLUMNS)
     row.commit()
 
 

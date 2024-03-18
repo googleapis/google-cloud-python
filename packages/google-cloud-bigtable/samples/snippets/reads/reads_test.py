@@ -14,11 +14,13 @@
 import datetime
 import os
 import uuid
+import inspect
 
 from google.cloud import bigtable
 import pytest
 
-import read_snippets
+from .snapshots.snap_reads_test import snapshots
+from . import read_snippets
 
 
 PROJECT = os.environ["GOOGLE_CLOUD_PROJECT"]
@@ -72,50 +74,57 @@ def table_id():
     table.delete()
 
 
-def test_read_row(capsys, snapshot, table_id):
+def test_read_row(capsys, table_id):
     read_snippets.read_row(PROJECT, BIGTABLE_INSTANCE, table_id)
 
     out, _ = capsys.readouterr()
-    snapshot.assert_match(out)
+    expected = snapshots[inspect.currentframe().f_code.co_name]
+    assert out == expected
 
 
-def test_read_row_partial(capsys, snapshot, table_id):
+def test_read_row_partial(capsys, table_id):
     read_snippets.read_row_partial(PROJECT, BIGTABLE_INSTANCE, table_id)
 
     out, _ = capsys.readouterr()
-    snapshot.assert_match(out)
+    expected = snapshots[inspect.currentframe().f_code.co_name]
+    assert out == expected
 
 
-def test_read_rows(capsys, snapshot, table_id):
+def test_read_rows(capsys, table_id):
     read_snippets.read_rows(PROJECT, BIGTABLE_INSTANCE, table_id)
 
     out, _ = capsys.readouterr()
-    snapshot.assert_match(out)
+    expected = snapshots[inspect.currentframe().f_code.co_name]
+    assert out == expected
 
 
-def test_read_row_range(capsys, snapshot, table_id):
+def test_read_row_range(capsys, table_id):
     read_snippets.read_row_range(PROJECT, BIGTABLE_INSTANCE, table_id)
 
     out, _ = capsys.readouterr()
-    snapshot.assert_match(out)
+    expected = snapshots[inspect.currentframe().f_code.co_name]
+    assert out == expected
 
 
-def test_read_row_ranges(capsys, snapshot, table_id):
+def test_read_row_ranges(capsys, table_id):
     read_snippets.read_row_ranges(PROJECT, BIGTABLE_INSTANCE, table_id)
 
     out, _ = capsys.readouterr()
-    snapshot.assert_match(out)
+    expected = snapshots[inspect.currentframe().f_code.co_name]
+    assert out == expected
 
 
-def test_read_prefix(capsys, snapshot, table_id):
+def test_read_prefix(capsys, table_id):
     read_snippets.read_prefix(PROJECT, BIGTABLE_INSTANCE, table_id)
 
     out, _ = capsys.readouterr()
-    snapshot.assert_match(out)
+    expected = snapshots[inspect.currentframe().f_code.co_name]
+    assert out == expected
 
 
-def test_read_filter(capsys, snapshot, table_id):
+def test_read_filter(capsys, table_id):
     read_snippets.read_filter(PROJECT, BIGTABLE_INSTANCE, table_id)
 
     out, _ = capsys.readouterr()
-    snapshot.assert_match(out)
+    expected = snapshots[inspect.currentframe().f_code.co_name]
+    assert out == expected

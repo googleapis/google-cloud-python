@@ -1,4 +1,5 @@
 # Copyright 2020, Google LLC
+
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -94,46 +95,46 @@ def table_id():
     yield table_id
 
 
-def assert_snapshot_match(capsys, snapshot):
+def assert_output_match(capsys, expected):
     out, _ = capsys.readouterr()
-    snapshot.assert_match(out)
+    assert out == expected
 
 
-def test_delete_from_column(capsys, snapshot, table_id):
+def test_delete_from_column(capsys, table_id):
     deletes_snippets.delete_from_column(PROJECT, BIGTABLE_INSTANCE, table_id)
-    assert_snapshot_match(capsys, snapshot)
+    assert_output_match(capsys, "")
 
 
-def test_delete_from_column_family(capsys, snapshot, table_id):
+def test_delete_from_column_family(capsys, table_id):
     deletes_snippets.delete_from_column_family(PROJECT, BIGTABLE_INSTANCE, table_id)
-    assert_snapshot_match(capsys, snapshot)
+    assert_output_match(capsys, "")
 
 
-def test_delete_from_row(capsys, snapshot, table_id):
+def test_delete_from_row(capsys, table_id):
     deletes_snippets.delete_from_row(PROJECT, BIGTABLE_INSTANCE, table_id)
-    assert_snapshot_match(capsys, snapshot)
+    assert_output_match(capsys, "")
 
 
-def test_streaming_and_batching(capsys, snapshot, table_id):
+def test_streaming_and_batching(capsys, table_id):
     deletes_snippets.streaming_and_batching(PROJECT, BIGTABLE_INSTANCE, table_id)
-    assert_snapshot_match(capsys, snapshot)
+    assert_output_match(capsys, "")
 
 
-def test_check_and_mutate(capsys, snapshot, table_id):
+def test_check_and_mutate(capsys, table_id):
     deletes_snippets.check_and_mutate(PROJECT, BIGTABLE_INSTANCE, table_id)
-    assert_snapshot_match(capsys, snapshot)
+    assert_output_match(capsys, "")
 
 
-def test_drop_row_range(capsys, snapshot, table_id):
+def test_drop_row_range(capsys, table_id):
     deletes_snippets.drop_row_range(PROJECT, BIGTABLE_INSTANCE, table_id)
-    assert_snapshot_match(capsys, snapshot)
+    assert_output_match(capsys, "")
 
 
-def test_delete_column_family(capsys, snapshot, table_id):
+def test_delete_column_family(capsys, table_id):
     deletes_snippets.delete_column_family(PROJECT, BIGTABLE_INSTANCE, table_id)
-    assert_snapshot_match(capsys, snapshot)
+    assert_output_match(capsys, "")
 
 
-def test_delete_table(capsys, snapshot, table_id):
+def test_delete_table(capsys, table_id):
     deletes_snippets.delete_table(PROJECT, BIGTABLE_INSTANCE, table_id)
-    assert_snapshot_match(capsys, snapshot)
+    assert_output_match(capsys, "")

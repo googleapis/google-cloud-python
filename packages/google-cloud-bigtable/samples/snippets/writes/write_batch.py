@@ -16,6 +16,7 @@
 import datetime
 
 from google.cloud import bigtable
+from google.cloud.bigtable.batcher import MutationsBatcher
 
 
 def write_batch(project_id, instance_id, table_id):
@@ -23,23 +24,21 @@ def write_batch(project_id, instance_id, table_id):
     instance = client.instance(instance_id)
     table = instance.table(table_id)
 
-    timestamp = datetime.datetime.utcnow()
-    column_family_id = "stats_summary"
+    with MutationsBatcher(table=table) as batcher:
+        timestamp = datetime.datetime.utcnow()
+        column_family_id = "stats_summary"
 
-    rows = [
-        table.direct_row("tablet#a0b81f74#20190501"),
-        table.direct_row("tablet#a0b81f74#20190502"),
-    ]
+        rows = [
+            table.direct_row("tablet#a0b81f74#20190501"),
+            table.direct_row("tablet#a0b81f74#20190502"),
+        ]
 
-    rows[0].set_cell(column_family_id, "connected_wifi", 1, timestamp)
-    rows[0].set_cell(column_family_id, "os_build", "12155.0.0-rc1", timestamp)
-    rows[1].set_cell(column_family_id, "connected_wifi", 1, timestamp)
-    rows[1].set_cell(column_family_id, "os_build", "12145.0.0-rc6", timestamp)
+        rows[0].set_cell(column_family_id, "connected_wifi", 1, timestamp)
+        rows[0].set_cell(column_family_id, "os_build", "12155.0.0-rc1", timestamp)
+        rows[1].set_cell(column_family_id, "connected_wifi", 1, timestamp)
+        rows[1].set_cell(column_family_id, "os_build", "12145.0.0-rc6", timestamp)
 
-    response = table.mutate_rows(rows)
-    for i, status in enumerate(response):
-        if status.code != 0:
-            print("Error writing row: {}".format(status.message))
+        batcher.mutate_rows(rows)
 
     print("Successfully wrote 2 rows.")
 
