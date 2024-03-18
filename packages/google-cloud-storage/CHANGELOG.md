@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.16.0](https://github.com/googleapis/python-storage/compare/v2.15.0...v2.16.0) (2024-03-18)
+
+
+### Features
+
+* Add support for soft delete ([#1229](https://github.com/googleapis/python-storage/issues/1229)) ([3928aa0](https://github.com/googleapis/python-storage/commit/3928aa0680ec03addae1f792c73abb5c9dc8586f))
+* Support includeFoldersAsPrefixes ([#1223](https://github.com/googleapis/python-storage/issues/1223)) ([7bb8065](https://github.com/googleapis/python-storage/commit/7bb806538cf3d7a5e16390db1983620933d5e51a))
+
 ## [2.15.0](https://github.com/googleapis/python-storage/compare/v2.14.0...v2.15.0) (2024-02-28)
 
 
