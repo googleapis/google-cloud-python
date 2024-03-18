@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright 2016 Google Inc.
+# Copyright 2024 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Demonstrates how to connect to Cloud Bigtable and run some basic operations.
+"""Demonstrates how to connect to Cloud Bigtable and run some basic operations with the async APIs
 
 Prerequisites:
 
@@ -25,28 +25,33 @@ Prerequisites:
 """
 
 import argparse
+import asyncio
 
-# [START bigtable_hw_imports]
-import datetime
-
+# [START bigtable_async_hw_imports]
 from google.cloud import bigtable
-from google.cloud.bigtable import column_family
-from google.cloud.bigtable import row_filters
+from google.cloud.bigtable.data import row_filters
+from google.cloud.bigtable.data import RowMutationEntry
+from google.cloud.bigtable.data import SetCell
+from google.cloud.bigtable.data import ReadRowsQuery
 
-# [END bigtable_hw_imports]
+# [END bigtable_async_hw_imports]
 
 
-def main(project_id, instance_id, table_id):
-    # [START bigtable_hw_connect]
-    # The client must be created with admin=True because it will create a
-    # table.
-    client = bigtable.Client(project=project_id, admin=True)
-    instance = client.instance(instance_id)
-    # [END bigtable_hw_connect]
+async def main(project_id, instance_id, table_id):
+    # [START bigtable_async_hw_connect]
+    client = bigtable.data.BigtableDataClientAsync(project=project_id)
+    table = client.get_table(instance_id, table_id)
+    # [END bigtable_async_hw_connect]
 
-    # [START bigtable_hw_create_table]
+    # [START bigtable_async_hw_create_table]
+    from google.cloud.bigtable import column_family
+
+    # the async client only supports the data API. Table creation as an admin operation
+    # use admin client to create the table
     print("Creating the {} table.".format(table_id))
-    table = instance.table(table_id)
+    admin_client = bigtable.Client(project=project_id, admin=True)
+    admin_instance = admin_client.instance(instance_id)
+    admin_table = admin_instance.table(table_id)
 
     print("Creating column family cf1 with Max Version GC rule...")
     # Create a column family with GC policy : most recent N versions
@@ -54,17 +59,17 @@ def main(project_id, instance_id, table_id):
     max_versions_rule = column_family.MaxVersionsGCRule(2)
     column_family_id = "cf1"
     column_families = {column_family_id: max_versions_rule}
-    if not table.exists():
-        table.create(column_families=column_families)
+    if not admin_table.exists():
+        admin_table.create(column_families=column_families)
     else:
         print("Table {} already exists.".format(table_id))
-    # [END bigtable_hw_create_table]
+    # [END bigtable_async_hw_create_table]
 
-    # [START bigtable_hw_write_rows]
+    # [START bigtable_async_hw_write_rows]
     print("Writing some greetings to the table.")
     greetings = ["Hello World!", "Hello Cloud Bigtable!", "Hello Python!"]
-    rows = []
-    column = "greeting".encode()
+    mutations = []
+    column = "greeting"
     for i, value in enumerate(greetings):
         # Note: This example uses sequential numeric IDs for simplicity,
         # but this can result in poor performance in a production
@@ -77,46 +82,46 @@ def main(project_id, instance_id, table_id):
         #
         #     https://cloud.google.com/bigtable/docs/schema-design
         row_key = "greeting{}".format(i).encode()
-        row = table.direct_row(row_key)
-        row.set_cell(
-            column_family_id, column, value, timestamp=datetime.datetime.utcnow()
+        row_mutation = RowMutationEntry(
+            row_key, SetCell(column_family_id, column, value)
         )
-        rows.append(row)
-    table.mutate_rows(rows)
-    # [END bigtable_hw_write_rows]
+        mutations.append(row_mutation)
+    await table.bulk_mutate_rows(mutations)
+    # [END bigtable_async_hw_write_rows]
 
-    # [START bigtable_hw_create_filter]
+    # [START bigtable_async_hw_create_filter]
     # Create a filter to only retrieve the most recent version of the cell
     # for each column across entire row.
     row_filter = row_filters.CellsColumnLimitFilter(1)
-    # [END bigtable_hw_create_filter]
+    # [END bigtable_async_hw_create_filter]
 
-    # [START bigtable_hw_get_with_filter]
-    # [START bigtable_hw_get_by_key]
+    # [START bigtable_async_hw_get_with_filter]
+    # [START bigtable_async_hw_get_by_key]
     print("Getting a single greeting by row key.")
     key = "greeting0".encode()
 
-    row = table.read_row(key, row_filter)
-    cell = row.cells[column_family_id][column][0]
+    row = await table.read_row(key, row_filter=row_filter)
+    cell = row.cells[0]
     print(cell.value.decode("utf-8"))
-    # [END bigtable_hw_get_by_key]
-    # [END bigtable_hw_get_with_filter]
+    # [END bigtable_async_hw_get_by_key]
+    # [END bigtable_async_hw_get_with_filter]
 
-    # [START bigtable_hw_scan_with_filter]
-    # [START bigtable_hw_scan_all]
+    # [START bigtable_async_hw_scan_with_filter]
+    # [START bigtable_async_hw_scan_all]
     print("Scanning for all greetings:")
-    partial_rows = table.read_rows(filter_=row_filter)
-
-    for row in partial_rows:
-        cell = row.cells[column_family_id][column][0]
+    query = ReadRowsQuery(row_filter=row_filter)
+    async for row in await table.read_rows_stream(query):
+        cell = row.cells[0]
         print(cell.value.decode("utf-8"))
-    # [END bigtable_hw_scan_all]
-    # [END bigtable_hw_scan_with_filter]
+    # [END bigtable_async_hw_scan_all]
+    # [END bigtable_async_hw_scan_with_filter]
 
-    # [START bigtable_hw_delete_table]
+    # [START bigtable_async_hw_delete_table]
+    # the async client only supports the data API. Table deletion as an admin operation
+    # use admin client to create the table
     print("Deleting the {} table.".format(table_id))
-    table.delete()
-    # [END bigtable_hw_delete_table]
+    admin_table.delete()
+    # [END bigtable_async_hw_delete_table]
 
 
 if __name__ == "__main__":
@@ -132,4 +137,4 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    main(args.project_id, args.instance_id, args.table)
+    asyncio.run(main(args.project_id, args.instance_id, args.table))

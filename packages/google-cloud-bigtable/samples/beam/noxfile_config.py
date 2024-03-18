@@ -23,8 +23,8 @@
 TEST_CONFIG_OVERRIDE = {
     # You can opt out from the test for specific Python versions.
     "ignored_versions": [
-        "2.7",   # not supported
-        "3.10",  # Beam wheels not yet released for Python 3.10
+        "3.7",  # Beam no longer supports Python 3.7 for new releases
+        "3.12",  # Beam not yet supported for Python 3.12
     ],
     # Old samples are opted out of enforcing Python type hints
     # All new samples should feature them
