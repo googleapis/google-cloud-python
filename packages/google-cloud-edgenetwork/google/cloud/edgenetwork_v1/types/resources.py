@@ -83,8 +83,10 @@ class Zone(proto.Message):
             Output only. The time when the zone was last
             updated.
         labels (MutableMapping[str, str]):
-            Labels as key value pairs
+            Deprecated: not implemented.
+            Labels as key value pairs.
         layout_name (str):
+            Deprecated: not implemented.
             The deployment layout type.
     """
 
