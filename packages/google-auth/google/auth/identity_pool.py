@@ -41,7 +41,6 @@ try:
 except ImportError:  # pragma: NO COVER
     from collections import Mapping
 import abc
-import io
 import json
 import os
 from typing import NamedTuple
@@ -104,7 +103,7 @@ class _FileSupplier(SubjectTokenSupplier):
         if not os.path.exists(self._path):
             raise exceptions.RefreshError("File '{}' was not found.".format(self._path))
 
-        with io.open(self._path, "r", encoding="utf-8") as file_obj:
+        with open(self._path, "r", encoding="utf-8") as file_obj:
             token_content = _TokenContent(file_obj.read(), self._path)
 
         return _parse_token_data(

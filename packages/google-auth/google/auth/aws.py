@@ -69,6 +69,8 @@ _AWS_DATE_HEADER = "x-amz-date"
 _DEFAULT_AWS_REGIONAL_CREDENTIAL_VERIFICATION_URL = (
     "https://sts.{region}.amazonaws.com?Action=GetCallerIdentity&Version=2011-06-15"
 )
+# IMDSV2 session token lifetime. This is set to a low value because the session token is used immediately.
+_IMDSV2_SESSION_TOKEN_TTL_SECONDS = "300"
 
 
 class RequestSigner(object):
@@ -476,9 +478,9 @@ class _DefaultAwsSecurityCredentialsSupplier(AwsSecurityCredentialsSupplier):
             else response.data
         )
 
-        if response.status != 200:
+        if response.status != http_client.OK:
             raise exceptions.RefreshError(
-                "Unable to retrieve AWS region", response_body
+                "Unable to retrieve AWS region: {}".format(response_body)
             )
 
         # This endpoint will return the region in format: us-east-2b.
@@ -487,16 +489,19 @@ class _DefaultAwsSecurityCredentialsSupplier(AwsSecurityCredentialsSupplier):
 
     def _get_imdsv2_session_token(self, request):
         if request is not None and self._imdsv2_session_token_url is not None:
-            headers = {"X-aws-ec2-metadata-token-ttl-seconds": "300"}
+            headers = {
+                "X-aws-ec2-metadata-token-ttl-seconds": _IMDSV2_SESSION_TOKEN_TTL_SECONDS
+            }
 
             imdsv2_session_token_response = request(
                 url=self._imdsv2_session_token_url, method="PUT", headers=headers
             )
 
-            if imdsv2_session_token_response.status != 200:
+            if imdsv2_session_token_response.status != http_client.OK:
                 raise exceptions.RefreshError(
-                    "Unable to retrieve AWS Session Token",
-                    imdsv2_session_token_response.data,
+                    "Unable to retrieve AWS Session Token: {}".format(
+                        imdsv2_session_token_response.data
+                    )
                 )
 
             return imdsv2_session_token_response.data
@@ -545,7 +550,7 @@ class _DefaultAwsSecurityCredentialsSupplier(AwsSecurityCredentialsSupplier):
 
         if response.status != http_client.OK:
             raise exceptions.RefreshError(
-                "Unable to retrieve AWS security credentials", response_body
+                "Unable to retrieve AWS security credentials: {}".format(response_body)
             )
 
         credentials_response = json.loads(response_body)
@@ -593,7 +598,7 @@ class _DefaultAwsSecurityCredentialsSupplier(AwsSecurityCredentialsSupplier):
 
         if response.status != http_client.OK:
             raise exceptions.RefreshError(
-                "Unable to retrieve AWS role name", response_body
+                "Unable to retrieve AWS role name {}".format(response_body)
             )
 
         return response_body
@@ -690,7 +695,7 @@ class Credentials(external_account.Credentials):
                 "regional_cred_verification_url"
             )
 
-            # Get the environment ID. Currently, only one version supported (v1).
+            # Get the environment ID, i.e. "aws1". Currently, only one version supported (1).
             matches = re.match(r"^(aws)([\d]+)$", environment_id)
             if matches:
                 env_id, env_version = matches.groups()
@@ -701,7 +706,7 @@ class Credentials(external_account.Credentials):
                 raise exceptions.InvalidResource(
                     "No valid AWS 'credential_source' provided"
                 )
-            elif int(env_version or "") != 1:
+            elif env_version is None or int(env_version) != 1:
                 raise exceptions.InvalidValue(
                     "aws version '{}' is not supported in the current build.".format(
                         env_version
@@ -784,15 +789,12 @@ class Credentials(external_account.Credentials):
         request_headers["x-goog-cloud-target-resource"] = self._target_resource
 
         # Serialize AWS signed request.
-        # Keeping inner keys in sorted order makes testing easier for Python
-        # versions <=3.5 as the stringified JSON string would have a predictable
-        # key order.
         aws_signed_req = {}
         aws_signed_req["url"] = request_options.get("url")
         aws_signed_req["method"] = request_options.get("method")
         aws_signed_req["headers"] = []
         # Reformat header to GCP STS expected format.
-        for key in sorted(request_headers.keys()):
+        for key in request_headers.keys():
             aws_signed_req["headers"].append(
                 {"key": key, "value": request_headers[key]}
             )
