@@ -23,6 +23,8 @@ from typing import Optional, Sequence
 import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
 
+import bigframes.core.expression as expression
+
 # TODO(tbergeron): Encode more efficiently
 ORDERING_ID_STRING_BASE: int = 10
 # Sufficient to store any value up to 2^63
@@ -52,12 +54,35 @@ class OrderingColumnReference:
     direction: OrderingDirection = OrderingDirection.ASC
     na_last: bool = True
 
-    def with_name(self, name: str):
+    def with_name(self, name: str) -> OrderingColumnReference:
         return OrderingColumnReference(name, self.direction, self.na_last)
 
-    def with_reverse(self):
+    def with_reverse(self) -> OrderingColumnReference:
         return OrderingColumnReference(
             self.column_id, self.direction.reverse(), not self.na_last
+        )
+
+
+@dataclass(frozen=True)
+class OrderingExpression:
+    """
+    An expression that defines a scalar value to order, a direction and a null behavior. Maps directly to ORDER BY expressions in GoogleSQL.
+    This is more of OrderingColumnReference which order on a previously projected column id instead of any scalar expression.
+    """
+
+    # TODO: Right now, expression trees requires projecting a value before it can be sorted on. If OrderByNode used this instead, we could avoid some such projections and simplify the tree.
+    scalar_expression: expression.Expression
+    direction: OrderingDirection = OrderingDirection.ASC
+    na_last: bool = True
+
+    def remap_names(self, mapping: dict[str, str]) -> OrderingExpression:
+        return OrderingExpression(
+            self.scalar_expression.rename(mapping), self.direction, self.na_last
+        )
+
+    def with_reverse(self) -> OrderingExpression:
+        return OrderingExpression(
+            self.scalar_expression, self.direction.reverse(), not self.na_last
         )
 
 

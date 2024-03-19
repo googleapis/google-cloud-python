@@ -30,15 +30,15 @@ if typing.TYPE_CHECKING:
 class RowOp(typing.Protocol):
     @property
     def name(self) -> str:
-        raise NotImplementedError("RowOp abstract base class has no implementation")
+        ...
 
     @property
     def arguments(self) -> int:
         """The number of column argument the operation takes"""
-        raise NotImplementedError("RowOp abstract base class has no implementation")
+        ...
 
     def output_type(self, *input_types: dtypes.ExpressionType) -> dtypes.ExpressionType:
-        raise NotImplementedError("Abstract typing rule has no output type")
+        ...
 
 
 # These classes can be used to create simple ops that don't take local parameters

@@ -2056,11 +2056,23 @@ def test_join_same_table(scalars_dfs, how):
     bf_df, pd_df = scalars_dfs
 
     bf_df_a = bf_df.set_index("int64_too")[["string_col", "int64_col"]]
+    bf_df_a = bf_df_a.sort_index()
+
     bf_df_b = bf_df.set_index("int64_too")[["float64_col"]]
+    bf_df_b = bf_df_b[bf_df_b.float64_col > 0]
+    bf_df_b = bf_df_b.sort_values("float64_col")
+
     bf_result = bf_df_a.join(bf_df_b, how=how).to_pandas()
-    pd_df_a = pd_df.set_index("int64_too")[["string_col", "int64_col"]]
+
+    pd_df_a = pd_df.set_index("int64_too")[["string_col", "int64_col"]].sort_index()
+    pd_df_a = pd_df_a.sort_index()
+
     pd_df_b = pd_df.set_index("int64_too")[["float64_col"]]
+    pd_df_b = pd_df_b[pd_df_b.float64_col > 0]
+    pd_df_b = pd_df_b.sort_values("float64_col")
+
     pd_result = pd_df_a.join(pd_df_b, how=how)
+
     assert_pandas_df_equal(bf_result, pd_result, ignore_order=True)
 
 

@@ -66,7 +66,6 @@ def compile_join(node: nodes.JoinNode, ordered: bool = True):
             left=left_ordered,
             right=right_ordered,
             join=node.join,
-            allow_row_identity_join=node.allow_row_identity_join,
         )
     else:
         left_unordered = compile_unordered_ir(node.left_child)
@@ -75,7 +74,6 @@ def compile_join(node: nodes.JoinNode, ordered: bool = True):
             left=left_unordered,
             right=right_unordered,
             join=node.join,
-            allow_row_identity_join=node.allow_row_identity_join,
         )
 
 

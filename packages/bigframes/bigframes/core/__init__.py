@@ -28,6 +28,7 @@ import bigframes.core.join_def as join_def
 import bigframes.core.nodes as nodes
 from bigframes.core.ordering import OrderingColumnReference
 import bigframes.core.ordering as orderings
+import bigframes.core.rewrite
 import bigframes.core.utils
 from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
@@ -351,14 +352,15 @@ class ArrayValue:
         join_def: join_def.JoinDefinition,
         allow_row_identity_join: bool = False,
     ):
-        return ArrayValue(
-            nodes.JoinNode(
-                left_child=self.node,
-                right_child=other.node,
-                join=join_def,
-                allow_row_identity_join=allow_row_identity_join,
-            )
+        join_node = nodes.JoinNode(
+            left_child=self.node,
+            right_child=other.node,
+            join=join_def,
+            allow_row_identity_join=allow_row_identity_join,
         )
+        if allow_row_identity_join:
+            return ArrayValue(bigframes.core.rewrite.maybe_rewrite_join(join_node))
+        return ArrayValue(join_node)
 
     def _uniform_sampling(self, fraction: float) -> ArrayValue:
         """Sampling the table on given fraction.
