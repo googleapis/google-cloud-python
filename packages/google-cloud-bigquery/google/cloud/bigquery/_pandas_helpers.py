@@ -49,10 +49,11 @@ except ImportError as exc:  # pragma: NO COVER
     db_dtypes_import_exception = exc
     date_dtype_name = time_dtype_name = ""  # Use '' rather than None because pytype
 
-pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
+pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import(raise_if_error=True)
+from pyarrow import ArrowTypeError  # type: ignore # noqa: E402
 
 _BIGNUMERIC_SUPPORT = False
-if pyarrow is not None:
+if pyarrow is not None:  # pragma: NO COVER
     _BIGNUMERIC_SUPPORT = True
 
 try:
@@ -302,11 +303,16 @@ def bq_to_arrow_array(series, bq_field):
 
     field_type_upper = bq_field.field_type.upper() if bq_field.field_type else ""
 
-    if bq_field.mode.upper() == "REPEATED":
-        return pyarrow.ListArray.from_pandas(series, type=arrow_type)
-    if field_type_upper in schema._STRUCT_TYPES:
-        return pyarrow.StructArray.from_pandas(series, type=arrow_type)
-    return pyarrow.Array.from_pandas(series, type=arrow_type)
+    try:
+        if bq_field.mode.upper() == "REPEATED":
+            return pyarrow.ListArray.from_pandas(series, type=arrow_type)
+        if field_type_upper in schema._STRUCT_TYPES:
+            return pyarrow.StructArray.from_pandas(series, type=arrow_type)
+        return pyarrow.Array.from_pandas(series, type=arrow_type)
+    except ArrowTypeError:  # pragma: NO COVER
+        msg = f"""Error converting Pandas column with name: "{series.name}" and datatype: "{series.dtype}" to an appropriate pyarrow datatype: Array, ListArray, or StructArray"""
+        _LOGGER.error(msg)
+        raise ArrowTypeError(msg)
 
 
 def get_column_or_index(dataframe, name):

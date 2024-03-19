@@ -49,7 +49,7 @@ except ImportError:  # pragma: NO COVER
 
 pyarrow = _versions_helpers.PYARROW_VERSIONS.try_import()
 
-if pyarrow:
+if pyarrow:  # pragma: NO COVER
     import pyarrow.types
 
 try:
@@ -3743,7 +3743,7 @@ class TestRowIterator(unittest.TestCase):
         if hasattr(pandas, "Float64Dtype"):
             self.assertEqual(list(df.miles), [1.77, 6.66, 2.0])
             self.assertEqual(df.miles.dtype.name, "Float64")
-        else:
+        else:  # pragma: NO COVER
             self.assertEqual(list(df.miles), ["1.77", "6.66", "2.0"])
             self.assertEqual(df.miles.dtype.name, "string")
 

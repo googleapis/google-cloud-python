@@ -49,7 +49,7 @@ def pyarrow_timestamp():
 _BQ_TO_ARROW_SCALARS = {}
 _ARROW_SCALAR_IDS_TO_BQ = {}
 
-if pyarrow:
+if pyarrow:  # pragma: NO COVER
     # This dictionary is duplicated in bigquery_storage/test/unite/test_reader.py
     # When modifying it be sure to update it there as well.
     # Note(todo!!): type "BIGNUMERIC"'s matching pyarrow type is added in _pandas_helpers.py
