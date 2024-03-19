@@ -242,9 +242,8 @@ class StoragePool(proto.Message):
             Optional. Flag indicating if the pool is NFS
             LDAP enabled or not.
         psa_range (str):
-            Optional. This field is currently not
-            implemented. Currently values provided in this
-            field will be ignored.
+            Optional. This field is not implemented. The
+            values provided in this field are ignored.
         encryption_type (google.cloud.netapp_v1.types.EncryptionType):
             Output only. Specifies the current pool
             encryption key source.

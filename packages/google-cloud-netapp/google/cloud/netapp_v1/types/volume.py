@@ -141,7 +141,7 @@ class SecurityStyle(proto.Enum):
         NTFS (1):
             SecurityStyle uses NTFS
         UNIX (2):
-            SecurityStyle uses NTFS
+            SecurityStyle uses UNIX
     """
     SECURITY_STYLE_UNSPECIFIED = 0
     NTFS = 1
@@ -371,9 +371,8 @@ class Volume(proto.Message):
         share_name (str):
             Required. Share name of the volume
         psa_range (str):
-            Output only. This field is currently not
-            implemented. Currently values provided in this
-            field will be ignored.
+            Output only. This field is not implemented.
+            The values provided in this field are ignored.
         storage_pool (str):
             Required. StoragePool name of the volume
         network (str):
