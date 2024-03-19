@@ -15,12 +15,18 @@
 import base64
 import decimal
 import functools
+from typing import Iterable, Optional, Set
 
 import geopandas as gpd  # type: ignore
+import google.api_core.operation
+from google.cloud import bigquery, functions_v2
+from google.cloud.functions_v2.types import functions
 import numpy as np
 import pandas as pd
 import pyarrow as pa  # type: ignore
 import pytest
+
+from bigframes.functions import remote_function
 
 
 def skip_legacy_pandas(test):
@@ -241,3 +247,60 @@ def assert_pandas_df_equal_pca(actual, expected, **kwargs):
         except AssertionError:
             # Allow for sign difference per column
             pd.testing.assert_series_equal(-actual[column], expected[column], **kwargs)
+
+
+def get_remote_function_endpoints(
+    bigquery_client: bigquery.Client, dataset_id: str
+) -> Set[str]:
+    """Get endpoints used by the remote functions in a datset"""
+    endpoints = set()
+    routines = bigquery_client.list_routines(dataset=dataset_id)
+    for routine in routines:
+        rf_options = routine._properties.get("remoteFunctionOptions")
+        if not rf_options:
+            continue
+        rf_endpoint = rf_options.get("endpoint")
+        if rf_endpoint:
+            endpoints.add(rf_endpoint)
+    return endpoints
+
+
+def get_cloud_functions(
+    functions_client: functions_v2.FunctionServiceClient,
+    project: str,
+    location: str,
+    name: Optional[str] = None,
+    name_prefix: Optional[str] = None,
+) -> Iterable[functions.ListFunctionsResponse]:
+    """Get the cloud functions in the given project and location."""
+
+    assert (
+        not name or not name_prefix
+    ), "Either 'name' or 'name_prefix' can be passed but not both."
+
+    _, location = remote_function.get_remote_function_locations(location)
+    parent = f"projects/{project}/locations/{location}"
+    request = functions_v2.ListFunctionsRequest(parent=parent)
+    page_result = functions_client.list_functions(request=request)
+    for response in page_result:
+        # If name is provided and it does not match then skip
+        if bool(name):
+            full_name = parent + f"/functions/{name}"
+            if response.name != full_name:
+                continue
+        # If name prefix is provided and it does not match then skip
+        elif bool(name_prefix):
+            full_name_prefix = parent + f"/functions/{name_prefix}"
+            if not response.name.startswith(full_name_prefix):
+                continue
+
+        yield response
+
+
+def delete_cloud_function(
+    functions_client: functions_v2.FunctionServiceClient, full_name: str
+) -> google.api_core.operation.Operation:
+    """Delete a cloud function with the given fully qualified name."""
+    request = functions_v2.DeleteFunctionRequest(name=full_name)
+    operation = functions_client.delete_function(request=request)
+    return operation
