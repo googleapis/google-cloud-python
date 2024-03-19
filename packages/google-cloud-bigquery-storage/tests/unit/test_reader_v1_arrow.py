@@ -27,9 +27,10 @@ except ImportError:
     import importlib_metadata as metadata
 
 import google.api_core.exceptions
-from google.cloud.bigquery_storage import types
-from .helpers import SCALAR_COLUMNS, SCALAR_COLUMN_NAMES, SCALAR_BLOCKS
 
+from google.cloud.bigquery_storage import types
+
+from .helpers import SCALAR_BLOCKS, SCALAR_COLUMN_NAMES, SCALAR_COLUMNS
 
 pyarrow = pytest.importorskip("pyarrow")
 

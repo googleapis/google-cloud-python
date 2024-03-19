@@ -19,7 +19,6 @@ import pytest
 
 from google.cloud.bigquery_storage import types
 
-
 PROJECT = "my-project"
 SERVICE_ACCOUNT_PROJECT = "project-from-credentials"
 

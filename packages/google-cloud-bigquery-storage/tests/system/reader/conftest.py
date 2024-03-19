@@ -17,8 +17,7 @@
 
 import pytest
 
-from google.cloud import bigquery_storage
-from google.cloud import bigquery_storage_v1beta2
+from google.cloud import bigquery_storage, bigquery_storage_v1beta2
 
 
 @pytest.fixture(scope="session")

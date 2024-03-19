@@ -24,9 +24,7 @@ from __future__ import absolute_import
 import google.api_core.gapic_v1.method
 
 from google.cloud.bigquery_storage_v1 import reader
-from google.cloud.bigquery_storage_v1.services import big_query_read
-from google.cloud.bigquery_storage_v1.services import big_query_write
-
+from google.cloud.bigquery_storage_v1.services import big_query_read, big_query_write
 
 _SCOPES = (
     "https://www.googleapis.com/auth/bigquery",

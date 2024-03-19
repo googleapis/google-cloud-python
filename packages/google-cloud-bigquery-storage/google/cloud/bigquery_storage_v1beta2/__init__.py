@@ -20,8 +20,7 @@ from google.cloud.bigquery_storage_v1beta2 import gapic_version as package_versi
 
 __version__ = package_version.__version__
 
-from google.cloud.bigquery_storage_v1beta2 import client
-from google.cloud.bigquery_storage_v1beta2 import types
+from google.cloud.bigquery_storage_v1beta2 import client, types
 
 
 class BigQueryReadClient(client.BigQueryReadClient):

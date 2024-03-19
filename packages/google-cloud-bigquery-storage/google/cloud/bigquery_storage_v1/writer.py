@@ -18,13 +18,12 @@ from __future__ import division
 import itertools
 import logging
 import queue
-import time
 import threading
+import time
 from typing import Callable, Optional, Sequence, Tuple
 
-from google.api_core import bidi
+from google.api_core import bidi, exceptions
 from google.api_core.future import polling as polling_future
-from google.api_core import exceptions
 import google.api_core.retry
 import grpc
 

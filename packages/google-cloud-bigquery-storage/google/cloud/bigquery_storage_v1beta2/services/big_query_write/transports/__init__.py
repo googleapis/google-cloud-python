@@ -20,7 +20,6 @@ from .base import BigQueryWriteTransport
 from .grpc import BigQueryWriteGrpcTransport
 from .grpc_asyncio import BigQueryWriteGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[BigQueryWriteTransport]]
 _transport_registry["grpc"] = BigQueryWriteGrpcTransport

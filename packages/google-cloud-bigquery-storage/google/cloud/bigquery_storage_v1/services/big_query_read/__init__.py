@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import BigQueryReadClient
 from .async_client import BigQueryReadAsyncClient
+from .client import BigQueryReadClient
 
 __all__ = (
     "BigQueryReadClient",

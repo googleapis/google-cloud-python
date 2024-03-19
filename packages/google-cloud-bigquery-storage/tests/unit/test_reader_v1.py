@@ -14,21 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import itertools
 import io
+import itertools
 import json
 from unittest import mock
 
 import fastavro
+import google.api_core.exceptions
+import google.rpc.error_details_pb2
 import pandas
 import pandas.testing
 import pytest
 
-import google.api_core.exceptions
 from google.cloud.bigquery_storage import types
-from .helpers import SCALAR_COLUMNS, SCALAR_COLUMN_NAMES, SCALAR_BLOCKS
-import google.rpc.error_details_pb2
 
+from .helpers import SCALAR_BLOCKS, SCALAR_COLUMN_NAMES, SCALAR_COLUMNS
 
 PROJECT = "my-project"
 BQ_TO_AVRO_TYPES = {

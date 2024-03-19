@@ -19,7 +19,6 @@ import decimal
 
 import pytz
 
-
 SCALAR_COLUMNS = [
     {"name": "int_col", "type": "int64"},
     {"name": "float_col", "type": "float64"},

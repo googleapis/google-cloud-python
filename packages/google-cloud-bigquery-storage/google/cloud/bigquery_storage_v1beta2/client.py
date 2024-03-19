@@ -28,7 +28,6 @@ from google.cloud.bigquery_storage_v1beta2.services import (
     big_query_write,
 )
 
-
 _SCOPES = (
     "https://www.googleapis.com/auth/bigquery",
     "https://www.googleapis.com/auth/cloud-platform",

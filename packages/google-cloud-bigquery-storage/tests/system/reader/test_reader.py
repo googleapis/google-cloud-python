@@ -21,12 +21,12 @@ import decimal
 import re
 import uuid
 
-from google.cloud import bigquery
 import pytest
 import pytz
 
-from .. import helpers
+from google.cloud import bigquery
 
+from .. import helpers
 
 _TABLE_FORMAT = "projects/{}/datasets/{}/tables/{}"
 

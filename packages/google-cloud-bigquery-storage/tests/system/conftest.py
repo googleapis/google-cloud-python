@@ -19,12 +19,12 @@ import os
 import uuid
 
 import google.auth
-from google.cloud import bigquery
 import pytest
 import test_utils.prefixer
 
-from . import helpers
+from google.cloud import bigquery
 
+from . import helpers
 
 prefixer = test_utils.prefixer.Prefixer("python-bigquery-storage", "tests/system")
 

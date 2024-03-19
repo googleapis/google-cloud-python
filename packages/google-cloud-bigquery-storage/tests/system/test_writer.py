@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import uuid
+
 from google.api_core import exceptions
 import pytest
 
 from google.cloud.bigquery_storage_v1 import types as gapic_types
 from google.cloud.bigquery_storage_v1.writer import AppendRowsStream
-import uuid
 
 
 @pytest.fixture
@@ -57,8 +58,8 @@ def test_append_rows_with_invalid_stream_name_fails_fast(bqstorage_write_client)
 
 
 def test_append_rows_with_proto3(bqstorage_write_client, table):
-    import proto
     from google.protobuf import descriptor_pb2
+    import proto
 
     # Using Proto Plus to build proto3
     # Declare proto3 field `optional` for presence

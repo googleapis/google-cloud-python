@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import BigQueryWriteClient
 from .async_client import BigQueryWriteAsyncClient
+from .client import BigQueryWriteClient
 
 __all__ = (
     "BigQueryWriteClient",

@@ -20,15 +20,11 @@ import collections
 import inspect
 import sys
 
-import proto
-
-from google.cloud.bigquery_storage_v1.types import arrow
-from google.cloud.bigquery_storage_v1.types import avro
-from google.cloud.bigquery_storage_v1.types import storage
-from google.cloud.bigquery_storage_v1.types import stream
-
 from google.protobuf import message as protobuf_message
 from google.protobuf import timestamp_pb2
+import proto
+
+from google.cloud.bigquery_storage_v1.types import arrow, avro, storage, stream
 
 
 # The current api core helper does not find new proto messages of type proto.Message,

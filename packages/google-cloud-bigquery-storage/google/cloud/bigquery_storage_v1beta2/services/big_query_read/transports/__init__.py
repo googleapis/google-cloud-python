@@ -20,7 +20,6 @@ from .base import BigQueryReadTransport
 from .grpc import BigQueryReadGrpcTransport
 from .grpc_asyncio import BigQueryReadGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[BigQueryReadTransport]]
 _transport_registry["grpc"] = BigQueryReadGrpcTransport

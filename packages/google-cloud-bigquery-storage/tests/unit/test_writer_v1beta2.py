@@ -15,14 +15,13 @@
 import time
 from unittest import mock
 
+from google.api_core import exceptions
+from google.protobuf import descriptor_pb2
 import pytest
 
-from google.api_core import exceptions
-from google.cloud.bigquery_storage_v1beta2.services import big_query_write
-from google.cloud.bigquery_storage_v1beta2 import types as gapic_types
 from google.cloud.bigquery_storage_v1beta2 import exceptions as bqstorage_exceptions
-from google.protobuf import descriptor_pb2
-
+from google.cloud.bigquery_storage_v1beta2 import types as gapic_types
+from google.cloud.bigquery_storage_v1beta2.services import big_query_write
 
 REQUEST_TEMPLATE = gapic_types.AppendRowsRequest()
 

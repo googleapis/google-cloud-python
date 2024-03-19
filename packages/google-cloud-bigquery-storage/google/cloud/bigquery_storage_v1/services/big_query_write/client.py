@@ -18,12 +18,12 @@ import os
 import re
 from typing import (
     Dict,
+    Iterable,
+    Iterator,
     Mapping,
     MutableMapping,
     MutableSequence,
     Optional,
-    Iterable,
-    Iterator,
     Sequence,
     Tuple,
     Type,
@@ -32,29 +32,29 @@ from typing import (
 )
 import warnings
 
-from google.cloud.bigquery_storage_v1 import gapic_version as package_version
-
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+
+from google.cloud.bigquery_storage_v1 import gapic_version as package_version
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault, None]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object, None]  # type: ignore
 
-from google.cloud.bigquery_storage_v1.types import storage
-from google.cloud.bigquery_storage_v1.types import stream
-from google.cloud.bigquery_storage_v1.types import table
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-from .transports.base import BigQueryWriteTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.bigquery_storage_v1.types import storage, stream, table
+
+from .transports.base import DEFAULT_CLIENT_INFO, BigQueryWriteTransport
 from .transports.grpc import BigQueryWriteGrpcTransport
 from .transports.grpc_asyncio import BigQueryWriteGrpcAsyncIOTransport
 
