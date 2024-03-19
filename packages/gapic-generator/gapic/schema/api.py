@@ -23,10 +23,12 @@ import itertools
 import keyword
 import os
 import sys
-from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
 from types import MappingProxyType
+from typing import Callable, Container, Dict, FrozenSet, Mapping, Optional, Sequence, Set, Tuple
+import yaml
 
 from google.api_core import exceptions
+from google.api import client_pb2  # type: ignore
 from google.api import http_pb2  # type: ignore
 from google.api import resource_pb2  # type: ignore
 from google.api import service_pb2  # type: ignore
@@ -56,6 +58,14 @@ from gapic.utils import RESERVED_NAMES
 TRANSPORT_GRPC = "grpc"
 TRANSPORT_GRPC_ASYNC = "grpc-async"
 TRANSPORT_REST = "rest"
+
+
+class MethodSettingsError(ValueError):
+    """
+    Raised when `google.api.client_pb2.MethodSettings` contains
+    an invalid value.
+    """
+    pass
 
 
 @dataclasses.dataclass(frozen=True)
@@ -559,6 +569,133 @@ class API:
                    for http_rule in http_options)
             res[s] = [rule for rule in opt_gen if rule]
         return res
+
+    @cached_property
+    def all_methods(self) -> Mapping[str, MethodDescriptorProto]:
+        """Return a map of all methods for the API.
+
+        Return:
+            Mapping[str, MethodDescriptorProto]: A mapping of MethodDescriptorProto
+                values for the API.
+        """
+        return {
+            f"{service_key}.{method_key}": method_value
+            for service_key, service_value in self.services.items()
+            for method_key, method_value in service_value.methods.items()
+        }
+
+    def enforce_valid_method_settings(
+        self, service_method_settings: Sequence[client_pb2.MethodSettings]
+    ) -> None:
+        """
+        Checks each `google.api.client.MethodSettings` provided for validity and
+        raises an exception if invalid values are found. If
+        `google.api.client.MethodSettings.auto_populated_fields`
+        is set, verify each field against the criteria of AIP-4235
+        (https://google.aip.dev/client-libraries/4235). All of the conditions
+        below must be true:
+
+        - The field must be of type string
+        - The field must be at the top-level of the request message
+        - The RPC must be a unary RPC (i.e. streaming RPCs are not supported)
+        - The field must not be annotated with google.api.field_behavior = REQUIRED.
+        - The field must be annotated with google.api.field_info.format = UUID4.
+
+        Note that the field presence requirements in AIP-4235 should be checked at run
+        time.
+
+        Args:
+            service_method_settings (Sequence[client_pb2.MethodSettings]): Method
+                settings to be used when generating API methods.
+        Return:
+            None
+        Raises:
+            MethodSettingsError: if fields in `method_settings.auto_populated_fields`
+                cannot be automatically populated.
+        """
+
+        all_errors: dict = {}
+        selectors_seen = []
+        for method_settings in service_method_settings:
+            # Check if this selector is defind more than once
+            if method_settings.selector in selectors_seen:
+                all_errors[method_settings.selector] = ["Duplicate selector"]
+                continue
+            selectors_seen.append(method_settings.selector)
+
+            method_descriptor = self.all_methods.get(method_settings.selector)
+            # Check if this selector can be mapped to a method in the API.
+            if not method_descriptor:
+                all_errors[method_settings.selector] = [
+                    "Method was not found."
+                ]
+                continue
+
+            if method_settings.auto_populated_fields:
+                # Check if the selector maps to a streaming method
+                if (
+                    method_descriptor.client_streaming
+                    or method_descriptor.server_streaming
+                ):
+                    all_errors[method_settings.selector] = [
+                        "Method is not a unary method."
+                    ]
+                    continue
+                top_level_request_message = self.messages[
+                    method_descriptor.input_type.lstrip(".")
+                ]
+                selector_errors = []
+                for field_str in method_settings.auto_populated_fields:
+                    if field_str not in top_level_request_message.fields:
+                        selector_errors.append(
+                            f"Field `{field_str}` was not found"
+                        )
+                    else:
+                        field = top_level_request_message.fields[field_str]
+                        if field.type != wrappers.PrimitiveType.build(str):
+                            selector_errors.append(
+                                f"Field `{field_str}` is not of type string."
+                            )
+                        if field.required:
+                            selector_errors.append(
+                                f"Field `{field_str}` is a required field."
+                            )
+                        if not field.uuid4:
+                            selector_errors.append(
+                                f"Field `{field_str}` is not annotated with "
+                                "`google.api.field_info.format = \"UUID4\"."
+                            )
+                if selector_errors:
+                    all_errors[method_settings.selector] = selector_errors
+        if all_errors:
+            raise MethodSettingsError(yaml.dump(all_errors))
+
+    @cached_property
+    def all_method_settings(self) -> Mapping[str, Sequence[client_pb2.MethodSettings]]:
+        """Return a map of all `google.api.client.MethodSettings` to be used
+        when generating methods.
+        https://github.com/googleapis/googleapis/blob/7dab3de7ec79098bb367b6b2ac3815512a49dd56/google/api/client.proto#L325
+
+        Return:
+            Mapping[str, Sequence[client_pb2.MethodSettings]]: A mapping of all method
+                settings read from the service YAML.
+
+        Raises:
+            gapic.schema.api.MethodSettingsError: if the method settings do not 
+                meet the requirements of https://google.aip.dev/client-libraries/4235.
+        """
+        self.enforce_valid_method_settings(
+            self.service_yaml_config.publishing.method_settings
+        )
+
+        return {
+            method_setting.selector: client_pb2.MethodSettings(
+                selector=method_setting.selector,
+                long_running=method_setting.long_running,
+                auto_populated_fields=method_setting.auto_populated_fields,
+            )
+            for method_setting in self.service_yaml_config.publishing.method_settings
+        }
 
     @cached_property
     def has_location_mixin(self) -> bool:
