@@ -414,7 +414,7 @@ def _(
     result = _is_true(column).any()
     return cast(
         ibis_types.BooleanScalar,
-        _apply_window_if_present(result, window).fillna(ibis_types.literal(True)),
+        _apply_window_if_present(result, window).fillna(ibis_types.literal(False)),
     )
 
 

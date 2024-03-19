@@ -68,6 +68,10 @@ def test_index_has_duplicates(scalars_df_index, scalars_pandas_df_index):
     assert bf_result == pd_result
 
 
+def test_index_empty_has_duplicates():
+    assert not bpd.Index([]).has_duplicates
+
+
 def test_index_values(scalars_df_index, scalars_pandas_df_index):
     bf_result = scalars_df_index.index.values
     pd_result = scalars_pandas_df_index.index.values
