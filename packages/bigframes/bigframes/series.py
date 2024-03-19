@@ -151,6 +151,10 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def _info_axis(self) -> indexes.Index:
         return self.index
 
+    @property
+    def _session(self) -> bigframes.Session:
+        return self._get_block().expr.session
+
     def transpose(self) -> Series:
         return self
 

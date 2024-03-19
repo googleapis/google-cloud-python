@@ -169,13 +169,32 @@ def test_concat_multi_indices_ignore_index(scalars_df_index, scalars_pandas_df_i
     pandas.testing.assert_frame_equal(bf_result.to_pandas(), pd_result)
 
 
-def test_multi_index_loc(scalars_df_index, scalars_pandas_df_index):
+@pytest.mark.parametrize(
+    ("key"),
+    [
+        (2),
+        ([2, 0]),
+        ([(2, "capitalize, This "), (-2345, "Hello, World!")]),
+    ],
+)
+def test_multi_index_loc_multi_row(scalars_df_index, scalars_pandas_df_index, key):
     bf_result = (
-        scalars_df_index.set_index(["int64_too", "bool_col"]).loc[[2, 0]].to_pandas()
+        scalars_df_index.set_index(["int64_too", "string_col"]).loc[key].to_pandas()
     )
-    pd_result = scalars_pandas_df_index.set_index(["int64_too", "bool_col"]).loc[[2, 0]]
+    pd_result = scalars_pandas_df_index.set_index(["int64_too", "string_col"]).loc[key]
 
     pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_multi_index_loc_single_row(scalars_df_index, scalars_pandas_df_index):
+    bf_result = scalars_df_index.set_index(["int64_too", "string_col"]).loc[
+        (2, "capitalize, This ")
+    ]
+    pd_result = scalars_pandas_df_index.set_index(["int64_too", "string_col"]).loc[
+        (2, "capitalize, This ")
+    ]
+
+    pandas.testing.assert_series_equal(bf_result, pd_result)
 
 
 def test_multi_index_getitem_bool(scalars_df_index, scalars_pandas_df_index):

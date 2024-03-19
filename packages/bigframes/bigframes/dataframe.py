@@ -2310,7 +2310,9 @@ class DataFrame(vendored_pandas_frame.DataFrame):
 
         return left._perform_join_by_index(right, how=how)
 
-    def _perform_join_by_index(self, other: DataFrame, *, how: str = "left"):
+    def _perform_join_by_index(
+        self, other: Union[DataFrame, indexes.Index], *, how: str = "left"
+    ):
         block, _ = self._block.join(other._block, how=how, block_identity_join=True)
         return DataFrame(block)
 

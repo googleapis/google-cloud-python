@@ -49,6 +49,7 @@ class Index(vendored_pandas_index.Index):
         dtype=None,
         *,
         name=None,
+        session=None,
     ):
         import bigframes.dataframe as df
         import bigframes.series as series
@@ -75,7 +76,7 @@ class Index(vendored_pandas_index.Index):
         else:
             pd_index = pandas.Index(data=data, dtype=dtype, name=name)
             pd_df = pandas.DataFrame(index=pd_index)
-            block = df.DataFrame(pd_df)._block
+            block = df.DataFrame(pd_df, session=session)._block
         self._query_job = None
         self._block: blocks.Block = block
 
