@@ -28,6 +28,7 @@ import google.api_core.retry
 import grpc
 
 from google.cloud.bigquery_storage_v1 import exceptions as bqstorage_exceptions
+from google.cloud.bigquery_storage_v1 import gapic_version as package_version
 from google.cloud.bigquery_storage_v1 import types as gapic_types
 from google.cloud.bigquery_storage_v1.services import big_query_write
 
@@ -163,6 +164,10 @@ class AppendRowsStream(object):
         gapic_types.AppendRowsRequest.copy_from(request, self._inital_request_template)
         request._pb.MergeFrom(initial_request._pb)
         self._stream_name = request.write_stream
+        if initial_request.trace_id:
+            request.trace_id = f"python-writer:{package_version.__version__} {initial_request.trace_id}"
+        else:
+            request.trace_id = f"python-writer:{package_version.__version__}"
 
         inital_response_future = AppendRowsFuture(self)
         self._futures_queue.put(inital_response_future)
