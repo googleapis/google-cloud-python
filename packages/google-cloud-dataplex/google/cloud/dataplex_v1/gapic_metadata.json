@@ -5,6 +5,240 @@
   "protoPackage": "google.cloud.dataplex.v1",
   "schema": "1.0",
   "services": {
+    "CatalogService": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "CatalogServiceClient",
+          "rpcs": {
+            "CreateAspectType": {
+              "methods": [
+                "create_aspect_type"
+              ]
+            },
+            "CreateEntry": {
+              "methods": [
+                "create_entry"
+              ]
+            },
+            "CreateEntryGroup": {
+              "methods": [
+                "create_entry_group"
+              ]
+            },
+            "CreateEntryType": {
+              "methods": [
+                "create_entry_type"
+              ]
+            },
+            "DeleteAspectType": {
+              "methods": [
+                "delete_aspect_type"
+              ]
+            },
+            "DeleteEntry": {
+              "methods": [
+                "delete_entry"
+              ]
+            },
+            "DeleteEntryGroup": {
+              "methods": [
+                "delete_entry_group"
+              ]
+            },
+            "DeleteEntryType": {
+              "methods": [
+                "delete_entry_type"
+              ]
+            },
+            "GetAspectType": {
+              "methods": [
+                "get_aspect_type"
+              ]
+            },
+            "GetEntry": {
+              "methods": [
+                "get_entry"
+              ]
+            },
+            "GetEntryGroup": {
+              "methods": [
+                "get_entry_group"
+              ]
+            },
+            "GetEntryType": {
+              "methods": [
+                "get_entry_type"
+              ]
+            },
+            "ListAspectTypes": {
+              "methods": [
+                "list_aspect_types"
+              ]
+            },
+            "ListEntries": {
+              "methods": [
+                "list_entries"
+              ]
+            },
+            "ListEntryGroups": {
+              "methods": [
+                "list_entry_groups"
+              ]
+            },
+            "ListEntryTypes": {
+              "methods": [
+                "list_entry_types"
+              ]
+            },
+            "LookupEntry": {
+              "methods": [
+                "lookup_entry"
+              ]
+            },
+            "SearchEntries": {
+              "methods": [
+                "search_entries"
+              ]
+            },
+            "UpdateAspectType": {
+              "methods": [
+                "update_aspect_type"
+              ]
+            },
+            "UpdateEntry": {
+              "methods": [
+                "update_entry"
+              ]
+            },
+            "UpdateEntryGroup": {
+              "methods": [
+                "update_entry_group"
+              ]
+            },
+            "UpdateEntryType": {
+              "methods": [
+                "update_entry_type"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "CatalogServiceAsyncClient",
+          "rpcs": {
+            "CreateAspectType": {
+              "methods": [
+                "create_aspect_type"
+              ]
+            },
+            "CreateEntry": {
+              "methods": [
+                "create_entry"
+              ]
+            },
+            "CreateEntryGroup": {
+              "methods": [
+                "create_entry_group"
+              ]
+            },
+            "CreateEntryType": {
+              "methods": [
+                "create_entry_type"
+              ]
+            },
+            "DeleteAspectType": {
+              "methods": [
+                "delete_aspect_type"
+              ]
+            },
+            "DeleteEntry": {
+              "methods": [
+                "delete_entry"
+              ]
+            },
+            "DeleteEntryGroup": {
+              "methods": [
+                "delete_entry_group"
+              ]
+            },
+            "DeleteEntryType": {
+              "methods": [
+                "delete_entry_type"
+              ]
+            },
+            "GetAspectType": {
+              "methods": [
+                "get_aspect_type"
+              ]
+            },
+            "GetEntry": {
+              "methods": [
+                "get_entry"
+              ]
+            },
+            "GetEntryGroup": {
+              "methods": [
+                "get_entry_group"
+              ]
+            },
+            "GetEntryType": {
+              "methods": [
+                "get_entry_type"
+              ]
+            },
+            "ListAspectTypes": {
+              "methods": [
+                "list_aspect_types"
+              ]
+            },
+            "ListEntries": {
+              "methods": [
+                "list_entries"
+              ]
+            },
+            "ListEntryGroups": {
+              "methods": [
+                "list_entry_groups"
+              ]
+            },
+            "ListEntryTypes": {
+              "methods": [
+                "list_entry_types"
+              ]
+            },
+            "LookupEntry": {
+              "methods": [
+                "lookup_entry"
+              ]
+            },
+            "SearchEntries": {
+              "methods": [
+                "search_entries"
+              ]
+            },
+            "UpdateAspectType": {
+              "methods": [
+                "update_aspect_type"
+              ]
+            },
+            "UpdateEntry": {
+              "methods": [
+                "update_entry"
+              ]
+            },
+            "UpdateEntryGroup": {
+              "methods": [
+                "update_entry_group"
+              ]
+            },
+            "UpdateEntryType": {
+              "methods": [
+                "update_entry_type"
+              ]
+            }
+          }
+        }
+      }
+    },
     "ContentService": {
       "clients": {
         "grpc": {
@@ -114,6 +348,11 @@
                 "delete_data_scan"
               ]
             },
+            "GenerateDataQualityRules": {
+              "methods": [
+                "generate_data_quality_rules"
+              ]
+            },
             "GetDataScan": {
               "methods": [
                 "get_data_scan"
@@ -157,6 +396,11 @@
             "DeleteDataScan": {
               "methods": [
                 "delete_data_scan"
+              ]
+            },
+            "GenerateDataQualityRules": {
+              "methods": [
+                "generate_data_quality_rules"
               ]
             },
             "GetDataScan": {

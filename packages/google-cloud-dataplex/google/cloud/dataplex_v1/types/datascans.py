@@ -43,6 +43,8 @@ __protobuf__ = proto.module(
         "GetDataScanJobRequest",
         "ListDataScanJobsRequest",
         "ListDataScanJobsResponse",
+        "GenerateDataQualityRulesRequest",
+        "GenerateDataQualityRulesResponse",
         "DataScan",
         "DataScanJob",
     },
@@ -439,6 +441,41 @@ class ListDataScanJobsResponse(proto.Message):
     next_page_token: str = proto.Field(
         proto.STRING,
         number=2,
+    )
+
+
+class GenerateDataQualityRulesRequest(proto.Message):
+    r"""Generate recommended DataQualityRules request.
+
+    Attributes:
+        name (str):
+            Required. The name should be either
+
+            -  the name of a datascan with at least one successful
+               completed data profiling job, or
+            -  the name of a successful completed data profiling
+               datascan job.
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GenerateDataQualityRulesResponse(proto.Message):
+    r"""Generate recommended DataQualityRules response.
+
+    Attributes:
+        rule (MutableSequence[google.cloud.dataplex_v1.types.DataQualityRule]):
+            Generated recommended {@link
+            DataQualityRule}s.
+    """
+
+    rule: MutableSequence[data_quality.DataQualityRule] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=data_quality.DataQualityRule,
     )
 
 
