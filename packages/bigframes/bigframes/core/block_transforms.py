@@ -13,6 +13,7 @@
 # limitations under the License.
 from __future__ import annotations
 
+import functools
 import typing
 
 import pandas as pd
@@ -307,7 +308,7 @@ def drop_duplicates(
 ) -> blocks.Block:
     block, dupe_indicator_id = indicate_duplicates(block, columns, keep)
     block, keep_indicator_id = block.apply_unary_op(dupe_indicator_id, ops.invert_op)
-    return block.filter(keep_indicator_id).drop_columns(
+    return block.filter_by_id(keep_indicator_id).drop_columns(
         (dupe_indicator_id, keep_indicator_id)
     )
 
@@ -459,32 +460,14 @@ def dropna(
     """
     Drop na entries from block
     """
+    predicates = [ops.notnull_op.as_expr(column_id) for column_id in column_ids]
+    if len(predicates) == 0:
+        return block
     if how == "any":
-        filtered_block = block
-        for column in column_ids:
-            filtered_block, result_id = filtered_block.apply_unary_op(
-                column, ops.notnull_op
-            )
-            filtered_block = filtered_block.filter(result_id)
-            filtered_block = filtered_block.drop_columns([result_id])
-        return filtered_block
+        predicate = functools.reduce(ops.and_op.as_expr, predicates)
     else:  # "all"
-        filtered_block = block
-        predicate = None
-        for column in column_ids:
-            filtered_block, partial_predicate = filtered_block.apply_unary_op(
-                column, ops.notnull_op
-            )
-            if predicate:
-                filtered_block, predicate = filtered_block.apply_binary_op(
-                    partial_predicate, predicate, ops.or_op
-                )
-            else:
-                predicate = partial_predicate
-        if predicate:
-            filtered_block = filtered_block.filter(predicate)
-        filtered_block = filtered_block.select_columns(block.value_columns)
-        return filtered_block
+        predicate = functools.reduce(ops.or_op.as_expr, predicates)
+    return block.filter(predicate)
 
 
 def nsmallest(
@@ -513,7 +496,7 @@ def nsmallest(
             window_spec=windows.WindowSpec(ordering=tuple(order_refs)),
         )
         block, condition = block.project_expr(ops.le_op.as_expr(counter, ex.const(n)))
-        block = block.filter(condition)
+        block = block.filter_by_id(condition)
         return block.drop_columns([counter, condition])
 
 
@@ -543,7 +526,7 @@ def nlargest(
             window_spec=windows.WindowSpec(ordering=tuple(order_refs)),
         )
         block, condition = block.project_expr(ops.le_op.as_expr(counter, ex.const(n)))
-        block = block.filter(condition)
+        block = block.filter_by_id(condition)
         return block.drop_columns([counter, condition])
 
 

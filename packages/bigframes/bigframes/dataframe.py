@@ -525,7 +525,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         ) = self._block.join(key._block, how="left")
         block = combined_index
         filter_col_id = get_column_right[key._value_column]
-        block = block.filter(filter_col_id)
+        block = block.filter_by_id(filter_col_id)
         block = block.drop_columns([filter_col_id])
         return DataFrame(block)
 
@@ -1193,7 +1193,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                 block, condition_id = block.project_expr(
                     ops.ne_op.as_expr(level_id, ex.const(index))
                 )
-            block = block.filter(condition_id, keep_null=True).select_columns(
+            block = block.filter_by_id(condition_id, keep_null=True).select_columns(
                 self._block.value_columns
             )
         if columns:
@@ -1214,7 +1214,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             ops.isnull_op,
         )
 
-        drop_block = drop_block.filter(drop_col)
+        drop_block = drop_block.filter_by_id(drop_col)
         original_columns = [
             get_column_left[column] for column in self._block.value_columns
         ]
@@ -1558,7 +1558,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
                     label_string_id, ops.StrContainsRegexOp(pat=regex)
                 )
 
-            block = block.filter(mask_id)
+            block = block.filter_by_id(mask_id)
             block = block.select_columns(self._block.value_columns)
             return DataFrame(block)
         elif items is not None:
@@ -1567,7 +1567,7 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             block, mask_id = block.apply_unary_op(
                 self._block.index_columns[0], ops.IsInOp(values=tuple(items))
             )
-            block = block.filter(mask_id)
+            block = block.filter_by_id(mask_id)
             block = block.select_columns(self._block.value_columns)
             return DataFrame(block)
         else:

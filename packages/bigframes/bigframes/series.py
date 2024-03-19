@@ -354,7 +354,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             block, condition_id = block.project_expr(
                 ops.ne_op.as_expr(level_id, ex.const(index))
             )
-        block = block.filter(condition_id, keep_null=True)
+        block = block.filter_by_id(condition_id, keep_null=True)
         block = block.drop_columns([condition_id])
         return Series(block.select_column(self._value_column))
 
@@ -861,7 +861,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             max_value_count_col_id,
             ops.eq_op,
         )
-        block = block.filter(is_mode_col_id)
+        block = block.filter_by_id(is_mode_col_id)
         # use temporary name for reset_index to avoid collision, restore after dropping extra columns
         block = (
             block.with_index_labels(["mode_temp_internal"])
@@ -1032,7 +1032,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             return self.iloc[indexer]
         if isinstance(indexer, Series):
             (left, right, block) = self._align(indexer, "left")
-            block = block.filter(right)
+            block = block.filter_by_id(right)
             block = block.select_column(left)
             return Series(block)
         return self.loc[indexer]
@@ -1304,7 +1304,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                     label_string_id, ops.StrContainsRegexOp(pat=regex)
                 )
 
-            block = block.filter(mask_id)
+            block = block.filter_by_id(mask_id)
             block = block.select_columns([self._value_column])
             return Series(block)
         elif items is not None:
@@ -1313,7 +1313,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
             block, mask_id = block.apply_unary_op(
                 self._block.index_columns[0], ops.IsInOp(values=tuple(items))
             )
-            block = block.filter(mask_id)
+            block = block.filter_by_id(mask_id)
             block = block.select_columns([self._value_column])
             return Series(block)
         else:

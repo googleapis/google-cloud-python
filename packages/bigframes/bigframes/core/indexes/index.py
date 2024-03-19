@@ -378,7 +378,7 @@ class Index(vendored_pandas_index.Index):
             block, condition_id = block.project_expr(
                 ops.ne_op.as_expr(level_id, ex.const(labels))
             )
-        block = block.filter(condition_id, keep_null=True)
+        block = block.filter_by_id(condition_id, keep_null=True)
         block = block.drop_columns([condition_id])
         return Index(block)
 
