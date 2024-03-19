@@ -1313,9 +1313,15 @@ def test_any(scalars_dfs):
 def test_groupby_sum(scalars_dfs):
     scalars_df, scalars_pandas_df = scalars_dfs
     col_name = "int64_too"
-    bf_series = scalars_df[col_name].groupby(scalars_df["string_col"]).sum()
+    bf_series = (
+        scalars_df[col_name]
+        .groupby([scalars_df["bool_col"], ~scalars_df["bool_col"]])
+        .sum()
+    )
     pd_series = (
-        scalars_pandas_df[col_name].groupby(scalars_pandas_df["string_col"]).sum()
+        scalars_pandas_df[col_name]
+        .groupby([scalars_pandas_df["bool_col"], ~scalars_pandas_df["bool_col"]])
+        .sum()
     )
     # TODO(swast): Update groupby to use index based on group by key(s).
     bf_result = bf_series.to_pandas()

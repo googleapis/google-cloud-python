@@ -1195,7 +1195,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
                     get_column_right,
                 ) = block.join(key._block, how="inner" if dropna else "left")
 
-                value_col = get_column_left[self._value_column]
+                value_col = get_column_left[value_col]
                 grouping_cols = [
                     *[get_column_left[value] for value in grouping_cols],
                     get_column_right[key._value_column],
