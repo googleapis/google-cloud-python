@@ -1086,19 +1086,19 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     def tail(self, n: int = 5) -> DataFrame:
         return typing.cast(DataFrame, self.iloc[-n:])
 
-    def peek(self, n: int = 5, *, force: bool = False) -> pandas.DataFrame:
+    def peek(self, n: int = 5, *, force: bool = True) -> pandas.DataFrame:
         """
         Preview n arbitrary rows from the dataframe. No guarantees about row selection or ordering.
-        DataFrame.peek(force=False) will always be very fast, but will not succeed if data requires
-        full data scanning. Using force=True will always succeed, but may be perform expensive
-        computations.
+        ``DataFrame.peek(force=False)`` will always be very fast, but will not succeed if data requires
+        full data scanning. Using ``force=True`` will always succeed, but may be perform queries.
+        Query results will be cached so that future steps will benefit from these queries.
 
         Args:
             n (int, default 5):
                 The number of rows to select from the dataframe. Which N rows are returned is non-deterministic.
-            force (bool, default False):
+            force (bool, default True):
                 If the data cannot be peeked efficiently, the dataframe will instead be fully materialized as part
-                of the operation if force=True. If force=False, the operation will throw a ValueError.
+                of the operation if ``force=True``. If ``force=False``, the operation will throw a ValueError.
         Returns:
             pandas.DataFrame: A pandas DataFrame with n rows.
 
