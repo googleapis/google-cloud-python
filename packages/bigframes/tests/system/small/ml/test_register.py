@@ -14,6 +14,8 @@
 
 from typing import cast
 
+import pytest
+
 from bigframes.ml import core, imported, linear_model, llm
 
 
@@ -54,19 +56,8 @@ def test_linear_reg_register_with_params(
 def test_palm2_text_generator_register(
     ephemera_palm2_text_generator_model: llm.PaLM2TextGenerator,
 ):
-    model = ephemera_palm2_text_generator_model
-    model.register()
-
-    model_name = "bigframes_" + cast(
-        str, cast(core.BqmlModel, model._bqml_model).model.model_id
-    )
-    # Only registered model contains the field, and the field includes project/dataset. Here only check model_id.
-    assert (
-        model_name[:63]  # truncated
-        in cast(core.BqmlModel, model._bqml_model).model.training_runs[-1][
-            "vertexAiModelId"
-        ]
-    )
+    with pytest.raises(AttributeError):
+        ephemera_palm2_text_generator_model.register()  # type: ignore
 
 
 def test_imported_tensorflow_register(

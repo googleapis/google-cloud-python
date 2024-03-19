@@ -90,6 +90,7 @@ class BaseEstimator(bigframes_vendored.sklearn.base.BaseEstimator, abc.ABC):
         return prettyprinter.pformat(self)
 
 
+# TODO(garrettwu): refactor to reflect the actual property. Now the class contains .register() method.
 class Predictor(BaseEstimator):
     """A BigQuery DataFrames ML Model base class that can be used to predict outputs."""
 

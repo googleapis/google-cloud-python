@@ -48,7 +48,7 @@ _ML_EMBED_TEXT_STATUS = "ml_embed_text_status"
 
 
 @log_adapter.class_logger
-class PaLM2TextGenerator(base.Predictor):
+class PaLM2TextGenerator(base.BaseEstimator):
     """PaLM2 text generator LLM model.
 
     Args:
@@ -258,7 +258,7 @@ class PaLM2TextGenerator(base.Predictor):
 
 
 @log_adapter.class_logger
-class PaLM2TextEmbeddingGenerator(base.Predictor):
+class PaLM2TextEmbeddingGenerator(base.BaseEstimator):
     """PaLM2 text embedding generator LLM model.
 
     Args:
@@ -418,7 +418,7 @@ class PaLM2TextEmbeddingGenerator(base.Predictor):
 
 
 @log_adapter.class_logger
-class GeminiTextGenerator(base.Predictor):
+class GeminiTextGenerator(base.BaseEstimator):
     """Gemini text generator LLM model.
 
     Args:
