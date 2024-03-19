@@ -3278,12 +3278,20 @@ class Series(NDFrame):  # type: ignore[misc]
 
     @property
     def iat(self):
-        """Access a single value for a row/column pair by integer position."""
+        """Access a single value for a row/column pair by integer position.
+
+        Returns:
+            bigframes.core.indexers.IatSeriesIndexer: Indexers object.
+        """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
     def at(self):
-        """Access a single value for a row/column label pair."""
+        """Access a single value for a row/column label pair.
+
+        Returns:
+            bigframes.core.indexers.AtSeriesIndexer: Indexers object.
+        """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
 
     @property
