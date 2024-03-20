@@ -170,6 +170,11 @@ class DataScanServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.generate_data_quality_rules: gapic_v1.method.wrap_method(
+                self.generate_data_quality_rules,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -259,6 +264,18 @@ class DataScanServiceTransport(abc.ABC):
         Union[
             datascans.ListDataScanJobsResponse,
             Awaitable[datascans.ListDataScanJobsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def generate_data_quality_rules(
+        self,
+    ) -> Callable[
+        [datascans.GenerateDataQualityRulesRequest],
+        Union[
+            datascans.GenerateDataQualityRulesResponse,
+            Awaitable[datascans.GenerateDataQualityRulesResponse],
         ],
     ]:
         raise NotImplementedError()
