@@ -19,6 +19,7 @@ from typing import MutableMapping, MutableSequence
 
 import proto  # type: ignore
 
+from google.apps.chat_v1.types import attachment
 from google.apps.chat_v1.types import user as gc_user
 
 __protobuf__ = proto.module(
@@ -28,6 +29,8 @@ __protobuf__ = proto.module(
         "Annotation",
         "UserMentionMetadata",
         "SlashCommandMetadata",
+        "RichLinkMetadata",
+        "DriveLinkData",
     },
 )
 
@@ -42,10 +45,13 @@ class AnnotationType(proto.Enum):
             A user is mentioned.
         SLASH_COMMAND (2):
             A slash command is invoked.
+        RICH_LINK (3):
+            A rich link annotation.
     """
     ANNOTATION_TYPE_UNSPECIFIED = 0
     USER_MENTION = 1
     SLASH_COMMAND = 2
+    RICH_LINK = 3
 
 
 class Annotation(proto.Message):
@@ -105,6 +111,10 @@ class Annotation(proto.Message):
             The metadata for a slash command.
 
             This field is a member of `oneof`_ ``metadata``.
+        rich_link_metadata (google.apps.chat_v1.types.RichLinkMetadata):
+            The metadata for a rich link.
+
+            This field is a member of `oneof`_ ``metadata``.
     """
 
     type_: "AnnotationType" = proto.Field(
@@ -132,6 +142,12 @@ class Annotation(proto.Message):
         number=5,
         oneof="metadata",
         message="SlashCommandMetadata",
+    )
+    rich_link_metadata: "RichLinkMetadata" = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="metadata",
+        message="RichLinkMetadata",
     )
 
 
@@ -225,6 +241,75 @@ class SlashCommandMetadata(proto.Message):
     triggers_dialog: bool = proto.Field(
         proto.BOOL,
         number=5,
+    )
+
+
+class RichLinkMetadata(proto.Message):
+    r"""A rich link to a resource.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        uri (str):
+            The URI of this link.
+        rich_link_type (google.apps.chat_v1.types.RichLinkMetadata.RichLinkType):
+            The rich link type.
+        drive_link_data (google.apps.chat_v1.types.DriveLinkData):
+            Data for a drive link.
+
+            This field is a member of `oneof`_ ``data``.
+    """
+
+    class RichLinkType(proto.Enum):
+        r"""The rich link type. More types might be added in the future.
+
+        Values:
+            RICH_LINK_TYPE_UNSPECIFIED (0):
+                Default value for the enum. Don't use.
+            DRIVE_FILE (1):
+                A Google Drive rich link type.
+        """
+        RICH_LINK_TYPE_UNSPECIFIED = 0
+        DRIVE_FILE = 1
+
+    uri: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    rich_link_type: RichLinkType = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RichLinkType,
+    )
+    drive_link_data: "DriveLinkData" = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="data",
+        message="DriveLinkData",
+    )
+
+
+class DriveLinkData(proto.Message):
+    r"""Data for Google Drive links.
+
+    Attributes:
+        drive_data_ref (google.apps.chat_v1.types.DriveDataRef):
+            A
+            `DriveDataRef <https://developers.google.com/chat/api/reference/rest/v1/spaces.messages.attachments#drivedataref>`__
+            which references a Google Drive file.
+        mime_type (str):
+            The mime type of the linked Google Drive
+            resource.
+    """
+
+    drive_data_ref: attachment.DriveDataRef = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=attachment.DriveDataRef,
+    )
+    mime_type: str = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 

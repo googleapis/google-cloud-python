@@ -1626,7 +1626,7 @@ class ChatServiceAsyncClient:
                 The request object. A request to return a single space.
             name (:class:`str`):
                 Required. Resource name of the space, in the form
-                "spaces/*".
+                ``"spaces/*"``.
 
                 Format: ``spaces/{space}``
 

@@ -90,6 +90,8 @@ class AnalyticsHubServiceAsyncClient:
     parse_subscription_path = staticmethod(
         AnalyticsHubServiceClient.parse_subscription_path
     )
+    table_path = staticmethod(AnalyticsHubServiceClient.table_path)
+    parse_table_path = staticmethod(AnalyticsHubServiceClient.parse_table_path)
     common_billing_account_path = staticmethod(
         AnalyticsHubServiceClient.common_billing_account_path
     )
