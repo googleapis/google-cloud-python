@@ -71,6 +71,9 @@ class DataQualitySpec(proto.Message):
             bigquery_export (google.cloud.dataplex_v1.types.DataQualitySpec.PostScanActions.BigQueryExport):
                 Optional. If set, results will be exported to
                 the provided BigQuery table.
+            notification_report (google.cloud.dataplex_v1.types.DataQualitySpec.PostScanActions.NotificationReport):
+                Optional. If set, results will be sent to the
+                provided notification receipts upon triggers.
         """
 
         class BigQueryExport(proto.Message):
@@ -88,10 +91,101 @@ class DataQualitySpec(proto.Message):
                 number=1,
             )
 
+        class Recipients(proto.Message):
+            r"""The individuals or groups who are designated to receive
+            notifications upon triggers.
+
+            Attributes:
+                emails (MutableSequence[str]):
+                    Optional. The email recipients who will
+                    receive the DataQualityScan results report.
+            """
+
+            emails: MutableSequence[str] = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+
+        class ScoreThresholdTrigger(proto.Message):
+            r"""This trigger is triggered when the DQ score in the job result
+            is less than a specified input score.
+
+            Attributes:
+                score_threshold (float):
+                    Optional. The score range is in [0,100].
+            """
+
+            score_threshold: float = proto.Field(
+                proto.FLOAT,
+                number=2,
+            )
+
+        class JobFailureTrigger(proto.Message):
+            r"""This trigger is triggered when the scan job itself fails,
+            regardless of the result.
+
+            """
+
+        class JobEndTrigger(proto.Message):
+            r"""This trigger is triggered whenever a scan job run ends,
+            regardless of the result.
+
+            """
+
+        class NotificationReport(proto.Message):
+            r"""The configuration of notification report post scan action.
+
+            Attributes:
+                recipients (google.cloud.dataplex_v1.types.DataQualitySpec.PostScanActions.Recipients):
+                    Required. The recipients who will receive the
+                    notification report.
+                score_threshold_trigger (google.cloud.dataplex_v1.types.DataQualitySpec.PostScanActions.ScoreThresholdTrigger):
+                    Optional. If set, report will be sent when
+                    score threshold is met.
+                job_failure_trigger (google.cloud.dataplex_v1.types.DataQualitySpec.PostScanActions.JobFailureTrigger):
+                    Optional. If set, report will be sent when a
+                    scan job fails.
+                job_end_trigger (google.cloud.dataplex_v1.types.DataQualitySpec.PostScanActions.JobEndTrigger):
+                    Optional. If set, report will be sent when a
+                    scan job ends.
+            """
+
+            recipients: "DataQualitySpec.PostScanActions.Recipients" = proto.Field(
+                proto.MESSAGE,
+                number=1,
+                message="DataQualitySpec.PostScanActions.Recipients",
+            )
+            score_threshold_trigger: "DataQualitySpec.PostScanActions.ScoreThresholdTrigger" = proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="DataQualitySpec.PostScanActions.ScoreThresholdTrigger",
+            )
+            job_failure_trigger: "DataQualitySpec.PostScanActions.JobFailureTrigger" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=4,
+                    message="DataQualitySpec.PostScanActions.JobFailureTrigger",
+                )
+            )
+            job_end_trigger: "DataQualitySpec.PostScanActions.JobEndTrigger" = (
+                proto.Field(
+                    proto.MESSAGE,
+                    number=5,
+                    message="DataQualitySpec.PostScanActions.JobEndTrigger",
+                )
+            )
+
         bigquery_export: "DataQualitySpec.PostScanActions.BigQueryExport" = proto.Field(
             proto.MESSAGE,
             number=1,
             message="DataQualitySpec.PostScanActions.BigQueryExport",
+        )
+        notification_report: "DataQualitySpec.PostScanActions.NotificationReport" = (
+            proto.Field(
+                proto.MESSAGE,
+                number=2,
+                message="DataQualitySpec.PostScanActions.NotificationReport",
+            )
         )
 
     rules: MutableSequence["DataQualityRule"] = proto.RepeatedField(
