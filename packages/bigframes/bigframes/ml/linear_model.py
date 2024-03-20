@@ -61,19 +61,25 @@ class LinearRegression(
             "auto_strategy", "batch_gradient_descent", "normal_equation"
         ] = "normal_equation",
         fit_intercept: bool = True,
+        l1_reg: Optional[float] = None,
         l2_reg: float = 0.0,
         max_iterations: int = 20,
+        warm_start: bool = False,
+        learn_rate: Optional[float] = None,
         learn_rate_strategy: Literal["line_search", "constant"] = "line_search",
         early_stop: bool = True,
         min_rel_progress: float = 0.01,
-        ls_init_learn_rate: float = 0.1,
+        ls_init_learn_rate: Optional[float] = None,
         calculate_p_values: bool = False,
         enable_global_explain: bool = False,
     ):
         self.optimize_strategy = optimize_strategy
         self.fit_intercept = fit_intercept
+        self.l1_reg = l1_reg
         self.l2_reg = l2_reg
         self.max_iterations = max_iterations
+        self.warm_start = warm_start
+        self.learn_rate = learn_rate
         self.learn_rate_strategy = learn_rate_strategy
         self.early_stop = early_stop
         self.min_rel_progress = min_rel_progress
@@ -99,17 +105,21 @@ class LinearRegression(
         for bf_param, bf_value in dummy_linear.__dict__.items():
             bqml_param = _BQML_PARAMS_MAPPING.get(bf_param)
             if bqml_param in last_fitting:
-                kwargs[bf_param] = type(bf_value)(last_fitting[bqml_param])
+                # Convert types
+                kwargs[bf_param] = (
+                    float(last_fitting[bqml_param])
+                    if bf_param in ["l1_reg", "learn_rate", "ls_init_learn_rate"]
+                    else type(bf_value)(last_fitting[bqml_param])
+                )
 
         new_linear_regression = cls(**kwargs)
         new_linear_regression._bqml_model = core.BqmlModel(session, model)
         return new_linear_regression
 
     @property
-    def _bqml_options(self) -> Dict[str, str | int | bool | float | List[str]]:
+    def _bqml_options(self) -> dict:
         """The model options as they will be set for BQML"""
-        # TODO: Support l1_reg, warm_start, and learn_rate with error catching.
-        return {
+        options = {
             "model_type": "LINEAR_REG",
             "data_split_method": "NO_SPLIT",
             "optimize_strategy": self.optimize_strategy,
@@ -119,10 +129,20 @@ class LinearRegression(
             "learn_rate_strategy": self.learn_rate_strategy,
             "early_stop": self.early_stop,
             "min_rel_progress": self.min_rel_progress,
-            "ls_init_learn_rate": self.ls_init_learn_rate,
             "calculate_p_values": self.calculate_p_values,
             "enable_global_explain": self.enable_global_explain,
         }
+        if self.l1_reg is not None:
+            options["l1_reg"] = self.l1_reg
+        if self.learn_rate is not None:
+            options["learn_rate"] = self.learn_rate
+        if self.ls_init_learn_rate is not None:
+            options["ls_init_learn_rate"] = self.ls_init_learn_rate
+        # Even presenting warm_start returns error for NORMAL_EQUATION optimizer
+        if self.warm_start is True:
+            options["warm_start"] = self.warm_start
+
+        return options
 
     def _fit(
         self,

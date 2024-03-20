@@ -38,7 +38,9 @@ class BaseSqlGenerator:
             inner = ", ".join([self.encode_value(x) for x in v])
             return f"[{inner}]"
         else:
-            raise ValueError(f"Unexpected value type. {constants.FEEDBACK_LINK}")
+            raise ValueError(
+                f"Unexpected value type {type(v)}. {constants.FEEDBACK_LINK}"
+            )
 
     def build_parameters(self, **kwargs: Union[str, int, float, Iterable[str]]) -> str:
         """Encode a dict of values into a formatted Iterable of key-value pairs for SQL"""
