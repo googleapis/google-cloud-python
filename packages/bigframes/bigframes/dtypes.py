@@ -47,6 +47,9 @@ Dtype = Union[
 # None represents the type of a None scalar.
 ExpressionType = typing.Optional[Dtype]
 
+# Used when storing Null expressions
+DEFAULT_DTYPE = pd.Float64Dtype()
+
 INT_DTYPE = pd.Int64Dtype()
 FLOAT_DTYPE = pd.Float64Dtype()
 BOOL_DTYPE = pd.BooleanDtype()
@@ -191,6 +194,13 @@ DTYPE_BYTE_SIZES = {
 }
 
 
+def dtype_for_etype(etype: ExpressionType) -> Dtype:
+    if etype is None:
+        return DEFAULT_DTYPE
+    else:
+        return etype
+
+
 def ibis_dtype_to_bigframes_dtype(
     ibis_dtype: ibis_dtypes.DataType,
 ) -> Dtype:
@@ -222,6 +232,12 @@ def ibis_dtype_to_bigframes_dtype(
 
     if ibis_dtype in IBIS_TO_BIGFRAMES:
         return IBIS_TO_BIGFRAMES[ibis_dtype]
+    elif isinstance(ibis_dtype, ibis_dtypes.Decimal):
+        # Temporary workaround for ibis decimal issue (b/323387826)
+        if ibis_dtype.precision >= 76:
+            return pd.ArrowDtype(pa.decimal256(76, 38))
+        else:
+            return pd.ArrowDtype(pa.decimal128(38, 9))
     elif isinstance(ibis_dtype, ibis_dtypes.Null):
         # Fallback to STRING for NULL values for most flexibility in SQL.
         return IBIS_TO_BIGFRAMES[ibis_dtypes.string]
@@ -280,6 +296,9 @@ def arrow_dtype_to_ibis_dtype(arrow_dtype: pa.DataType) -> ibis_dtypes.DataType:
 
     if arrow_dtype in ARROW_TO_IBIS:
         return ARROW_TO_IBIS[arrow_dtype]
+    if arrow_dtype == pa.null():
+        # Used for empty local dataframes where pyarrow has null type
+        return ibis_dtypes.float64
     else:
         raise ValueError(
             f"Unexpected Arrow data type {arrow_dtype}. {constants.FEEDBACK_LINK}"
@@ -625,6 +644,14 @@ def infer_literal_type(literal) -> typing.Optional[Dtype]:
     # Temporary logic, use ibis inferred type
     ibis_literal = literal_to_ibis_scalar(literal)
     return ibis_dtype_to_bigframes_dtype(ibis_literal.type())
+
+
+def infer_literal_arrow_type(literal) -> typing.Optional[pa.DataType]:
+    if pd.isna(literal):
+        return None  # Null value without a definite type
+    # Temporary logic, use ibis inferred type
+    ibis_literal = literal_to_ibis_scalar(literal)
+    return ibis_dtype_to_arrow_dtype(ibis_literal.type())
 
 
 # Input and output types supported by BigQuery DataFrames remote functions.

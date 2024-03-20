@@ -18,6 +18,8 @@ import dataclasses
 import typing
 
 import numpy as np
+import pandas as pd
+import pyarrow as pa
 
 import bigframes.dtypes as dtypes
 import bigframes.operations.type as op_typing
@@ -198,13 +200,17 @@ capitalize_op = create_unary_op(name="capitalize", type_rule=op_typing.STRING)
 ## DateTime Ops
 day_op = create_unary_op(name="day", type_rule=op_typing.INTEGER)
 dayofweek_op = create_unary_op(name="dayofweek", type_rule=op_typing.INTEGER)
-date_op = create_unary_op(name="date")
+date_op = create_unary_op(
+    name="date", type_rule=op_typing.Fixed(pd.ArrowDtype(pa.date32()))
+)
 hour_op = create_unary_op(name="hour", type_rule=op_typing.INTEGER)
 minute_op = create_unary_op(name="minute", type_rule=op_typing.INTEGER)
 month_op = create_unary_op(name="month", type_rule=op_typing.INTEGER)
 quarter_op = create_unary_op(name="quarter", type_rule=op_typing.INTEGER)
 second_op = create_unary_op(name="second", type_rule=op_typing.INTEGER)
-time_op = create_unary_op(name="time", type_rule=op_typing.INTEGER)
+time_op = create_unary_op(
+    name="time", type_rule=op_typing.Fixed(pd.ArrowDtype(pa.time64("us")))
+)
 year_op = create_unary_op(name="year", type_rule=op_typing.INTEGER)
 ## Trigonometry Ops
 sin_op = create_unary_op(name="sin", type_rule=op_typing.REAL_NUMERIC)
@@ -321,7 +327,7 @@ class StrFindOp(UnaryOp):
     end: typing.Optional[int]
 
     def output_type(self, *input_types):
-        return dtypes.BOOL_DTYPE
+        return dtypes.INT_DTYPE
 
 
 @dataclasses.dataclass(frozen=True)
@@ -359,6 +365,14 @@ class StructFieldOp(UnaryOp):
     name: typing.ClassVar[str] = "struct_field"
     name_or_index: str | int
 
+    def output_type(self, *input_types):
+        pd_type = typing.cast(pd.ArrowDtype, input_types[0])
+        pa_struct_t = typing.cast(pa.StructType, pd_type.pyarrow_dtype)
+        pa_result_type = pa_struct_t[self.name_or_index].type
+        # TODO: Directly convert from arrow to pandas type
+        ibis_result_type = dtypes.arrow_dtype_to_ibis_dtype(pa_result_type)
+        return dtypes.ibis_dtype_to_bigframes_dtype(ibis_result_type)
+
 
 @dataclasses.dataclass(frozen=True)
 class AsTypeOp(UnaryOp):
@@ -367,6 +381,9 @@ class AsTypeOp(UnaryOp):
     to_type: dtypes.DtypeString | dtypes.Dtype
 
     def output_type(self, *input_types):
+        # TODO: We should do this conversion earlier
+        if self.to_type == pa.string():
+            return dtypes.STRING_DTYPE
         if isinstance(self.to_type, str):
             return dtypes.BIGFRAMES_STRING_TO_BIGFRAMES[self.to_type]
         return self.to_type
@@ -389,10 +406,8 @@ class RemoteFunctionOp(UnaryOp):
     apply_on_null: bool
 
     def output_type(self, *input_types):
-        python_type = self.func.__signature__.output_type
-        ibis_type = dtypes.ibis_type_from_python_type(python_type)
-        dtype = dtypes.ibis_dtype_to_bigframes_dtype(ibis_type)
-        return dtype
+        # This property should be set to a valid Dtype by the @remote_function decorator or read_gbq_function method
+        return self.func.output_dtype
 
 
 @dataclasses.dataclass(frozen=True)
@@ -412,7 +427,8 @@ class ToDatetimeOp(UnaryOp):
     unit: typing.Optional[str] = None
 
     def output_type(self, *input_types):
-        return input_types[0]
+        timezone = "UTC" if self.utc else None
+        return pd.ArrowDtype(pa.timestamp("us", tz=timezone))
 
 
 @dataclasses.dataclass(frozen=True)
@@ -434,14 +450,14 @@ add_op = create_binary_op(name="add", type_rule=op_typing.NUMERIC)
 sub_op = create_binary_op(name="sub", type_rule=op_typing.NUMERIC)
 mul_op = create_binary_op(name="mul", type_rule=op_typing.NUMERIC)
 div_op = create_binary_op(name="div", type_rule=op_typing.REAL_NUMERIC)
-floordiv_op = create_binary_op(name="floordiv", type_rule=op_typing.REAL_NUMERIC)
-pow_op = create_binary_op(name="pow", type_rule=op_typing.REAL_NUMERIC)
+floordiv_op = create_binary_op(name="floordiv", type_rule=op_typing.NUMERIC)
+pow_op = create_binary_op(name="pow", type_rule=op_typing.NUMERIC)
 mod_op = create_binary_op(name="mod", type_rule=op_typing.NUMERIC)
 round_op = create_binary_op(name="round", type_rule=op_typing.REAL_NUMERIC)
 unsafe_pow_op = create_binary_op(name="unsafe_pow_op", type_rule=op_typing.REAL_NUMERIC)
 # Logical Ops
-and_op = create_binary_op(name="and", type_rule=op_typing.PREDICATE)
-or_op = create_binary_op(name="or", type_rule=op_typing.PREDICATE)
+and_op = create_binary_op(name="and")
+or_op = create_binary_op(name="or")
 
 ## Comparison Ops
 eq_op = create_binary_op(name="eq", type_rule=op_typing.PREDICATE)

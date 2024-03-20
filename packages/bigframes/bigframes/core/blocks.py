@@ -29,9 +29,9 @@ import typing
 from typing import Iterable, List, Mapping, Optional, Sequence, Tuple
 import warnings
 
-import bigframes_vendored.pandas.io.common as vendored_pandas_io_common
 import google.cloud.bigquery as bigquery
 import pandas as pd
+import pyarrow as pa
 
 import bigframes._config.sampling_options as sampling_options
 import bigframes.constants as constants
@@ -141,32 +141,23 @@ class Block:
         self._stats_cache[" ".join(self.index_columns)] = {}
 
     @classmethod
-    def from_local(cls, data, session: bigframes.Session) -> Block:
-        pd_data = pd.DataFrame(data)
-        columns = pd_data.columns
-
-        # Make a flattened version to treat as a table.
-        if len(pd_data.columns.names) > 1:
-            pd_data.columns = columns.to_flat_index()
-
+    def from_local(cls, data: pd.DataFrame, session: bigframes.Session) -> Block:
+        # Assumes caller has already converted datatypes to bigframes ones.
+        pd_data = data
+        column_labels = pd_data.columns
         index_labels = list(pd_data.index.names)
-        # The ArrayValue layer doesn't know about indexes, so make sure indexes
-        # are real columns with unique IDs.
-        pd_data = pd_data.reset_index(
-            names=[f"level_{level}" for level in range(len(index_labels))]
-        )
-        pd_data = pd_data.set_axis(
-            vendored_pandas_io_common.dedup_names(
-                list(pd_data.columns), is_potential_multiindex=False
-            ),
-            axis="columns",
-        )
-        index_ids = pd_data.columns[: len(index_labels)]
 
-        keys_expr = core.ArrayValue.from_pandas(pd_data, session)
+        # unique internal ids
+        column_ids = [f"column_{i}" for i in range(len(pd_data.columns))]
+        index_ids = [f"level_{level}" for level in range(pd_data.index.nlevels)]
+
+        pd_data = pd_data.set_axis(column_ids, axis=1)
+        pd_data = pd_data.reset_index(names=index_ids)
+        as_pyarrow = pa.Table.from_pandas(pd_data, preserve_index=False)
+        array_value = core.ArrayValue.from_pyarrow(as_pyarrow, session=session)
         return cls(
-            keys_expr,
-            column_labels=columns,
+            array_value,
+            column_labels=column_labels,
             index_columns=index_ids,
             index_labels=index_labels,
         )
@@ -484,6 +475,7 @@ class Block:
             # general Sequence[Label] that BigQuery DataFrames has.
             # See: https://github.com/pandas-dev/pandas-stubs/issues/804
             df.index.names = self.index.names  # type: ignore
+        df.columns = self.column_labels
 
     def _materialize_local(
         self, materialize_options: MaterializationOptions = MaterializationOptions()

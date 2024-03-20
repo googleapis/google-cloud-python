@@ -849,6 +849,7 @@ def remote_function(
             packages,
         )
 
+        # TODO: Move ibis logic to compiler step
         node = ibis.udf.scalar.builtin(
             f,
             name=rf_name,
@@ -859,6 +860,9 @@ def remote_function(
             remote_function_client.get_cloud_function_fully_qualified_name(cf_name)
         )
         node.bigframes_remote_function = str(dataset_ref.routine(rf_name))  # type: ignore
+        node.output_dtype = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(
+            ibis_signature.output_type
+        )
         return node
 
     return wrapper
@@ -913,6 +917,7 @@ def read_gbq_function(
     def node(*ignored_args, **ignored_kwargs):
         f"""Remote function {str(routine_ref)}."""
 
+    # TODO: Move ibis logic to compiler step
     node.__name__ = routine_ref.routine_id
     node = ibis.udf.scalar.builtin(
         node,
@@ -921,4 +926,7 @@ def read_gbq_function(
         signature=(ibis_signature.input_types, ibis_signature.output_type),
     )
     node.bigframes_remote_function = str(routine_ref)  # type: ignore
+    node.output_dtype = bigframes.dtypes.ibis_dtype_to_bigframes_dtype(  # type: ignore
+        ibis_signature.output_type
+    )
     return node

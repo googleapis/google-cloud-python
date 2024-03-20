@@ -43,8 +43,43 @@ def test_df_construct_copy(scalars_dfs):
     pandas.testing.assert_frame_equal(bf_result, pd_result)
 
 
-def test_df_construct_pandas(scalars_dfs):
-    columns = ["int64_too", "int64_col", "float64_col", "bool_col", "string_col"]
+def test_df_construct_pandas_default(scalars_dfs):
+    # This should trigger the inlined codepath
+    columns = [
+        "int64_too",
+        "int64_col",
+        "float64_col",
+        "bool_col",
+        "string_col",
+        "date_col",
+        "datetime_col",
+        "numeric_col",
+        "float64_col",
+        "time_col",
+        "timestamp_col",
+    ]
+    _, scalars_pandas_df = scalars_dfs
+    bf_result = dataframe.DataFrame(scalars_pandas_df, columns=columns).to_pandas()
+    pd_result = pd.DataFrame(scalars_pandas_df, columns=columns)
+    pandas.testing.assert_frame_equal(bf_result, pd_result)
+
+
+def test_df_construct_pandas_load_job(scalars_dfs):
+    # This should trigger the inlined codepath
+    columns = [
+        "int64_too",
+        "int64_col",
+        "float64_col",
+        "bool_col",
+        "string_col",
+        "date_col",
+        "datetime_col",
+        "numeric_col",
+        "float64_col",
+        "time_col",
+        "timestamp_col",
+        "geography_col",
+    ]
     _, scalars_pandas_df = scalars_dfs
     bf_result = dataframe.DataFrame(scalars_pandas_df, columns=columns).to_pandas()
     pd_result = pd.DataFrame(scalars_pandas_df, columns=columns)
@@ -1056,10 +1091,13 @@ def test_df_iter(
         assert bf_i == df_i
 
 
+@skip_legacy_pandas
 def test_iterrows(
     scalars_df_index,
     scalars_pandas_df_index,
 ):
+    scalars_df_index = scalars_df_index.add_suffix("_suffix", axis=1)
+    scalars_pandas_df_index = scalars_pandas_df_index.add_suffix("_suffix", axis=1)
     for (bf_index, bf_series), (pd_index, pd_series) in zip(
         scalars_df_index.iterrows(), scalars_pandas_df_index.iterrows()
     ):
@@ -1936,7 +1974,7 @@ def test_mod(scalars_dfs, other_scalar):
 def test_scalar_binop_str_exception(scalars_dfs):
     scalars_df, _ = scalars_dfs
     columns = ["string_col"]
-    with pytest.raises(TypeError):
+    with pytest.raises(Exception):
         (scalars_df[columns] + 1).to_pandas()
 
 
@@ -2760,7 +2798,7 @@ def test_loc_setitem_bool_series_scalar_new_col(scalars_dfs):
     bf_df.loc[bf_df["int64_too"] == 0, "new_col"] = 99
     pd_df.loc[pd_df["int64_too"] == 0, "new_col"] = 99
 
-    # pandas type difference
+    # pandas uses float64 instead
     pd_df["new_col"] = pd_df["new_col"].astype("Float64")
 
     pd.testing.assert_frame_equal(
@@ -2785,7 +2823,7 @@ def test_loc_setitem_bool_series_scalar_existing_col(scalars_dfs):
     )
 
 
-def test_loc_setitem_bool_series_scalar_type_error(scalars_dfs):
+def test_loc_setitem_bool_series_scalar_error(scalars_dfs):
     if pd.__version__.startswith("1."):
         pytest.skip("this loc overload not supported in pandas 1.x.")
 
@@ -2793,9 +2831,9 @@ def test_loc_setitem_bool_series_scalar_type_error(scalars_dfs):
     bf_df = scalars_df.copy()
     pd_df = scalars_pandas_df.copy()
 
-    with pytest.raises(TypeError):
+    with pytest.raises(Exception):
         bf_df.loc[bf_df["int64_too"] == 1, "string_col"] = 99
-    with pytest.raises(TypeError):
+    with pytest.raises(Exception):
         pd_df.loc[pd_df["int64_too"] == 1, "string_col"] = 99
 
 

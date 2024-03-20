@@ -41,7 +41,8 @@ def compile_peak_sql(node: nodes.BigFrameNode, n_rows: int) -> typing.Optional[s
     return compile_unordered_ir(node).peek_sql(n_rows)
 
 
-@functools.cache
+# TODO: Remove cache when schema no longer requires compilation to derive schema (and therefor only compiles for execution)
+@functools.lru_cache(maxsize=5000)
 def compile_node(
     node: nodes.BigFrameNode, ordered: bool = True
 ) -> compiled.UnorderedIR | compiled.OrderedIR:
@@ -80,7 +81,7 @@ def compile_join(node: nodes.JoinNode, ordered: bool = True):
 @_compile_node.register
 def compile_readlocal(node: nodes.ReadLocalNode, ordered: bool = True):
     array_as_pd = pd.read_feather(io.BytesIO(node.feather_bytes))
-    ordered_ir = compiled.OrderedIR.from_pandas(array_as_pd)
+    ordered_ir = compiled.OrderedIR.from_pandas(array_as_pd, node.schema)
     if ordered:
         return ordered_ir
     else:

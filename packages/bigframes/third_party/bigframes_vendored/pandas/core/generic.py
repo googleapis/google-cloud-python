@@ -756,12 +756,12 @@ class NDFrame(indexing.IndexingMixin):
 
             >>> ser = bpd.Series([5, None, 6, np.nan, bpd.NA])
             >>> ser
-            0     5.0
+            0       5
             1    <NA>
-            2     6.0
+            2       6
             3    <NA>
             4    <NA>
-            dtype: Float64
+            dtype: Int64
 
             >>> ser.isna()
             0    False

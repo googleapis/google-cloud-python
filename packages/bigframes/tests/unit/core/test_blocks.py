@@ -82,7 +82,7 @@ def test_block_from_local(data):
     # hard-coded the returned dimension of the session for that each of the test case contains 3 rows.
     mock_session._execute.return_value = (iter([[3]]), None)
 
-    block = blocks.Block.from_local(data, mock_session)
+    block = blocks.Block.from_local(pandas.DataFrame(data), mock_session)
 
     pandas.testing.assert_index_equal(block.column_labels, expected.columns)
     assert tuple(block.index.names) == tuple(expected.index.names)

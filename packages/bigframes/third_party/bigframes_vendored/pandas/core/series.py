@@ -2035,11 +2035,11 @@ class Series(NDFrame):  # type: ignore[misc]
 
             >>> a = bpd.Series([1, 2, 3, bpd.NA])
             >>> a
-            0     1.0
-            1     2.0
-            2     3.0
+            0       1
+            1       2
+            2       3
             3    <NA>
-            dtype: Float64
+            dtype: Int64
 
             >>> b = bpd.Series([10, 20, 30, 40])
             >>> b
@@ -2050,20 +2050,20 @@ class Series(NDFrame):  # type: ignore[misc]
             dtype: Int64
 
             >>> a.add(b)
-            0    11.0
-            1    22.0
-            2    33.0
+            0      11
+            1      22
+            2      33
             3    <NA>
-            dtype: Float64
+            dtype: Int64
 
         You can also use the mathematical operator ``+``:
 
             >>> a + b
-            0    11.0
-            1    22.0
-            2    33.0
+            0      11
+            1      22
+            2      33
             3    <NA>
-            dtype: Float64
+            dtype: Int64
 
         Adding two Series with explicit indexes:
 
@@ -2371,12 +2371,12 @@ class Series(NDFrame):  # type: ignore[misc]
 
             >>> s = bpd.Series([1, 3, bpd.NA])
             >>> s
-            0     1.0
-            1     3.0
+            0       1
+            1       3
             2    <NA>
-            dtype: Float64
+            dtype: Int64
             >>> s.max()
-            3.0
+            3
 
         Returns:
             scalar: Scalar.
@@ -2411,12 +2411,12 @@ class Series(NDFrame):  # type: ignore[misc]
 
             >>> s = bpd.Series([1, 3, bpd.NA])
             >>> s
-            0     1.0
-            1     3.0
+            0       1
+            1       3
             2    <NA>
-            dtype: Float64
+            dtype: Int64
             >>> s.min()
-            1.0
+            1
 
         Returns:
             scalar: Scalar.
@@ -2498,12 +2498,12 @@ class Series(NDFrame):  # type: ignore[misc]
 
             >>> s = bpd.Series([1, 3, bpd.NA])
             >>> s
-            0     1.0
-            1     3.0
+            0       1
+            1       3
             2    <NA>
-            dtype: Float64
+            dtype: Int64
             >>> s.sum()
-            4.0
+            4
 
         Returns:
             scalar: Scalar.
@@ -2532,10 +2532,10 @@ class Series(NDFrame):  # type: ignore[misc]
 
             >>> s = bpd.Series([1, 3, bpd.NA])
             >>> s
-            0     1.0
-            1     3.0
+            0       1
+            1       3
             2    <NA>
-            dtype: Float64
+            dtype: Int64
             >>> s.mean()
             2.0
 

@@ -15,8 +15,6 @@
 import dataclasses
 import functools
 
-import pandas as pd
-
 import bigframes.dtypes
 from bigframes.dtypes import ExpressionType
 
@@ -46,13 +44,10 @@ class InputType(OpTypeRule):
 @dataclasses.dataclass
 class RealNumeric(OpTypeRule):
     def output_type(self, *input_types: ExpressionType) -> ExpressionType:
-        all_ints = all(pd.api.types.is_integer(input) for input in input_types)
-        if all_ints:
-            return bigframes.dtypes.FLOAT_DTYPE
-        else:
-            return functools.reduce(
-                lambda t1, t2: bigframes.dtypes.lcd_etype(t1, t2), input_types
-            )
+        return functools.reduce(
+            lambda t1, t2: bigframes.dtypes.lcd_etype(t1, t2),
+            [*input_types, bigframes.dtypes.FLOAT_DTYPE],
+        )
 
 
 @dataclasses.dataclass

@@ -1070,8 +1070,16 @@ def floordiv_op(
     )
 
 
-def _is_float(x: ibis_types.Value):
-    return isinstance(x, (ibis_types.FloatingColumn, ibis_types.FloatingScalar))
+def _is_bignumeric(x: ibis_types.Value):
+    if not isinstance(x, ibis_types.DecimalValue):
+        return False
+    # Should be exactly 76 for bignumeric
+    return x.precision > 70
+
+
+def _is_numeric(x: ibis_types.Value):
+    # either big-numeric or numeric
+    return isinstance(x, ibis_types.DecimalValue)
 
 
 @scalar_op_compiler.register_binary_op(ops.mod_op)
@@ -1080,40 +1088,88 @@ def mod_op(
     x: ibis_types.Value,
     y: ibis_types.Value,
 ):
-    is_result_float = _is_float(x) | _is_float(y)
-    x_numeric = typing.cast(
-        ibis_types.NumericValue,
-        x.cast(ibis_dtypes.Decimal(precision=38, scale=9, nullable=True))
-        if is_result_float
-        else x,
-    )
-    y_numeric = typing.cast(
-        ibis_types.NumericValue,
-        y.cast(ibis_dtypes.Decimal(precision=38, scale=9, nullable=True))
-        if is_result_float
-        else y,
-    )
     # Hacky short-circuit to avoid passing zero-literal to sql backend, evaluate locally instead to null.
     op = y.op()
     if isinstance(op, ibis.expr.operations.generic.Literal) and op.value == 0:
         return ibis_types.null().cast(x.type())
 
-    bq_mod = x_numeric % y_numeric  # Bigquery will maintain x sign here
-    if is_result_float:
-        bq_mod = typing.cast(ibis_types.NumericValue, bq_mod.cast(ibis_dtypes.float64))
+    if x.type().is_integer() and y.type().is_integer():
+        # both are ints, no casting necessary
+        return _int_mod(x, y)
+
+    else:
+        # bigquery doens't support float mod, so just cast to bignumeric and hope for the best
+        x_numeric = typing.cast(
+            ibis_types.DecimalValue,
+            x.cast(ibis_dtypes.Decimal(precision=76, scale=38, nullable=True)),
+        )
+        y_numeric = typing.cast(
+            ibis_types.DecimalValue,
+            y.cast(ibis_dtypes.Decimal(precision=76, scale=38, nullable=True)),
+        )
+        mod_numeric = _bignumeric_mod(x_numeric, y_numeric)
+
+        # Cast back down based on original types
+        if _is_bignumeric(x) or _is_bignumeric(y):
+            return mod_numeric
+        if _is_numeric(x) or _is_numeric(y):
+            return mod_numeric.cast(ibis_dtypes.Decimal(38, 9))
+        else:
+            return mod_numeric.cast(ibis_dtypes.float64)
+
+
+def _bignumeric_mod(
+    x: ibis_types.IntegerValue,
+    y: ibis_types.IntegerValue,
+):
+    # Hacky short-circuit to avoid passing zero-literal to sql backend, evaluate locally instead to null.
+    op = y.op()
+    if isinstance(op, ibis.expr.operations.generic.Literal) and op.value == 0:
+        return ibis_types.null().cast(x.type())
+
+    bq_mod = x % y  # Bigquery will maintain x sign here
 
     # In BigQuery returned value has the same sign as X. In pandas, the sign of y is used, so we need to flip the result if sign(x) != sign(y)
     return (
         ibis.case()
         .when(
-            y_numeric == _ZERO,
-            _NAN * x_numeric if is_result_float else _ZERO * x_numeric,
+            y == _ZERO,
+            _NAN * x,
         )  # Dummy op to propogate nulls and type from x arg
         .when(
-            (y_numeric < _ZERO) & (bq_mod > _ZERO), (y_numeric + bq_mod)
+            (y < _ZERO) & (bq_mod > _ZERO), (y + bq_mod)
         )  # Convert positive result to negative
         .when(
-            (y_numeric > _ZERO) & (bq_mod < _ZERO), (y_numeric + bq_mod)
+            (y > _ZERO) & (bq_mod < _ZERO), (y + bq_mod)
+        )  # Convert negative result to positive
+        .else_(bq_mod)
+        .end()
+    )
+
+
+def _int_mod(
+    x: ibis_types.IntegerValue,
+    y: ibis_types.IntegerValue,
+):
+    # Hacky short-circuit to avoid passing zero-literal to sql backend, evaluate locally instead to null.
+    op = y.op()
+    if isinstance(op, ibis.expr.operations.generic.Literal) and op.value == 0:
+        return ibis_types.null().cast(x.type())
+
+    bq_mod = x % y  # Bigquery will maintain x sign here
+
+    # In BigQuery returned value has the same sign as X. In pandas, the sign of y is used, so we need to flip the result if sign(x) != sign(y)
+    return (
+        ibis.case()
+        .when(
+            y == _ZERO,
+            _ZERO * x,
+        )  # Dummy op to propogate nulls and type from x arg
+        .when(
+            (y < _ZERO) & (bq_mod > _ZERO), (y + bq_mod)
+        )  # Convert positive result to negative
+        .when(
+            (y > _ZERO) & (bq_mod < _ZERO), (y + bq_mod)
         )  # Convert negative result to positive
         .else_(bq_mod)
         .end()

@@ -36,6 +36,7 @@ from bigframes.core.ordering import (
     IntegerEncoding,
     OrderingColumnReference,
 )
+import bigframes.core.schema as schemata
 import bigframes.core.utils as utils
 from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
@@ -627,56 +628,30 @@ class OrderedIR(BaseIbisIR):
     def from_pandas(
         cls,
         pd_df: pandas.DataFrame,
+        schema: schemata.ArraySchema,
     ) -> OrderedIR:
         """
         Builds an in-memory only (SQL only) expr from a pandas dataframe.
+
+        Assumed that the dataframe has unique string column names and bigframes-suppported dtypes.
         """
-        # We can't include any hidden columns in the ArrayValue constructor, so
-        # grab the column names before we add the hidden ordering column.
-        column_names = [str(column) for column in pd_df.columns]
-        # Make sure column names are all strings.
-        pd_df = pd_df.set_axis(column_names, axis="columns")
-        pd_df = pd_df.assign(**{ORDER_ID_COLUMN: range(len(pd_df))})
 
         # ibis memtable cannot handle NA, must convert to None
-        pd_df = pd_df.astype("object")  # type: ignore
-        pd_df = pd_df.where(pandas.notnull(pd_df), None)
+        # this destroys the schema however
+        ibis_values = pd_df.astype("object").where(pandas.notnull(pd_df), None)  # type: ignore
+        ibis_values = ibis_values.assign(**{ORDER_ID_COLUMN: range(len(pd_df))})
+        # derive the ibis schema from the original pandas schema
+        ibis_schema = [
+            (name, bigframes.dtypes.bigframes_dtype_to_ibis_dtype(dtype))
+            for name, dtype in zip(schema.names, schema.dtypes)
+        ]
+        ibis_schema.append((ORDER_ID_COLUMN, ibis_dtypes.int64))
 
-        # NULL type isn't valid in BigQuery, so retry with an explicit schema in these cases.
-        keys_memtable = ibis.memtable(pd_df)
-        schema = keys_memtable.schema()
-        new_schema = []
-        for column_index, column in enumerate(schema):
-            if column == ORDER_ID_COLUMN:
-                new_type: ibis_dtypes.DataType = ibis_dtypes.int64
-            else:
-                column_type = schema[column]
-                # The autodetected type might not be one we can support, such
-                # as NULL type for empty rows, so convert to a type we do
-                # support.
-                new_type = bigframes.dtypes.bigframes_dtype_to_ibis_dtype(
-                    bigframes.dtypes.ibis_dtype_to_bigframes_dtype(column_type)
-                )
-                # TODO(swast): Ibis memtable doesn't use backticks in struct
-                # field names, so spaces and other characters aren't allowed in
-                # the memtable context. Blocked by
-                # https://github.com/ibis-project/ibis/issues/7187
-                column = f"col_{column_index}"
-            new_schema.append((column, new_type))
-
-        # must set non-null column labels. these are not the user-facing labels
-        pd_df = pd_df.set_axis(
-            [column for column, _ in new_schema],
-            axis="columns",
-        )
-        keys_memtable = ibis.memtable(pd_df, schema=ibis.schema(new_schema))
+        keys_memtable = ibis.memtable(ibis_values, schema=ibis.schema(ibis_schema))
 
         return cls(
             keys_memtable,
-            columns=[
-                keys_memtable[f"col_{column_index}"].name(column)
-                for column_index, column in enumerate(column_names)
-            ],
+            columns=[keys_memtable[column].name(column) for column in pd_df.columns],
             ordering=ExpressionOrdering(
                 ordering_value_columns=tuple(
                     [OrderingColumnReference(ORDER_ID_COLUMN)]

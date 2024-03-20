@@ -14,21 +14,26 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import functools
 import io
 import typing
 from typing import Iterable, Sequence
 
 import ibis.expr.types as ibis_types
 import pandas
+import pyarrow as pa
+import pyarrow.feather as pa_feather
 
 import bigframes.core.compile as compiling
 import bigframes.core.expression as ex
 import bigframes.core.guid
 import bigframes.core.join_def as join_def
+import bigframes.core.local_data as local_data
 import bigframes.core.nodes as nodes
 from bigframes.core.ordering import OrderingColumnReference
 import bigframes.core.ordering as orderings
 import bigframes.core.rewrite
+import bigframes.core.schema as schemata
 import bigframes.core.utils
 from bigframes.core.window_spec import WindowSpec
 import bigframes.dtypes
@@ -63,28 +68,32 @@ class ArrayValue:
         node = nodes.ReadGbqNode(
             table=table,
             table_session=session,
-            columns=tuple(columns),
+            columns=tuple(
+                bigframes.dtypes.ibis_value_to_canonical_type(column)
+                for column in columns
+            ),
             hidden_ordering_columns=tuple(hidden_ordering_columns),
             ordering=ordering,
         )
         return cls(node)
 
     @classmethod
-    def from_pandas(cls, pd_df: pandas.DataFrame, session: bigframes.Session):
+    def from_pyarrow(cls, arrow_table: pa.Table, session: Session):
+        adapted_table = local_data.adapt_pa_table(arrow_table)
+        schema = local_data.arrow_schema_to_bigframes(adapted_table.schema)
+
         iobytes = io.BytesIO()
-        # Use alphanumeric identifiers, to avoid downstream problems with escaping.
-        as_ids = [
-            bigframes.core.utils.label_to_identifier(label, strict=True)
-            for label in pd_df.columns
-        ]
-        unique_ids = tuple(bigframes.core.utils.disambiguate_ids(as_ids))
-        pd_df.reset_index(drop=True).set_axis(unique_ids, axis=1).to_feather(iobytes)
-        node = nodes.ReadLocalNode(feather_bytes=iobytes.getvalue(), session=session)
+        pa_feather.write_feather(adapted_table, iobytes)
+        node = nodes.ReadLocalNode(
+            iobytes.getvalue(),
+            data_schema=schema,
+            session=session,
+        )
         return cls(node)
 
     @property
     def column_ids(self) -> typing.Sequence[str]:
-        return self._compile_ordered().column_ids
+        return self.schema.names
 
     @property
     def session(self) -> Session:
@@ -95,6 +104,32 @@ class ArrayValue:
             required_session if (required_session is not None) else get_global_session()
         )
 
+    @functools.cached_property
+    def schema(self) -> schemata.ArraySchema:
+        # TODO: switch to use self.node.schema
+        return self._compiled_schema
+
+    @functools.cached_property
+    def _compiled_schema(self) -> schemata.ArraySchema:
+        compiled = self._compile_unordered()
+        items = tuple(
+            schemata.SchemaItem(id, compiled.get_column_type(id))
+            for id in compiled.column_ids
+        )
+        return schemata.ArraySchema(items)
+
+    def validate_schema(self):
+        tree_derived = self.node.schema
+        ibis_derived = self._compiled_schema
+        if tree_derived.names != ibis_derived.names:
+            raise ValueError(
+                f"Unexpected names internal {tree_derived.names} vs compiled {ibis_derived.names}"
+            )
+        if tree_derived.dtypes != ibis_derived.dtypes:
+            raise ValueError(
+                f"Unexpected types internal {tree_derived.dtypes} vs compiled {ibis_derived.dtypes}"
+            )
+
     def _try_evaluate_local(self):
         """Use only for unit testing paths - not fully featured. Will throw exception if fails."""
         import ibis
@@ -104,7 +139,7 @@ class ArrayValue:
         )
 
     def get_column_type(self, key: str) -> bigframes.dtypes.Dtype:
-        return self._compile_ordered().get_column_type(key)
+        return self.schema.get_type(key)
 
     def _compile_ordered(self) -> compiling.OrderedIR:
         return compiling.compile_ordered_ir(self.node)
