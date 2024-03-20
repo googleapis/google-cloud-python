@@ -4,6 +4,18 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+## [2.29.0](https://github.com/googleapis/google-auth-library-python/compare/v2.28.2...v2.29.0) (2024-03-18)
+
+
+### Features
+
+* Adds support for custom suppliers in AWS and Identity Pool credentials ([#1496](https://github.com/googleapis/google-auth-library-python/issues/1496)) ([3af1768](https://github.com/googleapis/google-auth-library-python/commit/3af176879fc356f785b9f5b449ce4270f437db7e))
+
+
+### Bug Fixes
+
+* Refactor tech debt in aws and identity pool credentials ([#1501](https://github.com/googleapis/google-auth-library-python/issues/1501)) ([ce435b0](https://github.com/googleapis/google-auth-library-python/commit/ce435b0b13f43ef9258c8693f6c3beac06da64e2))
+
 ## [2.28.2](https://github.com/googleapis/google-auth-library-python/compare/v2.28.1...v2.28.2) (2024-03-08)
 
 
