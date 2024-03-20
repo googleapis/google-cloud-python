@@ -8,6 +8,7 @@ Using the API
    :maxdepth: 2
 
    usage
+   async_data_usage
 
 
 API Reference

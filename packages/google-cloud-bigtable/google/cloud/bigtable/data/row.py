@@ -147,10 +147,12 @@ class Row:
         """
         Human-readable string representation
 
-        {
-          (family='fam', qualifier=b'col'): [b'value', (+1 more),],
-          (family='fam', qualifier=b'col2'): [b'other'],
-        }
+        .. code-block:: python
+
+            {
+              (family='fam', qualifier=b'col'): [b'value', (+1 more),],
+              (family='fam', qualifier=b'col2'): [b'other'],
+            }
         """
         output = ["{"]
         for family, qualifier in self._get_column_components():
