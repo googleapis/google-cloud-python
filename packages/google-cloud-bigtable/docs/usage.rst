@@ -1,5 +1,5 @@
-Using the API
-=============
+Using the Sync Client
+=====================
 
 .. toctree::
   :maxdepth: 2

@@ -1150,7 +1150,7 @@ class TableAsync:
                 applied to row_key. Entries are applied in order,
                 meaning that earlier mutations can be masked by later
                 ones. Must contain at least one entry if
-                `true_case_mutations is empty, and at most 100000.
+                `true_case_mutations` is empty, and at most 100000.
             - operation_timeout: the time budget for the entire operation, in seconds.
                 Failed requests will not be retried. Defaults to the Table's default_operation_timeout
         Returns:
