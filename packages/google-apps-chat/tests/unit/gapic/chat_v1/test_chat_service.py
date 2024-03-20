@@ -7007,6 +7007,14 @@ def test_create_message_rest(request_type):
                     "command_id": 1035,
                     "triggers_dialog": True,
                 },
+                "rich_link_metadata": {
+                    "uri": "uri_value",
+                    "rich_link_type": 1,
+                    "drive_link_data": {
+                        "drive_data_ref": {"drive_file_id": "drive_file_id_value"},
+                        "mime_type": "mime_type_value",
+                    },
+                },
             }
         ],
         "thread": {"name": "name_value", "thread_key": "thread_key_value"},
@@ -7052,7 +7060,7 @@ def test_create_message_rest(request_type):
                     "resource_name": "resource_name_value",
                     "attachment_upload_token": "attachment_upload_token_value",
                 },
-                "drive_data_ref": {"drive_file_id": "drive_file_id_value"},
+                "drive_data_ref": {},
                 "thumbnail_uri": "thumbnail_uri_value",
                 "download_uri": "download_uri_value",
                 "source": 1,
@@ -8941,6 +8949,14 @@ def test_update_message_rest(request_type):
                     "command_id": 1035,
                     "triggers_dialog": True,
                 },
+                "rich_link_metadata": {
+                    "uri": "uri_value",
+                    "rich_link_type": 1,
+                    "drive_link_data": {
+                        "drive_data_ref": {"drive_file_id": "drive_file_id_value"},
+                        "mime_type": "mime_type_value",
+                    },
+                },
             }
         ],
         "thread": {"name": "name_value", "thread_key": "thread_key_value"},
@@ -8986,7 +9002,7 @@ def test_update_message_rest(request_type):
                     "resource_name": "resource_name_value",
                     "attachment_upload_token": "attachment_upload_token_value",
                 },
-                "drive_data_ref": {"drive_file_id": "drive_file_id_value"},
+                "drive_data_ref": {},
                 "thumbnail_uri": "thumbnail_uri_value",
                 "download_uri": "download_uri_value",
                 "source": 1,

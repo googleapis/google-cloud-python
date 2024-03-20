@@ -23,6 +23,8 @@ from .types.action_status import ActionStatus
 from .types.annotation import (
     Annotation,
     AnnotationType,
+    DriveLinkData,
+    RichLinkMetadata,
     SlashCommandMetadata,
     UserMentionMetadata,
 )
@@ -117,6 +119,7 @@ __all__ = (
     "Dialog",
     "DialogAction",
     "DriveDataRef",
+    "DriveLinkData",
     "Emoji",
     "EmojiReactionSummary",
     "FindDirectMessageRequest",
@@ -139,6 +142,7 @@ __all__ = (
     "Message",
     "QuotedMessageMetadata",
     "Reaction",
+    "RichLinkMetadata",
     "SetUpSpaceRequest",
     "SlashCommand",
     "SlashCommandMetadata",

@@ -3445,6 +3445,247 @@ async def test_list_data_scan_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        datascans.GenerateDataQualityRulesRequest,
+        dict,
+    ],
+)
+def test_generate_data_quality_rules(request_type, transport: str = "grpc"):
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_data_quality_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datascans.GenerateDataQualityRulesResponse()
+        response = client.generate_data_quality_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.GenerateDataQualityRulesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datascans.GenerateDataQualityRulesResponse)
+
+
+def test_generate_data_quality_rules_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_data_quality_rules), "__call__"
+    ) as call:
+        client.generate_data_quality_rules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.GenerateDataQualityRulesRequest()
+
+
+@pytest.mark.asyncio
+async def test_generate_data_quality_rules_async(
+    transport: str = "grpc_asyncio",
+    request_type=datascans.GenerateDataQualityRulesRequest,
+):
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_data_quality_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datascans.GenerateDataQualityRulesResponse()
+        )
+        response = await client.generate_data_quality_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == datascans.GenerateDataQualityRulesRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, datascans.GenerateDataQualityRulesResponse)
+
+
+@pytest.mark.asyncio
+async def test_generate_data_quality_rules_async_from_dict():
+    await test_generate_data_quality_rules_async(request_type=dict)
+
+
+def test_generate_data_quality_rules_field_headers():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datascans.GenerateDataQualityRulesRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_data_quality_rules), "__call__"
+    ) as call:
+        call.return_value = datascans.GenerateDataQualityRulesResponse()
+        client.generate_data_quality_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_generate_data_quality_rules_field_headers_async():
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = datascans.GenerateDataQualityRulesRequest()
+
+    request.name = "name_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_data_quality_rules), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datascans.GenerateDataQualityRulesResponse()
+        )
+        await client.generate_data_quality_rules(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name_value",
+    ) in kw["metadata"]
+
+
+def test_generate_data_quality_rules_flattened():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_data_quality_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datascans.GenerateDataQualityRulesResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.generate_data_quality_rules(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_generate_data_quality_rules_flattened_error():
+    client = DataScanServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.generate_data_quality_rules(
+            datascans.GenerateDataQualityRulesRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_data_quality_rules_flattened_async():
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_data_quality_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = datascans.GenerateDataQualityRulesResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            datascans.GenerateDataQualityRulesResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.generate_data_quality_rules(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_generate_data_quality_rules_flattened_error_async():
+    client = DataScanServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.generate_data_quality_rules(
+            datascans.GenerateDataQualityRulesRequest(),
+            name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.DataScanServiceGrpcTransport(
@@ -3590,6 +3831,7 @@ def test_data_scan_service_base_transport():
         "run_data_scan",
         "get_data_scan_job",
         "list_data_scan_jobs",
+        "generate_data_quality_rules",
         "get_location",
         "list_locations",
         "get_operation",
