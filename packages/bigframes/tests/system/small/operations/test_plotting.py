@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import numpy as np
+import pandas as pd
 import pandas._testing as tm
 import pytest
 
@@ -235,6 +236,18 @@ def test_sampling_plot_args_random_state():
         tm.assert_almost_equal(ax_0.lines[0].get_data()[1], ax_2.lines[0].get_data()[1])
 
 
+def test_sampling_preserve_ordering():
+    df = bpd.DataFrame([0.0, 1.0, 2.0, 3.0, 4.0], index=[1, 3, 4, 2, 0])
+    pd_df = pd.DataFrame([0.0, 1.0, 2.0, 3.0, 4.0], index=[1, 3, 4, 2, 0])
+    ax = df.plot.line()
+    pd_ax = pd_df.plot.line()
+    tm.assert_almost_equal(ax.get_xticks(), pd_ax.get_xticks())
+    tm.assert_almost_equal(ax.get_yticks(), pd_ax.get_yticks())
+    for line, pd_line in zip(ax.lines, pd_ax.lines):
+        # Compare y coordinates between the lines
+        tm.assert_almost_equal(line.get_data()[1], pd_line.get_data()[1])
+
+
 @pytest.mark.parametrize(
     ("kind", "col_names", "kwargs"),
     [
@@ -251,7 +264,7 @@ def test_sampling_plot_args_random_state():
             marks=pytest.mark.xfail(raises=ValueError),
         ),
         pytest.param(
-            "uknown",
+            "bar",
             ["int64_col", "int64_too"],
             {},
             marks=pytest.mark.xfail(raises=NotImplementedError),

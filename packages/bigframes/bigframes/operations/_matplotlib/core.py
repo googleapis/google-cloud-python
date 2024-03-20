@@ -47,11 +47,11 @@ class SamplingPlot(MPLPlot):
         # TODO: Cache the sampling data in the PlotAccessor.
         sampling_n = self.kwargs.pop("sampling_n", 100)
         sampling_random_state = self.kwargs.pop("sampling_random_state", 0)
-        return (
-            data.sample(n=sampling_n, random_state=sampling_random_state)
-            .to_pandas()
-            .sort_index()
-        )
+        return data.sample(
+            n=sampling_n,
+            random_state=sampling_random_state,
+            sort=False,
+        ).to_pandas()
 
 
 class LinePlot(SamplingPlot):

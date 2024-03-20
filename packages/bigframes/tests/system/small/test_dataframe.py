@@ -3049,6 +3049,28 @@ def test_sample_raises_value_error(scalars_dfs):
         scalars_df.sample(frac=0.5, n=4)
 
 
+def test_sample_args_sort(scalars_dfs):
+    scalars_df, _ = scalars_dfs
+    index = [4, 3, 2, 5, 1, 0]
+    scalars_df = scalars_df.iloc[index]
+
+    kwargs = {"frac": 1.0, "random_state": 333}
+
+    df = scalars_df.sample(**kwargs).to_pandas()
+    assert df.index.values != index
+    assert df.index.values != sorted(index)
+
+    df = scalars_df.sample(sort="random", **kwargs).to_pandas()
+    assert df.index.values != index
+    assert df.index.values != sorted(index)
+
+    df = scalars_df.sample(sort=True, **kwargs).to_pandas()
+    assert df.index.values == sorted(index)
+
+    df = scalars_df.sample(sort=False, **kwargs).to_pandas()
+    assert df.index.values == index
+
+
 @pytest.mark.parametrize(
     ("axis",),
     [
