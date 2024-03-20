@@ -476,6 +476,36 @@ class DataScanServiceGrpcAsyncIOTransport(DataScanServiceTransport):
             )
         return self._stubs["list_data_scan_jobs"]
 
+    @property
+    def generate_data_quality_rules(
+        self,
+    ) -> Callable[
+        [datascans.GenerateDataQualityRulesRequest],
+        Awaitable[datascans.GenerateDataQualityRulesResponse],
+    ]:
+        r"""Return a callable for the generate data quality rules method over gRPC.
+
+        Generates recommended DataQualityRule from a data
+        profiling DataScan.
+
+        Returns:
+            Callable[[~.GenerateDataQualityRulesRequest],
+                    Awaitable[~.GenerateDataQualityRulesResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "generate_data_quality_rules" not in self._stubs:
+            self._stubs["generate_data_quality_rules"] = self.grpc_channel.unary_unary(
+                "/google.cloud.dataplex.v1.DataScanService/GenerateDataQualityRules",
+                request_serializer=datascans.GenerateDataQualityRulesRequest.serialize,
+                response_deserializer=datascans.GenerateDataQualityRulesResponse.deserialize,
+            )
+        return self._stubs["generate_data_quality_rules"]
+
     def close(self):
         return self.grpc_channel.close()
 
