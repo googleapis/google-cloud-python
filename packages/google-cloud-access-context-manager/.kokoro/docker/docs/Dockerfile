@@ -80,7 +80,6 @@ RUN wget -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
 # Test pip
 RUN python3 -m pip
 
-
 # Install build requirements
 COPY requirements.txt /requirements.txt
 RUN python3 -m pip install --require-hashes -r requirements.txt
