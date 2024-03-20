@@ -84,3 +84,74 @@ def test_decomposition_configure_fit_score_predict(
         in reloaded_model._bqml_model.model_name
     )
     assert reloaded_model.n_components == 3
+
+
+def test_decomposition_configure_fit_score_predict_params(
+    session, penguins_df_default_index, dataset_id
+):
+    model = decomposition.PCA(n_components=5, svd_solver="randomized")
+    model.fit(penguins_df_default_index)
+
+    new_penguins = session.read_pandas(
+        pd.DataFrame(
+            {
+                "tag_number": [1633, 1672, 1690],
+                "species": [
+                    "Adelie Penguin (Pygoscelis adeliae)",
+                    "Gentoo penguin (Pygoscelis papua)",
+                    "Adelie Penguin (Pygoscelis adeliae)",
+                ],
+                "island": ["Dream", "Biscoe", "Torgersen"],
+                "culmen_length_mm": [37.8, 46.5, 41.1],
+                "culmen_depth_mm": [18.1, 14.8, 18.6],
+                "flipper_length_mm": [193.0, 217.0, 189.0],
+                "body_mass_g": [3750.0, 5200.0, 3325.0],
+                "sex": ["MALE", "FEMALE", "MALE"],
+            }
+        ).set_index("tag_number")
+    )
+
+    # Check score to ensure the model was fitted
+    score_result = model.score(new_penguins).to_pandas()
+    score_expected = pd.DataFrame(
+        {
+            "total_explained_variance_ratio": [0.932897],
+        },
+        dtype="Float64",
+    )
+    score_expected = score_expected.reindex(index=score_expected.index.astype("Int64"))
+
+    pd.testing.assert_frame_equal(
+        score_result, score_expected, check_exact=False, rtol=0.1
+    )
+
+    result = model.predict(new_penguins).to_pandas()
+    expected = pd.DataFrame(
+        {
+            "principal_component_1": [-1.459, 2.258, -1.685],
+            "principal_component_2": [-1.120, -1.351, -0.874],
+            "principal_component_3": [-0.646, 0.443, -0.704],
+            "principal_component_4": [-0.539, 0.234, -0.571],
+            "principal_component_5": [-0.876, 0.122, 0.609],
+        },
+        dtype="Float64",
+        index=pd.Index([1633, 1672, 1690], name="tag_number", dtype="Int64"),
+    )
+
+    tests.system.utils.assert_pandas_df_equal_pca(
+        result,
+        expected,
+        check_exact=False,
+        rtol=0.1,
+    )
+
+    # save, load, check n_components to ensure configuration was kept
+    reloaded_model = model.to_gbq(
+        f"{dataset_id}.temp_configured_pca_model", replace=True
+    )
+    assert (
+        f"{dataset_id}.temp_configured_pca_model"
+        in reloaded_model._bqml_model.model_name
+    )
+    assert reloaded_model.n_components == 5
+    assert reloaded_model.svd_solver == "RANDOMIZED"

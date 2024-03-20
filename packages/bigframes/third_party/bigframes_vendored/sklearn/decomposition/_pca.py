@@ -32,9 +32,11 @@ class PCA(BaseEstimator, metaclass=ABCMeta):
     truncated SVD.
 
     Args:
-         n_components (Optional[int], default 3):
+        n_components (Optional[int], default 3):
             Number of components to keep. if n_components is not set all components
             are kept.
+        svd_solver ("full", "randomized" or "auto", default "auto"):
+            The solver to use to calculate the principal components. Details: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-create-pca#pca_solver.
 
     """
 
