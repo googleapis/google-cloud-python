@@ -19,6 +19,7 @@ import pytest
 
 import bigframes
 import bigframes.ml.linear_model
+from tests.system import utils
 
 
 @pytest.fixture(scope="module")
@@ -160,7 +161,7 @@ def test_read_csv_gcs(
     # Create a csv in gcs
     write_path = gcs_folder + "test_read_csv_gcs_bigquery_engine*.csv"
     read_path = (
-        write_path.replace("*", "000000000000") if engine is None else write_path
+        utils.get_first_file_from_wildcard(write_path) if engine is None else write_path
     )
     scalars_df_index.to_csv(write_path)
 

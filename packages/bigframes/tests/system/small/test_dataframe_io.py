@@ -19,7 +19,7 @@ import pandas as pd
 import pyarrow as pa
 import pytest
 
-from tests.system.utils import assert_pandas_df_equal, convert_pandas_dtypes
+from tests.system import utils
 
 try:
     import pandas_gbq  # type: ignore
@@ -115,7 +115,6 @@ def test_to_pandas_batches_w_correct_dtypes(scalars_df_default_index):
         pd.testing.assert_series_equal(actual, expected)
 
 
-@pytest.mark.skip(reason="Disable to unblock kokoro tests")
 @pytest.mark.parametrize(
     ("index"),
     [True, False],
@@ -150,12 +149,12 @@ def test_to_csv_index(
     # read_csv will decode into bytes inproperly, convert_pandas_dtypes will encode properly from string
     dtype.pop("bytes_col")
     gcs_df = pd.read_csv(
-        path,
+        utils.get_first_file_from_wildcard(path),
         dtype=dtype,
         date_format={"timestamp_col": "YYYY-MM-DD HH:MM:SS Z"},
         index_col=index_col,
     )
-    convert_pandas_dtypes(gcs_df, bytes_col=True)
+    utils.convert_pandas_dtypes(gcs_df, bytes_col=True)
     gcs_df.index.name = scalars_df.index.name
 
     scalars_pandas_df = scalars_pandas_df.copy()
@@ -164,7 +163,6 @@ def test_to_csv_index(
     pd.testing.assert_frame_equal(gcs_df, scalars_pandas_df)
 
 
-@pytest.mark.skip(reason="Disable to unblock kokoro tests")
 def test_to_csv_tabs(
     scalars_dfs: Tuple[bigframes.dataframe.DataFrame, pd.DataFrame],
     gcs_folder: str,
@@ -189,13 +187,13 @@ def test_to_csv_tabs(
     # read_csv will decode into bytes inproperly, convert_pandas_dtypes will encode properly from string
     dtype.pop("bytes_col")
     gcs_df = pd.read_csv(
-        path,
+        utils.get_first_file_from_wildcard(path),
         sep="\t",
         dtype=dtype,
         date_format={"timestamp_col": "YYYY-MM-DD HH:MM:SS Z"},
         index_col=index_col,
     )
-    convert_pandas_dtypes(gcs_df, bytes_col=True)
+    utils.convert_pandas_dtypes(gcs_df, bytes_col=True)
     gcs_df.index.name = scalars_df.index.name
 
     scalars_pandas_df = scalars_pandas_df.copy()
@@ -229,7 +227,7 @@ def test_to_gbq_index(scalars_dfs, dataset_id, index):
     else:
         df_out = df_out.sort_values("rowindex_2").reset_index(drop=True)
 
-    convert_pandas_dtypes(df_out, bytes_col=False)
+    utils.convert_pandas_dtypes(df_out, bytes_col=False)
     # pd.read_gbq interpets bytes_col as object, reconvert to pyarrow binary
     df_out["bytes_col"] = df_out["bytes_col"].astype(pd.ArrowDtype(pa.binary()))
     expected = scalars_pandas_df.copy()
@@ -415,7 +413,6 @@ def test_to_json_index_invalid_lines(
         scalars_df.to_json(path, index=index)
 
 
-@pytest.mark.skip(reason="Disable to unblock kokoro tests")
 @pytest.mark.parametrize(
     ("index"),
     [True, False],
@@ -435,8 +432,12 @@ def test_to_json_index_records_orient(
     """ Test the `to_json` API with `orient` is `records` and `lines` is True"""
     scalars_df.to_json(path, index=index, orient="records", lines=True)
 
-    gcs_df = pd.read_json(path, lines=True, convert_dates=["datetime_col"])
-    convert_pandas_dtypes(gcs_df, bytes_col=True)
+    gcs_df = pd.read_json(
+        utils.get_first_file_from_wildcard(path),
+        lines=True,
+        convert_dates=["datetime_col"],
+    )
+    utils.convert_pandas_dtypes(gcs_df, bytes_col=True)
     if index and scalars_df.index.name is not None:
         gcs_df = gcs_df.set_index(scalars_df.index.name)
 
@@ -474,8 +475,8 @@ def test_to_parquet_index(scalars_dfs, gcs_folder, index):
     # table.
     scalars_df.to_parquet(path, index=index)
 
-    gcs_df = pd.read_parquet(path.replace("*", "000000000000"))
-    convert_pandas_dtypes(gcs_df, bytes_col=False)
+    gcs_df = pd.read_parquet(utils.get_first_file_from_wildcard(path))
+    utils.convert_pandas_dtypes(gcs_df, bytes_col=False)
     if index and scalars_df.index.name is not None:
         gcs_df = gcs_df.set_index(scalars_df.index.name)
 
@@ -507,7 +508,7 @@ def test_to_sql_query_unnamed_index_included(
     pd_df = scalars_pandas_df_default_index.reset_index(drop=True)
     roundtrip = session.read_gbq(sql, index_col=idx_ids)
     roundtrip.index.names = [None]
-    assert_pandas_df_equal(roundtrip.to_pandas(), pd_df, check_index_type=False)
+    utils.assert_pandas_df_equal(roundtrip.to_pandas(), pd_df, check_index_type=False)
 
 
 def test_to_sql_query_named_index_included(
@@ -524,7 +525,7 @@ def test_to_sql_query_named_index_included(
 
     pd_df = scalars_pandas_df_default_index.set_index("rowindex_2", drop=True)
     roundtrip = session.read_gbq(sql, index_col=idx_ids)
-    assert_pandas_df_equal(roundtrip.to_pandas(), pd_df)
+    utils.assert_pandas_df_equal(roundtrip.to_pandas(), pd_df)
 
 
 def test_to_sql_query_unnamed_index_excluded(
@@ -539,7 +540,7 @@ def test_to_sql_query_unnamed_index_excluded(
 
     pd_df = scalars_pandas_df_default_index.reset_index(drop=True)
     roundtrip = session.read_gbq(sql)
-    assert_pandas_df_equal(
+    utils.assert_pandas_df_equal(
         roundtrip.to_pandas(), pd_df, check_index_type=False, ignore_order=True
     )
 
@@ -558,6 +559,6 @@ def test_to_sql_query_named_index_excluded(
         "rowindex_2", drop=True
     ).reset_index(drop=True)
     roundtrip = session.read_gbq(sql)
-    assert_pandas_df_equal(
+    utils.assert_pandas_df_equal(
         roundtrip.to_pandas(), pd_df, check_index_type=False, ignore_order=True
     )

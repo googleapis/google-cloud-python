@@ -27,6 +27,7 @@ import bigframes.series as series
 from tests.system.utils import (
     assert_pandas_df_equal,
     assert_series_equal,
+    get_first_file_from_wildcard,
     skip_legacy_pandas,
 )
 
@@ -2390,11 +2391,10 @@ def test_to_frame(scalars_dfs):
     assert_pandas_df_equal(bf_result, pd_result)
 
 
-@pytest.mark.skip(reason="Disable to unblock kokoro tests")
 def test_to_json(gcs_folder, scalars_df_index, scalars_pandas_df_index):
     path = gcs_folder + "test_series_to_json*.jsonl"
     scalars_df_index["int64_col"].to_json(path, lines=True, orient="records")
-    gcs_df = pd.read_json(path, lines=True)
+    gcs_df = pd.read_json(get_first_file_from_wildcard(path), lines=True)
 
     pd.testing.assert_series_equal(
         gcs_df["int64_col"].astype(pd.Int64Dtype()),
@@ -2404,11 +2404,10 @@ def test_to_json(gcs_folder, scalars_df_index, scalars_pandas_df_index):
     )
 
 
-@pytest.mark.skip(reason="Disable to unblock kokoro tests")
 def test_to_csv(gcs_folder, scalars_df_index, scalars_pandas_df_index):
     path = gcs_folder + "test_series_to_csv*.csv"
     scalars_df_index["int64_col"].to_csv(path)
-    gcs_df = pd.read_csv(path)
+    gcs_df = pd.read_csv(get_first_file_from_wildcard(path))
 
     pd.testing.assert_series_equal(
         gcs_df["int64_col"].astype(pd.Int64Dtype()),
