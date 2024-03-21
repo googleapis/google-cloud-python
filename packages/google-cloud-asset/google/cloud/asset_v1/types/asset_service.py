@@ -1515,10 +1515,10 @@ class IamPolicyAnalysisQuery(proto.Message):
             "projects/my-project-id"), or a project number (such as
             "projects/12345").
 
-            To know how to get organization id, visit
+            To know how to get organization ID, visit
             `here <https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id>`__.
 
-            To know how to get folder or project id, visit
+            To know how to get folder or project ID, visit
             `here <https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects>`__.
         resource_selector (google.cloud.asset_v1.types.IamPolicyAnalysisQuery.ResourceSelector):
             Optional. Specifies a resource for analysis.
@@ -2955,10 +2955,10 @@ class BatchGetEffectiveIamPoliciesRequest(proto.Message):
             "projects/my-project-id"), or a project number (such as
             "projects/12345").
 
-            To know how to get organization id, visit
+            To know how to get organization ID, visit
             `here <https://cloud.google.com/resource-manager/docs/creating-managing-organization#retrieving_your_organization_id>`__.
 
-            To know how to get folder or project id, visit
+            To know how to get folder or project ID, visit
             `here <https://cloud.google.com/resource-manager/docs/creating-managing-folders#viewing_or_listing_folders_and_projects>`__.
         names (MutableSequence[str]):
             Required. The names refer to the [full_resource_names]
@@ -3126,9 +3126,9 @@ class AnalyzerOrgPolicy(proto.Message):
 
         Attributes:
             values (google.cloud.asset_v1.types.AnalyzerOrgPolicy.Rule.StringValues):
-                List of values to be used for this
-                PolicyRule. This field can be set only in
-                Policies for list constraints.
+                List of values to be used for this policy
+                rule. This field can be set only in policies for
+                list constraints.
 
                 This field is a member of `oneof`_ ``kind``.
             allow_all (bool):
@@ -3155,14 +3155,17 @@ class AnalyzerOrgPolicy(proto.Message):
                 The condition evaluation result for this rule. Only
                 populated if it meets all the following criteria:
 
-                -  there is a
+                -  There is a
                    [condition][google.cloud.asset.v1.AnalyzerOrgPolicy.Rule.condition]
-                   defined for this rule
-                -  this rule is within a consolidated_policy
-                -  the consolidated_policy is within
-                   [AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer]
+                   defined for this rule.
+                -  This rule is within
+                   [AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer.consolidated_policy][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedContainersResponse.GovernedContainer.consolidated_policy],
                    or
-                   [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedResource]
+                   [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset.consolidated_policy][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset.consolidated_policy]
+                   when the
+                   [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset]
+                   has
+                   [AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset.governed_resource][google.cloud.asset.v1.AnalyzeOrgPolicyGovernedAssetsResponse.GovernedAsset.governed_resource].
         """
 
         class StringValues(proto.Message):
