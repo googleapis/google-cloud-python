@@ -40,7 +40,7 @@ import bigframes.core.expression as ex
 import bigframes.core.groupby as groupby
 import bigframes.core.indexers
 import bigframes.core.indexes as indexes
-from bigframes.core.ordering import OrderingColumnReference, OrderingDirection
+import bigframes.core.ordering as order
 import bigframes.core.scalar as scalars
 import bigframes.core.utils as utils
 import bigframes.core.window
@@ -875,7 +875,7 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         # use temporary name for reset_index to avoid collision, restore after dropping extra columns
         block = (
             block.with_index_labels(["mode_temp_internal"])
-            .order_by([OrderingColumnReference(self._value_column)])
+            .order_by([order.ascending_over(self._value_column)])
             .reset_index(drop=False)
         )
         block = block.select_column(self._value_column).with_column_labels([self.name])
@@ -941,10 +941,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         block, row_nums = self._block.promote_offsets()
         block = block.order_by(
             [
-                OrderingColumnReference(
-                    self._value_column, direction=OrderingDirection.DESC
-                ),
-                OrderingColumnReference(row_nums),
+                order.descending_over(self._value_column),
+                order.ascending_over(row_nums),
             ]
         )
         return typing.cast(
@@ -955,8 +953,8 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         block, row_nums = self._block.promote_offsets()
         block = block.order_by(
             [
-                OrderingColumnReference(self._value_column),
-                OrderingColumnReference(row_nums),
+                order.ascending_over(self._value_column),
+                order.ascending_over(row_nums),
             ]
         )
         return typing.cast(
@@ -989,11 +987,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def idxmax(self) -> blocks.Label:
         block = self._block.order_by(
             [
-                OrderingColumnReference(
-                    self._value_column, direction=OrderingDirection.DESC
-                ),
+                order.descending_over(self._value_column),
                 *[
-                    OrderingColumnReference(idx_col)
+                    order.ascending_over(idx_col)
                     for idx_col in self._block.index_columns
                 ],
             ]
@@ -1004,9 +1000,9 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     def idxmin(self) -> blocks.Label:
         block = self._block.order_by(
             [
-                OrderingColumnReference(self._value_column),
+                order.ascending_over(self._value_column),
                 *[
-                    OrderingColumnReference(idx_col)
+                    order.ascending_over(idx_col)
                     for idx_col in self._block.index_columns
                 ],
             ]
@@ -1099,14 +1095,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
     ) -> Series:
         if na_position not in ["first", "last"]:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
-        direction = OrderingDirection.ASC if ascending else OrderingDirection.DESC
         block = self._block.order_by(
             [
-                OrderingColumnReference(
-                    self._value_column,
-                    direction=direction,
-                    na_last=(na_position == "last"),
-                )
+                order.ascending_over(self._value_column, (na_position == "last"))
+                if ascending
+                else order.descending_over(self._value_column, (na_position == "last"))
             ],
         )
         return Series(block)
@@ -1116,10 +1109,11 @@ class Series(bigframes.operations.base.SeriesMethods, vendored_pandas_series.Ser
         if na_position not in ["first", "last"]:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
         block = self._block
-        direction = OrderingDirection.ASC if ascending else OrderingDirection.DESC
         na_last = na_position == "last"
         ordering = [
-            OrderingColumnReference(column, direction=direction, na_last=na_last)
+            order.ascending_over(column, na_last)
+            if ascending
+            else order.descending_over(column, na_last)
             for column in block.index_columns
         ]
         block = block.order_by(ordering)

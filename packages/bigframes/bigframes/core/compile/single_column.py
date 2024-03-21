@@ -179,12 +179,10 @@ def join_orderings(
     left_order_dominates: bool = True,
 ) -> orderings.ExpressionOrdering:
     left_ordering_refs = [
-        ref.with_name(left_id_mapping[ref.column_id])
-        for ref in left.all_ordering_columns
+        ref.remap_names(left_id_mapping) for ref in left.all_ordering_columns
     ]
     right_ordering_refs = [
-        ref.with_name(right_id_mapping[ref.column_id])
-        for ref in right.all_ordering_columns
+        ref.remap_names(right_id_mapping) for ref in right.all_ordering_columns
     ]
     if left_order_dominates:
         joined_refs = [*left_ordering_refs, *right_ordering_refs]

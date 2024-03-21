@@ -18,7 +18,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 import math
 import typing
-from typing import Optional, Sequence
+from typing import Mapping, Optional, Sequence, Set
 
 import ibis.expr.datatypes as ibis_dtypes
 import ibis.expr.types as ibis_types
@@ -47,37 +47,25 @@ class OrderingDirection(Enum):
 
 
 @dataclass(frozen=True)
-class OrderingColumnReference:
+class OrderingExpression:
     """References a column and how to order with respect to values in that column."""
 
-    column_id: str
-    direction: OrderingDirection = OrderingDirection.ASC
-    na_last: bool = True
-
-    def with_name(self, name: str) -> OrderingColumnReference:
-        return OrderingColumnReference(name, self.direction, self.na_last)
-
-    def with_reverse(self) -> OrderingColumnReference:
-        return OrderingColumnReference(
-            self.column_id, self.direction.reverse(), not self.na_last
-        )
-
-
-@dataclass(frozen=True)
-class OrderingExpression:
-    """
-    An expression that defines a scalar value to order, a direction and a null behavior. Maps directly to ORDER BY expressions in GoogleSQL.
-    This is more of OrderingColumnReference which order on a previously projected column id instead of any scalar expression.
-    """
-
-    # TODO: Right now, expression trees requires projecting a value before it can be sorted on. If OrderByNode used this instead, we could avoid some such projections and simplify the tree.
     scalar_expression: expression.Expression
     direction: OrderingDirection = OrderingDirection.ASC
     na_last: bool = True
 
-    def remap_names(self, mapping: dict[str, str]) -> OrderingExpression:
+    def remap_names(self, mapping: Mapping[str, str]) -> OrderingExpression:
         return OrderingExpression(
             self.scalar_expression.rename(mapping), self.direction, self.na_last
+        )
+
+    def bind_variables(
+        self, mapping: Mapping[str, expression.Expression]
+    ) -> OrderingExpression:
+        return OrderingExpression(
+            self.scalar_expression.bind_all_variables(mapping),
+            self.direction,
+            self.na_last,
         )
 
     def with_reverse(self) -> OrderingExpression:
@@ -109,7 +97,7 @@ class IntegerEncoding:
 class ExpressionOrdering:
     """Immutable object that holds information about the ordering of rows in a ArrayValue object."""
 
-    ordering_value_columns: typing.Tuple[OrderingColumnReference, ...] = ()
+    ordering_value_columns: typing.Tuple[OrderingExpression, ...] = ()
     integer_encoding: IntegerEncoding = IntegerEncoding(False)
     string_encoding: StringEncoding = StringEncoding(False)
     # A table has a total ordering defined by the identities of a set of 1 or more columns.
@@ -120,7 +108,7 @@ class ExpressionOrdering:
     @classmethod
     def from_offset_col(cls, col: str) -> ExpressionOrdering:
         return ExpressionOrdering(
-            (OrderingColumnReference(col),),
+            (ascending_over(col),),
             integer_encoding=IntegerEncoding(True, is_sequential=True),
             total_ordering_columns=frozenset({col}),
         )
@@ -143,7 +131,7 @@ class ExpressionOrdering:
 
     def with_ordering_columns(
         self,
-        ordering_value_columns: Sequence[OrderingColumnReference] = (),
+        ordering_value_columns: Sequence[OrderingExpression] = (),
     ) -> ExpressionOrdering:
         """Creates a new ordering that reorders by the given columns.
 
@@ -154,18 +142,10 @@ class ExpressionOrdering:
         Returns:
             Modified ExpressionOrdering
         """
-        col_ids_new = [
-            ordering_ref.column_id for ordering_ref in ordering_value_columns
-        ]
-        old_ordering_keep = [
-            ordering_ref
-            for ordering_ref in self.ordering_value_columns
-            if ordering_ref.column_id not in col_ids_new
-        ]
 
         # Truncate to remove any unneded col references after all total order cols included
         new_ordering = self._truncate_ordering(
-            (*ordering_value_columns, *old_ordering_keep)
+            (*ordering_value_columns, *self.ordering_value_columns)
         )
         return ExpressionOrdering(
             new_ordering,
@@ -173,15 +153,20 @@ class ExpressionOrdering:
         )
 
     def _truncate_ordering(
-        self, order_refs: tuple[OrderingColumnReference, ...]
-    ) -> tuple[OrderingColumnReference, ...]:
-        total_order_cols_remaining = set(self.total_ordering_columns)
-        for i in range(len(order_refs)):
-            column = order_refs[i].column_id
-            if column in total_order_cols_remaining:
-                total_order_cols_remaining.remove(column)
-            if len(total_order_cols_remaining) == 0:
-                return order_refs[: i + 1]
+        self, order_refs: tuple[OrderingExpression, ...]
+    ) -> tuple[OrderingExpression, ...]:
+        # Truncate once we refer to a full key in bijective operations
+        must_see = set(self.total_ordering_columns)
+        columns_seen: Set[str] = set()
+        truncated_refs = []
+        for order_part in order_refs:
+            expr = order_part.scalar_expression
+            if not set(expr.unbound_variables).issubset(columns_seen):
+                if expr.is_bijective:
+                    columns_seen.update(expr.unbound_variables)
+                truncated_refs.append(order_part)
+                if columns_seen.issuperset(must_see):
+                    return tuple(truncated_refs)
         raise ValueError("Ordering did not contain all total_order_cols")
 
     def with_reverse(self):
@@ -193,8 +178,7 @@ class ExpressionOrdering:
 
     def with_column_remap(self, mapping: typing.Mapping[str, str]):
         new_value_columns = [
-            col.with_name(mapping.get(col.column_id, col.column_id))
-            for col in self.ordering_value_columns
+            col.remap_names(mapping) for col in self.all_ordering_columns
         ]
         new_total_order = frozenset(
             mapping.get(col_id, col_id) for col_id in self.total_ordering_columns
@@ -207,7 +191,7 @@ class ExpressionOrdering:
         )
 
     @property
-    def total_order_col(self) -> Optional[OrderingColumnReference]:
+    def total_order_col(self) -> Optional[OrderingExpression]:
         """Returns column id of columns that defines total ordering, if such as column exists"""
         if len(self.ordering_value_columns) != 1:
             return None
@@ -226,7 +210,7 @@ class ExpressionOrdering:
         return self.integer_encoding.is_encoded and self.integer_encoding.is_sequential
 
     @property
-    def all_ordering_columns(self) -> Sequence[OrderingColumnReference]:
+    def all_ordering_columns(self) -> Sequence[OrderingExpression]:
         return list(self.ordering_value_columns)
 
 
@@ -251,4 +235,15 @@ def reencode_order_string(
     return typing.cast(
         ibis_types.StringColumn,
         (typing.cast(ibis_types.StringValue, order_id).lpad(length, "0")),
+    )
+
+
+# Convenience functions
+def ascending_over(id: str, nulls_last: bool = True) -> OrderingExpression:
+    return OrderingExpression(expression.free_var(id), na_last=nulls_last)
+
+
+def descending_over(id: str, nulls_last: bool = True) -> OrderingExpression:
+    return OrderingExpression(
+        expression.free_var(id), direction=OrderingDirection.DESC, na_last=nulls_last
     )

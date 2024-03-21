@@ -30,7 +30,7 @@ import bigframes.core.guid
 import bigframes.core.join_def as join_def
 import bigframes.core.local_data as local_data
 import bigframes.core.nodes as nodes
-from bigframes.core.ordering import OrderingColumnReference
+from bigframes.core.ordering import OrderingExpression
 import bigframes.core.ordering as orderings
 import bigframes.core.rewrite
 import bigframes.core.schema as schemata
@@ -162,7 +162,7 @@ class ArrayValue:
     def filter(self, predicate: ex.Expression):
         return ArrayValue(nodes.FilterNode(child=self.node, predicate=predicate))
 
-    def order_by(self, by: Sequence[OrderingColumnReference]) -> ArrayValue:
+    def order_by(self, by: Sequence[OrderingExpression]) -> ArrayValue:
         return ArrayValue(nodes.OrderByNode(child=self.node, by=tuple(by)))
 
     def reversed(self) -> ArrayValue:

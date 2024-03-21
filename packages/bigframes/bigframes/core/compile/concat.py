@@ -20,8 +20,8 @@ import ibis
 
 import bigframes.core.compile.compiled as compiled
 from bigframes.core.ordering import (
+    ascending_over,
     ExpressionOrdering,
-    OrderingColumnReference,
     reencode_order_string,
     StringEncoding,
 )
@@ -84,7 +84,7 @@ def concat_ordered(
         tables.append(table)
     combined_table = ibis.union(*tables)
     ordering = ExpressionOrdering(
-        ordering_value_columns=tuple([OrderingColumnReference(ORDER_ID_COLUMN)]),
+        ordering_value_columns=tuple([ascending_over(ORDER_ID_COLUMN)]),
         total_ordering_columns=frozenset([ORDER_ID_COLUMN]),
         string_encoding=StringEncoding(True, prefix_size + max_encoding_size),
     )

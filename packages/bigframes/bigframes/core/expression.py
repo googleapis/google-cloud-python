@@ -85,7 +85,7 @@ class Expression(abc.ABC):
     def unbound_variables(self) -> typing.Tuple[str, ...]:
         return ()
 
-    def rename(self, name_mapping: dict[str, str]) -> Expression:
+    def rename(self, name_mapping: Mapping[str, str]) -> Expression:
         return self
 
     @property
@@ -103,6 +103,10 @@ class Expression(abc.ABC):
     def bind_all_variables(self, bindings: Mapping[str, Expression]) -> Expression:
         """Replace all variables with expression given in `bindings`."""
         ...
+
+    @property
+    def is_bijective(self) -> bool:
+        return False
 
 
 @dataclasses.dataclass(frozen=True)
@@ -125,6 +129,11 @@ class ScalarConstantExpression(Expression):
     def bind_all_variables(self, bindings: Mapping[str, Expression]) -> Expression:
         return self
 
+    @property
+    def is_bijective(self) -> bool:
+        # () <-> value
+        return True
+
 
 @dataclasses.dataclass(frozen=True)
 class UnboundVariableExpression(Expression):
@@ -136,7 +145,7 @@ class UnboundVariableExpression(Expression):
     def unbound_variables(self) -> typing.Tuple[str, ...]:
         return (self.id,)
 
-    def rename(self, name_mapping: dict[str, str]) -> Expression:
+    def rename(self, name_mapping: Mapping[str, str]) -> Expression:
         if self.id in name_mapping:
             return UnboundVariableExpression(name_mapping[self.id])
         else:
@@ -160,6 +169,10 @@ class UnboundVariableExpression(Expression):
         else:
             raise ValueError(f"Variable {self.id} remains unbound")
 
+    @property
+    def is_bijective(self) -> bool:
+        return True
+
 
 @dataclasses.dataclass(frozen=True)
 class OpExpression(Expression):
@@ -179,7 +192,7 @@ class OpExpression(Expression):
             )
         )
 
-    def rename(self, name_mapping: dict[str, str]) -> Expression:
+    def rename(self, name_mapping: Mapping[str, str]) -> Expression:
         return OpExpression(
             self.op, tuple(input.rename(name_mapping) for input in self.inputs)
         )
@@ -201,3 +214,8 @@ class OpExpression(Expression):
             self.op,
             tuple(input.bind_all_variables(bindings) for input in self.inputs),
         )
+
+    @property
+    def is_bijective(self) -> bool:
+        # TODO: Mark individual functions as bijective?
+        return False

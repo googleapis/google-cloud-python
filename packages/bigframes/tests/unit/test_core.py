@@ -17,7 +17,7 @@ import pandas
 
 import bigframes.core as core
 import bigframes.core.expression as ex
-import bigframes.core.ordering
+import bigframes.core.ordering as order
 import bigframes.operations as ops
 import bigframes.operations.aggregations as agg_ops
 
@@ -39,8 +39,8 @@ def test_arrayvalue_constructor_from_ibis_table_adds_all_columns():
     )
     ibis_table = session.ibis_client.table("test_table")
     columns = (ibis_table["col1"], ibis_table["col2"], ibis_table["col3"])
-    ordering = bigframes.core.ordering.ExpressionOrdering(
-        tuple([core.OrderingColumnReference("col1")]),
+    ordering = order.ExpressionOrdering(
+        tuple([order.ascending_over("col1")]),
         total_ordering_columns=frozenset(["col1"]),
     )
     actual = core.ArrayValue.from_ibis(

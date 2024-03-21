@@ -1445,13 +1445,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
     ) -> DataFrame:
         if na_position not in ["first", "last"]:
             raise ValueError("Param na_position must be one of 'first' or 'last'")
-        direction = (
-            order.OrderingDirection.ASC if ascending else order.OrderingDirection.DESC
-        )
         na_last = na_position == "last"
         index_columns = self._block.index_columns
         ordering = [
-            order.OrderingColumnReference(column, direction=direction, na_last=na_last)
+            order.ascending_over(column, na_last)
+            if ascending
+            else order.descending_over(column, na_last)
             for column in index_columns
         ]
         return DataFrame(self._block.order_by(ordering))
@@ -1481,16 +1480,12 @@ class DataFrame(vendored_pandas_frame.DataFrame):
         ordering = []
         for i in range(len(sort_labels)):
             column_id = sort_column_ids[i]
-            direction = (
-                order.OrderingDirection.ASC
-                if sort_directions[i]
-                else order.OrderingDirection.DESC
-            )
+            is_ascending = sort_directions[i]
             na_last = na_position == "last"
             ordering.append(
-                order.OrderingColumnReference(
-                    column_id, direction=direction, na_last=na_last
-                )
+                order.ascending_over(column_id, na_last)
+                if is_ascending
+                else order.descending_over(column_id, na_last)
             )
         return DataFrame(self._block.order_by(ordering))
 

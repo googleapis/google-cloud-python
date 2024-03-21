@@ -29,7 +29,7 @@ class WindowSpec:
     """
 
     grouping_keys: typing.Tuple[str, ...] = tuple()
-    ordering: typing.Tuple[orderings.OrderingColumnReference, ...] = tuple()
+    ordering: typing.Tuple[orderings.OrderingExpression, ...] = tuple()
     preceding: typing.Optional[int] = None
     following: typing.Optional[int] = None
     min_periods: int = 0

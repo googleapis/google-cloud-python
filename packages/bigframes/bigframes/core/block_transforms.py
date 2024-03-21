@@ -176,7 +176,7 @@ def _interpolate_column(
 ) -> typing.Tuple[blocks.Block, str]:
     if interpolate_method not in ["linear", "nearest", "ffill"]:
         raise ValueError("interpolate method not supported")
-    window_ordering = (ordering.OrderingColumnReference(x_values),)
+    window_ordering = (ordering.OrderingExpression(ex.free_var(x_values)),)
     backwards_window = windows.WindowSpec(following=0, ordering=window_ordering)
     forwards_window = windows.WindowSpec(preceding=0, ordering=window_ordering)
 
@@ -338,8 +338,8 @@ def value_counts(
     if sort:
         block = block.order_by(
             [
-                ordering.OrderingColumnReference(
-                    count_id,
+                ordering.OrderingExpression(
+                    ex.free_var(count_id),
                     direction=ordering.OrderingDirection.ASC
                     if ascending
                     else ordering.OrderingDirection.DESC,
@@ -398,8 +398,8 @@ def rank(
         window = windows.WindowSpec(
             # BigQuery has syntax to reorder nulls with "NULLS FIRST/LAST", but that is unavailable through ibis presently, so must order on a separate nullity expression first.
             ordering=(
-                ordering.OrderingColumnReference(
-                    col,
+                ordering.OrderingExpression(
+                    ex.free_var(col),
                     ordering.OrderingDirection.ASC
                     if ascending
                     else ordering.OrderingDirection.DESC,
@@ -481,8 +481,8 @@ def nsmallest(
     if keep == "last":
         block = block.reversed()
     order_refs = [
-        ordering.OrderingColumnReference(
-            col_id, direction=ordering.OrderingDirection.ASC
+        ordering.OrderingExpression(
+            ex.free_var(col_id), direction=ordering.OrderingDirection.ASC
         )
         for col_id in column_ids
     ]
@@ -511,8 +511,8 @@ def nlargest(
     if keep == "last":
         block = block.reversed()
     order_refs = [
-        ordering.OrderingColumnReference(
-            col_id, direction=ordering.OrderingDirection.DESC
+        ordering.OrderingExpression(
+            ex.free_var(col_id), direction=ordering.OrderingDirection.DESC
         )
         for col_id in column_ids
     ]
@@ -804,9 +804,9 @@ def _idx_extrema(
         )
         # Have to find the min for each
         order_refs = [
-            ordering.OrderingColumnReference(value_col, direction),
+            ordering.OrderingExpression(ex.free_var(value_col), direction),
             *[
-                ordering.OrderingColumnReference(idx_col)
+                ordering.OrderingExpression(ex.free_var(idx_col))
                 for idx_col in original_block.index_columns
             ],
         ]

@@ -79,8 +79,8 @@ import bigframes.core as core
 import bigframes.core.blocks as blocks
 import bigframes.core.compile
 import bigframes.core.guid as guid
-from bigframes.core.ordering import IntegerEncoding, OrderingColumnReference
-import bigframes.core.ordering as orderings
+from bigframes.core.ordering import IntegerEncoding
+import bigframes.core.ordering as order
 import bigframes.core.traversal as traversals
 import bigframes.core.utils as utils
 import bigframes.dataframe as dataframe
@@ -747,10 +747,9 @@ class Session(
             # Note: currently, a table has a total ordering only when the
             # primary key(s) are set on a table. The query engine assumes such
             # columns are unique, even if not enforced.
-            ordering = orderings.ExpressionOrdering(
+            ordering = order.ExpressionOrdering(
                 ordering_value_columns=tuple(
-                    core.OrderingColumnReference(column_id)
-                    for column_id in total_ordering_cols
+                    order.ascending_over(column_id) for column_id in total_ordering_cols
                 ),
                 total_ordering_columns=frozenset(total_ordering_cols),
             )
@@ -765,12 +764,9 @@ class Session(
 
         elif len(index_cols) != 0:
             # We have index columns, lets see if those are actually total_order_columns
-            ordering = orderings.ExpressionOrdering(
+            ordering = order.ExpressionOrdering(
                 ordering_value_columns=tuple(
-                    [
-                        core.OrderingColumnReference(column_id)
-                        for column_id in index_cols
-                    ]
+                    [order.ascending_over(column_id) for column_id in index_cols]
                 ),
                 total_ordering_columns=frozenset(index_cols),
             )
@@ -1024,8 +1020,8 @@ class Session(
         )
         self._start_generic_job(load_job)
 
-        ordering = orderings.ExpressionOrdering(
-            ordering_value_columns=tuple([OrderingColumnReference(ordering_col)]),
+        ordering = order.ExpressionOrdering(
+            ordering_value_columns=tuple([order.ascending_over(ordering_col)]),
             total_ordering_columns=frozenset([ordering_col]),
             integer_encoding=IntegerEncoding(True, is_sequential=True),
         )
@@ -1380,9 +1376,9 @@ class Session(
             itertools.chain(original_column_ids, [full_row_hash, random_value])
         )
 
-        ordering_ref1 = core.OrderingColumnReference(ordering_hash_part)
-        ordering_ref2 = core.OrderingColumnReference(ordering_rand_part)
-        ordering = orderings.ExpressionOrdering(
+        ordering_ref1 = order.ascending_over(ordering_hash_part)
+        ordering_ref2 = order.ascending_over(ordering_rand_part)
+        ordering = order.ExpressionOrdering(
             ordering_value_columns=(ordering_ref1, ordering_ref2),
             total_ordering_columns=frozenset([ordering_hash_part, ordering_rand_part]),
         )
@@ -1746,7 +1742,7 @@ class Session(
             table_expression,
             columns=new_columns,
             hidden_ordering_columns=new_hidden_columns,
-            ordering=orderings.ExpressionOrdering.from_offset_col("bigframes_offsets"),
+            ordering=order.ExpressionOrdering.from_offset_col("bigframes_offsets"),
         )
 
     def _is_trivially_executable(self, array_value: core.ArrayValue):

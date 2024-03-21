@@ -171,7 +171,7 @@ def qcut(
         agg_ops.QcutOp(q),  # type: ignore
         window_spec=core.WindowSpec(
             grouping_keys=(nullity_id,),
-            ordering=(order.OrderingColumnReference(x._value_column),),
+            ordering=(order.ascending_over(x._value_column),),
         ),
     )
     block, result = block.project_expr(

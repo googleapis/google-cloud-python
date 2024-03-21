@@ -119,7 +119,7 @@ def create_arrayvalue(
     columns = tuple(ibis_table[key] for key in ibis_table.columns)
     ordering = bigframes.core.ordering.ExpressionOrdering(
         tuple(
-            [core.OrderingColumnReference(column) for column in total_ordering_columns]
+            [core.orderings.ascending_over(column) for column in total_ordering_columns]
         ),
         total_ordering_columns=frozenset(total_ordering_columns),
     )
