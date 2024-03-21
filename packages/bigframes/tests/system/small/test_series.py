@@ -240,10 +240,18 @@ def test_series___getitem__(scalars_dfs, index_col, key):
     pd.testing.assert_series_equal(bf_result.to_pandas(), pd_result)
 
 
-def test_series___getitem___with_int_key(scalars_dfs):
+@pytest.mark.parametrize(
+    ("key",),
+    (
+        (-2,),
+        (-1,),
+        (0,),
+        (1,),
+    ),
+)
+def test_series___getitem___with_int_key(scalars_dfs, key):
     col_name = "int64_too"
     index_col = "string_col"
-    key = 2
     scalars_df, scalars_pandas_df = scalars_dfs
     scalars_df = scalars_df.set_index(index_col, drop=False)
     scalars_pandas_df = scalars_pandas_df.set_index(index_col, drop=False)

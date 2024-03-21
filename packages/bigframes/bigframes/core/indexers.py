@@ -402,7 +402,8 @@ def _iloc_getitem_series_or_dataframe(
     pd.Series,
 ]:
     if isinstance(key, int):
-        internal_slice_result = series_or_dataframe._slice(key, key + 1, 1)
+        stop_key = key + 1 if key != -1 else None
+        internal_slice_result = series_or_dataframe._slice(key, stop_key, 1)
         result_pd_df = internal_slice_result.to_pandas()
         if result_pd_df.empty:
             raise IndexError("single positional indexer is out-of-bounds")
