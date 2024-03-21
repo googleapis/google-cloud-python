@@ -127,7 +127,7 @@ def test_create(
     publisher_client.delete_topic(request={"topic": topic_path})
 
 
-def test_create_kinesis_ingestion(
+def test_create_topic_with_kinesis_ingestion(
     publisher_client: pubsub_v1.PublisherClient, capsys: CaptureFixture[str]
 ) -> None:
     # The scope of `topic_path` is limited to this function.
@@ -146,7 +146,7 @@ def test_create_kinesis_ingestion(
     except NotFound:
         pass
 
-    publisher.create_topic_kinesis_ingestion(
+    publisher.create_topic_with_kinesis_ingestion(
         PROJECT_ID,
         TOPIC_ID,
         stream_arn,
@@ -162,7 +162,7 @@ def test_create_kinesis_ingestion(
     publisher_client.delete_topic(request={"topic": topic_path})
 
 
-def test_update_kinesis_ingestion(
+def test_update_topic_type(
     publisher_client: pubsub_v1.PublisherClient, capsys: CaptureFixture[str]
 ) -> None:
     # The scope of `topic_path` is limited to this function.
@@ -186,7 +186,7 @@ def test_update_kinesis_ingestion(
     out, _ = capsys.readouterr()
     assert f"Created topic: {topic_path}" in out
 
-    publisher.update_topic_kinesis_ingestion(
+    publisher.update_topic_type(
         PROJECT_ID,
         TOPIC_ID,
         stream_arn,
