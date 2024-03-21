@@ -5,6 +5,13 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.20.3](https://github.com/googleapis/python-pubsub/compare/v2.20.2...v2.20.3) (2024-03-21)
+
+
+### Documentation
+
+* **samples:** Update Region Tags ([#1128](https://github.com/googleapis/python-pubsub/issues/1128)) ([e3bc89e](https://github.com/googleapis/python-pubsub/commit/e3bc89eaa51337c93144d6c3100486353d494ad9))
+
 ## [2.20.2](https://github.com/googleapis/python-pubsub/compare/v2.20.1...v2.20.2) (2024-03-15)
 
 
