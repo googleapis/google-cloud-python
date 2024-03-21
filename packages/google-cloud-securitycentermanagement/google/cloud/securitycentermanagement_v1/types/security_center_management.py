@@ -80,7 +80,7 @@ class EffectiveSecurityHealthAnalyticsCustomModule(proto.Message):
 
     Attributes:
         name (str):
-            Output only. The resource name of the custom module. Its
+            Identifier. The resource name of the custom module. Its
             format is
             "organizations/{organization}/locations/{location}/effectiveSecurityHealthAnalyticsCustomModules/{effective_security_health_analytics_custom_module}",
             or
@@ -233,7 +233,7 @@ class SecurityHealthAnalyticsCustomModule(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The resource name of the custom module. Its
+            Identifier. The resource name of the custom module. Its
             format is
             "organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}",
             or
@@ -1129,7 +1129,7 @@ class EffectiveEventThreatDetectionCustomModule(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The resource name of the ETD custom module.
+            Identifier. The resource name of the ETD custom module.
 
             Its format is:
 
@@ -1288,7 +1288,7 @@ class EventThreatDetectionCustomModule(proto.Message):
 
     Attributes:
         name (str):
-            Immutable. The resource name of the ETD custom module.
+            Identifier. The resource name of the ETD custom module.
 
             Its format is:
 
