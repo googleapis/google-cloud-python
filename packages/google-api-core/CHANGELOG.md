@@ -4,6 +4,19 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+## [2.18.0](https://github.com/googleapis/python-api-core/compare/v2.17.1...v2.18.0) (2024-03-20)
+
+
+### Features
+
+* Add common logic for supporting universe domain ([#621](https://github.com/googleapis/python-api-core/issues/621)) ([94f2ca3](https://github.com/googleapis/python-api-core/commit/94f2ca3b4d094e6e10154634d3463d07ebea2035))
+
+
+### Bug Fixes
+
+* Add _registered_method to grpc ChannelStub ([#614](https://github.com/googleapis/python-api-core/issues/614)) ([5eaaea8](https://github.com/googleapis/python-api-core/commit/5eaaea8a989f8bdbdb5fbc95a155a20837c87f42))
+* **deps:** Require proto-plus &gt;= 1.22.3 ([#626](https://github.com/googleapis/python-api-core/issues/626)) ([4fed37c](https://github.com/googleapis/python-api-core/commit/4fed37cbc32122f156e38250b5fa8b2b08a787a1))
+
 ## [2.17.1](https://github.com/googleapis/python-api-core/compare/v2.17.0...v2.17.1) (2024-02-13)
 
 
