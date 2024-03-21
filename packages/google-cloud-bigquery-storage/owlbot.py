@@ -123,6 +123,10 @@ s.move(
 
 python.py_samples(skip_readmes=True)
 
-# run format session for all directories which have a noxfile
-for noxfile in Path(".").glob("**/noxfile.py"):
-    s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)
+# The format session in the sample folders conflict with the root noxfile,
+# which ends up formatting samples because of a symlink in the docs/ directory.
+s.shell.run(["nox", "-s", "format"], hide_output=False)
+
+# TODO(swast): run format session for all directories which have a noxfile
+# for noxfile in Path(".").glob("**/noxfile.py"):
+#    s.shell.run(["nox", "-s", "format"], cwd=noxfile.parent, hide_output=False)

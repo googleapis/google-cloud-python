@@ -17,7 +17,6 @@ from unittest import mock
 
 from google.api_core import exceptions
 from google.protobuf import descriptor_pb2
-
 import pytest
 
 from google.cloud.bigquery_storage_v1 import exceptions as bqstorage_exceptions
