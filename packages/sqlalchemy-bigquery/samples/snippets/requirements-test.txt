@@ -1,6 +1,6 @@
 attrs==23.2.0
 click==8.1.7
-google-auth==2.28.2
+google-auth==2.29.0
 google-cloud-testutils==1.4.0
 iniconfig==2.0.0
 packaging==24.0
