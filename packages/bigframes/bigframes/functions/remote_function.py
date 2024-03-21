@@ -126,9 +126,8 @@ class RemoteFunctionClient:
         bq_location,
         bq_dataset,
         bq_client,
-        bq_connection_client,
         bq_connection_id,
-        cloud_resource_manager_client,
+        bq_connection_manager,
         cloud_function_service_account,
         cloud_function_kms_key_name,
         cloud_function_docker_repository,
@@ -140,9 +139,7 @@ class RemoteFunctionClient:
         self._bq_dataset = bq_dataset
         self._bq_client = bq_client
         self._bq_connection_id = bq_connection_id
-        self._bq_connection_manager = clients.BqConnectionManager(
-            bq_connection_client, cloud_resource_manager_client
-        )
+        self._bq_connection_manager = bq_connection_manager
         self._cloud_function_service_account = cloud_function_service_account
         self._cloud_function_kms_key_name = cloud_function_kms_key_name
         self._cloud_function_docker_repository = cloud_function_docker_repository
@@ -152,12 +149,13 @@ class RemoteFunctionClient:
     ):
         """Create a BigQuery remote function given the artifacts of a user defined
         function and the http endpoint of a corresponding cloud function."""
-        self._bq_connection_manager.create_bq_connection(
-            self._gcp_project_id,
-            self._bq_location,
-            self._bq_connection_id,
-            "run.invoker",
-        )
+        if self._bq_connection_manager:
+            self._bq_connection_manager.create_bq_connection(
+                self._gcp_project_id,
+                self._bq_location,
+                self._bq_connection_id,
+                "run.invoker",
+            )
 
         # Create BQ function
         # https://cloud.google.com/bigquery/docs/reference/standard-sql/remote-functions#create_a_remote_function_2
@@ -784,7 +782,7 @@ def remote_function(
     if not bigquery_connection:
         bigquery_connection = session._bq_connection  # type: ignore
 
-    bigquery_connection = clients.BqConnectionManager.resolve_full_connection_name(
+    bigquery_connection = clients.resolve_full_bq_connection_name(
         bigquery_connection,
         default_project=dataset_ref.project,
         default_location=bq_location,
@@ -816,6 +814,8 @@ def remote_function(
             " For more details see https://cloud.google.com/functions/docs/securing/cmek#before_you_begin"
         )
 
+    bq_connection_manager = None if session is None else session.bqconnectionmanager
+
     def wrapper(f):
         if not callable(f):
             raise TypeError("f must be callable, got {}".format(f))
@@ -832,9 +832,8 @@ def remote_function(
             bq_location,
             dataset_ref.dataset_id,
             bigquery_client,
-            bigquery_connection_client,
             bq_connection_id,
-            resource_manager_client,
+            bq_connection_manager,
             cloud_function_service_account,
             cloud_function_kms_key_name,
             cloud_function_docker_repository,

@@ -27,6 +27,23 @@ from google.iam.v1 import iam_policy_pb2, policy_pb2
 logger = logging.getLogger(__name__)
 
 
+def resolve_full_bq_connection_name(
+    connection_name: str, default_project: str, default_location: str
+) -> str:
+    """Retrieve the full connection name of the form <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
+    Use default project, location or connection_id when any of them are missing."""
+    if connection_name.count(".") == 2:
+        return connection_name
+
+    if connection_name.count(".") == 1:
+        return f"{default_project}.{connection_name}"
+
+    if connection_name.count(".") == 0:
+        return f"{default_project}.{default_location}.{connection_name}"
+
+    raise ValueError(f"Invalid connection name format: {connection_name}.")
+
+
 class BqConnectionManager:
     """Manager to handle operations with BQ connections."""
 
@@ -40,23 +57,6 @@ class BqConnectionManager:
     ):
         self._bq_connection_client = bq_connection_client
         self._cloud_resource_manager_client = cloud_resource_manager_client
-
-    @classmethod
-    def resolve_full_connection_name(
-        cls, connection_name: str, default_project: str, default_location: str
-    ) -> str:
-        """Retrieve the full connection name of the form <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
-        Use default project, location or connection_id when any of them are missing."""
-        if connection_name.count(".") == 2:
-            return connection_name
-
-        if connection_name.count(".") == 1:
-            return f"{default_project}.{connection_name}"
-
-        if connection_name.count(".") == 0:
-            return f"{default_project}.{default_location}.{connection_name}"
-
-        raise ValueError(f"Invalid connection name format: {connection_name}.")
 
     def create_bq_connection(
         self, project_id: str, location: str, connection_id: str, iam_role: str
@@ -73,12 +73,6 @@ class BqConnectionManager:
             iam_role:
                 str of the IAM role that the service account of the created connection needs to aquire. E.g. 'run.invoker', 'aiplatform.user'
         """
-        # TODO(shobs): The below command to enable BigQuery Connection API needs
-        # to be automated. Disabling for now since most target users would not
-        # have the privilege to enable API in a project.
-        # log("Making sure BigQuery Connection API is enabled")
-        # if os.system("gcloud services enable bigqueryconnection.googleapis.com"):
-        #    raise ValueError("Failed to enable BigQuery Connection API")
         # If the intended connection does not exist then create it
         service_account_id = self._get_service_account_if_connection_exists(
             project_id, location, connection_id

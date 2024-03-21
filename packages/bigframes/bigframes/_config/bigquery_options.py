@@ -40,6 +40,7 @@ class BigQueryOptions:
         use_regional_endpoints: bool = False,
         application_name: Optional[str] = None,
         kms_key_name: Optional[str] = None,
+        skip_bq_connection_check: bool = False,
     ):
         self._credentials = credentials
         self._project = project
@@ -48,6 +49,7 @@ class BigQueryOptions:
         self._use_regional_endpoints = use_regional_endpoints
         self._application_name = application_name
         self._kms_key_name = kms_key_name
+        self._skip_bq_connection_check = skip_bq_connection_check
         self._session_started = False
 
     @property
@@ -105,14 +107,16 @@ class BigQueryOptions:
 
     @property
     def bq_connection(self) -> Optional[str]:
-        """Name of the BigQuery connection to use. Should be of the form <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
+        """Name of the BigQuery connection to use. Should be of the form
+        <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>.
 
         You should either have the connection already created in the
         <code>location</code> you have chosen, or you should have the Project IAM
         Admin role to enable the service to create the connection for you if you
         need it.
 
-        If this option isn't provided, or project or location aren't provided, session will use its default project/location/connection_id as default connection.
+        If this option isn't provided, or project or location aren't provided,
+        session will use its default project/location/connection_id as default connection.
         """
         return self._bq_connection
 
@@ -121,6 +125,26 @@ class BigQueryOptions:
         if self._session_started and self._bq_connection != value:
             raise ValueError(SESSION_STARTED_MESSAGE.format(attribute="bq_connection"))
         self._bq_connection = value
+
+    @property
+    def skip_bq_connection_check(self) -> bool:
+        """Forcibly use the BigQuery connection.
+
+        Setting this flag to True would avoid creating the BigQuery connection
+        and checking or setting IAM permissions on it. So if the BigQuery
+        connection (default or user-provided) does not exist, or it does not have
+        necessary permissions set up to support BigQuery DataFrames operations,
+        then a runtime error will be reported.
+        """
+        return self._skip_bq_connection_check
+
+    @skip_bq_connection_check.setter
+    def skip_bq_connection_check(self, value: bool):
+        if self._session_started and self._skip_bq_connection_check != value:
+            raise ValueError(
+                SESSION_STARTED_MESSAGE.format(attribute="skip_bq_connection_check")
+            )
+        self._skip_bq_connection_check = value
 
     @property
     def use_regional_endpoints(self) -> bool:

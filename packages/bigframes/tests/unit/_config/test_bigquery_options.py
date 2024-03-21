@@ -30,6 +30,7 @@ import bigframes._config.bigquery_options as bigquery_options
         ("bq_connection", "path/to/connection/1", "path/to/connection/2"),
         ("use_regional_endpoints", False, True),
         ("kms_key_name", "kms/key/name/1", "kms/key/name/2"),
+        ("skip_bq_connection_check", False, True),
     ],
 )
 def test_setter_raises_if_session_started(attribute, original_value, new_value):

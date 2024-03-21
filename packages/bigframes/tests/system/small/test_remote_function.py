@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import google.api_core.exceptions
 from google.cloud import bigquery
 import pandas as pd
 import pytest
@@ -464,6 +465,39 @@ def test_series_map(session_with_bq_connection, scalars_dfs):
         bf_result,
         pd_result,
     )
+
+
+def test_skip_bq_connection_check(dataset_id_permanent):
+    connection_name = "connection_does_not_exist"
+    session = bigframes.Session(
+        context=bigframes.BigQueryOptions(
+            bq_connection=connection_name, skip_bq_connection_check=True
+        )
+    )
+
+    # Make sure that the connection does not exist
+    with pytest.raises(google.api_core.exceptions.NotFound):
+        session.bqconnectionclient.get_connection(
+            name=session.bqconnectionclient.connection_path(
+                session._project, session._location, connection_name
+            )
+        )
+
+    # Make sure that an attempt to create a remote function routine with
+    # non-existent connection would result in an exception thrown by the BQ
+    # service.
+    # This is different from the exception throw by the BQ Connection service
+    # if it was not able to create the connection because of lack of permission
+    # when skip_bq_connection_check was not set to True:
+    # google.api_core.exceptions.PermissionDenied: 403 Permission 'resourcemanager.projects.setIamPolicy' denied on resource
+    with pytest.raises(
+        google.api_core.exceptions.NotFound,
+        match=f"Not found: Connection {connection_name}",
+    ):
+
+        @session.remote_function([int], int, dataset=dataset_id_permanent)
+        def add_one(x):
+            return x + 1
 
 
 @pytest.mark.flaky(retries=2, delay=120)

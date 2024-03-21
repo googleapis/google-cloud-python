@@ -18,21 +18,21 @@ from bigframes import clients
 
 
 def test_get_connection_name_full_connection_id():
-    connection_name = clients.BqConnectionManager.resolve_full_connection_name(
+    connection_name = clients.resolve_full_bq_connection_name(
         "connection-id", default_project="default-project", default_location="us"
     )
     assert connection_name == "default-project.us.connection-id"
 
 
 def test_get_connection_name_full_location_connection_id():
-    connection_name = clients.BqConnectionManager.resolve_full_connection_name(
+    connection_name = clients.resolve_full_bq_connection_name(
         "eu.connection-id", default_project="default-project", default_location="us"
     )
     assert connection_name == "default-project.eu.connection-id"
 
 
 def test_get_connection_name_full_all():
-    connection_name = clients.BqConnectionManager.resolve_full_connection_name(
+    connection_name = clients.resolve_full_bq_connection_name(
         "my-project.eu.connection-id",
         default_project="default-project",
         default_location="us",
@@ -42,7 +42,7 @@ def test_get_connection_name_full_all():
 
 def test_get_connection_name_full_raise_value_error():
     with pytest.raises(ValueError):
-        clients.BqConnectionManager.resolve_full_connection_name(
+        clients.resolve_full_bq_connection_name(
             "my-project.eu.connection-id.extra_field",
             default_project="default-project",
             default_location="us",

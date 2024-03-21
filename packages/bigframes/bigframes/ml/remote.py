@@ -62,11 +62,9 @@ class VertexAIModel(base.BaseEstimator):
         self.output = output
         self.session = session or bpd.get_global_session()
 
-        self._bq_connection_manager = clients.BqConnectionManager(
-            self.session.bqconnectionclient, self.session.resourcemanagerclient
-        )
+        self._bq_connection_manager = self.session.bqconnectionmanager
         connection_name = connection_name or self.session._bq_connection
-        self.connection_name = self._bq_connection_manager.resolve_full_connection_name(
+        self.connection_name = clients.resolve_full_bq_connection_name(
             connection_name,
             default_project=self.session._project,
             default_location=self.session._location,
@@ -81,17 +79,19 @@ class VertexAIModel(base.BaseEstimator):
             raise ValueError(
                 "Must provide connection_name, either in constructor or through session options."
             )
-        connection_name_parts = self.connection_name.split(".")
-        if len(connection_name_parts) != 3:
-            raise ValueError(
-                f"connection_name must be of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>, got {self.connection_name}."
+
+        if self._bq_connection_manager:
+            connection_name_parts = self.connection_name.split(".")
+            if len(connection_name_parts) != 3:
+                raise ValueError(
+                    f"connection_name must be of the format <PROJECT_NUMBER/PROJECT_ID>.<LOCATION>.<CONNECTION_ID>, got {self.connection_name}."
+                )
+            self._bq_connection_manager.create_bq_connection(
+                project_id=connection_name_parts[0],
+                location=connection_name_parts[1],
+                connection_id=connection_name_parts[2],
+                iam_role="aiplatform.user",
             )
-        self._bq_connection_manager.create_bq_connection(
-            project_id=connection_name_parts[0],
-            location=connection_name_parts[1],
-            connection_id=connection_name_parts[2],
-            iam_role="aiplatform.user",
-        )
 
         options = {
             "endpoint": self.endpoint,

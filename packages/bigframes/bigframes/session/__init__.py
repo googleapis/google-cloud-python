@@ -73,6 +73,7 @@ from pandas._typing import (
 import pyarrow as pa
 
 import bigframes._config.bigquery_options as bigquery_options
+import bigframes.clients
 import bigframes.constants as constants
 import bigframes.core as core
 import bigframes.core.blocks as blocks
@@ -153,7 +154,7 @@ class Session(
             Configuration adjusting how to connect to BigQuery and related
             APIs. Note that some options are ignored if ``clients_provider`` is
             set.
-        clients_provider (bigframes.session.bigframes.session.clients.ClientsProvider):
+        clients_provider (bigframes.session.clients.ClientsProvider):
             An object providing client library objects.
     """
 
@@ -212,6 +213,7 @@ class Session(
 
         # Resolve the BQ connection for remote function and Vertex AI integration
         self._bq_connection = context.bq_connection or _BIGFRAMES_DEFAULT_CONNECTION_ID
+        self._skip_bq_connection_check = context._skip_bq_connection_check
 
         # Now that we're starting the session, don't allow the options to be
         # changed.
@@ -237,6 +239,16 @@ class Session(
     @property
     def resourcemanagerclient(self):
         return self._clients_provider.resourcemanagerclient
+
+    _bq_connection_manager: Optional[bigframes.clients.BqConnectionManager] = None
+
+    @property
+    def bqconnectionmanager(self):
+        if not self._skip_bq_connection_check and not self._bq_connection_manager:
+            self._bq_connection_manager = bigframes.clients.BqConnectionManager(
+                self.bqconnectionclient, self.resourcemanagerclient
+            )
+        return self._bq_connection_manager
 
     @property
     def _project(self):
