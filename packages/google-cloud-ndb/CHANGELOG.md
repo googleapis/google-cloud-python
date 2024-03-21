@@ -4,6 +4,22 @@
 
 [1]: https://pypi.org/project/google-cloud-ndb/#history
 
+## [2.3.1](https://github.com/googleapis/python-ndb/compare/v2.3.0...v2.3.1) (2024-03-16)
+
+
+### Bug Fixes
+
+* **grpc:** Fix large payload handling when using the emulator. ([#975](https://github.com/googleapis/python-ndb/issues/975)) ([d9162ae](https://github.com/googleapis/python-ndb/commit/d9162aee709062683bf5f9f01208bd40f46d490a))
+* Remove uses of six. [#913](https://github.com/googleapis/python-ndb/issues/913) ([#958](https://github.com/googleapis/python-ndb/issues/958)) ([e17129a](https://github.com/googleapis/python-ndb/commit/e17129a2114c3f5d45b99cc9a4911b586eb3fafa))
+* Show a non-None error for core_exception.Unknown errors. ([#968](https://github.com/googleapis/python-ndb/issues/968)) ([66e61cc](https://github.com/googleapis/python-ndb/commit/66e61cc578335509d480650906528fa390f44c11))
+
+
+### Documentation
+
+* Document how to run system tests against the emulator. ([#963](https://github.com/googleapis/python-ndb/issues/963)) ([47db5b9](https://github.com/googleapis/python-ndb/commit/47db5b9f6ee1fc7c01ad86d476cd8e066fb5cffb))
+* Note to use functools.wrap instead of utils.wrapping. ([#966](https://github.com/googleapis/python-ndb/issues/966)) ([5e9f3d6](https://github.com/googleapis/python-ndb/commit/5e9f3d6977677c20b3447f07bf8bcf4553aac076))
+* Tell users of utils.wrapping to use functools.wraps ([#967](https://github.com/googleapis/python-ndb/issues/967)) ([042645b](https://github.com/googleapis/python-ndb/commit/042645b52608a1c11645dd4b014a90040468b113))
+
 ## [2.3.0](https://github.com/googleapis/python-ndb/compare/v2.2.2...v2.3.0) (2024-03-01)
 
 
