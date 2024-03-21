@@ -622,6 +622,26 @@ def strftime_op_impl(x: ibis_types.Value, op: ops.StrftimeOp):
     )
 
 
+@scalar_op_compiler.register_unary_op(ops.FloorDtOp, pass_op=True)
+def floor_dt_op_impl(x: ibis_types.Value, op: ops.FloorDtOp):
+    supported_freqs = ["Y", "Q", "M", "W", "D", "h", "min", "s", "ms", "us", "ns"]
+    pandas_to_ibis_freqs = {"min": "m"}
+    if op.freq not in supported_freqs:
+        raise NotImplementedError(
+            f"Unsupported freq paramater: {op.freq}"
+            + " Supported freq parameters are: "
+            + ",".join(supported_freqs)
+        )
+    if op.freq in pandas_to_ibis_freqs:
+        ibis_freq = pandas_to_ibis_freqs[op.freq]
+    else:
+        ibis_freq = op.freq
+    result_type = x.type()
+    result = typing.cast(ibis_types.TimestampValue, x)
+    result = result.truncate(ibis_freq)
+    return result.cast(result_type)
+
+
 @scalar_op_compiler.register_unary_op(ops.time_op)
 def time_op_impl(x: ibis_types.Value):
     return typing.cast(ibis_types.TimestampValue, x).time()

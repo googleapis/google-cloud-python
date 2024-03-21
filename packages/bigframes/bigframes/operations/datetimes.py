@@ -97,3 +97,6 @@ class DatetimeMethods(
 
     def normalize(self) -> series.Series:
         return self._apply_unary_op(ops.normalize_op)
+
+    def floor(self, freq: str) -> series.Series:
+        return self._apply_unary_op(ops.FloorDtOp(freq=freq))

@@ -282,3 +282,24 @@ def test_dt_normalize(scalars_dfs, col_name):
         pd_result.astype(scalars_df[col_name].dtype),  # normalize preserves type
         bf_result,
     )
+
+
+@pytest.mark.parametrize(
+    ("col_name", "freq"),
+    [
+        ("timestamp_col", "D"),
+        ("timestamp_col", "min"),
+        ("datetime_col", "s"),
+        ("datetime_col", "us"),
+    ],
+)
+@skip_legacy_pandas
+def test_dt_floor(scalars_dfs, col_name, freq):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df[col_name].dt.floor(freq).to_pandas()
+    pd_result = scalars_pandas_df[col_name].dt.floor(freq)
+
+    assert_series_equal(
+        pd_result.astype(scalars_df[col_name].dtype),  # floor preserves type
+        bf_result,
+    )

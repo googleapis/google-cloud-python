@@ -441,6 +441,15 @@ class StrftimeOp(UnaryOp):
         return dtypes.STRING_DTYPE
 
 
+@dataclasses.dataclass(frozen=True)
+class FloorDtOp(UnaryOp):
+    name: typing.ClassVar[str] = "floor_dt"
+    freq: str
+
+    def output_type(self, *input_types):
+        return input_types[0]
+
+
 # Binary Ops
 fillna_op = create_binary_op(name="fillna")
 cliplower_op = create_binary_op(name="clip_lower")

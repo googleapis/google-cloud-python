@@ -67,3 +67,33 @@ class DatelikeOps:
             bigframes.series.Series of the same dtype as the data.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def floor(self, freq: str):
+        """
+        Perform floor operation on the data to the specified freq.
+
+        Supported freq arguments are: 'Y' (year), 'Q' (quarter), 'M'
+        (month), 'W' (week), 'D' (day), 'h' (hour), 'min' (minute), 's'
+        (second), 'ms' (microsecond), 'us' (nanosecond), 'ns' (nanosecond)
+
+        Behavior around clock changes (i.e. daylight savings) is determined
+        by the SQL engine, so "ambiguous" and "nonexistent" parameters are not
+        supported. Y, Q, M, and W freqs are not supported by pandas as of
+        version 2.2, but have been added here due to backend support.
+
+        **Examples:**
+
+            >>> import pandas as pd
+            >>> import bigframes.pandas as bpd
+            >>> rng = pd.date_range('1/1/2018 11:59:00', periods=3, freq='min')
+            >>> bpd.Series(rng).dt.floor("h")
+            0    2018-01-01 11:00:00
+            1    2018-01-01 12:00:00
+            2    2018-01-01 12:00:00
+            dtype: timestamp[us][pyarrow]
+
+        Args:
+            freq (str):
+                Frequency string (e.g. "D", "min", "s").
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
