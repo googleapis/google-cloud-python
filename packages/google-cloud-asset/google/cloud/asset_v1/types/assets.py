@@ -512,7 +512,7 @@ class RelatedAsset(proto.Message):
 
 class Tag(proto.Message):
     r"""The key and value for a
-    `tag <https://cloud.google.com/resource-manager/docs/tags/tags-overview>`__,
+    `tag <https://cloud.google.com/resource-manager/docs/tags/tags-overview>`__.
 
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
@@ -1371,7 +1371,7 @@ class IamPolicyAnalysisState(proto.Message):
 
 
 class ConditionEvaluation(proto.Message):
-    r"""The Condition evaluation.
+    r"""The condition evaluation.
 
     Attributes:
         evaluation_value (google.cloud.asset_v1.types.ConditionEvaluation.EvaluationValue):
@@ -1391,7 +1391,7 @@ class ConditionEvaluation(proto.Message):
             CONDITIONAL (3):
                 The evaluation result is ``conditional`` when the condition
                 expression contains variables that are either missing input
-                values or have not been supported by Analyzer yet.
+                values or have not been supported by Policy Analyzer yet.
         """
         EVALUATION_VALUE_UNSPECIFIED = 0
         TRUE = 1
