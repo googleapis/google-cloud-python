@@ -73,6 +73,14 @@ def to_datetime(
             f"String and Timestamp requires utc=True. {constants.FEEDBACK_LINK}"
         )
 
+    if format and unit and arg.dtype in ("Int64", "Float64"):  # type: ignore
+        raise ValueError("cannot specify both format and unit")
+
+    if unit and arg.dtype not in ("Int64", "Float64"):  # type: ignore
+        raise NotImplementedError(
+            f"Unit parameter is not supported for non-numerical input types. {constants.FEEDBACK_LINK}"
+        )
+
     return arg._apply_unary_op(  # type: ignore
         ops.ToDatetimeOp(
             utc=utc,

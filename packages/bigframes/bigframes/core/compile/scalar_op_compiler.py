@@ -42,6 +42,8 @@ _FLOAT64_EXP_BOUND = typing.cast(ibis_types.NumericValue, ibis_types.literal(709
 
 # Datetime constants
 UNIT_TO_US_CONVERSION_FACTORS = {
+    "W": 7 * 24 * 60 * 60 * 1000 * 1000,
+    "d": 24 * 60 * 60 * 1000 * 1000,
     "D": 24 * 60 * 60 * 1000 * 1000,
     "h": 60 * 60 * 1000 * 1000,
     "m": 60 * 1000 * 1000,
@@ -753,12 +755,19 @@ def to_datetime_op_impl(x: ibis_types.Value, op: ops.ToDatetimeOp):
     if x.type() == ibis_dtypes.str:
         x = x.to_timestamp(op.format) if op.format else timestamp(x)
     elif x.type() == ibis_dtypes.Timestamp(timezone="UTC"):
+        if op.format:
+            raise NotImplementedError(
+                f"Format parameter is not supported for Timestamp input types. {constants.FEEDBACK_LINK}"
+            )
         return x
     elif x.type() != ibis_dtypes.timestamp:
-        # The default unit is set to "ns" (nanoseconds) for consistency
-        # with pandas, where "ns" is the default unit for datetime operations.
-        unit = op.unit or "ns"
-        x = numeric_to_datatime(x, unit)
+        if op.format:
+            x = x.cast(ibis_dtypes.str).to_timestamp(op.format)
+        else:
+            # The default unit is set to "ns" (nanoseconds) for consistency
+            # with pandas, where "ns" is the default unit for datetime operations.
+            unit = op.unit or "ns"
+            x = numeric_to_datatime(x, unit)
 
     return x.cast(ibis_dtypes.Timestamp(timezone="UTC" if op.utc else None))
 
