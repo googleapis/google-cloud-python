@@ -36,3 +36,34 @@ class DatelikeOps:
             bigframes.series.Series of formatted strings.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def normalize(self):
+        """
+        Convert times to midnight.
+
+        The time component of the date-time is converted to midnight i.e.
+        00:00:00. This is useful in cases when the time does not matter.
+        The return dtype will match the source series.
+
+        This method is available on Series with datetime values under the
+        .dt accessor.
+
+        **Examples:**
+
+            >>> import pandas as pd
+            >>> import bigframes.pandas as bpd
+            >>> s = bpd.Series(pd.date_range(
+            ...     start='2014-08-01 10:00',
+            ...     freq='h',
+            ...     periods=3,
+            ...     tz='Asia/Calcutta')) # note timezones will be converted to UTC here
+            >>> s.dt.normalize()
+            0    2014-08-01 00:00:00+00:00
+            1    2014-08-01 00:00:00+00:00
+            2    2014-08-01 00:00:00+00:00
+            dtype: timestamp[us, tz=UTC][pyarrow]
+
+        Returns:
+            bigframes.series.Series of the same dtype as the data.
+        """
+        raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)

@@ -212,6 +212,7 @@ time_op = create_unary_op(
     name="time", type_rule=op_typing.Fixed(pd.ArrowDtype(pa.time64("us")))
 )
 year_op = create_unary_op(name="year", type_rule=op_typing.INTEGER)
+normalize_op = create_unary_op(name="normalize")
 ## Trigonometry Ops
 sin_op = create_unary_op(name="sin", type_rule=op_typing.REAL_NUMERIC)
 cos_op = create_unary_op(name="cos", type_rule=op_typing.REAL_NUMERIC)
