@@ -19,11 +19,11 @@ from bigframes.ml import cluster
 from tests.system.utils import assert_pandas_df_equal
 
 
-@pytest.mark.flaky(retries=2, delay=120)
+@pytest.mark.flaky(retries=2)
 def test_cluster_configure_fit_score_predict(
     session, penguins_df_default_index, dataset_id
 ):
-    model = cluster.KMeans(n_clusters=3)
+    model = cluster.KMeans(n_clusters=3, init="random")
 
     df = penguins_df_default_index.dropna()[
         [
@@ -118,3 +118,47 @@ def test_cluster_configure_fit_score_predict(
         in reloaded_model._bqml_model.model_name
     )
     assert reloaded_model.n_clusters == 3
+    assert reloaded_model.init == "RANDOM"
+    assert reloaded_model.distance_type == "EUCLIDEAN"
+    assert reloaded_model.max_iter == 20
+    assert reloaded_model.tol == 0.01
+
+
+def test_cluster_configure_fit_load_params(penguins_df_default_index, dataset_id):
+    model = cluster.KMeans(
+        n_clusters=4,
+        init="random",
+        distance_type="cosine",
+        max_iter=30,
+        tol=0.001,
+    )
+
+    df = penguins_df_default_index.dropna()[
+        [
+            "culmen_length_mm",
+            "culmen_depth_mm",
+            "flipper_length_mm",
+            "sex",
+        ]
+    ]
+
+    # TODO(swast): How should we handle the default index? Currently, we get:
+    # "Column bigframes_index_0_z is not found in the input data to the
+    # EVALUATE function."
+    df = df.reset_index(drop=True)
+
+    model.fit(df)
+
+    # save, load, check n_clusters to ensure configuration was kept
+    reloaded_model = model.to_gbq(
+        f"{dataset_id}.temp_configured_cluster_model", replace=True
+    )
+    assert (
+        f"{dataset_id}.temp_configured_cluster_model"
+        in reloaded_model._bqml_model.model_name
+    )
+    assert reloaded_model.n_clusters == 4
+    assert reloaded_model.init == "RANDOM"
+    assert reloaded_model.distance_type == "COSINE"
+    assert reloaded_model.max_iter == 30
+    assert reloaded_model.tol == 0.001

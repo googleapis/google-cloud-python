@@ -31,6 +31,34 @@ class KMeans(_BaseKMeans):
         n_clusters (int, default 8):
             The number of clusters to form as well as the number of centroids to generate.
             Default to 8.
+
+        init ("kmeans++", "random" or "custom", default "kmeans++"):
+            The method of initializing the clusters. Default to "kmeans++"
+
+            kmeas++: Initializes a number of centroids equal to the n_clusters value by using the k-means++ algorithm. Using this approach usually trains a better model than using random cluster initialization.
+            random: Initializes the centroids by randomly selecting a number of data points equal to the n_clusters value from the input data.
+            custom: Initializes the centroids using a provided column of type bool. Uses the rows with a value of True as the initial centroids. You specify the column to use by using the init_col option.
+
+        init_col (str or None, default None):
+            The name of the column to use to initialize the centroids. This column must have a type of bool. If this column contains a value of True for a given row, then uses that row as an initial centroid. The number of True rows in this column must be equal to the value you have specified for the n_clusters option.
+            Only works with init method "custom". Default to None.
+
+        distance_type ("euclidean" or "cosine", default "euclidean"):
+            The type of metric to use to compute the distance between two points.
+            Default to "euclidean".
+
+        max_iter (int, default 20):
+            The maximum number of training iterations, where one iteration represents a single pass of the entire training data. Default to 20.
+
+        tol (float, default 0.01):
+            The minimum relative loss improvement that is necessary to continue training. For example, a value of 0.01 specifies that each iteration must reduce the loss by 1% for training to continue.
+            Default to 0.01.
+
+        warm_start (bool, default False):
+            Determines whether to train a model with new training data, new model options, or both. Unless you explicitly override them, the initial options used to train the model are used for the warm start run.
+            Default to False.
+
+
     """
 
     def fit(
