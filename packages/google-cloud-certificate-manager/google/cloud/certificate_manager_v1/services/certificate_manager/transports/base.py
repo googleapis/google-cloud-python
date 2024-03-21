@@ -31,7 +31,9 @@ from google.cloud.certificate_manager_v1.types import certificate_issuance_confi
 from google.cloud.certificate_manager_v1.types import (
     certificate_issuance_config as gcc_certificate_issuance_config,
 )
+from google.cloud.certificate_manager_v1.types import trust_config as gcc_trust_config
 from google.cloud.certificate_manager_v1.types import certificate_manager
+from google.cloud.certificate_manager_v1.types import trust_config
 
 DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
     gapic_version=package_version.__version__
@@ -468,6 +470,31 @@ class CertificateManagerTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.list_trust_configs: gapic_v1.method.wrap_method(
+                self.list_trust_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_trust_config: gapic_v1.method.wrap_method(
+                self.get_trust_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_trust_config: gapic_v1.method.wrap_method(
+                self.create_trust_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_trust_config: gapic_v1.method.wrap_method(
+                self.update_trust_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_trust_config: gapic_v1.method.wrap_method(
+                self.delete_trust_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -727,6 +754,54 @@ class CertificateManagerTransport(abc.ABC):
         self,
     ) -> Callable[
         [certificate_issuance_config.DeleteCertificateIssuanceConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_trust_configs(
+        self,
+    ) -> Callable[
+        [trust_config.ListTrustConfigsRequest],
+        Union[
+            trust_config.ListTrustConfigsResponse,
+            Awaitable[trust_config.ListTrustConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_trust_config(
+        self,
+    ) -> Callable[
+        [trust_config.GetTrustConfigRequest],
+        Union[trust_config.TrustConfig, Awaitable[trust_config.TrustConfig]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_trust_config(
+        self,
+    ) -> Callable[
+        [gcc_trust_config.CreateTrustConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_trust_config(
+        self,
+    ) -> Callable[
+        [gcc_trust_config.UpdateTrustConfigRequest],
+        Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_trust_config(
+        self,
+    ) -> Callable[
+        [trust_config.DeleteTrustConfigRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
     ]:
         raise NotImplementedError()

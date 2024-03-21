@@ -95,11 +95,10 @@ class ListCertificatesRequest(proto.Message):
             Filter expression to restrict the
             Certificates returned.
         order_by (str):
-            A list of Certificate field names used to
-            specify the order of the returned results. The
-            default sorting order is ascending. To specify
-            descending order for a field, add a suffix "
-            desc".
+            A list of Certificate field names used to specify the order
+            of the returned results. The default sorting order is
+            ascending. To specify descending order for a field, add a
+            suffix ``" desc"``.
     """
 
     parent: str = proto.Field(
@@ -265,11 +264,10 @@ class ListCertificateMapsRequest(proto.Message):
             Filter expression to restrict the
             Certificates Maps returned.
         order_by (str):
-            A list of Certificate Map field names used to
-            specify the order of the returned results. The
-            default sorting order is ascending. To specify
-            descending order for a field, add a suffix "
-            desc".
+            A list of Certificate Map field names used to specify the
+            order of the returned results. The default sorting order is
+            ascending. To specify descending order for a field, add a
+            suffix ``" desc"``.
     """
 
     parent: str = proto.Field(
@@ -440,11 +438,10 @@ class ListCertificateMapEntriesRequest(proto.Message):
             Filter expression to restrict the returned
             Certificate Map Entries.
         order_by (str):
-            A list of Certificate Map Entry field names
-            used to specify the order of the returned
-            results. The default sorting order is ascending.
-            To specify descending order for a field, add a
-            suffix " desc".
+            A list of Certificate Map Entry field names used to specify
+            the order of the returned results. The default sorting order
+            is ascending. To specify descending order for a field, add a
+            suffix ``" desc"``.
     """
 
     parent: str = proto.Field(
@@ -614,11 +611,10 @@ class ListDnsAuthorizationsRequest(proto.Message):
             Filter expression to restrict the Dns
             Authorizations returned.
         order_by (str):
-            A list of Dns Authorization field names used
-            to specify the order of the returned results.
-            The default sorting order is ascending. To
-            specify descending order for a field, add a
-            suffix " desc".
+            A list of Dns Authorization field names used to specify the
+            order of the returned results. The default sorting order is
+            ascending. To specify descending order for a field, add a
+            suffix ``" desc"``.
     """
 
     parent: str = proto.Field(
@@ -887,10 +883,16 @@ class Certificate(proto.Message):
                 this option.
             EDGE_CACHE (1):
                 Certificates with scope EDGE_CACHE are special-purposed
-                certificates, served from non-core Google data centers.
+                certificates, served from Edge Points of Presence. See
+                https://cloud.google.com/vpc/docs/edge-locations.
+            ALL_REGIONS (2):
+                Certificates with ALL_REGIONS scope are served from all
+                Google Cloud regions. See
+                https://cloud.google.com/compute/docs/regions-zones.
         """
         DEFAULT = 0
         EDGE_CACHE = 1
+        ALL_REGIONS = 2
 
     class SelfManagedCertificate(proto.Message):
         r"""Certificate data for a SelfManaged Certificate.
@@ -1051,8 +1053,8 @@ class Certificate(proto.Message):
                         State is unspecified.
                     AUTHORIZING (1):
                         Certificate provisioning for this domain is
-                        under way. GCP will attempt to authorize the
-                        domain.
+                        under way. Google Cloud will attempt to
+                        authorize the domain.
                     AUTHORIZED (6):
                         A managed certificate can be provisioned, no
                         issues for this domain.
@@ -1461,7 +1463,30 @@ class DnsAuthorization(proto.Message):
         dns_resource_record (google.cloud.certificate_manager_v1.types.DnsAuthorization.DnsResourceRecord):
             Output only. DNS Resource Record that needs
             to be added to DNS configuration.
+        type_ (google.cloud.certificate_manager_v1.types.DnsAuthorization.Type):
+            Immutable. Type of DnsAuthorization. If unset during
+            resource creation the following default will be used:
+
+            -  in location global: FIXED_RECORD.
     """
+
+    class Type(proto.Enum):
+        r"""DnsAuthorization type.
+
+        Values:
+            TYPE_UNSPECIFIED (0):
+                Type is unspecified.
+            FIXED_RECORD (1):
+                FIXED_RECORD DNS authorization uses DNS-01 validation
+                method.
+            PER_PROJECT_RECORD (2):
+                PER_PROJECT_RECORD DNS authorization allows for independent
+                management of Google-managed certificates with DNS
+                authorization across multiple projects.
+        """
+        TYPE_UNSPECIFIED = 0
+        FIXED_RECORD = 1
+        PER_PROJECT_RECORD = 2
 
     class DnsResourceRecord(proto.Message):
         r"""The structure describing the DNS Resource Record that needs
@@ -1523,6 +1548,11 @@ class DnsAuthorization(proto.Message):
         proto.MESSAGE,
         number=10,
         message=DnsResourceRecord,
+    )
+    type_: Type = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=Type,
     )
 
 
