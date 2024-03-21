@@ -26,6 +26,24 @@ from bigframes import constants
 def accuracy_score(y_true, y_pred, normalize=True) -> float:
     """Accuracy classification score.
 
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.ml.metrics
+        >>> bpd.options.display.progress_bar = None
+
+        >>> y_true = bpd.DataFrame([0, 2, 1, 3])
+        >>> y_pred = bpd.DataFrame([0, 1, 2, 3])
+        >>> accuracy_score = bigframes.ml.metrics.accuracy_score(y_true, y_pred)
+        >>> accuracy_score
+        0.5
+
+    If False, return the number of correctly classified samples:
+
+        >>> accuracy_score = bigframes.ml.metrics.accuracy_score(y_true, y_pred, normalize=False)
+        >>> accuracy_score
+        2
+
     Args:
         y_true (Series or DataFrame of shape (n_samples,)):
             Ground truth (correct) labels.
@@ -57,6 +75,30 @@ def confusion_matrix(
     Thus in binary classification, the count of true negatives is
     :math:`C_{0,0}`, false negatives is :math:`C_{1,0}`, true positives is
     :math:`C_{1,1}` and false positives is :math:`C_{0,1}`.
+
+    **Examples:**
+
+        >>> import bigframes.pandas as bpd
+        >>> import bigframes.ml.metrics
+        >>> bpd.options.display.progress_bar = None
+
+        >>> y_true = bpd.DataFrame([2, 0, 2, 2, 0, 1])
+        >>> y_pred = bpd.DataFrame([0, 0, 2, 2, 0, 2])
+        >>> confusion_matrix = bigframes.ml.metrics.confusion_matrix(y_true, y_pred)
+        >>> confusion_matrix
+           0  1  2
+        0  2  0  0
+        1  0  0  1
+        2  1  0  2
+
+        >>> y_true = bpd.DataFrame(["cat", "ant", "cat", "cat", "ant", "bird"])
+        >>> y_pred = bpd.DataFrame(["ant", "ant", "cat", "cat", "ant", "cat"])
+        >>> confusion_matrix = bigframes.ml.metrics.confusion_matrix(y_true, y_pred)
+        >>> confusion_matrix
+            ant  bird  cat
+        ant     2     0    0
+        bird    0     0    1
+        cat     1     0    2
 
     Args:
         y_true (Series or DataFrame of shape (n_samples,)):
