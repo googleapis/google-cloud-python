@@ -1222,7 +1222,8 @@ def test_create_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.CreateDatasetRequest()
+        request = maps_platform_datasets.CreateDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gmm_dataset.Dataset)
@@ -1245,6 +1246,59 @@ def test_create_dataset_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
         client.create_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == maps_platform_datasets.CreateDatasetRequest()
+
+
+def test_create_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MapsPlatformDatasetsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = maps_platform_datasets.CreateDatasetRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
+        client.create_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == maps_platform_datasets.CreateDatasetRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MapsPlatformDatasetsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gmm_dataset.Dataset(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                version_id="version_id_value",
+                usage=[gmm_dataset.Usage.USAGE_DATA_DRIVEN_STYLING],
+                version_description="version_description_value",
+            )
+        )
+        response = await client.create_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == maps_platform_datasets.CreateDatasetRequest()
@@ -1282,7 +1336,8 @@ async def test_create_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.CreateDatasetRequest()
+        request = maps_platform_datasets.CreateDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gmm_dataset.Dataset)
@@ -1483,7 +1538,8 @@ def test_update_dataset_metadata(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.UpdateDatasetMetadataRequest()
+        request = maps_platform_datasets.UpdateDatasetMetadataRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gmm_dataset.Dataset)
@@ -1508,6 +1564,59 @@ def test_update_dataset_metadata_empty_call():
         type(client.transport.update_dataset_metadata), "__call__"
     ) as call:
         client.update_dataset_metadata()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == maps_platform_datasets.UpdateDatasetMetadataRequest()
+
+
+def test_update_dataset_metadata_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MapsPlatformDatasetsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = maps_platform_datasets.UpdateDatasetMetadataRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dataset_metadata), "__call__"
+    ) as call:
+        client.update_dataset_metadata(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == maps_platform_datasets.UpdateDatasetMetadataRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_dataset_metadata_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MapsPlatformDatasetsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dataset_metadata), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gmm_dataset.Dataset(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                version_id="version_id_value",
+                usage=[gmm_dataset.Usage.USAGE_DATA_DRIVEN_STYLING],
+                version_description="version_description_value",
+            )
+        )
+        response = await client.update_dataset_metadata()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == maps_platform_datasets.UpdateDatasetMetadataRequest()
@@ -1547,7 +1656,8 @@ async def test_update_dataset_metadata_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.UpdateDatasetMetadataRequest()
+        request = maps_platform_datasets.UpdateDatasetMetadataRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gmm_dataset.Dataset)
@@ -1754,7 +1864,8 @@ def test_get_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.GetDatasetRequest()
+        request = maps_platform_datasets.GetDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.Dataset)
@@ -1777,6 +1888,59 @@ def test_get_dataset_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
         client.get_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == maps_platform_datasets.GetDatasetRequest()
+
+
+def test_get_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MapsPlatformDatasetsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = maps_platform_datasets.GetDatasetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
+        client.get_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == maps_platform_datasets.GetDatasetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MapsPlatformDatasetsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataset.Dataset(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                version_id="version_id_value",
+                usage=[dataset.Usage.USAGE_DATA_DRIVEN_STYLING],
+                version_description="version_description_value",
+            )
+        )
+        response = await client.get_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == maps_platform_datasets.GetDatasetRequest()
@@ -1814,7 +1978,8 @@ async def test_get_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.GetDatasetRequest()
+        request = maps_platform_datasets.GetDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.Dataset)
@@ -1998,7 +2163,8 @@ def test_list_datasets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.ListDatasetsRequest()
+        request = maps_platform_datasets.ListDatasetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatasetsPager)
@@ -2016,6 +2182,56 @@ def test_list_datasets_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
         client.list_datasets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == maps_platform_datasets.ListDatasetsRequest()
+
+
+def test_list_datasets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MapsPlatformDatasetsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = maps_platform_datasets.ListDatasetsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
+        client.list_datasets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == maps_platform_datasets.ListDatasetsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_datasets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MapsPlatformDatasetsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            maps_platform_datasets.ListDatasetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_datasets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == maps_platform_datasets.ListDatasetsRequest()
@@ -2048,7 +2264,8 @@ async def test_list_datasets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.ListDatasetsRequest()
+        request = maps_platform_datasets.ListDatasetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatasetsAsyncPager)
@@ -2419,7 +2636,8 @@ def test_delete_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.DeleteDatasetRequest()
+        request = maps_platform_datasets.DeleteDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2436,6 +2654,50 @@ def test_delete_dataset_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
         client.delete_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == maps_platform_datasets.DeleteDatasetRequest()
+
+
+def test_delete_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = MapsPlatformDatasetsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = maps_platform_datasets.DeleteDatasetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
+        client.delete_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == maps_platform_datasets.DeleteDatasetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = MapsPlatformDatasetsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == maps_platform_datasets.DeleteDatasetRequest()
@@ -2464,7 +2726,8 @@ async def test_delete_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == maps_platform_datasets.DeleteDatasetRequest()
+        request = maps_platform_datasets.DeleteDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

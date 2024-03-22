@@ -1095,7 +1095,8 @@ def test_compute_routes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == routes_service.ComputeRoutesRequest()
+        request = routes_service.ComputeRoutesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, routes_service.ComputeRoutesResponse)
@@ -1112,6 +1113,54 @@ def test_compute_routes_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.compute_routes), "__call__") as call:
         client.compute_routes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == routes_service.ComputeRoutesRequest()
+
+
+def test_compute_routes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RoutesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = routes_service.ComputeRoutesRequest(
+        language_code="language_code_value",
+        region_code="region_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.compute_routes), "__call__") as call:
+        client.compute_routes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == routes_service.ComputeRoutesRequest(
+            language_code="language_code_value",
+            region_code="region_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_compute_routes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RoutesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.compute_routes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            routes_service.ComputeRoutesResponse()
+        )
+        response = await client.compute_routes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == routes_service.ComputeRoutesRequest()
@@ -1141,7 +1190,8 @@ async def test_compute_routes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == routes_service.ComputeRoutesRequest()
+        request = routes_service.ComputeRoutesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, routes_service.ComputeRoutesResponse)
@@ -1180,7 +1230,8 @@ def test_compute_route_matrix(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == routes_service.ComputeRouteMatrixRequest()
+        request = routes_service.ComputeRouteMatrixRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     for message in response:
@@ -1200,6 +1251,59 @@ def test_compute_route_matrix_empty_call():
         type(client.transport.compute_route_matrix), "__call__"
     ) as call:
         client.compute_route_matrix()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == routes_service.ComputeRouteMatrixRequest()
+
+
+def test_compute_route_matrix_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RoutesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = routes_service.ComputeRouteMatrixRequest(
+        language_code="language_code_value",
+        region_code="region_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_route_matrix), "__call__"
+    ) as call:
+        client.compute_route_matrix(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == routes_service.ComputeRouteMatrixRequest(
+            language_code="language_code_value",
+            region_code="region_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_compute_route_matrix_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RoutesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_route_matrix), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = mock.Mock(aio.UnaryStreamCall, autospec=True)
+        call.return_value.read = mock.AsyncMock(
+            side_effect=[routes_service.RouteMatrixElement()]
+        )
+        response = await client.compute_route_matrix()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == routes_service.ComputeRouteMatrixRequest()
@@ -1233,7 +1337,8 @@ async def test_compute_route_matrix_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == routes_service.ComputeRouteMatrixRequest()
+        request = routes_service.ComputeRouteMatrixRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     message = await response.read()

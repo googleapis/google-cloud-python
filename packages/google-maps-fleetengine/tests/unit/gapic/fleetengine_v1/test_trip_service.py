@@ -1103,7 +1103,8 @@ def test_create_trip(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.CreateTripRequest()
+        request = trip_api.CreateTripRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trips.Trip)
@@ -1129,6 +1130,64 @@ def test_create_trip_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_trip), "__call__") as call:
         client.create_trip()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trip_api.CreateTripRequest()
+
+
+def test_create_trip_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TripServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = trip_api.CreateTripRequest(
+        parent="parent_value",
+        trip_id="trip_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_trip), "__call__") as call:
+        client.create_trip(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trip_api.CreateTripRequest(
+            parent="parent_value",
+            trip_id="trip_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_trip_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TripServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_trip), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            trips.Trip(
+                name="name_value",
+                vehicle_id="vehicle_id_value",
+                trip_status=trips.TripStatus.NEW,
+                trip_type=fleetengine.TripType.SHARED,
+                intermediate_destination_index=3187,
+                current_route_segment="current_route_segment_value",
+                number_of_passengers=2135,
+                last_location_snappable=True,
+                view=trips.TripView.SDK,
+            )
+        )
+        response = await client.create_trip()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == trip_api.CreateTripRequest()
@@ -1168,7 +1227,8 @@ async def test_create_trip_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.CreateTripRequest()
+        request = trip_api.CreateTripRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trips.Trip)
@@ -1248,7 +1308,8 @@ def test_get_trip(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.GetTripRequest()
+        request = trip_api.GetTripRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trips.Trip)
@@ -1274,6 +1335,62 @@ def test_get_trip_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_trip), "__call__") as call:
         client.get_trip()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trip_api.GetTripRequest()
+
+
+def test_get_trip_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TripServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = trip_api.GetTripRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_trip), "__call__") as call:
+        client.get_trip(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trip_api.GetTripRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_trip_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TripServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_trip), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            trips.Trip(
+                name="name_value",
+                vehicle_id="vehicle_id_value",
+                trip_status=trips.TripStatus.NEW,
+                trip_type=fleetengine.TripType.SHARED,
+                intermediate_destination_index=3187,
+                current_route_segment="current_route_segment_value",
+                number_of_passengers=2135,
+                last_location_snappable=True,
+                view=trips.TripView.SDK,
+            )
+        )
+        response = await client.get_trip()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == trip_api.GetTripRequest()
@@ -1313,7 +1430,8 @@ async def test_get_trip_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.GetTripRequest()
+        request = trip_api.GetTripRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trips.Trip)
@@ -1385,7 +1503,8 @@ def test_report_billable_trip(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.ReportBillableTripRequest()
+        request = trip_api.ReportBillableTripRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1404,6 +1523,56 @@ def test_report_billable_trip_empty_call():
         type(client.transport.report_billable_trip), "__call__"
     ) as call:
         client.report_billable_trip()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trip_api.ReportBillableTripRequest()
+
+
+def test_report_billable_trip_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TripServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = trip_api.ReportBillableTripRequest(
+        name="name_value",
+        country_code="country_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.report_billable_trip), "__call__"
+    ) as call:
+        client.report_billable_trip(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trip_api.ReportBillableTripRequest(
+            name="name_value",
+            country_code="country_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_report_billable_trip_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TripServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.report_billable_trip), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.report_billable_trip()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == trip_api.ReportBillableTripRequest()
@@ -1433,7 +1602,8 @@ async def test_report_billable_trip_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.ReportBillableTripRequest()
+        request = trip_api.ReportBillableTripRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1498,7 +1668,8 @@ def test_search_trips(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.SearchTripsRequest()
+        request = trip_api.SearchTripsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchTripsPager)
@@ -1516,6 +1687,58 @@ def test_search_trips_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_trips), "__call__") as call:
         client.search_trips()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trip_api.SearchTripsRequest()
+
+
+def test_search_trips_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TripServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = trip_api.SearchTripsRequest(
+        parent="parent_value",
+        vehicle_id="vehicle_id_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_trips), "__call__") as call:
+        client.search_trips(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trip_api.SearchTripsRequest(
+            parent="parent_value",
+            vehicle_id="vehicle_id_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_trips_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TripServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_trips), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            trip_api.SearchTripsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.search_trips()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == trip_api.SearchTripsRequest()
@@ -1547,7 +1770,8 @@ async def test_search_trips_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.SearchTripsRequest()
+        request = trip_api.SearchTripsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchTripsAsyncPager)
@@ -1806,7 +2030,8 @@ def test_update_trip(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.UpdateTripRequest()
+        request = trip_api.UpdateTripRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trips.Trip)
@@ -1832,6 +2057,62 @@ def test_update_trip_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_trip), "__call__") as call:
         client.update_trip()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trip_api.UpdateTripRequest()
+
+
+def test_update_trip_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TripServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = trip_api.UpdateTripRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_trip), "__call__") as call:
+        client.update_trip(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == trip_api.UpdateTripRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_trip_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TripServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_trip), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            trips.Trip(
+                name="name_value",
+                vehicle_id="vehicle_id_value",
+                trip_status=trips.TripStatus.NEW,
+                trip_type=fleetengine.TripType.SHARED,
+                intermediate_destination_index=3187,
+                current_route_segment="current_route_segment_value",
+                number_of_passengers=2135,
+                last_location_snappable=True,
+                view=trips.TripView.SDK,
+            )
+        )
+        response = await client.update_trip()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == trip_api.UpdateTripRequest()
@@ -1871,7 +2152,8 @@ async def test_update_trip_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == trip_api.UpdateTripRequest()
+        request = trip_api.UpdateTripRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, trips.Trip)

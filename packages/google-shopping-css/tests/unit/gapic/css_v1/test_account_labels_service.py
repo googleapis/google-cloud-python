@@ -1214,7 +1214,8 @@ def test_list_account_labels(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accounts_labels.ListAccountLabelsRequest()
+        request = accounts_labels.ListAccountLabelsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAccountLabelsPager)
@@ -1234,6 +1235,60 @@ def test_list_account_labels_empty_call():
         type(client.transport.list_account_labels), "__call__"
     ) as call:
         client.list_account_labels()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accounts_labels.ListAccountLabelsRequest()
+
+
+def test_list_account_labels_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccountLabelsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accounts_labels.ListAccountLabelsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_account_labels), "__call__"
+    ) as call:
+        client.list_account_labels(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accounts_labels.ListAccountLabelsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_account_labels_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccountLabelsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_account_labels), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accounts_labels.ListAccountLabelsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_account_labels()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accounts_labels.ListAccountLabelsRequest()
@@ -1268,7 +1323,8 @@ async def test_list_account_labels_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accounts_labels.ListAccountLabelsRequest()
+        request = accounts_labels.ListAccountLabelsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAccountLabelsAsyncPager)
@@ -1664,7 +1720,8 @@ def test_create_account_label(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accounts_labels.CreateAccountLabelRequest()
+        request = accounts_labels.CreateAccountLabelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accounts_labels.AccountLabel)
@@ -1689,6 +1746,63 @@ def test_create_account_label_empty_call():
         type(client.transport.create_account_label), "__call__"
     ) as call:
         client.create_account_label()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accounts_labels.CreateAccountLabelRequest()
+
+
+def test_create_account_label_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccountLabelsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accounts_labels.CreateAccountLabelRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_account_label), "__call__"
+    ) as call:
+        client.create_account_label(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accounts_labels.CreateAccountLabelRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_account_label_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccountLabelsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_account_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accounts_labels.AccountLabel(
+                name="name_value",
+                label_id=812,
+                account_id=1049,
+                display_name="display_name_value",
+                description="description_value",
+                label_type=accounts_labels.AccountLabel.LabelType.MANUAL,
+            )
+        )
+        response = await client.create_account_label()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accounts_labels.CreateAccountLabelRequest()
@@ -1728,7 +1842,8 @@ async def test_create_account_label_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accounts_labels.CreateAccountLabelRequest()
+        request = accounts_labels.CreateAccountLabelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accounts_labels.AccountLabel)
@@ -1941,7 +2056,8 @@ def test_update_account_label(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accounts_labels.UpdateAccountLabelRequest()
+        request = accounts_labels.UpdateAccountLabelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accounts_labels.AccountLabel)
@@ -1966,6 +2082,59 @@ def test_update_account_label_empty_call():
         type(client.transport.update_account_label), "__call__"
     ) as call:
         client.update_account_label()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accounts_labels.UpdateAccountLabelRequest()
+
+
+def test_update_account_label_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccountLabelsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accounts_labels.UpdateAccountLabelRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_account_label), "__call__"
+    ) as call:
+        client.update_account_label(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accounts_labels.UpdateAccountLabelRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_account_label_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccountLabelsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_account_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            accounts_labels.AccountLabel(
+                name="name_value",
+                label_id=812,
+                account_id=1049,
+                display_name="display_name_value",
+                description="description_value",
+                label_type=accounts_labels.AccountLabel.LabelType.MANUAL,
+            )
+        )
+        response = await client.update_account_label()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accounts_labels.UpdateAccountLabelRequest()
@@ -2005,7 +2174,8 @@ async def test_update_account_label_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accounts_labels.UpdateAccountLabelRequest()
+        request = accounts_labels.UpdateAccountLabelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, accounts_labels.AccountLabel)
@@ -2201,7 +2371,8 @@ def test_delete_account_label(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accounts_labels.DeleteAccountLabelRequest()
+        request = accounts_labels.DeleteAccountLabelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2220,6 +2391,54 @@ def test_delete_account_label_empty_call():
         type(client.transport.delete_account_label), "__call__"
     ) as call:
         client.delete_account_label()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accounts_labels.DeleteAccountLabelRequest()
+
+
+def test_delete_account_label_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AccountLabelsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = accounts_labels.DeleteAccountLabelRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_account_label), "__call__"
+    ) as call:
+        client.delete_account_label(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == accounts_labels.DeleteAccountLabelRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_account_label_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AccountLabelsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_account_label), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_account_label()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == accounts_labels.DeleteAccountLabelRequest()
@@ -2250,7 +2469,8 @@ async def test_delete_account_label_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == accounts_labels.DeleteAccountLabelRequest()
+        request = accounts_labels.DeleteAccountLabelRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

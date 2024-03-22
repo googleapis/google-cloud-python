@@ -1219,7 +1219,8 @@ def test_list_local_inventories(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == localinventory.ListLocalInventoriesRequest()
+        request = localinventory.ListLocalInventoriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLocalInventoriesPager)
@@ -1239,6 +1240,60 @@ def test_list_local_inventories_empty_call():
         type(client.transport.list_local_inventories), "__call__"
     ) as call:
         client.list_local_inventories()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == localinventory.ListLocalInventoriesRequest()
+
+
+def test_list_local_inventories_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LocalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = localinventory.ListLocalInventoriesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_local_inventories), "__call__"
+    ) as call:
+        client.list_local_inventories(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == localinventory.ListLocalInventoriesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_local_inventories_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LocalInventoryServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_local_inventories), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            localinventory.ListLocalInventoriesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_local_inventories()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == localinventory.ListLocalInventoriesRequest()
@@ -1273,7 +1328,8 @@ async def test_list_local_inventories_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == localinventory.ListLocalInventoriesRequest()
+        request = localinventory.ListLocalInventoriesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLocalInventoriesAsyncPager)
@@ -1671,7 +1727,8 @@ def test_insert_local_inventory(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == localinventory.InsertLocalInventoryRequest()
+        request = localinventory.InsertLocalInventoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, localinventory.LocalInventory)
@@ -1698,6 +1755,65 @@ def test_insert_local_inventory_empty_call():
         type(client.transport.insert_local_inventory), "__call__"
     ) as call:
         client.insert_local_inventory()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == localinventory.InsertLocalInventoryRequest()
+
+
+def test_insert_local_inventory_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LocalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = localinventory.InsertLocalInventoryRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.insert_local_inventory), "__call__"
+    ) as call:
+        client.insert_local_inventory(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == localinventory.InsertLocalInventoryRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_insert_local_inventory_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LocalInventoryServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.insert_local_inventory), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            localinventory.LocalInventory(
+                name="name_value",
+                account=749,
+                store_code="store_code_value",
+                availability="availability_value",
+                quantity=895,
+                pickup_method="pickup_method_value",
+                pickup_sla="pickup_sla_value",
+                instore_product_location="instore_product_location_value",
+            )
+        )
+        response = await client.insert_local_inventory()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == localinventory.InsertLocalInventoryRequest()
@@ -1739,7 +1855,8 @@ async def test_insert_local_inventory_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == localinventory.InsertLocalInventoryRequest()
+        request = localinventory.InsertLocalInventoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, localinventory.LocalInventory)
@@ -1851,7 +1968,8 @@ def test_delete_local_inventory(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == localinventory.DeleteLocalInventoryRequest()
+        request = localinventory.DeleteLocalInventoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1870,6 +1988,54 @@ def test_delete_local_inventory_empty_call():
         type(client.transport.delete_local_inventory), "__call__"
     ) as call:
         client.delete_local_inventory()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == localinventory.DeleteLocalInventoryRequest()
+
+
+def test_delete_local_inventory_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = LocalInventoryServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = localinventory.DeleteLocalInventoryRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_local_inventory), "__call__"
+    ) as call:
+        client.delete_local_inventory(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == localinventory.DeleteLocalInventoryRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_local_inventory_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = LocalInventoryServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_local_inventory), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_local_inventory()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == localinventory.DeleteLocalInventoryRequest()
@@ -1900,7 +2066,8 @@ async def test_delete_local_inventory_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == localinventory.DeleteLocalInventoryRequest()
+        request = localinventory.DeleteLocalInventoryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

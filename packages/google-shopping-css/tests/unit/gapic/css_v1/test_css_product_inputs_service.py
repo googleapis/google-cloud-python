@@ -1223,7 +1223,8 @@ def test_insert_css_product_input(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == css_product_inputs.InsertCssProductInputRequest()
+        request = css_product_inputs.InsertCssProductInputRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, css_product_inputs.CssProductInput)
@@ -1247,6 +1248,62 @@ def test_insert_css_product_input_empty_call():
         type(client.transport.insert_css_product_input), "__call__"
     ) as call:
         client.insert_css_product_input()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == css_product_inputs.InsertCssProductInputRequest()
+
+
+def test_insert_css_product_input_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CssProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = css_product_inputs.InsertCssProductInputRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.insert_css_product_input), "__call__"
+    ) as call:
+        client.insert_css_product_input(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == css_product_inputs.InsertCssProductInputRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_insert_css_product_input_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CssProductInputsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.insert_css_product_input), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            css_product_inputs.CssProductInput(
+                name="name_value",
+                final_name="final_name_value",
+                raw_provided_id="raw_provided_id_value",
+                content_language="content_language_value",
+                feed_label="feed_label_value",
+            )
+        )
+        response = await client.insert_css_product_input()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == css_product_inputs.InsertCssProductInputRequest()
@@ -1285,7 +1342,8 @@ async def test_insert_css_product_input_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == css_product_inputs.InsertCssProductInputRequest()
+        request = css_product_inputs.InsertCssProductInputRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, css_product_inputs.CssProductInput)
@@ -1394,7 +1452,8 @@ def test_delete_css_product_input(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == css_product_inputs.DeleteCssProductInputRequest()
+        request = css_product_inputs.DeleteCssProductInputRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1413,6 +1472,54 @@ def test_delete_css_product_input_empty_call():
         type(client.transport.delete_css_product_input), "__call__"
     ) as call:
         client.delete_css_product_input()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == css_product_inputs.DeleteCssProductInputRequest()
+
+
+def test_delete_css_product_input_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CssProductInputsServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = css_product_inputs.DeleteCssProductInputRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_css_product_input), "__call__"
+    ) as call:
+        client.delete_css_product_input(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == css_product_inputs.DeleteCssProductInputRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_css_product_input_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CssProductInputsServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_css_product_input), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_css_product_input()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == css_product_inputs.DeleteCssProductInputRequest()
@@ -1443,7 +1550,8 @@ async def test_delete_css_product_input_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == css_product_inputs.DeleteCssProductInputRequest()
+        request = css_product_inputs.DeleteCssProductInputRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
