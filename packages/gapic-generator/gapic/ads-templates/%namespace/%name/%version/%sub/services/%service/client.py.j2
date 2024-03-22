@@ -6,6 +6,9 @@ from collections import OrderedDict
 import os
 import re
 from typing import Callable, Dict, Mapping, MutableMapping, MutableSequence, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union, cast
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+import uuid
+{% endif %}
 {% if service.any_deprecated %}
 import warnings
 {% endif %}
@@ -472,6 +475,27 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
             )),
         )
         {% endif %}
+
+{#
+    Automatically populate UUID4 fields according to
+    https://google.aip.dev/client-libraries/4235 when the
+    field satisfies either of:
+    - The field supports explicit presence and has not been set by the user.
+    - The field doesn't support explicit presence, and its value is the empty
+      string (i.e. the default value).
+#}
+{% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+{% if method_settings is not none %}
+{% for auto_populated_field in method_settings.auto_populated_fields %}
+    {% if method.input.fields[auto_populated_field].proto3_optional %}
+        if '{{ auto_populated_field }}' not in request:
+    {% else %}
+        if not request.{{ auto_populated_field }}:
+    {% endif %}
+            request.{{ auto_populated_field }} = str(uuid.uuid4())
+{% endfor %}
+{% endif %}{# if method_settings is not none #}
+{% endwith %}{# method_settings #}
 
         # Send the request.
         {%+ if not method.void %}response = {% endif %}rpc(

@@ -3,6 +3,9 @@
 {% block content %}
 
 import os
+{% if api.all_method_settings.values()|map(attribute="auto_populated_fields", default=[])|list %}
+import re
+{% endif %}
 # try/except added for compatibility with python < 3.8
 try:
     from unittest import mock
@@ -67,6 +70,7 @@ from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
 
+{% with uuid4_re = "[a-f0-9]{8}-?[a-f0-9]{4}-?4[a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12}" %}
 
 def client_cert_source_callback():
     return b"cert bytes", b"key bytes"
@@ -513,6 +517,7 @@ def test_{{ service.client_name|snake_case }}_create_channel_credentials_file(cl
   dict,
 ])
 def test_{{ method_name }}(request_type, transport: str = 'grpc'):
+    {% with auto_populated_field_sample_value = "explicit value for autopopulate-able field" %}
     client = {{ service.client_name }}(
         credentials=ga_credentials.AnonymousCredentials(),
         transport=transport,
@@ -521,6 +526,18 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     # Everything is optional in proto3 as far as the runtime is concerned,
     # and we are mocking out the actual API, so just send an empty request.
     request = request_type()
+
+    {# Set UUID4 fields so that they are not automatically populated. #}
+    {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+    {% if method_settings is not none %}
+    {% for auto_populated_field in method_settings.auto_populated_fields %}
+    if isinstance(request, dict):
+        request['{{ auto_populated_field }}'] = "{{ auto_populated_field_sample_value }}"
+    else:
+        request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
+    {% endfor %}
+    {% endif %}{# if method_settings is not none #}
+    {% endwith %}{# method_settings #}
     {% if method.client_streaming %}
     requests = [request]
     {% endif %}
@@ -568,7 +585,15 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         {% if method.client_streaming %}
         assert next(args[0]) == request
         {% else %}
-        assert args[0] == {{ method.input.ident }}()
+        request = {{ method.input.ident }}()
+        {% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+        {% if method_settings is not none %}
+        {% for auto_populated_field in method_settings.auto_populated_fields %}
+        request.{{ auto_populated_field }} = "{{ auto_populated_field_sample_value }}"
+        {% endfor %}
+        {% endif %}{# if method_settings is not none #}
+        {% endwith %}{# method_settings #}
+        assert args[0] == request
         {% endif %}
 
     # Establish that the response is the type that we expect.
@@ -608,6 +633,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     {% endif %}{# end oneof/optional #}
     {% endfor %}
     {% endif %}
+    {% endwith %}{# auto_populated_field_sample_value #}
 
 
 {% if not method.client_streaming %}
@@ -629,8 +655,59 @@ def test_{{ method_name }}_empty_call():
         {% if method.client_streaming %}
         assert next(args[0]) == request
         {% else %}
+{% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+{% if method_settings is not none %}
+{% for auto_populated_field in method_settings.auto_populated_fields %}
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
+        # clear UUID field so that the check below succeeds
+        args[0].{{ auto_populated_field }} = None
+{% endfor %}
+{% endif %}{# if method_settings is not none #}
+{% endwith %}{# method_settings #}
         assert args[0] == {{ method.input.ident }}()
         {% endif %}
+
+
+def test_{{ method_name }}_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = {{ service.client_name }}(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport='grpc',
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = {{ method.input.ident }}(
+    {% for field in method.input.fields.values() if field.ident|string() == "str" and not field.uuid4 %}
+        {{ field.name }}={{ field.mock_value }},
+    {% endfor %}
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+            type(client.transport.{{ method.transport_safe_name|snake_case }}),
+            '__call__') as call:
+        client.{{ method_name }}(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+{% with method_settings = api.all_method_settings.get(method.meta.address.proto) %}
+{% if method_settings is not none %}
+{% for auto_populated_field in method_settings.auto_populated_fields %}
+        # Ensure that the uuid4 field is set according to AIP 4235
+        assert re.match(r"{{ uuid4_re }}", args[0].{{ auto_populated_field }})
+        # clear UUID field so that the check below succeeds
+        args[0].{{ auto_populated_field }} = None
+{% endfor %}
+{% endif %}{# if method_settings is not none #}
+{% endwith %}{# method_settings #}
+        assert args[0] == {{ method.input.ident }}(
+        {% for field in method.input.fields.values() if field.ident|string() == "str" and not field.uuid4 %}
+            {{ field.name }}={{ field.mock_value }},
+        {% endfor %}
+        )
 {% endif %}
 
 
@@ -2364,4 +2441,5 @@ def test_client_ctx():
                 pass
             close.assert_called()
 
+{% endwith %}{# uuid4_re #}
 {% endblock %}

@@ -31,7 +31,10 @@ dependencies = [
     "google-api-core[grpc] >= 1.34.1, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.*,!=2.4.*,!=2.5.*,!=2.6.*,!=2.7.*,!=2.8.*,!=2.9.*,!=2.10.*",
     "googleapis-common-protos >= 1.55.0",
     "grpcio >= 1.24.3",
-    "jinja2 >= 2.10",
+    # 2.11.0 is required which adds the `default` argument to `jinja-filters.map()`
+    # https://jinja.palletsprojects.com/en/3.0.x/templates/#jinja-filters.map
+    # https://jinja.palletsprojects.com/en/2.11.x/changelog/#version-2-11-0
+    "jinja2 >= 2.11",
     "protobuf>=3.19.5,<5.0.0dev,!=3.20.0,!=3.20.1,!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5",
     "pypandoc >= 1.4",
     "PyYAML >= 5.1.1",
