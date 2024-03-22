@@ -17,6 +17,7 @@ from __future__ import annotations
 
 from typing import MutableMapping, MutableSequence
 
+from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
@@ -40,6 +41,9 @@ __protobuf__ = proto.module(
         "MaintenanceWindow",
         "RecurringTimeWindow",
         "TimeWindow",
+        "ServerConfig",
+        "ChannelConfig",
+        "Version",
     },
 )
 
@@ -78,7 +82,7 @@ class Cluster(proto.Message):
         labels (MutableMapping[str, str]):
             Labels associated with this resource.
         fleet (google.cloud.edgecontainer_v1.types.Fleet):
-            Optional. Fleet configuration.
+            Required. Fleet configuration.
         networking (google.cloud.edgecontainer_v1.types.ClusterNetworking):
             Required. Cluster-wide networking
             configuration.
@@ -94,13 +98,458 @@ class Cluster(proto.Message):
         endpoint (str):
             Output only. The IP address of the Kubernetes
             API server.
+        port (int):
+            Output only. The port number of the
+            Kubernetes API server.
         cluster_ca_certificate (str):
             Output only. The PEM-encoded public
             certificate of the cluster's CA.
         maintenance_policy (google.cloud.edgecontainer_v1.types.MaintenancePolicy):
             Optional. Cluster-wide maintenance policy
             configuration.
+        control_plane_version (str):
+            Output only. The control plane release
+            version
+        node_version (str):
+            Output only. The lowest release version among
+            all worker nodes. This field can be empty if the
+            cluster does not have any worker nodes.
+        control_plane (google.cloud.edgecontainer_v1.types.Cluster.ControlPlane):
+            Optional. The configuration of the cluster
+            control plane.
+        system_addons_config (google.cloud.edgecontainer_v1.types.Cluster.SystemAddonsConfig):
+            Optional. The configuration of the system
+            add-ons.
+        external_load_balancer_ipv4_address_pools (MutableSequence[str]):
+            Optional. IPv4 address pools for cluster data
+            plane external load balancing.
+        control_plane_encryption (google.cloud.edgecontainer_v1.types.Cluster.ControlPlaneEncryption):
+            Optional. Remote control plane disk
+            encryption options. This field is only used when
+            enabling CMEK support.
+        status (google.cloud.edgecontainer_v1.types.Cluster.Status):
+            Output only. The current status of the
+            cluster.
+        maintenance_events (MutableSequence[google.cloud.edgecontainer_v1.types.Cluster.MaintenanceEvent]):
+            Output only. All the maintenance events
+            scheduled for the cluster, including the ones
+            ongoing, planned for the future and done in the
+            past (up to 90 days).
+        target_version (str):
+            Optional. The target cluster version. For
+            example: "1.5.0".
+        release_channel (google.cloud.edgecontainer_v1.types.Cluster.ReleaseChannel):
+            Optional. The release channel a cluster is
+            subscribed to.
+        survivability_config (google.cloud.edgecontainer_v1.types.Cluster.SurvivabilityConfig):
+            Optional. Configuration of the cluster
+            survivability, e.g., for the case when network
+            connectivity is lost. Note: This only applies to
+            local control plane clusters.
+        external_load_balancer_ipv6_address_pools (MutableSequence[str]):
+            Optional. IPv6 address pools for cluster data
+            plane external load balancing.
     """
+
+    class Status(proto.Enum):
+        r"""Indicates the status of the cluster.
+
+        Values:
+            STATUS_UNSPECIFIED (0):
+                Status unknown.
+            PROVISIONING (1):
+                The cluster is being created.
+            RUNNING (2):
+                The cluster is created and fully usable.
+            DELETING (3):
+                The cluster is being deleted.
+            ERROR (4):
+                The status indicates that some errors
+                occurred while reconciling/deleting the cluster.
+            RECONCILING (5):
+                The cluster is undergoing some work such as
+                version upgrades, etc.
+        """
+        STATUS_UNSPECIFIED = 0
+        PROVISIONING = 1
+        RUNNING = 2
+        DELETING = 3
+        ERROR = 4
+        RECONCILING = 5
+
+    class ReleaseChannel(proto.Enum):
+        r"""The release channel a cluster is subscribed to.
+
+        Values:
+            RELEASE_CHANNEL_UNSPECIFIED (0):
+                Unspecified release channel. This will
+                default to the REGULAR channel.
+            NONE (1):
+                No release channel.
+            REGULAR (2):
+                Regular release channel.
+        """
+        RELEASE_CHANNEL_UNSPECIFIED = 0
+        NONE = 1
+        REGULAR = 2
+
+    class ControlPlane(proto.Message):
+        r"""Configuration of the cluster control plane.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            remote (google.cloud.edgecontainer_v1.types.Cluster.ControlPlane.Remote):
+                Remote control plane configuration.
+
+                This field is a member of `oneof`_ ``config``.
+            local (google.cloud.edgecontainer_v1.types.Cluster.ControlPlane.Local):
+                Local control plane configuration.
+
+                Warning: Local control plane clusters must be
+                created in their own project. Local control
+                plane clusters cannot coexist in the same
+                project with any other type of clusters,
+                including non-GDCE clusters. Mixing local
+                control plane GDCE clusters with any other type
+                of clusters in the same project can result in
+                data loss.
+
+                This field is a member of `oneof`_ ``config``.
+        """
+
+        class SharedDeploymentPolicy(proto.Enum):
+            r"""Represents the policy configuration about how user
+            applications are deployed.
+
+            Values:
+                SHARED_DEPLOYMENT_POLICY_UNSPECIFIED (0):
+                    Unspecified.
+                ALLOWED (1):
+                    User applications can be deployed both on
+                    control plane and worker nodes.
+                DISALLOWED (2):
+                    User applications can not be deployed on
+                    control plane nodes and can only be deployed on
+                    worker nodes.
+            """
+            SHARED_DEPLOYMENT_POLICY_UNSPECIFIED = 0
+            ALLOWED = 1
+            DISALLOWED = 2
+
+        class Remote(proto.Message):
+            r"""Configuration specific to clusters with a control plane
+            hosted remotely.
+
+            """
+
+        class Local(proto.Message):
+            r"""Configuration specific to clusters with a control plane
+            hosted locally.
+            Warning: Local control plane clusters must be created in their
+            own project. Local control plane clusters cannot coexist in the
+            same project with any other type of clusters, including non-GDCE
+            clusters. Mixing local control plane GDCE clusters with any
+            other type of clusters in the same project can result in data
+            loss.
+
+            Attributes:
+                node_location (str):
+                    Name of the Google Distributed Cloud Edge zones where this
+                    node pool will be created. For example:
+                    ``us-central1-edge-customer-a``.
+                node_count (int):
+                    The number of nodes to serve as replicas of
+                    the Control Plane.
+                machine_filter (str):
+                    Only machines matching this filter will be allowed to host
+                    control plane nodes. The filtering language accepts strings
+                    like "name=", and is documented here:
+                    `AIP-160 <https://google.aip.dev/160>`__.
+                shared_deployment_policy (google.cloud.edgecontainer_v1.types.Cluster.ControlPlane.SharedDeploymentPolicy):
+                    Policy configuration about how user
+                    applications are deployed.
+            """
+
+            node_location: str = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            node_count: int = proto.Field(
+                proto.INT32,
+                number=2,
+            )
+            machine_filter: str = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            shared_deployment_policy: "Cluster.ControlPlane.SharedDeploymentPolicy" = (
+                proto.Field(
+                    proto.ENUM,
+                    number=4,
+                    enum="Cluster.ControlPlane.SharedDeploymentPolicy",
+                )
+            )
+
+        remote: "Cluster.ControlPlane.Remote" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            oneof="config",
+            message="Cluster.ControlPlane.Remote",
+        )
+        local: "Cluster.ControlPlane.Local" = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            oneof="config",
+            message="Cluster.ControlPlane.Local",
+        )
+
+    class SystemAddonsConfig(proto.Message):
+        r"""Config that customers are allowed to define for GDCE system
+        add-ons.
+
+        Attributes:
+            ingress (google.cloud.edgecontainer_v1.types.Cluster.SystemAddonsConfig.Ingress):
+                Optional. Config for Ingress.
+        """
+
+        class Ingress(proto.Message):
+            r"""Config for the Ingress add-on which allows customers to
+            create an Ingress object to manage external access to the
+            servers in a cluster. The add-on consists of istiod and
+            istio-ingress.
+
+            Attributes:
+                disabled (bool):
+                    Optional. Whether Ingress is disabled.
+                ipv4_vip (str):
+                    Optional. Ingress VIP.
+            """
+
+            disabled: bool = proto.Field(
+                proto.BOOL,
+                number=1,
+            )
+            ipv4_vip: str = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+
+        ingress: "Cluster.SystemAddonsConfig.Ingress" = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message="Cluster.SystemAddonsConfig.Ingress",
+        )
+
+    class ControlPlaneEncryption(proto.Message):
+        r"""Configuration for Customer-managed KMS key support for remote
+        control plane cluster disk encryption.
+
+        Attributes:
+            kms_key (str):
+                Immutable. The Cloud KMS CryptoKey e.g.
+                projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}
+                to use for protecting control plane disks. If
+                not specified, a Google-managed key will be used
+                instead.
+            kms_key_active_version (str):
+                Output only. The Cloud KMS CryptoKeyVersion currently in use
+                for protecting control plane disks. Only applicable if
+                kms_key is set.
+            kms_key_state (google.cloud.edgecontainer_v1.types.KmsKeyState):
+                Output only. Availability of the Cloud KMS CryptoKey. If not
+                ``KEY_AVAILABLE``, then nodes may go offline as they cannot
+                access their local data. This can be caused by a lack of
+                permissions to use the key, or if the key is disabled or
+                deleted.
+            kms_status (google.rpc.status_pb2.Status):
+                Output only. Error status returned by Cloud KMS when using
+                this key. This field may be populated only if
+                ``kms_key_state`` is not ``KMS_KEY_STATE_KEY_AVAILABLE``. If
+                populated, this field contains the error status reported by
+                Cloud KMS.
+        """
+
+        kms_key: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        kms_key_active_version: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        kms_key_state: "KmsKeyState" = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="KmsKeyState",
+        )
+        kms_status: status_pb2.Status = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=status_pb2.Status,
+        )
+
+    class MaintenanceEvent(proto.Message):
+        r"""A Maintenance Event is an operation that could cause
+        temporary disruptions to the cluster workloads, including
+        Google-driven or user-initiated cluster upgrades, user-initiated
+        cluster configuration changes that require restarting nodes,
+        etc.
+
+        Attributes:
+            uuid (str):
+                Output only. UUID of the maintenance event.
+            target_version (str):
+                Output only. The target version of the
+                cluster.
+            operation (str):
+                Output only. The operation for running the maintenance
+                event. Specified in the format
+                projects/\ */locations/*/operations/*. If the maintenance
+                event is split into multiple operations (e.g. due to
+                maintenance windows), the latest one is recorded.
+            type_ (google.cloud.edgecontainer_v1.types.Cluster.MaintenanceEvent.Type):
+                Output only. The type of the maintenance
+                event.
+            schedule (google.cloud.edgecontainer_v1.types.Cluster.MaintenanceEvent.Schedule):
+                Output only. The schedule of the maintenance
+                event.
+            state (google.cloud.edgecontainer_v1.types.Cluster.MaintenanceEvent.State):
+                Output only. The state of the maintenance
+                event.
+            create_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The time when the maintenance
+                event request was created.
+            start_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The time when the maintenance
+                event started.
+            end_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The time when the maintenance event ended,
+                either successfully or not. If the maintenance event is
+                split into multiple maintenance windows, end_time is only
+                updated when the whole flow ends.
+            update_time (google.protobuf.timestamp_pb2.Timestamp):
+                Output only. The time when the maintenance
+                event message was updated.
+        """
+
+        class Type(proto.Enum):
+            r"""Indicates the maintenance event type.
+
+            Values:
+                TYPE_UNSPECIFIED (0):
+                    Unspecified.
+                USER_INITIATED_UPGRADE (1):
+                    Upgrade initiated by users.
+                GOOGLE_DRIVEN_UPGRADE (2):
+                    Upgrade driven by Google.
+            """
+            TYPE_UNSPECIFIED = 0
+            USER_INITIATED_UPGRADE = 1
+            GOOGLE_DRIVEN_UPGRADE = 2
+
+        class Schedule(proto.Enum):
+            r"""Indicates when the maintenance event should be performed.
+
+            Values:
+                SCHEDULE_UNSPECIFIED (0):
+                    Unspecified.
+                IMMEDIATELY (1):
+                    Immediately after receiving the request.
+            """
+            SCHEDULE_UNSPECIFIED = 0
+            IMMEDIATELY = 1
+
+        class State(proto.Enum):
+            r"""Indicates the maintenance event state.
+
+            Values:
+                STATE_UNSPECIFIED (0):
+                    Unspecified.
+                RECONCILING (1):
+                    The maintenance event is ongoing. The cluster
+                    might be unusable.
+                SUCCEEDED (2):
+                    The maintenance event succeeded.
+                FAILED (3):
+                    The maintenance event failed.
+            """
+            STATE_UNSPECIFIED = 0
+            RECONCILING = 1
+            SUCCEEDED = 2
+            FAILED = 3
+
+        uuid: str = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        target_version: str = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        operation: str = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        type_: "Cluster.MaintenanceEvent.Type" = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="Cluster.MaintenanceEvent.Type",
+        )
+        schedule: "Cluster.MaintenanceEvent.Schedule" = proto.Field(
+            proto.ENUM,
+            number=5,
+            enum="Cluster.MaintenanceEvent.Schedule",
+        )
+        state: "Cluster.MaintenanceEvent.State" = proto.Field(
+            proto.ENUM,
+            number=6,
+            enum="Cluster.MaintenanceEvent.State",
+        )
+        create_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message=timestamp_pb2.Timestamp,
+        )
+        start_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message=timestamp_pb2.Timestamp,
+        )
+        end_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=9,
+            message=timestamp_pb2.Timestamp,
+        )
+        update_time: timestamp_pb2.Timestamp = proto.Field(
+            proto.MESSAGE,
+            number=10,
+            message=timestamp_pb2.Timestamp,
+        )
+
+    class SurvivabilityConfig(proto.Message):
+        r"""Configuration of the cluster survivability, e.g., for the
+        case when network connectivity is lost.
+
+        Attributes:
+            offline_reboot_ttl (google.protobuf.duration_pb2.Duration):
+                Optional. Time period that allows the cluster
+                nodes to be rebooted and become functional
+                without network connectivity to Google. The
+                default 0 means not allowed. The maximum is 7
+                days.
+        """
+
+        offline_reboot_ttl: duration_pb2.Duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
+        )
 
     name: str = proto.Field(
         proto.STRING,
@@ -144,6 +593,10 @@ class Cluster(proto.Message):
         proto.STRING,
         number=6,
     )
+    port: int = proto.Field(
+        proto.INT32,
+        number=19,
+    )
     cluster_ca_certificate: str = proto.Field(
         proto.STRING,
         number=10,
@@ -152,6 +605,65 @@ class Cluster(proto.Message):
         proto.MESSAGE,
         number=12,
         message="MaintenancePolicy",
+    )
+    control_plane_version: str = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    node_version: str = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    control_plane: ControlPlane = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=ControlPlane,
+    )
+    system_addons_config: SystemAddonsConfig = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message=SystemAddonsConfig,
+    )
+    external_load_balancer_ipv4_address_pools: MutableSequence[
+        str
+    ] = proto.RepeatedField(
+        proto.STRING,
+        number=17,
+    )
+    control_plane_encryption: ControlPlaneEncryption = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=ControlPlaneEncryption,
+    )
+    status: Status = proto.Field(
+        proto.ENUM,
+        number=20,
+        enum=Status,
+    )
+    maintenance_events: MutableSequence[MaintenanceEvent] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=21,
+        message=MaintenanceEvent,
+    )
+    target_version: str = proto.Field(
+        proto.STRING,
+        number=22,
+    )
+    release_channel: ReleaseChannel = proto.Field(
+        proto.ENUM,
+        number=23,
+        enum=ReleaseChannel,
+    )
+    survivability_config: SurvivabilityConfig = proto.Field(
+        proto.MESSAGE,
+        number=24,
+        message=SurvivabilityConfig,
+    )
+    external_load_balancer_ipv6_address_pools: MutableSequence[
+        str
+    ] = proto.RepeatedField(
+        proto.STRING,
+        number=25,
     )
 
 
@@ -275,6 +787,12 @@ class NodePool(proto.Message):
         local_disk_encryption (google.cloud.edgecontainer_v1.types.NodePool.LocalDiskEncryption):
             Optional. Local disk encryption options. This
             field is only used when enabling CMEK support.
+        node_version (str):
+            Output only. The lowest release version among
+            all worker nodes.
+        node_config (google.cloud.edgecontainer_v1.types.NodePool.NodeConfig):
+            Optional. Configuration for each node in the
+            NodePool
     """
 
     class LocalDiskEncryption(proto.Message):
@@ -325,6 +843,20 @@ class NodePool(proto.Message):
             message=status_pb2.Status,
         )
 
+    class NodeConfig(proto.Message):
+        r"""Configuration for each node in the NodePool
+
+        Attributes:
+            labels (MutableMapping[str, str]):
+                Optional. The Kubernetes node labels
+        """
+
+        labels: MutableMapping[str, str] = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=1,
+        )
+
     name: str = proto.Field(
         proto.STRING,
         number=1,
@@ -361,6 +893,15 @@ class NodePool(proto.Message):
         number=9,
         message=LocalDiskEncryption,
     )
+    node_version: str = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    node_config: NodeConfig = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=NodeConfig,
+    )
 
 
 class Machine(proto.Message):
@@ -384,9 +925,16 @@ class Machine(proto.Message):
             projects/{project}/locations/{location}/clusters/{cluster_id}/nodePools/{pool_id}/{node},
             Or empty if the machine is not assigned to assume the role
             of a node.
+
+            For control plane nodes hosted on edge machines, this will
+            return the following format:
+            "projects/{project}/locations/{location}/clusters/{cluster_id}/controlPlaneNodes/{node}".
         zone (str):
             The Google Distributed Cloud Edge zone of
             this machine.
+        version (str):
+            Output only. The software version of the
+            machine.
         disabled (bool):
             Output only. Whether the machine is disabled.
             If disabled, the machine is unable to enter
@@ -419,6 +967,10 @@ class Machine(proto.Message):
     zone: str = proto.Field(
         proto.STRING,
         number=6,
+    )
+    version: str = proto.Field(
+        proto.STRING,
+        number=7,
     )
     disabled: bool = proto.Field(
         proto.BOOL,
@@ -464,6 +1016,9 @@ class VpnConnection(proto.Message):
             cluster side. If enabled, when creating VPN
             connection we will attempt to use 2 ANG floating
             IPs.
+        router (str):
+            Optional. The VPN connection Cloud Router
+            name.
         details (google.cloud.edgecontainer_v1.types.VpnConnection.Details):
             Output only. The created connection details.
     """
@@ -549,7 +1104,7 @@ class VpnConnection(proto.Message):
 
             Attributes:
                 name (str):
-                    The created Cloud Router name.
+                    The associated Cloud Router name.
             """
 
             name: str = proto.Field(
@@ -637,6 +1192,10 @@ class VpnConnection(proto.Message):
         proto.BOOL,
         number=9,
     )
+    router: str = proto.Field(
+        proto.STRING,
+        number=12,
+    )
     details: Details = proto.Field(
         proto.MESSAGE,
         number=10,
@@ -670,12 +1229,39 @@ class ZoneMetadata(proto.Message):
     Attributes:
         quota (MutableSequence[google.cloud.edgecontainer_v1.types.Quota]):
             Quota for resources in this zone.
+        rack_types (MutableMapping[str, google.cloud.edgecontainer_v1.types.ZoneMetadata.RackType]):
+            The map keyed by rack name and has value of
+            RackType.
     """
+
+    class RackType(proto.Enum):
+        r"""Type of the rack.
+
+        Values:
+            RACK_TYPE_UNSPECIFIED (0):
+                Unspecified rack type, single rack also
+                belongs to this type.
+            BASE (1):
+                Base rack type, a pair of two modified
+                Config-1 racks containing Aggregation switches.
+            EXPANSION (2):
+                Expansion rack type, also known as standalone
+                racks, added by customers on demand.
+        """
+        RACK_TYPE_UNSPECIFIED = 0
+        BASE = 1
+        EXPANSION = 2
 
     quota: MutableSequence["Quota"] = proto.RepeatedField(
         proto.MESSAGE,
         number=1,
         message="Quota",
+    )
+    rack_types: MutableMapping[str, RackType] = proto.MapField(
+        proto.STRING,
+        proto.ENUM,
+        number=2,
+        enum=RackType,
     )
 
 
@@ -781,6 +1367,67 @@ class TimeWindow(proto.Message):
         proto.MESSAGE,
         number=2,
         message=timestamp_pb2.Timestamp,
+    )
+
+
+class ServerConfig(proto.Message):
+    r"""Server configuration for supported versions and release
+    channels.
+
+    Attributes:
+        channels (MutableMapping[str, google.cloud.edgecontainer_v1.types.ChannelConfig]):
+            Output only. Mapping from release channel to
+            channel config.
+        versions (MutableSequence[google.cloud.edgecontainer_v1.types.Version]):
+            Output only. Supported versions, e.g.: ["1.4.0", "1.5.0"].
+        default_version (str):
+            Output only. Default version, e.g.: "1.4.0".
+    """
+
+    channels: MutableMapping[str, "ChannelConfig"] = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message="ChannelConfig",
+    )
+    versions: MutableSequence["Version"] = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Version",
+    )
+    default_version: str = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class ChannelConfig(proto.Message):
+    r"""Configuration for a release channel.
+
+    Attributes:
+        default_version (str):
+            Output only. Default version for this release
+            channel, e.g.: "1.4.0".
+    """
+
+    default_version: str = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class Version(proto.Message):
+    r"""Version of a cluster.
+
+    Attributes:
+        name (str):
+            Output only. Name of the version, e.g.:
+            "1.4.0".
+    """
+
+    name: str = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
