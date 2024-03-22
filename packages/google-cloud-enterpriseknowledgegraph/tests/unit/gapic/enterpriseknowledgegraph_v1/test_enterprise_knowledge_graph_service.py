@@ -1257,7 +1257,8 @@ def test_create_entity_reconciliation_job(request_type, transport: str = "grpc")
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateEntityReconciliationJobRequest()
+        request = service.CreateEntityReconciliationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.EntityReconciliationJob)
@@ -1278,6 +1279,59 @@ def test_create_entity_reconciliation_job_empty_call():
         type(client.transport.create_entity_reconciliation_job), "__call__"
     ) as call:
         client.create_entity_reconciliation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateEntityReconciliationJobRequest()
+
+
+def test_create_entity_reconciliation_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CreateEntityReconciliationJobRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entity_reconciliation_job), "__call__"
+    ) as call:
+        client.create_entity_reconciliation_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateEntityReconciliationJobRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_entity_reconciliation_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_entity_reconciliation_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.EntityReconciliationJob(
+                name="name_value",
+                state=job_state.JobState.JOB_STATE_PENDING,
+            )
+        )
+        response = await client.create_entity_reconciliation_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CreateEntityReconciliationJobRequest()
@@ -1313,7 +1367,8 @@ async def test_create_entity_reconciliation_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CreateEntityReconciliationJobRequest()
+        request = service.CreateEntityReconciliationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.EntityReconciliationJob)
@@ -1526,7 +1581,8 @@ def test_get_entity_reconciliation_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetEntityReconciliationJobRequest()
+        request = service.GetEntityReconciliationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.EntityReconciliationJob)
@@ -1547,6 +1603,59 @@ def test_get_entity_reconciliation_job_empty_call():
         type(client.transport.get_entity_reconciliation_job), "__call__"
     ) as call:
         client.get_entity_reconciliation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetEntityReconciliationJobRequest()
+
+
+def test_get_entity_reconciliation_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.GetEntityReconciliationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_entity_reconciliation_job), "__call__"
+    ) as call:
+        client.get_entity_reconciliation_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetEntityReconciliationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_entity_reconciliation_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_entity_reconciliation_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.EntityReconciliationJob(
+                name="name_value",
+                state=job_state.JobState.JOB_STATE_PENDING,
+            )
+        )
+        response = await client.get_entity_reconciliation_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.GetEntityReconciliationJobRequest()
@@ -1582,7 +1691,8 @@ async def test_get_entity_reconciliation_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.GetEntityReconciliationJobRequest()
+        request = service.GetEntityReconciliationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.EntityReconciliationJob)
@@ -1776,7 +1886,8 @@ def test_list_entity_reconciliation_jobs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListEntityReconciliationJobsRequest()
+        request = service.ListEntityReconciliationJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntityReconciliationJobsPager)
@@ -1796,6 +1907,62 @@ def test_list_entity_reconciliation_jobs_empty_call():
         type(client.transport.list_entity_reconciliation_jobs), "__call__"
     ) as call:
         client.list_entity_reconciliation_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListEntityReconciliationJobsRequest()
+
+
+def test_list_entity_reconciliation_jobs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.ListEntityReconciliationJobsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entity_reconciliation_jobs), "__call__"
+    ) as call:
+        client.list_entity_reconciliation_jobs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListEntityReconciliationJobsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_entity_reconciliation_jobs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_entity_reconciliation_jobs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListEntityReconciliationJobsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_entity_reconciliation_jobs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.ListEntityReconciliationJobsRequest()
@@ -1830,7 +1997,8 @@ async def test_list_entity_reconciliation_jobs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.ListEntityReconciliationJobsRequest()
+        request = service.ListEntityReconciliationJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEntityReconciliationJobsAsyncPager)
@@ -2219,7 +2387,8 @@ def test_cancel_entity_reconciliation_job(request_type, transport: str = "grpc")
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CancelEntityReconciliationJobRequest()
+        request = service.CancelEntityReconciliationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2238,6 +2407,54 @@ def test_cancel_entity_reconciliation_job_empty_call():
         type(client.transport.cancel_entity_reconciliation_job), "__call__"
     ) as call:
         client.cancel_entity_reconciliation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CancelEntityReconciliationJobRequest()
+
+
+def test_cancel_entity_reconciliation_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.CancelEntityReconciliationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_entity_reconciliation_job), "__call__"
+    ) as call:
+        client.cancel_entity_reconciliation_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CancelEntityReconciliationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_cancel_entity_reconciliation_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.cancel_entity_reconciliation_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.cancel_entity_reconciliation_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.CancelEntityReconciliationJobRequest()
@@ -2268,7 +2485,8 @@ async def test_cancel_entity_reconciliation_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.CancelEntityReconciliationJobRequest()
+        request = service.CancelEntityReconciliationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2454,7 +2672,8 @@ def test_delete_entity_reconciliation_job(request_type, transport: str = "grpc")
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteEntityReconciliationJobRequest()
+        request = service.DeleteEntityReconciliationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2473,6 +2692,54 @@ def test_delete_entity_reconciliation_job_empty_call():
         type(client.transport.delete_entity_reconciliation_job), "__call__"
     ) as call:
         client.delete_entity_reconciliation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteEntityReconciliationJobRequest()
+
+
+def test_delete_entity_reconciliation_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.DeleteEntityReconciliationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entity_reconciliation_job), "__call__"
+    ) as call:
+        client.delete_entity_reconciliation_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteEntityReconciliationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_entity_reconciliation_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_entity_reconciliation_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_entity_reconciliation_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.DeleteEntityReconciliationJobRequest()
@@ -2503,7 +2770,8 @@ async def test_delete_entity_reconciliation_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.DeleteEntityReconciliationJobRequest()
+        request = service.DeleteEntityReconciliationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2687,7 +2955,8 @@ def test_lookup(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.LookupRequest()
+        request = service.LookupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.LookupResponse)
@@ -2704,6 +2973,52 @@ def test_lookup_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup), "__call__") as call:
         client.lookup()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupRequest()
+
+
+def test_lookup_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.LookupRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        client.lookup(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.LookupResponse()
+        )
+        response = await client.lookup()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.LookupRequest()
@@ -2733,7 +3048,8 @@ async def test_lookup_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.LookupRequest()
+        request = service.LookupRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.LookupResponse)
@@ -2923,7 +3239,8 @@ def test_search(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SearchRequest()
+        request = service.SearchRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.SearchResponse)
@@ -2940,6 +3257,54 @@ def test_search_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search), "__call__") as call:
         client.search()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SearchRequest()
+
+
+def test_search_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.SearchRequest(
+        parent="parent_value",
+        query="query_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        client.search(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SearchRequest(
+            parent="parent_value",
+            query="query_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.SearchResponse()
+        )
+        response = await client.search()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.SearchRequest()
@@ -2969,7 +3334,8 @@ async def test_search_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SearchRequest()
+        request = service.SearchRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.SearchResponse)
@@ -3159,7 +3525,8 @@ def test_lookup_public_kg(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.LookupPublicKgRequest()
+        request = service.LookupPublicKgRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.LookupPublicKgResponse)
@@ -3176,6 +3543,52 @@ def test_lookup_public_kg_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lookup_public_kg), "__call__") as call:
         client.lookup_public_kg()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupPublicKgRequest()
+
+
+def test_lookup_public_kg_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.LookupPublicKgRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_public_kg), "__call__") as call:
+        client.lookup_public_kg(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.LookupPublicKgRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_lookup_public_kg_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lookup_public_kg), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.LookupPublicKgResponse()
+        )
+        response = await client.lookup_public_kg()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.LookupPublicKgRequest()
@@ -3205,7 +3618,8 @@ async def test_lookup_public_kg_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.LookupPublicKgRequest()
+        request = service.LookupPublicKgRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.LookupPublicKgResponse)
@@ -3395,7 +3809,8 @@ def test_search_public_kg(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SearchPublicKgRequest()
+        request = service.SearchPublicKgRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.SearchPublicKgResponse)
@@ -3412,6 +3827,54 @@ def test_search_public_kg_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_public_kg), "__call__") as call:
         client.search_public_kg()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SearchPublicKgRequest()
+
+
+def test_search_public_kg_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = EnterpriseKnowledgeGraphServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = service.SearchPublicKgRequest(
+        parent="parent_value",
+        query="query_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_public_kg), "__call__") as call:
+        client.search_public_kg(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.SearchPublicKgRequest(
+            parent="parent_value",
+            query="query_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_public_kg_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = EnterpriseKnowledgeGraphServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_public_kg), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.SearchPublicKgResponse()
+        )
+        response = await client.search_public_kg()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == service.SearchPublicKgRequest()
@@ -3441,7 +3904,8 @@ async def test_search_public_kg_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == service.SearchPublicKgRequest()
+        request = service.SearchPublicKgRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, service.SearchPublicKgResponse)

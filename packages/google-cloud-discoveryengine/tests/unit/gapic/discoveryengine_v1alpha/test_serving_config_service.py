@@ -1236,7 +1236,8 @@ def test_update_serving_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.UpdateServingConfigRequest()
+        request = serving_config_service.UpdateServingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_serving_config.ServingConfig)
@@ -1269,6 +1270,67 @@ def test_update_serving_config_empty_call():
         type(client.transport.update_serving_config), "__call__"
     ) as call:
         client.update_serving_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == serving_config_service.UpdateServingConfigRequest()
+
+
+def test_update_serving_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServingConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = serving_config_service.UpdateServingConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_serving_config), "__call__"
+    ) as call:
+        client.update_serving_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == serving_config_service.UpdateServingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_serving_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServingConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_serving_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_serving_config.ServingConfig(
+                name="name_value",
+                display_name="display_name_value",
+                solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+                model_id="model_id_value",
+                diversity_level="diversity_level_value",
+                ranking_expression="ranking_expression_value",
+                filter_control_ids=["filter_control_ids_value"],
+                boost_control_ids=["boost_control_ids_value"],
+                redirect_control_ids=["redirect_control_ids_value"],
+                synonyms_control_ids=["synonyms_control_ids_value"],
+                oneway_synonyms_control_ids=["oneway_synonyms_control_ids_value"],
+                dissociate_control_ids=["dissociate_control_ids_value"],
+                replacement_control_ids=["replacement_control_ids_value"],
+                ignore_control_ids=["ignore_control_ids_value"],
+            )
+        )
+        response = await client.update_serving_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == serving_config_service.UpdateServingConfigRequest()
@@ -1316,7 +1378,8 @@ async def test_update_serving_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.UpdateServingConfigRequest()
+        request = serving_config_service.UpdateServingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_serving_config.ServingConfig)
@@ -1569,7 +1632,8 @@ def test_get_serving_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.GetServingConfigRequest()
+        request = serving_config_service.GetServingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, serving_config.ServingConfig)
@@ -1602,6 +1666,71 @@ def test_get_serving_config_empty_call():
         type(client.transport.get_serving_config), "__call__"
     ) as call:
         client.get_serving_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == serving_config_service.GetServingConfigRequest()
+
+
+def test_get_serving_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServingConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = serving_config_service.GetServingConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_serving_config), "__call__"
+    ) as call:
+        client.get_serving_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == serving_config_service.GetServingConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_serving_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServingConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_serving_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            serving_config.ServingConfig(
+                name="name_value",
+                display_name="display_name_value",
+                solution_type=common.SolutionType.SOLUTION_TYPE_RECOMMENDATION,
+                model_id="model_id_value",
+                diversity_level="diversity_level_value",
+                ranking_expression="ranking_expression_value",
+                filter_control_ids=["filter_control_ids_value"],
+                boost_control_ids=["boost_control_ids_value"],
+                redirect_control_ids=["redirect_control_ids_value"],
+                synonyms_control_ids=["synonyms_control_ids_value"],
+                oneway_synonyms_control_ids=["oneway_synonyms_control_ids_value"],
+                dissociate_control_ids=["dissociate_control_ids_value"],
+                replacement_control_ids=["replacement_control_ids_value"],
+                ignore_control_ids=["ignore_control_ids_value"],
+            )
+        )
+        response = await client.get_serving_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == serving_config_service.GetServingConfigRequest()
@@ -1649,7 +1778,8 @@ async def test_get_serving_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.GetServingConfigRequest()
+        request = serving_config_service.GetServingConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, serving_config.ServingConfig)
@@ -1855,7 +1985,8 @@ def test_list_serving_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.ListServingConfigsRequest()
+        request = serving_config_service.ListServingConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServingConfigsPager)
@@ -1875,6 +2006,60 @@ def test_list_serving_configs_empty_call():
         type(client.transport.list_serving_configs), "__call__"
     ) as call:
         client.list_serving_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == serving_config_service.ListServingConfigsRequest()
+
+
+def test_list_serving_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServingConfigServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = serving_config_service.ListServingConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_serving_configs), "__call__"
+    ) as call:
+        client.list_serving_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == serving_config_service.ListServingConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_serving_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServingConfigServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_serving_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            serving_config_service.ListServingConfigsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_serving_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == serving_config_service.ListServingConfigsRequest()
@@ -1909,7 +2094,8 @@ async def test_list_serving_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == serving_config_service.ListServingConfigsRequest()
+        request = serving_config_service.ListServingConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListServingConfigsAsyncPager)

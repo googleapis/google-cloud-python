@@ -1191,7 +1191,8 @@ def test_list_migration_jobs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListMigrationJobsRequest()
+        request = clouddms.ListMigrationJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMigrationJobsPager)
@@ -1212,6 +1213,65 @@ def test_list_migration_jobs_empty_call():
         type(client.transport.list_migration_jobs), "__call__"
     ) as call:
         client.list_migration_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListMigrationJobsRequest()
+
+
+def test_list_migration_jobs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.ListMigrationJobsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_migration_jobs), "__call__"
+    ) as call:
+        client.list_migration_jobs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListMigrationJobsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_migration_jobs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_migration_jobs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.ListMigrationJobsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_migration_jobs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.ListMigrationJobsRequest()
@@ -1246,7 +1306,8 @@ async def test_list_migration_jobs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListMigrationJobsRequest()
+        request = clouddms.ListMigrationJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMigrationJobsAsyncPager)
@@ -1647,7 +1708,8 @@ def test_get_migration_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetMigrationJobRequest()
+        request = clouddms.GetMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms_resources.MigrationJob)
@@ -1676,6 +1738,67 @@ def test_get_migration_job_empty_call():
         type(client.transport.get_migration_job), "__call__"
     ) as call:
         client.get_migration_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetMigrationJobRequest()
+
+
+def test_get_migration_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.GetMigrationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_migration_job), "__call__"
+    ) as call:
+        client.get_migration_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetMigrationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_migration_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_migration_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms_resources.MigrationJob(
+                name="name_value",
+                display_name="display_name_value",
+                state=clouddms_resources.MigrationJob.State.MAINTENANCE,
+                phase=clouddms_resources.MigrationJob.Phase.FULL_DUMP,
+                type_=clouddms_resources.MigrationJob.Type.ONE_TIME,
+                dump_path="dump_path_value",
+                source="source_value",
+                destination="destination_value",
+                filter="filter_value",
+                cmek_key_name="cmek_key_name_value",
+            )
+        )
+        response = await client.get_migration_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.GetMigrationJobRequest()
@@ -1718,7 +1841,8 @@ async def test_get_migration_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetMigrationJobRequest()
+        request = clouddms.GetMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms_resources.MigrationJob)
@@ -1918,7 +2042,8 @@ def test_create_migration_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreateMigrationJobRequest()
+        request = clouddms.CreateMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1937,6 +2062,60 @@ def test_create_migration_job_empty_call():
         type(client.transport.create_migration_job), "__call__"
     ) as call:
         client.create_migration_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreateMigrationJobRequest()
+
+
+def test_create_migration_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.CreateMigrationJobRequest(
+        parent="parent_value",
+        migration_job_id="migration_job_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_migration_job), "__call__"
+    ) as call:
+        client.create_migration_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreateMigrationJobRequest(
+            parent="parent_value",
+            migration_job_id="migration_job_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_migration_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_migration_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_migration_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.CreateMigrationJobRequest()
@@ -1968,7 +2147,8 @@ async def test_create_migration_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreateMigrationJobRequest()
+        request = clouddms.CreateMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2178,7 +2358,8 @@ def test_update_migration_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.UpdateMigrationJobRequest()
+        request = clouddms.UpdateMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2197,6 +2378,56 @@ def test_update_migration_job_empty_call():
         type(client.transport.update_migration_job), "__call__"
     ) as call:
         client.update_migration_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.UpdateMigrationJobRequest()
+
+
+def test_update_migration_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.UpdateMigrationJobRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_migration_job), "__call__"
+    ) as call:
+        client.update_migration_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.UpdateMigrationJobRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_migration_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_migration_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_migration_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.UpdateMigrationJobRequest()
@@ -2228,7 +2459,8 @@ async def test_update_migration_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.UpdateMigrationJobRequest()
+        request = clouddms.UpdateMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2428,7 +2660,8 @@ def test_delete_migration_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeleteMigrationJobRequest()
+        request = clouddms.DeleteMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2447,6 +2680,58 @@ def test_delete_migration_job_empty_call():
         type(client.transport.delete_migration_job), "__call__"
     ) as call:
         client.delete_migration_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeleteMigrationJobRequest()
+
+
+def test_delete_migration_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.DeleteMigrationJobRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_migration_job), "__call__"
+    ) as call:
+        client.delete_migration_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeleteMigrationJobRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_migration_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_migration_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_migration_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.DeleteMigrationJobRequest()
@@ -2478,7 +2763,8 @@ async def test_delete_migration_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeleteMigrationJobRequest()
+        request = clouddms.DeleteMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2668,7 +2954,8 @@ def test_start_migration_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.StartMigrationJobRequest()
+        request = clouddms.StartMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2687,6 +2974,56 @@ def test_start_migration_job_empty_call():
         type(client.transport.start_migration_job), "__call__"
     ) as call:
         client.start_migration_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.StartMigrationJobRequest()
+
+
+def test_start_migration_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.StartMigrationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_migration_job), "__call__"
+    ) as call:
+        client.start_migration_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.StartMigrationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_start_migration_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_migration_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.start_migration_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.StartMigrationJobRequest()
@@ -2718,7 +3055,8 @@ async def test_start_migration_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.StartMigrationJobRequest()
+        request = clouddms.StartMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2822,7 +3160,8 @@ def test_stop_migration_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.StopMigrationJobRequest()
+        request = clouddms.StopMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2841,6 +3180,56 @@ def test_stop_migration_job_empty_call():
         type(client.transport.stop_migration_job), "__call__"
     ) as call:
         client.stop_migration_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.StopMigrationJobRequest()
+
+
+def test_stop_migration_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.StopMigrationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_migration_job), "__call__"
+    ) as call:
+        client.stop_migration_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.StopMigrationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_stop_migration_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.stop_migration_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.stop_migration_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.StopMigrationJobRequest()
@@ -2872,7 +3261,8 @@ async def test_stop_migration_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.StopMigrationJobRequest()
+        request = clouddms.StopMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2976,7 +3366,8 @@ def test_resume_migration_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ResumeMigrationJobRequest()
+        request = clouddms.ResumeMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2995,6 +3386,56 @@ def test_resume_migration_job_empty_call():
         type(client.transport.resume_migration_job), "__call__"
     ) as call:
         client.resume_migration_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ResumeMigrationJobRequest()
+
+
+def test_resume_migration_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.ResumeMigrationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_migration_job), "__call__"
+    ) as call:
+        client.resume_migration_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ResumeMigrationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_resume_migration_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_migration_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.resume_migration_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.ResumeMigrationJobRequest()
@@ -3026,7 +3467,8 @@ async def test_resume_migration_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ResumeMigrationJobRequest()
+        request = clouddms.ResumeMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3130,7 +3572,8 @@ def test_promote_migration_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.PromoteMigrationJobRequest()
+        request = clouddms.PromoteMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3149,6 +3592,56 @@ def test_promote_migration_job_empty_call():
         type(client.transport.promote_migration_job), "__call__"
     ) as call:
         client.promote_migration_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.PromoteMigrationJobRequest()
+
+
+def test_promote_migration_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.PromoteMigrationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.promote_migration_job), "__call__"
+    ) as call:
+        client.promote_migration_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.PromoteMigrationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_promote_migration_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.promote_migration_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.promote_migration_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.PromoteMigrationJobRequest()
@@ -3180,7 +3673,8 @@ async def test_promote_migration_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.PromoteMigrationJobRequest()
+        request = clouddms.PromoteMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3284,7 +3778,8 @@ def test_verify_migration_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.VerifyMigrationJobRequest()
+        request = clouddms.VerifyMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3303,6 +3798,56 @@ def test_verify_migration_job_empty_call():
         type(client.transport.verify_migration_job), "__call__"
     ) as call:
         client.verify_migration_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.VerifyMigrationJobRequest()
+
+
+def test_verify_migration_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.VerifyMigrationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_migration_job), "__call__"
+    ) as call:
+        client.verify_migration_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.VerifyMigrationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_verify_migration_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.verify_migration_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.verify_migration_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.VerifyMigrationJobRequest()
@@ -3334,7 +3879,8 @@ async def test_verify_migration_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.VerifyMigrationJobRequest()
+        request = clouddms.VerifyMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3438,7 +3984,8 @@ def test_restart_migration_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.RestartMigrationJobRequest()
+        request = clouddms.RestartMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3457,6 +4004,56 @@ def test_restart_migration_job_empty_call():
         type(client.transport.restart_migration_job), "__call__"
     ) as call:
         client.restart_migration_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.RestartMigrationJobRequest()
+
+
+def test_restart_migration_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.RestartMigrationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.restart_migration_job), "__call__"
+    ) as call:
+        client.restart_migration_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.RestartMigrationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_restart_migration_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.restart_migration_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.restart_migration_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.RestartMigrationJobRequest()
@@ -3488,7 +4085,8 @@ async def test_restart_migration_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.RestartMigrationJobRequest()
+        request = clouddms.RestartMigrationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3594,7 +4192,8 @@ def test_generate_ssh_script(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GenerateSshScriptRequest()
+        request = clouddms.GenerateSshScriptRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms.SshScript)
@@ -3614,6 +4213,60 @@ def test_generate_ssh_script_empty_call():
         type(client.transport.generate_ssh_script), "__call__"
     ) as call:
         client.generate_ssh_script()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GenerateSshScriptRequest()
+
+
+def test_generate_ssh_script_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.GenerateSshScriptRequest(
+        migration_job="migration_job_value",
+        vm="vm_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_ssh_script), "__call__"
+    ) as call:
+        client.generate_ssh_script(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GenerateSshScriptRequest(
+            migration_job="migration_job_value",
+            vm="vm_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_ssh_script_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_ssh_script), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.SshScript(
+                script="script_value",
+            )
+        )
+        response = await client.generate_ssh_script()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.GenerateSshScriptRequest()
@@ -3647,7 +4300,8 @@ async def test_generate_ssh_script_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GenerateSshScriptRequest()
+        request = clouddms.GenerateSshScriptRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms.SshScript)
@@ -3752,7 +4406,8 @@ def test_generate_tcp_proxy_script(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GenerateTcpProxyScriptRequest()
+        request = clouddms.GenerateTcpProxyScriptRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms.TcpProxyScript)
@@ -3772,6 +4427,66 @@ def test_generate_tcp_proxy_script_empty_call():
         type(client.transport.generate_tcp_proxy_script), "__call__"
     ) as call:
         client.generate_tcp_proxy_script()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GenerateTcpProxyScriptRequest()
+
+
+def test_generate_tcp_proxy_script_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.GenerateTcpProxyScriptRequest(
+        migration_job="migration_job_value",
+        vm_name="vm_name_value",
+        vm_machine_type="vm_machine_type_value",
+        vm_zone="vm_zone_value",
+        vm_subnet="vm_subnet_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_tcp_proxy_script), "__call__"
+    ) as call:
+        client.generate_tcp_proxy_script(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GenerateTcpProxyScriptRequest(
+            migration_job="migration_job_value",
+            vm_name="vm_name_value",
+            vm_machine_type="vm_machine_type_value",
+            vm_zone="vm_zone_value",
+            vm_subnet="vm_subnet_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_generate_tcp_proxy_script_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.generate_tcp_proxy_script), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.TcpProxyScript(
+                script="script_value",
+            )
+        )
+        response = await client.generate_tcp_proxy_script()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.GenerateTcpProxyScriptRequest()
@@ -3805,7 +4520,8 @@ async def test_generate_tcp_proxy_script_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GenerateTcpProxyScriptRequest()
+        request = clouddms.GenerateTcpProxyScriptRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms.TcpProxyScript)
@@ -3913,7 +4629,8 @@ def test_list_connection_profiles(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListConnectionProfilesRequest()
+        request = clouddms.ListConnectionProfilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConnectionProfilesPager)
@@ -3934,6 +4651,65 @@ def test_list_connection_profiles_empty_call():
         type(client.transport.list_connection_profiles), "__call__"
     ) as call:
         client.list_connection_profiles()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListConnectionProfilesRequest()
+
+
+def test_list_connection_profiles_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.ListConnectionProfilesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_connection_profiles), "__call__"
+    ) as call:
+        client.list_connection_profiles(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListConnectionProfilesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_connection_profiles_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_connection_profiles), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.ListConnectionProfilesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_connection_profiles()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.ListConnectionProfilesRequest()
@@ -3968,7 +4744,8 @@ async def test_list_connection_profiles_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListConnectionProfilesRequest()
+        request = clouddms.ListConnectionProfilesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConnectionProfilesAsyncPager)
@@ -4365,7 +5142,8 @@ def test_get_connection_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetConnectionProfileRequest()
+        request = clouddms.GetConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms_resources.ConnectionProfile)
@@ -4388,6 +5166,61 @@ def test_get_connection_profile_empty_call():
         type(client.transport.get_connection_profile), "__call__"
     ) as call:
         client.get_connection_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetConnectionProfileRequest()
+
+
+def test_get_connection_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.GetConnectionProfileRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_connection_profile), "__call__"
+    ) as call:
+        client.get_connection_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetConnectionProfileRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_connection_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_connection_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms_resources.ConnectionProfile(
+                name="name_value",
+                state=clouddms_resources.ConnectionProfile.State.DRAFT,
+                display_name="display_name_value",
+                provider=clouddms_resources.DatabaseProvider.CLOUDSQL,
+            )
+        )
+        response = await client.get_connection_profile()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.GetConnectionProfileRequest()
@@ -4424,7 +5257,8 @@ async def test_get_connection_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetConnectionProfileRequest()
+        request = clouddms.GetConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms_resources.ConnectionProfile)
@@ -4618,7 +5452,8 @@ def test_create_connection_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreateConnectionProfileRequest()
+        request = clouddms.CreateConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4637,6 +5472,60 @@ def test_create_connection_profile_empty_call():
         type(client.transport.create_connection_profile), "__call__"
     ) as call:
         client.create_connection_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreateConnectionProfileRequest()
+
+
+def test_create_connection_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.CreateConnectionProfileRequest(
+        parent="parent_value",
+        connection_profile_id="connection_profile_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_connection_profile), "__call__"
+    ) as call:
+        client.create_connection_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreateConnectionProfileRequest(
+            parent="parent_value",
+            connection_profile_id="connection_profile_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_connection_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_connection_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_connection_profile()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.CreateConnectionProfileRequest()
@@ -4669,7 +5558,8 @@ async def test_create_connection_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreateConnectionProfileRequest()
+        request = clouddms.CreateConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4879,7 +5769,8 @@ def test_update_connection_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.UpdateConnectionProfileRequest()
+        request = clouddms.UpdateConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4898,6 +5789,56 @@ def test_update_connection_profile_empty_call():
         type(client.transport.update_connection_profile), "__call__"
     ) as call:
         client.update_connection_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.UpdateConnectionProfileRequest()
+
+
+def test_update_connection_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.UpdateConnectionProfileRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_connection_profile), "__call__"
+    ) as call:
+        client.update_connection_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.UpdateConnectionProfileRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_connection_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_connection_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_connection_profile()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.UpdateConnectionProfileRequest()
@@ -4930,7 +5871,8 @@ async def test_update_connection_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.UpdateConnectionProfileRequest()
+        request = clouddms.UpdateConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5130,7 +6072,8 @@ def test_delete_connection_profile(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeleteConnectionProfileRequest()
+        request = clouddms.DeleteConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5149,6 +6092,58 @@ def test_delete_connection_profile_empty_call():
         type(client.transport.delete_connection_profile), "__call__"
     ) as call:
         client.delete_connection_profile()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeleteConnectionProfileRequest()
+
+
+def test_delete_connection_profile_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.DeleteConnectionProfileRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_connection_profile), "__call__"
+    ) as call:
+        client.delete_connection_profile(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeleteConnectionProfileRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_connection_profile_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_connection_profile), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_connection_profile()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.DeleteConnectionProfileRequest()
@@ -5181,7 +6176,8 @@ async def test_delete_connection_profile_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeleteConnectionProfileRequest()
+        request = clouddms.DeleteConnectionProfileRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5371,7 +6367,8 @@ def test_create_private_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreatePrivateConnectionRequest()
+        request = clouddms.CreatePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5390,6 +6387,60 @@ def test_create_private_connection_empty_call():
         type(client.transport.create_private_connection), "__call__"
     ) as call:
         client.create_private_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreatePrivateConnectionRequest()
+
+
+def test_create_private_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.CreatePrivateConnectionRequest(
+        parent="parent_value",
+        private_connection_id="private_connection_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_private_connection), "__call__"
+    ) as call:
+        client.create_private_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreatePrivateConnectionRequest(
+            parent="parent_value",
+            private_connection_id="private_connection_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_private_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_private_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_private_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.CreatePrivateConnectionRequest()
@@ -5422,7 +6473,8 @@ async def test_create_private_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreatePrivateConnectionRequest()
+        request = clouddms.CreatePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5636,7 +6688,8 @@ def test_get_private_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetPrivateConnectionRequest()
+        request = clouddms.GetPrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms_resources.PrivateConnection)
@@ -5658,6 +6711,60 @@ def test_get_private_connection_empty_call():
         type(client.transport.get_private_connection), "__call__"
     ) as call:
         client.get_private_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetPrivateConnectionRequest()
+
+
+def test_get_private_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.GetPrivateConnectionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_private_connection), "__call__"
+    ) as call:
+        client.get_private_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetPrivateConnectionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_private_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_private_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms_resources.PrivateConnection(
+                name="name_value",
+                display_name="display_name_value",
+                state=clouddms_resources.PrivateConnection.State.CREATING,
+            )
+        )
+        response = await client.get_private_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.GetPrivateConnectionRequest()
@@ -5693,7 +6800,8 @@ async def test_get_private_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetPrivateConnectionRequest()
+        request = clouddms.GetPrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms_resources.PrivateConnection)
@@ -5889,7 +6997,8 @@ def test_list_private_connections(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListPrivateConnectionsRequest()
+        request = clouddms.ListPrivateConnectionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPrivateConnectionsPager)
@@ -5910,6 +7019,65 @@ def test_list_private_connections_empty_call():
         type(client.transport.list_private_connections), "__call__"
     ) as call:
         client.list_private_connections()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListPrivateConnectionsRequest()
+
+
+def test_list_private_connections_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.ListPrivateConnectionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_private_connections), "__call__"
+    ) as call:
+        client.list_private_connections(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListPrivateConnectionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_private_connections_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_private_connections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.ListPrivateConnectionsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_private_connections()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.ListPrivateConnectionsRequest()
@@ -5944,7 +7112,8 @@ async def test_list_private_connections_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListPrivateConnectionsRequest()
+        request = clouddms.ListPrivateConnectionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPrivateConnectionsAsyncPager)
@@ -6336,7 +7505,8 @@ def test_delete_private_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeletePrivateConnectionRequest()
+        request = clouddms.DeletePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6355,6 +7525,58 @@ def test_delete_private_connection_empty_call():
         type(client.transport.delete_private_connection), "__call__"
     ) as call:
         client.delete_private_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeletePrivateConnectionRequest()
+
+
+def test_delete_private_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.DeletePrivateConnectionRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_private_connection), "__call__"
+    ) as call:
+        client.delete_private_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeletePrivateConnectionRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_private_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_private_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_private_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.DeletePrivateConnectionRequest()
@@ -6387,7 +7609,8 @@ async def test_delete_private_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeletePrivateConnectionRequest()
+        request = clouddms.DeletePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6582,7 +7805,8 @@ def test_get_conversion_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetConversionWorkspaceRequest()
+        request = clouddms.GetConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversionworkspace_resources.ConversionWorkspace)
@@ -6605,6 +7829,61 @@ def test_get_conversion_workspace_empty_call():
         type(client.transport.get_conversion_workspace), "__call__"
     ) as call:
         client.get_conversion_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetConversionWorkspaceRequest()
+
+
+def test_get_conversion_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.GetConversionWorkspaceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_conversion_workspace), "__call__"
+    ) as call:
+        client.get_conversion_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetConversionWorkspaceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_conversion_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_conversion_workspace), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversionworkspace_resources.ConversionWorkspace(
+                name="name_value",
+                has_uncommitted_changes=True,
+                latest_commit_id="latest_commit_id_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_conversion_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.GetConversionWorkspaceRequest()
@@ -6641,7 +7920,8 @@ async def test_get_conversion_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetConversionWorkspaceRequest()
+        request = clouddms.GetConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversionworkspace_resources.ConversionWorkspace)
@@ -6838,7 +8118,8 @@ def test_list_conversion_workspaces(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListConversionWorkspacesRequest()
+        request = clouddms.ListConversionWorkspacesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversionWorkspacesPager)
@@ -6859,6 +8140,63 @@ def test_list_conversion_workspaces_empty_call():
         type(client.transport.list_conversion_workspaces), "__call__"
     ) as call:
         client.list_conversion_workspaces()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListConversionWorkspacesRequest()
+
+
+def test_list_conversion_workspaces_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.ListConversionWorkspacesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_conversion_workspaces), "__call__"
+    ) as call:
+        client.list_conversion_workspaces(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListConversionWorkspacesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_conversion_workspaces_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_conversion_workspaces), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.ListConversionWorkspacesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_conversion_workspaces()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.ListConversionWorkspacesRequest()
@@ -6894,7 +8232,8 @@ async def test_list_conversion_workspaces_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListConversionWorkspacesRequest()
+        request = clouddms.ListConversionWorkspacesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListConversionWorkspacesAsyncPager)
@@ -7290,7 +8629,8 @@ def test_create_conversion_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreateConversionWorkspaceRequest()
+        request = clouddms.CreateConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7309,6 +8649,60 @@ def test_create_conversion_workspace_empty_call():
         type(client.transport.create_conversion_workspace), "__call__"
     ) as call:
         client.create_conversion_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreateConversionWorkspaceRequest()
+
+
+def test_create_conversion_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.CreateConversionWorkspaceRequest(
+        parent="parent_value",
+        conversion_workspace_id="conversion_workspace_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_conversion_workspace), "__call__"
+    ) as call:
+        client.create_conversion_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreateConversionWorkspaceRequest(
+            parent="parent_value",
+            conversion_workspace_id="conversion_workspace_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_conversion_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_conversion_workspace), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_conversion_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.CreateConversionWorkspaceRequest()
@@ -7341,7 +8735,8 @@ async def test_create_conversion_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreateConversionWorkspaceRequest()
+        request = clouddms.CreateConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7559,7 +8954,8 @@ def test_update_conversion_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.UpdateConversionWorkspaceRequest()
+        request = clouddms.UpdateConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7578,6 +8974,56 @@ def test_update_conversion_workspace_empty_call():
         type(client.transport.update_conversion_workspace), "__call__"
     ) as call:
         client.update_conversion_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.UpdateConversionWorkspaceRequest()
+
+
+def test_update_conversion_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.UpdateConversionWorkspaceRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_conversion_workspace), "__call__"
+    ) as call:
+        client.update_conversion_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.UpdateConversionWorkspaceRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_conversion_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_conversion_workspace), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_conversion_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.UpdateConversionWorkspaceRequest()
@@ -7610,7 +9056,8 @@ async def test_update_conversion_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.UpdateConversionWorkspaceRequest()
+        request = clouddms.UpdateConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7818,7 +9265,8 @@ def test_delete_conversion_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeleteConversionWorkspaceRequest()
+        request = clouddms.DeleteConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7837,6 +9285,58 @@ def test_delete_conversion_workspace_empty_call():
         type(client.transport.delete_conversion_workspace), "__call__"
     ) as call:
         client.delete_conversion_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeleteConversionWorkspaceRequest()
+
+
+def test_delete_conversion_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.DeleteConversionWorkspaceRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_conversion_workspace), "__call__"
+    ) as call:
+        client.delete_conversion_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeleteConversionWorkspaceRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_conversion_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_conversion_workspace), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_conversion_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.DeleteConversionWorkspaceRequest()
@@ -7869,7 +9369,8 @@ async def test_delete_conversion_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeleteConversionWorkspaceRequest()
+        request = clouddms.DeleteConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8066,7 +9567,8 @@ def test_create_mapping_rule(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreateMappingRuleRequest()
+        request = clouddms.CreateMappingRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversionworkspace_resources.MappingRule)
@@ -8094,6 +9596,67 @@ def test_create_mapping_rule_empty_call():
         type(client.transport.create_mapping_rule), "__call__"
     ) as call:
         client.create_mapping_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreateMappingRuleRequest()
+
+
+def test_create_mapping_rule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.CreateMappingRuleRequest(
+        parent="parent_value",
+        mapping_rule_id="mapping_rule_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_mapping_rule), "__call__"
+    ) as call:
+        client.create_mapping_rule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CreateMappingRuleRequest(
+            parent="parent_value",
+            mapping_rule_id="mapping_rule_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_mapping_rule_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_mapping_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversionworkspace_resources.MappingRule(
+                name="name_value",
+                display_name="display_name_value",
+                state=conversionworkspace_resources.MappingRule.State.ENABLED,
+                rule_scope=conversionworkspace_resources.DatabaseEntityType.DATABASE_ENTITY_TYPE_SCHEMA,
+                rule_order=1075,
+                revision_id="revision_id_value",
+            )
+        )
+        response = await client.create_mapping_rule()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.CreateMappingRuleRequest()
@@ -8132,7 +9695,8 @@ async def test_create_mapping_rule_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CreateMappingRuleRequest()
+        request = clouddms.CreateMappingRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversionworkspace_resources.MappingRule)
@@ -8351,7 +9915,8 @@ def test_delete_mapping_rule(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeleteMappingRuleRequest()
+        request = clouddms.DeleteMappingRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -8370,6 +9935,56 @@ def test_delete_mapping_rule_empty_call():
         type(client.transport.delete_mapping_rule), "__call__"
     ) as call:
         client.delete_mapping_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeleteMappingRuleRequest()
+
+
+def test_delete_mapping_rule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.DeleteMappingRuleRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_mapping_rule), "__call__"
+    ) as call:
+        client.delete_mapping_rule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DeleteMappingRuleRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_mapping_rule_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_mapping_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_mapping_rule()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.DeleteMappingRuleRequest()
@@ -8399,7 +10014,8 @@ async def test_delete_mapping_rule_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DeleteMappingRuleRequest()
+        request = clouddms.DeleteMappingRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -8587,7 +10203,8 @@ def test_list_mapping_rules(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListMappingRulesRequest()
+        request = clouddms.ListMappingRulesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMappingRulesPager)
@@ -8607,6 +10224,60 @@ def test_list_mapping_rules_empty_call():
         type(client.transport.list_mapping_rules), "__call__"
     ) as call:
         client.list_mapping_rules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListMappingRulesRequest()
+
+
+def test_list_mapping_rules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.ListMappingRulesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules), "__call__"
+    ) as call:
+        client.list_mapping_rules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ListMappingRulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_mapping_rules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_mapping_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.ListMappingRulesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_mapping_rules()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.ListMappingRulesRequest()
@@ -8640,7 +10311,8 @@ async def test_list_mapping_rules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ListMappingRulesRequest()
+        request = clouddms.ListMappingRulesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListMappingRulesAsyncPager)
@@ -9038,7 +10710,8 @@ def test_get_mapping_rule(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetMappingRuleRequest()
+        request = clouddms.GetMappingRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversionworkspace_resources.MappingRule)
@@ -9064,6 +10737,59 @@ def test_get_mapping_rule_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_mapping_rule), "__call__") as call:
         client.get_mapping_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetMappingRuleRequest()
+
+
+def test_get_mapping_rule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.GetMappingRuleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_mapping_rule), "__call__") as call:
+        client.get_mapping_rule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.GetMappingRuleRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_mapping_rule_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_mapping_rule), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            conversionworkspace_resources.MappingRule(
+                name="name_value",
+                display_name="display_name_value",
+                state=conversionworkspace_resources.MappingRule.State.ENABLED,
+                rule_scope=conversionworkspace_resources.DatabaseEntityType.DATABASE_ENTITY_TYPE_SCHEMA,
+                rule_order=1075,
+                revision_id="revision_id_value",
+            )
+        )
+        response = await client.get_mapping_rule()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.GetMappingRuleRequest()
@@ -9100,7 +10826,8 @@ async def test_get_mapping_rule_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.GetMappingRuleRequest()
+        request = clouddms.GetMappingRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, conversionworkspace_resources.MappingRule)
@@ -9291,7 +11018,8 @@ def test_seed_conversion_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.SeedConversionWorkspaceRequest()
+        request = clouddms.SeedConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9310,6 +11038,60 @@ def test_seed_conversion_workspace_empty_call():
         type(client.transport.seed_conversion_workspace), "__call__"
     ) as call:
         client.seed_conversion_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.SeedConversionWorkspaceRequest()
+
+
+def test_seed_conversion_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.SeedConversionWorkspaceRequest(
+        name="name_value",
+        source_connection_profile="source_connection_profile_value",
+        destination_connection_profile="destination_connection_profile_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.seed_conversion_workspace), "__call__"
+    ) as call:
+        client.seed_conversion_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.SeedConversionWorkspaceRequest(
+            name="name_value",
+            source_connection_profile="source_connection_profile_value",
+            destination_connection_profile="destination_connection_profile_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_seed_conversion_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.seed_conversion_workspace), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.seed_conversion_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.SeedConversionWorkspaceRequest()
@@ -9342,7 +11124,8 @@ async def test_seed_conversion_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.SeedConversionWorkspaceRequest()
+        request = clouddms.SeedConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9446,7 +11229,8 @@ def test_import_mapping_rules(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ImportMappingRulesRequest()
+        request = clouddms.ImportMappingRulesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9465,6 +11249,56 @@ def test_import_mapping_rules_empty_call():
         type(client.transport.import_mapping_rules), "__call__"
     ) as call:
         client.import_mapping_rules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ImportMappingRulesRequest()
+
+
+def test_import_mapping_rules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.ImportMappingRulesRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_mapping_rules), "__call__"
+    ) as call:
+        client.import_mapping_rules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ImportMappingRulesRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_mapping_rules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.import_mapping_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_mapping_rules()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.ImportMappingRulesRequest()
@@ -9496,7 +11330,8 @@ async def test_import_mapping_rules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ImportMappingRulesRequest()
+        request = clouddms.ImportMappingRulesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9600,7 +11435,8 @@ def test_convert_conversion_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ConvertConversionWorkspaceRequest()
+        request = clouddms.ConvertConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9619,6 +11455,58 @@ def test_convert_conversion_workspace_empty_call():
         type(client.transport.convert_conversion_workspace), "__call__"
     ) as call:
         client.convert_conversion_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ConvertConversionWorkspaceRequest()
+
+
+def test_convert_conversion_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.ConvertConversionWorkspaceRequest(
+        name="name_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.convert_conversion_workspace), "__call__"
+    ) as call:
+        client.convert_conversion_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ConvertConversionWorkspaceRequest(
+            name="name_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_convert_conversion_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.convert_conversion_workspace), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.convert_conversion_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.ConvertConversionWorkspaceRequest()
@@ -9651,7 +11539,8 @@ async def test_convert_conversion_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ConvertConversionWorkspaceRequest()
+        request = clouddms.ConvertConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9755,7 +11644,8 @@ def test_commit_conversion_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CommitConversionWorkspaceRequest()
+        request = clouddms.CommitConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9774,6 +11664,58 @@ def test_commit_conversion_workspace_empty_call():
         type(client.transport.commit_conversion_workspace), "__call__"
     ) as call:
         client.commit_conversion_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CommitConversionWorkspaceRequest()
+
+
+def test_commit_conversion_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.CommitConversionWorkspaceRequest(
+        name="name_value",
+        commit_name="commit_name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.commit_conversion_workspace), "__call__"
+    ) as call:
+        client.commit_conversion_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.CommitConversionWorkspaceRequest(
+            name="name_value",
+            commit_name="commit_name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_commit_conversion_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.commit_conversion_workspace), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.commit_conversion_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.CommitConversionWorkspaceRequest()
@@ -9806,7 +11748,8 @@ async def test_commit_conversion_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.CommitConversionWorkspaceRequest()
+        request = clouddms.CommitConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9910,7 +11853,8 @@ def test_rollback_conversion_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.RollbackConversionWorkspaceRequest()
+        request = clouddms.RollbackConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9929,6 +11873,56 @@ def test_rollback_conversion_workspace_empty_call():
         type(client.transport.rollback_conversion_workspace), "__call__"
     ) as call:
         client.rollback_conversion_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.RollbackConversionWorkspaceRequest()
+
+
+def test_rollback_conversion_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.RollbackConversionWorkspaceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_conversion_workspace), "__call__"
+    ) as call:
+        client.rollback_conversion_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.RollbackConversionWorkspaceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_rollback_conversion_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.rollback_conversion_workspace), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.rollback_conversion_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.RollbackConversionWorkspaceRequest()
@@ -9961,7 +11955,8 @@ async def test_rollback_conversion_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.RollbackConversionWorkspaceRequest()
+        request = clouddms.RollbackConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10065,7 +12060,8 @@ def test_apply_conversion_workspace(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ApplyConversionWorkspaceRequest()
+        request = clouddms.ApplyConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10084,6 +12080,60 @@ def test_apply_conversion_workspace_empty_call():
         type(client.transport.apply_conversion_workspace), "__call__"
     ) as call:
         client.apply_conversion_workspace()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ApplyConversionWorkspaceRequest()
+
+
+def test_apply_conversion_workspace_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.ApplyConversionWorkspaceRequest(
+        name="name_value",
+        filter="filter_value",
+        connection_profile="connection_profile_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.apply_conversion_workspace), "__call__"
+    ) as call:
+        client.apply_conversion_workspace(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.ApplyConversionWorkspaceRequest(
+            name="name_value",
+            filter="filter_value",
+            connection_profile="connection_profile_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_apply_conversion_workspace_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.apply_conversion_workspace), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.apply_conversion_workspace()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.ApplyConversionWorkspaceRequest()
@@ -10116,7 +12166,8 @@ async def test_apply_conversion_workspace_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.ApplyConversionWorkspaceRequest()
+        request = clouddms.ApplyConversionWorkspaceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10222,7 +12273,8 @@ def test_describe_database_entities(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DescribeDatabaseEntitiesRequest()
+        request = clouddms.DescribeDatabaseEntitiesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.DescribeDatabaseEntitiesPager)
@@ -10242,6 +12294,64 @@ def test_describe_database_entities_empty_call():
         type(client.transport.describe_database_entities), "__call__"
     ) as call:
         client.describe_database_entities()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DescribeDatabaseEntitiesRequest()
+
+
+def test_describe_database_entities_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.DescribeDatabaseEntitiesRequest(
+        conversion_workspace="conversion_workspace_value",
+        page_token="page_token_value",
+        commit_id="commit_id_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.describe_database_entities), "__call__"
+    ) as call:
+        client.describe_database_entities(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DescribeDatabaseEntitiesRequest(
+            conversion_workspace="conversion_workspace_value",
+            page_token="page_token_value",
+            commit_id="commit_id_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_describe_database_entities_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.describe_database_entities), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.DescribeDatabaseEntitiesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.describe_database_entities()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.DescribeDatabaseEntitiesRequest()
@@ -10276,7 +12386,8 @@ async def test_describe_database_entities_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DescribeDatabaseEntitiesRequest()
+        request = clouddms.DescribeDatabaseEntitiesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.DescribeDatabaseEntitiesAsyncPager)
@@ -10584,7 +12695,8 @@ def test_search_background_jobs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.SearchBackgroundJobsRequest()
+        request = clouddms.SearchBackgroundJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms.SearchBackgroundJobsResponse)
@@ -10603,6 +12715,56 @@ def test_search_background_jobs_empty_call():
         type(client.transport.search_background_jobs), "__call__"
     ) as call:
         client.search_background_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.SearchBackgroundJobsRequest()
+
+
+def test_search_background_jobs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.SearchBackgroundJobsRequest(
+        conversion_workspace="conversion_workspace_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_background_jobs), "__call__"
+    ) as call:
+        client.search_background_jobs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.SearchBackgroundJobsRequest(
+            conversion_workspace="conversion_workspace_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_background_jobs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_background_jobs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.SearchBackgroundJobsResponse()
+        )
+        response = await client.search_background_jobs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.SearchBackgroundJobsRequest()
@@ -10634,7 +12796,8 @@ async def test_search_background_jobs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.SearchBackgroundJobsRequest()
+        request = clouddms.SearchBackgroundJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms.SearchBackgroundJobsResponse)
@@ -10738,7 +12901,8 @@ def test_describe_conversion_workspace_revisions(request_type, transport: str = 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DescribeConversionWorkspaceRevisionsRequest()
+        request = clouddms.DescribeConversionWorkspaceRevisionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms.DescribeConversionWorkspaceRevisionsResponse)
@@ -10757,6 +12921,58 @@ def test_describe_conversion_workspace_revisions_empty_call():
         type(client.transport.describe_conversion_workspace_revisions), "__call__"
     ) as call:
         client.describe_conversion_workspace_revisions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DescribeConversionWorkspaceRevisionsRequest()
+
+
+def test_describe_conversion_workspace_revisions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.DescribeConversionWorkspaceRevisionsRequest(
+        conversion_workspace="conversion_workspace_value",
+        commit_id="commit_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.describe_conversion_workspace_revisions), "__call__"
+    ) as call:
+        client.describe_conversion_workspace_revisions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.DescribeConversionWorkspaceRevisionsRequest(
+            conversion_workspace="conversion_workspace_value",
+            commit_id="commit_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_describe_conversion_workspace_revisions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.describe_conversion_workspace_revisions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.DescribeConversionWorkspaceRevisionsResponse()
+        )
+        response = await client.describe_conversion_workspace_revisions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.DescribeConversionWorkspaceRevisionsRequest()
@@ -10789,7 +13005,8 @@ async def test_describe_conversion_workspace_revisions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.DescribeConversionWorkspaceRevisionsRequest()
+        request = clouddms.DescribeConversionWorkspaceRevisionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, clouddms.DescribeConversionWorkspaceRevisionsResponse)
@@ -10894,7 +13111,8 @@ def test_fetch_static_ips(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.FetchStaticIpsRequest()
+        request = clouddms.FetchStaticIpsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchStaticIpsPager)
@@ -10913,6 +13131,57 @@ def test_fetch_static_ips_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_static_ips), "__call__") as call:
         client.fetch_static_ips()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.FetchStaticIpsRequest()
+
+
+def test_fetch_static_ips_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataMigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = clouddms.FetchStaticIpsRequest(
+        name="name_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.fetch_static_ips), "__call__") as call:
+        client.fetch_static_ips(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == clouddms.FetchStaticIpsRequest(
+            name="name_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_static_ips_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataMigrationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.fetch_static_ips), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            clouddms.FetchStaticIpsResponse(
+                static_ips=["static_ips_value"],
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.fetch_static_ips()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == clouddms.FetchStaticIpsRequest()
@@ -10945,7 +13214,8 @@ async def test_fetch_static_ips_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == clouddms.FetchStaticIpsRequest()
+        request = clouddms.FetchStaticIpsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchStaticIpsAsyncPager)

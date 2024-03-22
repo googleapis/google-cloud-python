@@ -1087,7 +1087,8 @@ def test_list_pages(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == page.ListPagesRequest()
+        request = page.ListPagesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPagesPager)
@@ -1105,6 +1106,58 @@ def test_list_pages_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_pages), "__call__") as call:
         client.list_pages()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == page.ListPagesRequest()
+
+
+def test_list_pages_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = page.ListPagesRequest(
+        parent="parent_value",
+        language_code="language_code_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_pages), "__call__") as call:
+        client.list_pages(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == page.ListPagesRequest(
+            parent="parent_value",
+            language_code="language_code_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_pages_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_pages), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            page.ListPagesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_pages()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == page.ListPagesRequest()
@@ -1136,7 +1189,8 @@ async def test_list_pages_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == page.ListPagesRequest()
+        request = page.ListPagesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPagesAsyncPager)
@@ -1512,7 +1566,8 @@ def test_get_page(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == page.GetPageRequest()
+        request = page.GetPageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, page.Page)
@@ -1533,6 +1588,59 @@ def test_get_page_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_page), "__call__") as call:
         client.get_page()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == page.GetPageRequest()
+
+
+def test_get_page_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = page.GetPageRequest(
+        name="name_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_page), "__call__") as call:
+        client.get_page(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == page.GetPageRequest(
+            name="name_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_page_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_page), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            page.Page(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                transition_route_groups=["transition_route_groups_value"],
+            )
+        )
+        response = await client.get_page()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == page.GetPageRequest()
@@ -1567,7 +1675,8 @@ async def test_get_page_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == page.GetPageRequest()
+        request = page.GetPageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, page.Page)
@@ -1752,7 +1861,8 @@ def test_create_page(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_page.CreatePageRequest()
+        request = gcdc_page.CreatePageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_page.Page)
@@ -1773,6 +1883,59 @@ def test_create_page_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_page), "__call__") as call:
         client.create_page()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_page.CreatePageRequest()
+
+
+def test_create_page_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_page.CreatePageRequest(
+        parent="parent_value",
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_page), "__call__") as call:
+        client.create_page(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_page.CreatePageRequest(
+            parent="parent_value",
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_page_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_page), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_page.Page(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                transition_route_groups=["transition_route_groups_value"],
+            )
+        )
+        response = await client.create_page()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_page.CreatePageRequest()
@@ -1807,7 +1970,8 @@ async def test_create_page_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_page.CreatePageRequest()
+        request = gcdc_page.CreatePageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_page.Page)
@@ -2002,7 +2166,8 @@ def test_update_page(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_page.UpdatePageRequest()
+        request = gcdc_page.UpdatePageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_page.Page)
@@ -2023,6 +2188,57 @@ def test_update_page_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_page), "__call__") as call:
         client.update_page()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_page.UpdatePageRequest()
+
+
+def test_update_page_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcdc_page.UpdatePageRequest(
+        language_code="language_code_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_page), "__call__") as call:
+        client.update_page(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcdc_page.UpdatePageRequest(
+            language_code="language_code_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_page_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_page), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcdc_page.Page(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                transition_route_groups=["transition_route_groups_value"],
+            )
+        )
+        response = await client.update_page()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcdc_page.UpdatePageRequest()
@@ -2057,7 +2273,8 @@ async def test_update_page_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcdc_page.UpdatePageRequest()
+        request = gcdc_page.UpdatePageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcdc_page.Page)
@@ -2247,7 +2464,8 @@ def test_delete_page(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == page.DeletePageRequest()
+        request = page.DeletePageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2264,6 +2482,50 @@ def test_delete_page_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_page), "__call__") as call:
         client.delete_page()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == page.DeletePageRequest()
+
+
+def test_delete_page_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = page.DeletePageRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_page), "__call__") as call:
+        client.delete_page(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == page.DeletePageRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_page_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_page), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_page()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == page.DeletePageRequest()
@@ -2291,7 +2553,8 @@ async def test_delete_page_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == page.DeletePageRequest()
+        request = page.DeletePageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
