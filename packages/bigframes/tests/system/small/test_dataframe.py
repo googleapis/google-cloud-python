@@ -1917,6 +1917,34 @@ def test_corr_w_invalid_parameters(scalars_dfs):
 
 
 @pytest.mark.parametrize(
+    ("columns", "numeric_only"),
+    [
+        (["bool_col", "int64_col", "float64_col"], True),
+        (["bool_col", "int64_col", "float64_col"], False),
+        (["bool_col", "int64_col", "float64_col", "string_col"], True),
+        pytest.param(
+            ["bool_col", "int64_col", "float64_col", "string_col"],
+            False,
+            marks=pytest.mark.xfail(
+                raises=NotImplementedError,
+            ),
+        ),
+    ],
+)
+def test_cov_w_numeric_only(scalars_dfs, columns, numeric_only):
+    scalars_df, scalars_pandas_df = scalars_dfs
+    bf_result = scalars_df[columns].cov(numeric_only=numeric_only).to_pandas()
+    pd_result = scalars_pandas_df[columns].cov(numeric_only=numeric_only)
+
+    # BigFrames and Pandas differ in their data type handling:
+    # - Column types: BigFrames uses Float64, Pandas uses float64.
+    # - Index types: BigFrames uses strign, Pandas uses object.
+    pd.testing.assert_frame_equal(
+        bf_result, pd_result, check_dtype=False, check_index_type=False
+    )
+
+
+@pytest.mark.parametrize(
     ("op"),
     [
         operator.add,

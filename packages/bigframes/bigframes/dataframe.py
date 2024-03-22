@@ -1019,17 +1019,21 @@ class DataFrame(vendored_pandas_frame.DataFrame):
             raise NotImplementedError(
                 f"min_periods not yet supported. {constants.FEEDBACK_LINK}"
             )
-        if len(self.columns) > 30:
-            raise NotImplementedError(
-                f"Only work with dataframes containing fewer than 30 columns. Current: {len(self.columns)}. {constants.FEEDBACK_LINK}"
-            )
 
         if not numeric_only:
             frame = self._raise_on_non_numeric("corr")
         else:
             frame = self._drop_non_numeric()
 
-        return DataFrame(frame._block.corr())
+        return DataFrame(frame._block.calculate_pairwise_metric(op=agg_ops.CorrOp()))
+
+    def cov(self, *, numeric_only: bool = False) -> DataFrame:
+        if not numeric_only:
+            frame = self._raise_on_non_numeric("corr")
+        else:
+            frame = self._drop_non_numeric()
+
+        return DataFrame(frame._block.calculate_pairwise_metric(agg_ops.CovOp()))
 
     def to_pandas(
         self,

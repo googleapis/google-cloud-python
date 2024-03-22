@@ -1110,13 +1110,22 @@ class Block:
             index_columns=[label_col_id],
         )
 
-    def corr(self):
-        """Returns a block object to compute the self-correlation on this block."""
+    def calculate_pairwise_metric(self, op=agg_ops.CorrOp()):
+        """
+        Returns a block object to compute pairwise metrics among all value columns in this block.
+
+        The metric to be computed is specified by the `op` parameter, which can be either a
+        correlation operation (default) or a covariance operation.
+        """
+        if len(self.value_columns) > 30:
+            raise NotImplementedError(
+                "This function supports dataframes with 30 columns or fewer. "
+                f"Provided dataframe has {len(self.value_columns)} columns. {constants.FEEDBACK_LINK}"
+            )
+
         aggregations = [
             (
-                ex.BinaryAggregation(
-                    agg_ops.CorrOp(), ex.free_var(left_col), ex.free_var(right_col)
-                ),
+                ex.BinaryAggregation(op, ex.free_var(left_col), ex.free_var(right_col)),
                 f"{left_col}-{right_col}",
             )
             for left_col in self.value_columns

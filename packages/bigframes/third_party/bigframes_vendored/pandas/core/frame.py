@@ -2834,9 +2834,37 @@ class DataFrame(generic.NDFrame):
                 Include only float, int, boolean, decimal data.
 
         Returns:
-            DataFrame:  Correlation matrix.
+            DataFrame: Correlation matrix.
         """
         raise NotImplementedError(constants.ABSTRACT_METHOD_ERROR_MESSAGE)
+
+    def cov(self, *, numeric_only) -> DataFrame:
+        """
+        Compute pairwise covariance of columns, excluding NA/null values.
+
+        **Examples:**
+
+            >>> import bigframes.pandas as bpd
+            >>> bpd.options.display.progress_bar = None
+
+            >>> df = bpd.DataFrame({'A': [1, 2, 3],
+            ...                    'B': [400, 500, 600],
+            ...                    'C': [0.8, 0.4, 0.9]})
+            >>> df.cov(numeric_only=True)
+                   A        B     C
+            A    1.0    100.0  0.05
+            B  100.0  10000.0   5.0
+            C   0.05      5.0  0.07
+            <BLANKLINE>
+            [3 rows x 3 columns]
+
+        Args:
+            numeric_only(bool, default False):
+                Include only float, int, boolean, decimal data.
+
+        Returns:
+            DataFrame: The covariance matrix of the series of the DataFrame.
+        """
 
     def update(
         self, other, join: str = "left", overwrite: bool = True, filter_func=None
