@@ -46,9 +46,11 @@ class edgecontainerCallTransformer(cst.CSTTransformer):
         'delete_node_pool': ('name', 'request_id', ),
         'delete_vpn_connection': ('name', 'request_id', ),
         'generate_access_token': ('cluster', ),
+        'generate_offline_credential': ('cluster', ),
         'get_cluster': ('name', ),
         'get_machine': ('name', ),
         'get_node_pool': ('name', ),
+        'get_server_config': ('name', ),
         'get_vpn_connection': ('name', ),
         'list_clusters': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_machines': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
@@ -56,6 +58,7 @@ class edgecontainerCallTransformer(cst.CSTTransformer):
         'list_vpn_connections': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'update_cluster': ('update_mask', 'cluster', 'request_id', ),
         'update_node_pool': ('update_mask', 'node_pool', 'request_id', ),
+        'upgrade_cluster': ('name', 'target_version', 'schedule', 'request_id', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

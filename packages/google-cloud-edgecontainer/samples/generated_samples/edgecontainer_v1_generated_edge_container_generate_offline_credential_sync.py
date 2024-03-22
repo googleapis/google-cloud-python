@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for CreateCluster
+# Snippet for GenerateOfflineCredential
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,7 +23,7 @@
 #   python3 -m pip install google-cloud-edgecontainer
 
 
-# [START edgecontainer_v1_generated_EdgeContainer_CreateCluster_async]
+# [START edgecontainer_v1_generated_EdgeContainer_GenerateOfflineCredential_sync]
 # This snippet has been automatically generated and should be regarded as a
 # code template only.
 # It will require modifications to work:
@@ -34,32 +34,19 @@
 from google.cloud import edgecontainer_v1
 
 
-async def sample_create_cluster():
+def sample_generate_offline_credential():
     # Create a client
-    client = edgecontainer_v1.EdgeContainerAsyncClient()
+    client = edgecontainer_v1.EdgeContainerClient()
 
     # Initialize request argument(s)
-    cluster = edgecontainer_v1.Cluster()
-    cluster.name = "name_value"
-    cluster.fleet.project = "project_value"
-    cluster.networking.cluster_ipv4_cidr_blocks = ['cluster_ipv4_cidr_blocks_value1', 'cluster_ipv4_cidr_blocks_value2']
-    cluster.networking.services_ipv4_cidr_blocks = ['services_ipv4_cidr_blocks_value1', 'services_ipv4_cidr_blocks_value2']
-    cluster.authorization.admin_users.username = "username_value"
-
-    request = edgecontainer_v1.CreateClusterRequest(
-        parent="parent_value",
-        cluster_id="cluster_id_value",
-        cluster=cluster,
+    request = edgecontainer_v1.GenerateOfflineCredentialRequest(
+        cluster="cluster_value",
     )
 
     # Make the request
-    operation = client.create_cluster(request=request)
-
-    print("Waiting for operation to complete...")
-
-    response = (await operation).result()
+    response = client.generate_offline_credential(request=request)
 
     # Handle the response
     print(response)
 
-# [END edgecontainer_v1_generated_EdgeContainer_CreateCluster_async]
+# [END edgecontainer_v1_generated_EdgeContainer_GenerateOfflineCredential_sync]
