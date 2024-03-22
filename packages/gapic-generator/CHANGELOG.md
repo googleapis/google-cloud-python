@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [1.16.0](https://github.com/googleapis/gapic-generator-python/compare/v1.15.0...v1.16.0) (2024-03-22)
+
+
+### Features
+
+* Add support for reading MethodSettings from service configuration YAML ([#1975](https://github.com/googleapis/gapic-generator-python/issues/1975)) ([24a23a1](https://github.com/googleapis/gapic-generator-python/commit/24a23a1ab885246e447c0010b2e5602209dfbb8d))
+* Automatically populate uuid4 fields ([#1985](https://github.com/googleapis/gapic-generator-python/issues/1985)) ([eb57e4f](https://github.com/googleapis/gapic-generator-python/commit/eb57e4f2e6b339f89aa3b7d55e4b4c0dfdfd002e))
+
+
+### Bug Fixes
+
+* Fix dependency `google-apps-card` ([#1971](https://github.com/googleapis/gapic-generator-python/issues/1971)) ([9a49cb0](https://github.com/googleapis/gapic-generator-python/commit/9a49cb07de8bd54d8601b742367887bdde854643))
+
 ## [1.15.0](https://github.com/googleapis/gapic-generator-python/compare/v1.14.5...v1.15.0) (2024-03-15)
 
 
