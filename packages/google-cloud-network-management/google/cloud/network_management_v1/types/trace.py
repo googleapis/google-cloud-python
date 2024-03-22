@@ -301,11 +301,8 @@ class Step(proto.Message):
                 Initial state: packet originating from the
                 internet. The endpoint information is populated.
             START_FROM_GOOGLE_SERVICE (27):
-                Initial state: packet originating from a
-                Google service. Some Google services, such as
-                health check probers or Identity Aware Proxy use
-                special routes, outside VPC routing
-                configuration to reach Compute Engine Instances.
+                Initial state: packet originating from a Google service. The
+                google_service information is populated.
             START_FROM_PRIVATE_NETWORK (3):
                 Initial state: packet originating from a VPC
                 or on-premises network with internal source IP.
@@ -1034,8 +1031,7 @@ class GoogleServiceInfo(proto.Message):
 
         Values:
             GOOGLE_SERVICE_TYPE_UNSPECIFIED (0):
-                Unspecified Google Service. Includes most of
-                Google APIs and services.
+                Unspecified Google Service.
             IAP (1):
                 Identity aware proxy.
                 https://cloud.google.com/iap/docs/using-tcp-forwarding
@@ -1051,11 +1047,23 @@ class GoogleServiceInfo(proto.Message):
                 private routing.
                 https://cloud.google.com/dns/docs/zones/forwarding-zones#firewall-rules
                 https://cloud.google.com/dns/docs/policies#firewall-rules
+            GOOGLE_API (4):
+                private.googleapis.com and
+                restricted.googleapis.com
+            GOOGLE_API_PSC (5):
+                Google API via Private Service Connect.
+                https://cloud.google.com/vpc/docs/configure-private-service-connect-apis
+            GOOGLE_API_VPC_SC (6):
+                Google API via VPC Service Controls.
+                https://cloud.google.com/vpc/docs/configure-private-service-connect-apis
         """
         GOOGLE_SERVICE_TYPE_UNSPECIFIED = 0
         IAP = 1
         GFE_PROXY_OR_HEALTH_CHECK_PROBER = 2
         CLOUD_DNS = 3
+        GOOGLE_API = 4
+        GOOGLE_API_PSC = 5
+        GOOGLE_API_VPC_SC = 6
 
     source_ip: str = proto.Field(
         proto.STRING,
