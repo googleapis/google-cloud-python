@@ -1309,9 +1309,7 @@ class CloudBillingAsyncClient:
         if isinstance(request, dict):
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
         elif not request:
-            request = iam_policy_pb2.GetIamPolicyRequest(
-                resource=resource,
-            )
+            request = iam_policy_pb2.GetIamPolicyRequest(resource=resource)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1460,9 +1458,7 @@ class CloudBillingAsyncClient:
         if isinstance(request, dict):
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
         elif not request:
-            request = iam_policy_pb2.SetIamPolicyRequest(
-                resource=resource,
-            )
+            request = iam_policy_pb2.SetIamPolicyRequest(resource=resource)
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
@@ -1593,8 +1589,7 @@ class CloudBillingAsyncClient:
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
         elif not request:
             request = iam_policy_pb2.TestIamPermissionsRequest(
-                resource=resource,
-                permissions=permissions,
+                resource=resource, permissions=permissions
             )
 
         # Wrap the RPC method; this adds retry and timeout information,

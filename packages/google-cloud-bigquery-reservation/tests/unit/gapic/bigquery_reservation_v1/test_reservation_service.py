@@ -1201,7 +1201,8 @@ def test_create_reservation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcbr_reservation.CreateReservationRequest()
+        request = gcbr_reservation.CreateReservationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcbr_reservation.Reservation)
@@ -1226,6 +1227,65 @@ def test_create_reservation_empty_call():
         type(client.transport.create_reservation), "__call__"
     ) as call:
         client.create_reservation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcbr_reservation.CreateReservationRequest()
+
+
+def test_create_reservation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcbr_reservation.CreateReservationRequest(
+        parent="parent_value",
+        reservation_id="reservation_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_reservation), "__call__"
+    ) as call:
+        client.create_reservation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcbr_reservation.CreateReservationRequest(
+            parent="parent_value",
+            reservation_id="reservation_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_reservation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_reservation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcbr_reservation.Reservation(
+                name="name_value",
+                slot_capacity=1391,
+                ignore_idle_slots=True,
+                concurrency=1195,
+                multi_region_auxiliary=True,
+                edition=gcbr_reservation.Edition.STANDARD,
+            )
+        )
+        response = await client.create_reservation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcbr_reservation.CreateReservationRequest()
@@ -1265,7 +1325,8 @@ async def test_create_reservation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcbr_reservation.CreateReservationRequest()
+        request = gcbr_reservation.CreateReservationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcbr_reservation.Reservation)
@@ -1483,7 +1544,8 @@ def test_list_reservations(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.ListReservationsRequest()
+        request = reservation.ListReservationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReservationsPager)
@@ -1503,6 +1565,60 @@ def test_list_reservations_empty_call():
         type(client.transport.list_reservations), "__call__"
     ) as call:
         client.list_reservations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.ListReservationsRequest()
+
+
+def test_list_reservations_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.ListReservationsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations), "__call__"
+    ) as call:
+        client.list_reservations(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.ListReservationsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_reservations_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_reservations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.ListReservationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_reservations()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.ListReservationsRequest()
@@ -1536,7 +1652,8 @@ async def test_list_reservations_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.ListReservationsRequest()
+        request = reservation.ListReservationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReservationsAsyncPager)
@@ -1930,7 +2047,8 @@ def test_get_reservation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.GetReservationRequest()
+        request = reservation.GetReservationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.Reservation)
@@ -1953,6 +2071,59 @@ def test_get_reservation_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_reservation), "__call__") as call:
         client.get_reservation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.GetReservationRequest()
+
+
+def test_get_reservation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.GetReservationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_reservation), "__call__") as call:
+        client.get_reservation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.GetReservationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_reservation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_reservation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.Reservation(
+                name="name_value",
+                slot_capacity=1391,
+                ignore_idle_slots=True,
+                concurrency=1195,
+                multi_region_auxiliary=True,
+                edition=reservation.Edition.STANDARD,
+            )
+        )
+        response = await client.get_reservation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.GetReservationRequest()
@@ -1989,7 +2160,8 @@ async def test_get_reservation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.GetReservationRequest()
+        request = reservation.GetReservationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.Reservation)
@@ -2177,7 +2349,8 @@ def test_delete_reservation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.DeleteReservationRequest()
+        request = reservation.DeleteReservationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2196,6 +2369,54 @@ def test_delete_reservation_empty_call():
         type(client.transport.delete_reservation), "__call__"
     ) as call:
         client.delete_reservation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.DeleteReservationRequest()
+
+
+def test_delete_reservation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.DeleteReservationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_reservation), "__call__"
+    ) as call:
+        client.delete_reservation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.DeleteReservationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_reservation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_reservation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_reservation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.DeleteReservationRequest()
@@ -2225,7 +2446,8 @@ async def test_delete_reservation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.DeleteReservationRequest()
+        request = reservation.DeleteReservationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2418,7 +2640,8 @@ def test_update_reservation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcbr_reservation.UpdateReservationRequest()
+        request = gcbr_reservation.UpdateReservationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcbr_reservation.Reservation)
@@ -2443,6 +2666,59 @@ def test_update_reservation_empty_call():
         type(client.transport.update_reservation), "__call__"
     ) as call:
         client.update_reservation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcbr_reservation.UpdateReservationRequest()
+
+
+def test_update_reservation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = gcbr_reservation.UpdateReservationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_reservation), "__call__"
+    ) as call:
+        client.update_reservation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == gcbr_reservation.UpdateReservationRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_reservation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_reservation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcbr_reservation.Reservation(
+                name="name_value",
+                slot_capacity=1391,
+                ignore_idle_slots=True,
+                concurrency=1195,
+                multi_region_auxiliary=True,
+                edition=gcbr_reservation.Edition.STANDARD,
+            )
+        )
+        response = await client.update_reservation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == gcbr_reservation.UpdateReservationRequest()
@@ -2482,7 +2758,8 @@ async def test_update_reservation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == gcbr_reservation.UpdateReservationRequest()
+        request = gcbr_reservation.UpdateReservationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcbr_reservation.Reservation)
@@ -2696,7 +2973,8 @@ def test_create_capacity_commitment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.CreateCapacityCommitmentRequest()
+        request = reservation.CreateCapacityCommitmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.CapacityCommitment)
@@ -2722,6 +3000,66 @@ def test_create_capacity_commitment_empty_call():
         type(client.transport.create_capacity_commitment), "__call__"
     ) as call:
         client.create_capacity_commitment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.CreateCapacityCommitmentRequest()
+
+
+def test_create_capacity_commitment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.CreateCapacityCommitmentRequest(
+        parent="parent_value",
+        capacity_commitment_id="capacity_commitment_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_capacity_commitment), "__call__"
+    ) as call:
+        client.create_capacity_commitment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.CreateCapacityCommitmentRequest(
+            parent="parent_value",
+            capacity_commitment_id="capacity_commitment_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_capacity_commitment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_capacity_commitment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.CapacityCommitment(
+                name="name_value",
+                slot_count=1098,
+                plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+                state=reservation.CapacityCommitment.State.PENDING,
+                renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+                multi_region_auxiliary=True,
+                edition=reservation.Edition.STANDARD,
+            )
+        )
+        response = await client.create_capacity_commitment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.CreateCapacityCommitmentRequest()
@@ -2762,7 +3100,8 @@ async def test_create_capacity_commitment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.CreateCapacityCommitmentRequest()
+        request = reservation.CreateCapacityCommitmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.CapacityCommitment)
@@ -2971,7 +3310,8 @@ def test_list_capacity_commitments(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.ListCapacityCommitmentsRequest()
+        request = reservation.ListCapacityCommitmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCapacityCommitmentsPager)
@@ -2991,6 +3331,60 @@ def test_list_capacity_commitments_empty_call():
         type(client.transport.list_capacity_commitments), "__call__"
     ) as call:
         client.list_capacity_commitments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.ListCapacityCommitmentsRequest()
+
+
+def test_list_capacity_commitments_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.ListCapacityCommitmentsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_capacity_commitments), "__call__"
+    ) as call:
+        client.list_capacity_commitments(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.ListCapacityCommitmentsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_capacity_commitments_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_capacity_commitments), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.ListCapacityCommitmentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_capacity_commitments()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.ListCapacityCommitmentsRequest()
@@ -3025,7 +3419,8 @@ async def test_list_capacity_commitments_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.ListCapacityCommitmentsRequest()
+        request = reservation.ListCapacityCommitmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCapacityCommitmentsAsyncPager)
@@ -3422,7 +3817,8 @@ def test_get_capacity_commitment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.GetCapacityCommitmentRequest()
+        request = reservation.GetCapacityCommitmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.CapacityCommitment)
@@ -3448,6 +3844,64 @@ def test_get_capacity_commitment_empty_call():
         type(client.transport.get_capacity_commitment), "__call__"
     ) as call:
         client.get_capacity_commitment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.GetCapacityCommitmentRequest()
+
+
+def test_get_capacity_commitment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.GetCapacityCommitmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_capacity_commitment), "__call__"
+    ) as call:
+        client.get_capacity_commitment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.GetCapacityCommitmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_capacity_commitment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_capacity_commitment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.CapacityCommitment(
+                name="name_value",
+                slot_count=1098,
+                plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+                state=reservation.CapacityCommitment.State.PENDING,
+                renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+                multi_region_auxiliary=True,
+                edition=reservation.Edition.STANDARD,
+            )
+        )
+        response = await client.get_capacity_commitment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.GetCapacityCommitmentRequest()
@@ -3488,7 +3942,8 @@ async def test_get_capacity_commitment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.GetCapacityCommitmentRequest()
+        request = reservation.GetCapacityCommitmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.CapacityCommitment)
@@ -3685,7 +4140,8 @@ def test_delete_capacity_commitment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.DeleteCapacityCommitmentRequest()
+        request = reservation.DeleteCapacityCommitmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3704,6 +4160,54 @@ def test_delete_capacity_commitment_empty_call():
         type(client.transport.delete_capacity_commitment), "__call__"
     ) as call:
         client.delete_capacity_commitment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.DeleteCapacityCommitmentRequest()
+
+
+def test_delete_capacity_commitment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.DeleteCapacityCommitmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_capacity_commitment), "__call__"
+    ) as call:
+        client.delete_capacity_commitment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.DeleteCapacityCommitmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_capacity_commitment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_capacity_commitment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_capacity_commitment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.DeleteCapacityCommitmentRequest()
@@ -3734,7 +4238,8 @@ async def test_delete_capacity_commitment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.DeleteCapacityCommitmentRequest()
+        request = reservation.DeleteCapacityCommitmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3928,7 +4433,8 @@ def test_update_capacity_commitment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.UpdateCapacityCommitmentRequest()
+        request = reservation.UpdateCapacityCommitmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.CapacityCommitment)
@@ -3954,6 +4460,60 @@ def test_update_capacity_commitment_empty_call():
         type(client.transport.update_capacity_commitment), "__call__"
     ) as call:
         client.update_capacity_commitment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.UpdateCapacityCommitmentRequest()
+
+
+def test_update_capacity_commitment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.UpdateCapacityCommitmentRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_capacity_commitment), "__call__"
+    ) as call:
+        client.update_capacity_commitment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.UpdateCapacityCommitmentRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_capacity_commitment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_capacity_commitment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.CapacityCommitment(
+                name="name_value",
+                slot_count=1098,
+                plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+                state=reservation.CapacityCommitment.State.PENDING,
+                renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+                multi_region_auxiliary=True,
+                edition=reservation.Edition.STANDARD,
+            )
+        )
+        response = await client.update_capacity_commitment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.UpdateCapacityCommitmentRequest()
@@ -3994,7 +4554,8 @@ async def test_update_capacity_commitment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.UpdateCapacityCommitmentRequest()
+        request = reservation.UpdateCapacityCommitmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.CapacityCommitment)
@@ -4201,7 +4762,8 @@ def test_split_capacity_commitment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.SplitCapacityCommitmentRequest()
+        request = reservation.SplitCapacityCommitmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.SplitCapacityCommitmentResponse)
@@ -4220,6 +4782,56 @@ def test_split_capacity_commitment_empty_call():
         type(client.transport.split_capacity_commitment), "__call__"
     ) as call:
         client.split_capacity_commitment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.SplitCapacityCommitmentRequest()
+
+
+def test_split_capacity_commitment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.SplitCapacityCommitmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.split_capacity_commitment), "__call__"
+    ) as call:
+        client.split_capacity_commitment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.SplitCapacityCommitmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_split_capacity_commitment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.split_capacity_commitment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.SplitCapacityCommitmentResponse()
+        )
+        response = await client.split_capacity_commitment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.SplitCapacityCommitmentRequest()
@@ -4252,7 +4864,8 @@ async def test_split_capacity_commitment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.SplitCapacityCommitmentRequest()
+        request = reservation.SplitCapacityCommitmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.SplitCapacityCommitmentResponse)
@@ -4460,7 +5073,8 @@ def test_merge_capacity_commitments(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.MergeCapacityCommitmentsRequest()
+        request = reservation.MergeCapacityCommitmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.CapacityCommitment)
@@ -4486,6 +5100,64 @@ def test_merge_capacity_commitments_empty_call():
         type(client.transport.merge_capacity_commitments), "__call__"
     ) as call:
         client.merge_capacity_commitments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.MergeCapacityCommitmentsRequest()
+
+
+def test_merge_capacity_commitments_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.MergeCapacityCommitmentsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.merge_capacity_commitments), "__call__"
+    ) as call:
+        client.merge_capacity_commitments(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.MergeCapacityCommitmentsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_merge_capacity_commitments_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.merge_capacity_commitments), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.CapacityCommitment(
+                name="name_value",
+                slot_count=1098,
+                plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+                state=reservation.CapacityCommitment.State.PENDING,
+                renewal_plan=reservation.CapacityCommitment.CommitmentPlan.FLEX,
+                multi_region_auxiliary=True,
+                edition=reservation.Edition.STANDARD,
+            )
+        )
+        response = await client.merge_capacity_commitments()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.MergeCapacityCommitmentsRequest()
@@ -4526,7 +5198,8 @@ async def test_merge_capacity_commitments_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.MergeCapacityCommitmentsRequest()
+        request = reservation.MergeCapacityCommitmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.CapacityCommitment)
@@ -4738,7 +5411,8 @@ def test_create_assignment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.CreateAssignmentRequest()
+        request = reservation.CreateAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.Assignment)
@@ -4761,6 +5435,63 @@ def test_create_assignment_empty_call():
         type(client.transport.create_assignment), "__call__"
     ) as call:
         client.create_assignment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.CreateAssignmentRequest()
+
+
+def test_create_assignment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.CreateAssignmentRequest(
+        parent="parent_value",
+        assignment_id="assignment_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_assignment), "__call__"
+    ) as call:
+        client.create_assignment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.CreateAssignmentRequest(
+            parent="parent_value",
+            assignment_id="assignment_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_assignment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_assignment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.Assignment(
+                name="name_value",
+                assignee="assignee_value",
+                job_type=reservation.Assignment.JobType.PIPELINE,
+                state=reservation.Assignment.State.PENDING,
+            )
+        )
+        response = await client.create_assignment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.CreateAssignmentRequest()
@@ -4797,7 +5528,8 @@ async def test_create_assignment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.CreateAssignmentRequest()
+        request = reservation.CreateAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.Assignment)
@@ -5001,7 +5733,8 @@ def test_list_assignments(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.ListAssignmentsRequest()
+        request = reservation.ListAssignmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssignmentsPager)
@@ -5019,6 +5752,56 @@ def test_list_assignments_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assignments), "__call__") as call:
         client.list_assignments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.ListAssignmentsRequest()
+
+
+def test_list_assignments_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.ListAssignmentsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assignments), "__call__") as call:
+        client.list_assignments(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.ListAssignmentsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_assignments_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assignments), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.ListAssignmentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_assignments()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.ListAssignmentsRequest()
@@ -5050,7 +5833,8 @@ async def test_list_assignments_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.ListAssignmentsRequest()
+        request = reservation.ListAssignmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssignmentsAsyncPager)
@@ -5423,7 +6207,8 @@ def test_delete_assignment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.DeleteAssignmentRequest()
+        request = reservation.DeleteAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5442,6 +6227,54 @@ def test_delete_assignment_empty_call():
         type(client.transport.delete_assignment), "__call__"
     ) as call:
         client.delete_assignment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.DeleteAssignmentRequest()
+
+
+def test_delete_assignment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.DeleteAssignmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_assignment), "__call__"
+    ) as call:
+        client.delete_assignment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.DeleteAssignmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_assignment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_assignment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_assignment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.DeleteAssignmentRequest()
@@ -5471,7 +6304,8 @@ async def test_delete_assignment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.DeleteAssignmentRequest()
+        request = reservation.DeleteAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -5659,7 +6493,8 @@ def test_search_assignments(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.SearchAssignmentsRequest()
+        request = reservation.SearchAssignmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAssignmentsPager)
@@ -5679,6 +6514,62 @@ def test_search_assignments_empty_call():
         type(client.transport.search_assignments), "__call__"
     ) as call:
         client.search_assignments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.SearchAssignmentsRequest()
+
+
+def test_search_assignments_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.SearchAssignmentsRequest(
+        parent="parent_value",
+        query="query_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_assignments), "__call__"
+    ) as call:
+        client.search_assignments(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.SearchAssignmentsRequest(
+            parent="parent_value",
+            query="query_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_assignments_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_assignments), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.SearchAssignmentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.search_assignments()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.SearchAssignmentsRequest()
@@ -5712,7 +6603,8 @@ async def test_search_assignments_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.SearchAssignmentsRequest()
+        request = reservation.SearchAssignmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAssignmentsAsyncPager)
@@ -6113,7 +7005,8 @@ def test_search_all_assignments(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.SearchAllAssignmentsRequest()
+        request = reservation.SearchAllAssignmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllAssignmentsPager)
@@ -6133,6 +7026,62 @@ def test_search_all_assignments_empty_call():
         type(client.transport.search_all_assignments), "__call__"
     ) as call:
         client.search_all_assignments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.SearchAllAssignmentsRequest()
+
+
+def test_search_all_assignments_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.SearchAllAssignmentsRequest(
+        parent="parent_value",
+        query="query_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_all_assignments), "__call__"
+    ) as call:
+        client.search_all_assignments(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.SearchAllAssignmentsRequest(
+            parent="parent_value",
+            query="query_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_all_assignments_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_all_assignments), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.SearchAllAssignmentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.search_all_assignments()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.SearchAllAssignmentsRequest()
@@ -6167,7 +7116,8 @@ async def test_search_all_assignments_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.SearchAllAssignmentsRequest()
+        request = reservation.SearchAllAssignmentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchAllAssignmentsAsyncPager)
@@ -6569,7 +7519,8 @@ def test_move_assignment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.MoveAssignmentRequest()
+        request = reservation.MoveAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.Assignment)
@@ -6590,6 +7541,61 @@ def test_move_assignment_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.move_assignment), "__call__") as call:
         client.move_assignment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.MoveAssignmentRequest()
+
+
+def test_move_assignment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.MoveAssignmentRequest(
+        name="name_value",
+        destination_id="destination_id_value",
+        assignment_id="assignment_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.move_assignment), "__call__") as call:
+        client.move_assignment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.MoveAssignmentRequest(
+            name="name_value",
+            destination_id="destination_id_value",
+            assignment_id="assignment_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_move_assignment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.move_assignment), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.Assignment(
+                name="name_value",
+                assignee="assignee_value",
+                job_type=reservation.Assignment.JobType.PIPELINE,
+                state=reservation.Assignment.State.PENDING,
+            )
+        )
+        response = await client.move_assignment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.MoveAssignmentRequest()
@@ -6624,7 +7630,8 @@ async def test_move_assignment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.MoveAssignmentRequest()
+        request = reservation.MoveAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.Assignment)
@@ -6825,7 +7832,8 @@ def test_update_assignment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.UpdateAssignmentRequest()
+        request = reservation.UpdateAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.Assignment)
@@ -6848,6 +7856,57 @@ def test_update_assignment_empty_call():
         type(client.transport.update_assignment), "__call__"
     ) as call:
         client.update_assignment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.UpdateAssignmentRequest()
+
+
+def test_update_assignment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.UpdateAssignmentRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_assignment), "__call__"
+    ) as call:
+        client.update_assignment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.UpdateAssignmentRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_assignment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_assignment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.Assignment(
+                name="name_value",
+                assignee="assignee_value",
+                job_type=reservation.Assignment.JobType.PIPELINE,
+                state=reservation.Assignment.State.PENDING,
+            )
+        )
+        response = await client.update_assignment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.UpdateAssignmentRequest()
@@ -6884,7 +7943,8 @@ async def test_update_assignment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.UpdateAssignmentRequest()
+        request = reservation.UpdateAssignmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.Assignment)
@@ -7091,7 +8151,8 @@ def test_get_bi_reservation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.GetBiReservationRequest()
+        request = reservation.GetBiReservationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.BiReservation)
@@ -7112,6 +8173,59 @@ def test_get_bi_reservation_empty_call():
         type(client.transport.get_bi_reservation), "__call__"
     ) as call:
         client.get_bi_reservation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.GetBiReservationRequest()
+
+
+def test_get_bi_reservation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.GetBiReservationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_bi_reservation), "__call__"
+    ) as call:
+        client.get_bi_reservation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.GetBiReservationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_bi_reservation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_bi_reservation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.BiReservation(
+                name="name_value",
+                size=443,
+            )
+        )
+        response = await client.get_bi_reservation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.GetBiReservationRequest()
@@ -7146,7 +8260,8 @@ async def test_get_bi_reservation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.GetBiReservationRequest()
+        request = reservation.GetBiReservationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.BiReservation)
@@ -7341,7 +8456,8 @@ def test_update_bi_reservation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.UpdateBiReservationRequest()
+        request = reservation.UpdateBiReservationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.BiReservation)
@@ -7362,6 +8478,55 @@ def test_update_bi_reservation_empty_call():
         type(client.transport.update_bi_reservation), "__call__"
     ) as call:
         client.update_bi_reservation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.UpdateBiReservationRequest()
+
+
+def test_update_bi_reservation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ReservationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = reservation.UpdateBiReservationRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_bi_reservation), "__call__"
+    ) as call:
+        client.update_bi_reservation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == reservation.UpdateBiReservationRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_bi_reservation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ReservationServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_bi_reservation), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            reservation.BiReservation(
+                name="name_value",
+                size=443,
+            )
+        )
+        response = await client.update_bi_reservation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == reservation.UpdateBiReservationRequest()
@@ -7396,7 +8561,8 @@ async def test_update_bi_reservation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == reservation.UpdateBiReservationRequest()
+        request = reservation.UpdateBiReservationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, reservation.BiReservation)

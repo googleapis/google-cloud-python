@@ -1205,7 +1205,8 @@ def test_list_app_gateways(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_gateways_service.ListAppGatewaysRequest()
+        request = app_gateways_service.ListAppGatewaysRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAppGatewaysPager)
@@ -1226,6 +1227,65 @@ def test_list_app_gateways_empty_call():
         type(client.transport.list_app_gateways), "__call__"
     ) as call:
         client.list_app_gateways()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_gateways_service.ListAppGatewaysRequest()
+
+
+def test_list_app_gateways_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppGatewaysServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = app_gateways_service.ListAppGatewaysRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_app_gateways), "__call__"
+    ) as call:
+        client.list_app_gateways(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_gateways_service.ListAppGatewaysRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_app_gateways_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppGatewaysServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_app_gateways), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            app_gateways_service.ListAppGatewaysResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_app_gateways()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == app_gateways_service.ListAppGatewaysRequest()
@@ -1261,7 +1321,8 @@ async def test_list_app_gateways_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_gateways_service.ListAppGatewaysRequest()
+        request = app_gateways_service.ListAppGatewaysRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAppGatewaysAsyncPager)
@@ -1657,7 +1718,8 @@ def test_get_app_gateway(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_gateways_service.GetAppGatewayRequest()
+        request = app_gateways_service.GetAppGatewayRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, app_gateways_service.AppGateway)
@@ -1683,6 +1745,60 @@ def test_get_app_gateway_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_app_gateway), "__call__") as call:
         client.get_app_gateway()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_gateways_service.GetAppGatewayRequest()
+
+
+def test_get_app_gateway_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppGatewaysServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = app_gateways_service.GetAppGatewayRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_app_gateway), "__call__") as call:
+        client.get_app_gateway(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_gateways_service.GetAppGatewayRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_app_gateway_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppGatewaysServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_app_gateway), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            app_gateways_service.AppGateway(
+                name="name_value",
+                display_name="display_name_value",
+                uid="uid_value",
+                type_=app_gateways_service.AppGateway.Type.TCP_PROXY,
+                state=app_gateways_service.AppGateway.State.CREATING,
+                uri="uri_value",
+                host_type=app_gateways_service.AppGateway.HostType.GCP_REGIONAL_MIG,
+            )
+        )
+        response = await client.get_app_gateway()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == app_gateways_service.GetAppGatewayRequest()
@@ -1721,7 +1837,8 @@ async def test_get_app_gateway_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_gateways_service.GetAppGatewayRequest()
+        request = app_gateways_service.GetAppGatewayRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, app_gateways_service.AppGateway)
@@ -1912,7 +2029,8 @@ def test_create_app_gateway(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_gateways_service.CreateAppGatewayRequest()
+        request = app_gateways_service.CreateAppGatewayRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1931,6 +2049,60 @@ def test_create_app_gateway_empty_call():
         type(client.transport.create_app_gateway), "__call__"
     ) as call:
         client.create_app_gateway()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_gateways_service.CreateAppGatewayRequest()
+
+
+def test_create_app_gateway_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppGatewaysServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = app_gateways_service.CreateAppGatewayRequest(
+        parent="parent_value",
+        app_gateway_id="app_gateway_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_app_gateway), "__call__"
+    ) as call:
+        client.create_app_gateway(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_gateways_service.CreateAppGatewayRequest(
+            parent="parent_value",
+            app_gateway_id="app_gateway_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_app_gateway_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppGatewaysServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_app_gateway), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_app_gateway()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == app_gateways_service.CreateAppGatewayRequest()
@@ -1963,7 +2135,8 @@ async def test_create_app_gateway_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_gateways_service.CreateAppGatewayRequest()
+        request = app_gateways_service.CreateAppGatewayRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2173,7 +2346,8 @@ def test_delete_app_gateway(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_gateways_service.DeleteAppGatewayRequest()
+        request = app_gateways_service.DeleteAppGatewayRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2192,6 +2366,58 @@ def test_delete_app_gateway_empty_call():
         type(client.transport.delete_app_gateway), "__call__"
     ) as call:
         client.delete_app_gateway()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_gateways_service.DeleteAppGatewayRequest()
+
+
+def test_delete_app_gateway_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AppGatewaysServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = app_gateways_service.DeleteAppGatewayRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_app_gateway), "__call__"
+    ) as call:
+        client.delete_app_gateway(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == app_gateways_service.DeleteAppGatewayRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_app_gateway_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AppGatewaysServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_app_gateway), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_app_gateway()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == app_gateways_service.DeleteAppGatewayRequest()
@@ -2224,7 +2450,8 @@ async def test_delete_app_gateway_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == app_gateways_service.DeleteAppGatewayRequest()
+        request = app_gateways_service.DeleteAppGatewayRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
