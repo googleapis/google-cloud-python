@@ -706,6 +706,9 @@ reset_session = global_session.close_session
 
 # SQL Compilation uses recursive algorithms on deep trees
 # 10M tree depth should be sufficient to generate any sql that is under bigquery limit
+# Note: This limit does not have the desired effect on Python 3.12 in
+# which the applicable limit is now hard coded. See:
+# https://github.com/python/cpython/issues/112282
 sys.setrecursionlimit(max(10000000, sys.getrecursionlimit()))
 resource.setrlimit(
     resource.RLIMIT_STACK, (resource.RLIM_INFINITY, resource.RLIM_INFINITY)
