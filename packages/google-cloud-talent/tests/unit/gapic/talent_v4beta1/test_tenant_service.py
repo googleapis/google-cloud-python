@@ -1152,7 +1152,8 @@ def test_create_tenant(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.CreateTenantRequest()
+        request = tenant_service.CreateTenantRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gct_tenant.Tenant)
@@ -1175,6 +1176,59 @@ def test_create_tenant_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tenant), "__call__") as call:
         client.create_tenant()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tenant_service.CreateTenantRequest()
+
+
+def test_create_tenant_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TenantServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tenant_service.CreateTenantRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_tenant), "__call__") as call:
+        client.create_tenant(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tenant_service.CreateTenantRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_tenant_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TenantServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_tenant), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gct_tenant.Tenant(
+                name="name_value",
+                external_id="external_id_value",
+                usage_type=gct_tenant.Tenant.DataUsageType.AGGREGATED,
+                keyword_searchable_profile_custom_attributes=[
+                    "keyword_searchable_profile_custom_attributes_value"
+                ],
+            )
+        )
+        response = await client.create_tenant()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tenant_service.CreateTenantRequest()
@@ -1211,7 +1265,8 @@ async def test_create_tenant_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.CreateTenantRequest()
+        request = tenant_service.CreateTenantRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gct_tenant.Tenant)
@@ -1410,7 +1465,8 @@ def test_get_tenant(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.GetTenantRequest()
+        request = tenant_service.GetTenantRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tenant.Tenant)
@@ -1433,6 +1489,59 @@ def test_get_tenant_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tenant), "__call__") as call:
         client.get_tenant()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tenant_service.GetTenantRequest()
+
+
+def test_get_tenant_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TenantServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tenant_service.GetTenantRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_tenant), "__call__") as call:
+        client.get_tenant(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tenant_service.GetTenantRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_tenant_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TenantServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_tenant), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tenant.Tenant(
+                name="name_value",
+                external_id="external_id_value",
+                usage_type=tenant.Tenant.DataUsageType.AGGREGATED,
+                keyword_searchable_profile_custom_attributes=[
+                    "keyword_searchable_profile_custom_attributes_value"
+                ],
+            )
+        )
+        response = await client.get_tenant()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tenant_service.GetTenantRequest()
@@ -1469,7 +1578,8 @@ async def test_get_tenant_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.GetTenantRequest()
+        request = tenant_service.GetTenantRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, tenant.Tenant)
@@ -1658,7 +1768,8 @@ def test_update_tenant(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.UpdateTenantRequest()
+        request = tenant_service.UpdateTenantRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gct_tenant.Tenant)
@@ -1681,6 +1792,55 @@ def test_update_tenant_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tenant), "__call__") as call:
         client.update_tenant()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tenant_service.UpdateTenantRequest()
+
+
+def test_update_tenant_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TenantServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tenant_service.UpdateTenantRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_tenant), "__call__") as call:
+        client.update_tenant(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tenant_service.UpdateTenantRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_tenant_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TenantServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_tenant), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gct_tenant.Tenant(
+                name="name_value",
+                external_id="external_id_value",
+                usage_type=gct_tenant.Tenant.DataUsageType.AGGREGATED,
+                keyword_searchable_profile_custom_attributes=[
+                    "keyword_searchable_profile_custom_attributes_value"
+                ],
+            )
+        )
+        response = await client.update_tenant()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tenant_service.UpdateTenantRequest()
@@ -1717,7 +1877,8 @@ async def test_update_tenant_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.UpdateTenantRequest()
+        request = tenant_service.UpdateTenantRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gct_tenant.Tenant)
@@ -1899,7 +2060,8 @@ def test_delete_tenant(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.DeleteTenantRequest()
+        request = tenant_service.DeleteTenantRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1916,6 +2078,50 @@ def test_delete_tenant_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_tenant), "__call__") as call:
         client.delete_tenant()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tenant_service.DeleteTenantRequest()
+
+
+def test_delete_tenant_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TenantServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tenant_service.DeleteTenantRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_tenant), "__call__") as call:
+        client.delete_tenant(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tenant_service.DeleteTenantRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_tenant_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TenantServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_tenant), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_tenant()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tenant_service.DeleteTenantRequest()
@@ -1943,7 +2149,8 @@ async def test_delete_tenant_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.DeleteTenantRequest()
+        request = tenant_service.DeleteTenantRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2121,7 +2328,8 @@ def test_list_tenants(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.ListTenantsRequest()
+        request = tenant_service.ListTenantsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTenantsPager)
@@ -2139,6 +2347,56 @@ def test_list_tenants_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tenants), "__call__") as call:
         client.list_tenants()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tenant_service.ListTenantsRequest()
+
+
+def test_list_tenants_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TenantServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = tenant_service.ListTenantsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tenants), "__call__") as call:
+        client.list_tenants(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == tenant_service.ListTenantsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_tenants_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TenantServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tenants), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            tenant_service.ListTenantsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_tenants()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == tenant_service.ListTenantsRequest()
@@ -2170,7 +2428,8 @@ async def test_list_tenants_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == tenant_service.ListTenantsRequest()
+        request = tenant_service.ListTenantsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTenantsAsyncPager)

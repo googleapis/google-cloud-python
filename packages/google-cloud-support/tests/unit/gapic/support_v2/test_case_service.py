@@ -1122,7 +1122,8 @@ def test_get_case(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.GetCaseRequest()
+        request = case_service.GetCaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, case.Case)
@@ -1150,6 +1151,64 @@ def test_get_case_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_case), "__call__") as call:
         client.get_case()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.GetCaseRequest()
+
+
+def test_get_case_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CaseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = case_service.GetCaseRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_case), "__call__") as call:
+        client.get_case(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.GetCaseRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_case_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CaseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_case), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            case.Case(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                time_zone="time_zone_value",
+                subscriber_email_addresses=["subscriber_email_addresses_value"],
+                state=case.Case.State.NEW,
+                contact_email="contact_email_value",
+                escalated=True,
+                test_case=True,
+                language_code="language_code_value",
+                priority=case.Case.Priority.P0,
+            )
+        )
+        response = await client.get_case()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == case_service.GetCaseRequest()
@@ -1191,7 +1250,8 @@ async def test_get_case_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.GetCaseRequest()
+        request = case_service.GetCaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, case.Case)
@@ -1380,7 +1440,8 @@ def test_list_cases(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.ListCasesRequest()
+        request = case_service.ListCasesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCasesPager)
@@ -1398,6 +1459,58 @@ def test_list_cases_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_cases), "__call__") as call:
         client.list_cases()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.ListCasesRequest()
+
+
+def test_list_cases_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CaseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = case_service.ListCasesRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_cases), "__call__") as call:
+        client.list_cases(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.ListCasesRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_cases_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CaseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_cases), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            case_service.ListCasesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_cases()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == case_service.ListCasesRequest()
@@ -1429,7 +1542,8 @@ async def test_list_cases_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.ListCasesRequest()
+        request = case_service.ListCasesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCasesAsyncPager)
@@ -1802,7 +1916,8 @@ def test_search_cases(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.SearchCasesRequest()
+        request = case_service.SearchCasesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCasesPager)
@@ -1820,6 +1935,58 @@ def test_search_cases_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_cases), "__call__") as call:
         client.search_cases()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.SearchCasesRequest()
+
+
+def test_search_cases_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CaseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = case_service.SearchCasesRequest(
+        parent="parent_value",
+        query="query_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_cases), "__call__") as call:
+        client.search_cases(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.SearchCasesRequest(
+            parent="parent_value",
+            query="query_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_cases_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CaseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_cases), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            case_service.SearchCasesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.search_cases()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == case_service.SearchCasesRequest()
@@ -1851,7 +2018,8 @@ async def test_search_cases_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.SearchCasesRequest()
+        request = case_service.SearchCasesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCasesAsyncPager)
@@ -2152,7 +2320,8 @@ def test_create_case(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.CreateCaseRequest()
+        request = case_service.CreateCaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_case.Case)
@@ -2180,6 +2349,64 @@ def test_create_case_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_case), "__call__") as call:
         client.create_case()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.CreateCaseRequest()
+
+
+def test_create_case_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CaseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = case_service.CreateCaseRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_case), "__call__") as call:
+        client.create_case(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.CreateCaseRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_case_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CaseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_case), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_case.Case(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                time_zone="time_zone_value",
+                subscriber_email_addresses=["subscriber_email_addresses_value"],
+                state=gcs_case.Case.State.NEW,
+                contact_email="contact_email_value",
+                escalated=True,
+                test_case=True,
+                language_code="language_code_value",
+                priority=gcs_case.Case.Priority.P0,
+            )
+        )
+        response = await client.create_case()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == case_service.CreateCaseRequest()
@@ -2221,7 +2448,8 @@ async def test_create_case_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.CreateCaseRequest()
+        request = case_service.CreateCaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_case.Case)
@@ -2430,7 +2658,8 @@ def test_update_case(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.UpdateCaseRequest()
+        request = case_service.UpdateCaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_case.Case)
@@ -2458,6 +2687,60 @@ def test_update_case_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_case), "__call__") as call:
         client.update_case()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.UpdateCaseRequest()
+
+
+def test_update_case_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CaseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = case_service.UpdateCaseRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_case), "__call__") as call:
+        client.update_case(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.UpdateCaseRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_case_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CaseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_case), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_case.Case(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                time_zone="time_zone_value",
+                subscriber_email_addresses=["subscriber_email_addresses_value"],
+                state=gcs_case.Case.State.NEW,
+                contact_email="contact_email_value",
+                escalated=True,
+                test_case=True,
+                language_code="language_code_value",
+                priority=gcs_case.Case.Priority.P0,
+            )
+        )
+        response = await client.update_case()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == case_service.UpdateCaseRequest()
@@ -2499,7 +2782,8 @@ async def test_update_case_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.UpdateCaseRequest()
+        request = case_service.UpdateCaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_case.Case)
@@ -2708,7 +2992,8 @@ def test_escalate_case(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.EscalateCaseRequest()
+        request = case_service.EscalateCaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, case.Case)
@@ -2736,6 +3021,64 @@ def test_escalate_case_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.escalate_case), "__call__") as call:
         client.escalate_case()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.EscalateCaseRequest()
+
+
+def test_escalate_case_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CaseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = case_service.EscalateCaseRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.escalate_case), "__call__") as call:
+        client.escalate_case(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.EscalateCaseRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_escalate_case_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CaseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.escalate_case), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            case.Case(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                time_zone="time_zone_value",
+                subscriber_email_addresses=["subscriber_email_addresses_value"],
+                state=case.Case.State.NEW,
+                contact_email="contact_email_value",
+                escalated=True,
+                test_case=True,
+                language_code="language_code_value",
+                priority=case.Case.Priority.P0,
+            )
+        )
+        response = await client.escalate_case()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == case_service.EscalateCaseRequest()
@@ -2777,7 +3120,8 @@ async def test_escalate_case_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.EscalateCaseRequest()
+        request = case_service.EscalateCaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, case.Case)
@@ -2896,7 +3240,8 @@ def test_close_case(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.CloseCaseRequest()
+        request = case_service.CloseCaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, case.Case)
@@ -2924,6 +3269,64 @@ def test_close_case_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.close_case), "__call__") as call:
         client.close_case()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.CloseCaseRequest()
+
+
+def test_close_case_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CaseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = case_service.CloseCaseRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.close_case), "__call__") as call:
+        client.close_case(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.CloseCaseRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_close_case_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CaseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.close_case), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            case.Case(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                time_zone="time_zone_value",
+                subscriber_email_addresses=["subscriber_email_addresses_value"],
+                state=case.Case.State.NEW,
+                contact_email="contact_email_value",
+                escalated=True,
+                test_case=True,
+                language_code="language_code_value",
+                priority=case.Case.Priority.P0,
+            )
+        )
+        response = await client.close_case()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == case_service.CloseCaseRequest()
@@ -2965,7 +3368,8 @@ async def test_close_case_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.CloseCaseRequest()
+        request = case_service.CloseCaseRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, case.Case)
@@ -3076,7 +3480,8 @@ def test_search_case_classifications(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.SearchCaseClassificationsRequest()
+        request = case_service.SearchCaseClassificationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCaseClassificationsPager)
@@ -3096,6 +3501,60 @@ def test_search_case_classifications_empty_call():
         type(client.transport.search_case_classifications), "__call__"
     ) as call:
         client.search_case_classifications()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.SearchCaseClassificationsRequest()
+
+
+def test_search_case_classifications_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CaseServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = case_service.SearchCaseClassificationsRequest(
+        query="query_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_case_classifications), "__call__"
+    ) as call:
+        client.search_case_classifications(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == case_service.SearchCaseClassificationsRequest(
+            query="query_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_case_classifications_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CaseServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_case_classifications), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            case_service.SearchCaseClassificationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.search_case_classifications()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == case_service.SearchCaseClassificationsRequest()
@@ -3130,7 +3589,8 @@ async def test_search_case_classifications_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == case_service.SearchCaseClassificationsRequest()
+        request = case_service.SearchCaseClassificationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchCaseClassificationsAsyncPager)

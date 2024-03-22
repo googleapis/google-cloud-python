@@ -1151,7 +1151,8 @@ def test_list_catalogs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.ListCatalogsRequest()
+        request = catalog_service.ListCatalogsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCatalogsPager)
@@ -1169,6 +1170,56 @@ def test_list_catalogs_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_catalogs), "__call__") as call:
         client.list_catalogs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.ListCatalogsRequest()
+
+
+def test_list_catalogs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog_service.ListCatalogsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_catalogs), "__call__") as call:
+        client.list_catalogs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.ListCatalogsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_catalogs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_catalogs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog_service.ListCatalogsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_catalogs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == catalog_service.ListCatalogsRequest()
@@ -1200,7 +1251,8 @@ async def test_list_catalogs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.ListCatalogsRequest()
+        request = catalog_service.ListCatalogsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCatalogsAsyncPager)
@@ -1574,7 +1626,8 @@ def test_update_catalog(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.UpdateCatalogRequest()
+        request = catalog_service.UpdateCatalogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcr_catalog.Catalog)
@@ -1593,6 +1646,51 @@ def test_update_catalog_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_catalog), "__call__") as call:
         client.update_catalog()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.UpdateCatalogRequest()
+
+
+def test_update_catalog_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog_service.UpdateCatalogRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_catalog), "__call__") as call:
+        client.update_catalog(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.UpdateCatalogRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_catalog_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_catalog), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcr_catalog.Catalog(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_catalog()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == catalog_service.UpdateCatalogRequest()
@@ -1625,7 +1723,8 @@ async def test_update_catalog_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.UpdateCatalogRequest()
+        request = catalog_service.UpdateCatalogRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcr_catalog.Catalog)
@@ -1815,7 +1914,8 @@ def test_set_default_branch(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.SetDefaultBranchRequest()
+        request = catalog_service.SetDefaultBranchRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1834,6 +1934,58 @@ def test_set_default_branch_empty_call():
         type(client.transport.set_default_branch), "__call__"
     ) as call:
         client.set_default_branch()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.SetDefaultBranchRequest()
+
+
+def test_set_default_branch_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog_service.SetDefaultBranchRequest(
+        catalog="catalog_value",
+        branch_id="branch_id_value",
+        note="note_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_default_branch), "__call__"
+    ) as call:
+        client.set_default_branch(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.SetDefaultBranchRequest(
+            catalog="catalog_value",
+            branch_id="branch_id_value",
+            note="note_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_default_branch_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_default_branch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.set_default_branch()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == catalog_service.SetDefaultBranchRequest()
@@ -1864,7 +2016,8 @@ async def test_set_default_branch_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.SetDefaultBranchRequest()
+        request = catalog_service.SetDefaultBranchRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2053,7 +2206,8 @@ def test_get_default_branch(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.GetDefaultBranchRequest()
+        request = catalog_service.GetDefaultBranchRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog_service.GetDefaultBranchResponse)
@@ -2074,6 +2228,59 @@ def test_get_default_branch_empty_call():
         type(client.transport.get_default_branch), "__call__"
     ) as call:
         client.get_default_branch()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetDefaultBranchRequest()
+
+
+def test_get_default_branch_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog_service.GetDefaultBranchRequest(
+        catalog="catalog_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_default_branch), "__call__"
+    ) as call:
+        client.get_default_branch(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetDefaultBranchRequest(
+            catalog="catalog_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_default_branch_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_default_branch), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog_service.GetDefaultBranchResponse(
+                branch="branch_value",
+                note="note_value",
+            )
+        )
+        response = await client.get_default_branch()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == catalog_service.GetDefaultBranchRequest()
@@ -2109,7 +2316,8 @@ async def test_get_default_branch_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.GetDefaultBranchRequest()
+        request = catalog_service.GetDefaultBranchRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog_service.GetDefaultBranchResponse)
@@ -2310,7 +2518,8 @@ def test_get_completion_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.GetCompletionConfigRequest()
+        request = catalog_service.GetCompletionConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.CompletionConfig)
@@ -2346,6 +2555,65 @@ def test_get_completion_config_empty_call():
         type(client.transport.get_completion_config), "__call__"
     ) as call:
         client.get_completion_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetCompletionConfigRequest()
+
+
+def test_get_completion_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog_service.GetCompletionConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_completion_config), "__call__"
+    ) as call:
+        client.get_completion_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetCompletionConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_completion_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_completion_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.CompletionConfig(
+                name="name_value",
+                matching_order="matching_order_value",
+                max_suggestions=1632,
+                min_prefix_length=1810,
+                auto_learning=True,
+                last_suggestions_import_operation="last_suggestions_import_operation_value",
+                last_denylist_import_operation="last_denylist_import_operation_value",
+                last_allowlist_import_operation="last_allowlist_import_operation_value",
+            )
+        )
+        response = await client.get_completion_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == catalog_service.GetCompletionConfigRequest()
@@ -2387,7 +2655,8 @@ async def test_get_completion_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.GetCompletionConfigRequest()
+        request = catalog_service.GetCompletionConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.CompletionConfig)
@@ -2603,7 +2872,8 @@ def test_update_completion_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.UpdateCompletionConfigRequest()
+        request = catalog_service.UpdateCompletionConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.CompletionConfig)
@@ -2639,6 +2909,61 @@ def test_update_completion_config_empty_call():
         type(client.transport.update_completion_config), "__call__"
     ) as call:
         client.update_completion_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.UpdateCompletionConfigRequest()
+
+
+def test_update_completion_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog_service.UpdateCompletionConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_completion_config), "__call__"
+    ) as call:
+        client.update_completion_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.UpdateCompletionConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_completion_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_completion_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.CompletionConfig(
+                name="name_value",
+                matching_order="matching_order_value",
+                max_suggestions=1632,
+                min_prefix_length=1810,
+                auto_learning=True,
+                last_suggestions_import_operation="last_suggestions_import_operation_value",
+                last_denylist_import_operation="last_denylist_import_operation_value",
+                last_allowlist_import_operation="last_allowlist_import_operation_value",
+            )
+        )
+        response = await client.update_completion_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == catalog_service.UpdateCompletionConfigRequest()
@@ -2680,7 +3005,8 @@ async def test_update_completion_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.UpdateCompletionConfigRequest()
+        request = catalog_service.UpdateCompletionConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.CompletionConfig)
@@ -2900,7 +3226,8 @@ def test_get_attributes_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.GetAttributesConfigRequest()
+        request = catalog_service.GetAttributesConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.AttributesConfig)
@@ -2924,6 +3251,59 @@ def test_get_attributes_config_empty_call():
         type(client.transport.get_attributes_config), "__call__"
     ) as call:
         client.get_attributes_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetAttributesConfigRequest()
+
+
+def test_get_attributes_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog_service.GetAttributesConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_attributes_config), "__call__"
+    ) as call:
+        client.get_attributes_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.GetAttributesConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_attributes_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_attributes_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig(
+                name="name_value",
+                attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+            )
+        )
+        response = await client.get_attributes_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == catalog_service.GetAttributesConfigRequest()
@@ -2959,7 +3339,8 @@ async def test_get_attributes_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.GetAttributesConfigRequest()
+        request = catalog_service.GetAttributesConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.AttributesConfig)
@@ -3157,7 +3538,8 @@ def test_update_attributes_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.UpdateAttributesConfigRequest()
+        request = catalog_service.UpdateAttributesConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.AttributesConfig)
@@ -3181,6 +3563,55 @@ def test_update_attributes_config_empty_call():
         type(client.transport.update_attributes_config), "__call__"
     ) as call:
         client.update_attributes_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.UpdateAttributesConfigRequest()
+
+
+def test_update_attributes_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog_service.UpdateAttributesConfigRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_attributes_config), "__call__"
+    ) as call:
+        client.update_attributes_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.UpdateAttributesConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_attributes_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_attributes_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig(
+                name="name_value",
+                attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+            )
+        )
+        response = await client.update_attributes_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == catalog_service.UpdateAttributesConfigRequest()
@@ -3216,7 +3647,8 @@ async def test_update_attributes_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.UpdateAttributesConfigRequest()
+        request = catalog_service.UpdateAttributesConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.AttributesConfig)
@@ -3424,7 +3856,8 @@ def test_add_catalog_attribute(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.AddCatalogAttributeRequest()
+        request = catalog_service.AddCatalogAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.AttributesConfig)
@@ -3448,6 +3881,59 @@ def test_add_catalog_attribute_empty_call():
         type(client.transport.add_catalog_attribute), "__call__"
     ) as call:
         client.add_catalog_attribute()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.AddCatalogAttributeRequest()
+
+
+def test_add_catalog_attribute_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog_service.AddCatalogAttributeRequest(
+        attributes_config="attributes_config_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_catalog_attribute), "__call__"
+    ) as call:
+        client.add_catalog_attribute(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.AddCatalogAttributeRequest(
+            attributes_config="attributes_config_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_add_catalog_attribute_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.add_catalog_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig(
+                name="name_value",
+                attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+            )
+        )
+        response = await client.add_catalog_attribute()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == catalog_service.AddCatalogAttributeRequest()
@@ -3483,7 +3969,8 @@ async def test_add_catalog_attribute_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.AddCatalogAttributeRequest()
+        request = catalog_service.AddCatalogAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.AttributesConfig)
@@ -3595,7 +4082,8 @@ def test_remove_catalog_attribute(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.RemoveCatalogAttributeRequest()
+        request = catalog_service.RemoveCatalogAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.AttributesConfig)
@@ -3619,6 +4107,61 @@ def test_remove_catalog_attribute_empty_call():
         type(client.transport.remove_catalog_attribute), "__call__"
     ) as call:
         client.remove_catalog_attribute()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.RemoveCatalogAttributeRequest()
+
+
+def test_remove_catalog_attribute_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog_service.RemoveCatalogAttributeRequest(
+        attributes_config="attributes_config_value",
+        key="key_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_catalog_attribute), "__call__"
+    ) as call:
+        client.remove_catalog_attribute(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.RemoveCatalogAttributeRequest(
+            attributes_config="attributes_config_value",
+            key="key_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_remove_catalog_attribute_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_catalog_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig(
+                name="name_value",
+                attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+            )
+        )
+        response = await client.remove_catalog_attribute()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == catalog_service.RemoveCatalogAttributeRequest()
@@ -3654,7 +4197,8 @@ async def test_remove_catalog_attribute_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.RemoveCatalogAttributeRequest()
+        request = catalog_service.RemoveCatalogAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.AttributesConfig)
@@ -3766,7 +4310,8 @@ def test_replace_catalog_attribute(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.ReplaceCatalogAttributeRequest()
+        request = catalog_service.ReplaceCatalogAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.AttributesConfig)
@@ -3790,6 +4335,59 @@ def test_replace_catalog_attribute_empty_call():
         type(client.transport.replace_catalog_attribute), "__call__"
     ) as call:
         client.replace_catalog_attribute()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.ReplaceCatalogAttributeRequest()
+
+
+def test_replace_catalog_attribute_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CatalogServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = catalog_service.ReplaceCatalogAttributeRequest(
+        attributes_config="attributes_config_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.replace_catalog_attribute), "__call__"
+    ) as call:
+        client.replace_catalog_attribute(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == catalog_service.ReplaceCatalogAttributeRequest(
+            attributes_config="attributes_config_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_replace_catalog_attribute_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CatalogServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.replace_catalog_attribute), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            catalog.AttributesConfig(
+                name="name_value",
+                attribute_config_level=common.AttributeConfigLevel.PRODUCT_LEVEL_ATTRIBUTE_CONFIG,
+            )
+        )
+        response = await client.replace_catalog_attribute()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == catalog_service.ReplaceCatalogAttributeRequest()
@@ -3825,7 +4423,8 @@ async def test_replace_catalog_attribute_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == catalog_service.ReplaceCatalogAttributeRequest()
+        request = catalog_service.ReplaceCatalogAttributeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, catalog.AttributesConfig)

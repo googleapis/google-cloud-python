@@ -1175,7 +1175,8 @@ def test_allocate_quota(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == quota_controller.AllocateQuotaRequest()
+        request = quota_controller.AllocateQuotaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, quota_controller.AllocateQuotaResponse)
@@ -1194,6 +1195,57 @@ def test_allocate_quota_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.allocate_quota), "__call__") as call:
         client.allocate_quota()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == quota_controller.AllocateQuotaRequest()
+
+
+def test_allocate_quota_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = QuotaControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = quota_controller.AllocateQuotaRequest(
+        service_name="service_name_value",
+        service_config_id="service_config_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_quota), "__call__") as call:
+        client.allocate_quota(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == quota_controller.AllocateQuotaRequest(
+            service_name="service_name_value",
+            service_config_id="service_config_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_allocate_quota_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = QuotaControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.allocate_quota), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            quota_controller.AllocateQuotaResponse(
+                operation_id="operation_id_value",
+                service_config_id="service_config_id_value",
+            )
+        )
+        response = await client.allocate_quota()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == quota_controller.AllocateQuotaRequest()
@@ -1226,7 +1278,8 @@ async def test_allocate_quota_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == quota_controller.AllocateQuotaRequest()
+        request = quota_controller.AllocateQuotaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, quota_controller.AllocateQuotaResponse)

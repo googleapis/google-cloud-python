@@ -1167,7 +1167,8 @@ def test_create_company(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.CreateCompanyRequest()
+        request = company_service.CreateCompanyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gct_company.Company)
@@ -1198,6 +1199,67 @@ def test_create_company_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_company), "__call__") as call:
         client.create_company()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == company_service.CreateCompanyRequest()
+
+
+def test_create_company_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = company_service.CreateCompanyRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_company), "__call__") as call:
+        client.create_company(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == company_service.CreateCompanyRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_company_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CompanyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_company), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gct_company.Company(
+                name="name_value",
+                display_name="display_name_value",
+                external_id="external_id_value",
+                size=common.CompanySize.MINI,
+                headquarters_address="headquarters_address_value",
+                hiring_agency=True,
+                eeo_text="eeo_text_value",
+                website_uri="website_uri_value",
+                career_site_uri="career_site_uri_value",
+                image_uri="image_uri_value",
+                keyword_searchable_job_custom_attributes=[
+                    "keyword_searchable_job_custom_attributes_value"
+                ],
+                suspended=True,
+            )
+        )
+        response = await client.create_company()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == company_service.CreateCompanyRequest()
@@ -1242,7 +1304,8 @@ async def test_create_company_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.CreateCompanyRequest()
+        request = company_service.CreateCompanyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gct_company.Company)
@@ -1457,7 +1520,8 @@ def test_get_company(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.GetCompanyRequest()
+        request = company_service.GetCompanyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, company.Company)
@@ -1488,6 +1552,67 @@ def test_get_company_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_company), "__call__") as call:
         client.get_company()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == company_service.GetCompanyRequest()
+
+
+def test_get_company_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = company_service.GetCompanyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_company), "__call__") as call:
+        client.get_company(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == company_service.GetCompanyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_company_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CompanyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_company), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            company.Company(
+                name="name_value",
+                display_name="display_name_value",
+                external_id="external_id_value",
+                size=common.CompanySize.MINI,
+                headquarters_address="headquarters_address_value",
+                hiring_agency=True,
+                eeo_text="eeo_text_value",
+                website_uri="website_uri_value",
+                career_site_uri="career_site_uri_value",
+                image_uri="image_uri_value",
+                keyword_searchable_job_custom_attributes=[
+                    "keyword_searchable_job_custom_attributes_value"
+                ],
+                suspended=True,
+            )
+        )
+        response = await client.get_company()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == company_service.GetCompanyRequest()
@@ -1532,7 +1657,8 @@ async def test_get_company_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.GetCompanyRequest()
+        request = company_service.GetCompanyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, company.Company)
@@ -1737,7 +1863,8 @@ def test_update_company(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.UpdateCompanyRequest()
+        request = company_service.UpdateCompanyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gct_company.Company)
@@ -1768,6 +1895,63 @@ def test_update_company_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_company), "__call__") as call:
         client.update_company()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == company_service.UpdateCompanyRequest()
+
+
+def test_update_company_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = company_service.UpdateCompanyRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_company), "__call__") as call:
+        client.update_company(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == company_service.UpdateCompanyRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_company_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CompanyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_company), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gct_company.Company(
+                name="name_value",
+                display_name="display_name_value",
+                external_id="external_id_value",
+                size=common.CompanySize.MINI,
+                headquarters_address="headquarters_address_value",
+                hiring_agency=True,
+                eeo_text="eeo_text_value",
+                website_uri="website_uri_value",
+                career_site_uri="career_site_uri_value",
+                image_uri="image_uri_value",
+                keyword_searchable_job_custom_attributes=[
+                    "keyword_searchable_job_custom_attributes_value"
+                ],
+                suspended=True,
+            )
+        )
+        response = await client.update_company()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == company_service.UpdateCompanyRequest()
@@ -1812,7 +1996,8 @@ async def test_update_company_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.UpdateCompanyRequest()
+        request = company_service.UpdateCompanyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gct_company.Company)
@@ -2002,7 +2187,8 @@ def test_delete_company(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.DeleteCompanyRequest()
+        request = company_service.DeleteCompanyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2019,6 +2205,50 @@ def test_delete_company_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_company), "__call__") as call:
         client.delete_company()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == company_service.DeleteCompanyRequest()
+
+
+def test_delete_company_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = company_service.DeleteCompanyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_company), "__call__") as call:
+        client.delete_company(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == company_service.DeleteCompanyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_company_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CompanyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_company), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_company()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == company_service.DeleteCompanyRequest()
@@ -2046,7 +2276,8 @@ async def test_delete_company_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.DeleteCompanyRequest()
+        request = company_service.DeleteCompanyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2224,7 +2455,8 @@ def test_list_companies(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.ListCompaniesRequest()
+        request = company_service.ListCompaniesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCompaniesPager)
@@ -2242,6 +2474,56 @@ def test_list_companies_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_companies), "__call__") as call:
         client.list_companies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == company_service.ListCompaniesRequest()
+
+
+def test_list_companies_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CompanyServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = company_service.ListCompaniesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_companies), "__call__") as call:
+        client.list_companies(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == company_service.ListCompaniesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_companies_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CompanyServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_companies), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            company_service.ListCompaniesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_companies()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == company_service.ListCompaniesRequest()
@@ -2273,7 +2555,8 @@ async def test_list_companies_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == company_service.ListCompaniesRequest()
+        request = company_service.ListCompaniesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCompaniesAsyncPager)

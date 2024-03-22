@@ -1178,7 +1178,8 @@ def test_list_report_configs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.ListReportConfigsRequest()
+        request = storageinsights.ListReportConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReportConfigsPager)
@@ -1199,6 +1200,65 @@ def test_list_report_configs_empty_call():
         type(client.transport.list_report_configs), "__call__"
     ) as call:
         client.list_report_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.ListReportConfigsRequest()
+
+
+def test_list_report_configs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.ListReportConfigsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_report_configs), "__call__"
+    ) as call:
+        client.list_report_configs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.ListReportConfigsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_report_configs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_report_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.ListReportConfigsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_report_configs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == storageinsights.ListReportConfigsRequest()
@@ -1234,7 +1294,8 @@ async def test_list_report_configs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.ListReportConfigsRequest()
+        request = storageinsights.ListReportConfigsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReportConfigsAsyncPager)
@@ -1627,7 +1688,8 @@ def test_get_report_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.GetReportConfigRequest()
+        request = storageinsights.GetReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storageinsights.ReportConfig)
@@ -1648,6 +1710,59 @@ def test_get_report_config_empty_call():
         type(client.transport.get_report_config), "__call__"
     ) as call:
         client.get_report_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.GetReportConfigRequest()
+
+
+def test_get_report_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.GetReportConfigRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_report_config), "__call__"
+    ) as call:
+        client.get_report_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.GetReportConfigRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_report_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_report_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.ReportConfig(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.get_report_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == storageinsights.GetReportConfigRequest()
@@ -1682,7 +1797,8 @@ async def test_get_report_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.GetReportConfigRequest()
+        request = storageinsights.GetReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storageinsights.ReportConfig)
@@ -1877,7 +1993,8 @@ def test_create_report_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.CreateReportConfigRequest()
+        request = storageinsights.CreateReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storageinsights.ReportConfig)
@@ -1898,6 +2015,61 @@ def test_create_report_config_empty_call():
         type(client.transport.create_report_config), "__call__"
     ) as call:
         client.create_report_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.CreateReportConfigRequest()
+
+
+def test_create_report_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.CreateReportConfigRequest(
+        parent="parent_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_report_config), "__call__"
+    ) as call:
+        client.create_report_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.CreateReportConfigRequest(
+            parent="parent_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_report_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_report_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.ReportConfig(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.create_report_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == storageinsights.CreateReportConfigRequest()
@@ -1933,7 +2105,8 @@ async def test_create_report_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.CreateReportConfigRequest()
+        request = storageinsights.CreateReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storageinsights.ReportConfig)
@@ -2138,7 +2311,8 @@ def test_update_report_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.UpdateReportConfigRequest()
+        request = storageinsights.UpdateReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storageinsights.ReportConfig)
@@ -2159,6 +2333,59 @@ def test_update_report_config_empty_call():
         type(client.transport.update_report_config), "__call__"
     ) as call:
         client.update_report_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.UpdateReportConfigRequest()
+
+
+def test_update_report_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.UpdateReportConfigRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_report_config), "__call__"
+    ) as call:
+        client.update_report_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.UpdateReportConfigRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_report_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_report_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.ReportConfig(
+                name="name_value",
+                display_name="display_name_value",
+            )
+        )
+        response = await client.update_report_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == storageinsights.UpdateReportConfigRequest()
@@ -2194,7 +2421,8 @@ async def test_update_report_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.UpdateReportConfigRequest()
+        request = storageinsights.UpdateReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storageinsights.ReportConfig)
@@ -2396,7 +2624,8 @@ def test_delete_report_config(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.DeleteReportConfigRequest()
+        request = storageinsights.DeleteReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2415,6 +2644,56 @@ def test_delete_report_config_empty_call():
         type(client.transport.delete_report_config), "__call__"
     ) as call:
         client.delete_report_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.DeleteReportConfigRequest()
+
+
+def test_delete_report_config_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.DeleteReportConfigRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_report_config), "__call__"
+    ) as call:
+        client.delete_report_config(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.DeleteReportConfigRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_report_config_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_report_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_report_config()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == storageinsights.DeleteReportConfigRequest()
@@ -2445,7 +2724,8 @@ async def test_delete_report_config_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.DeleteReportConfigRequest()
+        request = storageinsights.DeleteReportConfigRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2634,7 +2914,8 @@ def test_list_report_details(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.ListReportDetailsRequest()
+        request = storageinsights.ListReportDetailsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReportDetailsPager)
@@ -2655,6 +2936,65 @@ def test_list_report_details_empty_call():
         type(client.transport.list_report_details), "__call__"
     ) as call:
         client.list_report_details()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.ListReportDetailsRequest()
+
+
+def test_list_report_details_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.ListReportDetailsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_report_details), "__call__"
+    ) as call:
+        client.list_report_details(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.ListReportDetailsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_report_details_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_report_details), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.ListReportDetailsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_report_details()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == storageinsights.ListReportDetailsRequest()
@@ -2690,7 +3030,8 @@ async def test_list_report_details_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.ListReportDetailsRequest()
+        request = storageinsights.ListReportDetailsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListReportDetailsAsyncPager)
@@ -3084,7 +3425,8 @@ def test_get_report_detail(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.GetReportDetailRequest()
+        request = storageinsights.GetReportDetailRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storageinsights.ReportDetail)
@@ -3106,6 +3448,60 @@ def test_get_report_detail_empty_call():
         type(client.transport.get_report_detail), "__call__"
     ) as call:
         client.get_report_detail()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.GetReportDetailRequest()
+
+
+def test_get_report_detail_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = StorageInsightsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = storageinsights.GetReportDetailRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_report_detail), "__call__"
+    ) as call:
+        client.get_report_detail(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == storageinsights.GetReportDetailRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_report_detail_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageInsightsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_report_detail), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            storageinsights.ReportDetail(
+                name="name_value",
+                report_path_prefix="report_path_prefix_value",
+                shards_count=1293,
+            )
+        )
+        response = await client.get_report_detail()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == storageinsights.GetReportDetailRequest()
@@ -3141,7 +3537,8 @@ async def test_get_report_detail_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == storageinsights.GetReportDetailRequest()
+        request = storageinsights.GetReportDetailRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, storageinsights.ReportDetail)

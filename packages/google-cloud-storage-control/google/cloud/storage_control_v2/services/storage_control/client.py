@@ -28,6 +28,7 @@ from typing import (
     Union,
     cast,
 )
+import uuid
 import warnings
 
 from google.api_core import client_options as client_options_lib
@@ -806,6 +807,9 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -908,6 +912,9 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             metadata = tuple(metadata) + (
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
+
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1015,6 +1022,9 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             metadata = tuple(metadata) + (
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
+
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
 
         # Validate the universe domain.
         self._validate_universe_domain()
@@ -1270,6 +1280,9 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
 
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
         # Validate the universe domain.
         self._validate_universe_domain()
 
@@ -1391,6 +1404,9 @@ class StorageControlClient(metaclass=StorageControlClientMeta):
             metadata = tuple(metadata) + (
                 gapic_v1.routing_header.to_grpc_metadata(header_params),
             )
+
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
 
         # Validate the universe domain.
         self._validate_universe_domain()

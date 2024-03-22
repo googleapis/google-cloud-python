@@ -1091,7 +1091,8 @@ def test_get_task(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == task.GetTaskRequest()
+        request = task.GetTaskRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, task.Task)
@@ -1127,6 +1128,69 @@ def test_get_task_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_task), "__call__") as call:
         client.get_task()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == task.GetTaskRequest()
+
+
+def test_get_task_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = task.GetTaskRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
+        client.get_task(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == task.GetTaskRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_task_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_task), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            task.Task(
+                name="name_value",
+                uid="uid_value",
+                generation=1068,
+                job="job_value",
+                execution="execution_value",
+                max_retries=1187,
+                service_account="service_account_value",
+                execution_environment=vendor_settings.ExecutionEnvironment.EXECUTION_ENVIRONMENT_GEN1,
+                reconciling=True,
+                observed_generation=2021,
+                index=536,
+                retried=751,
+                encryption_key="encryption_key_value",
+                log_uri="log_uri_value",
+                satisfies_pzs=True,
+                etag="etag_value",
+            )
+        )
+        response = await client.get_task()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == task.GetTaskRequest()
@@ -1173,7 +1237,8 @@ async def test_get_task_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == task.GetTaskRequest()
+        request = task.GetTaskRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, task.Task)
@@ -1370,7 +1435,8 @@ def test_list_tasks(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == task.ListTasksRequest()
+        request = task.ListTasksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTasksPager)
@@ -1388,6 +1454,56 @@ def test_list_tasks_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
         client.list_tasks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == task.ListTasksRequest()
+
+
+def test_list_tasks_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TasksClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = task.ListTasksRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
+        client.list_tasks(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == task.ListTasksRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_tasks_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TasksAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_tasks), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            task.ListTasksResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_tasks()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == task.ListTasksRequest()
@@ -1419,7 +1535,8 @@ async def test_list_tasks_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == task.ListTasksRequest()
+        request = task.ListTasksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListTasksAsyncPager)

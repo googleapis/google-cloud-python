@@ -1200,7 +1200,8 @@ def test_get_environment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.GetEnvironmentRequest()
+        request = cloudshell.GetEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloudshell.Environment)
@@ -1226,6 +1227,62 @@ def test_get_environment_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
         client.get_environment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudshell.GetEnvironmentRequest()
+
+
+def test_get_environment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudShellServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudshell.GetEnvironmentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
+        client.get_environment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudshell.GetEnvironmentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_environment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudShellServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudshell.Environment(
+                name="name_value",
+                id="id_value",
+                docker_image="docker_image_value",
+                state=cloudshell.Environment.State.SUSPENDED,
+                web_host="web_host_value",
+                ssh_username="ssh_username_value",
+                ssh_host="ssh_host_value",
+                ssh_port=882,
+                public_keys=["public_keys_value"],
+            )
+        )
+        response = await client.get_environment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudshell.GetEnvironmentRequest()
@@ -1265,7 +1322,8 @@ async def test_get_environment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.GetEnvironmentRequest()
+        request = cloudshell.GetEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, cloudshell.Environment)
@@ -1456,7 +1514,8 @@ def test_start_environment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.StartEnvironmentRequest()
+        request = cloudshell.StartEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1475,6 +1534,58 @@ def test_start_environment_empty_call():
         type(client.transport.start_environment), "__call__"
     ) as call:
         client.start_environment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudshell.StartEnvironmentRequest()
+
+
+def test_start_environment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudShellServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudshell.StartEnvironmentRequest(
+        name="name_value",
+        access_token="access_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_environment), "__call__"
+    ) as call:
+        client.start_environment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudshell.StartEnvironmentRequest(
+            name="name_value",
+            access_token="access_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_start_environment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudShellServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.start_environment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.start_environment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudshell.StartEnvironmentRequest()
@@ -1506,7 +1617,8 @@ async def test_start_environment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.StartEnvironmentRequest()
+        request = cloudshell.StartEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1610,7 +1722,8 @@ def test_authorize_environment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.AuthorizeEnvironmentRequest()
+        request = cloudshell.AuthorizeEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1629,6 +1742,60 @@ def test_authorize_environment_empty_call():
         type(client.transport.authorize_environment), "__call__"
     ) as call:
         client.authorize_environment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudshell.AuthorizeEnvironmentRequest()
+
+
+def test_authorize_environment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudShellServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudshell.AuthorizeEnvironmentRequest(
+        name="name_value",
+        access_token="access_token_value",
+        id_token="id_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.authorize_environment), "__call__"
+    ) as call:
+        client.authorize_environment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudshell.AuthorizeEnvironmentRequest(
+            name="name_value",
+            access_token="access_token_value",
+            id_token="id_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_authorize_environment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudShellServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.authorize_environment), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.authorize_environment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudshell.AuthorizeEnvironmentRequest()
@@ -1660,7 +1827,8 @@ async def test_authorize_environment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.AuthorizeEnvironmentRequest()
+        request = cloudshell.AuthorizeEnvironmentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1762,7 +1930,8 @@ def test_add_public_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.AddPublicKeyRequest()
+        request = cloudshell.AddPublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1779,6 +1948,54 @@ def test_add_public_key_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.add_public_key), "__call__") as call:
         client.add_public_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudshell.AddPublicKeyRequest()
+
+
+def test_add_public_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudShellServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudshell.AddPublicKeyRequest(
+        environment="environment_value",
+        key="key_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.add_public_key), "__call__") as call:
+        client.add_public_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudshell.AddPublicKeyRequest(
+            environment="environment_value",
+            key="key_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_add_public_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudShellServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.add_public_key), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.add_public_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudshell.AddPublicKeyRequest()
@@ -1808,7 +2025,8 @@ async def test_add_public_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.AddPublicKeyRequest()
+        request = cloudshell.AddPublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1908,7 +2126,8 @@ def test_remove_public_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.RemovePublicKeyRequest()
+        request = cloudshell.RemovePublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1927,6 +2146,58 @@ def test_remove_public_key_empty_call():
         type(client.transport.remove_public_key), "__call__"
     ) as call:
         client.remove_public_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudshell.RemovePublicKeyRequest()
+
+
+def test_remove_public_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudShellServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudshell.RemovePublicKeyRequest(
+        environment="environment_value",
+        key="key_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_public_key), "__call__"
+    ) as call:
+        client.remove_public_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudshell.RemovePublicKeyRequest(
+            environment="environment_value",
+            key="key_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_remove_public_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudShellServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.remove_public_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.remove_public_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudshell.RemovePublicKeyRequest()
@@ -1958,7 +2229,8 @@ async def test_remove_public_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudshell.RemovePublicKeyRequest()
+        request = cloudshell.RemovePublicKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
