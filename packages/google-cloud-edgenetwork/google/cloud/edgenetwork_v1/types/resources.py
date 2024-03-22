@@ -83,8 +83,10 @@ class Zone(proto.Message):
             Output only. The time when the zone was last
             updated.
         labels (MutableMapping[str, str]):
-            Labels as key value pairs
+            Deprecated: not implemented.
+            Labels as key value pairs.
         layout_name (str):
+            Deprecated: not implemented.
             The deployment layout type.
     """
 
@@ -972,7 +974,7 @@ class RouterStatus(proto.Message):
                 Time this session has been up.
                 Format:
 
-                 14 years, 51 weeks, 6 days, 23 hours, 59
+                14 years, 51 weeks, 6 days, 23 hours, 59
                 minutes, 59 seconds
             uptime_seconds (int):
                 Time this session has been up, in seconds.

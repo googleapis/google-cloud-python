@@ -2597,7 +2597,8 @@ class EdgeNetworkRestTransport(EdgeNetworkTransport):
 
             Args:
                 request (~.service.GetZoneRequest):
-                    The request object. Message for getting a Zone
+                    The request object. Deprecated: not implemented.
+                Message for getting a Zone
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3220,7 +3221,8 @@ class EdgeNetworkRestTransport(EdgeNetworkTransport):
 
             Args:
                 request (~.service.ListZonesRequest):
-                    The request object. Message for requesting list of Zones
+                    The request object. Deprecated: not implemented.
+                Message for requesting list of Zones
                 retry (google.api_core.retry.Retry): Designation of what errors, if any,
                     should be retried.
                 timeout (float): The timeout for this request.
@@ -3229,7 +3231,9 @@ class EdgeNetworkRestTransport(EdgeNetworkTransport):
 
             Returns:
                 ~.service.ListZonesResponse:
-                    Message for response to listing Zones
+                    Deprecated: not implemented.
+                Message for response to listing Zones
+
             """
 
             http_options: List[Dict[str, str]] = [
