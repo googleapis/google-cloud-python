@@ -1195,7 +1195,8 @@ def test_create_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.CreateDatasetRequest()
+        request = data_labeling_service.CreateDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_dataset.Dataset)
@@ -1217,6 +1218,58 @@ def test_create_dataset_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
         client.create_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.CreateDatasetRequest()
+
+
+def test_create_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.CreateDatasetRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
+        client.create_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.CreateDatasetRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_dataset.Dataset(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                blocking_resources=["blocking_resources_value"],
+                data_item_count=1584,
+            )
+        )
+        response = await client.create_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.CreateDatasetRequest()
@@ -1253,7 +1306,8 @@ async def test_create_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.CreateDatasetRequest()
+        request = data_labeling_service.CreateDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_dataset.Dataset)
@@ -1450,7 +1504,8 @@ def test_get_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetDatasetRequest()
+        request = data_labeling_service.GetDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.Dataset)
@@ -1472,6 +1527,58 @@ def test_get_dataset_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
         client.get_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetDatasetRequest()
+
+
+def test_get_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.GetDatasetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
+        client.get_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetDatasetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataset.Dataset(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                blocking_resources=["blocking_resources_value"],
+                data_item_count=1584,
+            )
+        )
+        response = await client.get_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.GetDatasetRequest()
@@ -1508,7 +1615,8 @@ async def test_get_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetDatasetRequest()
+        request = data_labeling_service.GetDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.Dataset)
@@ -1691,7 +1799,8 @@ def test_list_datasets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListDatasetsRequest()
+        request = data_labeling_service.ListDatasetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatasetsPager)
@@ -1709,6 +1818,58 @@ def test_list_datasets_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
         client.list_datasets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListDatasetsRequest()
+
+
+def test_list_datasets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.ListDatasetsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
+        client.list_datasets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListDatasetsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_datasets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_datasets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_labeling_service.ListDatasetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_datasets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.ListDatasetsRequest()
@@ -1741,7 +1902,8 @@ async def test_list_datasets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListDatasetsRequest()
+        request = data_labeling_service.ListDatasetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDatasetsAsyncPager)
@@ -2122,7 +2284,8 @@ def test_delete_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteDatasetRequest()
+        request = data_labeling_service.DeleteDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2139,6 +2302,50 @@ def test_delete_dataset_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
         client.delete_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.DeleteDatasetRequest()
+
+
+def test_delete_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.DeleteDatasetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
+        client.delete_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.DeleteDatasetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_dataset), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.DeleteDatasetRequest()
@@ -2167,7 +2374,8 @@ async def test_delete_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteDatasetRequest()
+        request = data_labeling_service.DeleteDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2343,7 +2551,8 @@ def test_import_data(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ImportDataRequest()
+        request = data_labeling_service.ImportDataRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2360,6 +2569,54 @@ def test_import_data_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_data), "__call__") as call:
         client.import_data()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ImportDataRequest()
+
+
+def test_import_data_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.ImportDataRequest(
+        name="name_value",
+        user_email_address="user_email_address_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
+        client.import_data(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ImportDataRequest(
+            name="name_value",
+            user_email_address="user_email_address_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_import_data_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.import_data), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.import_data()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.ImportDataRequest()
@@ -2390,7 +2647,8 @@ async def test_import_data_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ImportDataRequest()
+        request = data_labeling_service.ImportDataRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2592,7 +2850,8 @@ def test_export_data(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ExportDataRequest()
+        request = data_labeling_service.ExportDataRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2609,6 +2868,58 @@ def test_export_data_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_data), "__call__") as call:
         client.export_data()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ExportDataRequest()
+
+
+def test_export_data_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.ExportDataRequest(
+        name="name_value",
+        annotated_dataset="annotated_dataset_value",
+        filter="filter_value",
+        user_email_address="user_email_address_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
+        client.export_data(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ExportDataRequest(
+            name="name_value",
+            annotated_dataset="annotated_dataset_value",
+            filter="filter_value",
+            user_email_address="user_email_address_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_export_data_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.export_data), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.export_data()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.ExportDataRequest()
@@ -2639,7 +2950,8 @@ async def test_export_data_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ExportDataRequest()
+        request = data_labeling_service.ExportDataRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2863,7 +3175,8 @@ def test_get_data_item(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetDataItemRequest()
+        request = data_labeling_service.GetDataItemRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.DataItem)
@@ -2881,6 +3194,54 @@ def test_get_data_item_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_item), "__call__") as call:
         client.get_data_item()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetDataItemRequest()
+
+
+def test_get_data_item_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.GetDataItemRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_item), "__call__") as call:
+        client.get_data_item(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetDataItemRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_data_item_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_data_item), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataset.DataItem(
+                name="name_value",
+            )
+        )
+        response = await client.get_data_item()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.GetDataItemRequest()
@@ -2913,7 +3274,8 @@ async def test_get_data_item_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetDataItemRequest()
+        request = data_labeling_service.GetDataItemRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.DataItem)
@@ -3092,7 +3454,8 @@ def test_list_data_items(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListDataItemsRequest()
+        request = data_labeling_service.ListDataItemsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataItemsPager)
@@ -3110,6 +3473,58 @@ def test_list_data_items_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_data_items), "__call__") as call:
         client.list_data_items()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListDataItemsRequest()
+
+
+def test_list_data_items_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.ListDataItemsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_data_items), "__call__") as call:
+        client.list_data_items(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListDataItemsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_data_items_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_data_items), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_labeling_service.ListDataItemsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_data_items()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.ListDataItemsRequest()
@@ -3142,7 +3557,8 @@ async def test_list_data_items_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListDataItemsRequest()
+        request = data_labeling_service.ListDataItemsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDataItemsAsyncPager)
@@ -3534,7 +3950,8 @@ def test_get_annotated_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetAnnotatedDatasetRequest()
+        request = data_labeling_service.GetAnnotatedDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.AnnotatedDataset)
@@ -3564,6 +3981,65 @@ def test_get_annotated_dataset_empty_call():
         type(client.transport.get_annotated_dataset), "__call__"
     ) as call:
         client.get_annotated_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetAnnotatedDatasetRequest()
+
+
+def test_get_annotated_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.GetAnnotatedDatasetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_annotated_dataset), "__call__"
+    ) as call:
+        client.get_annotated_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetAnnotatedDatasetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_annotated_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_annotated_dataset), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataset.AnnotatedDataset(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                annotation_source=annotation.AnnotationSource.OPERATOR,
+                annotation_type=annotation.AnnotationType.IMAGE_CLASSIFICATION_ANNOTATION,
+                example_count=1396,
+                completed_example_count=2448,
+                blocking_resources=["blocking_resources_value"],
+            )
+        )
+        response = await client.get_annotated_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.GetAnnotatedDatasetRequest()
@@ -3605,7 +4081,8 @@ async def test_get_annotated_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetAnnotatedDatasetRequest()
+        request = data_labeling_service.GetAnnotatedDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.AnnotatedDataset)
@@ -3808,7 +4285,8 @@ def test_list_annotated_datasets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListAnnotatedDatasetsRequest()
+        request = data_labeling_service.ListAnnotatedDatasetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAnnotatedDatasetsPager)
@@ -3828,6 +4306,62 @@ def test_list_annotated_datasets_empty_call():
         type(client.transport.list_annotated_datasets), "__call__"
     ) as call:
         client.list_annotated_datasets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListAnnotatedDatasetsRequest()
+
+
+def test_list_annotated_datasets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.ListAnnotatedDatasetsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_annotated_datasets), "__call__"
+    ) as call:
+        client.list_annotated_datasets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListAnnotatedDatasetsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_annotated_datasets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_annotated_datasets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_labeling_service.ListAnnotatedDatasetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_annotated_datasets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.ListAnnotatedDatasetsRequest()
@@ -3862,7 +4396,8 @@ async def test_list_annotated_datasets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListAnnotatedDatasetsRequest()
+        request = data_labeling_service.ListAnnotatedDatasetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAnnotatedDatasetsAsyncPager)
@@ -4261,7 +4796,8 @@ def test_delete_annotated_dataset(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteAnnotatedDatasetRequest()
+        request = data_labeling_service.DeleteAnnotatedDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -4280,6 +4816,54 @@ def test_delete_annotated_dataset_empty_call():
         type(client.transport.delete_annotated_dataset), "__call__"
     ) as call:
         client.delete_annotated_dataset()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.DeleteAnnotatedDatasetRequest()
+
+
+def test_delete_annotated_dataset_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.DeleteAnnotatedDatasetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_annotated_dataset), "__call__"
+    ) as call:
+        client.delete_annotated_dataset(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.DeleteAnnotatedDatasetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_annotated_dataset_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_annotated_dataset), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_annotated_dataset()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.DeleteAnnotatedDatasetRequest()
@@ -4310,7 +4894,8 @@ async def test_delete_annotated_dataset_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteAnnotatedDatasetRequest()
+        request = data_labeling_service.DeleteAnnotatedDatasetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -4410,7 +4995,8 @@ def test_label_image(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.LabelImageRequest()
+        request = data_labeling_service.LabelImageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4427,6 +5013,52 @@ def test_label_image_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.label_image), "__call__") as call:
         client.label_image()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.LabelImageRequest()
+
+
+def test_label_image_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.LabelImageRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.label_image), "__call__") as call:
+        client.label_image(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.LabelImageRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_label_image_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.label_image), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.label_image()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.LabelImageRequest()
@@ -4457,7 +5089,8 @@ async def test_label_image_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.LabelImageRequest()
+        request = data_labeling_service.LabelImageRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4669,7 +5302,8 @@ def test_label_video(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.LabelVideoRequest()
+        request = data_labeling_service.LabelVideoRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4686,6 +5320,52 @@ def test_label_video_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.label_video), "__call__") as call:
         client.label_video()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.LabelVideoRequest()
+
+
+def test_label_video_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.LabelVideoRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.label_video), "__call__") as call:
+        client.label_video(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.LabelVideoRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_label_video_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.label_video), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.label_video()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.LabelVideoRequest()
@@ -4716,7 +5396,8 @@ async def test_label_video_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.LabelVideoRequest()
+        request = data_labeling_service.LabelVideoRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4928,7 +5609,8 @@ def test_label_text(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.LabelTextRequest()
+        request = data_labeling_service.LabelTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4945,6 +5627,52 @@ def test_label_text_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.label_text), "__call__") as call:
         client.label_text()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.LabelTextRequest()
+
+
+def test_label_text_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.LabelTextRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.label_text), "__call__") as call:
+        client.label_text(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.LabelTextRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_label_text_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.label_text), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.label_text()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.LabelTextRequest()
@@ -4974,7 +5702,8 @@ async def test_label_text_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.LabelTextRequest()
+        request = data_labeling_service.LabelTextRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -5188,7 +5917,8 @@ def test_get_example(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetExampleRequest()
+        request = data_labeling_service.GetExampleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.Example)
@@ -5206,6 +5936,56 @@ def test_get_example_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_example), "__call__") as call:
         client.get_example()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetExampleRequest()
+
+
+def test_get_example_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.GetExampleRequest(
+        name="name_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_example), "__call__") as call:
+        client.get_example(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetExampleRequest(
+            name="name_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_example_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_example), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            dataset.Example(
+                name="name_value",
+            )
+        )
+        response = await client.get_example()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.GetExampleRequest()
@@ -5238,7 +6018,8 @@ async def test_get_example_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetExampleRequest()
+        request = data_labeling_service.GetExampleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, dataset.Example)
@@ -5427,7 +6208,8 @@ def test_list_examples(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListExamplesRequest()
+        request = data_labeling_service.ListExamplesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExamplesPager)
@@ -5445,6 +6227,58 @@ def test_list_examples_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_examples), "__call__") as call:
         client.list_examples()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListExamplesRequest()
+
+
+def test_list_examples_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.ListExamplesRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_examples), "__call__") as call:
+        client.list_examples(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListExamplesRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_examples_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_examples), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_labeling_service.ListExamplesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_examples()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.ListExamplesRequest()
@@ -5477,7 +6311,8 @@ async def test_list_examples_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListExamplesRequest()
+        request = data_labeling_service.ListExamplesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExamplesAsyncPager)
@@ -5865,7 +6700,8 @@ def test_create_annotation_spec_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.CreateAnnotationSpecSetRequest()
+        request = data_labeling_service.CreateAnnotationSpecSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_annotation_spec_set.AnnotationSpecSet)
@@ -5888,6 +6724,61 @@ def test_create_annotation_spec_set_empty_call():
         type(client.transport.create_annotation_spec_set), "__call__"
     ) as call:
         client.create_annotation_spec_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.CreateAnnotationSpecSetRequest()
+
+
+def test_create_annotation_spec_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.CreateAnnotationSpecSetRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_annotation_spec_set), "__call__"
+    ) as call:
+        client.create_annotation_spec_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.CreateAnnotationSpecSetRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_annotation_spec_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_annotation_spec_set), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_annotation_spec_set.AnnotationSpecSet(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                blocking_resources=["blocking_resources_value"],
+            )
+        )
+        response = await client.create_annotation_spec_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.CreateAnnotationSpecSetRequest()
@@ -5925,7 +6816,8 @@ async def test_create_annotation_spec_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.CreateAnnotationSpecSetRequest()
+        request = data_labeling_service.CreateAnnotationSpecSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_annotation_spec_set.AnnotationSpecSet)
@@ -6142,7 +7034,8 @@ def test_get_annotation_spec_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetAnnotationSpecSetRequest()
+        request = data_labeling_service.GetAnnotationSpecSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, annotation_spec_set.AnnotationSpecSet)
@@ -6165,6 +7058,61 @@ def test_get_annotation_spec_set_empty_call():
         type(client.transport.get_annotation_spec_set), "__call__"
     ) as call:
         client.get_annotation_spec_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetAnnotationSpecSetRequest()
+
+
+def test_get_annotation_spec_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.GetAnnotationSpecSetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_annotation_spec_set), "__call__"
+    ) as call:
+        client.get_annotation_spec_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetAnnotationSpecSetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_annotation_spec_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_annotation_spec_set), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            annotation_spec_set.AnnotationSpecSet(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                blocking_resources=["blocking_resources_value"],
+            )
+        )
+        response = await client.get_annotation_spec_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.GetAnnotationSpecSetRequest()
@@ -6202,7 +7150,8 @@ async def test_get_annotation_spec_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetAnnotationSpecSetRequest()
+        request = data_labeling_service.GetAnnotationSpecSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, annotation_spec_set.AnnotationSpecSet)
@@ -6398,7 +7347,8 @@ def test_list_annotation_spec_sets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListAnnotationSpecSetsRequest()
+        request = data_labeling_service.ListAnnotationSpecSetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAnnotationSpecSetsPager)
@@ -6418,6 +7368,62 @@ def test_list_annotation_spec_sets_empty_call():
         type(client.transport.list_annotation_spec_sets), "__call__"
     ) as call:
         client.list_annotation_spec_sets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListAnnotationSpecSetsRequest()
+
+
+def test_list_annotation_spec_sets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.ListAnnotationSpecSetsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_annotation_spec_sets), "__call__"
+    ) as call:
+        client.list_annotation_spec_sets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListAnnotationSpecSetsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_annotation_spec_sets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_annotation_spec_sets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_labeling_service.ListAnnotationSpecSetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_annotation_spec_sets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.ListAnnotationSpecSetsRequest()
@@ -6452,7 +7458,8 @@ async def test_list_annotation_spec_sets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListAnnotationSpecSetsRequest()
+        request = data_labeling_service.ListAnnotationSpecSetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAnnotationSpecSetsAsyncPager)
@@ -6855,7 +7862,8 @@ def test_delete_annotation_spec_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteAnnotationSpecSetRequest()
+        request = data_labeling_service.DeleteAnnotationSpecSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -6874,6 +7882,54 @@ def test_delete_annotation_spec_set_empty_call():
         type(client.transport.delete_annotation_spec_set), "__call__"
     ) as call:
         client.delete_annotation_spec_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.DeleteAnnotationSpecSetRequest()
+
+
+def test_delete_annotation_spec_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.DeleteAnnotationSpecSetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_annotation_spec_set), "__call__"
+    ) as call:
+        client.delete_annotation_spec_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.DeleteAnnotationSpecSetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_annotation_spec_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_annotation_spec_set), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_annotation_spec_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.DeleteAnnotationSpecSetRequest()
@@ -6904,7 +7960,8 @@ async def test_delete_annotation_spec_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteAnnotationSpecSetRequest()
+        request = data_labeling_service.DeleteAnnotationSpecSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -7090,7 +8147,8 @@ def test_create_instruction(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.CreateInstructionRequest()
+        request = data_labeling_service.CreateInstructionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7109,6 +8167,56 @@ def test_create_instruction_empty_call():
         type(client.transport.create_instruction), "__call__"
     ) as call:
         client.create_instruction()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.CreateInstructionRequest()
+
+
+def test_create_instruction_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.CreateInstructionRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_instruction), "__call__"
+    ) as call:
+        client.create_instruction(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.CreateInstructionRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_instruction_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_instruction), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_instruction()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.CreateInstructionRequest()
@@ -7141,7 +8249,8 @@ async def test_create_instruction_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.CreateInstructionRequest()
+        request = data_labeling_service.CreateInstructionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7345,7 +8454,8 @@ def test_get_instruction(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetInstructionRequest()
+        request = data_labeling_service.GetInstructionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, instruction.Instruction)
@@ -7367,6 +8477,58 @@ def test_get_instruction_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_instruction), "__call__") as call:
         client.get_instruction()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetInstructionRequest()
+
+
+def test_get_instruction_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.GetInstructionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_instruction), "__call__") as call:
+        client.get_instruction(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetInstructionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_instruction_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_instruction), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            instruction.Instruction(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+                data_type=dataset.DataType.IMAGE,
+                blocking_resources=["blocking_resources_value"],
+            )
+        )
+        response = await client.get_instruction()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.GetInstructionRequest()
@@ -7403,7 +8565,8 @@ async def test_get_instruction_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetInstructionRequest()
+        request = data_labeling_service.GetInstructionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, instruction.Instruction)
@@ -7592,7 +8755,8 @@ def test_list_instructions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListInstructionsRequest()
+        request = data_labeling_service.ListInstructionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstructionsPager)
@@ -7612,6 +8776,62 @@ def test_list_instructions_empty_call():
         type(client.transport.list_instructions), "__call__"
     ) as call:
         client.list_instructions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListInstructionsRequest()
+
+
+def test_list_instructions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.ListInstructionsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_instructions), "__call__"
+    ) as call:
+        client.list_instructions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListInstructionsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_instructions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_instructions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_labeling_service.ListInstructionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_instructions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.ListInstructionsRequest()
@@ -7646,7 +8866,8 @@ async def test_list_instructions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListInstructionsRequest()
+        request = data_labeling_service.ListInstructionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListInstructionsAsyncPager)
@@ -8045,7 +9266,8 @@ def test_delete_instruction(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteInstructionRequest()
+        request = data_labeling_service.DeleteInstructionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -8064,6 +9286,54 @@ def test_delete_instruction_empty_call():
         type(client.transport.delete_instruction), "__call__"
     ) as call:
         client.delete_instruction()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.DeleteInstructionRequest()
+
+
+def test_delete_instruction_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.DeleteInstructionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_instruction), "__call__"
+    ) as call:
+        client.delete_instruction(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.DeleteInstructionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_instruction_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_instruction), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_instruction()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.DeleteInstructionRequest()
@@ -8094,7 +9364,8 @@ async def test_delete_instruction_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteInstructionRequest()
+        request = data_labeling_service.DeleteInstructionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -8282,7 +9553,8 @@ def test_get_evaluation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetEvaluationRequest()
+        request = data_labeling_service.GetEvaluationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, evaluation.Evaluation)
@@ -8305,6 +9577,56 @@ def test_get_evaluation_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
         client.get_evaluation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetEvaluationRequest()
+
+
+def test_get_evaluation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.GetEvaluationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
+        client.get_evaluation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetEvaluationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_evaluation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_evaluation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            evaluation.Evaluation(
+                name="name_value",
+                annotation_type=annotation.AnnotationType.IMAGE_CLASSIFICATION_ANNOTATION,
+                evaluated_item_count=2129,
+            )
+        )
+        response = await client.get_evaluation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.GetEvaluationRequest()
@@ -8339,7 +9661,8 @@ async def test_get_evaluation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetEvaluationRequest()
+        request = data_labeling_service.GetEvaluationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, evaluation.Evaluation)
@@ -8529,7 +9852,8 @@ def test_search_evaluations(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.SearchEvaluationsRequest()
+        request = data_labeling_service.SearchEvaluationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchEvaluationsPager)
@@ -8549,6 +9873,62 @@ def test_search_evaluations_empty_call():
         type(client.transport.search_evaluations), "__call__"
     ) as call:
         client.search_evaluations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.SearchEvaluationsRequest()
+
+
+def test_search_evaluations_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.SearchEvaluationsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_evaluations), "__call__"
+    ) as call:
+        client.search_evaluations(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.SearchEvaluationsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_evaluations_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_evaluations), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_labeling_service.SearchEvaluationsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.search_evaluations()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.SearchEvaluationsRequest()
@@ -8583,7 +9963,8 @@ async def test_search_evaluations_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.SearchEvaluationsRequest()
+        request = data_labeling_service.SearchEvaluationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchEvaluationsAsyncPager)
@@ -8984,7 +10365,8 @@ def test_search_example_comparisons(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.SearchExampleComparisonsRequest()
+        request = data_labeling_service.SearchExampleComparisonsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchExampleComparisonsPager)
@@ -9004,6 +10386,60 @@ def test_search_example_comparisons_empty_call():
         type(client.transport.search_example_comparisons), "__call__"
     ) as call:
         client.search_example_comparisons()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.SearchExampleComparisonsRequest()
+
+
+def test_search_example_comparisons_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.SearchExampleComparisonsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_example_comparisons), "__call__"
+    ) as call:
+        client.search_example_comparisons(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.SearchExampleComparisonsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_example_comparisons_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.search_example_comparisons), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_labeling_service.SearchExampleComparisonsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.search_example_comparisons()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.SearchExampleComparisonsRequest()
@@ -9038,7 +10474,8 @@ async def test_search_example_comparisons_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.SearchExampleComparisonsRequest()
+        request = data_labeling_service.SearchExampleComparisonsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchExampleComparisonsAsyncPager)
@@ -9447,7 +10884,8 @@ def test_create_evaluation_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.CreateEvaluationJobRequest()
+        request = data_labeling_service.CreateEvaluationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, evaluation_job.EvaluationJob)
@@ -9473,6 +10911,64 @@ def test_create_evaluation_job_empty_call():
         type(client.transport.create_evaluation_job), "__call__"
     ) as call:
         client.create_evaluation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.CreateEvaluationJobRequest()
+
+
+def test_create_evaluation_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.CreateEvaluationJobRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_evaluation_job), "__call__"
+    ) as call:
+        client.create_evaluation_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.CreateEvaluationJobRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_evaluation_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_evaluation_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            evaluation_job.EvaluationJob(
+                name="name_value",
+                description="description_value",
+                state=evaluation_job.EvaluationJob.State.SCHEDULED,
+                schedule="schedule_value",
+                model_version="model_version_value",
+                annotation_spec_set="annotation_spec_set_value",
+                label_missing_ground_truth=True,
+            )
+        )
+        response = await client.create_evaluation_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.CreateEvaluationJobRequest()
@@ -9513,7 +11009,8 @@ async def test_create_evaluation_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.CreateEvaluationJobRequest()
+        request = data_labeling_service.CreateEvaluationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, evaluation_job.EvaluationJob)
@@ -9728,7 +11225,8 @@ def test_update_evaluation_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.UpdateEvaluationJobRequest()
+        request = data_labeling_service.UpdateEvaluationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_evaluation_job.EvaluationJob)
@@ -9754,6 +11252,60 @@ def test_update_evaluation_job_empty_call():
         type(client.transport.update_evaluation_job), "__call__"
     ) as call:
         client.update_evaluation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.UpdateEvaluationJobRequest()
+
+
+def test_update_evaluation_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.UpdateEvaluationJobRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_evaluation_job), "__call__"
+    ) as call:
+        client.update_evaluation_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.UpdateEvaluationJobRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_evaluation_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_evaluation_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcd_evaluation_job.EvaluationJob(
+                name="name_value",
+                description="description_value",
+                state=gcd_evaluation_job.EvaluationJob.State.SCHEDULED,
+                schedule="schedule_value",
+                model_version="model_version_value",
+                annotation_spec_set="annotation_spec_set_value",
+                label_missing_ground_truth=True,
+            )
+        )
+        response = await client.update_evaluation_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.UpdateEvaluationJobRequest()
@@ -9794,7 +11346,8 @@ async def test_update_evaluation_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.UpdateEvaluationJobRequest()
+        request = data_labeling_service.UpdateEvaluationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcd_evaluation_job.EvaluationJob)
@@ -10009,7 +11562,8 @@ def test_get_evaluation_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetEvaluationJobRequest()
+        request = data_labeling_service.GetEvaluationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, evaluation_job.EvaluationJob)
@@ -10035,6 +11589,64 @@ def test_get_evaluation_job_empty_call():
         type(client.transport.get_evaluation_job), "__call__"
     ) as call:
         client.get_evaluation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetEvaluationJobRequest()
+
+
+def test_get_evaluation_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.GetEvaluationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_evaluation_job), "__call__"
+    ) as call:
+        client.get_evaluation_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.GetEvaluationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_evaluation_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_evaluation_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            evaluation_job.EvaluationJob(
+                name="name_value",
+                description="description_value",
+                state=evaluation_job.EvaluationJob.State.SCHEDULED,
+                schedule="schedule_value",
+                model_version="model_version_value",
+                annotation_spec_set="annotation_spec_set_value",
+                label_missing_ground_truth=True,
+            )
+        )
+        response = await client.get_evaluation_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.GetEvaluationJobRequest()
@@ -10075,7 +11687,8 @@ async def test_get_evaluation_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.GetEvaluationJobRequest()
+        request = data_labeling_service.GetEvaluationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, evaluation_job.EvaluationJob)
@@ -10272,7 +11885,8 @@ def test_pause_evaluation_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.PauseEvaluationJobRequest()
+        request = data_labeling_service.PauseEvaluationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -10291,6 +11905,54 @@ def test_pause_evaluation_job_empty_call():
         type(client.transport.pause_evaluation_job), "__call__"
     ) as call:
         client.pause_evaluation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.PauseEvaluationJobRequest()
+
+
+def test_pause_evaluation_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.PauseEvaluationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_evaluation_job), "__call__"
+    ) as call:
+        client.pause_evaluation_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.PauseEvaluationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_pause_evaluation_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.pause_evaluation_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.pause_evaluation_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.PauseEvaluationJobRequest()
@@ -10321,7 +11983,8 @@ async def test_pause_evaluation_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.PauseEvaluationJobRequest()
+        request = data_labeling_service.PauseEvaluationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -10507,7 +12170,8 @@ def test_resume_evaluation_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ResumeEvaluationJobRequest()
+        request = data_labeling_service.ResumeEvaluationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -10526,6 +12190,54 @@ def test_resume_evaluation_job_empty_call():
         type(client.transport.resume_evaluation_job), "__call__"
     ) as call:
         client.resume_evaluation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ResumeEvaluationJobRequest()
+
+
+def test_resume_evaluation_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.ResumeEvaluationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_evaluation_job), "__call__"
+    ) as call:
+        client.resume_evaluation_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ResumeEvaluationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_resume_evaluation_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.resume_evaluation_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.resume_evaluation_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.ResumeEvaluationJobRequest()
@@ -10556,7 +12268,8 @@ async def test_resume_evaluation_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ResumeEvaluationJobRequest()
+        request = data_labeling_service.ResumeEvaluationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -10742,7 +12455,8 @@ def test_delete_evaluation_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteEvaluationJobRequest()
+        request = data_labeling_service.DeleteEvaluationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -10761,6 +12475,54 @@ def test_delete_evaluation_job_empty_call():
         type(client.transport.delete_evaluation_job), "__call__"
     ) as call:
         client.delete_evaluation_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.DeleteEvaluationJobRequest()
+
+
+def test_delete_evaluation_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.DeleteEvaluationJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_evaluation_job), "__call__"
+    ) as call:
+        client.delete_evaluation_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.DeleteEvaluationJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_evaluation_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_evaluation_job), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_evaluation_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.DeleteEvaluationJobRequest()
@@ -10791,7 +12553,8 @@ async def test_delete_evaluation_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.DeleteEvaluationJobRequest()
+        request = data_labeling_service.DeleteEvaluationJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -10979,7 +12742,8 @@ def test_list_evaluation_jobs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListEvaluationJobsRequest()
+        request = data_labeling_service.ListEvaluationJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationJobsPager)
@@ -10999,6 +12763,62 @@ def test_list_evaluation_jobs_empty_call():
         type(client.transport.list_evaluation_jobs), "__call__"
     ) as call:
         client.list_evaluation_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListEvaluationJobsRequest()
+
+
+def test_list_evaluation_jobs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DataLabelingServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = data_labeling_service.ListEvaluationJobsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_evaluation_jobs), "__call__"
+    ) as call:
+        client.list_evaluation_jobs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == data_labeling_service.ListEvaluationJobsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_evaluation_jobs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DataLabelingServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_evaluation_jobs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            data_labeling_service.ListEvaluationJobsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_evaluation_jobs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == data_labeling_service.ListEvaluationJobsRequest()
@@ -11033,7 +12853,8 @@ async def test_list_evaluation_jobs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == data_labeling_service.ListEvaluationJobsRequest()
+        request = data_labeling_service.ListEvaluationJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEvaluationJobsAsyncPager)

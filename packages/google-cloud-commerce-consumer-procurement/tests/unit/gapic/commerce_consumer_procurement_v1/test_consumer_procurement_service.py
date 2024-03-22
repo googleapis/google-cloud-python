@@ -1240,7 +1240,8 @@ def test_place_order(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == procurement_service.PlaceOrderRequest()
+        request = procurement_service.PlaceOrderRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1257,6 +1258,56 @@ def test_place_order_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.place_order), "__call__") as call:
         client.place_order()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == procurement_service.PlaceOrderRequest()
+
+
+def test_place_order_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConsumerProcurementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = procurement_service.PlaceOrderRequest(
+        parent="parent_value",
+        display_name="display_name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.place_order), "__call__") as call:
+        client.place_order(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == procurement_service.PlaceOrderRequest(
+            parent="parent_value",
+            display_name="display_name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_place_order_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConsumerProcurementServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.place_order), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.place_order()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == procurement_service.PlaceOrderRequest()
@@ -1286,7 +1337,8 @@ async def test_place_order_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == procurement_service.PlaceOrderRequest()
+        request = procurement_service.PlaceOrderRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1388,7 +1440,8 @@ def test_get_order(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == procurement_service.GetOrderRequest()
+        request = procurement_service.GetOrderRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, order.Order)
@@ -1408,6 +1461,56 @@ def test_get_order_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_order), "__call__") as call:
         client.get_order()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == procurement_service.GetOrderRequest()
+
+
+def test_get_order_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConsumerProcurementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = procurement_service.GetOrderRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_order), "__call__") as call:
+        client.get_order(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == procurement_service.GetOrderRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_order_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConsumerProcurementServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_order), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            order.Order(
+                name="name_value",
+                display_name="display_name_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.get_order()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == procurement_service.GetOrderRequest()
@@ -1441,7 +1544,8 @@ async def test_get_order_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == procurement_service.GetOrderRequest()
+        request = procurement_service.GetOrderRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, order.Order)
@@ -1622,7 +1726,8 @@ def test_list_orders(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == procurement_service.ListOrdersRequest()
+        request = procurement_service.ListOrdersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOrdersPager)
@@ -1640,6 +1745,58 @@ def test_list_orders_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_orders), "__call__") as call:
         client.list_orders()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == procurement_service.ListOrdersRequest()
+
+
+def test_list_orders_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ConsumerProcurementServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = procurement_service.ListOrdersRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_orders), "__call__") as call:
+        client.list_orders(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == procurement_service.ListOrdersRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_orders_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ConsumerProcurementServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_orders), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            procurement_service.ListOrdersResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_orders()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == procurement_service.ListOrdersRequest()
@@ -1671,7 +1828,8 @@ async def test_list_orders_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == procurement_service.ListOrdersRequest()
+        request = procurement_service.ListOrdersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOrdersAsyncPager)

@@ -1220,7 +1220,8 @@ def test_list_linked_targets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_link_service.ListLinkedTargetsRequest()
+        request = document_link_service.ListLinkedTargetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response.raw_page is response
@@ -1241,6 +1242,58 @@ def test_list_linked_targets_empty_call():
         type(client.transport.list_linked_targets), "__call__"
     ) as call:
         client.list_linked_targets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_link_service.ListLinkedTargetsRequest()
+
+
+def test_list_linked_targets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentLinkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_link_service.ListLinkedTargetsRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_linked_targets), "__call__"
+    ) as call:
+        client.list_linked_targets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_link_service.ListLinkedTargetsRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_linked_targets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentLinkServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_linked_targets), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_link_service.ListLinkedTargetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_linked_targets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_link_service.ListLinkedTargetsRequest()
@@ -1275,7 +1328,8 @@ async def test_list_linked_targets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_link_service.ListLinkedTargetsRequest()
+        request = document_link_service.ListLinkedTargetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_link_service.ListLinkedTargetsResponse)
@@ -1468,7 +1522,8 @@ def test_list_linked_sources(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_link_service.ListLinkedSourcesRequest()
+        request = document_link_service.ListLinkedSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLinkedSourcesPager)
@@ -1488,6 +1543,60 @@ def test_list_linked_sources_empty_call():
         type(client.transport.list_linked_sources), "__call__"
     ) as call:
         client.list_linked_sources()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_link_service.ListLinkedSourcesRequest()
+
+
+def test_list_linked_sources_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentLinkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_link_service.ListLinkedSourcesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_linked_sources), "__call__"
+    ) as call:
+        client.list_linked_sources(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_link_service.ListLinkedSourcesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_linked_sources_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentLinkServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_linked_sources), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_link_service.ListLinkedSourcesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_linked_sources()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_link_service.ListLinkedSourcesRequest()
@@ -1522,7 +1631,8 @@ async def test_list_linked_sources_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_link_service.ListLinkedSourcesRequest()
+        request = document_link_service.ListLinkedSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLinkedSourcesAsyncPager)
@@ -1915,7 +2025,8 @@ def test_create_document_link(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_link_service.CreateDocumentLinkRequest()
+        request = document_link_service.CreateDocumentLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_link_service.DocumentLink)
@@ -1937,6 +2048,60 @@ def test_create_document_link_empty_call():
         type(client.transport.create_document_link), "__call__"
     ) as call:
         client.create_document_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_link_service.CreateDocumentLinkRequest()
+
+
+def test_create_document_link_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentLinkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_link_service.CreateDocumentLinkRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_document_link), "__call__"
+    ) as call:
+        client.create_document_link(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_link_service.CreateDocumentLinkRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_document_link_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentLinkServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_document_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_link_service.DocumentLink(
+                name="name_value",
+                description="description_value",
+                state=document_link_service.DocumentLink.State.ACTIVE,
+            )
+        )
+        response = await client.create_document_link()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_link_service.CreateDocumentLinkRequest()
@@ -1973,7 +2138,8 @@ async def test_create_document_link_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_link_service.CreateDocumentLinkRequest()
+        request = document_link_service.CreateDocumentLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_link_service.DocumentLink)
@@ -2176,7 +2342,8 @@ def test_delete_document_link(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_link_service.DeleteDocumentLinkRequest()
+        request = document_link_service.DeleteDocumentLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2195,6 +2362,54 @@ def test_delete_document_link_empty_call():
         type(client.transport.delete_document_link), "__call__"
     ) as call:
         client.delete_document_link()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_link_service.DeleteDocumentLinkRequest()
+
+
+def test_delete_document_link_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentLinkServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_link_service.DeleteDocumentLinkRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_document_link), "__call__"
+    ) as call:
+        client.delete_document_link(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_link_service.DeleteDocumentLinkRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_document_link_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentLinkServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_document_link), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_document_link()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_link_service.DeleteDocumentLinkRequest()
@@ -2225,7 +2440,8 @@ async def test_delete_document_link_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_link_service.DeleteDocumentLinkRequest()
+        request = document_link_service.DeleteDocumentLinkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

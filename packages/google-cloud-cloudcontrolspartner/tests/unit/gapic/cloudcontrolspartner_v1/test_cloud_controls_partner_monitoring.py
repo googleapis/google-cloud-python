@@ -1244,7 +1244,8 @@ def test_list_violations(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == violations.ListViolationsRequest()
+        request = violations.ListViolationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListViolationsPager)
@@ -1263,6 +1264,61 @@ def test_list_violations_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_violations), "__call__") as call:
         client.list_violations()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == violations.ListViolationsRequest()
+
+
+def test_list_violations_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudControlsPartnerMonitoringClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = violations.ListViolationsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_violations), "__call__") as call:
+        client.list_violations(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == violations.ListViolationsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_violations_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudControlsPartnerMonitoringAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_violations), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            violations.ListViolationsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_violations()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == violations.ListViolationsRequest()
@@ -1295,7 +1351,8 @@ async def test_list_violations_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == violations.ListViolationsRequest()
+        request = violations.ListViolationsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListViolationsAsyncPager)
@@ -1674,7 +1731,8 @@ def test_get_violation(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == violations.GetViolationRequest()
+        request = violations.GetViolationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, violations.Violation)
@@ -1697,6 +1755,59 @@ def test_get_violation_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_violation), "__call__") as call:
         client.get_violation()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == violations.GetViolationRequest()
+
+
+def test_get_violation_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudControlsPartnerMonitoringClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = violations.GetViolationRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_violation), "__call__") as call:
+        client.get_violation(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == violations.GetViolationRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_violation_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudControlsPartnerMonitoringAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_violation), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            violations.Violation(
+                name="name_value",
+                description="description_value",
+                category="category_value",
+                state=violations.Violation.State.RESOLVED,
+                non_compliant_org_policy="non_compliant_org_policy_value",
+                folder_id=936,
+            )
+        )
+        response = await client.get_violation()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == violations.GetViolationRequest()
@@ -1733,7 +1844,8 @@ async def test_get_violation_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == violations.GetViolationRequest()
+        request = violations.GetViolationRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, violations.Violation)

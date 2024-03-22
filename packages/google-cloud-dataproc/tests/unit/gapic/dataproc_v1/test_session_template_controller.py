@@ -1239,7 +1239,8 @@ def test_create_session_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.CreateSessionTemplateRequest()
+        request = session_templates.CreateSessionTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, session_templates.SessionTemplate)
@@ -1262,6 +1263,61 @@ def test_create_session_template_empty_call():
         type(client.transport.create_session_template), "__call__"
     ) as call:
         client.create_session_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_templates.CreateSessionTemplateRequest()
+
+
+def test_create_session_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SessionTemplateControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = session_templates.CreateSessionTemplateRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_session_template), "__call__"
+    ) as call:
+        client.create_session_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_templates.CreateSessionTemplateRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_session_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SessionTemplateControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_session_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            session_templates.SessionTemplate(
+                name="name_value",
+                description="description_value",
+                creator="creator_value",
+                uuid="uuid_value",
+            )
+        )
+        response = await client.create_session_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == session_templates.CreateSessionTemplateRequest()
@@ -1299,7 +1355,8 @@ async def test_create_session_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.CreateSessionTemplateRequest()
+        request = session_templates.CreateSessionTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, session_templates.SessionTemplate)
@@ -1508,7 +1565,8 @@ def test_update_session_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.UpdateSessionTemplateRequest()
+        request = session_templates.UpdateSessionTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, session_templates.SessionTemplate)
@@ -1531,6 +1589,57 @@ def test_update_session_template_empty_call():
         type(client.transport.update_session_template), "__call__"
     ) as call:
         client.update_session_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_templates.UpdateSessionTemplateRequest()
+
+
+def test_update_session_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SessionTemplateControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = session_templates.UpdateSessionTemplateRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_session_template), "__call__"
+    ) as call:
+        client.update_session_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_templates.UpdateSessionTemplateRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_session_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SessionTemplateControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_session_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            session_templates.SessionTemplate(
+                name="name_value",
+                description="description_value",
+                creator="creator_value",
+                uuid="uuid_value",
+            )
+        )
+        response = await client.update_session_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == session_templates.UpdateSessionTemplateRequest()
@@ -1568,7 +1677,8 @@ async def test_update_session_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.UpdateSessionTemplateRequest()
+        request = session_templates.UpdateSessionTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, session_templates.SessionTemplate)
@@ -1767,7 +1877,8 @@ def test_get_session_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.GetSessionTemplateRequest()
+        request = session_templates.GetSessionTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, session_templates.SessionTemplate)
@@ -1790,6 +1901,61 @@ def test_get_session_template_empty_call():
         type(client.transport.get_session_template), "__call__"
     ) as call:
         client.get_session_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_templates.GetSessionTemplateRequest()
+
+
+def test_get_session_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SessionTemplateControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = session_templates.GetSessionTemplateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_session_template), "__call__"
+    ) as call:
+        client.get_session_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_templates.GetSessionTemplateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_session_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SessionTemplateControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_session_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            session_templates.SessionTemplate(
+                name="name_value",
+                description="description_value",
+                creator="creator_value",
+                uuid="uuid_value",
+            )
+        )
+        response = await client.get_session_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == session_templates.GetSessionTemplateRequest()
@@ -1827,7 +1993,8 @@ async def test_get_session_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.GetSessionTemplateRequest()
+        request = session_templates.GetSessionTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, session_templates.SessionTemplate)
@@ -2023,7 +2190,8 @@ def test_list_session_templates(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.ListSessionTemplatesRequest()
+        request = session_templates.ListSessionTemplatesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSessionTemplatesPager)
@@ -2043,6 +2211,62 @@ def test_list_session_templates_empty_call():
         type(client.transport.list_session_templates), "__call__"
     ) as call:
         client.list_session_templates()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_templates.ListSessionTemplatesRequest()
+
+
+def test_list_session_templates_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SessionTemplateControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = session_templates.ListSessionTemplatesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_session_templates), "__call__"
+    ) as call:
+        client.list_session_templates(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_templates.ListSessionTemplatesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_session_templates_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SessionTemplateControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_session_templates), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            session_templates.ListSessionTemplatesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_session_templates()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == session_templates.ListSessionTemplatesRequest()
@@ -2077,7 +2301,8 @@ async def test_list_session_templates_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.ListSessionTemplatesRequest()
+        request = session_templates.ListSessionTemplatesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSessionTemplatesAsyncPager)
@@ -2466,7 +2691,8 @@ def test_delete_session_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.DeleteSessionTemplateRequest()
+        request = session_templates.DeleteSessionTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2485,6 +2711,54 @@ def test_delete_session_template_empty_call():
         type(client.transport.delete_session_template), "__call__"
     ) as call:
         client.delete_session_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_templates.DeleteSessionTemplateRequest()
+
+
+def test_delete_session_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SessionTemplateControllerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = session_templates.DeleteSessionTemplateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_session_template), "__call__"
+    ) as call:
+        client.delete_session_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == session_templates.DeleteSessionTemplateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_session_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SessionTemplateControllerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_session_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_session_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == session_templates.DeleteSessionTemplateRequest()
@@ -2515,7 +2789,8 @@ async def test_delete_session_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == session_templates.DeleteSessionTemplateRequest()
+        request = session_templates.DeleteSessionTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

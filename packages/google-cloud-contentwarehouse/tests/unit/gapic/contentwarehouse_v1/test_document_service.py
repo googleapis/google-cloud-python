@@ -1192,7 +1192,8 @@ def test_create_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.CreateDocumentRequest()
+        request = document_service_request.CreateDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_service.CreateDocumentResponse)
@@ -1209,6 +1210,52 @@ def test_create_document_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_document), "__call__") as call:
         client.create_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.CreateDocumentRequest()
+
+
+def test_create_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_service_request.CreateDocumentRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_document), "__call__") as call:
+        client.create_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.CreateDocumentRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_service.CreateDocumentResponse()
+        )
+        response = await client.create_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_service_request.CreateDocumentRequest()
@@ -1239,7 +1286,8 @@ async def test_create_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.CreateDocumentRequest()
+        request = document_service_request.CreateDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_service.CreateDocumentResponse)
@@ -1447,7 +1495,8 @@ def test_get_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.GetDocumentRequest()
+        request = document_service_request.GetDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcc_document.Document)
@@ -1484,6 +1533,68 @@ def test_get_document_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_document), "__call__") as call:
         client.get_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.GetDocumentRequest()
+
+
+def test_get_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_service_request.GetDocumentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_document), "__call__") as call:
+        client.get_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.GetDocumentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcc_document.Document(
+                name="name_value",
+                reference_id="reference_id_value",
+                display_name="display_name_value",
+                title="title_value",
+                display_uri="display_uri_value",
+                document_schema_name="document_schema_name_value",
+                structured_content_uri="structured_content_uri_value",
+                raw_document_file_type=gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF,
+                async_enabled=True,
+                content_category=gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE,
+                text_extraction_disabled=True,
+                text_extraction_enabled=True,
+                creator="creator_value",
+                updater="updater_value",
+                legal_hold=True,
+            )
+        )
+        response = await client.get_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_service_request.GetDocumentRequest()
@@ -1530,7 +1641,8 @@ async def test_get_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.GetDocumentRequest()
+        request = document_service_request.GetDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcc_document.Document)
@@ -1730,7 +1842,8 @@ def test_update_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.UpdateDocumentRequest()
+        request = document_service_request.UpdateDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_service.UpdateDocumentResponse)
@@ -1747,6 +1860,52 @@ def test_update_document_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_document), "__call__") as call:
         client.update_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.UpdateDocumentRequest()
+
+
+def test_update_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_service_request.UpdateDocumentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_document), "__call__") as call:
+        client.update_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.UpdateDocumentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_service.UpdateDocumentResponse()
+        )
+        response = await client.update_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_service_request.UpdateDocumentRequest()
@@ -1777,7 +1936,8 @@ async def test_update_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.UpdateDocumentRequest()
+        request = document_service_request.UpdateDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_service.UpdateDocumentResponse)
@@ -1967,7 +2127,8 @@ def test_delete_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.DeleteDocumentRequest()
+        request = document_service_request.DeleteDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1984,6 +2145,50 @@ def test_delete_document_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_document), "__call__") as call:
         client.delete_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.DeleteDocumentRequest()
+
+
+def test_delete_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_service_request.DeleteDocumentRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_document), "__call__") as call:
+        client.delete_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.DeleteDocumentRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_service_request.DeleteDocumentRequest()
@@ -2012,7 +2217,8 @@ async def test_delete_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.DeleteDocumentRequest()
+        request = document_service_request.DeleteDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2192,7 +2398,8 @@ def test_search_documents(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.SearchDocumentsRequest()
+        request = document_service_request.SearchDocumentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchDocumentsPager)
@@ -2212,6 +2419,60 @@ def test_search_documents_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_documents), "__call__") as call:
         client.search_documents()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.SearchDocumentsRequest()
+
+
+def test_search_documents_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_service_request.SearchDocumentsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_documents), "__call__") as call:
+        client.search_documents(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.SearchDocumentsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_documents_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_documents), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_service.SearchDocumentsResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+                question_answer="question_answer_value",
+            )
+        )
+        response = await client.search_documents()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_service_request.SearchDocumentsRequest()
@@ -2246,7 +2507,8 @@ async def test_search_documents_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.SearchDocumentsRequest()
+        request = document_service_request.SearchDocumentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.SearchDocumentsAsyncPager)
@@ -2643,7 +2905,8 @@ def test_lock_document(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.LockDocumentRequest()
+        request = document_service_request.LockDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcc_document.Document)
@@ -2680,6 +2943,70 @@ def test_lock_document_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.lock_document), "__call__") as call:
         client.lock_document()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.LockDocumentRequest()
+
+
+def test_lock_document_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_service_request.LockDocumentRequest(
+        name="name_value",
+        collection_id="collection_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lock_document), "__call__") as call:
+        client.lock_document(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.LockDocumentRequest(
+            name="name_value",
+            collection_id="collection_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_lock_document_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.lock_document), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcc_document.Document(
+                name="name_value",
+                reference_id="reference_id_value",
+                display_name="display_name_value",
+                title="title_value",
+                display_uri="display_uri_value",
+                document_schema_name="document_schema_name_value",
+                structured_content_uri="structured_content_uri_value",
+                raw_document_file_type=gcc_document.RawDocumentFileType.RAW_DOCUMENT_FILE_TYPE_PDF,
+                async_enabled=True,
+                content_category=gcc_document.ContentCategory.CONTENT_CATEGORY_IMAGE,
+                text_extraction_disabled=True,
+                text_extraction_enabled=True,
+                creator="creator_value",
+                updater="updater_value",
+                legal_hold=True,
+            )
+        )
+        response = await client.lock_document()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_service_request.LockDocumentRequest()
@@ -2726,7 +3053,8 @@ async def test_lock_document_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.LockDocumentRequest()
+        request = document_service_request.LockDocumentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcc_document.Document)
@@ -2926,7 +3254,8 @@ def test_fetch_acl(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.FetchAclRequest()
+        request = document_service_request.FetchAclRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_service.FetchAclResponse)
@@ -2943,6 +3272,52 @@ def test_fetch_acl_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_acl), "__call__") as call:
         client.fetch_acl()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.FetchAclRequest()
+
+
+def test_fetch_acl_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_service_request.FetchAclRequest(
+        resource="resource_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.fetch_acl), "__call__") as call:
+        client.fetch_acl(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.FetchAclRequest(
+            resource="resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_acl_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.fetch_acl), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_service.FetchAclResponse()
+        )
+        response = await client.fetch_acl()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_service_request.FetchAclRequest()
@@ -2973,7 +3348,8 @@ async def test_fetch_acl_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.FetchAclRequest()
+        request = document_service_request.FetchAclRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_service.FetchAclResponse)
@@ -3153,7 +3529,8 @@ def test_set_acl(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.SetAclRequest()
+        request = document_service_request.SetAclRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_service.SetAclResponse)
@@ -3170,6 +3547,52 @@ def test_set_acl_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_acl), "__call__") as call:
         client.set_acl()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.SetAclRequest()
+
+
+def test_set_acl_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_service_request.SetAclRequest(
+        resource="resource_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_acl), "__call__") as call:
+        client.set_acl(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_service_request.SetAclRequest(
+            resource="resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_acl_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_acl), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_service.SetAclResponse()
+        )
+        response = await client.set_acl()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_service_request.SetAclRequest()
@@ -3199,7 +3622,8 @@ async def test_set_acl_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_service_request.SetAclRequest()
+        request = document_service_request.SetAclRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_service.SetAclResponse)

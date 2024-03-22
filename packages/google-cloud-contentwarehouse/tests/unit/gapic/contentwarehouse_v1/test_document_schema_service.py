@@ -1225,7 +1225,8 @@ def test_create_document_schema(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_schema_service.CreateDocumentSchemaRequest()
+        request = document_schema_service.CreateDocumentSchemaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcc_document_schema.DocumentSchema)
@@ -1248,6 +1249,61 @@ def test_create_document_schema_empty_call():
         type(client.transport.create_document_schema), "__call__"
     ) as call:
         client.create_document_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_schema_service.CreateDocumentSchemaRequest()
+
+
+def test_create_document_schema_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentSchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_schema_service.CreateDocumentSchemaRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_document_schema), "__call__"
+    ) as call:
+        client.create_document_schema(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_schema_service.CreateDocumentSchemaRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_document_schema_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentSchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_document_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcc_document_schema.DocumentSchema(
+                name="name_value",
+                display_name="display_name_value",
+                document_is_folder=True,
+                description="description_value",
+            )
+        )
+        response = await client.create_document_schema()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_schema_service.CreateDocumentSchemaRequest()
@@ -1285,7 +1341,8 @@ async def test_create_document_schema_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_schema_service.CreateDocumentSchemaRequest()
+        request = document_schema_service.CreateDocumentSchemaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcc_document_schema.DocumentSchema)
@@ -1494,7 +1551,8 @@ def test_update_document_schema(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_schema_service.UpdateDocumentSchemaRequest()
+        request = document_schema_service.UpdateDocumentSchemaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcc_document_schema.DocumentSchema)
@@ -1517,6 +1575,61 @@ def test_update_document_schema_empty_call():
         type(client.transport.update_document_schema), "__call__"
     ) as call:
         client.update_document_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_schema_service.UpdateDocumentSchemaRequest()
+
+
+def test_update_document_schema_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentSchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_schema_service.UpdateDocumentSchemaRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_document_schema), "__call__"
+    ) as call:
+        client.update_document_schema(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_schema_service.UpdateDocumentSchemaRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_document_schema_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentSchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_document_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcc_document_schema.DocumentSchema(
+                name="name_value",
+                display_name="display_name_value",
+                document_is_folder=True,
+                description="description_value",
+            )
+        )
+        response = await client.update_document_schema()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_schema_service.UpdateDocumentSchemaRequest()
@@ -1554,7 +1667,8 @@ async def test_update_document_schema_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_schema_service.UpdateDocumentSchemaRequest()
+        request = document_schema_service.UpdateDocumentSchemaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcc_document_schema.DocumentSchema)
@@ -1763,7 +1877,8 @@ def test_get_document_schema(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_schema_service.GetDocumentSchemaRequest()
+        request = document_schema_service.GetDocumentSchemaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_schema.DocumentSchema)
@@ -1786,6 +1901,61 @@ def test_get_document_schema_empty_call():
         type(client.transport.get_document_schema), "__call__"
     ) as call:
         client.get_document_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_schema_service.GetDocumentSchemaRequest()
+
+
+def test_get_document_schema_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentSchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_schema_service.GetDocumentSchemaRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_document_schema), "__call__"
+    ) as call:
+        client.get_document_schema(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_schema_service.GetDocumentSchemaRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_document_schema_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentSchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_document_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_schema.DocumentSchema(
+                name="name_value",
+                display_name="display_name_value",
+                document_is_folder=True,
+                description="description_value",
+            )
+        )
+        response = await client.get_document_schema()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_schema_service.GetDocumentSchemaRequest()
@@ -1823,7 +1993,8 @@ async def test_get_document_schema_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_schema_service.GetDocumentSchemaRequest()
+        request = document_schema_service.GetDocumentSchemaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, document_schema.DocumentSchema)
@@ -2017,7 +2188,8 @@ def test_delete_document_schema(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_schema_service.DeleteDocumentSchemaRequest()
+        request = document_schema_service.DeleteDocumentSchemaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2036,6 +2208,54 @@ def test_delete_document_schema_empty_call():
         type(client.transport.delete_document_schema), "__call__"
     ) as call:
         client.delete_document_schema()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_schema_service.DeleteDocumentSchemaRequest()
+
+
+def test_delete_document_schema_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentSchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_schema_service.DeleteDocumentSchemaRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_document_schema), "__call__"
+    ) as call:
+        client.delete_document_schema(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_schema_service.DeleteDocumentSchemaRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_document_schema_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentSchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_document_schema), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_document_schema()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_schema_service.DeleteDocumentSchemaRequest()
@@ -2066,7 +2286,8 @@ async def test_delete_document_schema_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_schema_service.DeleteDocumentSchemaRequest()
+        request = document_schema_service.DeleteDocumentSchemaRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2254,7 +2475,8 @@ def test_list_document_schemas(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_schema_service.ListDocumentSchemasRequest()
+        request = document_schema_service.ListDocumentSchemasRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDocumentSchemasPager)
@@ -2274,6 +2496,60 @@ def test_list_document_schemas_empty_call():
         type(client.transport.list_document_schemas), "__call__"
     ) as call:
         client.list_document_schemas()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_schema_service.ListDocumentSchemasRequest()
+
+
+def test_list_document_schemas_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = DocumentSchemaServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = document_schema_service.ListDocumentSchemasRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_document_schemas), "__call__"
+    ) as call:
+        client.list_document_schemas(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == document_schema_service.ListDocumentSchemasRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_document_schemas_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = DocumentSchemaServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_document_schemas), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            document_schema_service.ListDocumentSchemasResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_document_schemas()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == document_schema_service.ListDocumentSchemasRequest()
@@ -2308,7 +2584,8 @@ async def test_list_document_schemas_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == document_schema_service.ListDocumentSchemasRequest()
+        request = document_schema_service.ListDocumentSchemasRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListDocumentSchemasAsyncPager)
