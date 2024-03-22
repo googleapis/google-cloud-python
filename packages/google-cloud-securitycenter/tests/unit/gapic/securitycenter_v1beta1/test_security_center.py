@@ -1177,7 +1177,8 @@ def test_create_source(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.CreateSourceRequest()
+        request = securitycenter_service.CreateSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_source.Source)
@@ -1197,6 +1198,56 @@ def test_create_source_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_source), "__call__") as call:
         client.create_source()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.CreateSourceRequest()
+
+
+def test_create_source_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.CreateSourceRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_source), "__call__") as call:
+        client.create_source(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.CreateSourceRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_source_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_source), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_source.Source(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.create_source()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.CreateSourceRequest()
@@ -1231,7 +1282,8 @@ async def test_create_source_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.CreateSourceRequest()
+        request = securitycenter_service.CreateSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_source.Source)
@@ -1427,7 +1479,8 @@ def test_create_finding(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.CreateFindingRequest()
+        request = securitycenter_service.CreateFindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_finding.Finding)
@@ -1450,6 +1503,61 @@ def test_create_finding_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_finding), "__call__") as call:
         client.create_finding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.CreateFindingRequest()
+
+
+def test_create_finding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.CreateFindingRequest(
+        parent="parent_value",
+        finding_id="finding_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_finding), "__call__") as call:
+        client.create_finding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.CreateFindingRequest(
+            parent="parent_value",
+            finding_id="finding_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_finding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_finding), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_finding.Finding(
+                name="name_value",
+                parent="parent_value",
+                resource_name="resource_name_value",
+                state=gcs_finding.Finding.State.ACTIVE,
+                category="category_value",
+                external_uri="external_uri_value",
+            )
+        )
+        response = await client.create_finding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.CreateFindingRequest()
@@ -1487,7 +1595,8 @@ async def test_create_finding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.CreateFindingRequest()
+        request = securitycenter_service.CreateFindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_finding.Finding)
@@ -1692,7 +1801,8 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+        request = iam_policy_pb2.GetIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
@@ -1711,6 +1821,55 @@ def test_get_iam_policy_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         client.get_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+
+
+def test_get_iam_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = iam_policy_pb2.GetIamPolicyRequest(
+        resource="resource_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        client.get_iam_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.GetIamPolicyRequest(
+            resource="resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_iam_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        response = await client.get_iam_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
@@ -1743,7 +1902,8 @@ async def test_get_iam_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.GetIamPolicyRequest()
+        request = iam_policy_pb2.GetIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
@@ -1943,7 +2103,8 @@ def test_get_organization_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.GetOrganizationSettingsRequest()
+        request = securitycenter_service.GetOrganizationSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, organization_settings.OrganizationSettings)
@@ -1964,6 +2125,59 @@ def test_get_organization_settings_empty_call():
         type(client.transport.get_organization_settings), "__call__"
     ) as call:
         client.get_organization_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetOrganizationSettingsRequest()
+
+
+def test_get_organization_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.GetOrganizationSettingsRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_organization_settings), "__call__"
+    ) as call:
+        client.get_organization_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetOrganizationSettingsRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_organization_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_organization_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            organization_settings.OrganizationSettings(
+                name="name_value",
+                enable_asset_discovery=True,
+            )
+        )
+        response = await client.get_organization_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.GetOrganizationSettingsRequest()
@@ -1999,7 +2213,8 @@ async def test_get_organization_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.GetOrganizationSettingsRequest()
+        request = securitycenter_service.GetOrganizationSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, organization_settings.OrganizationSettings)
@@ -2193,7 +2408,8 @@ def test_get_source(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.GetSourceRequest()
+        request = securitycenter_service.GetSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, source.Source)
@@ -2213,6 +2429,56 @@ def test_get_source_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_source), "__call__") as call:
         client.get_source()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetSourceRequest()
+
+
+def test_get_source_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.GetSourceRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_source), "__call__") as call:
+        client.get_source(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GetSourceRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_source_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_source), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            source.Source(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_source()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.GetSourceRequest()
@@ -2247,7 +2513,8 @@ async def test_get_source_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.GetSourceRequest()
+        request = securitycenter_service.GetSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, source.Source)
@@ -2428,7 +2695,8 @@ def test_group_assets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.GroupAssetsRequest()
+        request = securitycenter_service.GroupAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.GroupAssetsPager)
@@ -2446,6 +2714,60 @@ def test_group_assets_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.group_assets), "__call__") as call:
         client.group_assets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GroupAssetsRequest()
+
+
+def test_group_assets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.GroupAssetsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        group_by="group_by_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.group_assets), "__call__") as call:
+        client.group_assets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GroupAssetsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            group_by="group_by_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_group_assets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.group_assets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.GroupAssetsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.group_assets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.GroupAssetsRequest()
@@ -2478,7 +2800,8 @@ async def test_group_assets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.GroupAssetsRequest()
+        request = securitycenter_service.GroupAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.GroupAssetsAsyncPager)
@@ -2769,7 +3092,8 @@ def test_group_findings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.GroupFindingsRequest()
+        request = securitycenter_service.GroupFindingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.GroupFindingsPager)
@@ -2787,6 +3111,60 @@ def test_group_findings_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.group_findings), "__call__") as call:
         client.group_findings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GroupFindingsRequest()
+
+
+def test_group_findings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.GroupFindingsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        group_by="group_by_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.group_findings), "__call__") as call:
+        client.group_findings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.GroupFindingsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            group_by="group_by_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_group_findings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.group_findings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.GroupFindingsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.group_findings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.GroupFindingsRequest()
@@ -2819,7 +3197,8 @@ async def test_group_findings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.GroupFindingsRequest()
+        request = securitycenter_service.GroupFindingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.GroupFindingsAsyncPager)
@@ -3203,7 +3582,8 @@ def test_list_assets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.ListAssetsRequest()
+        request = securitycenter_service.ListAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsPager)
@@ -3222,6 +3602,61 @@ def test_list_assets_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
         client.list_assets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListAssetsRequest()
+
+
+def test_list_assets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.ListAssetsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        order_by="order_by_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        client.list_assets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListAssetsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            order_by="order_by_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_assets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_assets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListAssetsResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.list_assets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.ListAssetsRequest()
@@ -3255,7 +3690,8 @@ async def test_list_assets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.ListAssetsRequest()
+        request = securitycenter_service.ListAssetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListAssetsAsyncPager)
@@ -3554,7 +3990,8 @@ def test_list_findings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.ListFindingsRequest()
+        request = securitycenter_service.ListFindingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFindingsPager)
@@ -3573,6 +4010,61 @@ def test_list_findings_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
         client.list_findings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListFindingsRequest()
+
+
+def test_list_findings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.ListFindingsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        order_by="order_by_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
+        client.list_findings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListFindingsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            order_by="order_by_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_findings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_findings), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListFindingsResponse(
+                next_page_token="next_page_token_value",
+                total_size=1086,
+            )
+        )
+        response = await client.list_findings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.ListFindingsRequest()
@@ -3606,7 +4098,8 @@ async def test_list_findings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.ListFindingsRequest()
+        request = securitycenter_service.ListFindingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListFindingsAsyncPager)
@@ -3898,7 +4391,8 @@ def test_list_sources(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.ListSourcesRequest()
+        request = securitycenter_service.ListSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSourcesPager)
@@ -3916,6 +4410,56 @@ def test_list_sources_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
         client.list_sources()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListSourcesRequest()
+
+
+def test_list_sources_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.ListSourcesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
+        client.list_sources(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.ListSourcesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_sources_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            securitycenter_service.ListSourcesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_sources()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.ListSourcesRequest()
@@ -3948,7 +4492,8 @@ async def test_list_sources_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.ListSourcesRequest()
+        request = securitycenter_service.ListSourcesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSourcesAsyncPager)
@@ -4321,7 +4866,8 @@ def test_run_asset_discovery(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.RunAssetDiscoveryRequest()
+        request = securitycenter_service.RunAssetDiscoveryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4340,6 +4886,56 @@ def test_run_asset_discovery_empty_call():
         type(client.transport.run_asset_discovery), "__call__"
     ) as call:
         client.run_asset_discovery()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.RunAssetDiscoveryRequest()
+
+
+def test_run_asset_discovery_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.RunAssetDiscoveryRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_asset_discovery), "__call__"
+    ) as call:
+        client.run_asset_discovery(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.RunAssetDiscoveryRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_asset_discovery_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.run_asset_discovery), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.run_asset_discovery()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.RunAssetDiscoveryRequest()
@@ -4372,7 +4968,8 @@ async def test_run_asset_discovery_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.RunAssetDiscoveryRequest()
+        request = securitycenter_service.RunAssetDiscoveryRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4569,7 +5166,8 @@ def test_set_finding_state(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.SetFindingStateRequest()
+        request = securitycenter_service.SetFindingStateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, finding.Finding)
@@ -4594,6 +5192,63 @@ def test_set_finding_state_empty_call():
         type(client.transport.set_finding_state), "__call__"
     ) as call:
         client.set_finding_state()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.SetFindingStateRequest()
+
+
+def test_set_finding_state_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.SetFindingStateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_finding_state), "__call__"
+    ) as call:
+        client.set_finding_state(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.SetFindingStateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_finding_state_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.set_finding_state), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            finding.Finding(
+                name="name_value",
+                parent="parent_value",
+                resource_name="resource_name_value",
+                state=finding.Finding.State.ACTIVE,
+                category="category_value",
+                external_uri="external_uri_value",
+            )
+        )
+        response = await client.set_finding_state()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.SetFindingStateRequest()
@@ -4633,7 +5288,8 @@ async def test_set_finding_state_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.SetFindingStateRequest()
+        request = securitycenter_service.SetFindingStateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, finding.Finding)
@@ -4846,7 +5502,8 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+        request = iam_policy_pb2.SetIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
@@ -4865,6 +5522,55 @@ def test_set_iam_policy_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         client.set_iam_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+
+
+def test_set_iam_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = iam_policy_pb2.SetIamPolicyRequest(
+        resource="resource_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        client.set_iam_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.SetIamPolicyRequest(
+            resource="resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_set_iam_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
+        )
+        response = await client.set_iam_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
@@ -4897,7 +5603,8 @@ async def test_set_iam_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.SetIamPolicyRequest()
+        request = iam_policy_pb2.SetIamPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, policy_pb2.Policy)
@@ -5097,7 +5804,8 @@ def test_test_iam_permissions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+        request = iam_policy_pb2.TestIamPermissionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
@@ -5117,6 +5825,58 @@ def test_test_iam_permissions_empty_call():
         type(client.transport.test_iam_permissions), "__call__"
     ) as call:
         client.test_iam_permissions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+
+
+def test_test_iam_permissions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = iam_policy_pb2.TestIamPermissionsRequest(
+        resource="resource_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        client.test_iam_permissions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest(
+            resource="resource_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_test_iam_permissions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.test_iam_permissions), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            iam_policy_pb2.TestIamPermissionsResponse(
+                permissions=["permissions_value"],
+            )
+        )
+        response = await client.test_iam_permissions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
@@ -5151,7 +5911,8 @@ async def test_test_iam_permissions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == iam_policy_pb2.TestIamPermissionsRequest()
+        request = iam_policy_pb2.TestIamPermissionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
@@ -5376,7 +6137,8 @@ def test_update_finding(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.UpdateFindingRequest()
+        request = securitycenter_service.UpdateFindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_finding.Finding)
@@ -5399,6 +6161,55 @@ def test_update_finding_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_finding), "__call__") as call:
         client.update_finding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateFindingRequest()
+
+
+def test_update_finding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.UpdateFindingRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_finding), "__call__") as call:
+        client.update_finding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateFindingRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_finding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_finding), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_finding.Finding(
+                name="name_value",
+                parent="parent_value",
+                resource_name="resource_name_value",
+                state=gcs_finding.Finding.State.ACTIVE,
+                category="category_value",
+                external_uri="external_uri_value",
+            )
+        )
+        response = await client.update_finding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.UpdateFindingRequest()
@@ -5436,7 +6247,8 @@ async def test_update_finding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.UpdateFindingRequest()
+        request = securitycenter_service.UpdateFindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_finding.Finding)
@@ -5623,7 +6435,8 @@ def test_update_organization_settings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.UpdateOrganizationSettingsRequest()
+        request = securitycenter_service.UpdateOrganizationSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_organization_settings.OrganizationSettings)
@@ -5644,6 +6457,55 @@ def test_update_organization_settings_empty_call():
         type(client.transport.update_organization_settings), "__call__"
     ) as call:
         client.update_organization_settings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateOrganizationSettingsRequest()
+
+
+def test_update_organization_settings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.UpdateOrganizationSettingsRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_organization_settings), "__call__"
+    ) as call:
+        client.update_organization_settings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateOrganizationSettingsRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_organization_settings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_organization_settings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_organization_settings.OrganizationSettings(
+                name="name_value",
+                enable_asset_discovery=True,
+            )
+        )
+        response = await client.update_organization_settings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.UpdateOrganizationSettingsRequest()
@@ -5679,7 +6541,8 @@ async def test_update_organization_settings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.UpdateOrganizationSettingsRequest()
+        request = securitycenter_service.UpdateOrganizationSettingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_organization_settings.OrganizationSettings)
@@ -5881,7 +6744,8 @@ def test_update_source(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.UpdateSourceRequest()
+        request = securitycenter_service.UpdateSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_source.Source)
@@ -5901,6 +6765,52 @@ def test_update_source_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_source), "__call__") as call:
         client.update_source()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateSourceRequest()
+
+
+def test_update_source_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.UpdateSourceRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_source), "__call__") as call:
+        client.update_source(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateSourceRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_source_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_source), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_source.Source(
+                name="name_value",
+                display_name="display_name_value",
+                description="description_value",
+            )
+        )
+        response = await client.update_source()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.UpdateSourceRequest()
@@ -5935,7 +6845,8 @@ async def test_update_source_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.UpdateSourceRequest()
+        request = securitycenter_service.UpdateSourceRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_source.Source)
@@ -6118,7 +7029,8 @@ def test_update_security_marks(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.UpdateSecurityMarksRequest()
+        request = securitycenter_service.UpdateSecurityMarksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_security_marks.SecurityMarks)
@@ -6138,6 +7050,54 @@ def test_update_security_marks_empty_call():
         type(client.transport.update_security_marks), "__call__"
     ) as call:
         client.update_security_marks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateSecurityMarksRequest()
+
+
+def test_update_security_marks_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = SecurityCenterClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = securitycenter_service.UpdateSecurityMarksRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_marks), "__call__"
+    ) as call:
+        client.update_security_marks(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == securitycenter_service.UpdateSecurityMarksRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_security_marks_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = SecurityCenterAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_security_marks), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_security_marks.SecurityMarks(
+                name="name_value",
+            )
+        )
+        response = await client.update_security_marks()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == securitycenter_service.UpdateSecurityMarksRequest()
@@ -6172,7 +7132,8 @@ async def test_update_security_marks_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == securitycenter_service.UpdateSecurityMarksRequest()
+        request = securitycenter_service.UpdateSecurityMarksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_security_marks.SecurityMarks)

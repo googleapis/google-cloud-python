@@ -1143,7 +1143,8 @@ def test_list_events(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListEventsRequest()
+        request = event_resources.ListEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEventsPager)
@@ -1162,6 +1163,59 @@ def test_list_events_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_events), "__call__") as call:
         client.list_events()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == event_resources.ListEventsRequest()
+
+
+def test_list_events_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = event_resources.ListEventsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_events), "__call__") as call:
+        client.list_events(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == event_resources.ListEventsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_events_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceHealthAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_events), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_resources.ListEventsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_events()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == event_resources.ListEventsRequest()
@@ -1194,7 +1248,8 @@ async def test_list_events_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListEventsRequest()
+        request = event_resources.ListEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListEventsAsyncPager)
@@ -1576,7 +1631,8 @@ def test_get_event(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetEventRequest()
+        request = event_resources.GetEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, event_resources.Event)
@@ -1605,6 +1661,62 @@ def test_get_event_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_event), "__call__") as call:
         client.get_event()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == event_resources.GetEventRequest()
+
+
+def test_get_event_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = event_resources.GetEventRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_event), "__call__") as call:
+        client.get_event(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == event_resources.GetEventRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_event_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceHealthAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_event), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_resources.Event(
+                name="name_value",
+                title="title_value",
+                description="description_value",
+                category=event_resources.Event.EventCategory.INCIDENT,
+                detailed_category=event_resources.Event.DetailedCategory.CONFIRMED_INCIDENT,
+                state=event_resources.Event.State.ACTIVE,
+                detailed_state=event_resources.Event.DetailedState.EMERGING,
+                relevance=event_resources.Event.Relevance.UNKNOWN,
+                parent_event="parent_event_value",
+            )
+        )
+        response = await client.get_event()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == event_resources.GetEventRequest()
@@ -1644,7 +1756,8 @@ async def test_get_event_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetEventRequest()
+        request = event_resources.GetEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, event_resources.Event)
@@ -1841,7 +1954,8 @@ def test_list_organization_events(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListOrganizationEventsRequest()
+        request = event_resources.ListOrganizationEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOrganizationEventsPager)
@@ -1862,6 +1976,63 @@ def test_list_organization_events_empty_call():
         type(client.transport.list_organization_events), "__call__"
     ) as call:
         client.list_organization_events()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == event_resources.ListOrganizationEventsRequest()
+
+
+def test_list_organization_events_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = event_resources.ListOrganizationEventsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_organization_events), "__call__"
+    ) as call:
+        client.list_organization_events(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == event_resources.ListOrganizationEventsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_organization_events_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceHealthAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_organization_events), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_resources.ListOrganizationEventsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_organization_events()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == event_resources.ListOrganizationEventsRequest()
@@ -1897,7 +2068,8 @@ async def test_list_organization_events_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListOrganizationEventsRequest()
+        request = event_resources.ListOrganizationEventsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOrganizationEventsAsyncPager)
@@ -2296,7 +2468,8 @@ def test_get_organization_event(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetOrganizationEventRequest()
+        request = event_resources.GetOrganizationEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, event_resources.OrganizationEvent)
@@ -2329,6 +2502,65 @@ def test_get_organization_event_empty_call():
         type(client.transport.get_organization_event), "__call__"
     ) as call:
         client.get_organization_event()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == event_resources.GetOrganizationEventRequest()
+
+
+def test_get_organization_event_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = event_resources.GetOrganizationEventRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_organization_event), "__call__"
+    ) as call:
+        client.get_organization_event(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == event_resources.GetOrganizationEventRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_organization_event_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceHealthAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_organization_event), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_resources.OrganizationEvent(
+                name="name_value",
+                title="title_value",
+                description="description_value",
+                category=event_resources.OrganizationEvent.EventCategory.INCIDENT,
+                detailed_category=event_resources.OrganizationEvent.DetailedCategory.CONFIRMED_INCIDENT,
+                state=event_resources.OrganizationEvent.State.ACTIVE,
+                detailed_state=event_resources.OrganizationEvent.DetailedState.EMERGING,
+                parent_event="parent_event_value",
+            )
+        )
+        response = await client.get_organization_event()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == event_resources.GetOrganizationEventRequest()
@@ -2370,7 +2602,8 @@ async def test_get_organization_event_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetOrganizationEventRequest()
+        request = event_resources.GetOrganizationEventRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, event_resources.OrganizationEvent)
@@ -2577,7 +2810,8 @@ def test_list_organization_impacts(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListOrganizationImpactsRequest()
+        request = event_resources.ListOrganizationImpactsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOrganizationImpactsPager)
@@ -2598,6 +2832,63 @@ def test_list_organization_impacts_empty_call():
         type(client.transport.list_organization_impacts), "__call__"
     ) as call:
         client.list_organization_impacts()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == event_resources.ListOrganizationImpactsRequest()
+
+
+def test_list_organization_impacts_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = event_resources.ListOrganizationImpactsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_organization_impacts), "__call__"
+    ) as call:
+        client.list_organization_impacts(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == event_resources.ListOrganizationImpactsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_organization_impacts_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceHealthAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_organization_impacts), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_resources.ListOrganizationImpactsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_organization_impacts()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == event_resources.ListOrganizationImpactsRequest()
@@ -2633,7 +2924,8 @@ async def test_list_organization_impacts_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.ListOrganizationImpactsRequest()
+        request = event_resources.ListOrganizationImpactsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListOrganizationImpactsAsyncPager)
@@ -3026,7 +3318,8 @@ def test_get_organization_impact(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetOrganizationImpactRequest()
+        request = event_resources.GetOrganizationImpactRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, event_resources.OrganizationImpact)
@@ -3047,6 +3340,59 @@ def test_get_organization_impact_empty_call():
         type(client.transport.get_organization_impact), "__call__"
     ) as call:
         client.get_organization_impact()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == event_resources.GetOrganizationImpactRequest()
+
+
+def test_get_organization_impact_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ServiceHealthClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = event_resources.GetOrganizationImpactRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_organization_impact), "__call__"
+    ) as call:
+        client.get_organization_impact(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == event_resources.GetOrganizationImpactRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_organization_impact_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ServiceHealthAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_organization_impact), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            event_resources.OrganizationImpact(
+                name="name_value",
+                events=["events_value"],
+            )
+        )
+        response = await client.get_organization_impact()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == event_resources.GetOrganizationImpactRequest()
@@ -3082,7 +3428,8 @@ async def test_get_organization_impact_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == event_resources.GetOrganizationImpactRequest()
+        request = event_resources.GetOrganizationImpactRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, event_resources.OrganizationImpact)

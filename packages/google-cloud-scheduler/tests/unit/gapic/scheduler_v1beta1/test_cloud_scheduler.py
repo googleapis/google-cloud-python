@@ -1153,7 +1153,8 @@ def test_list_jobs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.ListJobsRequest()
+        request = cloudscheduler.ListJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobsPager)
@@ -1171,6 +1172,58 @@ def test_list_jobs_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
         client.list_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.ListJobsRequest()
+
+
+def test_list_jobs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudscheduler.ListJobsRequest(
+        parent="parent_value",
+        filter="filter_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
+        client.list_jobs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.ListJobsRequest(
+            parent="parent_value",
+            filter="filter_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_jobs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloudscheduler.ListJobsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_jobs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudscheduler.ListJobsRequest()
@@ -1202,7 +1255,8 @@ async def test_list_jobs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.ListJobsRequest()
+        request = cloudscheduler.ListJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobsAsyncPager)
@@ -1580,7 +1634,8 @@ def test_get_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.GetJobRequest()
+        request = cloudscheduler.GetJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, job.Job)
@@ -1603,6 +1658,59 @@ def test_get_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
         client.get_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.GetJobRequest()
+
+
+def test_get_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudscheduler.GetJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job), "__call__") as call:
+        client.get_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.GetJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            job.Job(
+                name="name_value",
+                description="description_value",
+                schedule="schedule_value",
+                time_zone="time_zone_value",
+                state=job.Job.State.ENABLED,
+                legacy_app_engine_cron=True,
+            )
+        )
+        response = await client.get_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudscheduler.GetJobRequest()
@@ -1639,7 +1747,8 @@ async def test_get_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.GetJobRequest()
+        request = cloudscheduler.GetJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, job.Job)
@@ -1828,7 +1937,8 @@ def test_create_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.CreateJobRequest()
+        request = cloudscheduler.CreateJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_job.Job)
@@ -1851,6 +1961,59 @@ def test_create_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_job), "__call__") as call:
         client.create_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.CreateJobRequest()
+
+
+def test_create_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudscheduler.CreateJobRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_job), "__call__") as call:
+        client.create_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.CreateJobRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_job.Job(
+                name="name_value",
+                description="description_value",
+                schedule="schedule_value",
+                time_zone="time_zone_value",
+                state=gcs_job.Job.State.ENABLED,
+                legacy_app_engine_cron=True,
+            )
+        )
+        response = await client.create_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudscheduler.CreateJobRequest()
@@ -1887,7 +2050,8 @@ async def test_create_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.CreateJobRequest()
+        request = cloudscheduler.CreateJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_job.Job)
@@ -2086,7 +2250,8 @@ def test_update_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.UpdateJobRequest()
+        request = cloudscheduler.UpdateJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_job.Job)
@@ -2109,6 +2274,55 @@ def test_update_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_job), "__call__") as call:
         client.update_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.UpdateJobRequest()
+
+
+def test_update_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudscheduler.UpdateJobRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        client.update_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.UpdateJobRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_job.Job(
+                name="name_value",
+                description="description_value",
+                schedule="schedule_value",
+                time_zone="time_zone_value",
+                state=gcs_job.Job.State.ENABLED,
+                legacy_app_engine_cron=True,
+            )
+        )
+        response = await client.update_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudscheduler.UpdateJobRequest()
@@ -2145,7 +2359,8 @@ async def test_update_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.UpdateJobRequest()
+        request = cloudscheduler.UpdateJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_job.Job)
@@ -2337,7 +2552,8 @@ def test_delete_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.DeleteJobRequest()
+        request = cloudscheduler.DeleteJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2354,6 +2570,50 @@ def test_delete_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
         client.delete_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.DeleteJobRequest()
+
+
+def test_delete_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudscheduler.DeleteJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
+        client.delete_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.DeleteJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudscheduler.DeleteJobRequest()
@@ -2381,7 +2641,8 @@ async def test_delete_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.DeleteJobRequest()
+        request = cloudscheduler.DeleteJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2564,7 +2825,8 @@ def test_pause_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.PauseJobRequest()
+        request = cloudscheduler.PauseJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, job.Job)
@@ -2587,6 +2849,59 @@ def test_pause_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pause_job), "__call__") as call:
         client.pause_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.PauseJobRequest()
+
+
+def test_pause_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudscheduler.PauseJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_job), "__call__") as call:
+        client.pause_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.PauseJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_pause_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.pause_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            job.Job(
+                name="name_value",
+                description="description_value",
+                schedule="schedule_value",
+                time_zone="time_zone_value",
+                state=job.Job.State.ENABLED,
+                legacy_app_engine_cron=True,
+            )
+        )
+        response = await client.pause_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudscheduler.PauseJobRequest()
@@ -2623,7 +2938,8 @@ async def test_pause_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.PauseJobRequest()
+        request = cloudscheduler.PauseJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, job.Job)
@@ -2812,7 +3128,8 @@ def test_resume_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.ResumeJobRequest()
+        request = cloudscheduler.ResumeJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, job.Job)
@@ -2835,6 +3152,59 @@ def test_resume_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.resume_job), "__call__") as call:
         client.resume_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.ResumeJobRequest()
+
+
+def test_resume_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudscheduler.ResumeJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_job), "__call__") as call:
+        client.resume_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.ResumeJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_resume_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.resume_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            job.Job(
+                name="name_value",
+                description="description_value",
+                schedule="schedule_value",
+                time_zone="time_zone_value",
+                state=job.Job.State.ENABLED,
+                legacy_app_engine_cron=True,
+            )
+        )
+        response = await client.resume_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudscheduler.ResumeJobRequest()
@@ -2871,7 +3241,8 @@ async def test_resume_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.ResumeJobRequest()
+        request = cloudscheduler.ResumeJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, job.Job)
@@ -3060,7 +3431,8 @@ def test_run_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.RunJobRequest()
+        request = cloudscheduler.RunJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, job.Job)
@@ -3083,6 +3455,59 @@ def test_run_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_job), "__call__") as call:
         client.run_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.RunJobRequest()
+
+
+def test_run_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CloudSchedulerClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloudscheduler.RunJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_job), "__call__") as call:
+        client.run_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloudscheduler.RunJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_run_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudSchedulerAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.run_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            job.Job(
+                name="name_value",
+                description="description_value",
+                schedule="schedule_value",
+                time_zone="time_zone_value",
+                state=job.Job.State.ENABLED,
+                legacy_app_engine_cron=True,
+            )
+        )
+        response = await client.run_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloudscheduler.RunJobRequest()
@@ -3119,7 +3544,8 @@ async def test_run_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloudscheduler.RunJobRequest()
+        request = cloudscheduler.RunJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, job.Job)

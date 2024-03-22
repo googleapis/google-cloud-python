@@ -27,6 +27,7 @@ from typing import (
     Type,
     Union,
 )
+import uuid
 
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
@@ -368,6 +369,9 @@ class StorageControlAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
@@ -456,6 +460,9 @@ class StorageControlAsyncClient:
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
         )
+
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -562,6 +569,9 @@ class StorageControlAsyncClient:
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
+
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
 
         # Validate the universe domain.
         self._client._validate_universe_domain()
@@ -817,6 +827,9 @@ class StorageControlAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
+
         # Validate the universe domain.
         self._client._validate_universe_domain()
 
@@ -937,6 +950,9 @@ class StorageControlAsyncClient:
             default_timeout=60.0,
             client_info=DEFAULT_CLIENT_INFO,
         )
+
+        if not request.request_id:
+            request.request_id = str(uuid.uuid4())
 
         # Validate the universe domain.
         self._client._validate_universe_domain()

@@ -1134,7 +1134,8 @@ def test_get_revision(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == revision.GetRevisionRequest()
+        request = revision.GetRevisionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, revision.Revision)
@@ -1173,6 +1174,69 @@ def test_get_revision_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_revision), "__call__") as call:
         client.get_revision()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == revision.GetRevisionRequest()
+
+
+def test_get_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = revision.GetRevisionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_revision), "__call__") as call:
+        client.get_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == revision.GetRevisionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_revision_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_revision), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            revision.Revision(
+                name="name_value",
+                uid="uid_value",
+                generation=1068,
+                launch_stage=launch_stage_pb2.LaunchStage.UNIMPLEMENTED,
+                service="service_value",
+                max_instance_request_concurrency=3436,
+                service_account="service_account_value",
+                execution_environment=vendor_settings.ExecutionEnvironment.EXECUTION_ENVIRONMENT_GEN1,
+                encryption_key="encryption_key_value",
+                encryption_key_revocation_action=vendor_settings.EncryptionKeyRevocationAction.PREVENT_NEW,
+                reconciling=True,
+                observed_generation=2021,
+                log_uri="log_uri_value",
+                satisfies_pzs=True,
+                session_affinity=True,
+                etag="etag_value",
+            )
+        )
+        response = await client.get_revision()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == revision.GetRevisionRequest()
@@ -1219,7 +1283,8 @@ async def test_get_revision_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == revision.GetRevisionRequest()
+        request = revision.GetRevisionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, revision.Revision)
@@ -1386,7 +1451,8 @@ def test_list_revisions(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == revision.ListRevisionsRequest()
+        request = revision.ListRevisionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRevisionsPager)
@@ -1404,6 +1470,56 @@ def test_list_revisions_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_revisions), "__call__") as call:
         client.list_revisions()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == revision.ListRevisionsRequest()
+
+
+def test_list_revisions_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = revision.ListRevisionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_revisions), "__call__") as call:
+        client.list_revisions(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == revision.ListRevisionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_revisions_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_revisions), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            revision.ListRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_revisions()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == revision.ListRevisionsRequest()
@@ -1435,7 +1551,8 @@ async def test_list_revisions_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == revision.ListRevisionsRequest()
+        request = revision.ListRevisionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListRevisionsAsyncPager)
@@ -1768,7 +1885,8 @@ def test_delete_revision(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == revision.DeleteRevisionRequest()
+        request = revision.DeleteRevisionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1785,6 +1903,54 @@ def test_delete_revision_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_revision), "__call__") as call:
         client.delete_revision()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == revision.DeleteRevisionRequest()
+
+
+def test_delete_revision_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = revision.DeleteRevisionRequest(
+        name="name_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_revision), "__call__") as call:
+        client.delete_revision(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == revision.DeleteRevisionRequest(
+            name="name_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_revision_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_revision), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_revision()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == revision.DeleteRevisionRequest()
@@ -1814,7 +1980,8 @@ async def test_delete_revision_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == revision.DeleteRevisionRequest()
+        request = revision.DeleteRevisionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

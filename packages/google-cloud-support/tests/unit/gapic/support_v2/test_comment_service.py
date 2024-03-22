@@ -1148,7 +1148,8 @@ def test_list_comments(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == comment_service.ListCommentsRequest()
+        request = comment_service.ListCommentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCommentsPager)
@@ -1166,6 +1167,56 @@ def test_list_comments_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_comments), "__call__") as call:
         client.list_comments()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == comment_service.ListCommentsRequest()
+
+
+def test_list_comments_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CommentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = comment_service.ListCommentsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_comments), "__call__") as call:
+        client.list_comments(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == comment_service.ListCommentsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_comments_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CommentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_comments), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            comment_service.ListCommentsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_comments()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == comment_service.ListCommentsRequest()
@@ -1197,7 +1248,8 @@ async def test_list_comments_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == comment_service.ListCommentsRequest()
+        request = comment_service.ListCommentsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCommentsAsyncPager)
@@ -1572,7 +1624,8 @@ def test_create_comment(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == comment_service.CreateCommentRequest()
+        request = comment_service.CreateCommentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_comment.Comment)
@@ -1592,6 +1645,56 @@ def test_create_comment_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_comment), "__call__") as call:
         client.create_comment()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == comment_service.CreateCommentRequest()
+
+
+def test_create_comment_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = CommentServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = comment_service.CreateCommentRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_comment), "__call__") as call:
+        client.create_comment(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == comment_service.CreateCommentRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_comment_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CommentServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_comment), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcs_comment.Comment(
+                name="name_value",
+                body="body_value",
+                plain_text_body="plain_text_body_value",
+            )
+        )
+        response = await client.create_comment()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == comment_service.CreateCommentRequest()
@@ -1625,7 +1728,8 @@ async def test_create_comment_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == comment_service.CreateCommentRequest()
+        request = comment_service.CreateCommentRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcs_comment.Comment)

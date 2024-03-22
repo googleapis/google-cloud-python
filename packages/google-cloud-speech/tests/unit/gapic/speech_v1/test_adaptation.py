@@ -1108,7 +1108,8 @@ def test_create_phrase_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.CreatePhraseSetRequest()
+        request = cloud_speech_adaptation.CreatePhraseSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.PhraseSet)
@@ -1129,6 +1130,61 @@ def test_create_phrase_set_empty_call():
         type(client.transport.create_phrase_set), "__call__"
     ) as call:
         client.create_phrase_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.CreatePhraseSetRequest()
+
+
+def test_create_phrase_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdaptationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_speech_adaptation.CreatePhraseSetRequest(
+        parent="parent_value",
+        phrase_set_id="phrase_set_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_phrase_set), "__call__"
+    ) as call:
+        client.create_phrase_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.CreatePhraseSetRequest(
+            parent="parent_value",
+            phrase_set_id="phrase_set_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_phrase_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdaptationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_phrase_set), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource.PhraseSet(
+                name="name_value",
+                boost=0.551,
+            )
+        )
+        response = await client.create_phrase_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_speech_adaptation.CreatePhraseSetRequest()
@@ -1164,7 +1220,8 @@ async def test_create_phrase_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.CreatePhraseSetRequest()
+        request = cloud_speech_adaptation.CreatePhraseSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.PhraseSet)
@@ -1373,7 +1430,8 @@ def test_get_phrase_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.GetPhraseSetRequest()
+        request = cloud_speech_adaptation.GetPhraseSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.PhraseSet)
@@ -1392,6 +1450,55 @@ def test_get_phrase_set_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_phrase_set), "__call__") as call:
         client.get_phrase_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.GetPhraseSetRequest()
+
+
+def test_get_phrase_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdaptationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_speech_adaptation.GetPhraseSetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_phrase_set), "__call__") as call:
+        client.get_phrase_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.GetPhraseSetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_phrase_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdaptationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_phrase_set), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource.PhraseSet(
+                name="name_value",
+                boost=0.551,
+            )
+        )
+        response = await client.get_phrase_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_speech_adaptation.GetPhraseSetRequest()
@@ -1425,7 +1532,8 @@ async def test_get_phrase_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.GetPhraseSetRequest()
+        request = cloud_speech_adaptation.GetPhraseSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.PhraseSet)
@@ -1605,7 +1713,8 @@ def test_list_phrase_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.ListPhraseSetRequest()
+        request = cloud_speech_adaptation.ListPhraseSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPhraseSetPager)
@@ -1623,6 +1732,56 @@ def test_list_phrase_set_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_phrase_set), "__call__") as call:
         client.list_phrase_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.ListPhraseSetRequest()
+
+
+def test_list_phrase_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdaptationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_speech_adaptation.ListPhraseSetRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_phrase_set), "__call__") as call:
+        client.list_phrase_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.ListPhraseSetRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_phrase_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdaptationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_phrase_set), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_speech_adaptation.ListPhraseSetResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_phrase_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_speech_adaptation.ListPhraseSetRequest()
@@ -1655,7 +1814,8 @@ async def test_list_phrase_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.ListPhraseSetRequest()
+        request = cloud_speech_adaptation.ListPhraseSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPhraseSetAsyncPager)
@@ -2031,7 +2191,8 @@ def test_update_phrase_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.UpdatePhraseSetRequest()
+        request = cloud_speech_adaptation.UpdatePhraseSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.PhraseSet)
@@ -2052,6 +2213,55 @@ def test_update_phrase_set_empty_call():
         type(client.transport.update_phrase_set), "__call__"
     ) as call:
         client.update_phrase_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.UpdatePhraseSetRequest()
+
+
+def test_update_phrase_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdaptationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_speech_adaptation.UpdatePhraseSetRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_phrase_set), "__call__"
+    ) as call:
+        client.update_phrase_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.UpdatePhraseSetRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_phrase_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdaptationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_phrase_set), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource.PhraseSet(
+                name="name_value",
+                boost=0.551,
+            )
+        )
+        response = await client.update_phrase_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_speech_adaptation.UpdatePhraseSetRequest()
@@ -2087,7 +2297,8 @@ async def test_update_phrase_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.UpdatePhraseSetRequest()
+        request = cloud_speech_adaptation.UpdatePhraseSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.PhraseSet)
@@ -2285,7 +2496,8 @@ def test_delete_phrase_set(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.DeletePhraseSetRequest()
+        request = cloud_speech_adaptation.DeletePhraseSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2304,6 +2516,54 @@ def test_delete_phrase_set_empty_call():
         type(client.transport.delete_phrase_set), "__call__"
     ) as call:
         client.delete_phrase_set()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.DeletePhraseSetRequest()
+
+
+def test_delete_phrase_set_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdaptationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_speech_adaptation.DeletePhraseSetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_phrase_set), "__call__"
+    ) as call:
+        client.delete_phrase_set(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.DeletePhraseSetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_phrase_set_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdaptationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_phrase_set), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_phrase_set()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_speech_adaptation.DeletePhraseSetRequest()
@@ -2334,7 +2594,8 @@ async def test_delete_phrase_set_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.DeletePhraseSetRequest()
+        request = cloud_speech_adaptation.DeletePhraseSetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2523,7 +2784,8 @@ def test_create_custom_class(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.CreateCustomClassRequest()
+        request = cloud_speech_adaptation.CreateCustomClassRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.CustomClass)
@@ -2544,6 +2806,61 @@ def test_create_custom_class_empty_call():
         type(client.transport.create_custom_class), "__call__"
     ) as call:
         client.create_custom_class()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.CreateCustomClassRequest()
+
+
+def test_create_custom_class_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdaptationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_speech_adaptation.CreateCustomClassRequest(
+        parent="parent_value",
+        custom_class_id="custom_class_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_class), "__call__"
+    ) as call:
+        client.create_custom_class(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.CreateCustomClassRequest(
+            parent="parent_value",
+            custom_class_id="custom_class_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_custom_class_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdaptationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_custom_class), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource.CustomClass(
+                name="name_value",
+                custom_class_id="custom_class_id_value",
+            )
+        )
+        response = await client.create_custom_class()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_speech_adaptation.CreateCustomClassRequest()
@@ -2579,7 +2896,8 @@ async def test_create_custom_class_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.CreateCustomClassRequest()
+        request = cloud_speech_adaptation.CreateCustomClassRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.CustomClass)
@@ -2792,7 +3110,8 @@ def test_get_custom_class(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.GetCustomClassRequest()
+        request = cloud_speech_adaptation.GetCustomClassRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.CustomClass)
@@ -2811,6 +3130,55 @@ def test_get_custom_class_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_custom_class), "__call__") as call:
         client.get_custom_class()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.GetCustomClassRequest()
+
+
+def test_get_custom_class_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdaptationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_speech_adaptation.GetCustomClassRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_custom_class), "__call__") as call:
+        client.get_custom_class(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.GetCustomClassRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_custom_class_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdaptationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_custom_class), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource.CustomClass(
+                name="name_value",
+                custom_class_id="custom_class_id_value",
+            )
+        )
+        response = await client.get_custom_class()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_speech_adaptation.GetCustomClassRequest()
@@ -2844,7 +3212,8 @@ async def test_get_custom_class_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.GetCustomClassRequest()
+        request = cloud_speech_adaptation.GetCustomClassRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.CustomClass)
@@ -3030,7 +3399,8 @@ def test_list_custom_classes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.ListCustomClassesRequest()
+        request = cloud_speech_adaptation.ListCustomClassesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCustomClassesPager)
@@ -3050,6 +3420,60 @@ def test_list_custom_classes_empty_call():
         type(client.transport.list_custom_classes), "__call__"
     ) as call:
         client.list_custom_classes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.ListCustomClassesRequest()
+
+
+def test_list_custom_classes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdaptationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_speech_adaptation.ListCustomClassesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_classes), "__call__"
+    ) as call:
+        client.list_custom_classes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.ListCustomClassesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_custom_classes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdaptationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_custom_classes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            cloud_speech_adaptation.ListCustomClassesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_custom_classes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_speech_adaptation.ListCustomClassesRequest()
@@ -3084,7 +3508,8 @@ async def test_list_custom_classes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.ListCustomClassesRequest()
+        request = cloud_speech_adaptation.ListCustomClassesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListCustomClassesAsyncPager)
@@ -3476,7 +3901,8 @@ def test_update_custom_class(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.UpdateCustomClassRequest()
+        request = cloud_speech_adaptation.UpdateCustomClassRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.CustomClass)
@@ -3497,6 +3923,55 @@ def test_update_custom_class_empty_call():
         type(client.transport.update_custom_class), "__call__"
     ) as call:
         client.update_custom_class()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.UpdateCustomClassRequest()
+
+
+def test_update_custom_class_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdaptationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_speech_adaptation.UpdateCustomClassRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_class), "__call__"
+    ) as call:
+        client.update_custom_class(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.UpdateCustomClassRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_custom_class_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdaptationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_custom_class), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resource.CustomClass(
+                name="name_value",
+                custom_class_id="custom_class_id_value",
+            )
+        )
+        response = await client.update_custom_class()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_speech_adaptation.UpdateCustomClassRequest()
@@ -3532,7 +4007,8 @@ async def test_update_custom_class_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.UpdateCustomClassRequest()
+        request = cloud_speech_adaptation.UpdateCustomClassRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resource.CustomClass)
@@ -3734,7 +4210,8 @@ def test_delete_custom_class(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.DeleteCustomClassRequest()
+        request = cloud_speech_adaptation.DeleteCustomClassRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3753,6 +4230,54 @@ def test_delete_custom_class_empty_call():
         type(client.transport.delete_custom_class), "__call__"
     ) as call:
         client.delete_custom_class()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.DeleteCustomClassRequest()
+
+
+def test_delete_custom_class_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = AdaptationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = cloud_speech_adaptation.DeleteCustomClassRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_class), "__call__"
+    ) as call:
+        client.delete_custom_class(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == cloud_speech_adaptation.DeleteCustomClassRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_custom_class_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = AdaptationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_custom_class), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_custom_class()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == cloud_speech_adaptation.DeleteCustomClassRequest()
@@ -3783,7 +4308,8 @@ async def test_delete_custom_class_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == cloud_speech_adaptation.DeleteCustomClassRequest()
+        request = cloud_speech_adaptation.DeleteCustomClassRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

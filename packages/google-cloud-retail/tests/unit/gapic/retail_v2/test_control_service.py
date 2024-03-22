@@ -1157,7 +1157,8 @@ def test_create_control(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.CreateControlRequest()
+        request = control_service.CreateControlRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcr_control.Control)
@@ -1183,6 +1184,62 @@ def test_create_control_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_control), "__call__") as call:
         client.create_control()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == control_service.CreateControlRequest()
+
+
+def test_create_control_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ControlServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = control_service.CreateControlRequest(
+        parent="parent_value",
+        control_id="control_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_control), "__call__") as call:
+        client.create_control(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == control_service.CreateControlRequest(
+            parent="parent_value",
+            control_id="control_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_control_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ControlServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_control), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcr_control.Control(
+                name="name_value",
+                display_name="display_name_value",
+                associated_serving_config_ids=["associated_serving_config_ids_value"],
+                solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+                search_solution_use_case=[
+                    common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+                ],
+            )
+        )
+        response = await client.create_control()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == control_service.CreateControlRequest()
@@ -1220,7 +1277,8 @@ async def test_create_control_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.CreateControlRequest()
+        request = control_service.CreateControlRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcr_control.Control)
@@ -1437,7 +1495,8 @@ def test_delete_control(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.DeleteControlRequest()
+        request = control_service.DeleteControlRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1454,6 +1513,50 @@ def test_delete_control_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_control), "__call__") as call:
         client.delete_control()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == control_service.DeleteControlRequest()
+
+
+def test_delete_control_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ControlServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = control_service.DeleteControlRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_control), "__call__") as call:
+        client.delete_control(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == control_service.DeleteControlRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_control_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ControlServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_control), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_control()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == control_service.DeleteControlRequest()
@@ -1481,7 +1584,8 @@ async def test_delete_control_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.DeleteControlRequest()
+        request = control_service.DeleteControlRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -1665,7 +1769,8 @@ def test_update_control(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.UpdateControlRequest()
+        request = control_service.UpdateControlRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcr_control.Control)
@@ -1691,6 +1796,56 @@ def test_update_control_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_control), "__call__") as call:
         client.update_control()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == control_service.UpdateControlRequest()
+
+
+def test_update_control_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ControlServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = control_service.UpdateControlRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_control), "__call__") as call:
+        client.update_control(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == control_service.UpdateControlRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_control_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ControlServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_control), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            gcr_control.Control(
+                name="name_value",
+                display_name="display_name_value",
+                associated_serving_config_ids=["associated_serving_config_ids_value"],
+                solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+                search_solution_use_case=[
+                    common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+                ],
+            )
+        )
+        response = await client.update_control()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == control_service.UpdateControlRequest()
@@ -1728,7 +1883,8 @@ async def test_update_control_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.UpdateControlRequest()
+        request = control_service.UpdateControlRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, gcr_control.Control)
@@ -1943,7 +2099,8 @@ def test_get_control(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.GetControlRequest()
+        request = control_service.GetControlRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, control.Control)
@@ -1969,6 +2126,60 @@ def test_get_control_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_control), "__call__") as call:
         client.get_control()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == control_service.GetControlRequest()
+
+
+def test_get_control_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ControlServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = control_service.GetControlRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_control), "__call__") as call:
+        client.get_control(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == control_service.GetControlRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_control_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ControlServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_control), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            control.Control(
+                name="name_value",
+                display_name="display_name_value",
+                associated_serving_config_ids=["associated_serving_config_ids_value"],
+                solution_types=[common.SolutionType.SOLUTION_TYPE_RECOMMENDATION],
+                search_solution_use_case=[
+                    common.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH
+                ],
+            )
+        )
+        response = await client.get_control()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == control_service.GetControlRequest()
@@ -2006,7 +2217,8 @@ async def test_get_control_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.GetControlRequest()
+        request = control_service.GetControlRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, control.Control)
@@ -2193,7 +2405,8 @@ def test_list_controls(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.ListControlsRequest()
+        request = control_service.ListControlsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListControlsPager)
@@ -2211,6 +2424,58 @@ def test_list_controls_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
         client.list_controls()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == control_service.ListControlsRequest()
+
+
+def test_list_controls_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = ControlServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = control_service.ListControlsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
+        client.list_controls(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == control_service.ListControlsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_controls_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ControlServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_controls), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            control_service.ListControlsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_controls()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == control_service.ListControlsRequest()
@@ -2242,7 +2507,8 @@ async def test_list_controls_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == control_service.ListControlsRequest()
+        request = control_service.ListControlsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListControlsAsyncPager)
