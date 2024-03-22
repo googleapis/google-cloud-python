@@ -198,10 +198,8 @@ class Endpoint(proto.Message):
 
     Attributes:
         ip_address (str):
-            The IP address of the endpoint, which can be an external or
-            internal IP. An IPv6 address is only allowed when the test's
-            destination is a `global load balancer
-            VIP <https://cloud.google.com/load-balancing/docs/load-balancing-overview>`__.
+            The IP address of the endpoint, which can be
+            an external or internal IP.
         port (int):
             The IP protocol port of the endpoint.
             Only applicable when protocol is TCP or UDP.
@@ -216,7 +214,7 @@ class Endpoint(proto.Message):
             provide forwarding information in the control
             plane. Format:
 
-            projects/{project}/global/forwardingRules/{id}
+             projects/{project}/global/forwardingRules/{id}
             or
             projects/{project}/regions/{region}/forwardingRules/{id}
         forwarding_rule_target (google.cloud.network_management_v1.types.Endpoint.ForwardingRuleTarget):

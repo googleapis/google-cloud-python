@@ -236,7 +236,9 @@ class Step(proto.Message):
 
             This field is a member of `oneof`_ ``step_info``.
         load_balancer (google.cloud.network_management_v1.types.LoadBalancerInfo):
-            Display information of the load balancers.
+            Display information of the load balancers. Deprecated in
+            favor of the ``load_balancer_backend_info`` field, not used
+            in new tests.
 
             This field is a member of `oneof`_ ``step_info``.
         network (google.cloud.network_management_v1.types.NetworkInfo):
@@ -1138,7 +1140,9 @@ class LoadBalancerInfo(proto.Message):
             Type of the load balancer.
         health_check_uri (str):
             URI of the health check for the load
-            balancer.
+            balancer. Deprecated and no longer populated as
+            different load balancer backends might have
+            different health checks.
         backends (MutableSequence[google.cloud.network_management_v1.types.LoadBalancerBackend]):
             Information for the loadbalancer backends.
         backend_type (google.cloud.network_management_v1.types.LoadBalancerInfo.BackendType):
