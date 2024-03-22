@@ -1194,7 +1194,8 @@ def test_create_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.CreateJobRequest()
+        request = services.CreateJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.Job)
@@ -1219,6 +1220,61 @@ def test_create_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_job), "__call__") as call:
         client.create_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.CreateJobRequest()
+
+
+def test_create_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = services.CreateJobRequest(
+        parent="parent_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_job), "__call__") as call:
+        client.create_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.CreateJobRequest(
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranscoderServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Job(
+                name="name_value",
+                input_uri="input_uri_value",
+                output_uri="output_uri_value",
+                state=resources.Job.ProcessingState.PENDING,
+                ttl_after_completion_days=2670,
+                mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
+                batch_mode_priority=2023,
+                optimization=resources.Job.OptimizationStrategy.AUTODETECT,
+            )
+        )
+        response = await client.create_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == services.CreateJobRequest()
@@ -1257,7 +1313,8 @@ async def test_create_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.CreateJobRequest()
+        request = services.CreateJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.Job)
@@ -1454,7 +1511,8 @@ def test_list_jobs(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.ListJobsRequest()
+        request = services.ListJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobsPager)
@@ -1473,6 +1531,61 @@ def test_list_jobs_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
         client.list_jobs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.ListJobsRequest()
+
+
+def test_list_jobs_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = services.ListJobsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
+        client.list_jobs(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.ListJobsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_jobs_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranscoderServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            services.ListJobsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_jobs()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == services.ListJobsRequest()
@@ -1505,7 +1618,8 @@ async def test_list_jobs_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.ListJobsRequest()
+        request = services.ListJobsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobsAsyncPager)
@@ -1887,7 +2001,8 @@ def test_get_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.GetJobRequest()
+        request = services.GetJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.Job)
@@ -1912,6 +2027,61 @@ def test_get_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job), "__call__") as call:
         client.get_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.GetJobRequest()
+
+
+def test_get_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = services.GetJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job), "__call__") as call:
+        client.get_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.GetJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranscoderServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.Job(
+                name="name_value",
+                input_uri="input_uri_value",
+                output_uri="output_uri_value",
+                state=resources.Job.ProcessingState.PENDING,
+                ttl_after_completion_days=2670,
+                mode=resources.Job.ProcessingMode.PROCESSING_MODE_INTERACTIVE,
+                batch_mode_priority=2023,
+                optimization=resources.Job.OptimizationStrategy.AUTODETECT,
+            )
+        )
+        response = await client.get_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == services.GetJobRequest()
@@ -1950,7 +2120,8 @@ async def test_get_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.GetJobRequest()
+        request = services.GetJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.Job)
@@ -2134,7 +2305,8 @@ def test_delete_job(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.DeleteJobRequest()
+        request = services.DeleteJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2151,6 +2323,50 @@ def test_delete_job_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
         client.delete_job()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.DeleteJobRequest()
+
+
+def test_delete_job_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = services.DeleteJobRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
+        client.delete_job(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.DeleteJobRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_job_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranscoderServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_job), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_job()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == services.DeleteJobRequest()
@@ -2178,7 +2394,8 @@ async def test_delete_job_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.DeleteJobRequest()
+        request = services.DeleteJobRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -2358,7 +2575,8 @@ def test_create_job_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.CreateJobTemplateRequest()
+        request = services.CreateJobTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.JobTemplate)
@@ -2378,6 +2596,60 @@ def test_create_job_template_empty_call():
         type(client.transport.create_job_template), "__call__"
     ) as call:
         client.create_job_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.CreateJobTemplateRequest()
+
+
+def test_create_job_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = services.CreateJobTemplateRequest(
+        parent="parent_value",
+        job_template_id="job_template_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_job_template), "__call__"
+    ) as call:
+        client.create_job_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.CreateJobTemplateRequest(
+            parent="parent_value",
+            job_template_id="job_template_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_job_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranscoderServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_job_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.JobTemplate(
+                name="name_value",
+            )
+        )
+        response = await client.create_job_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == services.CreateJobTemplateRequest()
@@ -2411,7 +2683,8 @@ async def test_create_job_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.CreateJobTemplateRequest()
+        request = services.CreateJobTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.JobTemplate)
@@ -2625,7 +2898,8 @@ def test_list_job_templates(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.ListJobTemplatesRequest()
+        request = services.ListJobTemplatesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobTemplatesPager)
@@ -2646,6 +2920,65 @@ def test_list_job_templates_empty_call():
         type(client.transport.list_job_templates), "__call__"
     ) as call:
         client.list_job_templates()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.ListJobTemplatesRequest()
+
+
+def test_list_job_templates_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = services.ListJobTemplatesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_job_templates), "__call__"
+    ) as call:
+        client.list_job_templates(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.ListJobTemplatesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_job_templates_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranscoderServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_job_templates), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            services.ListJobTemplatesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_job_templates()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == services.ListJobTemplatesRequest()
@@ -2680,7 +3013,8 @@ async def test_list_job_templates_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.ListJobTemplatesRequest()
+        request = services.ListJobTemplatesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListJobTemplatesAsyncPager)
@@ -3070,7 +3404,8 @@ def test_get_job_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.GetJobTemplateRequest()
+        request = services.GetJobTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.JobTemplate)
@@ -3088,6 +3423,54 @@ def test_get_job_template_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_job_template), "__call__") as call:
         client.get_job_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.GetJobTemplateRequest()
+
+
+def test_get_job_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = services.GetJobTemplateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job_template), "__call__") as call:
+        client.get_job_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.GetJobTemplateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_job_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranscoderServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job_template), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            resources.JobTemplate(
+                name="name_value",
+            )
+        )
+        response = await client.get_job_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == services.GetJobTemplateRequest()
@@ -3119,7 +3502,8 @@ async def test_get_job_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.GetJobTemplateRequest()
+        request = services.GetJobTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, resources.JobTemplate)
@@ -3302,7 +3686,8 @@ def test_delete_job_template(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.DeleteJobTemplateRequest()
+        request = services.DeleteJobTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None
@@ -3321,6 +3706,54 @@ def test_delete_job_template_empty_call():
         type(client.transport.delete_job_template), "__call__"
     ) as call:
         client.delete_job_template()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.DeleteJobTemplateRequest()
+
+
+def test_delete_job_template_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = TranscoderServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = services.DeleteJobTemplateRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_job_template), "__call__"
+    ) as call:
+        client.delete_job_template(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == services.DeleteJobTemplateRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_job_template_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = TranscoderServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_job_template), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_job_template()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == services.DeleteJobTemplateRequest()
@@ -3350,7 +3783,8 @@ async def test_delete_job_template_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == services.DeleteJobTemplateRequest()
+        request = services.DeleteJobTemplateRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert response is None

@@ -1141,7 +1141,8 @@ def test_list_private_clouds(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListPrivateCloudsRequest()
+        request = vmwareengine.ListPrivateCloudsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPrivateCloudsPager)
@@ -1162,6 +1163,65 @@ def test_list_private_clouds_empty_call():
         type(client.transport.list_private_clouds), "__call__"
     ) as call:
         client.list_private_clouds()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListPrivateCloudsRequest()
+
+
+def test_list_private_clouds_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListPrivateCloudsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_private_clouds), "__call__"
+    ) as call:
+        client.list_private_clouds(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListPrivateCloudsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_private_clouds_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_private_clouds), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListPrivateCloudsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_private_clouds()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListPrivateCloudsRequest()
@@ -1196,7 +1256,8 @@ async def test_list_private_clouds_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListPrivateCloudsRequest()
+        request = vmwareengine.ListPrivateCloudsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPrivateCloudsAsyncPager)
@@ -1594,7 +1655,8 @@ def test_get_private_cloud(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetPrivateCloudRequest()
+        request = vmwareengine.GetPrivateCloudRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.PrivateCloud)
@@ -1618,6 +1680,62 @@ def test_get_private_cloud_empty_call():
         type(client.transport.get_private_cloud), "__call__"
     ) as call:
         client.get_private_cloud()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetPrivateCloudRequest()
+
+
+def test_get_private_cloud_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetPrivateCloudRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_private_cloud), "__call__"
+    ) as call:
+        client.get_private_cloud(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetPrivateCloudRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_private_cloud_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_private_cloud), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.PrivateCloud(
+                name="name_value",
+                state=vmwareengine_resources.PrivateCloud.State.ACTIVE,
+                description="description_value",
+                uid="uid_value",
+                type_=vmwareengine_resources.PrivateCloud.Type.TIME_LIMITED,
+            )
+        )
+        response = await client.get_private_cloud()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetPrivateCloudRequest()
@@ -1655,7 +1773,8 @@ async def test_get_private_cloud_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetPrivateCloudRequest()
+        request = vmwareengine.GetPrivateCloudRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.PrivateCloud)
@@ -1850,7 +1969,8 @@ def test_create_private_cloud(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreatePrivateCloudRequest()
+        request = vmwareengine.CreatePrivateCloudRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -1869,6 +1989,60 @@ def test_create_private_cloud_empty_call():
         type(client.transport.create_private_cloud), "__call__"
     ) as call:
         client.create_private_cloud()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreatePrivateCloudRequest()
+
+
+def test_create_private_cloud_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.CreatePrivateCloudRequest(
+        parent="parent_value",
+        private_cloud_id="private_cloud_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_private_cloud), "__call__"
+    ) as call:
+        client.create_private_cloud(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreatePrivateCloudRequest(
+            parent="parent_value",
+            private_cloud_id="private_cloud_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_private_cloud_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_private_cloud), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_private_cloud()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.CreatePrivateCloudRequest()
@@ -1900,7 +2074,8 @@ async def test_create_private_cloud_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreatePrivateCloudRequest()
+        request = vmwareengine.CreatePrivateCloudRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2110,7 +2285,8 @@ def test_update_private_cloud(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdatePrivateCloudRequest()
+        request = vmwareengine.UpdatePrivateCloudRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2129,6 +2305,56 @@ def test_update_private_cloud_empty_call():
         type(client.transport.update_private_cloud), "__call__"
     ) as call:
         client.update_private_cloud()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdatePrivateCloudRequest()
+
+
+def test_update_private_cloud_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UpdatePrivateCloudRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_private_cloud), "__call__"
+    ) as call:
+        client.update_private_cloud(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdatePrivateCloudRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_private_cloud_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_private_cloud), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_private_cloud()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UpdatePrivateCloudRequest()
@@ -2160,7 +2386,8 @@ async def test_update_private_cloud_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdatePrivateCloudRequest()
+        request = vmwareengine.UpdatePrivateCloudRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2360,7 +2587,8 @@ def test_delete_private_cloud(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeletePrivateCloudRequest()
+        request = vmwareengine.DeletePrivateCloudRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2379,6 +2607,58 @@ def test_delete_private_cloud_empty_call():
         type(client.transport.delete_private_cloud), "__call__"
     ) as call:
         client.delete_private_cloud()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeletePrivateCloudRequest()
+
+
+def test_delete_private_cloud_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.DeletePrivateCloudRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_private_cloud), "__call__"
+    ) as call:
+        client.delete_private_cloud(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeletePrivateCloudRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_private_cloud_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_private_cloud), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_private_cloud()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.DeletePrivateCloudRequest()
@@ -2410,7 +2690,8 @@ async def test_delete_private_cloud_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeletePrivateCloudRequest()
+        request = vmwareengine.DeletePrivateCloudRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2600,7 +2881,8 @@ def test_undelete_private_cloud(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UndeletePrivateCloudRequest()
+        request = vmwareengine.UndeletePrivateCloudRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2619,6 +2901,58 @@ def test_undelete_private_cloud_empty_call():
         type(client.transport.undelete_private_cloud), "__call__"
     ) as call:
         client.undelete_private_cloud()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UndeletePrivateCloudRequest()
+
+
+def test_undelete_private_cloud_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UndeletePrivateCloudRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.undelete_private_cloud), "__call__"
+    ) as call:
+        client.undelete_private_cloud(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UndeletePrivateCloudRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_undelete_private_cloud_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.undelete_private_cloud), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.undelete_private_cloud()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UndeletePrivateCloudRequest()
@@ -2651,7 +2985,8 @@ async def test_undelete_private_cloud_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UndeletePrivateCloudRequest()
+        request = vmwareengine.UndeletePrivateCloudRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -2842,7 +3177,8 @@ def test_list_clusters(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListClustersRequest()
+        request = vmwareengine.ListClustersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListClustersPager)
@@ -2861,6 +3197,61 @@ def test_list_clusters_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
         client.list_clusters()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListClustersRequest()
+
+
+def test_list_clusters_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListClustersRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
+        client.list_clusters(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListClustersRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_clusters_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_clusters), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListClustersResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_clusters()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListClustersRequest()
@@ -2893,7 +3284,8 @@ async def test_list_clusters_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListClustersRequest()
+        request = vmwareengine.ListClustersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListClustersAsyncPager)
@@ -3270,7 +3662,8 @@ def test_get_cluster(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetClusterRequest()
+        request = vmwareengine.GetClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.Cluster)
@@ -3291,6 +3684,57 @@ def test_get_cluster_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
         client.get_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetClusterRequest()
+
+
+def test_get_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetClusterRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
+        client.get_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetClusterRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_cluster_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.Cluster(
+                name="name_value",
+                state=vmwareengine_resources.Cluster.State.ACTIVE,
+                management=True,
+                uid="uid_value",
+            )
+        )
+        response = await client.get_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetClusterRequest()
@@ -3325,7 +3769,8 @@ async def test_get_cluster_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetClusterRequest()
+        request = vmwareengine.GetClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.Cluster)
@@ -3509,7 +3954,8 @@ def test_create_cluster(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateClusterRequest()
+        request = vmwareengine.CreateClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3526,6 +3972,56 @@ def test_create_cluster_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
         client.create_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateClusterRequest()
+
+
+def test_create_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.CreateClusterRequest(
+        parent="parent_value",
+        cluster_id="cluster_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
+        client.create_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateClusterRequest(
+            parent="parent_value",
+            cluster_id="cluster_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_cluster_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.CreateClusterRequest()
@@ -3555,7 +4051,8 @@ async def test_create_cluster_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateClusterRequest()
+        request = vmwareengine.CreateClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3755,7 +4252,8 @@ def test_update_cluster(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateClusterRequest()
+        request = vmwareengine.UpdateClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3772,6 +4270,52 @@ def test_update_cluster_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
         client.update_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateClusterRequest()
+
+
+def test_update_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UpdateClusterRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
+        client.update_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateClusterRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_cluster_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UpdateClusterRequest()
@@ -3801,7 +4345,8 @@ async def test_update_cluster_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateClusterRequest()
+        request = vmwareengine.UpdateClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -3991,7 +4536,8 @@ def test_delete_cluster(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteClusterRequest()
+        request = vmwareengine.DeleteClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4008,6 +4554,54 @@ def test_delete_cluster_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
         client.delete_cluster()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteClusterRequest()
+
+
+def test_delete_cluster_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.DeleteClusterRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
+        client.delete_cluster(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteClusterRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_cluster_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_cluster), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_cluster()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.DeleteClusterRequest()
@@ -4037,7 +4631,8 @@ async def test_delete_cluster_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteClusterRequest()
+        request = vmwareengine.DeleteClusterRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -4219,7 +4814,8 @@ def test_list_nodes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListNodesRequest()
+        request = vmwareengine.ListNodesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNodesPager)
@@ -4237,6 +4833,56 @@ def test_list_nodes_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
         client.list_nodes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNodesRequest()
+
+
+def test_list_nodes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListNodesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        client.list_nodes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNodesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_nodes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListNodesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_nodes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListNodesRequest()
@@ -4268,7 +4914,8 @@ async def test_list_nodes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListNodesRequest()
+        request = vmwareengine.ListNodesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNodesAsyncPager)
@@ -4647,7 +5294,8 @@ def test_get_node(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetNodeRequest()
+        request = vmwareengine.GetNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.Node)
@@ -4671,6 +5319,60 @@ def test_get_node_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node), "__call__") as call:
         client.get_node()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNodeRequest()
+
+
+def test_get_node_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetNodeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node), "__call__") as call:
+        client.get_node(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNodeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_node_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.Node(
+                name="name_value",
+                fqdn="fqdn_value",
+                internal_ip="internal_ip_value",
+                node_type_id="node_type_id_value",
+                version="version_value",
+                custom_core_count=1835,
+                state=vmwareengine_resources.Node.State.ACTIVE,
+            )
+        )
+        response = await client.get_node()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetNodeRequest()
@@ -4708,7 +5410,8 @@ async def test_get_node_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetNodeRequest()
+        request = vmwareengine.GetNodeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.Node)
@@ -4900,7 +5603,8 @@ def test_list_external_addresses(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListExternalAddressesRequest()
+        request = vmwareengine.ListExternalAddressesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExternalAddressesPager)
@@ -4921,6 +5625,65 @@ def test_list_external_addresses_empty_call():
         type(client.transport.list_external_addresses), "__call__"
     ) as call:
         client.list_external_addresses()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListExternalAddressesRequest()
+
+
+def test_list_external_addresses_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListExternalAddressesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses), "__call__"
+    ) as call:
+        client.list_external_addresses(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListExternalAddressesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_external_addresses_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_addresses), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListExternalAddressesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_external_addresses()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListExternalAddressesRequest()
@@ -4956,7 +5719,8 @@ async def test_list_external_addresses_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListExternalAddressesRequest()
+        request = vmwareengine.ListExternalAddressesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExternalAddressesAsyncPager)
@@ -5352,7 +6116,8 @@ def test_fetch_network_policy_external_addresses(request_type, transport: str = 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
+        request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchNetworkPolicyExternalAddressesPager)
@@ -5372,6 +6137,60 @@ def test_fetch_network_policy_external_addresses_empty_call():
         type(client.transport.fetch_network_policy_external_addresses), "__call__"
     ) as call:
         client.fetch_network_policy_external_addresses()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
+
+
+def test_fetch_network_policy_external_addresses_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest(
+        network_policy="network_policy_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses), "__call__"
+    ) as call:
+        client.fetch_network_policy_external_addresses(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.FetchNetworkPolicyExternalAddressesRequest(
+            network_policy="network_policy_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_fetch_network_policy_external_addresses_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.fetch_network_policy_external_addresses), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.FetchNetworkPolicyExternalAddressesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.fetch_network_policy_external_addresses()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
@@ -5406,7 +6225,8 @@ async def test_fetch_network_policy_external_addresses_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
+        request = vmwareengine.FetchNetworkPolicyExternalAddressesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.FetchNetworkPolicyExternalAddressesAsyncPager)
@@ -5806,7 +6626,8 @@ def test_get_external_address(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetExternalAddressRequest()
+        request = vmwareengine.GetExternalAddressRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.ExternalAddress)
@@ -5831,6 +6652,63 @@ def test_get_external_address_empty_call():
         type(client.transport.get_external_address), "__call__"
     ) as call:
         client.get_external_address()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetExternalAddressRequest()
+
+
+def test_get_external_address_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetExternalAddressRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_address), "__call__"
+    ) as call:
+        client.get_external_address(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetExternalAddressRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_external_address_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.ExternalAddress(
+                name="name_value",
+                internal_ip="internal_ip_value",
+                external_ip="external_ip_value",
+                state=vmwareengine_resources.ExternalAddress.State.ACTIVE,
+                uid="uid_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_external_address()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetExternalAddressRequest()
@@ -5869,7 +6747,8 @@ async def test_get_external_address_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetExternalAddressRequest()
+        request = vmwareengine.GetExternalAddressRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.ExternalAddress)
@@ -6065,7 +6944,8 @@ def test_create_external_address(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateExternalAddressRequest()
+        request = vmwareengine.CreateExternalAddressRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6084,6 +6964,60 @@ def test_create_external_address_empty_call():
         type(client.transport.create_external_address), "__call__"
     ) as call:
         client.create_external_address()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateExternalAddressRequest()
+
+
+def test_create_external_address_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.CreateExternalAddressRequest(
+        parent="parent_value",
+        external_address_id="external_address_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_address), "__call__"
+    ) as call:
+        client.create_external_address(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateExternalAddressRequest(
+            parent="parent_value",
+            external_address_id="external_address_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_external_address_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_external_address()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.CreateExternalAddressRequest()
@@ -6116,7 +7050,8 @@ async def test_create_external_address_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateExternalAddressRequest()
+        request = vmwareengine.CreateExternalAddressRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6326,7 +7261,8 @@ def test_update_external_address(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateExternalAddressRequest()
+        request = vmwareengine.UpdateExternalAddressRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6345,6 +7281,56 @@ def test_update_external_address_empty_call():
         type(client.transport.update_external_address), "__call__"
     ) as call:
         client.update_external_address()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateExternalAddressRequest()
+
+
+def test_update_external_address_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UpdateExternalAddressRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_address), "__call__"
+    ) as call:
+        client.update_external_address(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateExternalAddressRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_external_address_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_external_address()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UpdateExternalAddressRequest()
@@ -6377,7 +7363,8 @@ async def test_update_external_address_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateExternalAddressRequest()
+        request = vmwareengine.UpdateExternalAddressRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6577,7 +7564,8 @@ def test_delete_external_address(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteExternalAddressRequest()
+        request = vmwareengine.DeleteExternalAddressRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6596,6 +7584,58 @@ def test_delete_external_address_empty_call():
         type(client.transport.delete_external_address), "__call__"
     ) as call:
         client.delete_external_address()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteExternalAddressRequest()
+
+
+def test_delete_external_address_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.DeleteExternalAddressRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_address), "__call__"
+    ) as call:
+        client.delete_external_address(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteExternalAddressRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_external_address_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_address), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_external_address()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.DeleteExternalAddressRequest()
@@ -6628,7 +7668,8 @@ async def test_delete_external_address_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteExternalAddressRequest()
+        request = vmwareengine.DeleteExternalAddressRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -6819,7 +7860,8 @@ def test_list_subnets(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListSubnetsRequest()
+        request = vmwareengine.ListSubnetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSubnetsPager)
@@ -6838,6 +7880,57 @@ def test_list_subnets_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_subnets), "__call__") as call:
         client.list_subnets()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListSubnetsRequest()
+
+
+def test_list_subnets_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListSubnetsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_subnets), "__call__") as call:
+        client.list_subnets(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListSubnetsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_subnets_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_subnets), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListSubnetsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_subnets()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListSubnetsRequest()
@@ -6870,7 +7963,8 @@ async def test_list_subnets_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListSubnetsRequest()
+        request = vmwareengine.ListSubnetsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListSubnetsAsyncPager)
@@ -7249,7 +8343,8 @@ def test_get_subnet(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetSubnetRequest()
+        request = vmwareengine.GetSubnetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.Subnet)
@@ -7272,6 +8367,59 @@ def test_get_subnet_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_subnet), "__call__") as call:
         client.get_subnet()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetSubnetRequest()
+
+
+def test_get_subnet_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetSubnetRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_subnet), "__call__") as call:
+        client.get_subnet(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetSubnetRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_subnet_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_subnet), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.Subnet(
+                name="name_value",
+                ip_cidr_range="ip_cidr_range_value",
+                gateway_ip="gateway_ip_value",
+                type_="type__value",
+                state=vmwareengine_resources.Subnet.State.ACTIVE,
+                vlan_id=733,
+            )
+        )
+        response = await client.get_subnet()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetSubnetRequest()
@@ -7308,7 +8456,8 @@ async def test_get_subnet_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetSubnetRequest()
+        request = vmwareengine.GetSubnetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.Subnet)
@@ -7494,7 +8643,8 @@ def test_update_subnet(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateSubnetRequest()
+        request = vmwareengine.UpdateSubnetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7511,6 +8661,48 @@ def test_update_subnet_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_subnet), "__call__") as call:
         client.update_subnet()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateSubnetRequest()
+
+
+def test_update_subnet_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UpdateSubnetRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_subnet), "__call__") as call:
+        client.update_subnet(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateSubnetRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_subnet_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_subnet), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_subnet()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UpdateSubnetRequest()
@@ -7540,7 +8732,8 @@ async def test_update_subnet_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateSubnetRequest()
+        request = vmwareengine.UpdateSubnetRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -7735,7 +8928,8 @@ def test_list_external_access_rules(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListExternalAccessRulesRequest()
+        request = vmwareengine.ListExternalAccessRulesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExternalAccessRulesPager)
@@ -7756,6 +8950,65 @@ def test_list_external_access_rules_empty_call():
         type(client.transport.list_external_access_rules), "__call__"
     ) as call:
         client.list_external_access_rules()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListExternalAccessRulesRequest()
+
+
+def test_list_external_access_rules_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListExternalAccessRulesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules), "__call__"
+    ) as call:
+        client.list_external_access_rules(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListExternalAccessRulesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_external_access_rules_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_external_access_rules), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListExternalAccessRulesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_external_access_rules()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListExternalAccessRulesRequest()
@@ -7791,7 +9044,8 @@ async def test_list_external_access_rules_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListExternalAccessRulesRequest()
+        request = vmwareengine.ListExternalAccessRulesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListExternalAccessRulesAsyncPager)
@@ -8195,7 +9449,8 @@ def test_get_external_access_rule(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetExternalAccessRuleRequest()
+        request = vmwareengine.GetExternalAccessRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.ExternalAccessRule)
@@ -8223,6 +9478,66 @@ def test_get_external_access_rule_empty_call():
         type(client.transport.get_external_access_rule), "__call__"
     ) as call:
         client.get_external_access_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetExternalAccessRuleRequest()
+
+
+def test_get_external_access_rule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetExternalAccessRuleRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_access_rule), "__call__"
+    ) as call:
+        client.get_external_access_rule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetExternalAccessRuleRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_external_access_rule_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.ExternalAccessRule(
+                name="name_value",
+                description="description_value",
+                priority=898,
+                action=vmwareengine_resources.ExternalAccessRule.Action.ALLOW,
+                ip_protocol="ip_protocol_value",
+                source_ports=["source_ports_value"],
+                destination_ports=["destination_ports_value"],
+                state=vmwareengine_resources.ExternalAccessRule.State.ACTIVE,
+                uid="uid_value",
+            )
+        )
+        response = await client.get_external_access_rule()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetExternalAccessRuleRequest()
@@ -8265,7 +9580,8 @@ async def test_get_external_access_rule_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetExternalAccessRuleRequest()
+        request = vmwareengine.GetExternalAccessRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.ExternalAccessRule)
@@ -8464,7 +9780,8 @@ def test_create_external_access_rule(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateExternalAccessRuleRequest()
+        request = vmwareengine.CreateExternalAccessRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8483,6 +9800,60 @@ def test_create_external_access_rule_empty_call():
         type(client.transport.create_external_access_rule), "__call__"
     ) as call:
         client.create_external_access_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateExternalAccessRuleRequest()
+
+
+def test_create_external_access_rule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.CreateExternalAccessRuleRequest(
+        parent="parent_value",
+        external_access_rule_id="external_access_rule_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_access_rule), "__call__"
+    ) as call:
+        client.create_external_access_rule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateExternalAccessRuleRequest(
+            parent="parent_value",
+            external_access_rule_id="external_access_rule_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_external_access_rule_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_external_access_rule()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.CreateExternalAccessRuleRequest()
@@ -8515,7 +9886,8 @@ async def test_create_external_access_rule_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateExternalAccessRuleRequest()
+        request = vmwareengine.CreateExternalAccessRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8733,7 +10105,8 @@ def test_update_external_access_rule(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateExternalAccessRuleRequest()
+        request = vmwareengine.UpdateExternalAccessRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8752,6 +10125,56 @@ def test_update_external_access_rule_empty_call():
         type(client.transport.update_external_access_rule), "__call__"
     ) as call:
         client.update_external_access_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateExternalAccessRuleRequest()
+
+
+def test_update_external_access_rule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UpdateExternalAccessRuleRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_access_rule), "__call__"
+    ) as call:
+        client.update_external_access_rule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateExternalAccessRuleRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_external_access_rule_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_external_access_rule()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UpdateExternalAccessRuleRequest()
@@ -8784,7 +10207,8 @@ async def test_update_external_access_rule_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateExternalAccessRuleRequest()
+        request = vmwareengine.UpdateExternalAccessRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -8992,7 +10416,8 @@ def test_delete_external_access_rule(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteExternalAccessRuleRequest()
+        request = vmwareengine.DeleteExternalAccessRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9011,6 +10436,58 @@ def test_delete_external_access_rule_empty_call():
         type(client.transport.delete_external_access_rule), "__call__"
     ) as call:
         client.delete_external_access_rule()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteExternalAccessRuleRequest()
+
+
+def test_delete_external_access_rule_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.DeleteExternalAccessRuleRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_access_rule), "__call__"
+    ) as call:
+        client.delete_external_access_rule(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteExternalAccessRuleRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_external_access_rule_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_external_access_rule), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_external_access_rule()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.DeleteExternalAccessRuleRequest()
@@ -9043,7 +10520,8 @@ async def test_delete_external_access_rule_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteExternalAccessRuleRequest()
+        request = vmwareengine.DeleteExternalAccessRuleRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9236,7 +10714,8 @@ def test_list_logging_servers(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListLoggingServersRequest()
+        request = vmwareengine.ListLoggingServersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLoggingServersPager)
@@ -9257,6 +10736,65 @@ def test_list_logging_servers_empty_call():
         type(client.transport.list_logging_servers), "__call__"
     ) as call:
         client.list_logging_servers()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListLoggingServersRequest()
+
+
+def test_list_logging_servers_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListLoggingServersRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers), "__call__"
+    ) as call:
+        client.list_logging_servers(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListLoggingServersRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_logging_servers_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_logging_servers), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListLoggingServersResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_logging_servers()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListLoggingServersRequest()
@@ -9291,7 +10829,8 @@ async def test_list_logging_servers_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListLoggingServersRequest()
+        request = vmwareengine.ListLoggingServersRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListLoggingServersAsyncPager)
@@ -9690,7 +11229,8 @@ def test_get_logging_server(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetLoggingServerRequest()
+        request = vmwareengine.GetLoggingServerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.LoggingServer)
@@ -9715,6 +11255,63 @@ def test_get_logging_server_empty_call():
         type(client.transport.get_logging_server), "__call__"
     ) as call:
         client.get_logging_server()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetLoggingServerRequest()
+
+
+def test_get_logging_server_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetLoggingServerRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_server), "__call__"
+    ) as call:
+        client.get_logging_server(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetLoggingServerRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_logging_server_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.LoggingServer(
+                name="name_value",
+                hostname="hostname_value",
+                port=453,
+                protocol=vmwareengine_resources.LoggingServer.Protocol.UDP,
+                source_type=vmwareengine_resources.LoggingServer.SourceType.ESXI,
+                uid="uid_value",
+            )
+        )
+        response = await client.get_logging_server()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetLoggingServerRequest()
@@ -9753,7 +11350,8 @@ async def test_get_logging_server_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetLoggingServerRequest()
+        request = vmwareengine.GetLoggingServerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.LoggingServer)
@@ -9949,7 +11547,8 @@ def test_create_logging_server(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateLoggingServerRequest()
+        request = vmwareengine.CreateLoggingServerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -9968,6 +11567,60 @@ def test_create_logging_server_empty_call():
         type(client.transport.create_logging_server), "__call__"
     ) as call:
         client.create_logging_server()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateLoggingServerRequest()
+
+
+def test_create_logging_server_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.CreateLoggingServerRequest(
+        parent="parent_value",
+        logging_server_id="logging_server_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_logging_server), "__call__"
+    ) as call:
+        client.create_logging_server(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateLoggingServerRequest(
+            parent="parent_value",
+            logging_server_id="logging_server_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_logging_server_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_logging_server()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.CreateLoggingServerRequest()
@@ -10000,7 +11653,8 @@ async def test_create_logging_server_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateLoggingServerRequest()
+        request = vmwareengine.CreateLoggingServerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10210,7 +11864,8 @@ def test_update_logging_server(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateLoggingServerRequest()
+        request = vmwareengine.UpdateLoggingServerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10229,6 +11884,56 @@ def test_update_logging_server_empty_call():
         type(client.transport.update_logging_server), "__call__"
     ) as call:
         client.update_logging_server()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateLoggingServerRequest()
+
+
+def test_update_logging_server_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UpdateLoggingServerRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_server), "__call__"
+    ) as call:
+        client.update_logging_server(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateLoggingServerRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_logging_server_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_logging_server()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UpdateLoggingServerRequest()
@@ -10261,7 +11966,8 @@ async def test_update_logging_server_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateLoggingServerRequest()
+        request = vmwareengine.UpdateLoggingServerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10461,7 +12167,8 @@ def test_delete_logging_server(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteLoggingServerRequest()
+        request = vmwareengine.DeleteLoggingServerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10480,6 +12187,58 @@ def test_delete_logging_server_empty_call():
         type(client.transport.delete_logging_server), "__call__"
     ) as call:
         client.delete_logging_server()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteLoggingServerRequest()
+
+
+def test_delete_logging_server_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.DeleteLoggingServerRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_logging_server), "__call__"
+    ) as call:
+        client.delete_logging_server(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteLoggingServerRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_logging_server_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_logging_server), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_logging_server()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.DeleteLoggingServerRequest()
@@ -10512,7 +12271,8 @@ async def test_delete_logging_server_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteLoggingServerRequest()
+        request = vmwareengine.DeleteLoggingServerRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -10703,7 +12463,8 @@ def test_list_node_types(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListNodeTypesRequest()
+        request = vmwareengine.ListNodeTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNodeTypesPager)
@@ -10722,6 +12483,59 @@ def test_list_node_types_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_node_types), "__call__") as call:
         client.list_node_types()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNodeTypesRequest()
+
+
+def test_list_node_types_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListNodeTypesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_node_types), "__call__") as call:
+        client.list_node_types(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNodeTypesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_node_types_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_node_types), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListNodeTypesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_node_types()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListNodeTypesRequest()
@@ -10754,7 +12568,8 @@ async def test_list_node_types_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListNodeTypesRequest()
+        request = vmwareengine.ListNodeTypesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNodeTypesAsyncPager)
@@ -11140,7 +12955,8 @@ def test_get_node_type(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetNodeTypeRequest()
+        request = vmwareengine.GetNodeTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.NodeType)
@@ -11170,6 +12986,66 @@ def test_get_node_type_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node_type), "__call__") as call:
         client.get_node_type()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNodeTypeRequest()
+
+
+def test_get_node_type_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetNodeTypeRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node_type), "__call__") as call:
+        client.get_node_type(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNodeTypeRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_node_type_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_node_type), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.NodeType(
+                name="name_value",
+                node_type_id="node_type_id_value",
+                display_name="display_name_value",
+                virtual_cpu_count=1846,
+                total_core_count=1716,
+                memory_gb=961,
+                disk_size_gb=1261,
+                available_custom_core_counts=[2974],
+                kind=vmwareengine_resources.NodeType.Kind.STANDARD,
+                families=["families_value"],
+                capabilities=[
+                    vmwareengine_resources.NodeType.Capability.STRETCHED_CLUSTERS
+                ],
+            )
+        )
+        response = await client.get_node_type()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetNodeTypeRequest()
@@ -11213,7 +13089,8 @@ async def test_get_node_type_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetNodeTypeRequest()
+        request = vmwareengine.GetNodeTypeRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.NodeType)
@@ -11411,7 +13288,8 @@ def test_show_nsx_credentials(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ShowNsxCredentialsRequest()
+        request = vmwareengine.ShowNsxCredentialsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.Credentials)
@@ -11432,6 +13310,59 @@ def test_show_nsx_credentials_empty_call():
         type(client.transport.show_nsx_credentials), "__call__"
     ) as call:
         client.show_nsx_credentials()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ShowNsxCredentialsRequest()
+
+
+def test_show_nsx_credentials_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ShowNsxCredentialsRequest(
+        private_cloud="private_cloud_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.show_nsx_credentials), "__call__"
+    ) as call:
+        client.show_nsx_credentials(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ShowNsxCredentialsRequest(
+            private_cloud="private_cloud_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_show_nsx_credentials_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.show_nsx_credentials), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.Credentials(
+                username="username_value",
+                password="password_value",
+            )
+        )
+        response = await client.show_nsx_credentials()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ShowNsxCredentialsRequest()
@@ -11466,7 +13397,8 @@ async def test_show_nsx_credentials_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ShowNsxCredentialsRequest()
+        request = vmwareengine.ShowNsxCredentialsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.Credentials)
@@ -11661,7 +13593,8 @@ def test_show_vcenter_credentials(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ShowVcenterCredentialsRequest()
+        request = vmwareengine.ShowVcenterCredentialsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.Credentials)
@@ -11682,6 +13615,61 @@ def test_show_vcenter_credentials_empty_call():
         type(client.transport.show_vcenter_credentials), "__call__"
     ) as call:
         client.show_vcenter_credentials()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ShowVcenterCredentialsRequest()
+
+
+def test_show_vcenter_credentials_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ShowVcenterCredentialsRequest(
+        private_cloud="private_cloud_value",
+        username="username_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.show_vcenter_credentials), "__call__"
+    ) as call:
+        client.show_vcenter_credentials(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ShowVcenterCredentialsRequest(
+            private_cloud="private_cloud_value",
+            username="username_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_show_vcenter_credentials_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.show_vcenter_credentials), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.Credentials(
+                username="username_value",
+                password="password_value",
+            )
+        )
+        response = await client.show_vcenter_credentials()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ShowVcenterCredentialsRequest()
@@ -11717,7 +13705,8 @@ async def test_show_vcenter_credentials_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ShowVcenterCredentialsRequest()
+        request = vmwareengine.ShowVcenterCredentialsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.Credentials)
@@ -11909,7 +13898,8 @@ def test_reset_nsx_credentials(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ResetNsxCredentialsRequest()
+        request = vmwareengine.ResetNsxCredentialsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -11928,6 +13918,58 @@ def test_reset_nsx_credentials_empty_call():
         type(client.transport.reset_nsx_credentials), "__call__"
     ) as call:
         client.reset_nsx_credentials()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ResetNsxCredentialsRequest()
+
+
+def test_reset_nsx_credentials_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ResetNsxCredentialsRequest(
+        private_cloud="private_cloud_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reset_nsx_credentials), "__call__"
+    ) as call:
+        client.reset_nsx_credentials(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ResetNsxCredentialsRequest(
+            private_cloud="private_cloud_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_reset_nsx_credentials_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reset_nsx_credentials), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.reset_nsx_credentials()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ResetNsxCredentialsRequest()
@@ -11960,7 +14002,8 @@ async def test_reset_nsx_credentials_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ResetNsxCredentialsRequest()
+        request = vmwareengine.ResetNsxCredentialsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -12150,7 +14193,8 @@ def test_reset_vcenter_credentials(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ResetVcenterCredentialsRequest()
+        request = vmwareengine.ResetVcenterCredentialsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -12169,6 +14213,60 @@ def test_reset_vcenter_credentials_empty_call():
         type(client.transport.reset_vcenter_credentials), "__call__"
     ) as call:
         client.reset_vcenter_credentials()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ResetVcenterCredentialsRequest()
+
+
+def test_reset_vcenter_credentials_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ResetVcenterCredentialsRequest(
+        private_cloud="private_cloud_value",
+        request_id="request_id_value",
+        username="username_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reset_vcenter_credentials), "__call__"
+    ) as call:
+        client.reset_vcenter_credentials(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ResetVcenterCredentialsRequest(
+            private_cloud="private_cloud_value",
+            request_id="request_id_value",
+            username="username_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_reset_vcenter_credentials_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.reset_vcenter_credentials), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.reset_vcenter_credentials()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ResetVcenterCredentialsRequest()
@@ -12201,7 +14299,8 @@ async def test_reset_vcenter_credentials_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ResetVcenterCredentialsRequest()
+        request = vmwareengine.ResetVcenterCredentialsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -12393,7 +14492,8 @@ def test_get_dns_forwarding(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetDnsForwardingRequest()
+        request = vmwareengine.GetDnsForwardingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.DnsForwarding)
@@ -12413,6 +14513,58 @@ def test_get_dns_forwarding_empty_call():
         type(client.transport.get_dns_forwarding), "__call__"
     ) as call:
         client.get_dns_forwarding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetDnsForwardingRequest()
+
+
+def test_get_dns_forwarding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetDnsForwardingRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_forwarding), "__call__"
+    ) as call:
+        client.get_dns_forwarding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetDnsForwardingRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_dns_forwarding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_forwarding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.DnsForwarding(
+                name="name_value",
+            )
+        )
+        response = await client.get_dns_forwarding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetDnsForwardingRequest()
@@ -12446,7 +14598,8 @@ async def test_get_dns_forwarding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetDnsForwardingRequest()
+        request = vmwareengine.GetDnsForwardingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.DnsForwarding)
@@ -12637,7 +14790,8 @@ def test_update_dns_forwarding(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateDnsForwardingRequest()
+        request = vmwareengine.UpdateDnsForwardingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -12656,6 +14810,56 @@ def test_update_dns_forwarding_empty_call():
         type(client.transport.update_dns_forwarding), "__call__"
     ) as call:
         client.update_dns_forwarding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateDnsForwardingRequest()
+
+
+def test_update_dns_forwarding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UpdateDnsForwardingRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dns_forwarding), "__call__"
+    ) as call:
+        client.update_dns_forwarding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateDnsForwardingRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_dns_forwarding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_dns_forwarding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_dns_forwarding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UpdateDnsForwardingRequest()
@@ -12688,7 +14892,8 @@ async def test_update_dns_forwarding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateDnsForwardingRequest()
+        request = vmwareengine.UpdateDnsForwardingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -12903,7 +15108,8 @@ def test_get_network_peering(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetNetworkPeeringRequest()
+        request = vmwareengine.GetNetworkPeeringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.NetworkPeering)
@@ -12939,6 +15145,71 @@ def test_get_network_peering_empty_call():
         type(client.transport.get_network_peering), "__call__"
     ) as call:
         client.get_network_peering()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNetworkPeeringRequest()
+
+
+def test_get_network_peering_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetNetworkPeeringRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_network_peering), "__call__"
+    ) as call:
+        client.get_network_peering(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNetworkPeeringRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_network_peering_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.NetworkPeering(
+                name="name_value",
+                peer_network="peer_network_value",
+                export_custom_routes=True,
+                import_custom_routes=True,
+                exchange_subnet_routes=True,
+                export_custom_routes_with_public_ip=True,
+                import_custom_routes_with_public_ip=True,
+                state=vmwareengine_resources.NetworkPeering.State.INACTIVE,
+                state_details="state_details_value",
+                peer_mtu=865,
+                peer_network_type=vmwareengine_resources.NetworkPeering.PeerNetworkType.STANDARD,
+                uid="uid_value",
+                vmware_engine_network="vmware_engine_network_value",
+                description="description_value",
+            )
+        )
+        response = await client.get_network_peering()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetNetworkPeeringRequest()
@@ -12985,7 +15256,8 @@ async def test_get_network_peering_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetNetworkPeeringRequest()
+        request = vmwareengine.GetNetworkPeeringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.NetworkPeering)
@@ -13195,7 +15467,8 @@ def test_list_network_peerings(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListNetworkPeeringsRequest()
+        request = vmwareengine.ListNetworkPeeringsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNetworkPeeringsPager)
@@ -13216,6 +15489,65 @@ def test_list_network_peerings_empty_call():
         type(client.transport.list_network_peerings), "__call__"
     ) as call:
         client.list_network_peerings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNetworkPeeringsRequest()
+
+
+def test_list_network_peerings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListNetworkPeeringsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings), "__call__"
+    ) as call:
+        client.list_network_peerings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNetworkPeeringsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_network_peerings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_peerings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListNetworkPeeringsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_network_peerings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListNetworkPeeringsRequest()
@@ -13251,7 +15583,8 @@ async def test_list_network_peerings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListNetworkPeeringsRequest()
+        request = vmwareengine.ListNetworkPeeringsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNetworkPeeringsAsyncPager)
@@ -13645,7 +15978,8 @@ def test_create_network_peering(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateNetworkPeeringRequest()
+        request = vmwareengine.CreateNetworkPeeringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13664,6 +15998,60 @@ def test_create_network_peering_empty_call():
         type(client.transport.create_network_peering), "__call__"
     ) as call:
         client.create_network_peering()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateNetworkPeeringRequest()
+
+
+def test_create_network_peering_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.CreateNetworkPeeringRequest(
+        parent="parent_value",
+        network_peering_id="network_peering_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_network_peering), "__call__"
+    ) as call:
+        client.create_network_peering(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateNetworkPeeringRequest(
+            parent="parent_value",
+            network_peering_id="network_peering_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_network_peering_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_network_peering()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.CreateNetworkPeeringRequest()
@@ -13696,7 +16084,8 @@ async def test_create_network_peering_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateNetworkPeeringRequest()
+        request = vmwareengine.CreateNetworkPeeringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13906,7 +16295,8 @@ def test_delete_network_peering(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteNetworkPeeringRequest()
+        request = vmwareengine.DeleteNetworkPeeringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -13925,6 +16315,58 @@ def test_delete_network_peering_empty_call():
         type(client.transport.delete_network_peering), "__call__"
     ) as call:
         client.delete_network_peering()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteNetworkPeeringRequest()
+
+
+def test_delete_network_peering_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.DeleteNetworkPeeringRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_network_peering), "__call__"
+    ) as call:
+        client.delete_network_peering(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteNetworkPeeringRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_network_peering_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_network_peering()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.DeleteNetworkPeeringRequest()
@@ -13957,7 +16399,8 @@ async def test_delete_network_peering_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteNetworkPeeringRequest()
+        request = vmwareengine.DeleteNetworkPeeringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -14147,7 +16590,8 @@ def test_update_network_peering(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateNetworkPeeringRequest()
+        request = vmwareengine.UpdateNetworkPeeringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -14166,6 +16610,56 @@ def test_update_network_peering_empty_call():
         type(client.transport.update_network_peering), "__call__"
     ) as call:
         client.update_network_peering()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateNetworkPeeringRequest()
+
+
+def test_update_network_peering_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UpdateNetworkPeeringRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_network_peering), "__call__"
+    ) as call:
+        client.update_network_peering(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateNetworkPeeringRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_network_peering_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_network_peering), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_network_peering()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UpdateNetworkPeeringRequest()
@@ -14198,7 +16692,8 @@ async def test_update_network_peering_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateNetworkPeeringRequest()
+        request = vmwareengine.UpdateNetworkPeeringRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -14400,7 +16895,8 @@ def test_list_peering_routes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListPeeringRoutesRequest()
+        request = vmwareengine.ListPeeringRoutesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPeeringRoutesPager)
@@ -14420,6 +16916,62 @@ def test_list_peering_routes_empty_call():
         type(client.transport.list_peering_routes), "__call__"
     ) as call:
         client.list_peering_routes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListPeeringRoutesRequest()
+
+
+def test_list_peering_routes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListPeeringRoutesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes), "__call__"
+    ) as call:
+        client.list_peering_routes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListPeeringRoutesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_peering_routes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_peering_routes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListPeeringRoutesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_peering_routes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListPeeringRoutesRequest()
@@ -14453,7 +17005,8 @@ async def test_list_peering_routes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListPeeringRoutesRequest()
+        request = vmwareengine.ListPeeringRoutesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPeeringRoutesAsyncPager)
@@ -14844,7 +17397,8 @@ def test_create_hcx_activation_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateHcxActivationKeyRequest()
+        request = vmwareengine.CreateHcxActivationKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -14863,6 +17417,60 @@ def test_create_hcx_activation_key_empty_call():
         type(client.transport.create_hcx_activation_key), "__call__"
     ) as call:
         client.create_hcx_activation_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateHcxActivationKeyRequest()
+
+
+def test_create_hcx_activation_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.CreateHcxActivationKeyRequest(
+        parent="parent_value",
+        hcx_activation_key_id="hcx_activation_key_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_hcx_activation_key), "__call__"
+    ) as call:
+        client.create_hcx_activation_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateHcxActivationKeyRequest(
+            parent="parent_value",
+            hcx_activation_key_id="hcx_activation_key_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_hcx_activation_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_hcx_activation_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_hcx_activation_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.CreateHcxActivationKeyRequest()
@@ -14895,7 +17503,8 @@ async def test_create_hcx_activation_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateHcxActivationKeyRequest()
+        request = vmwareengine.CreateHcxActivationKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -15116,7 +17725,8 @@ def test_list_hcx_activation_keys(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListHcxActivationKeysRequest()
+        request = vmwareengine.ListHcxActivationKeysRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListHcxActivationKeysPager)
@@ -15137,6 +17747,61 @@ def test_list_hcx_activation_keys_empty_call():
         type(client.transport.list_hcx_activation_keys), "__call__"
     ) as call:
         client.list_hcx_activation_keys()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListHcxActivationKeysRequest()
+
+
+def test_list_hcx_activation_keys_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListHcxActivationKeysRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_hcx_activation_keys), "__call__"
+    ) as call:
+        client.list_hcx_activation_keys(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListHcxActivationKeysRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_hcx_activation_keys_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_hcx_activation_keys), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListHcxActivationKeysResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_hcx_activation_keys()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListHcxActivationKeysRequest()
@@ -15172,7 +17837,8 @@ async def test_list_hcx_activation_keys_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListHcxActivationKeysRequest()
+        request = vmwareengine.ListHcxActivationKeysRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListHcxActivationKeysAsyncPager)
@@ -15571,7 +18237,8 @@ def test_get_hcx_activation_key(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetHcxActivationKeyRequest()
+        request = vmwareengine.GetHcxActivationKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.HcxActivationKey)
@@ -15594,6 +18261,61 @@ def test_get_hcx_activation_key_empty_call():
         type(client.transport.get_hcx_activation_key), "__call__"
     ) as call:
         client.get_hcx_activation_key()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetHcxActivationKeyRequest()
+
+
+def test_get_hcx_activation_key_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetHcxActivationKeyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_hcx_activation_key), "__call__"
+    ) as call:
+        client.get_hcx_activation_key(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetHcxActivationKeyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_hcx_activation_key_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_hcx_activation_key), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.HcxActivationKey(
+                name="name_value",
+                state=vmwareengine_resources.HcxActivationKey.State.AVAILABLE,
+                activation_key="activation_key_value",
+                uid="uid_value",
+            )
+        )
+        response = await client.get_hcx_activation_key()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetHcxActivationKeyRequest()
@@ -15631,7 +18353,8 @@ async def test_get_hcx_activation_key_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetHcxActivationKeyRequest()
+        request = vmwareengine.GetHcxActivationKeyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.HcxActivationKey)
@@ -15832,7 +18555,8 @@ def test_get_network_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetNetworkPolicyRequest()
+        request = vmwareengine.GetNetworkPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.NetworkPolicy)
@@ -15860,6 +18584,63 @@ def test_get_network_policy_empty_call():
         type(client.transport.get_network_policy), "__call__"
     ) as call:
         client.get_network_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNetworkPolicyRequest()
+
+
+def test_get_network_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetNetworkPolicyRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_network_policy), "__call__"
+    ) as call:
+        client.get_network_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetNetworkPolicyRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_network_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_network_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.NetworkPolicy(
+                name="name_value",
+                edge_services_cidr="edge_services_cidr_value",
+                uid="uid_value",
+                vmware_engine_network="vmware_engine_network_value",
+                description="description_value",
+                vmware_engine_network_canonical="vmware_engine_network_canonical_value",
+            )
+        )
+        response = await client.get_network_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetNetworkPolicyRequest()
@@ -15898,7 +18679,8 @@ async def test_get_network_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetNetworkPolicyRequest()
+        request = vmwareengine.GetNetworkPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.NetworkPolicy)
@@ -16100,7 +18882,8 @@ def test_list_network_policies(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListNetworkPoliciesRequest()
+        request = vmwareengine.ListNetworkPoliciesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNetworkPoliciesPager)
@@ -16121,6 +18904,65 @@ def test_list_network_policies_empty_call():
         type(client.transport.list_network_policies), "__call__"
     ) as call:
         client.list_network_policies()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNetworkPoliciesRequest()
+
+
+def test_list_network_policies_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListNetworkPoliciesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_policies), "__call__"
+    ) as call:
+        client.list_network_policies(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListNetworkPoliciesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_network_policies_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_network_policies), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListNetworkPoliciesResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_network_policies()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListNetworkPoliciesRequest()
@@ -16156,7 +18998,8 @@ async def test_list_network_policies_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListNetworkPoliciesRequest()
+        request = vmwareengine.ListNetworkPoliciesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListNetworkPoliciesAsyncPager)
@@ -16548,7 +19391,8 @@ def test_create_network_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateNetworkPolicyRequest()
+        request = vmwareengine.CreateNetworkPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -16567,6 +19411,60 @@ def test_create_network_policy_empty_call():
         type(client.transport.create_network_policy), "__call__"
     ) as call:
         client.create_network_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateNetworkPolicyRequest()
+
+
+def test_create_network_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.CreateNetworkPolicyRequest(
+        parent="parent_value",
+        network_policy_id="network_policy_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_network_policy), "__call__"
+    ) as call:
+        client.create_network_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateNetworkPolicyRequest(
+            parent="parent_value",
+            network_policy_id="network_policy_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_network_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_network_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_network_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.CreateNetworkPolicyRequest()
@@ -16599,7 +19497,8 @@ async def test_create_network_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateNetworkPolicyRequest()
+        request = vmwareengine.CreateNetworkPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -16809,7 +19708,8 @@ def test_update_network_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateNetworkPolicyRequest()
+        request = vmwareengine.UpdateNetworkPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -16828,6 +19728,56 @@ def test_update_network_policy_empty_call():
         type(client.transport.update_network_policy), "__call__"
     ) as call:
         client.update_network_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateNetworkPolicyRequest()
+
+
+def test_update_network_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UpdateNetworkPolicyRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_network_policy), "__call__"
+    ) as call:
+        client.update_network_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateNetworkPolicyRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_network_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_network_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_network_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UpdateNetworkPolicyRequest()
@@ -16860,7 +19810,8 @@ async def test_update_network_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateNetworkPolicyRequest()
+        request = vmwareengine.UpdateNetworkPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -17060,7 +20011,8 @@ def test_delete_network_policy(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteNetworkPolicyRequest()
+        request = vmwareengine.DeleteNetworkPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -17079,6 +20031,58 @@ def test_delete_network_policy_empty_call():
         type(client.transport.delete_network_policy), "__call__"
     ) as call:
         client.delete_network_policy()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteNetworkPolicyRequest()
+
+
+def test_delete_network_policy_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.DeleteNetworkPolicyRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_network_policy), "__call__"
+    ) as call:
+        client.delete_network_policy(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteNetworkPolicyRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_network_policy_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_network_policy), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_network_policy()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.DeleteNetworkPolicyRequest()
@@ -17111,7 +20115,8 @@ async def test_delete_network_policy_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteNetworkPolicyRequest()
+        request = vmwareengine.DeleteNetworkPolicyRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -17304,7 +20309,8 @@ def test_list_management_dns_zone_bindings(request_type, transport: str = "grpc"
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListManagementDnsZoneBindingsRequest()
+        request = vmwareengine.ListManagementDnsZoneBindingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListManagementDnsZoneBindingsPager)
@@ -17325,6 +20331,65 @@ def test_list_management_dns_zone_bindings_empty_call():
         type(client.transport.list_management_dns_zone_bindings), "__call__"
     ) as call:
         client.list_management_dns_zone_bindings()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListManagementDnsZoneBindingsRequest()
+
+
+def test_list_management_dns_zone_bindings_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListManagementDnsZoneBindingsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings), "__call__"
+    ) as call:
+        client.list_management_dns_zone_bindings(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListManagementDnsZoneBindingsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_management_dns_zone_bindings_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_management_dns_zone_bindings), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListManagementDnsZoneBindingsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_management_dns_zone_bindings()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListManagementDnsZoneBindingsRequest()
@@ -17360,7 +20425,8 @@ async def test_list_management_dns_zone_bindings_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListManagementDnsZoneBindingsRequest()
+        request = vmwareengine.ListManagementDnsZoneBindingsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListManagementDnsZoneBindingsAsyncPager)
@@ -17762,7 +20828,8 @@ def test_get_management_dns_zone_binding(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetManagementDnsZoneBindingRequest()
+        request = vmwareengine.GetManagementDnsZoneBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.ManagementDnsZoneBinding)
@@ -17787,6 +20854,61 @@ def test_get_management_dns_zone_binding_empty_call():
         type(client.transport.get_management_dns_zone_binding), "__call__"
     ) as call:
         client.get_management_dns_zone_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetManagementDnsZoneBindingRequest()
+
+
+def test_get_management_dns_zone_binding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetManagementDnsZoneBindingRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_management_dns_zone_binding), "__call__"
+    ) as call:
+        client.get_management_dns_zone_binding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetManagementDnsZoneBindingRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_management_dns_zone_binding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.ManagementDnsZoneBinding(
+                name="name_value",
+                state=vmwareengine_resources.ManagementDnsZoneBinding.State.ACTIVE,
+                description="description_value",
+                uid="uid_value",
+            )
+        )
+        response = await client.get_management_dns_zone_binding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetManagementDnsZoneBindingRequest()
@@ -17824,7 +20946,8 @@ async def test_get_management_dns_zone_binding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetManagementDnsZoneBindingRequest()
+        request = vmwareengine.GetManagementDnsZoneBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.ManagementDnsZoneBinding)
@@ -18020,7 +21143,8 @@ def test_create_management_dns_zone_binding(request_type, transport: str = "grpc
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateManagementDnsZoneBindingRequest()
+        request = vmwareengine.CreateManagementDnsZoneBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -18039,6 +21163,60 @@ def test_create_management_dns_zone_binding_empty_call():
         type(client.transport.create_management_dns_zone_binding), "__call__"
     ) as call:
         client.create_management_dns_zone_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateManagementDnsZoneBindingRequest()
+
+
+def test_create_management_dns_zone_binding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.CreateManagementDnsZoneBindingRequest(
+        parent="parent_value",
+        management_dns_zone_binding_id="management_dns_zone_binding_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_management_dns_zone_binding), "__call__"
+    ) as call:
+        client.create_management_dns_zone_binding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateManagementDnsZoneBindingRequest(
+            parent="parent_value",
+            management_dns_zone_binding_id="management_dns_zone_binding_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_management_dns_zone_binding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_management_dns_zone_binding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.CreateManagementDnsZoneBindingRequest()
@@ -18071,7 +21249,8 @@ async def test_create_management_dns_zone_binding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateManagementDnsZoneBindingRequest()
+        request = vmwareengine.CreateManagementDnsZoneBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -18289,7 +21468,8 @@ def test_update_management_dns_zone_binding(request_type, transport: str = "grpc
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateManagementDnsZoneBindingRequest()
+        request = vmwareengine.UpdateManagementDnsZoneBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -18308,6 +21488,56 @@ def test_update_management_dns_zone_binding_empty_call():
         type(client.transport.update_management_dns_zone_binding), "__call__"
     ) as call:
         client.update_management_dns_zone_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateManagementDnsZoneBindingRequest()
+
+
+def test_update_management_dns_zone_binding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UpdateManagementDnsZoneBindingRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_management_dns_zone_binding), "__call__"
+    ) as call:
+        client.update_management_dns_zone_binding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateManagementDnsZoneBindingRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_management_dns_zone_binding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_management_dns_zone_binding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UpdateManagementDnsZoneBindingRequest()
@@ -18340,7 +21570,8 @@ async def test_update_management_dns_zone_binding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateManagementDnsZoneBindingRequest()
+        request = vmwareengine.UpdateManagementDnsZoneBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -18548,7 +21779,8 @@ def test_delete_management_dns_zone_binding(request_type, transport: str = "grpc
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteManagementDnsZoneBindingRequest()
+        request = vmwareengine.DeleteManagementDnsZoneBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -18567,6 +21799,58 @@ def test_delete_management_dns_zone_binding_empty_call():
         type(client.transport.delete_management_dns_zone_binding), "__call__"
     ) as call:
         client.delete_management_dns_zone_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteManagementDnsZoneBindingRequest()
+
+
+def test_delete_management_dns_zone_binding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.DeleteManagementDnsZoneBindingRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_management_dns_zone_binding), "__call__"
+    ) as call:
+        client.delete_management_dns_zone_binding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteManagementDnsZoneBindingRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_management_dns_zone_binding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_management_dns_zone_binding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.DeleteManagementDnsZoneBindingRequest()
@@ -18599,7 +21883,8 @@ async def test_delete_management_dns_zone_binding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteManagementDnsZoneBindingRequest()
+        request = vmwareengine.DeleteManagementDnsZoneBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -18789,7 +22074,8 @@ def test_repair_management_dns_zone_binding(request_type, transport: str = "grpc
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.RepairManagementDnsZoneBindingRequest()
+        request = vmwareengine.RepairManagementDnsZoneBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -18808,6 +22094,58 @@ def test_repair_management_dns_zone_binding_empty_call():
         type(client.transport.repair_management_dns_zone_binding), "__call__"
     ) as call:
         client.repair_management_dns_zone_binding()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.RepairManagementDnsZoneBindingRequest()
+
+
+def test_repair_management_dns_zone_binding_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.RepairManagementDnsZoneBindingRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.repair_management_dns_zone_binding), "__call__"
+    ) as call:
+        client.repair_management_dns_zone_binding(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.RepairManagementDnsZoneBindingRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_repair_management_dns_zone_binding_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.repair_management_dns_zone_binding), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.repair_management_dns_zone_binding()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.RepairManagementDnsZoneBindingRequest()
@@ -18840,7 +22178,8 @@ async def test_repair_management_dns_zone_binding_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.RepairManagementDnsZoneBindingRequest()
+        request = vmwareengine.RepairManagementDnsZoneBindingRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -19030,7 +22369,8 @@ def test_create_vmware_engine_network(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateVmwareEngineNetworkRequest()
+        request = vmwareengine.CreateVmwareEngineNetworkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -19049,6 +22389,60 @@ def test_create_vmware_engine_network_empty_call():
         type(client.transport.create_vmware_engine_network), "__call__"
     ) as call:
         client.create_vmware_engine_network()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateVmwareEngineNetworkRequest()
+
+
+def test_create_vmware_engine_network_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.CreateVmwareEngineNetworkRequest(
+        parent="parent_value",
+        vmware_engine_network_id="vmware_engine_network_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_vmware_engine_network), "__call__"
+    ) as call:
+        client.create_vmware_engine_network(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreateVmwareEngineNetworkRequest(
+            parent="parent_value",
+            vmware_engine_network_id="vmware_engine_network_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_vmware_engine_network_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_vmware_engine_network), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_vmware_engine_network()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.CreateVmwareEngineNetworkRequest()
@@ -19081,7 +22475,8 @@ async def test_create_vmware_engine_network_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreateVmwareEngineNetworkRequest()
+        request = vmwareengine.CreateVmwareEngineNetworkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -19299,7 +22694,8 @@ def test_update_vmware_engine_network(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateVmwareEngineNetworkRequest()
+        request = vmwareengine.UpdateVmwareEngineNetworkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -19318,6 +22714,56 @@ def test_update_vmware_engine_network_empty_call():
         type(client.transport.update_vmware_engine_network), "__call__"
     ) as call:
         client.update_vmware_engine_network()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateVmwareEngineNetworkRequest()
+
+
+def test_update_vmware_engine_network_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UpdateVmwareEngineNetworkRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vmware_engine_network), "__call__"
+    ) as call:
+        client.update_vmware_engine_network(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdateVmwareEngineNetworkRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_vmware_engine_network_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_vmware_engine_network), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_vmware_engine_network()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UpdateVmwareEngineNetworkRequest()
@@ -19350,7 +22796,8 @@ async def test_update_vmware_engine_network_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdateVmwareEngineNetworkRequest()
+        request = vmwareengine.UpdateVmwareEngineNetworkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -19558,7 +23005,8 @@ def test_delete_vmware_engine_network(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteVmwareEngineNetworkRequest()
+        request = vmwareengine.DeleteVmwareEngineNetworkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -19577,6 +23025,60 @@ def test_delete_vmware_engine_network_empty_call():
         type(client.transport.delete_vmware_engine_network), "__call__"
     ) as call:
         client.delete_vmware_engine_network()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteVmwareEngineNetworkRequest()
+
+
+def test_delete_vmware_engine_network_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.DeleteVmwareEngineNetworkRequest(
+        name="name_value",
+        request_id="request_id_value",
+        etag="etag_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_vmware_engine_network), "__call__"
+    ) as call:
+        client.delete_vmware_engine_network(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeleteVmwareEngineNetworkRequest(
+            name="name_value",
+            request_id="request_id_value",
+            etag="etag_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_vmware_engine_network_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_vmware_engine_network), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_vmware_engine_network()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.DeleteVmwareEngineNetworkRequest()
@@ -19609,7 +23111,8 @@ async def test_delete_vmware_engine_network_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeleteVmwareEngineNetworkRequest()
+        request = vmwareengine.DeleteVmwareEngineNetworkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -19806,7 +23309,8 @@ def test_get_vmware_engine_network(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetVmwareEngineNetworkRequest()
+        request = vmwareengine.GetVmwareEngineNetworkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.VmwareEngineNetwork)
@@ -19831,6 +23335,63 @@ def test_get_vmware_engine_network_empty_call():
         type(client.transport.get_vmware_engine_network), "__call__"
     ) as call:
         client.get_vmware_engine_network()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetVmwareEngineNetworkRequest()
+
+
+def test_get_vmware_engine_network_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetVmwareEngineNetworkRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_vmware_engine_network), "__call__"
+    ) as call:
+        client.get_vmware_engine_network(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetVmwareEngineNetworkRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_vmware_engine_network_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_vmware_engine_network), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.VmwareEngineNetwork(
+                name="name_value",
+                description="description_value",
+                state=vmwareengine_resources.VmwareEngineNetwork.State.CREATING,
+                type_=vmwareengine_resources.VmwareEngineNetwork.Type.LEGACY,
+                uid="uid_value",
+                etag="etag_value",
+            )
+        )
+        response = await client.get_vmware_engine_network()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetVmwareEngineNetworkRequest()
@@ -19870,7 +23431,8 @@ async def test_get_vmware_engine_network_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetVmwareEngineNetworkRequest()
+        request = vmwareengine.GetVmwareEngineNetworkRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.VmwareEngineNetwork)
@@ -20069,7 +23631,8 @@ def test_list_vmware_engine_networks(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListVmwareEngineNetworksRequest()
+        request = vmwareengine.ListVmwareEngineNetworksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVmwareEngineNetworksPager)
@@ -20090,6 +23653,65 @@ def test_list_vmware_engine_networks_empty_call():
         type(client.transport.list_vmware_engine_networks), "__call__"
     ) as call:
         client.list_vmware_engine_networks()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListVmwareEngineNetworksRequest()
+
+
+def test_list_vmware_engine_networks_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListVmwareEngineNetworksRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_vmware_engine_networks), "__call__"
+    ) as call:
+        client.list_vmware_engine_networks(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListVmwareEngineNetworksRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_vmware_engine_networks_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_vmware_engine_networks), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListVmwareEngineNetworksResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_vmware_engine_networks()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListVmwareEngineNetworksRequest()
@@ -20125,7 +23747,8 @@ async def test_list_vmware_engine_networks_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListVmwareEngineNetworksRequest()
+        request = vmwareengine.ListVmwareEngineNetworksRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListVmwareEngineNetworksAsyncPager)
@@ -20519,7 +24142,8 @@ def test_create_private_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreatePrivateConnectionRequest()
+        request = vmwareengine.CreatePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -20538,6 +24162,60 @@ def test_create_private_connection_empty_call():
         type(client.transport.create_private_connection), "__call__"
     ) as call:
         client.create_private_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreatePrivateConnectionRequest()
+
+
+def test_create_private_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.CreatePrivateConnectionRequest(
+        parent="parent_value",
+        private_connection_id="private_connection_id_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_private_connection), "__call__"
+    ) as call:
+        client.create_private_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.CreatePrivateConnectionRequest(
+            parent="parent_value",
+            private_connection_id="private_connection_id_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_private_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_private_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.create_private_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.CreatePrivateConnectionRequest()
@@ -20570,7 +24248,8 @@ async def test_create_private_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.CreatePrivateConnectionRequest()
+        request = vmwareengine.CreatePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -20800,7 +24479,8 @@ def test_get_private_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetPrivateConnectionRequest()
+        request = vmwareengine.GetPrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.PrivateConnection)
@@ -20847,6 +24527,68 @@ def test_get_private_connection_empty_call():
         assert args[0] == vmwareengine.GetPrivateConnectionRequest()
 
 
+def test_get_private_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetPrivateConnectionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_private_connection), "__call__"
+    ) as call:
+        client.get_private_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetPrivateConnectionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_private_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_private_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.PrivateConnection(
+                name="name_value",
+                description="description_value",
+                state=vmwareengine_resources.PrivateConnection.State.CREATING,
+                vmware_engine_network="vmware_engine_network_value",
+                vmware_engine_network_canonical="vmware_engine_network_canonical_value",
+                type_=vmwareengine_resources.PrivateConnection.Type.PRIVATE_SERVICE_ACCESS,
+                peering_id="peering_id_value",
+                routing_mode=vmwareengine_resources.PrivateConnection.RoutingMode.GLOBAL,
+                uid="uid_value",
+                service_network="service_network_value",
+                peering_state=vmwareengine_resources.PrivateConnection.PeeringState.PEERING_ACTIVE,
+            )
+        )
+        response = await client.get_private_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetPrivateConnectionRequest()
+
+
 @pytest.mark.asyncio
 async def test_get_private_connection_async(
     transport: str = "grpc_asyncio",
@@ -20886,7 +24628,8 @@ async def test_get_private_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetPrivateConnectionRequest()
+        request = vmwareengine.GetPrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.PrivateConnection)
@@ -21102,7 +24845,8 @@ def test_list_private_connections(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListPrivateConnectionsRequest()
+        request = vmwareengine.ListPrivateConnectionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPrivateConnectionsPager)
@@ -21123,6 +24867,65 @@ def test_list_private_connections_empty_call():
         type(client.transport.list_private_connections), "__call__"
     ) as call:
         client.list_private_connections()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListPrivateConnectionsRequest()
+
+
+def test_list_private_connections_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListPrivateConnectionsRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+        filter="filter_value",
+        order_by="order_by_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_private_connections), "__call__"
+    ) as call:
+        client.list_private_connections(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListPrivateConnectionsRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+            filter="filter_value",
+            order_by="order_by_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_private_connections_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_private_connections), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListPrivateConnectionsResponse(
+                next_page_token="next_page_token_value",
+                unreachable=["unreachable_value"],
+            )
+        )
+        response = await client.list_private_connections()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListPrivateConnectionsRequest()
@@ -21158,7 +24961,8 @@ async def test_list_private_connections_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListPrivateConnectionsRequest()
+        request = vmwareengine.ListPrivateConnectionsRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPrivateConnectionsAsyncPager)
@@ -21552,7 +25356,8 @@ def test_update_private_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdatePrivateConnectionRequest()
+        request = vmwareengine.UpdatePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -21571,6 +25376,56 @@ def test_update_private_connection_empty_call():
         type(client.transport.update_private_connection), "__call__"
     ) as call:
         client.update_private_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdatePrivateConnectionRequest()
+
+
+def test_update_private_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.UpdatePrivateConnectionRequest(
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_private_connection), "__call__"
+    ) as call:
+        client.update_private_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.UpdatePrivateConnectionRequest(
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_private_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_private_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.update_private_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.UpdatePrivateConnectionRequest()
@@ -21603,7 +25458,8 @@ async def test_update_private_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.UpdatePrivateConnectionRequest()
+        request = vmwareengine.UpdatePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -21811,7 +25667,8 @@ def test_delete_private_connection(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeletePrivateConnectionRequest()
+        request = vmwareengine.DeletePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -21830,6 +25687,58 @@ def test_delete_private_connection_empty_call():
         type(client.transport.delete_private_connection), "__call__"
     ) as call:
         client.delete_private_connection()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeletePrivateConnectionRequest()
+
+
+def test_delete_private_connection_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.DeletePrivateConnectionRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_private_connection), "__call__"
+    ) as call:
+        client.delete_private_connection(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.DeletePrivateConnectionRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_private_connection_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_private_connection), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.delete_private_connection()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.DeletePrivateConnectionRequest()
@@ -21862,7 +25771,8 @@ async def test_delete_private_connection_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.DeletePrivateConnectionRequest()
+        request = vmwareengine.DeletePrivateConnectionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -22054,7 +25964,8 @@ def test_list_private_connection_peering_routes(request_type, transport: str = "
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListPrivateConnectionPeeringRoutesRequest()
+        request = vmwareengine.ListPrivateConnectionPeeringRoutesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPrivateConnectionPeeringRoutesPager)
@@ -22074,6 +25985,60 @@ def test_list_private_connection_peering_routes_empty_call():
         type(client.transport.list_private_connection_peering_routes), "__call__"
     ) as call:
         client.list_private_connection_peering_routes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListPrivateConnectionPeeringRoutesRequest()
+
+
+def test_list_private_connection_peering_routes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.ListPrivateConnectionPeeringRoutesRequest(
+        parent="parent_value",
+        page_token="page_token_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_private_connection_peering_routes), "__call__"
+    ) as call:
+        client.list_private_connection_peering_routes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.ListPrivateConnectionPeeringRoutesRequest(
+            parent="parent_value",
+            page_token="page_token_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_private_connection_peering_routes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_private_connection_peering_routes), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine.ListPrivateConnectionPeeringRoutesResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_private_connection_peering_routes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.ListPrivateConnectionPeeringRoutesRequest()
@@ -22108,7 +26073,8 @@ async def test_list_private_connection_peering_routes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.ListPrivateConnectionPeeringRoutesRequest()
+        request = vmwareengine.ListPrivateConnectionPeeringRoutesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, pagers.ListPrivateConnectionPeeringRoutesAsyncPager)
@@ -22499,7 +26465,8 @@ def test_grant_dns_bind_permission(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GrantDnsBindPermissionRequest()
+        request = vmwareengine.GrantDnsBindPermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -22518,6 +26485,58 @@ def test_grant_dns_bind_permission_empty_call():
         type(client.transport.grant_dns_bind_permission), "__call__"
     ) as call:
         client.grant_dns_bind_permission()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GrantDnsBindPermissionRequest()
+
+
+def test_grant_dns_bind_permission_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GrantDnsBindPermissionRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.grant_dns_bind_permission), "__call__"
+    ) as call:
+        client.grant_dns_bind_permission(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GrantDnsBindPermissionRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_grant_dns_bind_permission_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.grant_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.grant_dns_bind_permission()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GrantDnsBindPermissionRequest()
@@ -22550,7 +26569,8 @@ async def test_grant_dns_bind_permission_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GrantDnsBindPermissionRequest()
+        request = vmwareengine.GrantDnsBindPermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -22752,7 +26772,8 @@ def test_get_dns_bind_permission(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetDnsBindPermissionRequest()
+        request = vmwareengine.GetDnsBindPermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.DnsBindPermission)
@@ -22772,6 +26793,58 @@ def test_get_dns_bind_permission_empty_call():
         type(client.transport.get_dns_bind_permission), "__call__"
     ) as call:
         client.get_dns_bind_permission()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetDnsBindPermissionRequest()
+
+
+def test_get_dns_bind_permission_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.GetDnsBindPermissionRequest(
+        name="name_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_bind_permission), "__call__"
+    ) as call:
+        client.get_dns_bind_permission(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.GetDnsBindPermissionRequest(
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_dns_bind_permission_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            vmwareengine_resources.DnsBindPermission(
+                name="name_value",
+            )
+        )
+        response = await client.get_dns_bind_permission()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.GetDnsBindPermissionRequest()
@@ -22806,7 +26879,8 @@ async def test_get_dns_bind_permission_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.GetDnsBindPermissionRequest()
+        request = vmwareengine.GetDnsBindPermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, vmwareengine_resources.DnsBindPermission)
@@ -22997,7 +27071,8 @@ def test_revoke_dns_bind_permission(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.RevokeDnsBindPermissionRequest()
+        request = vmwareengine.RevokeDnsBindPermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)
@@ -23016,6 +27091,58 @@ def test_revoke_dns_bind_permission_empty_call():
         type(client.transport.revoke_dns_bind_permission), "__call__"
     ) as call:
         client.revoke_dns_bind_permission()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.RevokeDnsBindPermissionRequest()
+
+
+def test_revoke_dns_bind_permission_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = VmwareEngineClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = vmwareengine.RevokeDnsBindPermissionRequest(
+        name="name_value",
+        request_id="request_id_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_dns_bind_permission), "__call__"
+    ) as call:
+        client.revoke_dns_bind_permission(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == vmwareengine.RevokeDnsBindPermissionRequest(
+            name="name_value",
+            request_id="request_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_revoke_dns_bind_permission_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = VmwareEngineAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.revoke_dns_bind_permission), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            operations_pb2.Operation(name="operations/spam")
+        )
+        response = await client.revoke_dns_bind_permission()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == vmwareengine.RevokeDnsBindPermissionRequest()
@@ -23048,7 +27175,8 @@ async def test_revoke_dns_bind_permission_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == vmwareengine.RevokeDnsBindPermissionRequest()
+        request = vmwareengine.RevokeDnsBindPermissionRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, future.Future)

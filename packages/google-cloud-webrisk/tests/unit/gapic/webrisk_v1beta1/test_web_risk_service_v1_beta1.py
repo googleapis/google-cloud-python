@@ -1219,7 +1219,8 @@ def test_compute_threat_list_diff(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webrisk.ComputeThreatListDiffRequest()
+        request = webrisk.ComputeThreatListDiffRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.ComputeThreatListDiffResponse)
@@ -1243,6 +1244,55 @@ def test_compute_threat_list_diff_empty_call():
         type(client.transport.compute_threat_list_diff), "__call__"
     ) as call:
         client.compute_threat_list_diff()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == webrisk.ComputeThreatListDiffRequest()
+
+
+def test_compute_threat_list_diff_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = webrisk.ComputeThreatListDiffRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_threat_list_diff), "__call__"
+    ) as call:
+        client.compute_threat_list_diff(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == webrisk.ComputeThreatListDiffRequest()
+
+
+@pytest.mark.asyncio
+async def test_compute_threat_list_diff_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebRiskServiceV1Beta1AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.compute_threat_list_diff), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            webrisk.ComputeThreatListDiffResponse(
+                response_type=webrisk.ComputeThreatListDiffResponse.ResponseType.DIFF,
+                new_version_token=b"new_version_token_blob",
+            )
+        )
+        response = await client.compute_threat_list_diff()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == webrisk.ComputeThreatListDiffRequest()
@@ -1277,7 +1327,8 @@ async def test_compute_threat_list_diff_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webrisk.ComputeThreatListDiffRequest()
+        request = webrisk.ComputeThreatListDiffRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.ComputeThreatListDiffResponse)
@@ -1437,7 +1488,8 @@ def test_search_uris(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webrisk.SearchUrisRequest()
+        request = webrisk.SearchUrisRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.SearchUrisResponse)
@@ -1454,6 +1506,52 @@ def test_search_uris_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_uris), "__call__") as call:
         client.search_uris()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == webrisk.SearchUrisRequest()
+
+
+def test_search_uris_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = webrisk.SearchUrisRequest(
+        uri="uri_value",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_uris), "__call__") as call:
+        client.search_uris(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == webrisk.SearchUrisRequest(
+            uri="uri_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_search_uris_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebRiskServiceV1Beta1AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_uris), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            webrisk.SearchUrisResponse()
+        )
+        response = await client.search_uris()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == webrisk.SearchUrisRequest()
@@ -1483,7 +1581,8 @@ async def test_search_uris_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webrisk.SearchUrisRequest()
+        request = webrisk.SearchUrisRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.SearchUrisResponse)
@@ -1612,7 +1711,8 @@ def test_search_hashes(request_type, transport: str = "grpc"):
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webrisk.SearchHashesRequest()
+        request = webrisk.SearchHashesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.SearchHashesResponse)
@@ -1629,6 +1729,48 @@ def test_search_hashes_empty_call():
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_hashes), "__call__") as call:
         client.search_hashes()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == webrisk.SearchHashesRequest()
+
+
+def test_search_hashes_non_empty_request_with_auto_populated_field():
+    # This test is a coverage failsafe to make sure that UUID4 fields are
+    # automatically populated, according to AIP-4235, with non-empty requests.
+    client = WebRiskServiceV1Beta1Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Populate all string fields in the request which are not UUID4
+    # since we want to check that UUID4 are populated automatically
+    # if they meet the requirements of AIP 4235.
+    request = webrisk.SearchHashesRequest()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_hashes), "__call__") as call:
+        client.search_hashes(request=request)
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == webrisk.SearchHashesRequest()
+
+
+@pytest.mark.asyncio
+async def test_search_hashes_empty_call_async():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = WebRiskServiceV1Beta1AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.search_hashes), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            webrisk.SearchHashesResponse()
+        )
+        response = await client.search_hashes()
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == webrisk.SearchHashesRequest()
@@ -1658,7 +1800,8 @@ async def test_search_hashes_async(
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
         _, args, _ = call.mock_calls[0]
-        assert args[0] == webrisk.SearchHashesRequest()
+        request = webrisk.SearchHashesRequest()
+        assert args[0] == request
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, webrisk.SearchHashesResponse)
